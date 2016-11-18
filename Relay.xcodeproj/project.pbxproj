@@ -2502,10 +2502,10 @@
 				LastSwiftUpdateCheck = 0720;
 				LastTestingUpgradeCheck = 0600;
 				LastUpgradeCheck = 0720;
-				ORGANIZATIONNAME = "Open Whisper Systems";
+				ORGANIZATIONNAME = Forsta;
 				TargetAttributes = {
 					D221A088169C9E5E00537ABF = {
-						DevelopmentTeam = U68MSDN6DR;
+						DevelopmentTeam = 5Z36NVB22Y;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.DataProtection = {
@@ -2532,7 +2532,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D221A083169C9E5E00537ABF /* Build configuration list for PBXProject "Signal" */;
+			buildConfigurationList = D221A083169C9E5E00537ABF /* Build configuration list for PBXProject "Relay" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -2696,7 +2696,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		3465F381B1856CC06933B3A8 /* [CP] Copy Pods Resources */ = {
@@ -2771,7 +2771,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B4E9B04E862FB64FC9A8F79B /* [CP] Embed Pods Frameworks */ = {
@@ -3415,7 +3415,7 @@
 				CODE_SIGN_ENTITLEMENTS = Signal/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U68MSDN6DR;
+				DEVELOPMENT_TEAM = 5Z36NVB22Y;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -3453,7 +3453,7 @@
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = org.whispersystems.signal;
+				PRODUCT_BUNDLE_IDENTIFIER = org.forsta.relay;
 				PRODUCT_NAME = Signal;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Signal/src/Signal-Bridging-Header.h";
@@ -3474,7 +3474,7 @@
 				CODE_SIGN_ENTITLEMENTS = Signal/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U68MSDN6DR;
+				DEVELOPMENT_TEAM = 5Z36NVB22Y;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -3512,7 +3512,7 @@
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = org.whispersystems.signal;
+				PRODUCT_BUNDLE_IDENTIFIER = org.forsta.relay;
 				PRODUCT_NAME = Signal;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -3641,7 +3641,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D221A083169C9E5E00537ABF /* Build configuration list for PBXProject "Signal" */ = {
+		D221A083169C9E5E00537ABF /* Build configuration list for PBXProject "Relay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D221A0BA169C9E5F00537ABF /* Debug */,
