@@ -1,0 +1,839 @@
+/* No comment provided by engineer. */
+"AB_PERMISSION_MISSING_ACTION" = "Give access";
+
+/* No comment provided by engineer. */
+"AB_PERMISSION_MISSING_BODY" = "Forsta Relay requires access to your contacts. We do not store your contacts on our servers.";
+
+/* No comment provided by engineer. */
+"AB_PERMISSION_MISSING_TITLE" = "Sorry!";
+
+/* Action sheet item */
+"ACCEPT_NEW_IDENTITY_ACTION" = "Accept new safety numbers";
+
+/* No comment provided by engineer. */
+"ACTION_REQUIRED_TITLE" = "Action Required";
+
+/* No comment provided by engineer. */
+"ADDRESSBOOK_RESTRICTED_ALERT_BODY" = "Forsta Relay requires access to your contacts. Access to contacts is restricted. Forsta Relay will close. You can disable the restriction temporarily to let Forsta Relay access your contacts by going the Settings app >> General >> Restrictions >> Contacts >> Allow Changes.";
+
+/* No comment provided by engineer. */
+"ADDRESSBOOK_RESTRICTED_ALERT_BUTTON" = "Close";
+
+/* No comment provided by engineer. */
+"ANSWER_CALL_BUTTON_TITLE" = "Answer";
+
+/* No comment provided by engineer. */
+"APN_FETCHED_FAILED" = "New Message! Open app to read it.";
+
+/* No comment provided by engineer. */
+"APN_Message" = "New Message!";
+
+/* No comment provided by engineer. */
+"APN_MESSAGE_FROM" = "Message from";
+
+/* No comment provided by engineer. */
+"APN_MESSAGE_IN_GROUP" = "Message in group";
+
+/* No comment provided by engineer. */
+"APN_MESSAGE_IN_GROUP_DETAILED" = "%@ in group %@: %@";
+
+/* Pressing this button moves a thread from the inbox to the archive */
+"ARCHIVE_ACTION" = "Archive";
+
+/* No comment provided by engineer. */
+"ARCHIVE_NAV_BAR_TITLE" = "Archive";
+
+/* No comment provided by engineer. */
+"ATTACHMENT" = "Attachment";
+
+/* No comment provided by engineer. */
+"ATTACHMENT_DOWNLOAD_FAILED" = "Attachment download failed, tap to retry.";
+
+/* No comment provided by engineer. */
+"ATTACHMENT_DOWNLOADING" = "Attachment is downloading";
+
+/* No comment provided by engineer. */
+"ATTACHMENT_QUEUED" = "New attachment queued for retrieval.";
+
+/* No comment provided by engineer. */
+"AUDIO_PERMISSION_MESSAGE" = "Forsta Relay requires access to your microphone to work properly. You can restore the permission in the Settings app >> Privacy >> Microphone >> Forsta Relay";
+
+/* No comment provided by engineer. */
+"CALLBACK_BUTTON_TITLE" = "Call back";
+
+/* No comment provided by engineer. */
+"CHOOSE_MEDIA_BUTTON" = "Choose from Library...";
+
+/* No comment provided by engineer. */
+"CONFIRM_ACCOUNT_DESTRUCTION_TEXT" = "This will reset the application by deleting your messages and unregister you with the server. The app will close after deletion of data.";
+
+/* No comment provided by engineer. */
+"CONFIRM_ACCOUNT_DESTRUCTION_TITLE" = "Are you sure you want to delete your account?";
+
+/* Alert body */
+"CONFIRM_LEAVE_GROUP_DESCRIPTION" = "You will no longer be able to send or receive messages in this group.";
+
+/* Alert title */
+"CONFIRM_LEAVE_GROUP_TITLE" = "Do you really want to leave?";
+
+/* Button text */
+"CONFIRM_LINK_NEW_DEVICE_ACTION" = "Link New Device";
+
+/* No comment provided by engineer. */
+"CONFIRMATION_TITLE" = "Confirm";
+
+/* No comment provided by engineer. */
+"CONTACT_DETAIL_COMM_TYPE_INSECURE" = "Unregistered Number";
+
+/* title for conversation settings screen */
+"CONVERSATION_SETTINGS" = "Conversation Settings";
+
+/* ActionSheet title */
+"CORRUPTED_SESSION_DESCRIPTION" = "Resetting your session will allow you to receive future messages from %@, but it will not recover any already corrupted messages.";
+
+/* No comment provided by engineer. */
+"COUNTRYCODE_SELECT_TITLE" = "Select Country Code";
+
+/* {{number of days}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 days}}'. See other *_TIME_AMOUNT strings */
+"DAYS_TIME_AMOUNT" = "%u days";
+
+/* No comment provided by engineer. */
+"DELIVERED_MESSAGE_TEXT" = "Delivered";
+
+/* {{Short Date}} when device last communicated with Forsta Relay Server. */
+"DEVICE_LAST_ACTIVE_AT_LABEL" = "Last active: %@";
+
+/* {{Short Date}} when device was linked. */
+"DEVICE_LINKED_AT_LABEL" = "Linked: %@";
+
+/* Alert title that can occur when viewing device manager. */
+"DEVICE_LIST_UPDATE_FAILED_TITLE" = "Failed to update device list.";
+
+/* table cell label in conversation settings */
+"DISAPPEARING_MESSAGES" = "Disappearing Messages";
+
+/* subheading in conversation settings */
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "When enabled, messages sent and received in this conversation will disappear after they have been seen.";
+
+/* Generic short text for button to dismiss a dialog */
+"DISMISS_BUTTON_TEXT" = "Dismiss";
+
+/* table cell label in conversation settings */
+"EDIT_GROUP_ACTION" = "Edit Group";
+
+/* Short name for edit menu item to save contents of media message. */
+"EDIT_ITEM_SAVE_ACTION" = "Save";
+
+/* No comment provided by engineer. */
+"EMPTY_ARCHIVE_FIRST_TEXT" = "Tap on the compose button.";
+
+/* No comment provided by engineer. */
+"EMPTY_ARCHIVE_FIRST_TITLE" = "Start your first Forsta Relay conversation!";
+
+/* No comment provided by engineer. */
+"EMPTY_ARCHIVE_TEXT" = "You can archive inactive conversations for later from your Inbox.";
+
+/* No comment provided by engineer. */
+"EMPTY_ARCHIVE_TITLE" = "Clean Up Your Conversations.";
+
+/* No comment provided by engineer. */
+"EMPTY_CONTACTS_INVITE_BUTTON" = "Invite contact";
+
+/* No comment provided by engineer. */
+"EMPTY_CONTACTS_LABEL_LINE1" = "None of your contacts have Forsta Relay!";
+
+/* No comment provided by engineer. */
+"EMPTY_CONTACTS_LABEL_LINE2" = "Why don't you invite someone";
+
+/* No comment provided by engineer. */
+"EMPTY_INBOX_FIRST_TEXT" = "Tip: add a conversation as a reminder!";
+
+/* No comment provided by engineer. */
+"EMPTY_INBOX_FIRST_TITLE" = "Done. Done. Done.";
+
+/* No comment provided by engineer. */
+"EMPTY_INBOX_TEXT" = "None. Zero. Zilch. Nada.";
+
+/* No comment provided by engineer. */
+"EMPTY_INBOX_TITLE" = "Squeaky Freaking Clean.";
+
+/* No comment provided by engineer. */
+"END_CALL_BAD_INTERACTION_WITH_SERVER" = "Server Failed!";
+
+/* No comment provided by engineer. */
+"END_CALL_BUTTON_TITLE" = "End";
+
+/* No comment provided by engineer. */
+"END_CALL_HANDSHAKE_FAILED" = "Handshake Failed!";
+
+/* No comment provided by engineer. */
+"END_CALL_HANGUP_LOCAL" = "You Hung Up.";
+
+/* No comment provided by engineer. */
+"END_CALL_HANGUP_REMOTE" = "They Hung Up.";
+
+/* No comment provided by engineer. */
+"END_CALL_LOGIN_FAILED" = "Login failed!";
+
+/* No comment provided by engineer. */
+"END_CALL_MESSAGE_FROM_SERVER_PREFIX" = "Message from Server: ";
+
+/* No comment provided by engineer. */
+"END_CALL_NO_SUCH_USER" = "Number not registered with Forsta Relay or RedPhone!";
+
+/* No comment provided by engineer. */
+"END_CALL_RECIPIENT_UNAVAILABLE" = "Recipient Unavailable.";
+
+/* No comment provided by engineer. */
+"END_CALL_REJECTED_LOCAL" = "You Rejected the Call.";
+
+/* No comment provided by engineer. */
+"END_CALL_REJECTED_REMOTE" = "Call Rejected.";
+
+/* No comment provided by engineer. */
+"END_CALL_REPLACED_BY_NEXT" = "You Made Another Call.";
+
+/* No comment provided by engineer. */
+"END_CALL_RESPONDER_IS_BUSY" = "Busy...";
+
+/* No comment provided by engineer. */
+"END_CALL_STALE_SESSION" = "Missed the Call.";
+
+/* No comment provided by engineer. */
+"END_CALL_UNCATEGORIZED_FAILURE" = "Client Failed!";
+
+/* Generic notice when message failed to send. */
+"ERROR_DESCRIPTION_CLIENT_SENDING_FAILURE" = "Failed to send message.";
+
+/* Generic error used whenver Signal can't contact the server */
+"ERROR_DESCRIPTION_NO_INTERNET" = "Forsta Relay was unable to connect to the internet. Please try from another WiFi network or use mobile data.";
+
+/* Generic server error */
+"ERROR_DESCRIPTION_SERVER_FAILURE" = "Server Error. Please try again later.";
+
+/* Error message when attempting to send message */
+"ERROR_DESCRIPTION_UNREGISTERED_RECIPIENT" = "Recipient is no longer a Forsta Relay user.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_DUPLICATE_MESSAGE" = "Received a duplicated message.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_INVALID_KEY_EXCEPTION" = "The recipient's key is not valid.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_INVALID_MESSAGE" = "Received a badly encrypted message. Tap to reset your secure session.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_INVALID_VERSION" = "Received a message not compatible with this version.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_NO_SESSION" = "No available session for contact.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_NON_BLOCKING_IDENTITY_CHANGE" = "Safety numbers changed.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_UNKNOWN_ERROR" = "An unknown error occured.";
+
+/* No comment provided by engineer. */
+"ERROR_MESSAGE_WRONG_TRUSTED_IDENTITY_KEY" = "Safety numbers changed. Tap to verify.";
+
+/* No comment provided by engineer. */
+"ERROR_WAS_DETECTED_TITLE" = "Bummer!";
+
+/* action sheet header when re-sending message which failed because of too many attempts */
+"FAILED_SENDING_BECAUSE_RATE_LIMIT" = "Too many failures with this contact. Please try again shortly.";
+
+/* action sheet header when re-sending message which failed because of untrusted identity keys */
+"FAILED_SENDING_BECAUSE_UNTRUSTED_IDENTITY_KEY" = "You must accept their new safety numbers before you will be able to send.";
+
+/* No comment provided by engineer. */
+"FAILED_SENDING_TEXT" = "Sending failed. Tap to retry.";
+
+/* alert title */
+"FAILED_VERIFICATION_TITLE" = "Failed to Verify Safety Numbers!";
+
+/* No comment provided by engineer. */
+"FINGERPRINT_SHRED_KEYMATERIAL_BUTTON" = "Reset this session.";
+
+/* No comment provided by engineer. */
+"GROUP_AVATAR_CHANGED" = "Avatar changed. ";
+
+/* No comment provided by engineer. */
+"GROUP_CREATED" = "Group created.";
+
+/* No comment provided by engineer. */
+"GROUP_CREATING" = "Creating new group";
+
+/* No comment provided by engineer. */
+"GROUP_CREATING_FAILED" = "Group creation failed";
+
+/* Conversation settings table section title */
+"GROUP_MANAGEMENT_SECTION" = "Group Management";
+
+/* No comment provided by engineer. */
+"GROUP_MEMBER_JOINED" = " %@ joined the group. ";
+
+/* No comment provided by engineer. */
+"GROUP_MEMBER_LEFT" = " %@ left the group. ";
+
+/* header for table which lists the members of this group thread */
+"GROUP_MEMBERS_HEADER" = "Group Members";
+
+/* No comment provided by engineer. */
+"GROUP_REMOVING" = "Leaving group %@";
+
+/* No comment provided by engineer. */
+"GROUP_REMOVING_FAILED" = "Failed to leave group";
+
+/* No comment provided by engineer. */
+"GROUP_TITLE_CHANGED" = "Title is now '%@'. ";
+
+/* No comment provided by engineer. */
+"GROUP_UPDATED" = "Group updated.";
+
+/* No comment provided by engineer. */
+"GROUP_YOU_LEFT" = "You have left the group.";
+
+/* {{number of hours}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 hours}}'. See other *_TIME_AMOUNT strings */
+"HOURS_TIME_AMOUNT" = "%u hours";
+
+/* Call setup status label */
+"IN_CALL_CONNECTING" = "Connecting...";
+
+/* Call setup status label */
+"IN_CALL_RINGING" = "Ringing...";
+
+/* Call setup status label */
+"IN_CALL_SECURING" = "Answered. Securing...";
+
+/* Call setup status label */
+"IN_CALL_TALKING" = "Secured. Active.";
+
+/* Call setup status label */
+"IN_CALL_TERMINATED" = "Done.";
+
+/* No comment provided by engineer. */
+"INCOMING_CALL" = "Incoming call";
+
+/* No comment provided by engineer. */
+"INCOMING_CALL_FROM" = "Incoming call from %@";
+
+/* Slider label embeds {{TIME_AMOUNT}}, e.g. '2 hours'. See *_TIME_AMOUNT strings for examples. */
+"KEEP_MESSAGES_DURATION" = "Messages disappear after %@.";
+
+/* Slider label when disappearing messages is off */
+"KEEP_MESSAGES_FOREVER" = "Messages do not disappear.";
+
+/* Confirmation button within contextual alert */
+"LEAVE_BUTTON_TITLE" = "Leave";
+
+/* table cell label in conversation settings */
+"LEAVE_GROUP_ACTION" = "Leave Group";
+
+/* report an invalid linking code */
+"LINK_DEVICE_INVALID_CODE_BODY" = "This QR code is not valid, make sure you are scanning the QR code displayed on the device you want to link.";
+
+/* report an invalid linking code */
+"LINK_DEVICE_INVALID_CODE_TITLE" = "Linking Device Failed";
+
+/* confirm the users intent to link a new device */
+"LINK_DEVICE_PERMISSION_ALERT_BODY" = "This device will be able to see your groups and contacts, read all your messages, and send messages in your name.";
+
+/* confirm the users intent to link a new device */
+"LINK_DEVICE_PERMISSION_ALERT_TITLE" = "Link this device?";
+
+/* attempt another linking */
+"LINK_DEVICE_RESTART" = "Retry";
+
+/* QR Scanning screen instructions, placed alongside a camera view for scanning QRCodes */
+"LINK_DEVICE_SCANNING_INSTRUCTIONS" = "Scan the QR code displayed on the device to link.";
+
+/* Subheading for 'Link New Device' navigation */
+"LINK_NEW_DEVICE_SUBTITLE" = "Scan QR Code";
+
+/* Navigation title when scanning QR code to add new device. */
+"LINK_NEW_DEVICE_TITLE" = "Link New Device";
+
+/* Menu item and navbar title for the device manager */
+"LINKED_DEVICES_TITLE" = "Linked Devices";
+
+/* Alert Title */
+"LINKING_DEVICE_FAILED_TITLE" = "Linking Device Failed";
+
+/* table cell label in conversation settings */
+"LIST_GROUP_MEMBERS_ACTION" = "List Group Members";
+
+/* No comment provided by engineer. */
+"LOADING_CONTACTS_LABEL_LINE1" = "Loading your contacts.";
+
+/* No comment provided by engineer. */
+"LOADING_CONTACTS_LABEL_LINE2" = "Sit tight.";
+
+/* No comment provided by engineer. */
+"LOGGING_SECTION" = "Logging";
+
+/* No comment provided by engineer. */
+"ME_STRING" = "Me";
+
+/* No comment provided by engineer. */
+"MESSAGE_COMPOSEVIEW_TITLE" = "New Message";
+
+/* {{number of minutes}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 minutes}}'. See other *_TIME_AMOUNT strings */
+"MINUTES_TIME_AMOUNT" = "%u minutes";
+
+/* No comment provided by engineer. */
+"MISSED_CALL" = "Missed call";
+
+/* Alert body */
+"MISSING_CAMERA_PERMISSION_MESSAGE" = "You previously declined to let Forsta Relay access your camera. Update your system settings to proceed.";
+
+/* Alert title */
+"MISSING_CAMERA_PERMISSION_TITLE" = "Forsta Relay needs to access your camera.";
+
+/* No comment provided by engineer. */
+"MSGVIEW_MISSED_CALL" = "Missed call from %@.";
+
+/* No comment provided by engineer. */
+"MSGVIEW_RECEIVED_CALL" = "You received a call from %@.";
+
+/* No comment provided by engineer. */
+"MSGVIEW_YOU_CALLED" = "You called %@.";
+
+/* No comment provided by engineer. */
+"MULTIDEVICE_PAIRING_MAX_DESC" = "You can not pair any more devices.";
+
+/* No comment provided by engineer. */
+"MULTIDEVICE_PAIRING_MAX_RECOVERY" = "You have reached the maximum of devices you can currently pair with your account. Please remove a device or try again to pair it later.";
+
+/* No comment provided by engineer. */
+"NETWORK_ERROR_RECOVERY" = "Please check you're online and try again.";
+
+/* No comment provided by engineer. */
+"NETWORK_STATUS_CONNECTED" = "Connected";
+
+/* No comment provided by engineer. */
+"NETWORK_STATUS_CONNECTING" = "Connecting";
+
+/* No comment provided by engineer. */
+"NETWORK_STATUS_HEADER" = "Network Status";
+
+/* No comment provided by engineer. */
+"NETWORK_STATUS_OFFLINE" = "Offline";
+
+/* No comment provided by engineer. */
+"NETWORK_STATUS_TEXT" = "You can check your network status by looking at the colored bar above your inbox.";
+
+/* No comment provided by engineer. */
+"NEW_GROUP_DEFAULT_TITLE" = "New Group";
+
+/* No comment provided by engineer. */
+"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT" = "Name this group chat";
+
+/* No comment provided by engineer. */
+"NEW_GROUP_REQUEST_ADDPEOPLE" = "Add people";
+
+/* No comment provided by engineer. */
+"NOTIFICATION_SEND_FAILED" = "Your message failed to send to %@.";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_FOOTER_WARNING" = "Due to known bugs in Apple's push framework, message previews will only be shown if the message is retrieved within 30 seconds after being sent. The application badge might be inaccurate as a result.";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_NONE" = "No name or message";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_SECTION_BACKGROUND" = "Background Notifications";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_SECTION_INAPP" = "In-App Notifications";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_SENDER_AND_MESSAGE" = "Sender name & message";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_SENDER_ONLY" = "Sender name only";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_SHOW" = "Show";
+
+/* No comment provided by engineer. */
+"NOTIFICATIONS_SOUND" = "Notification Sounds";
+
+/* No comment provided by engineer. */
+"OK" = "Ok";
+
+/* Button text which opens the settings app */
+"OPEN_SETTINGS_BUTTON" = "Settings";
+
+/* Info Message when {{other user}} disables or doesn't support disappearing messages */
+"OTHER_DISABLED_DISAPPEARING_MESSAGES_CONFIGURATION" = "%@ disabled disappearing messages.";
+
+/* Info Message when {{other user}} updates message expiration to {{time amount}}, see the *_TIME_AMOUNT strings for context. */
+"OTHER_UPDATED_DISAPPEARING_MESSAGES_CONFIGURATION" = "%@ set disappearing message time to %@.";
+
+/* No comment provided by engineer. */
+"OUTGOING_CALL" = "Outgoing call";
+
+/* No comment provided by engineer. */
+"PHONE_NEEDS_UNLOCK" = "Your iPhone needs to be unlocked to receive new messages.";
+
+/* Alert body when verifying with {{contact name}} */
+"PRIVACY_VERIFICATION_FAILED_I_HAVE_WRONG_KEY_FOR_THEM" = "Those don't look like the safety numbers for %@. Are you verifying the correct contact?";
+
+/* Alert body when verifying with {{contact name}} */
+"PRIVACY_VERIFICATION_FAILED_THEY_HAVE_WRONG_KEY_FOR_ME" = "Every pair of Forsta Relay users shares distinct safety numbers. Double check that %@ is displaying *your* distinct safety numbers.";
+
+/* alert body */
+"PRIVACY_VERIFICATION_FAILED_WITH_OLD_LOCAL_VERSION" = "You're running an old version of Forsta Relay. You need to update before you can verify.";
+
+/* alert body */
+"PRIVACY_VERIFICATION_FAILED_WITH_OLD_REMOTE_VERSION" = "Your partner is running an old version of Forsta Relay. They need to update before you can verify.";
+
+/* alert body */
+"PRIVACY_VERIFICATION_FAILURE_INVALID_QRCODE" = "The scanned code doesn't look like a safety number code. Are you both on an up-to-date version of Forsta Relay?";
+
+/* Paragraph(s) shown alongside keying material when verifying privacy with {{contact name}} */
+"PRIVACY_VERIFICATION_INSTRUCTIONS" = "If you wish to verify the security of your end-to-end encryption with %@, compare the numbers above with the numbers on their device.\n\nAlternatively, you can scan the code on their phone, or ask them to scan your code.";
+
+/* Navbar title */
+"PRIVACY_VERIFICATION_TITLE" = "Verify Safety Numbers";
+
+/* No comment provided by engineer. */
+"PROCEED_BUTTON" = "Proceed";
+
+/* No comment provided by engineer. */
+"PUSH_MANAGER_MARKREAD" = "Mark as read";
+
+/* No comment provided by engineer. */
+"PUSH_MANAGER_REPLY" = "Reply";
+
+/* Alert title */
+"PUSH_REGISTER_SUCCESS" = "Successfully re-registered for push notifications.";
+
+/* Used in table section header and alert view title contexts */
+"PUSH_REGISTER_TITLE" = "Push Notifications";
+
+/* No comment provided by engineer. */
+"PUSH_SETTINGS_MESSAGE" = "Forsta Relay requires push notification alerts and sounds to be enabled to work properly. Please change it in the Settings app >> Notification Center >> Forsta Relay.";
+
+/* No comment provided by engineer. */
+"QUESTIONMARK_PUNCTUATION" = "?";
+
+/* No comment provided by engineer. */
+"RATING_MSG" = "If you enjoy using Forsta Relay to have private conversations, you can support our project by rating it. It won't take more than a minute, and will help others find some privacy.";
+
+/* No comment provided by engineer. */
+"RATING_RATE" = "Rate Forsta Relay";
+
+/* No comment provided by engineer. */
+"RATING_TITLE" = "Support Forsta Relay!";
+
+/* No comment provided by engineer. */
+"REGISTER_CC_ERR_ALERT_VIEW_MESSAGE" = "Please enter a valid country code";
+
+/* No comment provided by engineer. */
+"REGISTER_CC_ERR_ALERT_VIEW_TITLE" = "Country Code Error";
+
+/* No comment provided by engineer. */
+"REGISTER_CONTACTS_BODY" = "Forsta Relay allows you to have private conversations with your existing contacts. To use Forsta Relay, please allow access to your contacts.";
+
+/* No comment provided by engineer. */
+"REGISTER_CONTACTS_CONTINUE" = "Continue";
+
+/* No comment provided by engineer. */
+"REGISTER_CONTACTS_WELCOME" = "Welcome!";
+
+/* No comment provided by engineer. */
+"REGISTER_FAILED_TRY_AGAIN" = "Try again";
+
+/* No comment provided by engineer. */
+"REGISTER_RATE_LIMITING_BODY" = "The server is currently rate-limiting signups, please try again later.";
+
+/* No comment provided by engineer. */
+"REGISTERED_NUMBER_TEXT" = "Registered Number";
+
+/* Alert title */
+"REGISTRATION_BODY" = "Failed to re-register for push notifications.";
+
+/* No comment provided by engineer. */
+"REGISTRATION_DEFAULT_COUNTRY_NAME" = "Country Code";
+
+/* No comment provided by engineer. */
+"REGISTRATION_ENTERNUMBER_DEFAULT_TEXT" = "Enter Number";
+
+/* No comment provided by engineer. */
+"REGISTRATION_ERROR" = "Registration Error";
+
+/* alert body during registration */
+"REGISTRATION_ERROR_BLANK_VERIFICATION_CODE" = "We can't activate your account until you verify the code we sent you.";
+
+/* No comment provided by engineer. */
+"REGISTRATION_NON_VALID_NUMBER" = "This phone number format is not supported, please contact support.";
+
+/* No comment provided by engineer. */
+"REGISTRATION_PHONENUMBER_BUTTON" = "Phone Number";
+
+/* No comment provided by engineer. */
+"REGISTRATION_RESTRICTED_MESSAGE" = "Someone's excited to send their first message! You need to register before performing this action.";
+
+/* No comment provided by engineer. */
+"REGISTRATION_TITLE_LABEL" = "Your Phone Number";
+
+/* Alert view title */
+"REGISTRATION_VERIFICATION_FAILED_TITLE" = "Verification Failed";
+
+/* Alert body, during registration */
+"REGISTRATION_VERIFICATION_FAILED_WRONG_CODE_DESCRIPTION" = "The numbers you submitted don't match what we sent. Want to double check?";
+
+/* No comment provided by engineer. */
+"REGISTRATION_VERIFY_DEVICE" = "Verify This Device";
+
+/* No comment provided by engineer. */
+"REJECT_CALL_BUTTON_TITLE" = "Reject";
+
+/* No comment provided by engineer. */
+"RELAY_REGISTERED_ERROR_RECOVERY" = "The phone number you are trying to register has already been registered on another server, please unregister from there and try again.";
+
+/* No comment provided by engineer. */
+"REREGISTER_FOR_PUSH" = "Re-register for push notifications";
+
+/* Generic text for button that retries whatever the last action was. */
+"RETRY_BUTTON_TEXT" = "Retry";
+
+/* Snippet to share {{safety numbers}} with a friend. sent e.g. via sms */
+"SAFETY_NUMBER_SHARE_FORMAT" = "Our Forsta Relay Safety Numbers:\n%@";
+
+/* Action sheet heading */
+"SAFETY_NUMBERS_ACTIONSHEET_TITLE" = "The safety numbers for %@ have changed. You may wish to verify them.";
+
+/* Button label presented with camera icon while verifying privacy credentials. Shows the camera interface. */
+"SCAN_CODE_ACTION" = "Scan Code";
+
+/* label presented once scanning (camera) view is visible. */
+"SCAN_CODE_INSTRUCTIONS" = "Scan the QR Code on your contact's device.";
+
+/* No comment provided by engineer. */
+"SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT" = "Search by name or number";
+
+/* {{number of seconds}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 seconds}}'. See other *_TIME_AMOUNT strings */
+"SECONDS_TIME_AMOUNT" = "%u seconds";
+
+/* No comment provided by engineer. */
+"SECURE_SESSION_RESET" = "Secure session was reset.";
+
+/* No comment provided by engineer. */
+"SEND_AGAIN_BUTTON" = "Send again";
+
+/* No comment provided by engineer. */
+"SEND_BUTTON_TITLE" = "Send";
+
+/* No comment provided by engineer. */
+"SEND_SMS_BUTTON" = "Send SMS to: ";
+
+/* No comment provided by engineer. */
+"SEND_SMS_CONFIRM_TITLE" = "Invite a friend via insecure SMS?";
+
+/* No comment provided by engineer. */
+"SEND_SMS_INVITE_FAILURE" = "SMS sending failed, please try again later.";
+
+/* No comment provided by engineer. */
+"SEND_SMS_INVITE_SUCCESS" = "You've invited your friend to use Forsta Relay!";
+
+/* No comment provided by engineer. */
+"SEND_SMS_INVITE_TITLE" = "Would you like to invite the following number to Forsta Relay: ";
+
+/* No comment provided by engineer. */
+"SETTINGS_ABOUT" = "About";
+
+/* No comment provided by engineer. */
+"SETTINGS_ADVANCED_DEBUGLOG" = "Enable Debug Log";
+
+/* No comment provided by engineer. */
+"SETTINGS_ADVANCED_SUBMIT_DEBUGLOG" = "Submit Debug Log";
+
+/* No comment provided by engineer. */
+"SETTINGS_ADVANCED_TITLE" = "Advanced";
+
+/* User settings section footer, a detailed explanation */
+"SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL" = "Requires your approval before communicating with someone who has new safety numbers, commonly from a reinstall of Forsta Relay.";
+
+/* Table cell label */
+"SETTINGS_BLOCK_ON_IDENTITY_CHANGE_TITLE" = "Require Approval on Change";
+
+/* No comment provided by engineer. */
+"SETTINGS_CLEAR_HISTORY" = "Clear History Logs";
+
+/* No comment provided by engineer. */
+"SETTINGS_COPYRIGHT" = "Copyright Forsta \n Licensed under the GPLv3";
+
+/* No comment provided by engineer. */
+"SETTINGS_DELETE_ACCOUNT_BUTTON" = "Delete Account";
+
+/* No comment provided by engineer. */
+"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION" = "Are you sure you want to delete all your history (messages, attachments, call history ...) ? This action cannot be reverted.";
+
+/* No comment provided by engineer. */
+"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON" = "I'm sure.";
+
+/* No comment provided by engineer. */
+"SETTINGS_HELP_HEADER" = "Help";
+
+/* Section header */
+"SETTINGS_HISTORYLOG_TITLE" = "History Log";
+
+/* No comment provided by engineer. */
+"SETTINGS_INFORMATION_HEADER" = "Information";
+
+/* No comment provided by engineer. */
+"SETTINGS_INVITE_HEADER" = "Invite";
+
+/* No comment provided by engineer. */
+"SETTINGS_INVITE_TWITTER_TEXT" = "You can reach me using Forsta Relay, get it now.";
+
+/* Title for settings activity */
+"SETTINGS_NAV_BAR_TITLE" = "Settings";
+
+/* No comment provided by engineer. */
+"SETTINGS_NOTIFICATIONS" = "Notifications";
+
+/* No comment provided by engineer. */
+"SETTINGS_PRIVACY_TITLE" = "Privacy";
+
+/* Section header */
+"SETTINGS_PRIVACY_VERIFICATION_TITLE" = "Safety Numbers Approval";
+
+/* No comment provided by engineer. */
+"SETTINGS_SCREEN_SECURITY" = "Enable Screen Security";
+
+/* No comment provided by engineer. */
+"SETTINGS_SCREEN_SECURITY_DETAIL" = "Prevents Forsta Relay previews from appearing in the app switcher.";
+
+/* Section header */
+"SETTINGS_SECURITY_TITLE" = "Screen Security";
+
+/* No comment provided by engineer. */
+"SETTINGS_SHARE_INSTALL" = "Share Install Link";
+
+/* No comment provided by engineer. */
+"SETTINGS_SUPPORT" = "Support";
+
+/* No comment provided by engineer. */
+"SETTINGS_VERSION" = "Version";
+
+/* Action sheet item */
+"SHOW_SAFETY_NUMBER_ACTION" = "Show new safety numbers";
+
+/* {{1 day}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{1 day}}'. See other *_TIME_AMOUNT strings */
+"SINGLE_DAY_TIME_AMOUNT" = "%u day";
+
+/* {{1 hour}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{1 hour}}'. See other *_TIME_AMOUNT strings */
+"SINGLE_HOUR_TIME_AMOUNT" = "%u hour";
+
+/* {{1 minute}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{1 minute}}'. See other *_TIME_AMOUNT strings */
+"SINGLE_MINUTE_TIME_AMOUNT" = "%u minute";
+
+/* {{1 week}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{1 week}}'. See other *_TIME_AMOUNT strings */
+"SINGLE_WEEK_TIME_AMOUNT" = "%u week";
+
+/* No comment provided by engineer. */
+"SMS_INVITE_BODY" = "I'm inviting you to install Forsta Relay! Here is the link:";
+
+/* Alert body after verifying privacy with {{other user's name}} */
+"SUCCESSFUL_VERIFICATION_DESCRIPTION" = "Your safety numbers have been verified. You can be confident your communication with %@ is private.";
+
+/* No comment provided by engineer. */
+"SUCCESSFUL_VERIFICATION_TITLE" = "Safety Numbers Verified!";
+
+/* No comment provided by engineer. */
+"TAKE_MEDIA_BUTTON" = "Take Photo or Video";
+
+/* No comment provided by engineer. */
+"TAKE_PICTURE_BUTTON" = "Take a Picture";
+
+/* No comment provided by engineer. */
+"TIMEOUT_CONTACTS_DETAIL" = "We couldn't fetch an updated contact list from the server. Please try again later.";
+
+/* No comment provided by engineer. */
+"TXT_CANCEL_TITLE" = "Cancel";
+
+/* No comment provided by engineer. */
+"TXT_DELETE_TITLE" = "Delete";
+
+/* Pressing this button moves an archived thread from the archive back to the inbox */
+"UNARCHIVE_ACTION" = "Unarchive";
+
+/* In Inbox view, last message label for thread with corrupted attachment. */
+"UNKNOWN_ATTACHMENT_LABEL" = "Unknown attachment";
+
+/* Displayed if for some reason we can't determine a contacts phone number *or* name */
+"UNKNOWN_CONTACT_NAME" = "Unknown Contact";
+
+/* button title for unlinking a device */
+"UNLINK_ACTION" = "Unlink";
+
+/* Alert message to confirm unlinking a device */
+"UNLINK_CONFIRMATION_ALERT_BODY" = "By unlinking this device, it will no longer be able to send or receive messages.";
+
+/* Alert title for confirming device deletion */
+"UNLINK_CONFIRMATION_ALERT_TITLE" = "Unlink \"%@\"?";
+
+/* Alert title when unlinking device fails */
+"UNLINKING_FAILED_ALERT_TITLE" = "Forsta Relay was unable to unlink your device.";
+
+/* Label text in device manager for a device with no name */
+"UNNAMED_DEVICE" = "Unnamed Device";
+
+/* No comment provided by engineer. */
+"UNREGISTER_SIGNAL_FAIL" = "Failed to unregister from Forsta Relay.";
+
+/* No comment provided by engineer. */
+"UNSUPPORTED_ATTACHMENT" = "Received unsupported attachment type.";
+
+/* No comment provided by engineer. */
+"UNSUPPORTED_FEATURE_ERROR" = "Your device doesn't support this feature.";
+
+/* No comment provided by engineer. */
+"UPDATE_BUTTON_TITLE" = "Update";
+
+/* No comment provided by engineer. */
+"Upgrading Signal ..." = "Upgrading Forsta Relay ...";
+
+/* message footer while attachment is uploading */
+"UPLOADING_MESSAGE_TEXT" = "Uploading...";
+
+/* button text during registration to make corrections to your submitted phone number */
+"VERIFICATION_CHALLENGE_CHANGE_NUMBER" = "Change Number";
+
+/* Text field placeholder for SMS verification code during registration */
+"VERIFICATION_CHALLENGE_DEFAULT_TEXT" = "Verification Code";
+
+/* button text during registration to request phone number verification be done via phone call */
+"VERIFICATION_CHALLENGE_SEND_VIAVOICE" = "Call Me Instead";
+
+/* button text during registration to request another SMS code be sent */
+"VERIFICATION_CHALLENGE_SUBMIT_AGAIN" = "Request Code Again";
+
+/* button text during registration to submit your SMS verification code */
+"VERIFICATION_CHALLENGE_SUBMIT_CODE" = "Submit Verification Code";
+
+/* Navigation title in the registration flow - during the sms code verification process. */
+"VERIFICATION_HEADER" = "Verify";
+
+/* table cell label in conversation settings */
+"VERIFY_PRIVACY" = "Verify Safety Numbers";
+
+/* Activity indicator title, shown upon returning to the device manager, until you complete the provisioning process on desktop */
+"WAITING_TO_COMPLETE_DEVICE_LINK_TEXT" = "Complete setup on Forsta Relay Desktop.";
+
+/* {{number of weeks}}, embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 weeks}}'. See other *_TIME_AMOUNT strings */
+"WEEKS_TIME_AMOUNT" = "%u weeks";
+
+/* No comment provided by engineer. */
+"WHISPER_NAV_BAR_TITLE" = "Inbox";
+
+/* Info Message when you disable disappearing messages */
+"YOU_DISABLED_DISAPPEARING_MESSAGES_CONFIGURATION" = "You disabled disappearing messages.";
+
+/* Info message embedding a {{time amount}}, see the *_TIME_AMOUNT strings for context. */
+"YOU_UPDATED_DISAPPEARING_MESSAGES_CONFIGURATION" = "You set disappearing message time to %@.";
