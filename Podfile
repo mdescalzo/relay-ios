@@ -1,7 +1,7 @@
 platform :ios, '8.0'
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'Signal' do
+target 'Relay' do
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git'
     pod 'SignalServiceKit',           git: 'https://github.com/WhisperSystems/SignalServiceKit.git', branch: 'mkirk/default-to-blocking-sn'
     #pod 'SignalServiceKit',           path: '../SignalServiceKit'
