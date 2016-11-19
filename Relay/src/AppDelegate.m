@@ -19,10 +19,10 @@
 #import "VersionMigrations.h"
 #import <PastelogKit/Pastelog.h>
 #import <PromiseKit/AnyPromise.h>
-#import <SignalServiceKit/OWSDisappearingMessagesJob.h>
-#import <SignalServiceKit/OWSIncomingMessageReadObserver.h>
-#import <SignalServiceKit/OWSMessageSender.h>
-#import <SignalServiceKit/TSAccountManager.h>
+#import <RelayServiceKit/OWSDisappearingMessagesJob.h>
+#import <RelayServiceKit/OWSIncomingMessageReadObserver.h>
+#import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/TSAccountManager.h>
 
 NSString *const AppDelegateStoryboardMain = @"Main";
 NSString *const AppDelegateStoryboardRegistration = @"Registration";

@@ -4,10 +4,10 @@
 #import "OWSDeviceTableViewCell.h"
 #import "OWSLinkDeviceViewController.h"
 #import "UIViewController+CameraPermissions.h"
-#import <SignalServiceKit/OWSDevice.h>
-#import <SignalServiceKit/OWSDevicesService.h>
-#import <SignalServiceKit/TSDatabaseView.h>
-#import <SignalServiceKit/TSStorageManager.h>
+#import <RelayServiceKit/OWSDevice.h>
+#import <RelayServiceKit/OWSDevicesService.h>
+#import <RelayServiceKit/TSDatabaseView.h>
+#import <RelayServiceKit/TSStorageManager.h>
 #import <YapDatabase/YapDatabaseTransaction.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
 #import <YapDatabase/YapDatabaseViewMappings.h>

@@ -13,13 +13,13 @@
 #import "Relay-Swift.h"
 #import "UIUtil.h"
 #import "UIViewController+CameraPermissions.h"
-#import <SignalServiceKit/NSDate+millisecondTimeStamp.h>
-#import <SignalServiceKit/OWSFingerprint.h>
-#import <SignalServiceKit/TSInfoMessage.h>
-#import <SignalServiceKit/TSStorageManager+IdentityKeyStore.h>
-#import <SignalServiceKit/TSStorageManager+SessionStore.h>
-#import <SignalServiceKit/TSStorageManager+keyingMaterial.h>
-#import <SignalServiceKit/TSThread.h>
+#import <RelayServiceKit/NSDate+millisecondTimeStamp.h>
+#import <RelayServiceKit/OWSFingerprint.h>
+#import <RelayServiceKit/TSInfoMessage.h>
+#import <RelayServiceKit/TSStorageManager+IdentityKeyStore.h>
+#import <RelayServiceKit/TSStorageManager+SessionStore.h>
+#import <RelayServiceKit/TSStorageManager+keyingMaterial.h>
+#import <RelayServiceKit/TSThread.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

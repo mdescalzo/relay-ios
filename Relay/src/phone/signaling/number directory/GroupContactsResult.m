@@ -8,7 +8,7 @@
 
 #import "GroupContactsResult.h"
 
-#import <SignalServiceKit/TSAccountManager.h>
+#import <RelayServiceKit/TSAccountManager.h>
 #import "Contact.h"
 #import "OWSContactsManager.h"
 #import "Environment.h"

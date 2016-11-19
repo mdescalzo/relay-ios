@@ -52,17 +52,17 @@
 #import <JSQMessagesViewController/UIColor+JSQMessages.h>
 #import <JSQSystemSoundPlayer.h>
 #import <MobileCoreServices/UTCoreTypes.h>
-#import <SignalServiceKit/MimeTypeUtil.h>
-#import <SignalServiceKit/OWSAttachmentsProcessor.h>
-#import <SignalServiceKit/OWSDisappearingMessagesConfiguration.h>
-#import <SignalServiceKit/OWSFingerprint.h>
-#import <SignalServiceKit/OWSFingerprintBuilder.h>
-#import <SignalServiceKit/OWSMessageSender.h>
-#import <SignalServiceKit/SignalRecipient.h>
-#import <SignalServiceKit/TSAccountManager.h>
-#import <SignalServiceKit/TSInvalidIdentityKeySendingErrorMessage.h>
-#import <SignalServiceKit/TSMessagesManager.h>
-#import <SignalServiceKit/TSNetworkManager.h>
+#import <RelayServiceKit/MimeTypeUtil.h>
+#import <RelayServiceKit/OWSAttachmentsProcessor.h>
+#import <RelayServiceKit/OWSDisappearingMessagesConfiguration.h>
+#import <RelayServiceKit/OWSFingerprint.h>
+#import <RelayServiceKit/OWSFingerprintBuilder.h>
+#import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/SignalRecipient.h>
+#import <RelayServiceKit/TSAccountManager.h>
+#import <RelayServiceKit/TSInvalidIdentityKeySendingErrorMessage.h>
+#import <RelayServiceKit/TSMessagesManager.h>
+#import <RelayServiceKit/TSNetworkManager.h>
 #import <YapDatabase/YapDatabaseView.h>
 
 

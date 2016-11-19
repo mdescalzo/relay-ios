@@ -13,9 +13,9 @@
 #import "SignalsNavigationController.h"
 #import "SignalsViewController.h"
 #import <PromiseKit/AnyPromise.h>
-#import <SignalServiceKit/OWSError.h>
-#import <SignalServiceKit/TSAccountManager.h>
-#import <SignalServiceKit/TSStorageManager+keyingMaterial.h>
+#import <RelayServiceKit/OWSError.h>
+#import <RelayServiceKit/TSAccountManager.h>
+#import <RelayServiceKit/TSStorageManager+keyingMaterial.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

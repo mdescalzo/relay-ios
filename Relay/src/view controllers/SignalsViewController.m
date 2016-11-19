@@ -23,9 +23,9 @@
 #import "TSStorageManager.h"
 #import "UIUtil.h"
 #import "VersionMigrations.h"
-#import <SignalServiceKit/OWSMessageSender.h>
-#import <SignalServiceKit/TSMessagesManager.h>
-#import <SignalServiceKit/TSOutgoingMessage.h>
+#import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/TSMessagesManager.h>
+#import <RelayServiceKit/TSOutgoingMessage.h>
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
 

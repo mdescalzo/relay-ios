@@ -17,7 +17,7 @@
 #import "RPServerRequestsManager.h"
 #import "TSOutgoingMessage.h"
 #import "TSSocketManager.h"
-#import <SignalServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/OWSMessageSender.h>
 
 #define pushManagerDomain @"org.whispersystems.pushmanager"
 

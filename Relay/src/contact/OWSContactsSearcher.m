@@ -7,7 +7,7 @@
 //
 
 #import "OWSContactsSearcher.h"
-#import <SignalServiceKit/PhoneNumber.h>
+#import <RelayServiceKit/PhoneNumber.h>
 
 @interface OWSContactsSearcher ()
 

@@ -4,7 +4,7 @@
 #import "TSContactThread.h"
 #import "TSMessagesManager.h"
 #import "TSStorageManager.h"
-#import <SignalServiceKit/TextSecureKitEnv.h>
+#import <RelayServiceKit/TextSecureKitEnv.h>
 
 @interface RecentCallManager ()
 @property YapDatabaseConnection *dbConnection;

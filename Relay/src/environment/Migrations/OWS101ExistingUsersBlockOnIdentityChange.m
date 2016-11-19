@@ -2,7 +2,7 @@
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
 #import "OWS101ExistingUsersBlockOnIdentityChange.h"
-#import <SignalServiceKit/TSPrivacyPreferences.h>
+#import <RelayServiceKit/TSPrivacyPreferences.h>
 #import <YapDatabase/YapDatabaseTransaction.h>
 
 NS_ASSUME_NONNULL_BEGIN

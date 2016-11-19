@@ -3,8 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'Relay' do
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git'
-    pod 'SignalServiceKit',           git: 'https://github.com/WhisperSystems/SignalServiceKit.git', branch: 'mkirk/default-to-blocking-sn'
-    #pod 'SignalServiceKit',           path: '../SignalServiceKit'
+    pod 'RelayServiceKit',            :git => 'https://github.com/forstaathletics/RelayServiceKit.git'
     pod 'OpenSSL'
     pod 'PastelogKit',                '~> 1.3'
     pod 'FFCircularProgressView',     '~> 0.5'

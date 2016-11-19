@@ -6,7 +6,7 @@
 #import "TSContactThread.h"
 #import <JSQMessagesViewController/JSQMessagesTimestampFormatter.h>
 #import <JSQMessagesViewController/UIImage+JSQMessages.h>
-#import <SignalServiceKit/TSCall.h>
+#import <RelayServiceKit/TSCall.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

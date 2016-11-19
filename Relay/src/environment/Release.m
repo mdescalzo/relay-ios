@@ -3,9 +3,9 @@
 #import "PhoneManager.h"
 #import "PhoneNumberUtil.h"
 #import "RecentCallManager.h"
-#import <SignalServiceKit/ContactsUpdater.h>
-#import <SignalServiceKit/OWSMessageSender.h>
-#import <SignalServiceKit/TSNetworkManager.h>
+#import <RelayServiceKit/ContactsUpdater.h>
+#import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/TSNetworkManager.h>
 
 #define RELEASE_ZRTP_CLIENT_ID @"Whisper 000     ".encodedAsAscii
 #define RELEASE_ZRTP_VERSION_ID @"1.10".encodedAsAscii
@@ -54,10 +54,10 @@ static unsigned char DH3K_PRIME[] = {
                                                                        contactsUpdater:contactsUpdater];
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
-                                     serverPort:31337
-                           masterServerHostName:@"master.whispersystems.org"
-                               defaultRelayName:@"relay"
-                      relayServerHostNameSuffix:@"whispersystems.org"
+                                     serverPort:80
+                           masterServerHostName:@"forsta-relay-1307716308.us-west-2.elb.amazonaws.com"
+                               defaultRelayName:@"forsta-relay-1307716308"
+                      relayServerHostNameSuffix:@"us-west-2.elb.amazonaws.com"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
                                    phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
@@ -85,10 +85,10 @@ static unsigned char DH3K_PRIME[] = {
                                                                        contactsUpdater:contactsUpdater];
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
-                                     serverPort:31337
-                           masterServerHostName:@"redphone-staging.whispersystems.org"
-                               defaultRelayName:@"redphone-staging-relay"
-                      relayServerHostNameSuffix:@"whispersystems.org"
+                                     serverPort:80
+                           masterServerHostName:@"forsta-relay-1307716308.us-west-2.elb.amazonaws.com"
+                               defaultRelayName:@"forsta-relay-1307716308"
+                      relayServerHostNameSuffix:@"us-west-2.elb.amazonaws.com"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
                                    phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
@@ -119,10 +119,10 @@ static unsigned char DH3K_PRIME[] = {
     return [[Environment alloc] initWithLogging:[DiscardingLog discardingLog]
                                      errorNoter:^(id error, id relatedInfo, bool causedTermination) {
                                      }
-                                     serverPort:31337
-                           masterServerHostName:@"master.whispersystems.org"
-                               defaultRelayName:@"relay"
-                      relayServerHostNameSuffix:@"whispersystems.org"
+                                     serverPort:80
+                           masterServerHostName:@"forsta-relay-1307716308.us-west-2.elb.amazonaws.com"
+                               defaultRelayName:@"forsta-relay-1307716308"
+                      relayServerHostNameSuffix:@"us-west-2.elb.amazonaws.com"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:keyAgreementProtocols
                                    phoneManager:nil

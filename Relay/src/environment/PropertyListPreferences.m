@@ -1,7 +1,7 @@
 #import "PropertyListPreferences.h"
 #import "Constraints.h"
 #import "TSStorageHeaders.h"
-#import <SignalServiceKit/TSPrivacyPreferences.h>
+#import <RelayServiceKit/TSPrivacyPreferences.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

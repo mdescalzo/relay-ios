@@ -1,6 +1,6 @@
 #import <AddressBook/AddressBook.h>
 #import <Foundation/Foundation.h>
-#import <SignalServiceKit/TSCall.h>
+#import <RelayServiceKit/TSCall.h>
 #import "Contact.h"
 #import "OWSContactsManager.h"
 #import "PhoneNumber.h"

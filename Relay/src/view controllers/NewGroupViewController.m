@@ -18,10 +18,10 @@
 #import "UIImage+normalizeImage.h"
 #import "UIUtil.h"
 #import <MobileCoreServices/UTCoreTypes.h>
-#import <SignalServiceKit/MimeTypeUtil.h>
-#import <SignalServiceKit/NSDate+millisecondTimeStamp.h>
-#import <SignalServiceKit/OWSMessageSender.h>
-#import <SignalServiceKit/TSAccountManager.h>
+#import <RelayServiceKit/MimeTypeUtil.h>
+#import <RelayServiceKit/NSDate+millisecondTimeStamp.h>
+#import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/TSAccountManager.h>
 
 static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue";
 

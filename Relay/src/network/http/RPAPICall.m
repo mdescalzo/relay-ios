@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 //
 
-#import <SignalServiceKit/TSAccountManager.h>
+#import <RelayServiceKit/TSAccountManager.h>
 #import "Constraints.h"
 #import "CryptoTools.h"
 #import "PhoneNumber.h"

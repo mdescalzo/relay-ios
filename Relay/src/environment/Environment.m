@@ -10,7 +10,7 @@
 #import "SignalsViewController.h"
 #import "TSContactThread.h"
 #import "TSGroupThread.h"
-#import <SignalServiceKit/ContactsUpdater.h>
+#import <RelayServiceKit/ContactsUpdater.h>
 
 #define isRegisteredUserDefaultString @"isRegistered"
 

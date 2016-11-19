@@ -4,10 +4,10 @@
 #import "OWSDeviceProvisioningURLParser.h"
 #import "OWSLinkedDevicesTableViewController.h"
 #import "SettingsTableViewController.h"
-#import <SignalServiceKit/ECKeyPair+OWSPrivateKey.h>
-#import <SignalServiceKit/OWSDeviceProvisioner.h>
-#import <SignalServiceKit/TSStorageManager+IdentityKeyStore.h>
-#import <SignalServiceKit/TSStorageManager+keyingMaterial.h>
+#import <RelayServiceKit/ECKeyPair+OWSPrivateKey.h>
+#import <RelayServiceKit/OWSDeviceProvisioner.h>
+#import <RelayServiceKit/TSStorageManager+IdentityKeyStore.h>
+#import <RelayServiceKit/TSStorageManager+keyingMaterial.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
