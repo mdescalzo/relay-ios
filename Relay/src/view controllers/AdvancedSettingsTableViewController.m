@@ -12,7 +12,7 @@
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
 #import "RPAccountManager.h"
-#import "Signal-Swift.h"
+#import "Relay-Swift.h"
 #import "TSAccountManager.h"
 #import <PastelogKit/Pastelog.h>
 #import <PromiseKit/AnyPromise.h>
