@@ -131,7 +131,7 @@
             [self tappedInviteTwitter];
             break;
         case 2:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://support.whispersystems.org"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://support.forsta.io"]];
             break;
 
         default:
@@ -154,7 +154,7 @@
 
         NSString *tweetString = [NSString stringWithFormat:NSLocalizedString(@"SETTINGS_INVITE_TWITTER_TEXT", @"")];
         [tweetSheet setInitialText:tweetString];
-        [tweetSheet addURL:[NSURL URLWithString:@"https://whispersystems.org/signal/install/"]];
+        [tweetSheet addURL:[NSURL URLWithString:@"https://forsta.io/signal/install/"]];
         tweetSheet.completionHandler = ^(SLComposeViewControllerResult result) {
         };
         [self presentViewController:tweetSheet animated:YES completion:[UIUtil modalCompletionBlock]];

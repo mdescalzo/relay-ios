@@ -2,7 +2,7 @@
 #import "NetworkStream.h"
 #import "TestUtil.h"
 
-#define TEST_SERVER_HOST @"master.whispersystems.org"
+#define TEST_SERVER_HOST @"master.forsta.io"
 #define TEST_SERVER_PORT 31337
 #define TEST_SERVER_CERT_PATH @"redphone"
 #define TEST_SERVER_CERT_TYPE @"cer"
