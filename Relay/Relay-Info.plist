@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Relay</string>
+	<string>Forsta</string>
 	<key>CFBundleExecutable</key>
 	<string>Relay</string>
 	<key>CFBundleGetInfoString</key>
@@ -57,12 +57,12 @@
 		<dict>
 			<key>amazonaws.com</key>
 			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
 				<key>NSIncludesSubdomains</key>
 				<true/>
 				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
 				<false/>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
 			</dict>
 			<key>forsta.io</key>
 			<dict>
