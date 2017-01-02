@@ -4,7 +4,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'Relay' do
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git'
     pod 'RelayServiceKit',            :git => 'git@github.com:forstaathletics/RelayServiceKit.git'
-    pod 'OpenSSL'
+    pod 'OpenSSL-Universal',		      '~> 1.0'
     pod 'PastelogKit',                '~> 1.3'
     pod 'FFCircularProgressView',     '~> 0.5'
     pod 'SCWaveformView',             '~> 1.0'
