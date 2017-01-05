@@ -505,12 +505,13 @@ typedef enum : NSUInteger {
         [barButtons addObject:manageGroupButton];
     }
 
-    if (disappearingMessagesConfiguration.isEnabled) {
+    // [ps] want to see disappearing message icon in bar
+    // if (disappearingMessagesConfiguration.isEnabled) {
         [barButtons addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_timer"]
                                                                style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(didTapTimerInNavbar)]];
-    }
+    //}
 
     self.navigationItem.rightBarButtonItems = [barButtons copy];
 }
@@ -631,8 +632,13 @@ typedef enum : NSUInteger {
 - (void)callAction {
     if ([self canCall]) {
         PhoneNumber *number = [self phoneNumberForThread];
-        Contact *contact = [self.contactsManager latestContactForPhoneNumber:number];
-        [Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
+        //Contact *contact = [self.contactsManager latestContactForPhoneNumber:number];
+        NSString *phoneStr = [[NSString alloc] initWithFormat:@"tel://%@",number];
+        // Prepare the NSURL
+        NSURL *phoneURL = [[NSURL alloc] initWithString:phoneStr];
+        // Make the call
+        [[UIApplication sharedApplication] openURL:phoneURL];
+        //[Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
     } else {
         DDLogWarn(@"Tried to initiate a call but thread is not callable.");
     }
