@@ -2,7 +2,7 @@
 #import "DnsManager.h"
 #import "TestUtil.h"
 
-#define infrastructureTestHostName @"relay.whispersystems.org"
+#define infrastructureTestHostName @"relay.forsta.io"
 #define reliableHostName @"example.com"
 #define invalidHostname @"∆©˙∆¨¥©©˜¨¥©˜†¥µ¬¬¨˙µ†¥∫®∂®†"
 #define nonExistentHostname [NSString stringWithFormat:@"%@kfurmtludehntlgihmvnduyebntiinvbudydepqowudyfnrkt.com", \
