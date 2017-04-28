@@ -55,9 +55,9 @@ static unsigned char DH3K_PRIME[] = {
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
                                      serverPort:80
-                           masterServerHostName:@"forsta-relay-1307716308.us-west-2.elb.amazonaws.com"
-                               defaultRelayName:@"forsta-relay-1307716308"
-                      relayServerHostNameSuffix:@"us-west-2.elb.amazonaws.com"
+                           masterServerHostName:@"textsecure.forsta.services"
+                               defaultRelayName:@"textsecure"
+                      relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
                                    phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
@@ -86,9 +86,9 @@ static unsigned char DH3K_PRIME[] = {
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
                                      serverPort:80
-                           masterServerHostName:@"forsta-relay-1307716308.us-west-2.elb.amazonaws.com"
-                               defaultRelayName:@"forsta-relay-1307716308"
-                      relayServerHostNameSuffix:@"us-west-2.elb.amazonaws.com"
+                           masterServerHostName:@"textsecure.forsta.services"
+                               defaultRelayName:@"textsecure"
+                      relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
                                    phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
@@ -120,9 +120,9 @@ static unsigned char DH3K_PRIME[] = {
                                      errorNoter:^(id error, id relatedInfo, bool causedTermination) {
                                      }
                                      serverPort:80
-                           masterServerHostName:@"forsta-relay-1307716308.us-west-2.elb.amazonaws.com"
-                               defaultRelayName:@"forsta-relay-1307716308"
-                      relayServerHostNameSuffix:@"us-west-2.elb.amazonaws.com"
+                           masterServerHostName:@"textsecure.forsta.services"
+                               defaultRelayName:@"textsecure"
+                      relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:keyAgreementProtocols
                                    phoneManager:nil

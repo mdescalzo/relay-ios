@@ -3,7 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'Relay' do
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :commit => '877ac7438be3ad0b45ef5ca3969574e4b97112bf'
-    pod 'RelayServiceKit',            :git => 'https://github.com/forstalabs/RelayServiceKit.git', :commit => 'be4812b'
+    pod 'RelayServiceKit',            :git => 'https://github.com/forstalabs/RelayServiceKit.git', :commit => '2285087'
     pod 'OpenSSL', '~> 1.0.210'
     pod 'PastelogKit',                '~> 1.3'
     pod 'FFCircularProgressView',     '~> 0.5'
