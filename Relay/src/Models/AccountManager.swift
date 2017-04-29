@@ -35,12 +35,6 @@ class AccountManager : NSObject {
             return self.registerForTextSecure(verificationCode: verificationCode)
         }.then {
             Logger.debug("\(self.TAG) successfully registered for TextSecure")
-            return self.fetchRedPhoneToken()
-        }.then { (redphoneToken: String) in
-            Logger.debug("\(self.TAG) successfully fetched redPhone token")
-            return self.registerForRedPhone(tsToken:redphoneToken)
-        }.then {
-            Logger.debug("\(self.TAG) successfully registered with RedPhone")
         }
     }
 
