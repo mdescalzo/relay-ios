@@ -3435,7 +3435,7 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Relay/Relay-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3472,7 +3472,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
@@ -3495,7 +3495,7 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Relay/Relay-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3533,6 +3533,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
