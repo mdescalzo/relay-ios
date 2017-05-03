@@ -8,7 +8,6 @@
 
 #import "CodeVerificationViewController.h"
 #import "AppDelegate.h"
-#import "RPAccountManager.h"
 #import "Relay-Swift.h"
 #import "SignalsNavigationController.h"
 #import "SignalsViewController.h"
@@ -36,8 +35,7 @@ NSString *const kCompletedRegistrationSegue = @"CompletedRegistration";
         return self;
     }
 
-    _accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]
-                                                           redPhoneAccountManager:[RPAccountManager sharedInstance]];
+    _accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
 
     return self;
 }
@@ -49,8 +47,7 @@ NSString *const kCompletedRegistrationSegue = @"CompletedRegistration";
         return self;
     }
 
-    _accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]
-                                                           redPhoneAccountManager:[RPAccountManager sharedInstance]];
+    _accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
 
     return self;
 }

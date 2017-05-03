@@ -120,8 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
         [Pastelog submitLogs];
     } else if ([tableView cellForRowAtIndexPath:indexPath] == self.registerPushCell) {
         OWSAccountManager *accountManager =
-            [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]
-                                                 redPhoneAccountManager:[RPAccountManager sharedInstance]];
+            [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
         OWSSyncPushTokensJob *syncJob = [[OWSSyncPushTokensJob alloc] initWithPushManager:[PushManager sharedManager]
                                                                            accountManager:accountManager
                                                                               preferences:[Environment preferences]];

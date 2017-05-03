@@ -15,7 +15,6 @@
 #import "OWSContactsManager.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
-#import "RPAccountManager.h"
 #import "Relay-Swift.h"
 #import "TSAccountManager.h"
 #import "TSDatabaseView.h"
@@ -225,8 +224,7 @@
 - (void)ensureNotificationsUpToDate
 {
     OWSAccountManager *accountManager =
-        [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]
-                                             redPhoneAccountManager:[RPAccountManager sharedInstance]];
+        [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
 
     OWSSyncPushTokensJob *syncPushTokensJob =
         [[OWSSyncPushTokensJob alloc] initWithPushManager:[PushManager sharedManager]

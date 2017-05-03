@@ -9,7 +9,6 @@
 #import "OWSStaleNotificationObserver.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
-#import "RPAccountManager.h"
 #import "Release.h"
 #import "Relay-Swift.h"
 #import "TSMessagesManager.h"
@@ -124,8 +123,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         }
 
         OWSAccountManager *accountManager =
-            [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]
-                                                 redPhoneAccountManager:[RPAccountManager sharedInstance]];
+            [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
 
         [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
                                   accountManager:accountManager
