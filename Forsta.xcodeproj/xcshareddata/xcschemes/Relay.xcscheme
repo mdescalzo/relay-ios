@@ -17,7 +17,7 @@
                BlueprintIdentifier = "D221A088169C9E5E00537ABF"
                BuildableName = "Relay.app"
                BlueprintName = "Relay"
-               ReferencedContainer = "container:Relay.xcodeproj">
+               ReferencedContainer = "container:Forsta.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "D221A0A9169C9E5F00537ABF"
                BuildableName = "SignalTests.xctest"
                BlueprintName = "SignalTests"
-               ReferencedContainer = "container:Relay.xcodeproj">
+               ReferencedContainer = "container:Forsta.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -59,7 +59,7 @@
             BlueprintIdentifier = "D221A088169C9E5E00537ABF"
             BuildableName = "Relay.app"
             BlueprintName = "Relay"
-            ReferencedContainer = "container:Relay.xcodeproj">
+            ReferencedContainer = "container:Forsta.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <EnvironmentVariables>
@@ -90,7 +90,7 @@
             BlueprintIdentifier = "D221A088169C9E5E00537ABF"
             BuildableName = "Relay.app"
             BlueprintName = "Relay"
-            ReferencedContainer = "container:Relay.xcodeproj">
+            ReferencedContainer = "container:Forsta.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -116,7 +116,7 @@
             BlueprintIdentifier = "D221A088169C9E5E00537ABF"
             BuildableName = "Relay.app"
             BlueprintName = "Relay"
-            ReferencedContainer = "container:Relay.xcodeproj">
+            ReferencedContainer = "container:Forsta.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

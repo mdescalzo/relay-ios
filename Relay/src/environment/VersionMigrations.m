@@ -51,6 +51,7 @@
         return;
     }
 
+    /*
     if ([self isVersion:previousVersion atLeast:@"1.0.2" andLessThan:@"2.0"]) {
         DDLogError(@"Migrating from RedPhone no longer supported. Quitting.");
         // Not translating these as so few are affected.
@@ -91,6 +92,7 @@
             DDLogInfo(@"OWSMigration: completed removing orphaned data.");
         });
     }
+    */
 
     [[[OWSDatabaseMigrationRunner alloc] initWithStorageManager:[TSStorageManager sharedManager]] runAllOutstanding];
     [Environment.preferences setAndGetCurrentVersion];
