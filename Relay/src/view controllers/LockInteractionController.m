@@ -1,6 +1,6 @@
 //
 //  LockInteractionController.m
-//  Signal
+//  Forsta
 //
 //  Created by Frederic Jacobs on 22/08/15.
 //  Copyright (c) 2015 Open Whisper Systems. All rights reserved.
@@ -35,7 +35,7 @@
 
     LockInteractionController *sharedController = [LockInteractionController sharedController];
     sharedController.alertController =
-        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Upgrading Signal ...", nil)
+        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Upgrading Forsta ...", nil)
                                             message:nil
                                      preferredStyle:UIAlertControllerStyleAlert];
 
@@ -71,7 +71,7 @@
     LIControllerRetryBlock retryBlock =
         ^void(LIControllerBlockingOperation blockingOperation, LIControllerCompletionBlock completionBlock) {
           UIAlertController *retryController =
-              [UIAlertController alertControllerWithTitle:@"Upgrading Signal failed"
+              [UIAlertController alertControllerWithTitle:@"Upgrading Forsta failed"
                                                   message:@"An network error occured while upgrading, please check "
                                                           @"your connectivity and try again."
                                            preferredStyle:UIAlertControllerStyleAlert];
