@@ -2,7 +2,7 @@
 "AB_PERMISSION_MISSING_ACTION" = "Give access";
 
 /* No comment provided by engineer. */
-"AB_PERMISSION_MISSING_BODY" = "Forsta Relay requires access to your contacts. We do not store your contacts on our servers.";
+"AB_PERMISSION_MISSING_BODY" = "Forsta requires access to your contacts. We do not store your contacts on our servers.";
 
 /* No comment provided by engineer. */
 "AB_PERMISSION_MISSING_TITLE" = "Sorry!";
@@ -14,7 +14,7 @@
 "ACTION_REQUIRED_TITLE" = "Action Required";
 
 /* No comment provided by engineer. */
-"ADDRESSBOOK_RESTRICTED_ALERT_BODY" = "Forsta Relay requires access to your contacts. Access to contacts is restricted. Forsta Relay will close. You can disable the restriction temporarily to let Forsta Relay access your contacts by going the Settings app >> General >> Restrictions >> Contacts >> Allow Changes.";
+"ADDRESSBOOK_RESTRICTED_ALERT_BODY" = "Forsta requires access to your contacts. Access to contacts is restricted. Forsta will close. You can disable the restriction temporarily to let Forsta access your contacts by going the Settings app >> General >> Restrictions >> Contacts >> Allow Changes.";
 
 /* No comment provided by engineer. */
 "ADDRESSBOOK_RESTRICTED_ALERT_BUTTON" = "Close";
@@ -56,7 +56,7 @@
 "ATTACHMENT_QUEUED" = "New attachment queued for retrieval.";
 
 /* No comment provided by engineer. */
-"AUDIO_PERMISSION_MESSAGE" = "Forsta Relay requires access to your microphone to work properly. You can restore the permission in the Settings app >> Privacy >> Microphone >> Forsta Relay";
+"AUDIO_PERMISSION_MESSAGE" = "Forsta requires access to your microphone to work properly. You can restore the permission in the Settings app >> Privacy >> Microphone >> Forsta";
 
 /* No comment provided by engineer. */
 "CALLBACK_BUTTON_TITLE" = "Call back";
@@ -100,7 +100,7 @@
 /* No comment provided by engineer. */
 "DELIVERED_MESSAGE_TEXT" = "Delivered";
 
-/* {{Short Date}} when device last communicated with Forsta Relay Server. */
+/* {{Short Date}} when device last communicated with Forsta Server. */
 "DEVICE_LAST_ACTIVE_AT_LABEL" = "Last active: %@";
 
 /* {{Short Date}} when device was linked. */
@@ -128,7 +128,7 @@
 "EMPTY_ARCHIVE_FIRST_TEXT" = "Tap on the compose button.";
 
 /* No comment provided by engineer. */
-"EMPTY_ARCHIVE_FIRST_TITLE" = "Start your first Forsta Relay conversation!";
+"EMPTY_ARCHIVE_FIRST_TITLE" = "Start your first Forsta conversation!";
 
 /* No comment provided by engineer. */
 "EMPTY_ARCHIVE_TEXT" = "You can archive inactive conversations for later from your Inbox.";
@@ -140,7 +140,7 @@
 "EMPTY_CONTACTS_INVITE_BUTTON" = "Invite contact";
 
 /* No comment provided by engineer. */
-"EMPTY_CONTACTS_LABEL_LINE1" = "None of your contacts have Forsta Relay!";
+"EMPTY_CONTACTS_LABEL_LINE1" = "None of your contacts have Forsta!";
 
 /* No comment provided by engineer. */
 "EMPTY_CONTACTS_LABEL_LINE2" = "Why don't you invite someone";
@@ -179,7 +179,7 @@
 "END_CALL_MESSAGE_FROM_SERVER_PREFIX" = "Message from Server: ";
 
 /* No comment provided by engineer. */
-"END_CALL_NO_SUCH_USER" = "Number not registered with Forsta Relay or RedPhone!";
+"END_CALL_NO_SUCH_USER" = "Number not registered with Forsta or RedPhone!";
 
 /* No comment provided by engineer. */
 "END_CALL_RECIPIENT_UNAVAILABLE" = "Recipient Unavailable.";
@@ -205,14 +205,14 @@
 /* Generic notice when message failed to send. */
 "ERROR_DESCRIPTION_CLIENT_SENDING_FAILURE" = "Failed to send message.";
 
-/* Generic error used whenver Signal can't contact the server */
-"ERROR_DESCRIPTION_NO_INTERNET" = "Forsta Relay was unable to connect to the internet. Please try from another WiFi network or use mobile data.";
+/* Generic error used whenver Forsta can't contact the server */
+"ERROR_DESCRIPTION_NO_INTERNET" = "Forsta was unable to connect to the internet. Please try from another WiFi network or use mobile data.";
 
 /* Generic server error */
 "ERROR_DESCRIPTION_SERVER_FAILURE" = "Server Error. Please try again later.";
 
 /* Error message when attempting to send message */
-"ERROR_DESCRIPTION_UNREGISTERED_RECIPIENT" = "Recipient is no longer a Forsta Relay user.";
+"ERROR_DESCRIPTION_UNREGISTERED_RECIPIENT" = "Recipient is no longer a Forsta user.";
 
 /* No comment provided by engineer. */
 "ERROR_MESSAGE_DUPLICATE_MESSAGE" = "Received a duplicated message.";
@@ -386,10 +386,10 @@
 "MISSED_CALL" = "Missed call";
 
 /* Alert body */
-"MISSING_CAMERA_PERMISSION_MESSAGE" = "You previously declined to let Forsta Relay access your camera. Update your system settings to proceed.";
+"MISSING_CAMERA_PERMISSION_MESSAGE" = "You previously declined to let Forsta access your camera. Update your system settings to proceed.";
 
 /* Alert title */
-"MISSING_CAMERA_PERMISSION_TITLE" = "Forsta Relay needs to access your camera.";
+"MISSING_CAMERA_PERMISSION_TITLE" = "Forsta needs to access your camera.";
 
 /* No comment provided by engineer. */
 "MSGVIEW_MISSED_CALL" = "Missed call from %@.";
@@ -482,16 +482,16 @@
 "PRIVACY_VERIFICATION_FAILED_I_HAVE_WRONG_KEY_FOR_THEM" = "Those don't look like the safety numbers for %@. Are you verifying the correct contact?";
 
 /* Alert body when verifying with {{contact name}} */
-"PRIVACY_VERIFICATION_FAILED_THEY_HAVE_WRONG_KEY_FOR_ME" = "Every pair of Forsta Relay users shares distinct safety numbers. Double check that %@ is displaying *your* distinct safety numbers.";
+"PRIVACY_VERIFICATION_FAILED_THEY_HAVE_WRONG_KEY_FOR_ME" = "Every pair of Forsta users shares distinct safety numbers. Double check that %@ is displaying *your* distinct safety numbers.";
 
 /* alert body */
-"PRIVACY_VERIFICATION_FAILED_WITH_OLD_LOCAL_VERSION" = "You're running an old version of Forsta Relay. You need to update before you can verify.";
+"PRIVACY_VERIFICATION_FAILED_WITH_OLD_LOCAL_VERSION" = "You're running an old version of Forsta. You need to update before you can verify.";
 
 /* alert body */
-"PRIVACY_VERIFICATION_FAILED_WITH_OLD_REMOTE_VERSION" = "Your partner is running an old version of Forsta Relay. They need to update before you can verify.";
+"PRIVACY_VERIFICATION_FAILED_WITH_OLD_REMOTE_VERSION" = "Your partner is running an old version of Forsta. They need to update before you can verify.";
 
 /* alert body */
-"PRIVACY_VERIFICATION_FAILURE_INVALID_QRCODE" = "The scanned code doesn't look like a safety number code. Are you both on an up-to-date version of Forsta Relay?";
+"PRIVACY_VERIFICATION_FAILURE_INVALID_QRCODE" = "The scanned code doesn't look like a safety number code. Are you both on an up-to-date version of Forsta?";
 
 /* Paragraph(s) shown alongside keying material when verifying privacy with {{contact name}} */
 "PRIVACY_VERIFICATION_INSTRUCTIONS" = "If you wish to verify the security of your end-to-end encryption with %@, compare the numbers above with the numbers on their device.\n\nAlternatively, you can scan the code on their phone, or ask them to scan your code.";
@@ -515,19 +515,19 @@
 "PUSH_REGISTER_TITLE" = "Push Notifications";
 
 /* No comment provided by engineer. */
-"PUSH_SETTINGS_MESSAGE" = "Forsta Relay requires push notification alerts and sounds to be enabled to work properly. Please change it in the Settings app >> Notification Center >> Forsta Relay.";
+"PUSH_SETTINGS_MESSAGE" = "Forsta requires push notification alerts and sounds to be enabled to work properly. Please change it in the Settings app >> Notification Center >> Forsta.";
 
 /* No comment provided by engineer. */
 "QUESTIONMARK_PUNCTUATION" = "?";
 
 /* No comment provided by engineer. */
-"RATING_MSG" = "If you enjoy using Forsta Relay to have private conversations, you can support our project by rating it. It won't take more than a minute, and will help others find some privacy.";
+"RATING_MSG" = "If you enjoy using Forsta to have private conversations, you can support our project by rating it. It won't take more than a minute, and will help others find some privacy.";
 
 /* No comment provided by engineer. */
-"RATING_RATE" = "Rate Forsta Relay";
+"RATING_RATE" = "Rate Forsta";
 
 /* No comment provided by engineer. */
-"RATING_TITLE" = "Support Forsta Relay!";
+"RATING_TITLE" = "Support Forsta!";
 
 /* No comment provided by engineer. */
 "REGISTER_CC_ERR_ALERT_VIEW_MESSAGE" = "Please enter a valid country code";
@@ -536,7 +536,7 @@
 "REGISTER_CC_ERR_ALERT_VIEW_TITLE" = "Country Code Error";
 
 /* No comment provided by engineer. */
-"REGISTER_CONTACTS_BODY" = "Forsta Relay allows you to have private conversations with your existing contacts. To use Forsta Relay, please allow access to your contacts.";
+"REGISTER_CONTACTS_BODY" = "Forsta allows you to have private conversations with your existing contacts. To use Forsta, please allow access to your contacts.";
 
 /* No comment provided by engineer. */
 "REGISTER_CONTACTS_CONTINUE" = "Continue";
@@ -602,7 +602,7 @@
 "RETRY_BUTTON_TEXT" = "Retry";
 
 /* Snippet to share {{safety numbers}} with a friend. sent e.g. via sms */
-"SAFETY_NUMBER_SHARE_FORMAT" = "Our Forsta Relay Safety Numbers:\n%@";
+"SAFETY_NUMBER_SHARE_FORMAT" = "Our Forsta Safety Numbers:\n%@";
 
 /* Action sheet heading */
 "SAFETY_NUMBERS_ACTIONSHEET_TITLE" = "The safety numbers for %@ have changed. You may wish to verify them.";
@@ -638,10 +638,10 @@
 "SEND_SMS_INVITE_FAILURE" = "SMS sending failed, please try again later.";
 
 /* No comment provided by engineer. */
-"SEND_SMS_INVITE_SUCCESS" = "You've invited your friend to use Forsta Relay!";
+"SEND_SMS_INVITE_SUCCESS" = "You've invited your friend to use Forsta!";
 
 /* No comment provided by engineer. */
-"SEND_SMS_INVITE_TITLE" = "Would you like to invite the following number to Forsta Relay: ";
+"SEND_SMS_INVITE_TITLE" = "Would you like to invite the following number to Forsta: ";
 
 /* No comment provided by engineer. */
 "SETTINGS_ABOUT" = "About";
@@ -656,7 +656,7 @@
 "SETTINGS_ADVANCED_TITLE" = "Advanced";
 
 /* User settings section footer, a detailed explanation */
-"SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL" = "Requires your approval before communicating with someone who has new safety numbers, commonly from a reinstall of Forsta Relay.";
+"SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL" = "Requires your approval before communicating with someone who has new safety numbers, commonly from a reinstall of Forsta.";
 
 /* Table cell label */
 "SETTINGS_BLOCK_ON_IDENTITY_CHANGE_TITLE" = "Require Approval on Change";
@@ -665,7 +665,7 @@
 "SETTINGS_CLEAR_HISTORY" = "Clear History Logs";
 
 /* No comment provided by engineer. */
-"SETTINGS_COPYRIGHT" = "Copyright Forsta \n Licensed under the GPLv3";
+"SETTINGS_COPYRIGHT" = "Copyright Open Whisper Systems, \n Licensed under the GPLv3";
 
 /* No comment provided by engineer. */
 "SETTINGS_DELETE_ACCOUNT_BUTTON" = "Delete Account";
@@ -689,7 +689,7 @@
 "SETTINGS_INVITE_HEADER" = "Invite";
 
 /* No comment provided by engineer. */
-"SETTINGS_INVITE_TWITTER_TEXT" = "You can reach me using Forsta Relay, get it now.";
+"SETTINGS_INVITE_TWITTER_TEXT" = "You can reach me using Forsta, @forstainc get it now.";
 
 /* Title for settings activity */
 "SETTINGS_NAV_BAR_TITLE" = "Settings";
@@ -707,7 +707,7 @@
 "SETTINGS_SCREEN_SECURITY" = "Enable Screen Security";
 
 /* No comment provided by engineer. */
-"SETTINGS_SCREEN_SECURITY_DETAIL" = "Prevents Forsta Relay previews from appearing in the app switcher.";
+"SETTINGS_SCREEN_SECURITY_DETAIL" = "Prevents Forsta previews from appearing in the app switcher.";
 
 /* Section header */
 "SETTINGS_SECURITY_TITLE" = "Screen Security";
@@ -737,7 +737,7 @@
 "SINGLE_WEEK_TIME_AMOUNT" = "%u week";
 
 /* No comment provided by engineer. */
-"SMS_INVITE_BODY" = "I'm inviting you to install Forsta Relay! Here is the link:";
+"SMS_INVITE_BODY" = "I'm inviting you to install Forsta! Here is the link:";
 
 /* Alert body after verifying privacy with {{other user's name}} */
 "SUCCESSFUL_VERIFICATION_DESCRIPTION" = "Your safety numbers have been verified. You can be confident your communication with %@ is private.";
@@ -779,13 +779,13 @@
 "UNLINK_CONFIRMATION_ALERT_TITLE" = "Unlink \"%@\"?";
 
 /* Alert title when unlinking device fails */
-"UNLINKING_FAILED_ALERT_TITLE" = "Forsta Relay was unable to unlink your device.";
+"UNLINKING_FAILED_ALERT_TITLE" = "Forsta was unable to unlink your device.";
 
 /* Label text in device manager for a device with no name */
 "UNNAMED_DEVICE" = "Unnamed Device";
 
 /* No comment provided by engineer. */
-"UNREGISTER_SIGNAL_FAIL" = "Failed to unregister from Forsta Relay.";
+"UNREGISTER_SIGNAL_FAIL" = "Failed to unregister from Forsta.";
 
 /* No comment provided by engineer. */
 "UNSUPPORTED_ATTACHMENT" = "Received unsupported attachment type.";
@@ -797,7 +797,7 @@
 "UPDATE_BUTTON_TITLE" = "Update";
 
 /* No comment provided by engineer. */
-"Upgrading Signal ..." = "Upgrading Forsta Relay ...";
+"Upgrading Forsta ..." = "Upgrading Forsta ...";
 
 /* message footer while attachment is uploading */
 "UPLOADING_MESSAGE_TEXT" = "Uploading...";
@@ -824,7 +824,7 @@
 "VERIFY_PRIVACY" = "Verify Safety Numbers";
 
 /* Activity indicator title, shown upon returning to the device manager, until you complete the provisioning process on desktop */
-"WAITING_TO_COMPLETE_DEVICE_LINK_TEXT" = "Complete setup on Forsta Relay Desktop.";
+"WAITING_TO_COMPLETE_DEVICE_LINK_TEXT" = "Complete setup on Forsta Desktop.";
 
 /* {{number of weeks}}, embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 weeks}}'. See other *_TIME_AMOUNT strings */
 "WEEKS_TIME_AMOUNT" = "%u weeks";
