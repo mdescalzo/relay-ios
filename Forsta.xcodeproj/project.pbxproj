@@ -3547,7 +3547,7 @@
 			baseConfigurationReference = AD2AB1207E8888E4262D781B /* Pods-SignalTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Forsta Relay.app/Relay";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Relay.app/Relay";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3604,7 +3604,7 @@
 			baseConfigurationReference = E85DB184824BA9DC302EC8B3 /* Pods-SignalTests.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Forsta Relay.app/Relay";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Relay.app/Relay";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
