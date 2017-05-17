@@ -665,7 +665,7 @@
 "SETTINGS_CLEAR_HISTORY" = "Clear History Logs";
 
 /* No comment provided by engineer. */
-"SETTINGS_COPYRIGHT" = "Copyright Open Whisper Systems, \n Licensed under the GPLv3";
+"SETTINGS_COPYRIGHT" = "Copyright Forsta, Inc,\n Open Whisper Systems, \n Licensed under the GPLv3";
 
 /* No comment provided by engineer. */
 "SETTINGS_DELETE_ACCOUNT_BUTTON" = "Delete Account";
