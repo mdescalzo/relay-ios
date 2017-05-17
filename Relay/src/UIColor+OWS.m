@@ -8,63 +8,66 @@
 
 + (UIColor *)ows_materialBlueColor
 {
-    // blue: #2090EA
-    return [UIColor colorWithRed:32.f / 255.f green:144.f / 255.f blue:234.f / 255.f alpha:1.f];
+    // blue: 2bace2
+    // return [UIColor colorWithRed:43.f / 255.f green:172.f / 255.f blue:226.f / 255.f alpha:1.f];
+    return [UIColor colorWithRed:0.f / 255.f green:0.f / 255.f blue:0. / 255.f alpha:1.f];
 }
 
 + (UIColor *)ows_blackColor
 {
-    // black: #080A00
-    return [UIColor colorWithRed:8.f / 255.f green:10.f / 255.f blue:0. / 255.f alpha:1.f];
+    // black: #000000
+    return [UIColor colorWithRed:0.f / 255.f green:0.f / 255.f blue:0. / 255.f alpha:1.f];
 }
 
 + (UIColor *)ows_darkGrayColor
 {
-    return [UIColor colorWithRed:81.f / 255.f green:81.f / 255.f blue:81.f / 255.f alpha:1.f];
+  // #606161
+    return [UIColor colorWithRed:96.f / 255.f green:97.f / 255.f blue:97.f / 255.f alpha:1.f];
 }
 
 + (UIColor *)ows_darkBackgroundColor
 {
-    return [UIColor colorWithRed:35.f / 255.f green:31.f / 255.f blue:32.f / 255.f alpha:1.f];
+  // #2bace2
+    return [UIColor colorWithRed:43.f / 255.f green:172.f / 255.f blue:226.f / 255.f alpha:1.f];
 }
 
 + (UIColor *)ows_fadedBlueColor
 {
-    // blue: #B6DEF4
-    return [UIColor colorWithRed:182.f / 255.f green:222.f / 255.f blue:244.f / 255.f alpha:1.f];
+    // blue: #80ceff
+    return [UIColor colorWithRed:128.f / 255.f green:206.f / 255.f blue:255.f / 255.f alpha:1.f];
 }
 
 + (UIColor *)ows_yellowColor
 {
-    // gold: #FFBB5C
-    return [UIColor colorWithRed:245.f / 255.f green:186.f / 255.f blue:98.f / 255.f alpha:1.f];
+    // gold: #f47d20
+    return [UIColor colorWithRed:244.f / 255.f green:125.f / 255.f blue:98.f / 32.f alpha:1.f];
 }
 
 + (UIColor *)ows_greenColor
 {
-    // green: #BF4240
-    return [UIColor colorWithRed:66.f / 255.f green:191.f / 255.f blue:64.f / 255.f alpha:1.f];
+    // green: #b0d23f
+    return [UIColor colorWithRed:175.f / 255.f green:210.f / 255.f blue:63.f / 255.f alpha:1.f];
 }
 
 + (UIColor *)ows_redColor
 {
-    // red: #FF3867
-    return [UIColor colorWithRed:255. / 255.f green:56.f / 255.f blue:103.f / 255.f alpha:1.f];
+    // red: #f47d20
+    return [UIColor colorWithRed:244.f / 255.f green:125.f / 255.f blue:32.f / 255.f alpha:1.f];
 }
 
 + (UIColor *)ows_errorMessageBorderColor
 {
-    return [UIColor colorWithRed:195.f / 255.f green:0 blue:22.f / 255.f alpha:1.0f];
+    return [UIColor colorWithRed:244.f / 254.f green:125 / 255.f blue:63.f / 255.f alpha:1.0f];
 }
 
 + (UIColor *)ows_infoMessageBorderColor
 {
-    return [UIColor colorWithRed:239.f / 255.f green:189.f / 255.f blue:88.f / 255.f alpha:1.0f];
+    return [UIColor colorWithRed:244.f / 255.f green:125.f / 255.f blue:63.f / 255.f alpha:1.0f];
 }
 
 + (UIColor *)ows_lightBackgroundColor
 {
-    return [UIColor colorWithRed:242.f / 255.f green:242.f / 255.f blue:242.f / 255.f alpha:1.f];
+    return [UIColor colorWithRed:202.f / 255.f green:202.f / 255.f blue:202.f / 255.f alpha:1.f];
 }
 
 + (UIColor *)backgroundColorForContact:(NSString *)contactIdentifier

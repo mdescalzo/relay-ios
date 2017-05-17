@@ -247,7 +247,7 @@ typedef enum {
 
 - (void)socketDidOpen {
     self.networkStatusLabel.text      = NSLocalizedString(@"NETWORK_STATUS_CONNECTED", @"");
-    self.networkStatusLabel.textColor = [UIColor ows_greenColor];
+    self.networkStatusLabel.textColor = [UIColor ows_redColor];
 }
 
 - (void)socketDidClose {
@@ -257,7 +257,7 @@ typedef enum {
 
 - (void)socketIsConnecting {
     self.networkStatusLabel.text      = NSLocalizedString(@"NETWORK_STATUS_CONNECTING", @"");
-    self.networkStatusLabel.textColor = [UIColor ows_yellowColor];
+    self.networkStatusLabel.textColor = [UIColor ows_redColor];
 }
 
 @end
