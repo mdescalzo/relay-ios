@@ -2,11 +2,11 @@
 SHELL=/bin/bash -o pipefail -o errexit
 
 # iPhone6, iOS10
-DEVICE_UUID:=$(shell xcrun instruments -s | grep -o "iPhone 6 (10.0) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$$/\1/")
+DEVICE_UUID:=$(shell xcrun instruments -s | grep -o "iPhone 6 (10.3) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$$/\1/")
 BUILD_DESTINATION = platform=iOS Simulator,id=${DEVICE_UUID}
 WORKING_DIR = ./
 SCHEME = Relay
-XCODE_BUILD = xcrun xcodebuild -workspace $(SCHEME).xcworkspace -scheme $(SCHEME) -sdk iphonesimulator
+XCODE_BUILD = xcrun xcodebuild -workspace Forsta.xcworkspace -scheme $(SCHEME) -sdk iphonesimulator
 
 .PHONY: build test retest clean dependencies
 
