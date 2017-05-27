@@ -5,6 +5,7 @@
 #import "SecureEndPoint.h"
 #import "TSGroupModel.h"
 #import "TSStorageHeaders.h"
+#import "CCSMStorage.h"
 
 static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
@@ -87,6 +88,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (PhoneManager *)phoneManager;
 
 + (PropertyListPreferences *)preferences;
++ (CCSMStorage *)ccsmStorage;
 
 + (BOOL)isRedPhoneRegistered;
 + (void)resetAppData;

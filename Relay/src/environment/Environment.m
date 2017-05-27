@@ -161,6 +161,11 @@ static Environment *environment = nil;
     return [PropertyListPreferences new];
 }
 
++ (CCSMStorage *)ccsmStorage {
+    return [CCSMStorage new];
+}
+
+
 - (void)setSignalsViewController:(SignalsViewController *)signalsViewController {
     _signalsViewController = signalsViewController;
 }
