@@ -19,7 +19,8 @@
     // Do any additional setup after loading the view.
     
     // Allow for localized string on controls
-    self.validationLabel.text = NSLocalizedString(@"Enter Validation Code", @"");
+//    self.validationLabel.text = NSLocalizedString(@"Enter Validation Code", @"");
+    self.validationCodeTextField.placeholder = NSLocalizedString(@"Enter Validation Code", @"");
     self.validationButton.titleLabel.text = NSLocalizedString(@"Validate", @"");
 }
 

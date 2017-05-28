@@ -19,8 +19,10 @@
     // Do any additional setup after loading the view.
     
     // Allow for localized strings on controls
-    self.organizationLabel.text = NSLocalizedString(@"Organization", @"");
-    self.usernameLabel.text = NSLocalizedString(@"Username", @"");
+//    self.organizationLabel.text = NSLocalizedString(@"Organization", @"");
+//    self.usernameLabel.text = NSLocalizedString(@"Username", @"");
+    self.organizationTextField.placeholder = NSLocalizedString(@"Enter Organization", @"");
+    self.usernameTextField.placeholder = NSLocalizedString(@"Enter Username", @"");
     self.loginButton.titleLabel.text = NSLocalizedString(@"Login", @"");
 }
 
