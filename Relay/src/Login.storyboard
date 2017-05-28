@@ -23,9 +23,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="RcM-BM-ob0">
-                                <rect key="frame" x="67" y="20" width="240" height="200"/>
-                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Organization" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oIf-Tz-feb">
+                                <rect key="frame" x="36" y="238" width="303" height="24"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ggk-mM-IRI" id="t3U-6H-sDV"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xA2-XF-1vd" userLabel="Line2">
+                                <rect key="frame" x="0.0" y="341" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.75559091570000003" green="0.75556838510000002" blue="0.75558114050000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="7cE-jA-DLc"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zZD-yC-Wls" userLabel="Line1">
+                                <rect key="frame" x="0.0" y="280" width="375" height="1"/>
+                                <color key="backgroundColor" red="0.75559091570000003" green="0.75556838510000002" blue="0.75558114050000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Z3O-nz-pPQ"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ciA-mF-VaF">
+                                <rect key="frame" x="36" y="299" width="303" height="24"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ggk-mM-IRI" id="HeF-Yd-X7B"/>
+                                </connections>
+                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUA-U8-v9B">
                                 <rect key="frame" x="46" y="357" width="283" height="47"/>
                                 <color key="backgroundColor" red="0.16862745100000001" green="0.67450980390000004" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
@@ -40,35 +69,12 @@
                                     <action selector="OnLoginButtonTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="hUu-wH-GEF"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ciA-mF-VaF">
-                                <rect key="frame" x="36" y="299" width="303" height="24"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zZD-yC-Wls" userLabel="Line1">
-                                <rect key="frame" x="0.0" y="280" width="375" height="1"/>
-                                <color key="backgroundColor" red="0.75559091570000003" green="0.75556838510000002" blue="0.75558114050000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="Z3O-nz-pPQ"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xA2-XF-1vd" userLabel="Line2">
-                                <rect key="frame" x="0.0" y="341" width="375" height="1"/>
-                                <color key="backgroundColor" red="0.75559091570000003" green="0.75556838510000002" blue="0.75558114050000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="7cE-jA-DLc"/>
-                                </constraints>
-                            </view>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LdC-Mu-PcV">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="RcM-BM-ob0">
+                                <rect key="frame" x="67" y="20" width="240" height="200"/>
+                            </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LdC-Mu-PcV">
                                 <rect key="frame" x="299" y="371" width="20" height="20"/>
                             </activityIndicatorView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Organization" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oIf-Tz-feb">
-                                <rect key="frame" x="36" y="238" width="303" height="24"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -148,7 +154,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="VBO-Hl-e5n"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eSA-GE-T4t">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eSA-GE-T4t">
                                 <rect key="frame" x="299" y="309" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
