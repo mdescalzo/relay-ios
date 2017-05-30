@@ -88,7 +88,9 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [self setupTSKitEnv];
 
     UIStoryboard *storyboard;
-    if ([TSAccountManager isRegistered]) {
+    if (YES) {
+        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+    } else if ([TSAccountManager isRegistered]) {
         storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
     } else {
         storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];

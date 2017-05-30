@@ -182,11 +182,20 @@
                         <outlet property="spinner" destination="eSA-GE-T4t" id="phb-Tq-ZM0"/>
                         <outlet property="validationButton" destination="pzC-eI-juG" id="df0-Vn-b6A"/>
                         <outlet property="validationCodeTextField" destination="sFx-a6-Obs" id="3ro-VB-teY"/>
+                        <segue destination="IvH-DS-Gho" kind="show" identifier="registrationSegue" id="0r4-Ct-1V6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mdv-n9-h0K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-236" y="210"/>
+        </scene>
+        <!--Registration-->
+        <scene sceneID="7gF-pa-jUJ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Registration" id="IvH-DS-Gho" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9FC-42-eZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="542" y="208"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Rua-rS-UBS">

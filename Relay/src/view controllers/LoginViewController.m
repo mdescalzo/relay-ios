@@ -59,15 +59,17 @@
 -(IBAction)onLoginButtonTap:(id)sender
 {
     // Do stuff on Login button tap
-    [self.spinner startAnimating];
 
     [self.ccsmStorage setOrgName:self.organizationTextField.text];
     [self.ccsmStorage setUserName:self.usernameTextField.text];
     
-    self.loginButton.enabled = NO;
-    self.loginButton.alpha = 0.8;
-    
-    [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner startAnimating];
+        self.loginButton.enabled = NO;
+        self.loginButton.alpha = 0.8;
+        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
+    });
+
 }
 
 #pragma mark -
@@ -90,17 +92,21 @@
 
 -(void)loginSucceeded
 {
-    [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
-    self.loginButton.enabled = YES;
-    self.loginButton.alpha = 1.0;
-    [self.spinner stopAnimating];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
+        self.loginButton.enabled = YES;
+        self.loginButton.alpha = 1.0;
+        [self.spinner stopAnimating];
+    });
 }
 
 -(void)loginFailed
 {
-    [self.spinner stopAnimating];
-    self.loginButton.enabled = YES;
-    self.loginButton.alpha = 1.0;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.loginButton.enabled = YES;
+        self.loginButton.alpha = 1.0;
+        [self.spinner stopAnimating];
+    });
 }
 
 #pragma mark - UITextField delegate methods

@@ -44,8 +44,14 @@ NSUInteger maximumValidationAttempts = 9999;
 -(IBAction)onValidationButtonTap:(id)sender
 {
     // Do stuff when Validation button tapped
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner startAnimating];
+        self.validationButton.enabled = NO;
+        self.validationButton.alpha = 0.5;
+        [self performSegueWithIdentifier:@"registrationSegue" sender:self];
+    });
 }
+
+
 
 @end
