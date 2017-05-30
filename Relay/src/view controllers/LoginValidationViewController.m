@@ -8,6 +8,8 @@
 
 #import "LoginValidationViewController.h"
 
+NSUInteger maximumValidationAttempts = 9999;
+
 @interface LoginValidationViewController ()
 
 @end
@@ -39,7 +41,7 @@
 }
 */
 
--(IBAction)OnValidationButtonTap:(id)sender
+-(IBAction)onValidationButtonTap:(id)sender
 {
     // Do stuff when Validation button tapped
     

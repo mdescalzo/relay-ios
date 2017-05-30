@@ -10,13 +10,13 @@
 
 @interface LoginViewController : UIViewController <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel *organizationLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *organizationLabel;
 @property (weak, nonatomic) IBOutlet UITextField *organizationTextField;
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
--(IBAction)OnLoginButtonTap:(id)sender;
+-(IBAction)onLoginButtonTap:(id)sender;
 
 @end

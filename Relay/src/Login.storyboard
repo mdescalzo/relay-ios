@@ -66,7 +66,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="OnLoginButtonTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="hUu-wH-GEF"/>
+                                    <action selector="onLoginButtonTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="0Op-bk-s02"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="RcM-BM-ob0">
@@ -130,6 +130,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="7Uu-IH-pbe" id="Tfu-MA-wbu"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pzC-eI-juG">
                                 <rect key="frame" x="46" y="296" width="283" height="47"/>
@@ -139,8 +142,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="OnLoginButtonTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="FC6-Mn-guT"/>
-                                    <action selector="OnValidationButtonTap:" destination="7Uu-IH-pbe" eventType="touchUpInside" id="fMS-4H-Z0C"/>
+                                    <action selector="onValidationButtonTap:" destination="7Uu-IH-pbe" eventType="touchUpInside" id="WrD-VH-3K7"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="Fbk-AC-mml">
