@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginValidationViewController : UIViewController <UITextFieldDelegate>
+@interface LoginValidationViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
 
 //@property (weak, nonatomic) IBOutlet UILabel *validationLabel;
 @property (weak, nonatomic) IBOutlet UITextField *validationCodeTextField;

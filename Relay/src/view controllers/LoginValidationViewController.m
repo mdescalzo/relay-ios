@@ -41,15 +41,54 @@ NSUInteger maximumValidationAttempts = 9999;
 }
 */
 
--(IBAction)onValidationButtonTap:(id)sender
+#pragma mark -
+-(BOOL)attemptValidation
 {
-    // Do stuff when Validation button tapped
+    return NO;
+}
+
+-(void)validationSucceeded
+{
+    // Move on to the Registration storyboard
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner startAnimating];
         self.validationButton.enabled = NO;
         self.validationButton.alpha = 0.5;
         [self performSegueWithIdentifier:@"registrationSegue" sender:self];
     });
+}
+
+-(void)validationFailed
+{
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
+                                message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
+                               delegate:self
+                      cancelButtonTitle:NSLocalizedString(@"Try again", @"")
+                      otherButtonTitles:NSLocalizedString(@"Send new code", @""), nil]
+     show];
+}
+
+#pragma mark - Button actions
+-(IBAction)onValidationButtonTap:(id)sender
+{
+    if ([self attemptValidation])
+        [self validationSucceeded];
+    else
+        [self validationFailed];
+}
+
+#pragma mark - UIAlertView delegate methods
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+#warning Initiate resend of validation code here
+    }
+}
+
+#pragma mark - UITextField delegate methods
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    return YES;
 }
 
 

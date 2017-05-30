@@ -20,10 +20,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
-    
-    
     self.ccsmStorage = [[CCSMStorage alloc] init];
     
     // Allow for localized strings on controls
@@ -66,10 +62,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner startAnimating];
         self.loginButton.enabled = NO;
-        self.loginButton.alpha = 0.8;
-        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
+        self.loginButton.alpha = 0.5;
+//        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
     });
-
+    
+    if ([self attemptLogin])
+        [self loginSucceeded];
+    else
+        [self loginFailed];
 }
 
 #pragma mark -
@@ -85,18 +85,18 @@
 }
 
 #pragma mark - Login handlers
--(void)attemptLogin
+-(BOOL)attemptLogin
 {
-    // Initiate login attemp with supplied credentials
+    return YES;
 }
 
 -(void)loginSucceeded
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
         self.loginButton.enabled = YES;
         self.loginButton.alpha = 1.0;
         [self.spinner stopAnimating];
+        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
     });
 }
 
@@ -106,6 +106,13 @@
         self.loginButton.enabled = YES;
         self.loginButton.alpha = 1.0;
         [self.spinner stopAnimating];
+        
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
+                                    message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
+                                   delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                          otherButtonTitles:nil]
+         show];
     });
 }
 
@@ -114,18 +121,18 @@
 {
     if (textField == self.organizationTextField)
     {
-        NSLog(@"OrgFieldEnding...");
         return [self isValidOrganization:textField.text];
     }
     else if (textField == self.usernameTextField)
     {
-        NSLog(@"UserFiendEnding...");
         return [self isValidUsername:textField.text];
     }
     else
         return YES;
 }
 
-#pragma mark - Lazy instatiation
+#pragma mark - Unwinding
+- (IBAction)unwindToChangeCredientials:(UIStoryboardSegue *)sender {
+}
 
 @end
