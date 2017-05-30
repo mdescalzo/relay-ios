@@ -7,6 +7,7 @@
 //
 
 #import "LoginValidationViewController.h"
+#import "TSAccountManager.h"
 
 NSUInteger maximumValidationAttempts = 9999;
 
@@ -44,17 +45,24 @@ NSUInteger maximumValidationAttempts = 9999;
 #pragma mark -
 -(BOOL)attemptValidation
 {
-    return NO;
+    return YES;
 }
 
 -(void)validationSucceeded
 {
+    // Check if registered and proceed to next storyboard accordingly
+    NSString *targetSegue = nil;
+    if ([TSAccountManager isRegistered])
+        targetSegue = @"mainSegue";
+    else
+        targetSegue = @"registrationSegue";
+    
     // Move on to the Registration storyboard
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner startAnimating];
         self.validationButton.enabled = NO;
         self.validationButton.alpha = 0.5;
-        [self performSegueWithIdentifier:@"registrationSegue" sender:self];
+        [self performSegueWithIdentifier:targetSegue sender:self];
     });
 }
 

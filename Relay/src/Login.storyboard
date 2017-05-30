@@ -212,6 +212,7 @@
                         <outlet property="validationButton" destination="pzC-eI-juG" id="df0-Vn-b6A"/>
                         <outlet property="validationCodeTextField" destination="sFx-a6-Obs" id="3ro-VB-teY"/>
                         <segue destination="IvH-DS-Gho" kind="presentation" identifier="registrationSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="0r4-Ct-1V6"/>
+                        <segue destination="lHa-vW-cYk" kind="presentation" identifier="mainSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="b3e-xB-Db4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mdv-n9-h0K" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -225,7 +226,15 @@
                 <viewControllerPlaceholder storyboardName="Registration" id="IvH-DS-Gho" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9FC-42-eZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="542" y="208"/>
+            <point key="canvasLocation" x="534" y="177"/>
+        </scene>
+        <!--Main-->
+        <scene sceneID="30S-pw-aQx">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" id="lHa-vW-cYk" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lxn-3l-bHY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="499" y="239"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Rua-rS-UBS">
