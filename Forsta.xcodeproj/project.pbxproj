@@ -2319,8 +2319,8 @@
 			children = (
 				DBE1798D1ED9FFD600327B2B /* CCSMStorage.h */,
 				DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */,
-				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
+				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 			);
 			name = ccsm;
 			sourceTree = "<group>";

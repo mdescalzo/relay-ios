@@ -66,7 +66,6 @@
         [self.spinner startAnimating];
         self.loginButton.enabled = NO;
         self.loginButton.alpha = 0.5;
-//        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
     });
     
     [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
@@ -75,7 +74,7 @@
                                    [self loginSucceeded];
                                }
                                failure:^(NSError *err){
-                                   [self loginFailed];
+                                   [self loginFailed:err];
                                }];
 }
 
@@ -83,19 +82,22 @@
 
 -(BOOL)isValidOrganization:(NSString *)organization
 {
+    // Placeholder for potential validation method
     return YES;
 }
 
 -(BOOL)isValidUsername:(NSString *)username
 {
+    // Placeholder for potential validation method
     return YES;
 }
 
 #pragma mark - Login handlers
--(BOOL)attemptLogin
-{
-    return YES;
-}
+//
+//-(BOOL)attemptLogin
+//{
+//    return YES;
+//}
 
 -(void)loginSucceeded
 {
@@ -107,7 +109,7 @@
     });
 }
 
--(void)loginFailed
+-(void)loginFailed:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.loginButton.enabled = YES;
@@ -115,7 +117,7 @@
         [self.spinner stopAnimating];
         
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                    message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
+                                    message:error.localizedDescription
                                    delegate:nil
                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                           otherButtonTitles:nil]

@@ -89,7 +89,7 @@ NSUInteger maximumValidationAttempts = 9999;
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-#warning Initiate resend of validation code here
+        // Initiate resend of validation code here
     }
 }
 
