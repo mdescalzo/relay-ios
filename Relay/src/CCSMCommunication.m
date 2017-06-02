@@ -125,9 +125,9 @@
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-             NSLog(@"verification repsonse token is: %@", [result objectForKey:@"token"]);
-             // TODO: stash other goodies, like the user :^)
              [Environment.ccsmStorage setSessionKey:[result objectForKey:@"token"]];
+             [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          } else if (connectionError != nil) {
              failureBlock(connectionError);

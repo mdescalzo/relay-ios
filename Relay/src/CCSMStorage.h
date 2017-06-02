@@ -20,6 +20,9 @@
 - (NSString *)getSessionKey;
 - (void)setSessionKey:(NSString *)value;
 
+- (NSDictionary *)getUserInfo;
+- (void)setUserInfo:(NSDictionary *)value;
+
 @end
 
 #endif /* Storage_h */
