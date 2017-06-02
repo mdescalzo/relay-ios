@@ -78,8 +78,9 @@
              success:(void (^)())successBlock
              failure:(void (^)(NSError *error))failureBlock ;
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ccsm-dev.forsta.io/v1/login/send/%@/%@", orgName, userName]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    NSString * urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/login/send/%@/%@/?format=json", orgName, userName];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response,
@@ -88,9 +89,10 @@
          if (data.length > 0 && connectionError == nil)
          {
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                      options:0
-                                                                        error:NULL];
-             NSLog(@"login result's msg is: %@", [[result objectForKey:@"msg"] stringValue]);
+                                                                    options:0
+                                                                      error:NULL];
+             NSLog(@"login result's msg is: %@", [result objectForKey:@"msg"]);
+             successBlock();
          } else if (connectionError != nil) {
              failureBlock(connectionError);
          }

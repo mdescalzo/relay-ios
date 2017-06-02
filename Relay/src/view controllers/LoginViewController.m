@@ -69,8 +69,8 @@
 //        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
     });
     
-    [self.ccsmCommManager requestLogin:self.usernameTextField.text
-                               orgName:self.organizationTextField.text
+    [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
+                               orgName:[self.ccsmStorage getOrgName]
                                success:^{
                                    [self loginSucceeded];
                                }
