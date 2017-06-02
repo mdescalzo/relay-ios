@@ -57,39 +57,51 @@
 
 -(IBAction)onLoginButtonTap:(id)sender
 {
-    // Do stuff on Login button tap
-
-    [self.ccsmStorage setOrgName:self.organizationTextField.text];
-    [self.ccsmStorage setUserName:self.usernameTextField.text];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner startAnimating];
-        self.loginButton.enabled = NO;
-        self.loginButton.alpha = 0.5;
-    });
-    
-    [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
-                               orgName:[self.ccsmStorage getOrgName]
-                               success:^{
-                                   [self loginSucceeded];
-                               }
-                               failure:^(NSError *err){
-                                   [self loginFailed:err];
-                               }];
+    if ([self isValidUsername:self.usernameTextField.text] &&
+        [self isValidOrganization:self.organizationTextField.text]) // check for valid entries
+    {
+        
+        [self.ccsmStorage setOrgName:self.organizationTextField.text];
+        [self.ccsmStorage setUserName:self.usernameTextField.text];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.spinner startAnimating];
+            self.loginButton.enabled = NO;
+            self.loginButton.alpha = 0.5;
+        });
+        
+        [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
+                                   orgName:[self.ccsmStorage getOrgName]
+                                   success:^{
+                                       [self connectionSucceeded];
+                                   }
+                                   failure:^(NSError *err){
+                                       [self connectionFailed:err];
+                                   }];
+    }
+    else  // Bad organization or username
+    {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+                                    message:NSLocalizedString(@"Please enter a valid organization/username.", @"")
+                                   delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                          otherButtonTitles:nil]
+         show];
+    }
 }
 
 #pragma mark -
 
 -(BOOL)isValidOrganization:(NSString *)organization
 {
-    // Placeholder for potential validation method
-    return YES;
+    // Make sure not empty
+    return !([organization isEqualToString:@""] || organization == nil);
 }
 
 -(BOOL)isValidUsername:(NSString *)username
 {
-    // Placeholder for potential validation method
-    return YES;
+    // Make sure not empty
+    return !([username isEqualToString:@""] || username == nil);
 }
 
 #pragma mark - Login handlers
@@ -99,7 +111,7 @@
 //    return YES;
 //}
 
--(void)loginSucceeded
+-(void)connectionSucceeded
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.loginButton.enabled = YES;
@@ -109,7 +121,7 @@
     });
 }
 
--(void)loginFailed:(NSError *)error
+-(void)connectionFailed:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.loginButton.enabled = YES;
@@ -117,7 +129,7 @@
         [self.spinner stopAnimating];
         
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                    message:error.localizedDescription
+                                    message:[NSString stringWithFormat:@"Error: %ld\n%@", error.code, error.localizedDescription]
                                    delegate:nil
                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                           otherButtonTitles:nil]
@@ -126,19 +138,19 @@
 }
 
 #pragma mark - UITextField delegate methods
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if (textField == self.organizationTextField)
-    {
-        return [self isValidOrganization:textField.text];
-    }
-    else if (textField == self.usernameTextField)
-    {
-        return [self isValidUsername:textField.text];
-    }
-    else
-        return YES;
-}
+//-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+//{
+//    if (textField == self.organizationTextField)
+//    {
+//        return [self isValidOrganization:textField.text];
+//    }
+//    else if (textField == self.usernameTextField)
+//    {
+//        return [self isValidUsername:textField.text];
+//    }
+//    else
+//        return YES;
+//}
 
 #pragma mark - Unwinding
 - (IBAction)unwindToChangeCredientials:(UIStoryboardSegue *)sender {
