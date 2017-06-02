@@ -65,5 +65,16 @@ NSString *const CCSMStorageKeySessionKey = @"Session Key";
     return [self tryGetValueForKey:CCSMStorageKeySessionKey];
 }
 
+- (void)setUserInfo:(NSDictionary *)value
+{
+    [self setValueForKey:CCSMStorageKeySessionKey toValue:value];
+}
+
+- (nullable NSDictionary *)getUserInfo
+{
+    return [self tryGetValueForKey:CCSMStorageKeySessionKey];
+}
+
+
 
 @end

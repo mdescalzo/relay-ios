@@ -98,6 +98,8 @@
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
+             [Environment.ccsmStorage setOrgName:orgName];
+             [Environment.ccsmStorage setUserName:userName];
              NSLog(@"login result's msg is: %@", [result objectForKey:@"msg"]);
              successBlock();
          }
@@ -107,6 +109,43 @@
                                                   code:HTTPresponse.statusCode
                                               userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
              failureBlock(error);
+         }
+
+         
+     }];
+}
+
+- (void)verifyLogin:(NSString *)verificationCode
+            success:(void (^)())successBlock
+            failure:(void (^)(NSError *error))failureBlock
+{
+    NSString *orgName = [Environment.ccsmStorage getOrgName];
+    NSString *userName = [Environment.ccsmStorage getUserName];
+    NSString * urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/login/authtoken/"];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    // soon: NSString *bodyString = [NSString stringWithFormat:@"authtoken=%@:%@:%@", orgname, userName, verificationCode];
+    NSString *bodyString = [NSString stringWithFormat:@"authtoken=%@:%@", userName, verificationCode];
+    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response,
+                                               NSData *data, NSError *connectionError)
+     {
+         if (data.length > 0 && connectionError == nil)
+         {
+             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                    options:0
+                                                                      error:NULL];
+             [Environment.ccsmStorage setSessionKey:[result objectForKey:@"token"]];
+             [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+             successBlock();
+         }
+         else if (connectionError != nil) {
+             failureBlock(connectionError);
          }
      }];
 }

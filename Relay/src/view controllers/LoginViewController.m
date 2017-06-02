@@ -57,6 +57,7 @@
 
 -(IBAction)onLoginButtonTap:(id)sender
 {
+<<<<<<< HEAD
     if ([self isValidUsername:self.usernameTextField.text] &&
         [self isValidOrganization:self.organizationTextField.text]) // check for valid entries
     {
@@ -88,6 +89,24 @@
                           otherButtonTitles:nil]
          show];
     }
+=======
+    // Do stuff on Login button tap
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner startAnimating];
+        self.loginButton.enabled = NO;
+        self.loginButton.alpha = 0.5;
+    });
+    
+    [self.ccsmCommManager requestLogin:self.usernameTextField.text
+                               orgName:self.organizationTextField.text
+                               success:^{
+                                   [self loginSucceeded];
+                               }
+                               failure:^(NSError *err){
+                                   [self loginFailed:err];
+                               }];
+>>>>>>> efacecbbc9b9ebe2c2a68d66e2ff6502bc35d1cf
 }
 
 #pragma mark -
