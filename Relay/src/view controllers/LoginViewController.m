@@ -59,17 +59,14 @@
 {
     // Do stuff on Login button tap
 
-    [self.ccsmStorage setOrgName:self.organizationTextField.text];
-    [self.ccsmStorage setUserName:self.usernameTextField.text];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner startAnimating];
         self.loginButton.enabled = NO;
         self.loginButton.alpha = 0.5;
     });
     
-    [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
-                               orgName:[self.ccsmStorage getOrgName]
+    [self.ccsmCommManager requestLogin:self.usernameTextField.text
+                               orgName:self.organizationTextField.text
                                success:^{
                                    [self loginSucceeded];
                                }

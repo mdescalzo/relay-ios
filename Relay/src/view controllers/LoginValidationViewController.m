@@ -8,10 +8,15 @@
 
 #import "LoginValidationViewController.h"
 #import "TSAccountManager.h"
+#import "CCSMCommunication.h"
+#import "CCSMStorage.h"
 
 NSUInteger maximumValidationAttempts = 9999;
 
 @interface LoginValidationViewController ()
+
+@property (strong) CCSMStorage *ccsmStorage;
+@property (strong) CCSMCommManager *ccsmCommManager;
 
 @end
 
@@ -19,6 +24,9 @@ NSUInteger maximumValidationAttempts = 9999;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.ccsmStorage = [CCSMStorage new];
+    self.ccsmCommManager = [CCSMCommManager new];
+    
     // Do any additional setup after loading the view.
     
     // Allow for localized string on controls
@@ -79,10 +87,14 @@ NSUInteger maximumValidationAttempts = 9999;
 #pragma mark - Button actions
 -(IBAction)onValidationButtonTap:(id)sender
 {
-    if ([self attemptValidation])
-        [self validationSucceeded];
-    else
-        [self validationFailed];
+    NSString *code = self.validationCodeTextField.text;
+    [self.ccsmCommManager verifyLogin:code
+                              success:^{
+                                  [self validationSucceeded];
+                              }
+                              failure:^(NSError *err){
+                                  [self validationFailed];
+                              }];
 }
 
 #pragma mark - UIAlertView delegate methods
