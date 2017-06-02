@@ -7,11 +7,13 @@
 //
 
 #import "LoginViewController.h"
+#import "CCSMCommunication.h"
 #import "CCSMStorage.h"
 
 @interface LoginViewController ()
 
 @property (strong) CCSMStorage *ccsmStorage;
+@property (strong) CCSMCommManager *ccsmCommManager;
 
 @end
 
@@ -20,7 +22,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.ccsmStorage = [[CCSMStorage alloc] init];
+    self.ccsmStorage = [CCSMStorage new];
+    self.ccsmCommManager = [CCSMCommManager new];
     
     // Allow for localized strings on controls
     self.organizationTextField.placeholder = NSLocalizedString(@"Enter Organization", @"");
@@ -66,10 +69,14 @@
 //        [self performSegueWithIdentifier:@"validationViewSegue" sender:nil];
     });
     
-    if ([self attemptLogin])
-        [self loginSucceeded];
-    else
-        [self loginFailed];
+    [self.ccsmCommManager requestLogin:self.usernameTextField.text
+                               orgName:self.organizationTextField.text
+                               success:^{
+                                   [self loginSucceeded];
+                               }
+                               failure:^(NSError *err){
+                                   [self loginFailed];
+                               }];
 }
 
 #pragma mark -
