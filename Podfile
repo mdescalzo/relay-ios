@@ -11,6 +11,7 @@ target 'Relay' do
     pod 'ZXingObjC', '~> 3.1.0'
     pod 'DJWActionSheet', '~> 1.0.4'
     pod 'JSQMessagesViewController', git: 'https://github.com/WhisperSystems/JSQMessagesViewController.git', branch: 'fix-intermittent-crash-on-delete'
+    pod 'SlackTextViewController'
     target 'SignalTests' do
         inherit! :search_paths
     end

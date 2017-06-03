@@ -88,15 +88,15 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [self setupTSKitEnv];
 
     UIStoryboard *storyboard;
-    if (YES) // Check for local sessionKey
-    {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-    } else if ([TSAccountManager isRegistered])  // Registration check
-    {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-    } else {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
-    }
+//    if (YES) // Check for local sessionKey
+//    {
+//        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+//    } else if ([TSAccountManager isRegistered])  // Registration check
+//    {
+        storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+//    } else {
+//        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+//    }
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     self.window.rootViewController = [storyboard instantiateInitialViewController];
