@@ -271,14 +271,14 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    InboxTableViewCell *cell =
-    [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class]) forIndexPath:indexPath];
-//    [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
+//    NSString *aString = NSStringFromClass([InboxTableViewCell class]);
+//    InboxTableViewCell *cell = (InboxTableViewCell *)[tableView dequeueReusableCellWithIdentifier:aString forIndexPath:indexPath];
+   InboxTableViewCell *cell =  [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
     TSThread *thread = [self threadForIndexPath:indexPath];
     
-//    if (!cell) {
-//        cell = [InboxTableViewCell inboxTableViewCell];
-//    }
+    if (!cell) {
+        cell = [InboxTableViewCell inboxTableViewCell];
+    }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [cell configureWithThread:thread contactsManager:self.contactsManager];
