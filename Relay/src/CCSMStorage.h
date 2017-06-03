@@ -23,6 +23,9 @@
 - (NSDictionary *)getUserInfo;
 - (void)setUserInfo:(NSDictionary *)value;
 
+- (NSMutableDictionary *)getUsers;
+- (void)setUsers:(NSMutableDictionary *)value;
+
 @end
 
 #endif /* Storage_h */
