@@ -491,7 +491,6 @@
 		FC5CDF391A3393DD00B47253 /* error_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF371A3393DD00B47253 /* error_white@2x.png */; };
 		FC5CDF3A1A3393DD00B47253 /* warning_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF381A3393DD00B47253 /* warning_white@2x.png */; };
 		FC9120411A39EFB70074545C /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
-		FCAC963C19FEF9280046DFC5 /* SignalsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAC963B19FEF9280046DFC5 /* SignalsViewController.m */; };
 		FCAC964019FEF99A0046DFC5 /* InboxTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAC963E19FEF99A0046DFC5 /* InboxTableViewCell.m */; };
 		FCAC965119FF0A6E0046DFC5 /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAC965019FF0A6E0046DFC5 /* MessagesViewController.m */; };
 		FCB11D8C1A129A76002F93FB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB11D8B1A129A76002F93FB /* CoreMedia.framework */; };
@@ -1130,8 +1129,6 @@
 		FC5CDF371A3393DD00B47253 /* error_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error_white@2x.png"; sourceTree = "<group>"; };
 		FC5CDF381A3393DD00B47253 /* warning_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "warning_white@2x.png"; sourceTree = "<group>"; };
 		FC91203F1A39EFB70074545C /* qr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr@2x.png"; sourceTree = "<group>"; };
-		FCAC963A19FEF9280046DFC5 /* SignalsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalsViewController.h; sourceTree = "<group>"; };
-		FCAC963B19FEF9280046DFC5 /* SignalsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalsViewController.m; sourceTree = "<group>"; };
 		FCAC963D19FEF99A0046DFC5 /* InboxTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InboxTableViewCell.h; path = "../view controllers/InboxTableViewCell.h"; sourceTree = "<group>"; };
 		FCAC963E19FEF99A0046DFC5 /* InboxTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InboxTableViewCell.m; path = "../view controllers/InboxTableViewCell.m"; sourceTree = "<group>"; };
 		FCAC964F19FF0A6E0046DFC5 /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
@@ -2449,8 +2446,6 @@
 			children = (
 				FC3196281A067D8F0094C78E /* MessageComposeTableViewController.h */,
 				FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */,
-				FCAC963A19FEF9280046DFC5 /* SignalsViewController.h */,
-				FCAC963B19FEF9280046DFC5 /* SignalsViewController.m */,
 				FCAC964F19FF0A6E0046DFC5 /* MessagesViewController.h */,
 				FCAC965019FF0A6E0046DFC5 /* MessagesViewController.m */,
 				FC31962B1A06A2190094C78E /* FingerprintViewController.h */,
@@ -2943,7 +2938,6 @@
 				76EB05FE18170B33006006FC /* InitiateSignal.pb.m in Sources */,
 				76EB05CA18170B33006006FC /* RecipientUnavailable.m in Sources */,
 				E197B61418BBEC1A00F073E5 /* DropoutTracker.m in Sources */,
-				FCAC963C19FEF9280046DFC5 /* SignalsViewController.m in Sources */,
 				76EB05DA18170B33006006FC /* LowLatencyConnector.m in Sources */,
 				76EB05EE18170B33006006FC /* CallTermination.m in Sources */,
 				B66B9F7D1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m in Sources */,

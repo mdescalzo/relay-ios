@@ -25,7 +25,7 @@
 
 #import "CCSMCommunication.h"
 
-NSString *const AppDelegateStoryboardMain = @"Main";
+NSString *const AppDelegateStoryboardMain = @"Main_v2";
 NSString *const AppDelegateStoryboardRegistration = @"Registration";
 NSString *const AppDelegateStoryboardLogin = @"Login";
 
@@ -274,7 +274,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
       if ([TSAccountManager isRegistered]) {
           dispatch_sync(dispatch_get_main_queue(), ^{
             [self protectScreen];
-            [[[Environment getCurrent] signalsViewController] updateInboxCountLabel];
+              [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
+//              [[[Environment getCurrent] signalsViewController] updateInboxCountLabel];
           });
           [TSSocketManager resignActivity];
       }
@@ -288,7 +289,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
                completionHandler:(void (^)(BOOL succeeded))completionHandler {
     if ([TSAccountManager isRegistered]) {
-        [[Environment getCurrent].signalsViewController composeNew];
+        [[Environment getCurrent].forstaViewController composeNew];
+//        [[Environment getCurrent].signalsViewController composeNew];
         completionHandler(YES);
     } else {
         UIAlertController *controller =
@@ -302,11 +304,18 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
                                                      }]];
         [[Environment getCurrent]
-                .signalsViewController.presentedViewController presentViewController:controller
-                                                                            animated:YES
-                                                                          completion:^{
-                                                                            completionHandler(NO);
-                                                                          }];
+         .forstaViewController.presentedViewController presentViewController:controller
+         animated:YES
+         completion:^{
+             completionHandler(NO);
+         }];
+
+//        [[Environment getCurrent]
+//                .signalsViewController.presentedViewController presentViewController:controller
+//                                                                            animated:YES
+//                                                                          completion:^{
+//                                                                            completionHandler(NO);
+//                                                                          }];
     }
 }
 

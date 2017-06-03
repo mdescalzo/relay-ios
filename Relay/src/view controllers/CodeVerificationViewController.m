@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "Relay-Swift.h"
 #import "SignalsNavigationController.h"
-#import "SignalsViewController.h"
+//#import "SignalsViewController.h"
 #import <PromiseKit/AnyPromise.h>
 #import <RelayServiceKit/OWSError.h>
 #import <RelayServiceKit/TSAccountManager.h>
@@ -145,14 +145,17 @@ NSString *const kCompletedRegistrationSegue = @"CompletedRegistration";
 
         AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         appDelegate.window.rootViewController = snc;
-        if (![snc.topViewController isKindOfClass:[SignalsViewController class]]) {
+        if (![snc.topViewController isKindOfClass:[ForstaMessagesViewController class]]) {
+//            if (![snc.topViewController isKindOfClass:[SignalsViewController class]]) {
             DDLogError(@"%@ Unexpected top view controller: %@", self.tag, snc.topViewController);
             return;
         }
 
         DDLogDebug(@"%@ notifying signals view controller of new user.", self.tag);
-        SignalsViewController *signalsViewController = (SignalsViewController *)snc.topViewController;
-        signalsViewController.newlyRegisteredUser = YES;
+        ForstaMessagesViewController *forstaVC = (ForstaMessagesViewController *)snc.topViewController;
+        forstaVC.newlyRegisteredUser = YES;
+//        SignalsViewController *signalsViewController = (SignalsViewController *)snc.topViewController;
+//        signalsViewController.newlyRegisteredUser = YES;
     }
 }
 

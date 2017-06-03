@@ -7,9 +7,20 @@
 //
 
 #import "SLKTextViewController.h"
+#include "InboxTableViewCell.h"
 
-@interface ForstaMessagesViewController : SLKTextViewController <UIGestureRecognizerDelegate>
+#import "CallState.h"
+#import "Contact.h"
+#import "TSGroupModel.h"
 
+@interface ForstaMessagesViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate>
 
+@property (nonatomic) BOOL newlyRegisteredUser;
+@property (nonatomic, retain) CallState *latestCall;
+
+- (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing;
+- (NSNumber *)updateInboxCountLabel;
+- (void)composeNew;
+-(void)reloadTableView;
 
 @end
