@@ -23,6 +23,8 @@
 #import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSAccountManager.h>
 
+#import "CCSMCommunication.h"
+
 NSString *const AppDelegateStoryboardMain = @"Main";
 NSString *const AppDelegateStoryboardRegistration = @"Registration";
 NSString *const AppDelegateStoryboardLogin = @"Login";
@@ -37,6 +39,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 @property (nonatomic, retain) UIWindow *screenProtectionWindow;
 @property (nonatomic) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
 @property (nonatomic) OWSStaleNotificationObserver *staleNotificationObserver;
+
+@property (nonatomic, strong) CCSMCommManager *ccsmCommMananger;
 
 @end
 
@@ -87,16 +91,31 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     [self setupTSKitEnv];
 
-    UIStoryboard *storyboard;
-    if (YES) // Check for local sessionKey
+    __block UIStoryboard *storyboard;
+    
+    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
     {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-    } else if ([TSAccountManager isRegistered])  // Registration check
+        [self.ccsmCommMananger refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
+            {
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+            }
+            else {  // Good token, but not registered, go register
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+            }
+        }
+        failure:^(NSError *error){  // Unable to refresh, login
+            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+        }];
+    }
+    else  // No local token, login
     {
         storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
     } else {
         storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
     }
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     self.window.rootViewController = [storyboard instantiateInitialViewController];
@@ -397,6 +416,15 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 - (NSString *)tag
 {
     return self.class.tag;
+}
+
+#pragma mark - lazy instantiation
+-(CCSMCommManager *)ccsmCommMananger
+{
+    if (_ccsmCommMananger == nil) {
+        _ccsmCommMananger = [CCSMCommManager new];
+    }
+    return _ccsmCommMananger;
 }
 
 @end

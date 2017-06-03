@@ -20,6 +20,12 @@
             success:(void (^)())successBlock
             failure:(void (^)(NSError *error))failureBlock;
 
+- (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
+                           failure:(void (^)(NSError *error))failureBlock;
+
+- (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
+                                      failure:(void (^)(NSError *))failureBlock;
+
 @end
 
 #endif /* CCSMCommunication_h */

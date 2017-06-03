@@ -17,8 +17,8 @@
 - (NSString *)getUserName;
 - (void)setUserName:(NSString *)value;
 
-- (NSString *)getSessionKey;
-- (void)setSessionKey:(NSString *)value;
+- (NSString *)getSessionToken;
+- (void)setSessionToken:(NSString *)value;
 
 - (NSDictionary *)getUserInfo;
 - (void)setUserInfo:(NSDictionary *)value;

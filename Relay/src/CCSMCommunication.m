@@ -110,8 +110,6 @@
                                               userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
              failureBlock(error);
          }
-
-         
      }];
 }
 
@@ -134,20 +132,124 @@
                            completionHandler:^(NSURLResponse *response,
                                                NSData *data, NSError *connectionError)
      {
-         if (data.length > 0 && connectionError == nil)
+
+         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+         NSLog(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         NSLog(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+         if (connectionError != nil)  // Failed connection
+         {
+             failureBlock(connectionError);
+         }
+         else if (HTTPresponse.statusCode == 200) // SUCCESS!
          {
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-             [Environment.ccsmStorage setSessionKey:[result objectForKey:@"token"]];
+             [Environment.ccsmStorage setSessionToken:[result objectForKey:@"token"]];
              [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
-         else if (connectionError != nil) {
-             failureBlock(connectionError);
+         else  // Connection good, error from server
+         {
+             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                  code:HTTPresponse.statusCode
+                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+             failureBlock(error);
          }
      }];
 }
+
+
+- (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
+                           failure:(void (^)(NSError *error))failureBlock
+{
+    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/api-token-refresh/"];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSString *bodyString = [NSString stringWithFormat:@"token=%@", sessionToken];
+    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSHTTPURLResponse *HTTPresponse;
+    NSError *connectionError;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                         returningResponse:&HTTPresponse
+                                                     error:&connectionError];
+    
+    NSLog(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+    NSLog(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+    
+    if (connectionError != nil)  // Failed connection
+    {
+        failureBlock(connectionError);
+    }
+    else if (HTTPresponse.statusCode == 200) // SUCCESS!
+    {
+        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                               options:0
+                                                                 error:NULL];
+        [Environment.ccsmStorage setSessionToken:[result objectForKey:@"token"]];
+        [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+        // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+        successBlock();
+    }
+    else  // Connection good, error from server
+    {
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:HTTPresponse.statusCode
+                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+        failureBlock(error);
+    }
+}
+
+- (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
+                           failure:(void (^)(NSError *error))failureBlock
+{
+    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/api-token-refresh/"];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSString *bodyString = [NSString stringWithFormat:@"token=%@", sessionToken];
+    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response,
+                                               NSData *data, NSError *connectionError)
+     {
+         
+         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+         NSLog(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         NSLog(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+         
+         if (connectionError != nil)  // Failed connection
+         {
+             failureBlock(connectionError);
+         }
+         else if (HTTPresponse.statusCode == 200) // SUCCESS!
+         {
+             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                    options:0
+                                                                      error:NULL];
+             [Environment.ccsmStorage setSessionToken:[result objectForKey:@"token"]];
+             [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+             successBlock();
+         }
+         else  // Connection good, error from server
+         {
+             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                  code:HTTPresponse.statusCode
+                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+             failureBlock(error);
+         }
+         
+     }];
+}
+
 
 @end
