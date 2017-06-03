@@ -20,8 +20,11 @@
             success:(void (^)())successBlock
             failure:(void (^)(NSError *error))failureBlock;
 
-- (void)refreshSessionTokenSuccess:(void (^)())successBlock
+- (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                            failure:(void (^)(NSError *error))failureBlock;
+
+- (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
+                                      failure:(void (^)(NSError *))failureBlock;
 
 @end
 
