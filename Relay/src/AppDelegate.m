@@ -111,9 +111,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     }
     else  // No local token, login
     {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
-    } else {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
     }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
