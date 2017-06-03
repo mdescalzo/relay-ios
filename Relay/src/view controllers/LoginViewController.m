@@ -88,13 +88,6 @@
                           otherButtonTitles:nil]
          show];
     }
-    // Do stuff on Login button tap
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner startAnimating];
-        self.loginButton.enabled = NO;
-        self.loginButton.alpha = 0.5;
-    });
 }
 
 #pragma mark -
