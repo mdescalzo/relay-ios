@@ -110,8 +110,6 @@
                                               userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
              failureBlock(error);
          }
-
-         
      }];
 }
 
@@ -134,7 +132,15 @@
                            completionHandler:^(NSURLResponse *response,
                                                NSData *data, NSError *connectionError)
      {
-         if (data.length > 0 && connectionError == nil)
+
+         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+         NSLog(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         NSLog(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+         if (connectionError != nil)  // Failed connection
+         {
+             failureBlock(connectionError);
+         }
+         else if (HTTPresponse.statusCode == 200) // SUCCESS!
          {
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
@@ -143,8 +149,13 @@
              [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
-         } else if (connectionError != nil) {
-             failureBlock(connectionError);
+         }
+         else  // Connection good, error from server
+         {
+             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                  code:HTTPresponse.statusCode
+                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+             failureBlock(error);
          }
      }];
 }
@@ -166,7 +177,16 @@
                            completionHandler:^(NSURLResponse *response,
                                                NSData *data, NSError *connectionError)
      {
-         if (data.length > 0 && connectionError == nil)
+
+         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+         NSLog(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         NSLog(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+
+         if (connectionError != nil)  // Failed connection
+         {
+             failureBlock(connectionError);
+         }
+         else if (HTTPresponse.statusCode == 200) // SUCCESS!
          {
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
@@ -176,9 +196,14 @@
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
-         else if (connectionError != nil) {
-             failureBlock(connectionError);
+         else  // Connection good, error from server
+         {
+             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                  code:HTTPresponse.statusCode
+                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+             failureBlock(error);
          }
+
      }];
 }
 
