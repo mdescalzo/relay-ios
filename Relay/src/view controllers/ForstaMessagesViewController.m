@@ -7,8 +7,33 @@
 //
 
 #import "ForstaMessagesViewController.h"
+#import "InboxTableViewCell.h"
+#import "Environment.h"
+#import "NSDate+millisecondTimeStamp.h"
+#import "OWSContactsManager.h"
+#import "PropertyListPreferences.h"
+#import "PushManager.h"
+#import "Relay-Swift.h"
+#import "TSAccountManager.h"
+#import "TSDatabaseView.h"
+#import "TSGroupThread.h"
+#import "TSStorageManager.h"
+#import "UIUtil.h"
+#import "VersionMigrations.h"
+#import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/TSMessagesManager.h>
+#import <RelayServiceKit/TSOutgoingMessage.h>
+#import <YapDatabase/YapDatabaseViewChange.h>
+#import <YapDatabase/YapDatabaseViewConnection.h>
 
 @interface ForstaMessagesViewController ()
+
+@property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic, readonly) TSMessagesManager *messagesManager;
+@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
+@property (nonatomic, strong) YapDatabaseConnection *editingDbConnection;
+@property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
 
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeRecognizer;
 
@@ -30,6 +55,48 @@
 @end
 
 @implementation ForstaMessagesViewController
+
+- (id)init
+{
+    self = [super init];
+    if (!self) {
+        return self;
+    }
+    
+    _contactsManager = [Environment getCurrent].contactsManager;
+    _messagesManager = [TSMessagesManager sharedManager];
+    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+                                                       storageManager:[TSStorageManager sharedManager]
+                                                      contactsManager:_contactsManager
+                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+    
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (!self) {
+        return self;
+    }
+    
+    _contactsManager = [Environment getCurrent].contactsManager;
+    _messagesManager = [TSMessagesManager sharedManager];
+    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+                                                       storageManager:[TSStorageManager sharedManager]
+                                                      contactsManager:_contactsManager
+                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+    
+    return self;
+}
+
+//- (void)awakeFromNib
+//{
+//    [super awakeFromNib];
+//    [[Environment getCurrent] setSignalsViewController:self];
+//}
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,6 +122,30 @@
 }
 */
 
+#pragma mark - TableView delegate and data source methods
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    InboxTableViewCell *cell =
+    [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class]) forIndexPath:indexPath];
+//    [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
+    TSThread *thread = [self threadForIndexPath:indexPath];
+    
+//    if (!cell) {
+//        cell = [InboxTableViewCell inboxTableViewCell];
+//    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [cell configureWithThread:thread contactsManager:self.contactsManager];
+    });
+    
+    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
+        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+    }
+    
+    return cell;
+
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 0;
@@ -65,6 +156,18 @@
     return 1;
 }
 
+- (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
+    __block TSThread *thread = nil;
+    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        thread = [[transaction extension:TSThreadDatabaseViewExtensionName] objectAtIndexPath:indexPath
+                                                                                 withMappings:self.threadMappings];
+    }];
+    
+    return thread;
+}
+
+
+#pragma mark - convenience build methods
 -(void)configureBottomButtons
 {
     // Look at using segmentedcontrol to simulate multiple buttons on one side

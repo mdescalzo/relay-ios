@@ -95,15 +95,6 @@
         self.loginButton.enabled = NO;
         self.loginButton.alpha = 0.5;
     });
-    
-    [self.ccsmCommManager requestLogin:self.usernameTextField.text
-                               orgName:self.organizationTextField.text
-                               success:^{
-                                   [self connectionSucceeded];
-                               }
-                               failure:^(NSError *err){
-                                   [self connectionFailed:err];
-                               }];
 }
 
 #pragma mark -
