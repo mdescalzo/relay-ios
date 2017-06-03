@@ -17,7 +17,8 @@ NSString *const CCSMStorageDatabaseCollection = @"CCSMInformation";
 
 NSString *const CCSMStorageKeyOrgName = @"Organization Name";
 NSString *const CCSMStorageKeyUserName = @"User Name";
-NSString *const CCSMStorageKeySessionKey = @"Session Key";
+NSString *const CCSMStorageKeySessionToken = @"Session Token";
+NSString *const CCSMStorageKeyUserInfo = @"User Info";
 
 - (nullable id)tryGetValueForKey:(NSString *)key
 {
@@ -35,6 +36,7 @@ NSString *const CCSMStorageKeySessionKey = @"Session Key";
                                  inCollection:CCSMStorageDatabaseCollection];
 }
 
+
 - (void)setUserName:(NSString *)value
 {
     [self setValueForKey:CCSMStorageKeyUserName toValue:value];
@@ -44,6 +46,7 @@ NSString *const CCSMStorageKeySessionKey = @"Session Key";
 {
     return [self tryGetValueForKey:CCSMStorageKeyUserName];
 }
+
 
 - (void)setOrgName:(NSString *)value
 {
@@ -55,24 +58,26 @@ NSString *const CCSMStorageKeySessionKey = @"Session Key";
     return [self tryGetValueForKey:CCSMStorageKeyOrgName];
 }
 
-- (void)setSessionKey:(NSString *)value
+
+- (void)setSessionToken:(NSString *)value
 {
-    [self setValueForKey:CCSMStorageKeySessionKey toValue:value];
+    [self setValueForKey:CCSMStorageKeySessionToken toValue:value];
 }
 
-- (nullable NSString *)getSessionKey
+- (nullable NSString *)getSessionToken
 {
-    return [self tryGetValueForKey:CCSMStorageKeySessionKey];
+    return [self tryGetValueForKey:CCSMStorageKeySessionToken];
 }
+
 
 - (void)setUserInfo:(NSDictionary *)value
 {
-    [self setValueForKey:CCSMStorageKeySessionKey toValue:value];
+    [self setValueForKey:CCSMStorageKeyUserInfo toValue:value];
 }
 
 - (nullable NSDictionary *)getUserInfo
 {
-    return [self tryGetValueForKey:CCSMStorageKeySessionKey];
+    return [self tryGetValueForKey:CCSMStorageKeyUserInfo];
 }
 
 
