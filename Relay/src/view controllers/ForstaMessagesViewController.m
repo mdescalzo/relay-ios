@@ -28,6 +28,8 @@
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
 
+#define CELL_HEIGHT 72.0f
+
 @interface ForstaMessagesViewController ()
 
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
@@ -41,6 +43,7 @@
 @property (nonatomic) long inboxCount;
 @property (nonatomic, strong) id previewingContext;
 
+@property (nonatomic, strong) TSThread *currentThread;
 
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeRecognizer;
 
@@ -135,7 +138,7 @@
     }
 
 //////////////
-    
+    self.inverted = NO;
     [self configureNavigationBar];
     [self configureBottomButtons];
     [self swipeRecognizer];
@@ -269,6 +272,10 @@
     return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return CELL_HEIGHT;
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    NSString *aString = NSStringFromClass([InboxTableViewCell class]);
@@ -339,6 +346,7 @@
 #pragma mark - swipe handler
 -(IBAction)onSwipeToTheRight:(id)sender
 {
+#warning Call up a ForstaDomainViewController wrapped in a navigation controller here
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"DING" message:@"Swipe to the right" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
@@ -378,7 +386,7 @@
     if (_threadMappings == nil) {
         _threadMappings =
         [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
-        [_threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+        [_threadMappings setIsReversed:NO forGroup:TSInboxGroup];
         
         [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
             [_threadMappings updateWithTransaction:transaction];
