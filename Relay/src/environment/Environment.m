@@ -180,6 +180,8 @@ static Environment *environment = nil;
     _signUpFlowNavigationController = navigationController;
 }
 
+
+// Called when a thread is updated?
 + (void)messageThreadId:(NSString *)threadId {
     TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId];
 
@@ -196,6 +198,8 @@ static Environment *environment = nil;
 //        SignalsViewController *vc = env.signalsViewController;
         UIViewController *topvc   = vc.navigationController.topViewController;
 
+        // Dismisses keyboard if current thread updated.
+        // May not be necessary in Forsta implementation
         if ([topvc isKindOfClass:[MessagesViewController class]]) {
             MessagesViewController *mvc = (MessagesViewController *)topvc;
             if ([mvc.thread.uniqueId isEqualToString:threadId]) {
@@ -207,6 +211,7 @@ static Environment *environment = nil;
     }
 }
 
+// Get or create a thread for identifier(ContactID)
 + (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose {
     Environment *env          = [self getCurrent];
     ForstaMessagesViewController *vc = env.forstaViewController;

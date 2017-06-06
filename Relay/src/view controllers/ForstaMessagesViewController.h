@@ -18,9 +18,14 @@
 @property (nonatomic) BOOL newlyRegisteredUser;
 @property (nonatomic, retain) CallState *latestCall;
 
+@property (nonatomic, strong) NSThread *selectedThread;
+
 - (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing;
 - (NSNumber *)updateInboxCountLabel;
 - (void)composeNew;
 -(void)reloadTableView;
+
+-(void)showDomainTableView;
+-(void)hideDomainTableView;
 
 @end

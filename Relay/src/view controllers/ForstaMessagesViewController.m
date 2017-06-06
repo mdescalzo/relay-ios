@@ -45,8 +45,6 @@
 @property (nonatomic) long inboxCount;
 @property (nonatomic, strong) id previewingContext;
 
-@property (nonatomic, strong) TSThread *currentThread;
-
 @property (strong, nonatomic) UISwipeGestureRecognizer *rightSwipeRecognizer;
 @property (strong, nonatomic) UISwipeGestureRecognizer *leftSwipeRecognizer;
 
@@ -147,6 +145,8 @@
 //////////////
     // Build the domain view/thread list
     [self.view addSubview:self.domainTableViewController.view];
+    [self hideDomainTableView];
+    
     self.isDomainViewVisible = NO;
     
     self.inverted = NO;
@@ -208,7 +208,52 @@
     
 }
 
-#pragma mark Database delegates
+#pragma mark - swipe handlers
+-(IBAction)onSwipeToTheRight:(id)sender
+{
+    if (self.domainTableViewController.view.hidden) {
+        [self showDomainTableView];
+    }
+}
+
+-(IBAction)onSwipeToTheLeft:(id)sender
+{
+    if (!self.domainTableViewController.view.hidden) {
+        [self hideDomainTableView];
+    }
+}
+
+#pragma mark - Domain View handling
+-(void)showDomainTableView
+{
+    CGFloat navBarHeight = self.navigationController.navigationBar.bounds.size.height;
+    CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    
+//    self.domainTableViewController.view.hidden = NO;
+//    self.isDomainViewVisible = YES;
+    self.domainTableViewController.view.hidden = NO;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.domainTableViewController.view.frame = CGRectMake(0, (navBarHeight + statusBarHeight),
+                                                               self.tableView.frame.size.width * 2/3,
+                                                               self.tableView.frame.size.height);
+    }];
+}
+
+-(void)hideDomainTableView
+{
+    CGFloat navBarHeight = self.navigationController.navigationBar.bounds.size.height;
+    CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        self.domainTableViewController.view.frame = CGRectMake(-self.domainTableViewController.view.frame.size.width
+                                                               , (navBarHeight + statusBarHeight),
+                                                               self.tableView.frame.size.width * 2/3,
+                                                               self.tableView.frame.size.height);
+        self.domainTableViewController.view.hidden = YES;
+    }];
+}
+
+#pragma mark - Database delegates
 
 - (YapDatabaseConnection *)uiDatabaseConnection {
     NSAssert([NSThread isMainThread], @"Must access uiDatabaseConnection on main thread!");
@@ -374,34 +419,6 @@
 {
     [self.tableView reloadData];
 }
-
-#pragma mark - swipe handlers
--(IBAction)onSwipeToTheRight:(id)sender
-{
-    if (!self.isDomainViewVisible) {
-        self.isDomainViewVisible = YES;
-        [UIView animateWithDuration:0.25 animations:^{
-            self.domainTableViewController.view.frame = CGRectMake(0, 60,
-//                                                                   self.navigationController.navigationBar.bounds.size.height,
-                                                                   self.tableView.frame.size.width * 2/3,
-                                                                   self.tableView.frame.size.height);
-        }];
-        
-    }
-}
--(IBAction)onSwipeToTheLeft:(id)sender
-{
-    if (self.isDomainViewVisible) {
-        self.isDomainViewVisible = NO;
-        [UIView animateWithDuration:0.25 animations:^{
-            self.domainTableViewController.view.frame = CGRectMake(-self.tableView.bounds.size.width * 2/3, 60,
-//                                                                   self.navigationController.navigationBar.bounds.size.height,
-                                                                   self.tableView.frame.size.width * 2/3,
-                                                                   self.tableView.frame.size.height);        }];
-        
-    }
-}
-
 
 #pragma mark - Button actions
 -(IBAction)onLogoTap:(id)sender

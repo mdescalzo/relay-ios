@@ -9,6 +9,9 @@
 #import "ForstaDomainTableViewController.h"
 #import "InboxTableViewCell.h"
 #import "Environment.h"
+#import "TSDatabaseView.h"
+#import "OWSContactsManager.h"
+
 #import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSMessagesManager.h>
 #import <RelayServiceKit/TSOutgoingMessage.h>
@@ -20,19 +23,67 @@ NSInteger const kPinnedIndex = 1;
 NSInteger const kAnnouncementsIndex = 2;
 NSInteger const kTopicsIndex = 4;
 
+CGFloat const kCellHeight = 72.0;
+CGFloat const kHeaderHeight = 33.0;
 
 @interface ForstaDomainTableViewController ()
 
 @property (nonatomic, strong) NSArray *sectionTitles;
 @property (nonatomic, strong) NSArray *sectionImages;
 
+@property (nonatomic) long inboxCount;
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic) CellState viewingThreadsIn;
+
+@property (nonatomic, readonly) TSMessagesManager *messagesManager;
+@property (nonatomic, readonly) OWSMessageSender *messageSender;
 @property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
 @property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
+@property (nonatomic, strong) YapDatabaseConnection *editingDbConnection;
 
 @end
 
 @implementation ForstaDomainTableViewController
+
+- (id)init
+{
+    self = [super init];
+    if (!self) {
+        return self;
+    }
+    
+    _contactsManager = [Environment getCurrent].contactsManager;
+    _messagesManager = [TSMessagesManager sharedManager];
+    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+                                                       storageManager:[TSStorageManager sharedManager]
+                                                      contactsManager:_contactsManager
+                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+    
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (!self) {
+        return self;
+    }
+    
+    _contactsManager = [Environment getCurrent].contactsManager;
+    _messagesManager = [TSMessagesManager sharedManager];
+    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+                                                       storageManager:[TSStorageManager sharedManager]
+                                                      contactsManager:_contactsManager
+                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+    
+    return self;
+}
+
+//- (void)awakeFromNib
+//{
+//    [super awakeFromNib];
+//    [[Environment getCurrent] setForstaViewController:self];
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,6 +93,30 @@ NSInteger const kTopicsIndex = 4;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+/////////////////////
+    self.editingDbConnection = TSStorageManager.sharedManager.newDatabaseConnection;
+    
+    [self.uiDatabaseConnection beginLongLivedReadTransaction];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(yapDatabaseModified:)
+                                                 name:TSUIDatabaseConnectionDidUpdateNotification
+                                               object:nil];
+    
+    [[[Environment getCurrent] contactsManager]
+     .getObservableContacts watchLatestValue:^(id latestValue) {
+         [self.tableView reloadData];
+     }
+     onThread:[NSThread mainThread]
+     untilCancelled:nil];
+    
+    if ([self.traitCollection respondsToSelector:@selector(forceTouchCapability)] &&
+        (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)) {
+        [self registerForPreviewingWithDelegate:self sourceView:self.tableView];
+    }
+///////////////////////
+    
     self.title = @"Domain";
     
     // Section header name and image in NSDictionary
@@ -67,7 +142,33 @@ NSInteger const kTopicsIndex = 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+//    switch (section) {
+//        case kConversationsIndex:
+//        {
+            return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
+//        }
+//            break;
+//        case kPinnedIndex:
+//        {
+//            return 0;
+//        }
+//            break;
+//        case kAnnouncementsIndex:
+//        {
+//            return 0;
+//        }
+//            break;
+//        case kTopicsIndex:
+//        {
+//            return 0;
+//        }
+//            break;
+//            
+//        default:
+//            // Bad thing.
+//            return 0;
+//            break;
+//    }
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -131,10 +232,12 @@ NSInteger const kTopicsIndex = 4;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 33.0;
+    return kHeaderHeight;
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kCellHeight;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 //    static NSString *cellID = @"cell";
@@ -214,6 +317,110 @@ NSInteger const kTopicsIndex = 4;
 }
 */
 
+#pragma mark Database delegates
+
+- (YapDatabaseConnection *)uiDatabaseConnection {
+    NSAssert([NSThread isMainThread], @"Must access uiDatabaseConnection on main thread!");
+    if (!_uiDatabaseConnection) {
+        YapDatabase *database = TSStorageManager.sharedManager.database;
+        _uiDatabaseConnection = [database newConnection];
+        [_uiDatabaseConnection beginLongLivedReadTransaction];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(yapDatabaseModified:)
+                                                     name:YapDatabaseModifiedNotification
+                                                   object:database];
+    }
+    return _uiDatabaseConnection;
+}
+
+- (void)yapDatabaseModified:(NSNotification *)notification {
+    NSArray *notifications  = [self.uiDatabaseConnection beginLongLivedReadTransaction];
+    NSArray *sectionChanges = nil;
+    NSArray *rowChanges     = nil;
+    
+    [[self.uiDatabaseConnection ext:TSThreadDatabaseViewExtensionName] getSectionChanges:&sectionChanges
+                                                                              rowChanges:&rowChanges
+                                                                        forNotifications:notifications
+                                                                            withMappings:self.threadMappings];
+    
+    // We want this regardless of if we're currently viewing the archive.
+    // So we run it before the early return
+    //    [self updateInboxCountLabel];
+    
+    if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
+        return;
+    }
+    
+    [self.tableView beginUpdates];
+    
+    for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
+        switch (sectionChange.type) {
+            case YapDatabaseViewChangeDelete: {
+                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeInsert: {
+                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeUpdate:
+            case YapDatabaseViewChangeMove:
+                break;
+        }
+    }
+    
+    for (YapDatabaseViewRowChange *rowChange in rowChanges) {
+        switch (rowChange.type) {
+            case YapDatabaseViewChangeDelete: {
+                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+                break;
+            }
+            case YapDatabaseViewChangeInsert: {
+                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+                break;
+            }
+            case YapDatabaseViewChangeMove: {
+                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeUpdate: {
+                [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationNone];
+                break;
+            }
+        }
+    }
+    
+    [self.tableView endUpdates];
+    //    [self checkIfEmptyView];
+}
+
 #pragma mark - Lazy instantiation
+-(YapDatabaseViewMappings *)threadMappings
+{
+    if (_threadMappings == nil) {
+        _threadMappings =
+        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
+        [_threadMappings setIsReversed:NO forGroup:TSInboxGroup];
+        
+        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            [_threadMappings updateWithTransaction:transaction];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }];
+    }
+    return _threadMappings;
+}
 
 @end
