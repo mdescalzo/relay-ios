@@ -30,6 +30,10 @@
                 collection:(NSMutableDictionary *)collection
                    success:(void (^)())successBlock
                    failure:(void (^)(NSError *error))failureBlock;
+
+- (void)getThing:(NSString *)urlString
+         success:(void (^)(NSDictionary *))successBlock
+         failure:(void (^)(NSError *error))failureBlock;
 @end
 
 #endif /* CCSMCommunication_h */

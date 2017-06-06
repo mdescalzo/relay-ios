@@ -303,4 +303,33 @@
      }];
 }
 
+
+- (void)getThing:(NSString *)urlString
+         success:(void (^)(NSDictionary *))successBlock
+         failure:(void (^)(NSError *error))failureBlock;
+{
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response,
+                                               NSData *data, NSError *connectionError)
+     {
+         if (data.length > 0 && connectionError == nil)
+         {
+             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                    options:0
+                                                                      error:NULL];
+             successBlock(result);
+         }
+         else if (connectionError != nil) {
+             failureBlock(connectionError);
+         }
+     }];
+}
+
 @end
