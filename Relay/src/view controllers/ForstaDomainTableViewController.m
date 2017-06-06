@@ -16,6 +16,9 @@ NSInteger const kTopicsIndex = 4;
 
 @interface ForstaDomainTableViewController ()
 
+@property (nonatomic, strong) NSArray *sectionTitles;
+@property (nonatomic, strong) NSArray *sectionImages;
+
 @end
 
 @implementation ForstaDomainTableViewController
@@ -29,6 +32,16 @@ NSInteger const kTopicsIndex = 4;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.title = @"Domain";
+    
+    // Section header name and image in NSDictionary
+    self.sectionTitles = @[NSLocalizedString(@"Conversation", @""),
+                           NSLocalizedString(@"Pinned", @""),
+                           NSLocalizedString(@"Announcements", @""),
+                           NSLocalizedString(@"Topics", @"") ];
+     self.sectionImages = @[[UIImage imageNamed:@"Chat_2"],
+                            [UIImage imageNamed:@"Pin_2"],
+                            [UIImage imageNamed:@"Announcements_2"],
+                            [UIImage imageNamed:@"Topics_2"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,46 +52,70 @@ NSInteger const kTopicsIndex = 4;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
     return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
     return 0;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    // UIView to hold the things
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                                   0,
-                                                                  [UIScreen mainScreen].bounds.size.width,
-                                                                  [self tableView:tableView heightForHeaderInSection:section])];
-    UIImage *headerImage;
-    NSString *headerTitle;
+                                                                  self.view.frame.size.width,
+                                                                  [self tableView:tableView heightForHeaderInSection:section]
+                                                                  )];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                                           0,
+                                                                           [self tableView:tableView heightForHeaderInSection:section],
+                                                                           [self tableView:tableView heightForHeaderInSection:section])];
+    
     switch (section) {
         case kConversationsIndex:
         {
-            headerImage = [UIImage imageNamed:@""];
-            headerTitle = @"CONVERSTAIONS";
+            imageView.backgroundColor = [UIColor colorWithRed:43 green:172 blue:226 alpha:1.0];
         }
             break;
         case kPinnedIndex:
         {
-            headerImage = [UIImage imageNamed:@""];
-            headerTitle = @"CONVERSTAIONS";
+            imageView.backgroundColor = [UIColor colorWithRed:175 green:210 blue:63 alpha:1.0];
         }
             break;
         case kAnnouncementsIndex:
-        {}
+        {
+            imageView.backgroundColor = [UIColor colorWithRed:244 green:125 blue:32 alpha:1.0];
+        }
             break;
         case kTopicsIndex:
-        {}
+        {
+            imageView.backgroundColor = [UIColor colorWithRed:128 green:206 blue:255 alpha:1.0];
+        }
             break;
             
         default:
             break;
     }
+    
+    imageView.image = [self.sectionImages objectAtIndex:(NSUInteger)section];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake([self tableView:tableView heightForHeaderInSection:section],
+                                                              0,
+                                                              self.view.frame.size.width - imageView.frame.size.width,
+                                                              [self tableView:tableView heightForHeaderInSection:section])];
+    label.backgroundColor = [UIColor colorWithRed:202 green:202 blue:202 alpha:1.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = [self.sectionTitles objectAtIndex:(NSUInteger)section];
+    
+    headerView.backgroundColor = [UIColor clearColor];
+    
+    
+    [headerView addSubview:imageView];
+    [headerView addSubview:label];  
+    
+    return headerView;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -87,15 +124,16 @@ NSInteger const kTopicsIndex = 4;
 }
 
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    static NSString *cellID = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     
     // Configure the cell...
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

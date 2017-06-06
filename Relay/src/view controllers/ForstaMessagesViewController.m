@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "ForstaMessagesViewController.h"
+#import "ForstaDomainTableViewController.h"
 #import "InboxTableViewCell.h"
 #import "Environment.h"
 #import "NSDate+millisecondTimeStamp.h"
@@ -45,11 +46,15 @@
 
 @property (nonatomic, strong) TSThread *currentThread;
 
-@property (strong, nonatomic) UISwipeGestureRecognizer *swipeRecognizer;
+@property (strong, nonatomic) UISwipeGestureRecognizer *rightSwipeRecognizer;
+@property (strong, nonatomic) UISwipeGestureRecognizer *leftSwipeRecognizer;
 
 @property (nonatomic, strong) NSMutableArray *messages;
 
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
+
+@property (nonatomic, strong) ForstaDomainTableViewController *domainTableViewController;
+@property (nonatomic, assign) BOOL isDomainViewVisible;
 
 //@property (nonatomic, strong) NSArray *users;
 //@property (nonatomic, strong) NSArray *channels;
@@ -138,10 +143,15 @@
     }
 
 //////////////
+    // Build the domain view/thread list
+    [self domainTableViewController];
+    self.isDomainViewVisible = NO;
+    
     self.inverted = NO;
     [self configureNavigationBar];
     [self configureBottomButtons];
-    [self swipeRecognizer];
+    [self rightSwipeRecognizer];
+    [self leftSwipeRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -343,13 +353,33 @@
     [self.tableView reloadData];
 }
 
-#pragma mark - swipe handler
+#pragma mark - swipe handlers
 -(IBAction)onSwipeToTheRight:(id)sender
 {
-#warning Call up a ForstaDomainViewController wrapped in a navigation controller here
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"DING" message:@"Swipe to the right" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
+    if (!self.isDomainViewVisible) {
+        self.isDomainViewVisible = YES;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.domainTableViewController.view.frame = CGRectMake(0, 60,
+//                                                                   self.navigationController.navigationBar.bounds.size.height,
+                                                                   self.tableView.frame.size.width * 2/3,
+                                                                   self.tableView.frame.size.height);
+        }];
+        
+    }
 }
+-(IBAction)onSwipeToTheLeft:(id)sender
+{
+    if (self.isDomainViewVisible) {
+        self.isDomainViewVisible = NO;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.domainTableViewController.view.frame = CGRectMake(-self.tableView.bounds.size.width * 2/3, 60,
+//                                                                   self.navigationController.navigationBar.bounds.size.height,
+                                                                   self.tableView.frame.size.width * 2/3,
+                                                                   self.tableView.frame.size.height);        }];
+        
+    }
+}
+
 
 #pragma mark - Button actions
 -(IBAction)onLogoTap:(id)sender
@@ -363,6 +393,21 @@
 }
 
 #pragma mark - Lazy instantiation
+-(ForstaDomainTableViewController *)domainTableViewController
+{
+    if (_domainTableViewController == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+        _domainTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"domainViewController"];
+        _domainTableViewController.view.frame =  CGRectMake(-self.tableView.frame.size.width * 2/3,
+                   self.tableView.frame.origin.y,
+                   self.tableView.frame.size.width * 2/3,
+                   self.tableView.frame.size.height);
+
+        [self.view addSubview:_domainTableViewController.view];
+    }
+    return _domainTableViewController;
+}
+
 -(UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
@@ -371,14 +416,24 @@
     return _searchBar;
 }
 
--(UISwipeGestureRecognizer *)swipeRecognizer
+-(UISwipeGestureRecognizer *)rightSwipeRecognizer
 {
-    if (_swipeRecognizer == nil) {
-        _swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeToTheRight:)];
-        _swipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.tableView addGestureRecognizer:_swipeRecognizer];
+    if (_rightSwipeRecognizer == nil) {
+        _rightSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeToTheRight:)];
+        _rightSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        [self.tableView addGestureRecognizer:_rightSwipeRecognizer];
     }
-    return _swipeRecognizer;
+    return _rightSwipeRecognizer;
+}
+
+-(UISwipeGestureRecognizer *)leftSwipeRecognizer
+{
+    if (_leftSwipeRecognizer == nil) {
+        _leftSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeToTheLeft:)];
+        _leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.tableView addGestureRecognizer:_leftSwipeRecognizer];
+    }
+    return _leftSwipeRecognizer;
 }
 
 -(YapDatabaseViewMappings *)threadMappings

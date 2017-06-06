@@ -46,5 +46,56 @@
             </objects>
             <point key="canvasLocation" x="3418.4000000000001" y="174.96251874062969"/>
         </scene>
+        <!--Forsta Domain Table View Controller-->
+        <scene sceneID="qK2-gA-Jit">
+            <objects>
+                <viewController storyboardIdentifier="domainViewController" id="esR-V8-lzh" customClass="ForstaDomainTableViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VUW-bs-tL8"/>
+                        <viewControllerLayoutGuide type="bottom" id="ccF-E7-NJo"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OXe-rd-y3r">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bSR-sE-EvV">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <color key="backgroundColor" red="0.62352941176470589" green="0.62352941176470589" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="fon-aJ-KkY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="bO7-xI-eLc">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="esR-V8-lzh" id="whU-Oe-I3J"/>
+                                    <outlet property="delegate" destination="esR-V8-lzh" id="DgO-3Z-6qd"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bO7-xI-eLc" firstAttribute="top" secondItem="bSR-sE-EvV" secondAttribute="bottom" id="D0j-bN-YSh"/>
+                            <constraint firstItem="bSR-sE-EvV" firstAttribute="leading" secondItem="OXe-rd-y3r" secondAttribute="leading" id="LZy-zc-Id7"/>
+                            <constraint firstAttribute="trailing" secondItem="bO7-xI-eLc" secondAttribute="trailing" id="Qaq-Tl-lV9"/>
+                            <constraint firstAttribute="trailing" secondItem="bSR-sE-EvV" secondAttribute="trailing" id="lz8-Sx-KLY"/>
+                            <constraint firstItem="ccF-E7-NJo" firstAttribute="top" secondItem="bO7-xI-eLc" secondAttribute="bottom" id="pu5-pW-Z4p"/>
+                            <constraint firstItem="bSR-sE-EvV" firstAttribute="top" secondItem="VUW-bs-tL8" secondAttribute="bottom" id="rHt-VF-XQ8"/>
+                            <constraint firstItem="bO7-xI-eLc" firstAttribute="leading" secondItem="OXe-rd-y3r" secondAttribute="leading" id="rUk-pW-arb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="bO7-xI-eLc" id="T7p-YB-EcD"/>
+                        <outlet property="titleLabel" destination="bSR-sE-EvV" id="Bsd-Bd-eVT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5oQ-yt-vMh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3906" y="-532"/>
+        </scene>
     </scenes>
 </document>

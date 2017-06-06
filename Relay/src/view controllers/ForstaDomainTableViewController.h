@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ForstaDomainTableViewController : UITableViewController
+@interface ForstaDomainTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
