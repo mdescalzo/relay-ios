@@ -58,6 +58,31 @@ NSUInteger maximumValidationAttempts = 9999;
 
 -(void)validationSucceeded
 {
+    // refresh other stuff now that we have the user info...
+    NSMutableDictionary * users = [self.ccsmStorage getUsers];
+    if (!users) {
+        users = [NSMutableDictionary new];
+    }
+    
+    NSString *orgUrl = [[self.ccsmStorage getUserInfo] objectForKey:@"org"];
+    [self.ccsmCommManager getThing:orgUrl
+                           success:^(NSDictionary *org){
+                               NSLog(@"Retrieved org info after login validation");
+                               [self.ccsmStorage setOrgInfo:org];
+                           }
+                           failure:^(NSError *err){
+                               NSLog(@"Failed to retrieve org info after login validation");
+                           }];
+    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
+                                  collection:users
+                                     success:^{
+                                         NSLog(@"Retrieved all users after login validation");
+                                         [self.ccsmStorage setUsers:users];
+                                     }
+                                     failure:^(NSError *err){
+                                         NSLog(@"Failed to retrieve all users after login validation");
+                                     }];
+    
     // Check if registered and proceed to next storyboard accordingly
     NSString *targetSegue = nil;
     if ([TSAccountManager isRegistered])
