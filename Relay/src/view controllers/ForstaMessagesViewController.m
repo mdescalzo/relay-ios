@@ -10,6 +10,7 @@
 
 #import "ForstaMessagesViewController.h"
 #import "ForstaDomainTableViewController.h"
+#import "SettingsMenuViewController.h"
 #import "InboxTableViewCell.h"
 #import "Environment.h"
 #import "NSDate+millisecondTimeStamp.h"
@@ -54,6 +55,7 @@
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, strong) ForstaDomainTableViewController *domainTableViewController;
+@property (nonatomic, strong) SettingsMenuViewController *settingsViewController;
 @property (nonatomic, assign) BOOL isDomainViewVisible;
 
 //@property (nonatomic, strong) NSArray *users;
@@ -77,6 +79,10 @@
     if (!self) {
         return self;
     }
+    
+    // Popover handling
+    self.modalPresentationStyle = UIModalPresentationPopover;
+    self.popoverPresentationController.delegate = self;
     
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
@@ -144,7 +150,7 @@
 
 //////////////
     // Build the domain view/thread list
-    [self domainTableViewController];
+    [self.view addSubview:self.domainTableViewController.view];
     self.isDomainViewVisible = NO;
     
     self.inverted = NO;
@@ -389,7 +395,14 @@
 
 -(IBAction)onSettingsTap:(id)sender
 {
-    // Settings button tapped
+    // Display settings view
+    self.popoverPresentationController.sourceView = self.navigationController.view;
+    [self performSegueWithIdentifier:@"settingsSegue" sender:sender];
+}
+
+#pragma mark - UIPopover delegate methods
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
+    return UIModalPresentationNone;
 }
 
 #pragma mark - Lazy instantiation
@@ -399,13 +412,23 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
         _domainTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"domainViewController"];
         _domainTableViewController.view.frame =  CGRectMake(-self.tableView.frame.size.width * 2/3,
-                   self.tableView.frame.origin.y,
-                   self.tableView.frame.size.width * 2/3,
-                   self.tableView.frame.size.height);
-
-        [self.view addSubview:_domainTableViewController.view];
+                                                            self.tableView.frame.origin.y,
+                                                            self.tableView.frame.size.width * 2/3,
+                                                            self.tableView.frame.size.height);
     }
     return _domainTableViewController;
+}
+
+-(SettingsMenuViewController *)settingsViewController
+{
+    if (_settingsViewController == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+
+        _settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"settingsViewController"];
+//        _settingsViewController.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width/2,
+//                                                             [_settingsViewController tableView:_settingsViewController.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]);
+    }
+    return _settingsViewController;
 }
 
 -(UISearchBar *)searchBar

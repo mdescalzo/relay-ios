@@ -13,7 +13,7 @@
 #import "Contact.h"
 #import "TSGroupModel.h"
 
-@interface ForstaMessagesViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate>
+@interface ForstaMessagesViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic) BOOL newlyRegisteredUser;
 @property (nonatomic, retain) CallState *latestCall;
