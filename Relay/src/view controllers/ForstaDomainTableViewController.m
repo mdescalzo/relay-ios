@@ -7,6 +7,13 @@
 //
 
 #import "ForstaDomainTableViewController.h"
+#import "InboxTableViewCell.h"
+#import "Environment.h"
+#import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/TSMessagesManager.h>
+#import <RelayServiceKit/TSOutgoingMessage.h>
+#import <YapDatabase/YapDatabaseViewChange.h>
+#import <YapDatabase/YapDatabaseViewConnection.h>
 
 NSInteger const kConversationsIndex = 0;
 NSInteger const kPinnedIndex = 1;
@@ -18,6 +25,10 @@ NSInteger const kTopicsIndex = 4;
 
 @property (nonatomic, strong) NSArray *sectionTitles;
 @property (nonatomic, strong) NSArray *sectionImages;
+
+@property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
+@property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
 
 @end
 
@@ -126,12 +137,36 @@ NSInteger const kTopicsIndex = 4;
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellID = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+//    static NSString *cellID = @"cell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     
     // Configure the cell...
+    InboxTableViewCell *cell =  [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
+    TSThread *thread = [self threadForIndexPath:indexPath];
+    
+    if (!cell) {
+        cell = [InboxTableViewCell inboxTableViewCell];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [cell configureWithThread:thread contactsManager:self.contactsManager];
+    });
+    
+    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
+        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+    }
     
     return cell;
+}
+
+- (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
+    __block TSThread *thread = nil;
+    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        thread = [[transaction extension:TSThreadDatabaseViewExtensionName] objectAtIndexPath:indexPath
+                                                                                 withMappings:self.threadMappings];
+    }];
+    
+    return thread;
 }
 
 
@@ -178,5 +213,7 @@ NSInteger const kTopicsIndex = 4;
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - Lazy instantiation
 
 @end
