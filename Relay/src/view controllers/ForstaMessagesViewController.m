@@ -80,10 +80,6 @@
         return self;
     }
     
-    // Popover handling
-    self.modalPresentationStyle = UIModalPresentationPopover;
-    self.popoverPresentationController.delegate = self;
-    
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
@@ -158,6 +154,11 @@
     [self configureBottomButtons];
     [self rightSwipeRecognizer];
     [self leftSwipeRecognizer];
+
+    // Popover handling
+    self.modalPresentationStyle = UIModalPresentationPopover;
+    self.popoverPresentationController.delegate = self;
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -165,15 +166,31 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"settingsSegue"]) {
+        [segue destinationViewController].popoverPresentationController.delegate = self;
+        [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
+        [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForSettingsBarButton];
+    }
 }
-*/
+
+-(CGRect)frameForSettingsBarButton
+{
+    // Workaround for UIBarButtomItem not inheriting from UIView
+    NSMutableArray* buttons = [[NSMutableArray alloc] init];
+    for (UIControl* btn in self.navigationController.navigationBar.subviews)
+        if ([btn isKindOfClass:[UIControl class]])
+            [buttons addObject:btn];
+    UIView* view = [buttons objectAtIndex:1];
+    return [view convertRect:view.bounds toView:nil];
+//    return view;
+}
 
 #pragma mark - Lifted from SignalsViewController
 - (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing
@@ -348,7 +365,6 @@
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
                                                                action:@selector(onSettingsTap:)];
-    
     self.navigationItem.leftBarButtonItem = logoItem;
     self.navigationItem.titleView = self.searchBar;
     self.navigationItem.rightBarButtonItem = settingsItem;
@@ -393,17 +409,18 @@
     // Logo icon tapped
 }
 
--(IBAction)onSettingsTap:(id)sender
+-(IBAction)onSettingsTap:(UIBarButtonItem *)sender
 {
     // Display settings view
-    self.popoverPresentationController.sourceView = self.navigationController.view;
     [self performSegueWithIdentifier:@"settingsSegue" sender:sender];
 }
 
 #pragma mark - UIPopover delegate methods
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+{
     return UIModalPresentationNone;
 }
+
 
 #pragma mark - Lazy instantiation
 -(ForstaDomainTableViewController *)domainTableViewController
@@ -425,6 +442,7 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
 
         _settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"settingsViewController"];
+        _settingsViewController.popoverPresentationController.delegate = self;
 //        _settingsViewController.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width/2,
 //                                                             [_settingsViewController tableView:_settingsViewController.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]);
     }

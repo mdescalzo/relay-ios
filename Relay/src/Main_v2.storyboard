@@ -25,7 +25,7 @@
                     <navigationItem key="navigationItem" id="Fmx-VY-5mC"/>
                     <connections>
                         <segue destination="7BF-eX-3b0" kind="popoverPresentation" identifier="settingsSegue" popoverAnchorView="itT-4e-qaU" id="K2g-26-NFE">
-                            <popoverArrowDirection key="popoverArrowDirection" down="YES"/>
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
                     </connections>
                 </viewController>
@@ -37,7 +37,7 @@
         <scene sceneID="IgF-gX-uTw">
             <objects>
                 <tableViewController storyboardIdentifier="settingsViewController" id="7BF-eX-3b0" customClass="SettingsMenuViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="eNd-ih-jsx">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="eNd-ih-jsx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

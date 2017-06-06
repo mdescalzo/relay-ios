@@ -10,4 +10,6 @@
 
 @interface SettingsMenuViewController : UITableViewController
 
+-(CGFloat)heightForTableView;
+
 @end

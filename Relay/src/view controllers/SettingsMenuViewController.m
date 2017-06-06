@@ -8,6 +8,8 @@
 
 #import "SettingsMenuViewController.h"
 
+CGFloat const kRowHeight = 40;
+
 @interface SettingsMenuViewController ()
 
 @property (nonatomic, strong) NSArray *settingsTitles;
@@ -97,6 +99,18 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kRowHeight;
+}
+
+#pragma mark - convenience method for getting overall table heigh
+-(CGFloat)heightForTableView;
+{
+    CGFloat numRows = [self tableView:self.tableView numberOfRowsInSection:1];
+    return numRows * kRowHeight;
+}
 
 #pragma mark - Lazy instantiation
 -(NSArray *)settingsTitles
