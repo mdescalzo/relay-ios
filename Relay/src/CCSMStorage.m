@@ -19,6 +19,8 @@ NSString *const CCSMStorageKeyOrgName = @"Organization Name";
 NSString *const CCSMStorageKeyUserName = @"User Name";
 NSString *const CCSMStorageKeySessionToken = @"Session Token";
 NSString *const CCSMStorageKeyUserInfo = @"User Info";
+NSString *const CCSMStorageKeyOrgInfo = @"Org Info";
+NSString *const CCSMStorageKeyUsers = @"Users";
 
 - (nullable id)tryGetValueForKey:(NSString *)key
 {
@@ -78,6 +80,28 @@ NSString *const CCSMStorageKeyUserInfo = @"User Info";
 - (nullable NSDictionary *)getUserInfo
 {
     return [self tryGetValueForKey:CCSMStorageKeyUserInfo];
+}
+
+
+- (void)setOrgInfo:(NSDictionary *)value
+{
+    [self setValueForKey:CCSMStorageKeyOrgInfo toValue:value];
+}
+
+- (nullable NSDictionary *)getOrgInfo
+{
+    return [self tryGetValueForKey:CCSMStorageKeyOrgInfo];
+}
+
+
+- (void)setUsers:(NSMutableDictionary *)value
+{
+    [self setValueForKey:CCSMStorageKeyUsers toValue:value];
+}
+
+- (nullable NSMutableDictionary *)getUsers
+{
+    return [self tryGetValueForKey:CCSMStorageKeyUsers];
 }
 
 

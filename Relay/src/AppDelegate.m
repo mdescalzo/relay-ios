@@ -40,7 +40,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 @property (nonatomic) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
 @property (nonatomic) OWSStaleNotificationObserver *staleNotificationObserver;
 
-@property (nonatomic, strong) CCSMCommManager *ccsmCommMananger;
+@property (nonatomic, strong) CCSMCommManager *ccsmCommManager;
 
 @end
 
@@ -96,7 +96,30 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
     if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
     {
-        [self.ccsmCommMananger refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+            NSMutableDictionary * users = [Environment.ccsmStorage getUsers];
+            if (!users) {
+                users = [NSMutableDictionary new];
+            }
+            
+            NSString *orgUrl = [[Environment.ccsmStorage getUserInfo] objectForKey:@"org"];
+            [self.ccsmCommManager getThing:orgUrl
+                                   success:^(NSDictionary *org){
+                                       NSLog(@"Retrieved org info after session token refresh");
+                                       [Environment.ccsmStorage setOrgInfo:org];
+                                   } 
+                                   failure:^(NSError *err){
+                                       NSLog(@"Failed to retrieve org info after session token refresh");
+                                   }];
+            [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
+                                          collection:users
+                                             success:^{
+                                                 NSLog(@"Retrieved all users after session token refresh");
+                                                 [Environment.ccsmStorage setUsers:users];
+                                             }
+                                             failure:^(NSError *err){
+                                                 NSLog(@"Failed to retrieve all users after session token refresh");
+                                             }];
             if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
             {
                 storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
@@ -426,12 +449,12 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 }
 
 #pragma mark - lazy instantiation
--(CCSMCommManager *)ccsmCommMananger
+-(CCSMCommManager *)ccsmCommManager
 {
-    if (_ccsmCommMananger == nil) {
-        _ccsmCommMananger = [CCSMCommManager new];
+    if (_ccsmCommManager == nil) {
+        _ccsmCommManager = [CCSMCommManager new];
     }
-    return _ccsmCommMananger;
+    return _ccsmCommManager;
 }
 
 @end
