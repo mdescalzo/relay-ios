@@ -275,20 +275,6 @@
 }
 
 #pragma mark - Message handling
-- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
-{
-    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
-    
-    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
-    
-    if (!messageAdapter) {
-        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
-        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
-    }
-    
-    return messageAdapter;
-}
-
 - (TSInteraction *)interactionAtIndexPath:(NSIndexPath *)indexPath {
     __block TSInteraction *message = nil;
     [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
@@ -311,6 +297,20 @@
     return message;
 }
 
+- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
+{
+    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
+    
+    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
+    
+    if (!messageAdapter) {
+        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
+        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
+    }
+    
+    return messageAdapter;
+}
+
 
 #pragma mark - Database delegates
 
@@ -319,7 +319,7 @@
     if (!_uiDatabaseConnection) {
         YapDatabase *database = TSStorageManager.sharedManager.database;
         _uiDatabaseConnection = [database newConnection];
-        [_uiDatabaseConnection beginLongLivedReadTransaction];
+//        [_uiDatabaseConnection beginLongLivedReadTransaction];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(yapDatabaseModified:)
                                                      name:YapDatabaseModifiedNotification
@@ -402,11 +402,13 @@
 
 #pragma mark - TableView delegate and data source methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return (NSInteger)[self.threadMappings numberOfSections];
+    return 1;
+//    return (NSInteger)[self.threadMappings numberOfSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
+    return (NSInteger)[self.selectedThread numberOfInteractions];
+//    return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -417,23 +419,32 @@
 {
 //    NSString *aString = NSStringFromClass([InboxTableViewCell class]);
 //    InboxTableViewCell *cell = (InboxTableViewCell *)[tableView dequeueReusableCellWithIdentifier:aString forIndexPath:indexPath];
-   InboxTableViewCell *cell =  [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
-    TSThread *thread = [self threadForIndexPath:indexPath];
+//   InboxTableViewCell *cell =  [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
+//    TSThread *thread = [self threadForIndexPath:indexPath];
+//    
+//    if (!cell) {
+//        cell = [InboxTableViewCell inboxTableViewCell];
+//    }
+//    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [cell configureWithThread:thread contactsManager:self.contactsManager];
+//    });
+//    
+//    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
+//        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+//    }
+//    
+//    return cell;
+
+    NSString *cellID = @"Cell";
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     
-    if (!cell) {
-        cell = [InboxTableViewCell inboxTableViewCell];
-    }
+    TSMessageAdapter *messageAdapter = [self messageAtIndexPath:indexPath];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [cell configureWithThread:thread contactsManager:self.contactsManager];
-    });
-    
-    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
-        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
-    }
+    cell.textLabel.text = messageAdapter.senderDisplayName;
     
     return cell;
-
+    
 }
 
 - (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
@@ -554,22 +565,22 @@
     return _leftSwipeRecognizer;
 }
 
--(YapDatabaseViewMappings *)threadMappings
-{
-    if (_threadMappings == nil) {
-        _threadMappings =
-        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
-        [_threadMappings setIsReversed:NO forGroup:TSInboxGroup];
-        
-        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-            [_threadMappings updateWithTransaction:transaction];
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        }];
-    }
-    return _threadMappings;
-}
+//-(YapDatabaseViewMappings *)threadMappings
+//{
+//    if (_threadMappings == nil) {
+//        _threadMappings =
+//        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
+//        [_threadMappings setIsReversed:NO forGroup:TSInboxGroup];
+//        
+//        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+//            [_threadMappings updateWithTransaction:transaction];
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.tableView reloadData];
+//            });
+//        }];
+//    }
+//    return _threadMappings;
+//}
 
 @end

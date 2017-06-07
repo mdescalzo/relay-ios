@@ -130,6 +130,18 @@ CGFloat const kHeaderHeight = 33.0;
                             [UIImage imageNamed:@"Topics_2"]];
 }
 
+//-(void)viewWillAppear:(BOOL)animated
+//{
+//    [self.uiDatabaseConnection beginLongLivedReadTransaction];
+//}
+//
+//-(void)viewWillDisappear:(BOOL)animated
+//{
+//    [self.uiDatabaseConnection endLongLivedReadTransaction];
+//    
+//    [super viewDidDisappear:animated];
+//}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -338,7 +350,7 @@ CGFloat const kHeaderHeight = 33.0;
     if (!_uiDatabaseConnection) {
         YapDatabase *database = TSStorageManager.sharedManager.database;
         _uiDatabaseConnection = [database newConnection];
-        [_uiDatabaseConnection beginLongLivedReadTransaction];
+//        [_uiDatabaseConnection beginLongLivedReadTransaction];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(yapDatabaseModified:)
                                                      name:YapDatabaseModifiedNotification
