@@ -14,7 +14,16 @@
 #import "InboxTableViewCell.h"
 #import "Environment.h"
 #import "NSDate+millisecondTimeStamp.h"
+#import "OWSCall.h"
+#import "OWSCallCollectionViewCell.h"
 #import "OWSContactsManager.h"
+#import "OWSConversationSettingsTableViewController.h"
+#import "OWSDisappearingMessagesJob.h"
+#import "OWSDisplayedMessageCollectionViewCell.h"
+#import "OWSExpirableMessageView.h"
+#import "OWSIncomingMessageCollectionViewCell.h"
+#import "OWSMessagesBubblesSizeCalculator.h"
+#import "OWSOutgoingMessageCollectionViewCell.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
 #import "Relay-Swift.h"
@@ -24,6 +33,16 @@
 #import "TSStorageManager.h"
 #import "UIUtil.h"
 #import "VersionMigrations.h"
+#import "TSAttachmentPointer.h"
+#import "TSCall.h"
+#import "TSContactThread.h"
+#import "TSContentAdapters.h"
+#import "TSDatabaseView.h"
+#import "TSErrorMessage.h"
+#import "TSGroupThread.h"
+#import "TSIncomingMessage.h"
+#import "TSInfoMessage.h"
+#import "TSInvalidIdentityKeyErrorMessage.h"
 #import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSMessagesManager.h>
 #import <RelayServiceKit/TSOutgoingMessage.h>
@@ -38,9 +57,11 @@
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
 @property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
+@property (nonatomic, strong) YapDatabaseViewMappings *messageMappings;
+
 @property (nonatomic, strong) YapDatabaseConnection *editingDbConnection;
 @property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
-
+@property NSCache *messageAdapterCache;
 @property (nonatomic) CellState viewingThreadsIn;
 @property (nonatomic) long inboxCount;
 @property (nonatomic, strong) id previewingContext;
@@ -253,6 +274,44 @@
     }];
 }
 
+#pragma mark - Message handling
+- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
+{
+    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
+    
+    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
+    
+    if (!messageAdapter) {
+        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
+        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
+    }
+    
+    return messageAdapter;
+}
+
+- (TSInteraction *)interactionAtIndexPath:(NSIndexPath *)indexPath {
+    __block TSInteraction *message = nil;
+    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        YapDatabaseViewTransaction *viewTransaction = [transaction ext:TSMessageDatabaseViewExtensionName];
+        NSParameterAssert(viewTransaction != nil);
+        NSParameterAssert(self.messageMappings != nil);
+        NSParameterAssert(indexPath != nil);
+        NSUInteger row                    = (NSUInteger)indexPath.row;
+        NSUInteger section                = (NSUInteger)indexPath.section;
+        NSUInteger numberOfItemsInSection __unused = [self.messageMappings numberOfItemsInSection:section];
+        NSAssert(row < numberOfItemsInSection,
+                 @"Cannot fetch message because row %d is >= numberOfItemsInSection %d",
+                 (int)row,
+                 (int)numberOfItemsInSection);
+        
+        message = [viewTransaction objectAtRow:row inSection:section withMappings:self.messageMappings];
+        NSParameterAssert(message != nil);
+    }];
+    
+    return message;
+}
+
+
 #pragma mark - Database delegates
 
 - (YapDatabaseConnection *)uiDatabaseConnection {
@@ -445,6 +504,7 @@
     if (_domainTableViewController == nil) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
         _domainTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"domainViewController"];
+        _domainTableViewController.hostViewController = self;
         _domainTableViewController.view.frame =  CGRectMake(-self.tableView.frame.size.width * 2/3,
                                                             self.tableView.frame.origin.y,
                                                             self.tableView.frame.size.width * 2/3,

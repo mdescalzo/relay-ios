@@ -262,6 +262,20 @@ CGFloat const kHeaderHeight = 33.0;
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.tableView)    //  check for main tableview or...
+    {
+        TSThread *selectedThread = [self threadForIndexPath:indexPath];
+        self.hostViewController.selectedThread = selectedThread;
+        [self.hostViewController hideDomainTableView];
+        [self.hostViewController reloadTableView];
+    }
+    else   // autocomplete tableview
+    {
+    }
+}
+
 - (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
     __block TSThread *thread = nil;
     [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {

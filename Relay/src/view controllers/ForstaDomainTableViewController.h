@@ -13,5 +13,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) ForstaMessagesViewController *hostViewController;
 
 @end
