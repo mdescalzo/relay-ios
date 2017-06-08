@@ -11,6 +11,26 @@
 #import "Constraints.h"
 #import "TSStorageHeaders.h"
 
+NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
+    NSMutableDictionary *tags = [NSMutableDictionary new];
+    for (id userId in users) {
+        NSMutableDictionary *user = [users objectForKey:userId];
+        for (id usertag in [user objectForKey:@"tags"]) {
+            NSString *associationType = [usertag objectForKey:@"association_type"];
+            if (![associationType isEqualToString:@"REPORTSTO"]) {
+                NSMutableDictionary *tag = [usertag objectForKey:@"tag"];
+                NSString *slug = [tag objectForKey:@"slug"];
+                if ([tags objectForKey:slug] == nil) {
+                    [tags setValue:[NSMutableDictionary new] forKey:slug];
+                }
+                [[tags objectForKey:slug] setValue:user forKey:userId];
+            }
+        }
+    }
+    
+    return tags;
+}
+
 @implementation CCSMStorage
 
 NSString *const CCSMStorageDatabaseCollection = @"CCSMInformation";
@@ -21,6 +41,7 @@ NSString *const CCSMStorageKeySessionToken = @"Session Token";
 NSString *const CCSMStorageKeyUserInfo = @"User Info";
 NSString *const CCSMStorageKeyOrgInfo = @"Org Info";
 NSString *const CCSMStorageKeyUsers = @"Users";
+NSString *const CCSMStorageKeyTags = @"Tags";
 
 - (nullable id)tryGetValueForKey:(NSString *)key
 {
@@ -97,6 +118,8 @@ NSString *const CCSMStorageKeyUsers = @"Users";
 - (void)setUsers:(NSMutableDictionary *)value
 {
     [self setValueForKey:CCSMStorageKeyUsers toValue:value];
+    NSDictionary * tags = extractTagsForUsers(value);
+    [self setTags:tags];
 }
 
 - (nullable NSMutableDictionary *)getUsers
@@ -105,5 +128,14 @@ NSString *const CCSMStorageKeyUsers = @"Users";
 }
 
 
+- (void)setTags:(NSDictionary *)value
+{
+    [self setValueForKey:CCSMStorageKeyTags toValue:value];
+}
+
+- (nullable NSDictionary *)getTags
+{
+    return [self tryGetValueForKey:CCSMStorageKeyTags];
+}
 
 @end

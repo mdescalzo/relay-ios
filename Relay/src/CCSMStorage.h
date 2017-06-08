@@ -29,6 +29,7 @@
 - (NSMutableDictionary *)getUsers;
 - (void)setUsers:(NSMutableDictionary *)value;
 
+- (NSDictionary *)getTags;
 @end
 
 #endif /* Storage_h */
