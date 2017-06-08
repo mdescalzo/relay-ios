@@ -51,6 +51,8 @@
 
 #define CELL_HEIGHT 72.0f
 
+NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
+
 @interface ForstaMessagesViewController ()
 
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
@@ -92,6 +94,8 @@
 @end
 
 @implementation ForstaMessagesViewController
+
+@synthesize selectedThread = _selectedThread;
 
 - (id)init
 {
@@ -593,6 +597,30 @@
         _userTags = [[CCSMStorage new] getTags];
     }
     return _userTags;
+}
+
+-(void)setSelectedThread:(TSThread *)value
+{
+    if (_selectedThread != value) {
+        _selectedThread = value;
+        
+        // Store selected value when set for persistence between launches
+        [[NSUserDefaults standardUserDefaults] setObject:self.selectedThread.uniqueId forKey:kSelectedThreadIDKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
+-(TSThread *)selectedThread
+{
+    if (_selectedThread == nil) {
+        
+        NSString *threadId = [[NSUserDefaults standardUserDefaults] objectForKey:kSelectedThreadIDKey];
+        
+        if (threadId != nil)
+        _selectedThread = [TSThread fetchObjectWithUniqueID:threadId];
+    }
+    return _selectedThread;
+        
 }
 
 @end
