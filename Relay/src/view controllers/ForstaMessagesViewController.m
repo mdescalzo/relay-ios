@@ -43,15 +43,26 @@
 #import "TSIncomingMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
+#import <RelayServiceKit/MimeTypeUtil.h>
+#import <RelayServiceKit/OWSAttachmentsProcessor.h>
+#import <RelayServiceKit/OWSDisappearingMessagesConfiguration.h>
+#import <RelayServiceKit/OWSFingerprint.h>
+#import <RelayServiceKit/OWSFingerprintBuilder.h>
 #import <RelayServiceKit/OWSMessageSender.h>
+#import <RelayServiceKit/SignalRecipient.h>
+#import <RelayServiceKit/TSAccountManager.h>
+#import <RelayServiceKit/TSInvalidIdentityKeySendingErrorMessage.h>
 #import <RelayServiceKit/TSMessagesManager.h>
-#import <RelayServiceKit/TSOutgoingMessage.h>
+#import <RelayServiceKit/TSNetworkManager.h>
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
+#import <JSQSystemSoundPlayer.h>
+
 
 #define CELL_HEIGHT 72.0f
 
 NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
+NSString *kUserIDKey = @"phone";
 
 @interface ForstaMessagesViewController ()
 
@@ -88,6 +99,10 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 @property (nonatomic, strong) NSArray *searchResult;
 
 @property (nonatomic, strong) UIWindow *pipWindow;
+
+
+@property (nonatomic, strong) NSString *userId;
+@property (nonatomic, strong) NSString *userDispalyName;
 
 //@property (nonatomic, weak) Message *editingMessage;
 
@@ -185,6 +200,18 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
     self.modalPresentationStyle = UIModalPresentationPopover;
     self.popoverPresentationController.delegate = self;
 
+    self.textView.delegate = self;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self scrollToBottom];
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    return [super textView:textView shouldChangeTextInRange:range replacementText:text];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -199,7 +226,7 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    if ([[segue identifier] isEqualToString:@"settingsSegue"]) {
+    if ([[segue identifier] isEqualToString:@"SettingsPopoverSegue"]) {
         [segue destinationViewController].popoverPresentationController.delegate = self;
         [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
         [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForSettingsBarButton];
@@ -233,6 +260,44 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 {
     
 }
+
+- (void)didPressSendButton:(UIButton *)button
+           withMessageText:(NSString *)text
+                  senderId:(NSString *)senderId
+         senderDisplayName:(NSString *)senderDisplayName
+                      date:(NSDate *)date
+{
+    if (text.length > 0) {
+//        if ([Environment.preferences soundInForeground]) {
+//            [JSQSystemSoundPlayer jsq_playMessageSentSound];
+//        }
+
+        TSOutgoingMessage *message;
+        OWSDisappearingMessagesConfiguration *configuration =
+        [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.selectedThread.uniqueId];
+        if (configuration.isEnabled) {
+            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                          inThread:self.selectedThread
+                                                       messageBody:text
+                                                     attachmentIds:[NSMutableArray new]
+                                                  expiresInSeconds:configuration.durationSeconds];
+        } else {
+            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                          inThread:self.selectedThread
+                                                       messageBody:text];
+        }
+
+        [self.messageSender sendMessage:message
+                                success:^{
+                                    DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                                }
+                                failure:^(NSError *error) {
+                                    DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+                                }];
+//        [self finishSendingMessage];
+    }
+}
+
 
 #pragma mark - swipe handlers
 -(IBAction)onSwipeToTheRight:(id)sender
@@ -334,76 +399,88 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 }
 
 - (void)yapDatabaseModified:(NSNotification *)notification {
-    NSArray *notifications  = [self.uiDatabaseConnection beginLongLivedReadTransaction];
-    NSArray *sectionChanges = nil;
-    NSArray *rowChanges     = nil;
-    
-    [[self.uiDatabaseConnection ext:TSThreadDatabaseViewExtensionName] getSectionChanges:&sectionChanges
-                                                                              rowChanges:&rowChanges
-                                                                        forNotifications:notifications
-                                                                            withMappings:self.threadMappings];
-    
-    // We want this regardless of if we're currently viewing the archive.
-    // So we run it before the early return
-//    [self updateInboxCountLabel];
-    
-    if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
-        return;
-    }
-    
-    [self.tableView beginUpdates];
-    
-    for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
-        switch (sectionChange.type) {
-            case YapDatabaseViewChangeDelete: {
-                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
-                              withRowAnimation:UITableViewRowAnimationAutomatic];
-                break;
-            }
-            case YapDatabaseViewChangeInsert: {
-                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
-                              withRowAnimation:UITableViewRowAnimationAutomatic];
-                break;
-            }
-            case YapDatabaseViewChangeUpdate:
-            case YapDatabaseViewChangeMove:
-                break;
-        }
-    }
-    
-    for (YapDatabaseViewRowChange *rowChange in rowChanges) {
-        switch (rowChange.type) {
-            case YapDatabaseViewChangeDelete: {
-                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-                _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
-                break;
-            }
-            case YapDatabaseViewChangeInsert: {
-                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-                _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
-                break;
-            }
-            case YapDatabaseViewChangeMove: {
-                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-                break;
-            }
-            case YapDatabaseViewChangeUpdate: {
-                [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
-                                      withRowAnimation:UITableViewRowAnimationNone];
-                break;
-            }
-        }
-    }
-    
-    [self.tableView endUpdates];
+//    NSArray *notifications  = [self.uiDatabaseConnection beginLongLivedReadTransaction];
+//    NSArray *sectionChanges = nil;
+//    NSArray *rowChanges     = nil;
+//    
+//    [[self.uiDatabaseConnection ext:TSThreadDatabaseViewExtensionName] getSectionChanges:&sectionChanges
+//                                                                              rowChanges:&rowChanges
+//                                                                        forNotifications:notifications
+//                                                                            withMappings:self.threadMappings];
+//    
+//    // We want this regardless of if we're currently viewing the archive.
+//    // So we run it before the early return
+////    [self updateInboxCountLabel];
+//    
+//    if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
+//        return;
+//    }
+//    
+    self.selectedThread = nil;
+    [self reloadTableView];
+//    [self.tableView beginUpdates];
+//    
+//    for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
+//        switch (sectionChange.type) {
+//            case YapDatabaseViewChangeDelete: {
+//                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+//                              withRowAnimation:UITableViewRowAnimationAutomatic];
+//                break;
+//            }
+//            case YapDatabaseViewChangeInsert: {
+//                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+//                              withRowAnimation:UITableViewRowAnimationAutomatic];
+//                break;
+//            }
+//            case YapDatabaseViewChangeUpdate:
+//            case YapDatabaseViewChangeMove:
+//                break;
+//        }
+//    }
+//    
+//    for (YapDatabaseViewRowChange *rowChange in rowChanges) {
+//        switch (rowChange.type) {
+//            case YapDatabaseViewChangeDelete: {
+//                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+//                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+//                _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+//                break;
+//            }
+//            case YapDatabaseViewChangeInsert: {
+//                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+//                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+//                _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+//                break;
+//            }
+//            case YapDatabaseViewChangeMove: {
+//                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+//                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+//                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+//                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+//                break;
+//            }
+//            case YapDatabaseViewChangeUpdate: {
+//                [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
+//                                      withRowAnimation:UITableViewRowAnimationNone];
+//                break;
+//            }
+//        }
+//    }
+//    
+//    [self.tableView endUpdates];
 //    [self checkIfEmptyView];
 }
 
+- (void)scrollToBottom
+{
+    CGFloat yOffset = 0;
+    
+    if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
+        yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
+    }
+    
+    [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:YES];
+}
 
 #pragma mark - TableView delegate and data source methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -422,25 +499,6 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSString *aString = NSStringFromClass([InboxTableViewCell class]);
-//    InboxTableViewCell *cell = (InboxTableViewCell *)[tableView dequeueReusableCellWithIdentifier:aString forIndexPath:indexPath];
-//   InboxTableViewCell *cell =  [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
-//    TSThread *thread = [self threadForIndexPath:indexPath];
-//    
-//    if (!cell) {
-//        cell = [InboxTableViewCell inboxTableViewCell];
-//    }
-//    
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [cell configureWithThread:thread contactsManager:self.contactsManager];
-//    });
-//    
-//    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
-//        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
-//    }
-//    
-//    return cell;
-
     NSString *cellID = @"Cell";
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     
@@ -461,7 +519,11 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
     cell.detailTextLabel.text = ((TSMessage *)interaction).body;
     
     return cell;
-    
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self tableView:tableView didDeselectRowAtIndexPath:indexPath];
 }
 
 - (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
@@ -516,7 +578,27 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 -(IBAction)onSettingsTap:(UIBarButtonItem *)sender
 {
     // Display settings view
-    [self performSegueWithIdentifier:@"settingsSegue" sender:sender];
+    [self performSegueWithIdentifier:@"SettingsPopoverSegue" sender:sender];
+}
+
+-(void)didPressLeftButton:(id)sender
+{
+    [super didPressLeftButton:sender];
+    // Attachment logic here
+}
+
+-(void)didPressRightButton:(id)sender
+{
+
+    NSString *tmpString = self.textView.text;
+    
+    [self didPressSendButton:self.rightButton
+             withMessageText:self.textView.text
+                    senderId:self.userId
+           senderDisplayName:self.userDispalyName
+                        date:[NSDate date]];
+
+    [super didPressRightButton:sender];
 }
 
 #pragma mark - UIPopover delegate methods
@@ -620,7 +702,28 @@ NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
         _selectedThread = [TSThread fetchObjectWithUniqueID:threadId];
     }
     return _selectedThread;
-        
+}
+
+-(NSString *)userId
+{
+    return [[Environment.ccsmStorage getUserInfo] objectForKey:kUserIDKey];
+}
+
+-(NSString *)userDispalyName
+{
+    return [NSString stringWithFormat:@"%@ %@", [[Environment.ccsmStorage getUserInfo] objectForKey:@"first_name"],[[Environment.ccsmStorage getUserInfo] objectForKey:@"last_name"]];
+}
+
+#pragma mark - Logging
+
++ (NSString *)tag
+{
+    return [NSString stringWithFormat:@"[%@]", self.class];
+}
+
+- (NSString *)tag
+{
+    return self.class.tag;
 }
 
 @end
