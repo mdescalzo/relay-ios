@@ -28,7 +28,7 @@ NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
         }
     }
     
-    return tags;
+    return [NSDictionary dictionaryWithDictionary:tags];
 }
 
 @implementation CCSMStorage

@@ -76,6 +76,7 @@
 @property (nonatomic, strong) ForstaDomainTableViewController *domainTableViewController;
 @property (nonatomic, strong) SettingsPopupMenuViewController *settingsViewController;
 @property (nonatomic, assign) BOOL isDomainViewVisible;
+@property (nonatomic, strong) NSDictionary *userTags;
 
 //@property (nonatomic, strong) NSArray *users;
 //@property (nonatomic, strong) NSArray *channels;
@@ -446,10 +447,14 @@
     TSInteraction *interaction = [array objectAtIndex:(NSUInteger)[indexPath row]];
     
     TSMessageAdapter *message = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
+
+    // Saving for later use
+//    if ([interaction isKindOfClass:[TSIncomingMessage class]]) {} ||
+//    [interaction isKindOfClass:[TSOutgoingMessage class]]) {
+
     
     cell.textLabel.text = message.senderDisplayName;
     cell.detailTextLabel.text = ((TSMessage *)interaction).body;
-//    cell.textLabel.text = messageAdapter.senderDisplayName;
     
     return cell;
     
@@ -580,6 +585,14 @@
     _messageMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ self.selectedThread.uniqueId ] view:TSMessageDatabaseViewExtensionName];
     }
     return _messageMappings;
+}
+
+-(NSDictionary *)userTags
+{
+    if (_userTags == nil) {
+        _userTags = [[CCSMStorage new] getTags];
+    }
+    return _userTags;
 }
 
 @end

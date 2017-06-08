@@ -1,22 +1,18 @@
 //
-//  DirectoryTableViewController.m
+//  DirectoryDetailTableViewController.m
 //  Forsta
 //
-//  Created by Mark on 6/7/17.
+//  Created by Mark on 6/8/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "DirectoryTableViewController.h"
-#import "CCSMStorage.h"
 #import "DirectoryDetailTableViewController.h"
 
-@interface DirectoryTableViewController ()
-
-@property (nonatomic, strong) CCSMStorage *ccsmStorage;
+@interface DirectoryDetailTableViewController ()
 
 @end
 
-@implementation DirectoryTableViewController
+@implementation DirectoryDetailTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,8 +22,6 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    [self contentDictionary];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,19 +38,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
-    return (NSInteger)[[self.contentDictionary allKeys] count];
+    NSInteger rows = (NSInteger)[[self.contentDictionary allKeys] count];
+    return rows;
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DirectoryElementCell" forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
-    // Configure the cell...
-    cell.detailTextLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
-    
-    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [tmpDict objectForKey:@"first_name" ], [tmpDict objectForKey:@"last_name"]];
-    cell.textLabel.text = fullName;
+    cell.textLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+    cell.detailTextLabel.text = [[self.contentDictionary objectForKey:cell.textLabel.text] description];
     
     return cell;
 }
@@ -96,47 +88,22 @@
 }
 */
 
-
+/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    
-    NSDictionary *payload = [self detailObjectForIndexPath:path];
-    ((DirectoryDetailTableViewController *)[segue destinationViewController]).contentDictionary = payload;
 }
+*/
 
--(NSDictionary *)detailObjectForIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *aKey = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-
-    NSDictionary *tmpDict = [self.contentDictionary objectForKey:aKey];
-    return [tmpDict objectForKey:[tmpDict allKeys].lastObject];
-}
-
--(IBAction)onDoneTap:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - Lazy instantiation
 -(NSDictionary *)contentDictionary
 {
     if (_contentDictionary == nil) {
-        _contentDictionary = [self.ccsmStorage getTags];
+        _contentDictionary = [NSDictionary new];
     }
     return _contentDictionary;
-}
-
--(CCSMStorage *)ccsmStorage
-{
-    if (_ccsmStorage == nil) {
-        _ccsmStorage = [CCSMStorage new];
-    }
-    return _ccsmStorage;
 }
 
 @end

@@ -175,6 +175,7 @@
 		7D3B866E1EE5B61700190FD5 /* ForstaDomainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* ForstaDomainTableViewController.m */; };
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
+		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
@@ -846,6 +847,8 @@
 		7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPopupMenuViewController.m; sourceTree = "<group>"; };
 		7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryTableViewController.h; sourceTree = "<group>"; };
 		7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryTableViewController.m; sourceTree = "<group>"; };
+		7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryDetailTableViewController.h; sourceTree = "<group>"; };
+		7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryDetailTableViewController.m; sourceTree = "<group>"; };
 		7DBA8D661ED9FA62009FCF65 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7DBA8D6A1ED9FCEB009FCF65 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -1909,6 +1912,8 @@
 				7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */,
 				7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */,
 				7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */,
+				7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */,
+				7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -2963,6 +2968,7 @@
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
 				76EB058218170B33006006FC /* Environment.m in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
+				7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */,
 				45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */,
 				45C681C61D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				E197B61E18BBEC6D00F073E5 /* AudioRouter.m in Sources */,
