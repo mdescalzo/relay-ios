@@ -437,11 +437,19 @@
 //    return cell;
 
     NSString *cellID = @"Cell";
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
     
-    TSMessageAdapter *messageAdapter = [self messageAtIndexPath:indexPath];
+//    TSMessageAdapter *messageAdapter = [self messageAtIndexPath:indexPath];
     
-    cell.textLabel.text = messageAdapter.senderDisplayName;
+    NSArray *array = [self.selectedThread allInteractions];
+    
+    TSInteraction *interaction = [array objectAtIndex:(NSUInteger)[indexPath row]];
+    
+    TSMessageAdapter *message = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
+    
+    cell.textLabel.text = message.senderDisplayName;
+    cell.detailTextLabel.text = ((TSMessage *)interaction).body;
+//    cell.textLabel.text = messageAdapter.senderDisplayName;
     
     return cell;
     
@@ -565,22 +573,13 @@
     return _leftSwipeRecognizer;
 }
 
-//-(YapDatabaseViewMappings *)threadMappings
-//{
-//    if (_threadMappings == nil) {
-//        _threadMappings =
-//        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
-//        [_threadMappings setIsReversed:NO forGroup:TSInboxGroup];
-//        
-//        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-//            [_threadMappings updateWithTransaction:transaction];
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self.tableView reloadData];
-//            });
-//        }];
-//    }
-//    return _threadMappings;
-//}
+-(YapDatabaseViewMappings *)messageMappings
+{
+    if (_messageMappings == nil) {
+
+    _messageMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ self.selectedThread.uniqueId ] view:TSMessageDatabaseViewExtensionName];
+    }
+    return _messageMappings;
+}
 
 @end

@@ -99,7 +99,7 @@ CGFloat const kRowHeight = 40;
     switch (indexPath.row) {
         case 0:  //         Directory selected
         {
-            [self performSegueWithIdentifier:@"DirectorySegue" sender:[tableView cellForRowAtIndexPath:indexPath] ];
+            [self performSegueWithIdentifier:@"directorySegue" sender:[tableView cellForRowAtIndexPath:indexPath] ];
         }
             break;
             

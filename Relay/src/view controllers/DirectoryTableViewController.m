@@ -7,8 +7,11 @@
 //
 
 #import "DirectoryTableViewController.h"
+#import "CCSMStorage.h"
 
 @interface DirectoryTableViewController ()
+
+@property (nonatomic, strong) CCSMStorage *ccsmStorage;
 
 @end
 
@@ -22,6 +25,8 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [self contentDictionary];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,23 +38,24 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
-    return 0;
+    return (NSInteger)[[self.contentDictionary allKeys] count];
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DirectoryElementCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    cell.textLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -100,9 +106,17 @@
 -(NSDictionary *)contentDictionary
 {
     if (_contentDictionary == nil) {
-        _contentDictionary = [NSDictionary new];
+        _contentDictionary = [self.ccsmStorage getUsers];
     }
     return _contentDictionary;
+}
+
+-(CCSMStorage *)ccsmStorage
+{
+    if (_ccsmStorage == nil) {
+        _ccsmStorage = [CCSMStorage new];
+    }
+    return _ccsmStorage;
 }
 
 @end
