@@ -1,22 +1,23 @@
 //
-//  SettingsMenuViewController.m
+//  SettingsPopupMenuViewController.m
 //  Forsta
 //
 //  Created by Mark on 6/5/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "SettingsMenuViewController.h"
+#import "SettingsPopupMenuViewController.h"
+#import "DirectoryTableViewController.h"
 
 CGFloat const kRowHeight = 40;
 
-@interface SettingsMenuViewController ()
+@interface SettingsPopupMenuViewController ()
 
 @property (nonatomic, strong) NSArray *settingsTitles;
 
 @end
 
-@implementation SettingsMenuViewController
+@implementation SettingsPopupMenuViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -90,9 +91,25 @@ CGFloat const kRowHeight = 40;
 }
 */
 
-/*
-#pragma mark - Navigation
 
+
+#pragma mark - Navigation
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.row) {
+        case 0:  //         Directory selected
+        {
+            [self performSegueWithIdentifier:@"DirectorySegue" sender:[tableView cellForRowAtIndexPath:indexPath] ];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+/*
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
@@ -104,6 +121,18 @@ CGFloat const kRowHeight = 40;
 {
     return kRowHeight;
 }
+
+#pragma mark - Unwind action
+- (IBAction)unwindToSettings:(UIStoryboardSegue *)unwindSegue
+{
+    UIViewController* sourceViewController = unwindSegue.sourceViewController;
+    
+    if ([sourceViewController isKindOfClass:[DirectoryTableViewController class]])
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 
 #pragma mark - convenience method for getting overall table heigh
 -(CGFloat)heightForTableView;

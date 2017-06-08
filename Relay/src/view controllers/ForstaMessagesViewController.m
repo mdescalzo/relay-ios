@@ -10,7 +10,7 @@
 
 #import "ForstaMessagesViewController.h"
 #import "ForstaDomainTableViewController.h"
-#import "SettingsMenuViewController.h"
+#import "SettingsPopupMenuViewController.h"
 #import "InboxTableViewCell.h"
 #import "Environment.h"
 #import "NSDate+millisecondTimeStamp.h"
@@ -74,7 +74,7 @@
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, strong) ForstaDomainTableViewController *domainTableViewController;
-@property (nonatomic, strong) SettingsMenuViewController *settingsViewController;
+@property (nonatomic, strong) SettingsPopupMenuViewController *settingsViewController;
 @property (nonatomic, assign) BOOL isDomainViewVisible;
 
 //@property (nonatomic, strong) NSArray *users;
@@ -524,7 +524,7 @@
     return _domainTableViewController;
 }
 
--(SettingsMenuViewController *)settingsViewController
+-(SettingsPopupMenuViewController *)settingsViewController
 {
     if (_settingsViewController == nil) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
