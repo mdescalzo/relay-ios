@@ -295,7 +295,13 @@
                             <outlet property="delegate" destination="tyn-Im-y75" id="ZgV-n7-Qim"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="tsE-8I-iC0"/>
+                    <navigationItem key="navigationItem" id="tsE-8I-iC0">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="lrF-HT-8cp">
+                            <connections>
+                                <segue destination="Nj7-a0-Eh5" kind="unwind" unwindAction="unwindToSettings:" id="pSE-KH-icF"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="aboutLabel" destination="lhY-TQ-DZD" id="zAq-Tq-j1T"/>
                         <outlet property="advancedLabel" destination="fOg-rE-Obl" id="kcx-oI-7ec"/>
@@ -310,6 +316,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eZV-VK-PFp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Nj7-a0-Eh5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="7207" y="-804"/>
         </scene>

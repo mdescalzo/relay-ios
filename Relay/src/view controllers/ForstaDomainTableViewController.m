@@ -282,6 +282,7 @@ CGFloat const kHeaderHeight = 33.0;
         self.hostViewController.selectedThread = selectedThread;
         [self.hostViewController hideDomainTableView];
         [self.hostViewController reloadTableView];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     else   // autocomplete tableview
     {

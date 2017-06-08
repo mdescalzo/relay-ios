@@ -417,7 +417,7 @@ NSString *kUserIDKey = @"phone";
 //    }
 //    
     self.selectedThread = nil;
-    [self reloadTableView];
+    [self.tableView reloadData];
 //    [self.tableView beginUpdates];
 //    
 //    for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
@@ -523,7 +523,7 @@ NSString *kUserIDKey = @"phone";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self tableView:tableView didDeselectRowAtIndexPath:indexPath];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
@@ -566,7 +566,9 @@ NSString *kUserIDKey = @"phone";
 
 -(void)reloadTableView
 {
+    [self.selectedThread markAllAsRead];
     [self.tableView reloadData];
+    [self scrollToBottom];
 }
 
 #pragma mark - Button actions

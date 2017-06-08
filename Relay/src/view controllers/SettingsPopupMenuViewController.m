@@ -129,12 +129,6 @@ CGFloat const kRowHeight = 40;
 #pragma mark - Unwind action
 - (IBAction)unwindToSettings:(UIStoryboardSegue *)unwindSegue
 {
-    UIViewController* sourceViewController = unwindSegue.sourceViewController;
-    
-    if ([sourceViewController isKindOfClass:[DirectoryTableViewController class]])
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
 }
 
 
