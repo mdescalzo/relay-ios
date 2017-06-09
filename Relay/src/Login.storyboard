@@ -146,14 +146,13 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="Fbk-AC-mml">
-                                <rect key="frame" x="67" y="20" width="300" height="200"/>
+                                <rect key="frame" x="37.5" y="20" width="300" height="200"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vL2-W5-Ado" userLabel="Line1">
                                 <rect key="frame" x="0.0" y="280" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.75559091570000003" green="0.75556838510000002" blue="0.75558114050000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="FNL-d5-72C"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="VBO-Hl-e5n"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQE-qx-WiV" userLabel="ChangeCredentials Button">
@@ -204,9 +203,9 @@
                             <constraint firstItem="ic9-2W-eAg" firstAttribute="centerX" secondItem="pzC-eI-juG" secondAttribute="centerX" id="Cbu-6K-KzK"/>
                             <constraint firstItem="Fbk-AC-mml" firstAttribute="top" secondItem="zrz-CT-M7y" secondAttribute="topMargin" constant="20" id="DyM-LN-PRf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pzC-eI-juG" secondAttribute="trailing" constant="30" id="Gtf-5B-BnC"/>
-                            <constraint firstItem="Fbk-AC-mml" firstAttribute="leading" secondItem="zrz-CT-M7y" secondAttribute="leadingMargin" constant="51" id="HBO-iU-JUh"/>
                             <constraint firstItem="sFx-a6-Obs" firstAttribute="leading" secondItem="zrz-CT-M7y" secondAttribute="leadingMargin" constant="20" id="OXd-Pa-n9C"/>
                             <constraint firstItem="Wdl-0A-XYo" firstAttribute="centerY" secondItem="SQE-qx-WiV" secondAttribute="centerY" id="REq-wV-Orp"/>
+                            <constraint firstItem="Fbk-AC-mml" firstAttribute="centerX" secondItem="zrz-CT-M7y" secondAttribute="centerX" id="YBd-3Z-ZwD"/>
                             <constraint firstAttribute="trailing" secondItem="vL2-W5-Ado" secondAttribute="trailing" id="Zs2-LX-Qh3"/>
                             <constraint firstItem="eSA-GE-T4t" firstAttribute="top" secondItem="vL2-W5-Ado" secondAttribute="bottom" constant="28" id="a5l-M5-Ihy"/>
                             <constraint firstItem="vL2-W5-Ado" firstAttribute="top" secondItem="sFx-a6-Obs" secondAttribute="centerY" constant="30" id="b3s-Gt-Ih5"/>
