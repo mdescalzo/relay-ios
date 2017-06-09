@@ -19,8 +19,12 @@
 @property (nonatomic, retain) CallState *latestCall;
 
 @property (nonatomic, strong) TSThread *selectedThread;
+@property (nonatomic, assign) BOOL newConversation;
+@property (nonatomic, strong) NSDictionary *targetUserInfo;
 
 - (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing;
+- (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing;
+
 - (NSNumber *)updateInboxCountLabel;
 - (void)composeNew;
 -(void)reloadTableView;

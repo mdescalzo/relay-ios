@@ -9,6 +9,9 @@
 #import "DirectoryTableViewController.h"
 #import "CCSMStorage.h"
 #import "DirectoryDetailTableViewController.h"
+#import "ForstaMessagesViewController.h"
+#import "TSContactThread.h"
+#import "TSGroupThread.h"
 
 @interface DirectoryTableViewController ()
 
@@ -99,6 +102,15 @@
 
 #pragma mark - Navigation
 
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Build a new message thread from selected user in table
+//    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
+//    NSString *contactID = [tmpDict objectForKey:@"phone"];
+//    TSContactThread *newThread = [TSContactThread getOrCreateThreadWithContactId:contactID];
+//    
+//}
+
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
@@ -106,7 +118,16 @@
     NSIndexPath *path = [self.tableView indexPathForSelectedRow];
     
     NSDictionary *payload = [self detailObjectForIndexPath:path];
-    ((DirectoryDetailTableViewController *)[segue destinationViewController]).contentDictionary = payload;
+    if ([segue.identifier isEqualToString:@"DirectoryDetailSegue"]) {
+        ((DirectoryDetailTableViewController *)[segue destinationViewController]).contentDictionary = payload;
+    } else {
+        ForstaMessagesViewController *targetVC = (ForstaMessagesViewController *)[segue destinationViewController];
+        NSDictionary *tmpDict = [self detailObjectForIndexPath:path];
+        targetVC.newConversation = YES;
+        targetVC.targetUserInfo = tmpDict;
+        targetVC.selectedThread = nil;
+        [targetVC reloadTableView];
+    }
 }
 
 -(NSDictionary *)detailObjectForIndexPath:(NSIndexPath *)indexPath

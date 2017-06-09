@@ -523,11 +523,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DirectoryElementCell" textLabel="gPC-Kb-PTt" detailTextLabel="YMV-E6-b2Y" style="IBUITableViewCellStyleSubtitle" id="qPU-fd-JNp">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DirectoryElementCell" textLabel="gPC-Kb-PTt" detailTextLabel="YMV-E6-b2Y" style="IBUITableViewCellStyleSubtitle" id="qPU-fd-JNp">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qPU-fd-JNp" id="Jro-1J-mBw">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gPC-Kb-PTt">
@@ -547,7 +547,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="ov8-0K-eJJ" kind="show" id="vrS-nU-9ai"/>
+                                    <segue destination="5NG-BH-vh0" kind="unwind" unwindAction="unwindToMessagesView:" id="JBD-UY-2GH"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -565,9 +565,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="doneBarButton" destination="H8z-fn-A3O" id="nZc-BJ-plo"/>
+                        <segue destination="ov8-0K-eJJ" kind="show" identifier="DirectoryDetailSegue" id="Vhm-4m-BGN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UdZ-hx-5P3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="5NG-BH-vh0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="7218" y="-46"/>
         </scene>

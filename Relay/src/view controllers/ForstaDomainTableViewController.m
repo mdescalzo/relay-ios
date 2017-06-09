@@ -279,8 +279,10 @@ CGFloat const kHeaderHeight = 33.0;
     if (tableView == self.tableView)    //  check for main tableview or...
     {
         TSThread *selectedThread = [self threadForIndexPath:indexPath];
+        [selectedThread markAllAsRead];
         self.hostViewController.selectedThread = selectedThread;
         [self.hostViewController hideDomainTableView];
+        self.hostViewController.newConversation = NO;
         [self.hostViewController reloadTableView];
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
