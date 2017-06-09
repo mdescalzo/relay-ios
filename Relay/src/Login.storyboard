@@ -175,22 +175,33 @@
                                 <rect key="frame" x="299" y="309" width="20" height="20"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="_arrow_button" translatesAutoresizingMaskIntoConstraints="NO" id="Wdl-0A-XYo">
-                                <rect key="frame" x="8" y="611.5" width="12" height="56"/>
+                                <rect key="frame" x="8" y="611" width="12" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="wBF-lR-1Vi"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ic9-2W-eAg">
+                                <rect key="frame" x="132" y="359" width="111" height="30"/>
+                                <state key="normal" title="Send New Code">
+                                    <color key="titleColor" red="0.16862745100000001" green="0.67450980390000004" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onResendCodeButtonTap:" destination="7Uu-IH-pbe" eventType="touchUpInside" id="CcR-vS-mJh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="pzC-eI-juG" firstAttribute="top" secondItem="vL2-W5-Ado" secondAttribute="bottom" constant="15" id="1Br-mH-HZp"/>
                             <constraint firstItem="pzC-eI-juG" firstAttribute="trailing" secondItem="eSA-GE-T4t" secondAttribute="trailing" constant="10" id="2aU-d0-bTU"/>
                             <constraint firstItem="SQE-qx-WiV" firstAttribute="leading" secondItem="zrz-CT-M7y" secondAttribute="leading" id="3DL-k1-wch"/>
+                            <constraint firstItem="ic9-2W-eAg" firstAttribute="top" secondItem="pzC-eI-juG" secondAttribute="bottom" constant="16" id="7RK-f6-I10"/>
                             <constraint firstAttribute="bottom" secondItem="SQE-qx-WiV" secondAttribute="bottom" id="7xy-Tb-H2I"/>
                             <constraint firstItem="SQE-qx-WiV" firstAttribute="leading" secondItem="zrz-CT-M7y" secondAttribute="leading" id="9dj-Nd-TKr"/>
                             <constraint firstItem="vL2-W5-Ado" firstAttribute="top" secondItem="Fbk-AC-mml" secondAttribute="bottom" constant="60" id="9kv-cK-p3c"/>
                             <constraint firstItem="Wdl-0A-XYo" firstAttribute="leading" secondItem="SQE-qx-WiV" secondAttribute="leading" constant="8" id="B3g-HU-eRm"/>
                             <constraint firstItem="pzC-eI-juG" firstAttribute="centerY" secondItem="eSA-GE-T4t" secondAttribute="centerY" id="Bqn-fw-VFj"/>
+                            <constraint firstItem="ic9-2W-eAg" firstAttribute="centerX" secondItem="pzC-eI-juG" secondAttribute="centerX" id="Cbu-6K-KzK"/>
                             <constraint firstItem="Fbk-AC-mml" firstAttribute="top" secondItem="zrz-CT-M7y" secondAttribute="topMargin" constant="20" id="DyM-LN-PRf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pzC-eI-juG" secondAttribute="trailing" constant="30" id="Gtf-5B-BnC"/>
                             <constraint firstItem="Fbk-AC-mml" firstAttribute="leading" secondItem="zrz-CT-M7y" secondAttribute="leadingMargin" constant="51" id="HBO-iU-JUh"/>
@@ -208,6 +219,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="resendCodeButton" destination="ic9-2W-eAg" id="f7a-ty-GZa"/>
                         <outlet property="spinner" destination="eSA-GE-T4t" id="phb-Tq-ZM0"/>
                         <outlet property="validationButton" destination="pzC-eI-juG" id="df0-Vn-b6A"/>
                         <outlet property="validationCodeTextField" destination="sFx-a6-Obs" id="3ro-VB-teY"/>

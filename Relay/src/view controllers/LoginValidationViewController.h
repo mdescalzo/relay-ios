@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *validationCodeTextField;
 @property (weak, nonatomic) IBOutlet UIButton *validationButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (weak, nonatomic) IBOutlet UIButton *resendCodeButton;
 
 -(IBAction)onValidationButtonTap:(id)sender;
 

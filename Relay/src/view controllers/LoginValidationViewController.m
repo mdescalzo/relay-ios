@@ -27,12 +27,11 @@ NSUInteger maximumValidationAttempts = 9999;
     self.ccsmStorage = [CCSMStorage new];
     self.ccsmCommManager = [CCSMCommManager new];
     
-    // Do any additional setup after loading the view.
-    
-    // Allow for localized string on controls
-//    self.validationLabel.text = NSLocalizedString(@"Enter Validation Code", @"");
+   // Allow for localized string on controls
     self.validationCodeTextField.placeholder = NSLocalizedString(@"Enter Validation Code", @"");
     self.validationButton.titleLabel.text = NSLocalizedString(@"Validate", @"");
+    self.resendCodeButton.titleLabel.text = NSLocalizedString(@"Send New Code", @"");
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,25 +92,38 @@ NSUInteger maximumValidationAttempts = 9999;
     // Move on to the Registration storyboard
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner startAnimating];
-        self.validationButton.enabled = NO;
-        self.validationButton.alpha = 0.5;
+        self.validationButton.enabled = YES;
+        self.validationButton.alpha = 1.0;
         [self performSegueWithIdentifier:targetSegue sender:self];
     });
 }
 
 -(void)validationFailed
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner startAnimating];
+        self.validationButton.enabled = YES;
+        self.validationButton.alpha = 1.0;
+    });
+
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
                                 message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
-                               delegate:self
-                      cancelButtonTitle:NSLocalizedString(@"Try again", @"")
-                      otherButtonTitles:NSLocalizedString(@"Send new code", @""), nil]
+                               delegate:nil
+                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                      otherButtonTitles:nil]
      show];
 }
 
 #pragma mark - Button actions
 -(IBAction)onValidationButtonTap:(id)sender
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner startAnimating];
+        self.validationButton.enabled = NO;
+        self.validationButton.alpha = 0.5;
+    });
+
+    
     NSString *code = self.validationCodeTextField.text;
     [self.ccsmCommManager verifyLogin:code
                               success:^{
@@ -120,6 +132,12 @@ NSUInteger maximumValidationAttempts = 9999;
                               failure:^(NSError *err){
                                   [self validationFailed];
                               }];
+}
+
+-(IBAction)onResendCodeButtonTap:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Be Patient." message:@"Function not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - UIAlertView delegate methods
