@@ -35,7 +35,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView opaque="NO" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="0de-rr-b5G">
-                                        <rect key="frame" x="43" y="46" width="288" height="153"/>
+                                        <rect key="frame" x="57" y="28" width="300" height="200"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                 </subviews>
@@ -47,6 +47,7 @@
                                     <constraint firstAttribute="height" constant="245" id="EX0-kF-4ZZ"/>
                                     <constraint firstAttribute="bottom" secondItem="K0h-3v-ziO" secondAttribute="bottom" constant="26" id="GzS-Jj-DiU"/>
                                     <constraint firstAttribute="centerX" secondItem="0de-rr-b5G" secondAttribute="centerX" id="d3o-xW-nyx"/>
+                                    <constraint firstItem="0de-rr-b5G" firstAttribute="top" secondItem="xmu-A7-TNZ" secondAttribute="topMargin" constant="20" id="e1s-m2-a0u"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogW-8F-AvT" userLabel="_1.0b Registration Country Code Selection">
@@ -352,7 +353,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="Yql-X5-USw">
-                                        <rect key="frame" x="37" y="22" width="300" height="200"/>
+                                        <rect key="frame" x="58" y="28" width="300" height="200"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -363,6 +364,7 @@
                                     <constraint firstAttribute="width" secondItem="ARw-Wq-shF" secondAttribute="width" id="TVo-yg-YPd"/>
                                     <constraint firstAttribute="centerX" secondItem="ARw-Wq-shF" secondAttribute="centerX" constant="-1" id="ihp-cT-EIU"/>
                                     <constraint firstAttribute="height" constant="245" id="nNa-2d-2TY" userLabel="Height - (245) - _1.1 Registration Screen Title"/>
+                                    <constraint firstItem="Yql-X5-USw" firstAttribute="top" secondItem="X6Y-tl-Cgw" secondAttribute="topMargin" constant="20" id="sMs-zN-rsF"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YJG-aq-61Z" userLabel="_1.1b Verification Code Input">

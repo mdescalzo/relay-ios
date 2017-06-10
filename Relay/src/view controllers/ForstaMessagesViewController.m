@@ -585,7 +585,7 @@ NSString *kUserIDKey = @"phone";
         text = [NSString stringWithFormat:@":%@:", text];
     }
     
-    cell.textLabel.backgroundColor = [UIColor colorWithRed:215/255 green:230/255 blue:245/255 alpha:1.0];
+    cell.textLabel.backgroundColor = [UIColor colorWithRed:215.0/255.0 green:230.0/255.0 blue:245.0/255.0 alpha:1.0];
     cell.textLabel.text = text;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;

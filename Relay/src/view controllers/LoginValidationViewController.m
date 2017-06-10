@@ -138,6 +138,15 @@ NSUInteger maximumValidationAttempts = 9999;
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Be Patient." message:@"Function not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+
+//    [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
+//                               orgName:[self.ccsmStorage getOrgName]
+//                               success:^{
+////                                   [self connectionSucceeded];
+//                               }
+//                               failure:^(NSError *err){
+//                                   [self connectionFailed:err];
+//                               }];    
 }
 
 #pragma mark - UIAlertView delegate methods

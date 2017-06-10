@@ -236,6 +236,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Tep-oO-3Dd" kind="show" id="Plo-bh-pVG"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="fOg-rE-Obl" style="IBUITableViewCellStyleDefault" id="WZj-ca-tYW" userLabel="Advanced Cell">
                                         <rect key="frame" x="0.0" y="422" width="375" height="44"/>
@@ -404,10 +407,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Linked Devices" id="okS-cj-QL6"/>
+                    <connections>
+                        <segue destination="RuD-LD-qgC" kind="show" identifier="LinkDeviceSegue" id="cfS-fH-GVX"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FPy-ZB-a4j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8871" y="-804"/>
+            <point key="canvasLocation" x="8018" y="-806"/>
         </scene>
         <!--Link Device-->
         <scene sceneID="frb-xi-FHU">
@@ -471,6 +477,9 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GJi-OM-JlB">
                                 <rect key="frame" x="0.0" y="20" width="375" height="323.5"/>
                                 <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <segue destination="NFz-Gt-LjH" kind="embed" identifier="embedDeviceQRScanner" id="7JJ-Vf-KnH"/>
+                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -494,7 +503,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pf4-ue-fW9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7980" y="-804"/>
+            <point key="canvasLocation" x="8870" y="-806"/>
         </scene>
         <!--Device QR Scanner-->
         <scene sceneID="hzg-u7-8nv">
@@ -505,7 +514,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3W9-c8-idi"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uWg-LB-Bic">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="323.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
