@@ -98,7 +98,7 @@ NSString *kUserIDKey = @"phone";
 
 @property (nonatomic, strong) NSMutableArray *searchResult;
 
-@property (nonatomic, strong) UIWindow *pipWindow;
+//@property (nonatomic, strong) UIWindow *pipWindow;
 
 @property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) NSString *userDispalyName;
@@ -249,7 +249,6 @@ NSString *kUserIDKey = @"phone";
 
 -(IBAction)unwindToMessagesView:(UIStoryboardSegue *)sender
 {
-    
 }
 
 #pragma mark - Lifted from SignalsViewController
@@ -599,7 +598,7 @@ NSString *kUserIDKey = @"phone";
         NSMutableString *item = [[self.searchResult objectAtIndex:(NSUInteger)[indexPath row] ] mutableCopy];
         
         if ([self.foundPrefix isEqualToString:@"@"] && self.foundPrefixRange.location == 0) {
-            [item appendString:@":"];
+            [item appendString:@" ®"];
         }
         else if (([self.foundPrefix isEqualToString:@":"] || [self.foundPrefix isEqualToString:@"+:"])) {
             [item appendString:@":"];
