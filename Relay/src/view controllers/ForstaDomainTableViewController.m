@@ -200,22 +200,22 @@ CGFloat const kHeaderHeight = 33.0;
     switch (section) {
         case kConversationsIndex:
         {
-            imageView.backgroundColor = [UIColor colorWithRed:43 green:172 blue:226 alpha:1.0];
+            imageView.backgroundColor = [UIColor colorWithRed:43/255.0 green:172/255.0 blue:226/255.0 alpha:1.0];
         }
             break;
         case kPinnedIndex:
         {
-            imageView.backgroundColor = [UIColor colorWithRed:175 green:210 blue:63 alpha:1.0];
+            imageView.backgroundColor = [UIColor colorWithRed:175/255.0 green:210/255.0 blue:63/255.0 alpha:1.0];
         }
             break;
         case kAnnouncementsIndex:
         {
-            imageView.backgroundColor = [UIColor colorWithRed:244 green:125 blue:32 alpha:1.0];
+            imageView.backgroundColor = [UIColor colorWithRed:244/255.0 green:125/255.0 blue:32/255.0 alpha:1.0];
         }
             break;
         case kTopicsIndex:
         {
-            imageView.backgroundColor = [UIColor colorWithRed:128 green:206 blue:255 alpha:1.0];
+            imageView.backgroundColor = [UIColor colorWithRed:128/255.0 green:206/255.0 blue:255/255.0 alpha:1.0];
         }
             break;
             
@@ -229,7 +229,7 @@ CGFloat const kHeaderHeight = 33.0;
                                                               0,
                                                               self.view.frame.size.width - imageView.frame.size.width,
                                                               [self tableView:tableView heightForHeaderInSection:section])];
-    label.backgroundColor = [UIColor colorWithRed:202 green:202 blue:202 alpha:1.0];
+    label.backgroundColor = [UIColor colorWithRed:202/255.0 green:202/255.0 blue:202/255.0 alpha:1.0];
     label.textAlignment = NSTextAlignmentCenter;
     label.text = [self.sectionTitles objectAtIndex:(NSUInteger)section];
     
