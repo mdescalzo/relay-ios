@@ -5,6 +5,7 @@
 #import "SecureEndPoint.h"
 #import "TSGroupModel.h"
 #import "TSStorageHeaders.h"
+#import "CCSMStorage.h"
 
 static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
@@ -32,6 +33,8 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @class ContactsUpdater;
 @class TSNetworkManager;
 @class OWSMessageSender;
+
+@class ForstaMessagesViewController;
 
 @interface Environment : NSObject
 
@@ -71,7 +74,8 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
 
-@property (nonatomic, readonly) SignalsViewController *signalsViewController;
+@property (nonatomic, readonly) ForstaMessagesViewController *forstaViewController;
+//@property (nonatomic, readonly) SignalsViewController *signalsViewController;
 @property (nonatomic, readonly, weak) UINavigationController *signUpFlowNavigationController;
 
 + (SecureEndPoint *)getMasterServerSecureEndPoint;
@@ -87,12 +91,14 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (PhoneManager *)phoneManager;
 
 + (PropertyListPreferences *)preferences;
++ (CCSMStorage *)ccsmStorage;
 
 + (BOOL)isRedPhoneRegistered;
 + (void)resetAppData;
 
 - (void)initCallListener;
-- (void)setSignalsViewController:(SignalsViewController *)signalsViewController;
+-(void)setForstaViewController:(ForstaMessagesViewController *)forstaViewController;
+//- (void)setSignalsViewController:(SignalsViewController *)signalsViewController;
 - (void)setSignUpFlowNavigationController:(UINavigationController *)signUpFlowNavigationController;
 
 + (void)messageThreadId:(NSString *)threadId;

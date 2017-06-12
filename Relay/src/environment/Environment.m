@@ -7,10 +7,12 @@
 #import "MessagesViewController.h"
 #import "RecentCallManager.h"
 #import "SignalKeyingStorage.h"
-#import "SignalsViewController.h"
+//#import "SignalsViewController.h"
 #import "TSContactThread.h"
 #import "TSGroupThread.h"
 #import <RelayServiceKit/ContactsUpdater.h>
+
+#import "ForstaMessagesViewController.h"
 
 #define isRegisteredUserDefaultString @"isRegistered"
 
@@ -144,14 +146,14 @@ static Environment *environment = nil;
 
 - (void)initCallListener {
     [self.phoneManager.currentCallObservable watchLatestValue:^(CallState *latestCall) {
-      if (latestCall == nil) {
-          return;
-      }
-
-      SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
-      [vc dismissViewControllerAnimated:NO completion:nil];
-      vc.latestCall = latestCall;
-      [vc performSegueWithIdentifier:kCallSegue sender:self];
+        if (latestCall == nil) {
+            return;
+        }
+        ForstaMessagesViewController *vc = [[Environment getCurrent] forstaViewController];
+//        SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
+        [vc dismissViewControllerAnimated:NO completion:nil];
+        vc.latestCall = latestCall;
+        [vc performSegueWithIdentifier:kCallSegue sender:self];
     }
                                                      onThread:NSThread.mainThread
                                                untilCancelled:nil];
@@ -161,14 +163,25 @@ static Environment *environment = nil;
     return [PropertyListPreferences new];
 }
 
-- (void)setSignalsViewController:(SignalsViewController *)signalsViewController {
-    _signalsViewController = signalsViewController;
++ (CCSMStorage *)ccsmStorage {
+    return [CCSMStorage new];
 }
+
+-(void)setForstaViewController:(ForstaMessagesViewController *)forstaViewController
+{
+    _forstaViewController = forstaViewController;
+}
+
+//- (void)setSignalsViewController:(SignalsViewController *)signalsViewController {
+//    _signalsViewController = signalsViewController;
+//}
 
 - (void)setSignUpFlowNavigationController:(UINavigationController *)navigationController {
     _signUpFlowNavigationController = navigationController;
 }
 
+
+// Called when a thread is updated?
 + (void)messageThreadId:(NSString *)threadId {
     TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId];
 
@@ -181,9 +194,12 @@ static Environment *environment = nil;
         [self messageGroup:(TSGroupThread *)thread];
     } else {
         Environment *env          = [self getCurrent];
-        SignalsViewController *vc = env.signalsViewController;
+        ForstaMessagesViewController *vc = env.forstaViewController;
+//        SignalsViewController *vc = env.signalsViewController;
         UIViewController *topvc   = vc.navigationController.topViewController;
 
+        // Dismisses keyboard if current thread updated.
+        // May not be necessary in Forsta implementation
         if ([topvc isKindOfClass:[MessagesViewController class]]) {
             MessagesViewController *mvc = (MessagesViewController *)topvc;
             if ([mvc.thread.uniqueId isEqualToString:threadId]) {
@@ -195,9 +211,11 @@ static Environment *environment = nil;
     }
 }
 
+// Get or create a thread for identifier(ContactID)
 + (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose {
     Environment *env          = [self getCurrent];
-    SignalsViewController *vc = env.signalsViewController;
+    ForstaMessagesViewController *vc = env.forstaViewController;
+//    SignalsViewController *vc = env.signalsViewController;
 
     [[TSStorageManager sharedManager]
             .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
@@ -209,7 +227,8 @@ static Environment *environment = nil;
 
 + (void)messageGroup:(TSGroupThread *)groupThread {
     Environment *env          = [self getCurrent];
-    SignalsViewController *vc = env.signalsViewController;
+    ForstaMessagesViewController *vc = env.forstaViewController;
+//    SignalsViewController *vc = env.signalsViewController;
 
     [vc presentThread:groupThread keyboardOnViewAppearing:YES];
 }

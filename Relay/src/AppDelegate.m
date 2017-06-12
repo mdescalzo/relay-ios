@@ -23,8 +23,12 @@
 #import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSAccountManager.h>
 
-NSString *const AppDelegateStoryboardMain = @"Main";
+#import "CCSMCommunication.h"
+
+NSString *const AppDelegateStoryboardMain = @"Main_v2";
 NSString *const AppDelegateStoryboardRegistration = @"Registration";
+NSString *const AppDelegateStoryboardLogin = @"Login";
+
 
 static NSString *const kInitialViewControllerIdentifier = @"UserInitialViewController";
 static NSString *const kURLSchemeSGNLKey                = @"sgnl";
@@ -35,6 +39,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 @property (nonatomic, retain) UIWindow *screenProtectionWindow;
 @property (nonatomic) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
 @property (nonatomic) OWSStaleNotificationObserver *staleNotificationObserver;
+
+@property (nonatomic, strong) CCSMCommManager *ccsmCommManager;
 
 @end
 
@@ -85,12 +91,52 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     [self setupTSKitEnv];
 
-    UIStoryboard *storyboard;
-    if ([TSAccountManager isRegistered]) {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-    } else {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+    __block UIStoryboard *storyboard;
+    
+    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
+    {
+        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+            NSMutableDictionary * users = [Environment.ccsmStorage getUsers];
+            if (!users) {
+                users = [NSMutableDictionary new];
+            }
+            
+            NSString *orgUrl = [[Environment.ccsmStorage getUserInfo] objectForKey:@"org"];
+            [self.ccsmCommManager getThing:orgUrl
+                                   success:^(NSDictionary *org){
+                                       NSLog(@"Retrieved org info after session token refresh");
+                                       [Environment.ccsmStorage setOrgInfo:org];
+                                   } 
+                                   failure:^(NSError *err){
+                                       NSLog(@"Failed to retrieve org info after session token refresh");
+                                   }];
+            [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
+                                          collection:users
+                                             success:^{
+                                                 NSLog(@"Retrieved all users after session token refresh");
+                                                 [Environment.ccsmStorage setUsers:users];
+                                             }
+                                             failure:^(NSError *err){
+                                                 NSLog(@"Failed to retrieve all users after session token refresh");
+                                             }];
+            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
+            {
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+            }
+            else {  // Good token, but not registered, go register
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+            }
+        }
+        failure:^(NSError *error){  // Unable to refresh, login
+            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+        }];
     }
+    else  // No local token, login
+    {
+        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+    }
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     self.window.rootViewController = [storyboard instantiateInitialViewController];
@@ -251,7 +297,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
       if ([TSAccountManager isRegistered]) {
           dispatch_sync(dispatch_get_main_queue(), ^{
             [self protectScreen];
-            [[[Environment getCurrent] signalsViewController] updateInboxCountLabel];
+              [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
+//              [[[Environment getCurrent] signalsViewController] updateInboxCountLabel];
           });
           [TSSocketManager resignActivity];
       }
@@ -265,7 +312,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
                completionHandler:(void (^)(BOOL succeeded))completionHandler {
     if ([TSAccountManager isRegistered]) {
-        [[Environment getCurrent].signalsViewController composeNew];
+        [[Environment getCurrent].forstaViewController composeNew];
+//        [[Environment getCurrent].signalsViewController composeNew];
         completionHandler(YES);
     } else {
         UIAlertController *controller =
@@ -279,11 +327,18 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
                                                      }]];
         [[Environment getCurrent]
-                .signalsViewController.presentedViewController presentViewController:controller
-                                                                            animated:YES
-                                                                          completion:^{
-                                                                            completionHandler(NO);
-                                                                          }];
+         .forstaViewController.presentedViewController presentViewController:controller
+         animated:YES
+         completion:^{
+             completionHandler(NO);
+         }];
+
+//        [[Environment getCurrent]
+//                .signalsViewController.presentedViewController presentViewController:controller
+//                                                                            animated:YES
+//                                                                          completion:^{
+//                                                                            completionHandler(NO);
+//                                                                          }];
     }
 }
 
@@ -391,6 +446,15 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 - (NSString *)tag
 {
     return self.class.tag;
+}
+
+#pragma mark - lazy instantiation
+-(CCSMCommManager *)ccsmCommManager
+{
+    if (_ccsmCommManager == nil) {
+        _ccsmCommManager = [CCSMCommManager new];
+    }
+    return _ccsmCommManager;
 }
 
 @end

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zqr-Ab-axp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zqr-Ab-axp">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -35,7 +35,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView opaque="NO" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="0de-rr-b5G">
-                                        <rect key="frame" x="43" y="46" width="288" height="153"/>
+                                        <rect key="frame" x="57" y="28" width="300" height="200"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                 </subviews>
@@ -47,6 +47,7 @@
                                     <constraint firstAttribute="height" constant="245" id="EX0-kF-4ZZ"/>
                                     <constraint firstAttribute="bottom" secondItem="K0h-3v-ziO" secondAttribute="bottom" constant="26" id="GzS-Jj-DiU"/>
                                     <constraint firstAttribute="centerX" secondItem="0de-rr-b5G" secondAttribute="centerX" id="d3o-xW-nyx"/>
+                                    <constraint firstItem="0de-rr-b5G" firstAttribute="top" secondItem="xmu-A7-TNZ" secondAttribute="topMargin" constant="20" id="e1s-m2-a0u"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogW-8F-AvT" userLabel="_1.0b Registration Country Code Selection">
@@ -352,7 +353,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="Yql-X5-USw">
-                                        <rect key="frame" x="37" y="22" width="300" height="200"/>
+                                        <rect key="frame" x="58" y="28" width="300" height="200"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -363,6 +364,7 @@
                                     <constraint firstAttribute="width" secondItem="ARw-Wq-shF" secondAttribute="width" id="TVo-yg-YPd"/>
                                     <constraint firstAttribute="centerX" secondItem="ARw-Wq-shF" secondAttribute="centerX" constant="-1" id="ihp-cT-EIU"/>
                                     <constraint firstAttribute="height" constant="245" id="nNa-2d-2TY" userLabel="Height - (245) - _1.1 Registration Screen Title"/>
+                                    <constraint firstItem="Yql-X5-USw" firstAttribute="top" secondItem="X6Y-tl-Cgw" secondAttribute="topMargin" constant="20" id="sMs-zN-rsF"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YJG-aq-61Z" userLabel="_1.1b Verification Code Input">
@@ -594,10 +596,10 @@
             </objects>
             <point key="canvasLocation" x="-3780" y="-735"/>
         </scene>
-        <!--Main-->
+        <!--Main_v2-->
         <scene sceneID="sjs-Ns-GrM">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="ZlQ-iw-Vxb" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Main_v2" id="ZlQ-iw-Vxb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nhi-5D-Zp3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3149" y="-736"/>

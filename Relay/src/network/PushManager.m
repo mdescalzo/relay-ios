@@ -209,7 +209,8 @@
             [self.messageSender sendMessage:message
                 success:^{
                     [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];
-                    [[[[Environment getCurrent] signalsViewController] tableView] reloadData];
+//                    [[[[Environment getCurrent] signalsViewController] tableView] reloadData];
+                    [[[[Environment getCurrent] forstaViewController] tableView] reloadData];
                 }
                 failure:^(NSError *error) {
                     // TODO Surface the specific error in the notification?
@@ -256,7 +257,7 @@
       [thread markAllAsReadWithTransaction:transaction];
     }
         completionBlock:^{
-          [[[Environment getCurrent] signalsViewController] updateInboxCountLabel];
+          [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
           [self cancelNotificationsWithThreadId:threadId];
 
           completionHandler();
