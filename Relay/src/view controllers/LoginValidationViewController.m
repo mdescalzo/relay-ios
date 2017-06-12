@@ -18,6 +18,8 @@ NSUInteger maximumValidationAttempts = 9999;
 @property (strong) CCSMStorage *ccsmStorage;
 @property (strong) CCSMCommManager *ccsmCommManager;
 
+@property (nonatomic, assign) BOOL keyboardShowing;
+
 @end
 
 @implementation LoginValidationViewController
@@ -34,6 +36,13 @@ NSUInteger maximumValidationAttempts = 9999;
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -48,6 +57,51 @@ NSUInteger maximumValidationAttempts = 9999;
     // Pass the selected object to the new view controller.
 }
 */
+#pragma mark - move controls up to accomodate keyboard.
+-(void)keyboardWillShow:(NSNotification *)notification
+{
+    if (!self.keyboardShowing) {
+        self.keyboardShowing = YES;
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize screenSize = UIScreen.mainScreen.bounds.size;
+        
+        CGFloat controlsY = self.resendCodeButton.frame.origin.y + self.resendCodeButton.frame.size.height + 8.0;
+        
+        if ((screenSize.height - controlsY) < keyboardSize.height) {  // Keyboard will overlap
+            
+            CGFloat offset =  keyboardSize.height - (screenSize.height - controlsY);
+            
+            CGRect newFrame = CGRectMake(self.view.frame.origin.x,
+                                         self.view.frame.origin.y - offset,
+                                         self.view.frame.size.width,
+                                         self.view.frame.size.height);
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.25 animations:^{
+                    self.view.frame = newFrame;
+                    
+                }];
+            });
+        }
+    }
+}
+
+-(void)keyboardWillHide:(NSNotification *)notification
+{
+    if (self.keyboardShowing) {
+        self.keyboardShowing = NO;
+        if ([self.validationCodeTextField isFirstResponder]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.25 animations:^{
+                    self.view.frame = [UIScreen mainScreen].bounds ;
+                    
+                }];
+            });
+        }
+    }
+}
+
 
 #pragma mark -
 -(BOOL)attemptValidation
@@ -136,17 +190,17 @@ NSUInteger maximumValidationAttempts = 9999;
 
 -(IBAction)onResendCodeButtonTap:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Be Patient." message:@"Function not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Be Patient." message:@"Function not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alert show];
 
-//    [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
-//                               orgName:[self.ccsmStorage getOrgName]
-//                               success:^{
-////                                   [self connectionSucceeded];
-//                               }
-//                               failure:^(NSError *err){
-//                                   [self connectionFailed:err];
-//                               }];    
+    [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
+                               orgName:[self.ccsmStorage getOrgName]
+                               success:^{
+//                                   [self connectionSucceeded];
+                               }
+                               failure:^(NSError *err){
+                                   
+                               }];
 }
 
 #pragma mark - UIAlertView delegate methods

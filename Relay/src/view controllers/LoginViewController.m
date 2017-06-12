@@ -10,14 +10,18 @@
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
 
+
 @interface LoginViewController ()
 
 @property (strong) CCSMStorage *ccsmStorage;
 @property (strong) CCSMCommManager *ccsmCommManager;
 
+@property (nonatomic, assign) BOOL keyboardShowing;
+
 @end
 
 @implementation LoginViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,11 +35,27 @@
     self.loginButton.titleLabel.text = NSLocalizedString(@"Login", @"");
 }
 
--(void)viewDidDisappear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self.usernameTextField resignFirstResponder];
+    [self.organizationTextField resignFirstResponder]; 
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.usernameTextField resignFirstResponder];
+    [self.organizationTextField resignFirstResponder];
     [self.spinner stopAnimating];
-    
-    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,6 +107,49 @@
                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                           otherButtonTitles:nil]
          show];
+    }
+}
+
+#pragma mark - move controls up to accomodate keyboard.
+-(void)keyboardWillShow:(NSNotification *)notification
+{
+    if (!self.keyboardShowing) {
+        self.keyboardShowing = YES;
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize screenSize = UIScreen.mainScreen.bounds.size;
+        
+        CGFloat controlsY = self.loginButton.frame.origin.y + self.loginButton.frame.size.height + 8.0;
+        
+        if ((screenSize.height - controlsY) < keyboardSize.height) {  // Keyboard will overlap
+            
+            CGFloat offset =  keyboardSize.height - (screenSize.height - controlsY);
+            
+            CGRect newFrame = CGRectMake(self.view.frame.origin.x,
+                                         self.view.frame.origin.y - offset,
+                                         self.view.frame.size.width,
+                                         self.view.frame.size.height);
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.25 animations:^{
+                    self.view.frame = newFrame;
+                }];
+            });
+        }
+    }
+}
+
+-(void)keyboardWillHide:(nullable NSNotification *)notification
+{
+    if (self.keyboardShowing) {
+        self.keyboardShowing = NO;
+        if (([self.organizationTextField isFirstResponder] || [self.usernameTextField isFirstResponder])) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.25 animations:^{
+                    self.view.frame = [UIScreen mainScreen].bounds ;
+                }];
+            });
+        }
     }
 }
 
