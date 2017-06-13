@@ -257,19 +257,22 @@ CGFloat const kHeaderHeight = 33.0;
     
     // Configure the cell...
     InboxTableViewCell *cell =  [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
-    TSThread *thread = [self threadForIndexPath:indexPath];
     
-    if (!cell) {
-        cell = [InboxTableViewCell inboxTableViewCell];
-    }
+/**********  Disabling this table's content  ****************/
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [cell configureWithThread:thread contactsManager:self.contactsManager];
-    });
-    
-    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
-        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
-    }
+//    TSThread *thread = [self threadForIndexPath:indexPath];
+//    
+//    if (!cell) {
+//        cell = [InboxTableViewCell inboxTableViewCell];
+//    }
+//    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [cell configureWithThread:thread contactsManager:self.contactsManager];
+//    });
+//    
+//    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
+//        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+//    }
     
     return cell;
 }
