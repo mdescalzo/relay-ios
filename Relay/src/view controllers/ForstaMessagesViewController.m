@@ -82,9 +82,11 @@ NSString *kUserIDKey = @"phone";
 @property (strong, nonatomic) UISwipeGestureRecognizer *rightSwipeRecognizer;
 @property (strong, nonatomic) UISwipeGestureRecognizer *leftSwipeRecognizer;
 
+@property (nonatomic, strong) NSMutableArray *taggedRecipients;
 @property (nonatomic, strong) NSMutableArray *messages;
 
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) IBOutlet UILabel *bannerLabel;
 
 @property (nonatomic, strong) ForstaDomainTableViewController *domainTableViewController;
 @property (nonatomic, strong) SettingsPopupMenuViewController *settingsViewController;
@@ -203,6 +205,11 @@ NSString *kUserIDKey = @"phone";
     
     // Temporarily disable the searchbar since it isn't funcational yet
     self.searchBar.userInteractionEnabled = NO;
+    
+    // Banner label
+    [self.view bringSubviewToFront:self.bannerLabel];
+    self.bannerLabel.backgroundColor = [UIColor lightGrayColor];
+    self.bannerLabel.hidden = YES;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -229,6 +236,7 @@ NSString *kUserIDKey = @"phone";
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     if ([[segue identifier] isEqualToString:@"SettingsPopoverSegue"]) {
+        SettingsPopupMenuViewController *destination = [segue destinationViewController];
         [segue destinationViewController].popoverPresentationController.delegate = self;
         [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
         [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForSettingsBarButton];
@@ -452,6 +460,7 @@ NSString *kUserIDKey = @"phone";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-]+" options:0 error:nil];
     NSArray *matches = [regex matchesInString:textView.text options:0 range:range];
     
+    [self.taggedRecipients removeAllObjects];
     for (NSTextCheckingResult *match in matches)
     {
         UIColor *highlightColor;
@@ -461,6 +470,9 @@ NSString *kUserIDKey = @"phone";
         // Also, select highlight color based on validity
         if ([self isValidUserID:tag]) {
             highlightColor = [UIColor blueColor];
+            if (![self.taggedRecipients containsObject:tag]) {
+                [self.taggedRecipients addObject:tag];
+            }
         } else {
             highlightColor = [UIColor redColor];
         }
@@ -468,8 +480,9 @@ NSString *kUserIDKey = @"phone";
         [attributedText addAttribute:NSForegroundColorAttributeName value:highlightColor range:match.range];
     }
     
-    // Check to see if new input ends the match and switch color back to black.
+    [self updateBannerLabel];
     
+    // Check to see if new input ends the match and switch color back to black.
     textView.attributedText = attributedText;
     textView.selectedRange = initialSelectedRange;
 }
@@ -480,6 +493,20 @@ NSString *kUserIDKey = @"phone";
         return YES;
     else
         return NO;
+}
+
+// Label used for testing purposes.  Do not include in release or demonstration builds.
+-(void)updateBannerLabel
+{
+    NSMutableString *holdingString = [NSMutableString new];
+    
+    if ([self.taggedRecipients count] > 0) {
+        for (NSString *tag in self.taggedRecipients) {
+            [holdingString appendString:tag];
+            [holdingString appendString:@" "];
+        }
+    }
+    self.bannerLabel.text = holdingString;
 }
 
 
@@ -531,7 +558,14 @@ NSString *kUserIDKey = @"phone";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return CELL_HEIGHT;
+
+    if ([tableView isEqual:self.tableView]) {
+        return CELL_HEIGHT;
+    }
+    else {
+        return CELL_HEIGHT - 8.0;
+    }
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -584,7 +618,7 @@ NSString *kUserIDKey = @"phone";
         text = [NSString stringWithFormat:@":%@:", text];
     }
     
-    cell.textLabel.backgroundColor = [UIColor colorWithRed:215.0/255.0 green:230.0/255.0 blue:245.0/255.0 alpha:1.0];
+    cell.backgroundColor = [UIColor colorWithRed:215.0/255.0 green:230.0/255.0 blue:245.0/255.0 alpha:1.0];
     cell.textLabel.text = text;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
@@ -598,7 +632,7 @@ NSString *kUserIDKey = @"phone";
         NSMutableString *item = [[self.searchResult objectAtIndex:(NSUInteger)[indexPath row] ] mutableCopy];
         
         if ([self.foundPrefix isEqualToString:@"@"] && self.foundPrefixRange.location == 0) {
-            [item appendString:@" ®"];
+            [item appendString:@""];
         }
         else if (([self.foundPrefix isEqualToString:@":"] || [self.foundPrefix isEqualToString:@"+:"])) {
             [item appendString:@":"];
@@ -718,6 +752,8 @@ NSString *kUserIDKey = @"phone";
         _settingsViewController.popoverPresentationController.delegate = self;
 //        _settingsViewController.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width/2,
 //                                                             [_settingsViewController tableView:_settingsViewController.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]);
+        
+        [self addChildViewController:_settingsViewController];
     }
     return _settingsViewController;
 }
@@ -799,6 +835,14 @@ NSString *kUserIDKey = @"phone";
 -(NSString *)userDispalyName
 {
     return [NSString stringWithFormat:@"%@ %@", [[Environment.ccsmStorage getUserInfo] objectForKey:@"first_name"],[[Environment.ccsmStorage getUserInfo] objectForKey:@"last_name"]];
+}
+
+-(NSMutableArray *)taggedRecipients
+{
+    if (_taggedRecipients ==  nil) {
+        _taggedRecipients = [NSMutableArray new];
+    }
+    return _taggedRecipients;
 }
 
 #pragma mark - Logging
