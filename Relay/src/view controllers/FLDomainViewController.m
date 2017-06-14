@@ -284,7 +284,7 @@ CGFloat const kHeaderHeight = 33.0;
     {
         TSThread *selectedThread = [self threadForIndexPath:indexPath];
         [selectedThread markAllAsRead];
-        self.hostViewController.selectedThread = selectedThread;
+//        self.hostViewController.selectedThread = selectedThread;
         [self.hostViewController hideDomainTableView];
         self.hostViewController.newConversation = NO;
         [self.hostViewController reloadTableView];

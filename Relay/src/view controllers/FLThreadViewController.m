@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "CCSMStorage.h"
 
 #import "FLThreadViewController.h"
 #import "FLDomainViewController.h"
@@ -69,6 +70,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 @interface FLThreadViewController ()
 
+@property (nonatomic, strong) CCSMStorage *ccsmStorage;
+
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
@@ -115,8 +118,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @end
 
 @implementation FLThreadViewController
-
-@synthesize selectedThread = _selectedThread;
 
 - (id)init
 {
@@ -310,45 +311,67 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
-    if (text.length > 0) {
-//        if ([Environment.preferences soundInForeground]) {
-//            [JSQSystemSoundPlayer jsq_playMessageSentSound];
-//        }
-        
-        // Check for new threadedness
-        if (self.newConversation) {
-            self.selectedThread = [TSContactThread getOrCreateThreadWithContactId:[self.targetUserInfo objectForKey:@"phone"]];
+        // Check the tagged user list.
+    switch ([self.taggedRecipients count]) {
+        case 0:       //  Empty, alert and bail
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
         }
-
-        TSOutgoingMessage *message;
-        OWSDisappearingMessagesConfiguration *configuration =
-        [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.selectedThread.uniqueId];
-        if (configuration.isEnabled) {
-            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                          inThread:self.selectedThread
-                                                       messageBody:text
-                                                     attachmentIds:[NSMutableArray new]
-                                                  expiresInSeconds:configuration.durationSeconds];
-        } else {
-            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                          inThread:self.selectedThread
-                                                       messageBody:text];
+            break;
+        case 1:      // Single recipient, converstaion thread
+        {
+            
         }
+            break;
+        default:   //   Multiple recipients, group thread
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Multiple recipient support is current under development.  Using only the first @tagged recipient." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
 
-        [self.messageSender sendMessage:message
-                                success:^{
-                                    self.newConversation = NO;
-                                    DDLogInfo(@"%@ Successfully sent message.", self.tag);
-                                }
-                                failure:^(NSError *error) {
-                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                    message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
-                                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                    [alert show];
-                                    DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-                                }];
-//        [self finishSendingMessage];
+        }
+            break;
     }
+    
+    // Build the message parts
+#warning Kick this out into a convenience method
+    NSString *recipientTag = [self.taggedRecipients firstObject];
+    NSDictionary *tmpDict = [[self.ccsmStorage getTags] objectForKey:recipientTag];
+    NSDictionary *recipientBlob = [tmpDict objectForKey:[tmpDict allKeys].lastObject];
+    NSString *recipientID = [recipientBlob objectForKey:kUserIDKey];
+    
+    TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
+
+    TSOutgoingMessage *message;
+    
+    OWSDisappearingMessagesConfiguration *configuration =
+    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
+    
+    if (configuration.isEnabled) {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:text
+                                                 attachmentIds:[NSMutableArray new]
+                                              expiresInSeconds:configuration.durationSeconds];
+    } else {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:text];
+    }
+    
+    [self.messageSender sendMessage:message
+                            success:^{
+                                self.newConversation = NO;
+                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                            }
+                            failure:^(NSError *error) {
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
+                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                [alert show];
+                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+                            }];
+    //        [self finishSendingMessage];
 }
 
 
@@ -424,19 +447,19 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     return message;
 }
 
-- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
-{
-    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
-    
-    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
-    
-    if (!messageAdapter) {
-        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
-        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
-    }
-    
-    return messageAdapter;
-}
+//- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
+//    
+//    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
+//    
+//    if (!messageAdapter) {
+//        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
+//        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
+//    }
+//    
+//    return messageAdapter;
+//}
 
 #pragma mark - Completion handling
 - (void)didChangeAutoCompletionPrefix:(NSString *)prefix andWord:(NSString *)word
@@ -742,6 +765,9 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // Extract the string and insert it
     NSString *aString = [NSString stringWithFormat:@"@%@ ", [notification.userInfo objectForKey:@"tag"]];
     [self insertTextIntoTextInputView:aString];
+    
+    if (![self.textView isFirstResponder])
+        [self.textView becomeFirstResponder];
 }
 
 -(void)insertTextIntoTextInputView:(NSString *)string
@@ -802,6 +828,9 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 {
     // insert @ into textview
     [self insertTextIntoTextInputView:@"@"];
+    
+    if (![self.textView isFirstResponder])
+        [self.textView becomeFirstResponder];
     
     [super didPressLeftButton:sender];
 }
@@ -924,28 +953,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     return _userTags;
 }
 
--(void)setSelectedThread:(TSThread *)value
-{
-    if (_selectedThread != value) {
-        _selectedThread = value;
-        
-        // Store selected value when set for persistence between launches
-        [[NSUserDefaults standardUserDefaults] setObject:self.selectedThread.uniqueId forKey:kSelectedThreadIDKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-}
-
-//-(TSThread *)selectedThread
-//{
-//    if (_selectedThread == nil && !self.newConversation) {
-//        
-//        NSString *threadId = [[NSUserDefaults standardUserDefaults] objectForKey:kSelectedThreadIDKey];
-//        
-//        if (threadId != nil)
-//        _selectedThread = [TSThread fetchObjectWithUniqueID:threadId];
-//    }
-//    return _selectedThread;
-//}
 
 -(NSString *)userId
 {
@@ -964,6 +971,15 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     }
     return _taggedRecipients;
 }
+
+-(CCSMStorage *)ccsmStorage
+{
+    if (_ccsmStorage == nil) {
+        _ccsmStorage = [CCSMStorage new];
+    }
+    return _ccsmStorage;
+}
+
 
 #pragma mark - Logging
 

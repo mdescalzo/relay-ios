@@ -126,7 +126,7 @@
         NSDictionary *tmpDict = [self detailObjectForIndexPath:path];
         targetVC.newConversation = YES;
         targetVC.targetUserInfo = tmpDict;
-        targetVC.selectedThread = nil;
+//        targetVC.selectedThread = nil;
         [targetVC reloadTableView];
     }
 }

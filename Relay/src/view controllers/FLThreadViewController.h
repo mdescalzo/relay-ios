@@ -18,7 +18,6 @@
 @property (nonatomic) BOOL newlyRegisteredUser;
 @property (nonatomic, retain) CallState *latestCall;
 
-@property (nonatomic, strong) TSThread *selectedThread;
 @property (nonatomic, assign) BOOL newConversation;
 @property (nonatomic, strong) NSDictionary *targetUserInfo;
 
