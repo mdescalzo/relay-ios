@@ -206,13 +206,13 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     self.textView.delegate = self;
     
     [self registerPrefixesForAutoCompletion:@[@"@", @"#", @":", @"+:", @"/"]];
-
-    self.newConversation = NO;
     
     // Temporarily disable the searchbar since it isn't funcational yet
     self.searchBar.userInteractionEnabled = NO;
     
-    // Banner label
+    self.textView.keyboardType = UIKeyboardTypeDefault;
+    
+    // Banner label - for testing purposes
     [self.view bringSubviewToFront:self.bannerLabel];
     self.bannerLabel.backgroundColor = [UIColor lightGrayColor];
     self.bannerLabel.hidden = YES;
