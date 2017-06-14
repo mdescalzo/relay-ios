@@ -1,5 +1,5 @@
 //
-//  ForstaMessagesViewController.h
+//  FLThreadViewController.h
 //  Forsta
 //
 //  Created by Mark on 6/2/17.
@@ -13,7 +13,7 @@
 #import "Contact.h"
 #import "TSGroupModel.h"
 
-@interface ForstaMessagesViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate>
+@interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic) BOOL newlyRegisteredUser;
 @property (nonatomic, retain) CallState *latestCall;

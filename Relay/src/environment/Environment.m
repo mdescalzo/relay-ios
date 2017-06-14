@@ -12,7 +12,7 @@
 #import "TSGroupThread.h"
 #import <RelayServiceKit/ContactsUpdater.h>
 
-#import "ForstaMessagesViewController.h"
+#import "FLThreadViewController.h"
 
 #define isRegisteredUserDefaultString @"isRegistered"
 
@@ -149,7 +149,7 @@ static Environment *environment = nil;
         if (latestCall == nil) {
             return;
         }
-        ForstaMessagesViewController *vc = [[Environment getCurrent] forstaViewController];
+        FLThreadViewController *vc = [[Environment getCurrent] forstaViewController];
 //        SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
         [vc dismissViewControllerAnimated:NO completion:nil];
         vc.latestCall = latestCall;
@@ -167,7 +167,7 @@ static Environment *environment = nil;
     return [CCSMStorage new];
 }
 
--(void)setForstaViewController:(ForstaMessagesViewController *)forstaViewController
+-(void)setForstaViewController:(FLThreadViewController *)forstaViewController
 {
     _forstaViewController = forstaViewController;
 }
@@ -194,7 +194,7 @@ static Environment *environment = nil;
         [self messageGroup:(TSGroupThread *)thread];
     } else {
         Environment *env          = [self getCurrent];
-        ForstaMessagesViewController *vc = env.forstaViewController;
+        FLThreadViewController *vc = env.forstaViewController;
 //        SignalsViewController *vc = env.signalsViewController;
         UIViewController *topvc   = vc.navigationController.topViewController;
 
@@ -214,7 +214,7 @@ static Environment *environment = nil;
 // Get or create a thread for identifier(ContactID)
 + (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose {
     Environment *env          = [self getCurrent];
-    ForstaMessagesViewController *vc = env.forstaViewController;
+    FLThreadViewController *vc = env.forstaViewController;
 //    SignalsViewController *vc = env.signalsViewController;
 
     [[TSStorageManager sharedManager]
@@ -227,7 +227,7 @@ static Environment *environment = nil;
 
 + (void)messageGroup:(TSGroupThread *)groupThread {
     Environment *env          = [self getCurrent];
-    ForstaMessagesViewController *vc = env.forstaViewController;
+    FLThreadViewController *vc = env.forstaViewController;
 //    SignalsViewController *vc = env.signalsViewController;
 
     [vc presentThread:groupThread keyboardOnViewAppearing:YES];

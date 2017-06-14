@@ -145,14 +145,14 @@ NSString *const kCompletedRegistrationSegue = @"CompletedRegistration";
 
         AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         appDelegate.window.rootViewController = snc;
-        if (![snc.topViewController isKindOfClass:[ForstaMessagesViewController class]]) {
+        if (![snc.topViewController isKindOfClass:[FLThreadViewController class]]) {
 //            if (![snc.topViewController isKindOfClass:[SignalsViewController class]]) {
             DDLogError(@"%@ Unexpected top view controller: %@", self.tag, snc.topViewController);
             return;
         }
 
         DDLogDebug(@"%@ notifying signals view controller of new user.", self.tag);
-        ForstaMessagesViewController *forstaVC = (ForstaMessagesViewController *)snc.topViewController;
+        FLThreadViewController *forstaVC = (FLThreadViewController *)snc.topViewController;
         forstaVC.newlyRegisteredUser = YES;
 //        SignalsViewController *signalsViewController = (SignalsViewController *)snc.topViewController;
 //        signalsViewController.newlyRegisteredUser = YES;

@@ -34,7 +34,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @class TSNetworkManager;
 @class OWSMessageSender;
 
-@class ForstaMessagesViewController;
+@class FLThreadViewController;
 
 @interface Environment : NSObject
 
@@ -74,7 +74,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
 
-@property (nonatomic, readonly) ForstaMessagesViewController *forstaViewController;
+@property (nonatomic, readonly) FLThreadViewController *forstaViewController;
 //@property (nonatomic, readonly) SignalsViewController *signalsViewController;
 @property (nonatomic, readonly, weak) UINavigationController *signUpFlowNavigationController;
 
@@ -97,7 +97,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (void)resetAppData;
 
 - (void)initCallListener;
--(void)setForstaViewController:(ForstaMessagesViewController *)forstaViewController;
+-(void)setForstaViewController:(FLThreadViewController *)forstaViewController;
 //- (void)setSignalsViewController:(SignalsViewController *)signalsViewController;
 - (void)setSignUpFlowNavigationController:(UINavigationController *)signUpFlowNavigationController;
 

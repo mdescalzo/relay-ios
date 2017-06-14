@@ -9,7 +9,7 @@
 #import "DirectoryTableViewController.h"
 #import "CCSMStorage.h"
 #import "DirectoryDetailTableViewController.h"
-#import "ForstaMessagesViewController.h"
+#import "FLThreadViewController.h"
 #import "TSContactThread.h"
 #import "TSGroupThread.h"
 
@@ -121,7 +121,7 @@
     if ([segue.identifier isEqualToString:@"DirectoryDetailSegue"]) {
         ((DirectoryDetailTableViewController *)[segue destinationViewController]).contentDictionary = payload;
     } else {
-        ForstaMessagesViewController *targetVC = (ForstaMessagesViewController *)[segue destinationViewController];
+        FLThreadViewController *targetVC = (FLThreadViewController *)[segue destinationViewController];
         NSDictionary *tmpDict = [self detailObjectForIndexPath:path];
         targetVC.newConversation = YES;
         targetVC.targetUserInfo = tmpDict;
