@@ -9,6 +9,8 @@
 #import "CCSMStorage.h"
 #import "FLDirectoryPopupViewController.h"
 
+NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
+
 @interface FLDirectoryPopupViewController ()
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
@@ -75,6 +77,14 @@
     return YES;
 }
 */
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Everyong a user was selected
+    NSString *sendString = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromDirectory object:nil userInfo:@{@"tag":sendString}];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 /*
 // Override to support editing the table view.

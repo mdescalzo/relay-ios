@@ -64,6 +64,8 @@
 
 NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 NSString *kUserIDKey = @"phone";
+NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
+
 
 @interface FLThreadViewController ()
 
@@ -80,8 +82,10 @@ NSString *kUserIDKey = @"phone";
 @property (nonatomic) long inboxCount;
 @property (nonatomic, strong) id previewingContext;
 
+// Gesture recognizers
 @property (strong, nonatomic) UISwipeGestureRecognizer *rightSwipeRecognizer;
 @property (strong, nonatomic) UISwipeGestureRecognizer *leftSwipeRecognizer;
+@property (strong, nonatomic) UILongPressGestureRecognizer *longPressOnDirButton;
 
 @property (nonatomic, strong) NSMutableArray *taggedRecipients;
 @property (nonatomic, strong) NSMutableArray *messages;
@@ -192,6 +196,7 @@ NSString *kUserIDKey = @"phone";
     [self configureBottomButtons];
     [self rightSwipeRecognizer];
     [self leftSwipeRecognizer];
+    [self longPressOnDirButton];
 
     // Popover handling
     self.modalPresentationStyle = UIModalPresentationPopover;
@@ -215,6 +220,8 @@ NSString *kUserIDKey = @"phone";
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedUserNotification:) name:FLUserSelectedFromDirectory object:nil];
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -250,6 +257,8 @@ NSString *kUserIDKey = @"phone";
     }
 
     else if ([[segue identifier] isEqualToString:@"threadSelectedSegue"]) {
+        self.navigationItem.backBarButtonItem.title = @"";
+
         MessagesViewController *destination = (MessagesViewController *)segue.destinationViewController;
         [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
     }
@@ -710,7 +719,7 @@ NSString *kUserIDKey = @"phone";
     }
     else
     {
-        [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+         [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
         
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -727,7 +736,25 @@ NSString *kUserIDKey = @"phone";
 }
 
 
-#pragma mark - convenience build methods
+#pragma mark - convenience methods
+-(void)selectedUserNotification:(NSNotification *)notification
+{
+    // Extract the string and insert it
+    NSString *aString = [notification.userInfo objectForKey:@"tag"];
+    [self insertTextIntoTextInputView:aString];
+}
+
+-(void)insertTextIntoTextInputView:(NSString *)string
+{
+    NSRange cursorPosition = self.textView.selectedRange;
+    
+    NSMutableString *textViewText = [self.textView.text mutableCopy];
+    [textViewText insertString:string atIndex:cursorPosition.location];
+    
+    self.textView.text = [NSString stringWithString:textViewText];
+    [self textViewDidChange:self.textView];
+}
+
 -(void)configureBottomButtons
 {
     // Look at using segmentedcontrol to simulate multiple buttons on one side
@@ -773,9 +800,15 @@ NSString *kUserIDKey = @"phone";
 
 -(void)didPressLeftButton:(id)sender  // Popup directory in popover
 {
-    [self performSegueWithIdentifier:@"directoryPopoverSegue" sender:self.leftButton];
+    // insert @ into textview
+    [self insertTextIntoTextInputView:@"@"];
     
     [super didPressLeftButton:sender];
+}
+
+-(void)onLongPressLeftButton:(id)sender
+{
+    [self performSegueWithIdentifier:@"directoryPopoverSegue" sender:self.leftButton];
 }
 
 -(void)didPressRightButton:(id)sender  // This is the send button
@@ -854,29 +887,29 @@ NSString *kUserIDKey = @"phone";
     return _leftSwipeRecognizer;
 }
 
-//-(YapDatabaseViewMappings *)messageMappings
-//{
-//    if (_messageMappings == nil) {
-//
-//    _messageMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ self.selectedThread.uniqueId ] view:TSMessageDatabaseViewExtensionName];
-//    }
-//    return _messageMappings;
-//}
+-(UILongPressGestureRecognizer *)longPressOnDirButton
+{
+    if (_longPressOnDirButton == nil) {
+        _longPressOnDirButton = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressLeftButton:)];
+        [self.leftButton addGestureRecognizer:_longPressOnDirButton];
+    }
+    return _longPressOnDirButton;
+}
 
 -(YapDatabaseViewMappings *)threadMappings
 {
     if (_threadMappings == nil) {
-    _threadMappings =
-    [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
-    [self.threadMappings setIsReversed:YES forGroup:TSInboxGroup];
-    
-    [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        [self.threadMappings updateWithTransaction:transaction];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-//            [self checkIfEmptyView];
-        });
-    }];
+        _threadMappings =
+        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
+        [self.threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+        
+        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            [self.threadMappings updateWithTransaction:transaction];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                //            [self checkIfEmptyView];
+            });
+        }];
 
     }
         return _threadMappings;
