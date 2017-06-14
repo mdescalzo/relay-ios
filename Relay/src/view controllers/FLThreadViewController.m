@@ -740,7 +740,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 -(void)selectedUserNotification:(NSNotification *)notification
 {
     // Extract the string and insert it
-    NSString *aString = [notification.userInfo objectForKey:@"tag"];
+    NSString *aString = [NSString stringWithFormat:@"@%@ ", [notification.userInfo objectForKey:@"tag"]];
     [self insertTextIntoTextInputView:aString];
 }
 

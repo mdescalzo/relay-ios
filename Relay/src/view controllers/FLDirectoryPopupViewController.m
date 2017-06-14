@@ -9,7 +9,6 @@
 #import "CCSMStorage.h"
 #import "FLDirectoryPopupViewController.h"
 
-NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 @interface FLDirectoryPopupViewController ()
 
@@ -81,6 +80,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Everyong a user was selected
+    NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
+
     NSString *sendString = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
     [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromDirectory object:nil userInfo:@{@"tag":sendString}];
     [self dismissViewControllerAnimated:YES completion:nil];
