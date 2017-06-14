@@ -1,26 +1,22 @@
 //
-//  DirectoryTableViewController.m
+//  FLDirectoryPopupViewController.m
 //  Forsta
 //
-//  Created by Mark on 6/7/17.
+//  Created by Mark on 6/14/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "DirectoryTableViewController.h"
 #import "CCSMStorage.h"
-#import "DirectoryDetailTableViewController.h"
-#import "FLThreadViewController.h"
-#import "TSContactThread.h"
-#import "TSGroupThread.h"
+#import "FLDirectoryPopupViewController.h"
 
-@interface DirectoryTableViewController ()
+@interface FLDirectoryPopupViewController ()
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, strong) NSDictionary *contentDictionary;
 
 @end
 
-@implementation DirectoryTableViewController
+@implementation FLDirectoryPopupViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,8 +26,6 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    [self contentDictionary];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,7 +45,6 @@
     return (NSInteger)[[self.contentDictionary allKeys] count];
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DirectoryElementCell" forIndexPath:indexPath];
     
@@ -63,6 +56,15 @@
     cell.textLabel.text = fullName;
     
     return cell;
+}
+
+// Convenience method to break into the dictory to get the user tag
+-(NSDictionary *)detailObjectForIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *aKey = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+    
+    NSDictionary *tmpDict = [self.contentDictionary objectForKey:aKey];
+    return [tmpDict objectForKey:[tmpDict allKeys].lastObject];
 }
 
 
@@ -100,51 +102,16 @@
 }
 */
 
-
+/*
 #pragma mark - Navigation
-
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    // Build a new message thread from selected user in table
-//    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
-//    NSString *contactID = [tmpDict objectForKey:@"phone"];
-//    TSContactThread *newThread = [TSContactThread getOrCreateThreadWithContactId:contactID];
-//    
-//}
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    
-    NSDictionary *payload = [self detailObjectForIndexPath:path];
-    if ([segue.identifier isEqualToString:@"DirectoryDetailSegue"]) {
-        ((DirectoryDetailTableViewController *)[segue destinationViewController]).contentDictionary = payload;
-    } else {
-        FLThreadViewController *targetVC = (FLThreadViewController *)[segue destinationViewController];
-        NSDictionary *tmpDict = [self detailObjectForIndexPath:path];
-        targetVC.newConversation = YES;
-        targetVC.targetUserInfo = tmpDict;
-        targetVC.selectedThread = nil;
-        [targetVC reloadTableView];
-    }
 }
+*/
 
--(NSDictionary *)detailObjectForIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *aKey = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-
-    NSDictionary *tmpDict = [self.contentDictionary objectForKey:aKey];
-    return [tmpDict objectForKey:[tmpDict allKeys].lastObject];
-}
-
--(IBAction)onDoneTap:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - Lazy instantiation
 -(NSDictionary *)contentDictionary
 {
     if (_contentDictionary == nil) {
@@ -160,5 +127,6 @@
     }
     return _ccsmStorage;
 }
+
 
 @end

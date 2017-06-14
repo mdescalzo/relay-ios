@@ -12,6 +12,4 @@
 
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *doneBarButton;
 
-@property (nonatomic, strong) NSDictionary *contentDictionary;
-
 @end

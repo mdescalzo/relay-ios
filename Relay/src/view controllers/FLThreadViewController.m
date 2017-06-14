@@ -239,6 +239,16 @@ NSString *kUserIDKey = @"phone";
         [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
         [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForSettingsBarButton];
     }
+    else if ([[segue identifier] isEqualToString:@"directoryPopoverSegue"]) {
+        [segue destinationViewController].popoverPresentationController.delegate = self;
+        [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width * 0.75, self.tableView.frame.size.height * 0.75);
+        CGRect aFrame = CGRectMake(self.textInputbar.frame.origin.x,
+                                   self.textInputbar.frame.origin.y,
+                                   self.leftButton.frame.size.width,
+                                   self.leftButton.frame.size.height);
+        [segue destinationViewController].popoverPresentationController.sourceRect = aFrame;
+    }
+
     else if ([[segue identifier] isEqualToString:@"threadSelectedSegue"]) {
         MessagesViewController *destination = (MessagesViewController *)segue.destinationViewController;
         [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
@@ -761,10 +771,11 @@ NSString *kUserIDKey = @"phone";
     [self performSegueWithIdentifier:@"SettingsPopoverSegue" sender:sender];
 }
 
--(void)didPressLeftButton:(id)sender
+-(void)didPressLeftButton:(id)sender  // Popup directory in popover
 {
+    [self performSegueWithIdentifier:@"directoryPopoverSegue" sender:self.leftButton];
+    
     [super didPressLeftButton:sender];
-    // Attachment logic here
 }
 
 -(void)didPressRightButton:(id)sender  // This is the send button
