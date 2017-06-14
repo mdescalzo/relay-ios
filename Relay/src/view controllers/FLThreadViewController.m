@@ -246,12 +246,12 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
         [segue destinationViewController].popoverPresentationController.delegate = self;
         [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
         
-        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
-                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
-                                   self.navigationController.navigationBar.frame.size.height,
-                                   self.navigationController.navigationBar.frame.size.height + 20);
+//        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
+//                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
+//                                   self.navigationController.navigationBar.frame.size.height,
+//                                   self.navigationController.navigationBar.frame.size.height + 20);
 
-        [segue destinationViewController].popoverPresentationController.sourceRect = aFrame;
+        [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForLogoBarButton];
     }
     else if ([[segue identifier] isEqualToString:@"directoryPopoverSegue"]) {
         [segue destinationViewController].popoverPresentationController.delegate = self;
@@ -271,14 +271,14 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     }
 }
 
--(CGRect)frameForSettingsBarButton
+-(CGRect)frameForLogoBarButton
 {
     // Workaround for UIBarButtomItem not inheriting from UIView
     NSMutableArray* buttons = [[NSMutableArray alloc] init];
     for (UIControl* btn in self.navigationController.navigationBar.subviews)
         if ([btn isKindOfClass:[UIControl class]])
             [buttons addObject:btn];
-    UIView* view = [buttons objectAtIndex:1];
+    UIView* view = [buttons objectAtIndex:0];
     return [view convertRect:view.bounds toView:nil];
 //    return view;
 }
@@ -306,9 +306,11 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     return [NSNumber numberWithInt:0];
 }
 
-- (void)composeNew
+
+// Compose new message
+- (void)composeNew:(id)sender
 {
-    
+    [self performSegueWithIdentifier:@"composeNew" sender:nil];
 }
 
 - (void)didPressSendButton:(UIButton *)button
@@ -802,15 +804,18 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forsta_logo_blk"]
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
-                                                               action:@selector(onLogoTap:)];
-    
-    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
                                                                action:@selector(onSettingsTap:)];
+
+//    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeNew:)];
+
+//    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
+//                                                                style:UIBarButtonItemStylePlain
+//                                                               target:self
+//                                                               action:@selector(onSettingsTap:)];
     self.navigationItem.leftBarButtonItem = logoItem;
     self.navigationItem.titleView = self.searchBar;
-    self.navigationItem.rightBarButtonItem = settingsItem;
+//    self.navigationItem.rightBarButtonItem = settingsItem;
+//    self.navigationItem.rightBarButtonItem = composeItem;
 }
 
 -(void)reloadTableView
