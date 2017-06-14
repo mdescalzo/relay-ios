@@ -245,7 +245,13 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     if ([[segue identifier] isEqualToString:@"SettingsPopoverSegue"]) {
         [segue destinationViewController].popoverPresentationController.delegate = self;
         [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
-        [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForSettingsBarButton];
+        
+        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
+                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
+                                   self.navigationController.navigationBar.frame.size.height,
+                                   self.navigationController.navigationBar.frame.size.height + 20);
+
+        [segue destinationViewController].popoverPresentationController.sourceRect = aFrame;
     }
     else if ([[segue identifier] isEqualToString:@"directoryPopoverSegue"]) {
         [segue destinationViewController].popoverPresentationController.delegate = self;
