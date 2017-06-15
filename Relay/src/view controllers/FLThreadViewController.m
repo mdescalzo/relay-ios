@@ -325,6 +325,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
+            return;
         }
             break;
         case 1:      // Single recipient, converstaion thread
