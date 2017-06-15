@@ -180,6 +180,8 @@
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
 		7D516F171EF3124F00E7E15F /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */; };
+		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
+		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
@@ -860,6 +862,10 @@
 		7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryDetailTableViewController.m; sourceTree = "<group>"; };
 		7D516F151EF3124F00E7E15F /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
+		7D516F1B1EF3195100E7E15F /* FLMessageSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLMessageSender.h; path = Services/FLMessageSender.h; sourceTree = "<group>"; };
+		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
+		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
+		7D516F221EF32B6000E7E15F /* CCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCSMJSONService.m; path = Services/CCSMJSONService.m; sourceTree = "<group>"; };
 		7DBA8D661ED9FA62009FCF65 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7DBA8D6A1ED9FCEB009FCF65 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -1357,6 +1363,8 @@
 		76EB03C118170B33006006FC /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7D516F1A1EF318F000E7E15F /* Services */,
+				7D516F191EF318B900E7E15F /* New Group */,
 				DBE1798C1ED9FF8500327B2B /* ccsm */,
 				45CD81A41DBFF8CF004C9430 /* Storyboards */,
 				76EB03C218170B33006006FC /* AppDelegate.h */,
@@ -1942,6 +1950,24 @@
 				7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */,
 			);
 			name = "Developer Panel";
+			sourceTree = "<group>";
+		};
+		7D516F191EF318B900E7E15F /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
+		7D516F1A1EF318F000E7E15F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7D516F211EF32B6000E7E15F /* CCSMJSONService.h */,
+				7D516F221EF32B6000E7E15F /* CCSMJSONService.m */,
+				7D516F1B1EF3195100E7E15F /* FLMessageSender.h */,
+				7D516F1C1EF3195100E7E15F /* FLMessageSender.m */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
@@ -2928,6 +2954,7 @@
 				B6BADBE71B88D1AC0086A80D /* LockInteractionController.m in Sources */,
 				76EB061A18170B33006006FC /* DiscardingLog.m in Sources */,
 				45CD81F21DC03A22004C9430 /* OWSLogger.m in Sources */,
+				7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */,
 				76EB05AC18170B33006006FC /* SrtpSocket.m in Sources */,
 				7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */,
 				FCB11D931A12A4AA002F93FB /* FullImageViewController.m in Sources */,
@@ -3049,6 +3076,7 @@
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
 				76EB05C418170B33006006FC /* HandshakePacket.m in Sources */,
 				76EB05AA18170B33006006FC /* SequenceCounter.m in Sources */,
+				7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */,
 				7038632718F70C0700D4A43F /* CryptoTools.m in Sources */,
 				76EB058C18170B33006006FC /* DnsManager.m in Sources */,
 				B671B2461A93B238002BBD9D /* GroupContactsResult.m in Sources */,
