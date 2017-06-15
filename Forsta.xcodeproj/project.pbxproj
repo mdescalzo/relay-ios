@@ -3574,6 +3574,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3636,6 +3637,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "App Store Release";
