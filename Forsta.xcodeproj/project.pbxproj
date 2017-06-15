@@ -179,6 +179,7 @@
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
+		7D516F171EF3124F00E7E15F /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */; };
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
@@ -857,6 +858,8 @@
 		7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryTableViewController.m; sourceTree = "<group>"; };
 		7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryDetailTableViewController.h; sourceTree = "<group>"; };
 		7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryDetailTableViewController.m; sourceTree = "<group>"; };
+		7D516F151EF3124F00E7E15F /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
+		7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
 		7DBA8D661ED9FA62009FCF65 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7DBA8D6A1ED9FCEB009FCF65 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -1851,6 +1854,7 @@
 		76EB04FE18170B33006006FC /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7D516F181EF3125B00E7E15F /* Developer Panel */,
 				7DBA8D681ED9FC49009FCF65 /* Login */,
 				7D3B865B1EE2190700190FD5 /* ForstaMessages */,
 				FC3196311A08141D0094C78E /* Settings */,
@@ -1929,6 +1933,15 @@
 				7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */,
 			);
 			name = ForstaMessages;
+			sourceTree = "<group>";
+		};
+		7D516F181EF3125B00E7E15F /* Developer Panel */ = {
+			isa = PBXGroup;
+			children = (
+				7D516F151EF3124F00E7E15F /* DeveloperPanelViewController.h */,
+				7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */,
+			);
+			name = "Developer Panel";
 			sourceTree = "<group>";
 		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
@@ -3101,6 +3114,7 @@
 				76EB05C618170B33006006FC /* HelloAckPacket.m in Sources */,
 				76EB05E818170B33006006FC /* CallFailedServerMessage.m in Sources */,
 				76EB05FA18170B33006006FC /* CallConnectUtil_Responder.m in Sources */,
+				7D516F171EF3124F00E7E15F /* DeveloperPanelViewController.m in Sources */,
 				45B201761DAECBFE00C461E0 /* HighlightableLabel.swift in Sources */,
 				76EB05AE18170B33006006FC /* SrtpStream.m in Sources */,
 				E197B61318BBEC1A00F073E5 /* DesiredBufferDepthController.m in Sources */,
