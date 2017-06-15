@@ -31,7 +31,13 @@ NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
     return [NSDictionary dictionaryWithDictionary:tags];
 }
 
+@interface CCSMStorage()
+
+@end
+
 @implementation CCSMStorage
+
+@synthesize supermanId = _supermanId;
 
 NSString *const CCSMStorageDatabaseCollection = @"CCSMInformation";
 
@@ -42,6 +48,7 @@ NSString *const CCSMStorageKeyUserInfo = @"User Info";
 NSString *const CCSMStorageKeyOrgInfo = @"Org Info";
 NSString *const CCSMStorageKeyUsers = @"Users";
 NSString *const CCSMStorageKeyTags = @"Tags";
+NSString *const CCSMStorageKeySupermanId = @"SupermanID";
 
 - (nullable id)tryGetValueForKey:(NSString *)key
 {
@@ -136,6 +143,22 @@ NSString *const CCSMStorageKeyTags = @"Tags";
 - (nullable NSDictionary *)getTags
 {
     return [self tryGetValueForKey:CCSMStorageKeyTags];
+}
+
+-(NSString *)supermanId
+{
+    if (_supermanId == nil) {
+        _supermanId = [self tryGetValueForKey:CCSMStorageKeySupermanId];
+    }
+    return _supermanId;
+}
+
+-(void)setSupermanId:(NSString *)value
+{
+    if (![_supermanId isEqualToString:value]) {
+        _supermanId = [value copy];
+        [self setValue:value forKey:CCSMStorageKeySupermanId];
+    }
 }
 
 @end
