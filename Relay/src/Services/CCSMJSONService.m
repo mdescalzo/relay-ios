@@ -15,11 +15,11 @@
 {
     
     NSDictionary *holdingDictionary = @{ @"formatVersion": @"",
-                                         @"messageId": @"",     // globally unique message id
-                                         @"threadId": @"",      // globally unique thread id
-                                         @"threadTitle": @"",   // non-unique original name for the thread from its creator
-                                         @"sendTime": @"",
-                                         @"type": @"",          //  'ordinary'|'broadcast'|'survey'|'survey-response'|'control'|'receipt'
+                                         @"messageId": message.uniqueId,            // globally unique message id
+                                         @"threadId": message.uniqueThreadId,       // globally unique thread id
+                                         @"threadTitle": @"",                       // non-unique original name for the thread from its creator
+                                         @"sendTime": [NSNumber numberWithUnsignedInteger:message.timestamp],
+                                         @"type": @"",                              //  'ordinary'|'broadcast'|'survey'|'survey-response'|'control'|'receipt'
                                          @"data": @{
                                                  @"receipt": @{   // If 'receipt'
                                                          @"messageId": @"",
@@ -67,8 +67,11 @@
                                                  }
                                          };
     
-    
-    return @"";
+    NSError *error;
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:holdingDictionary
+                                                       options:NSJSONWritingPrettyPrinted error:&error];
+    return [[NSString alloc] initWithData:jsonData
+                          encoding:NSUTF8StringEncoding];
 }
 
 
