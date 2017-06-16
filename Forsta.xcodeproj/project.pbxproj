@@ -3613,7 +3613,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -3676,7 +3676,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
