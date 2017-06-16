@@ -795,7 +795,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // Look at using segmentedcontrol to simulate multiple buttons on one side
     [self.leftButton setImage:[UIImage imageNamed:@"Tag_1"] forState:UIControlStateNormal];
 
-    [self.rightButton setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
+    [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
+    [self.rightButton setImage:[UIImage imageNamed:@"Send_1"] forState:UIControlStateNormal];
     self.textInputbar.autoHideRightButton = NO;
 
 }
