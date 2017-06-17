@@ -1364,7 +1364,6 @@
 			isa = PBXGroup;
 			children = (
 				7D516F1A1EF318F000E7E15F /* Services */,
-				7D516F191EF318B900E7E15F /* New Group */,
 				DBE1798C1ED9FF8500327B2B /* ccsm */,
 				45CD81A41DBFF8CF004C9430 /* Storyboards */,
 				76EB03C218170B33006006FC /* AppDelegate.h */,
@@ -1950,13 +1949,6 @@
 				7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */,
 			);
 			name = "Developer Panel";
-			sourceTree = "<group>";
-		};
-		7D516F191EF318B900E7E15F /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "New Group";
 			sourceTree = "<group>";
 		};
 		7D516F1A1EF318F000E7E15F /* Services */ = {

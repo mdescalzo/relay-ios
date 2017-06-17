@@ -192,7 +192,7 @@
         [self.spinner stopAnimating];
         
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                    message:[NSString stringWithFormat:@"Error: %ld\n%@", error.code, error.localizedDescription]
+                                    message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
                                    delegate:nil
                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                           otherButtonTitles:nil]

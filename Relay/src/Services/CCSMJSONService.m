@@ -31,20 +31,29 @@
     
     NSArray *holdingArray = [self arrayForTypeOrdinaryFromMessage:message];
     
-    
     NSError *error;
-    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:holdingArray
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
-    return [[NSString alloc] initWithData:jsonData
-                          encoding:NSUTF8StringEncoding];
+    
+    if ([NSJSONSerialization isValidJSONObject:holdingArray]) {
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:holdingArray
+                                                           options:NSJSONWritingPrettyPrinted error:&error];
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        return [[NSString alloc] initWithData:jsonData
+                                     encoding:NSUTF8StringEncoding];
+    } else {
+        return nil;
+    }
 }
-
+         
 +(NSArray *)arrayForTypeOrdinaryFromMessage:(TSOutgoingMessage *)message
 {
-    NSString *messageId = message.uniqueId;
+    NSNumber *version = [NSNumber numberWithInt:1];
+//    NSString *messageId = message.uniqueId; // unused?
     NSString *threadId = message.uniqueThreadId;
     NSString *threadTitle = @"forsta";  // forsta for contact threads for now.  group threads have their own title
-    NSDate *sendTime = [NSDate date];
+    NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *type = @"ordinary";
     NSDictionary *data = @{@"body": @[
                                         @{ @"type": @"text/plain",
@@ -53,42 +62,52 @@
                           };
     NSDictionary *sender = @{ @"tagId": [[CCSMStorage new] getUserName] };
     
-    NSArray *returnArray = @[ @{ @"version" : [NSNumber numberWithInt:1],
-                                 @"messageId" : messageId,
-                                 @"threadId" : threadId,
-                                 @"threadTitle" : threadTitle,
-                                 @"sendTime" : sendTime,
-                                 @"type" : type,
-                                 @"data" : data,
-                                 @"sender" : sender
-                                 }];
+    NSDictionary *tmpDict = @{ @"version" : version,
+//                             @"messageId" : messageId,  //  Appears to be unused.
+                               @"threadId" : threadId,
+                               @"threadTitle" : threadTitle,
+                               @"sendTime" : sendTime,
+                               @"type" : type,
+                               @"data" : data,
+                               @"sender" : sender
+                               };
+    
+    NSArray *returnArray = @[ tmpDict ];
 
     return returnArray;
 }
 
-+(NSDictionary *)dictionaryForTypeBroadcastFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeBroadcastFromMessage:(TSOutgoingMessage *)message
 {
-    return [NSDictionary new];
+    return [NSArray new];
 }
 
-+(NSDictionary *)dictionaryForTypeSurveyFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeSurveyFromMessage:(TSOutgoingMessage *)message
 {
-    return [NSDictionary new];
+    return [NSArray new];
 }
 
-+(NSDictionary *)dictionaryForTypeSurveyResponseFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeSurveyResponseFromMessage:(TSOutgoingMessage *)message
 {
-    return [NSDictionary new];
+    return [NSArray new];
 }
 
-+(NSDictionary *)dictionaryForTypeControlFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeControlFromMessage:(TSOutgoingMessage *)message
 {
-    return [NSDictionary new];
+    return [NSArray new];
 }
 
-+(NSDictionary *)dictionaryForTypeReceiptFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeReceiptFromMessage:(TSOutgoingMessage *)message
 {
-    return [NSDictionary new];
+    return [NSArray new];
+}
+
++(NSString *)formattedStringFromDate:(NSDate *)date
+{
+    NSISO8601DateFormatter *df = [[NSISO8601DateFormatter alloc] init];
+    df.formatOptions = NSISO8601DateFormatWithInternetDateTime;
+    
+    return [df stringFromDate:date];
 }
 
 @end

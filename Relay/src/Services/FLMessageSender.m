@@ -8,6 +8,9 @@
 
 #import "FLMessageSender.h"
 #import "CCSMJSONService.h"
+#import "CCSMStorage.h"
+#import "TSOutgoingMessage.h"
+#import "TSContactThread.h"
 
 @implementation FLMessageSender
 
@@ -21,6 +24,16 @@
         4) build new TSOutgoingMessage
         5) send new TSOutgoinMessage
      */
+
+    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[[CCSMStorage new] supermanId]];
+    
+    TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
+                                                                            inThread:supermanThread
+                                                                         messageBody:[CCSMJSONService blobFromMessage:message]];
+
+    // send to Superman
+#warning Need alternative handlers for the Superman send
+    [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
     
     // proceed with parent process
     

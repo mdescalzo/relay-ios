@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "CCSMStorage.h"
 
+#import "FLMessageSender.h"
 #import "FLThreadViewController.h"
 #import "FLDomainViewController.h"
 #import "SettingsPopupMenuViewController.h"
@@ -74,7 +75,9 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
+//@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) FLMessageSender *messageSender;
+
 @property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
 @property (nonatomic, strong) YapDatabaseViewMappings *messageMappings;
 
@@ -128,7 +131,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:_contactsManager
                                                       contactsUpdater:[Environment getCurrent].contactsUpdater];
@@ -145,7 +148,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:_contactsManager
                                                       contactsUpdater:[Environment getCurrent].contactsUpdater];

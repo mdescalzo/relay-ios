@@ -16,7 +16,7 @@
 @interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic) BOOL newlyRegisteredUser;
-@property (nonatomic, retain) CallState *latestCall;
+@property (nonatomic, strong) CallState *latestCall;
 
 @property (nonatomic, assign) BOOL newConversation;
 @property (nonatomic, strong) NSDictionary *targetUserInfo;
@@ -25,7 +25,7 @@
 - (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing;
 
 - (NSNumber *)updateInboxCountLabel;
-- (void)composeNew;
+- (void)composeNew:(nullable id)sender;
 -(void)reloadTableView;
 
 -(void)showDomainTableView;

@@ -21,8 +21,8 @@
     #define SignalReportError [Pastelog reportErrorAndSubmitLogsWithAlertTitle:NSLocalizedString(@"ERROR_WAS_DETECTED_TITLE", @"") alertBody:NSLocalizedString(@"ERROR_WAS_DETECTED_SUBMIT", @"")];
 
 // Superman is here....
-static const NSString *FLSupermanDevID =   @"+17017328731";
-static const NSString *FLSupermanStageID = @"+17017328732";
-static const NSString *FLSupermanProdID =  @"+17017328733";
+static NSString *FLSupermanDevID =   @"+17017328731";
+static NSString *FLSupermanStageID = @"+17017328732";
+static NSString *FLSupermanProdID =  @"+17017328733";
 
 #endif

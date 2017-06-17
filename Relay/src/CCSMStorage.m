@@ -157,7 +157,7 @@ NSString *const CCSMStorageKeySupermanId = @"SupermanID";
 {
     if (![_supermanId isEqualToString:value]) {
         _supermanId = [value copy];
-        [self setValue:value forKey:CCSMStorageKeySupermanId];
+        [self setValueForKey:CCSMStorageKeySupermanId toValue:value];
     }
 }
 
