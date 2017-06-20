@@ -4,8 +4,9 @@
 #import "PhoneNumberUtil.h"
 #import "RecentCallManager.h"
 #import <RelayServiceKit/ContactsUpdater.h>
-#import <RelayServiceKit/OWSMessageSender.h>
+//#import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSNetworkManager.h>
+#import "FLMessageSender.h"
 
 #define RELEASE_ZRTP_CLIENT_ID @"Whisper 000     ".encodedAsAscii
 #define RELEASE_ZRTP_VERSION_ID @"1.10".encodedAsAscii
@@ -48,7 +49,7 @@ static unsigned char DH3K_PRIME[] = {
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     OWSContactsManager *contactsManager = [OWSContactsManager new];
     ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
-    OWSMessageSender *messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
+    FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
                                                                        contactsManager:contactsManager
                                                                        contactsUpdater:contactsUpdater];
@@ -79,7 +80,7 @@ static unsigned char DH3K_PRIME[] = {
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     OWSContactsManager *contactsManager = [OWSContactsManager new];
     ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
-    OWSMessageSender *messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
+    FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
                                                                        contactsManager:contactsManager
                                                                        contactsUpdater:contactsUpdater];
@@ -111,7 +112,7 @@ static unsigned char DH3K_PRIME[] = {
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     OWSContactsManager *contactsManager = [OWSContactsManager new];
     ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
-    OWSMessageSender *messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
+    FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
                                                                        contactsManager:contactsManager
                                                                        contactsUpdater:contactsUpdater];

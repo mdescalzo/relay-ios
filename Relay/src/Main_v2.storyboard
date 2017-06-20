@@ -1593,14 +1593,8 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fOi-XD-P5g">
-                                <rect key="frame" x="16" y="49" width="343" height="30"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMA-Eb-Nui">
-                                <rect key="frame" x="16" y="87" width="70" height="30"/>
+                                <rect key="frame" x="16" y="273" width="70" height="30"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="KV2-X3-6NQ"/>
@@ -1614,7 +1608,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gw0-u4-rvh">
-                                <rect key="frame" x="94" y="87" width="70" height="30"/>
+                                <rect key="frame" x="94" y="273" width="70" height="30"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="d0r-u3-T99"/>
@@ -1627,19 +1621,26 @@
                                     <action selector="didPressReset:" destination="RfC-zh-ph2" eventType="touchUpInside" id="9Of-SK-J9R"/>
                                 </connections>
                             </button>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kgR-Zq-IHO">
+                                <rect key="frame" x="0.0" y="49" width="375" height="216"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="RfC-zh-ph2" id="oJ6-w9-vwd"/>
+                                    <outlet property="delegate" destination="RfC-zh-ph2" id="NBY-pa-f4L"/>
+                                </connections>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="kgR-Zq-IHO" secondAttribute="trailing" id="2V7-48-WE5"/>
                             <constraint firstItem="gw0-u4-rvh" firstAttribute="leading" secondItem="jMA-Eb-Nui" secondAttribute="trailing" constant="8" id="3wA-av-oGG"/>
                             <constraint firstItem="JvP-PH-F77" firstAttribute="top" secondItem="B3C-OE-3V9" secondAttribute="bottom" constant="20" id="43t-wn-gLO"/>
                             <constraint firstItem="JvP-PH-F77" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" id="8ls-8e-Xqf"/>
-                            <constraint firstItem="fOi-XD-P5g" firstAttribute="trailing" secondItem="ROq-Wp-Qhu" secondAttribute="trailingMargin" id="D6R-Cw-8tm"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JvP-PH-F77" secondAttribute="trailing" constant="159" id="EiA-g1-o36"/>
-                            <constraint firstItem="fOi-XD-P5g" firstAttribute="top" secondItem="JvP-PH-F77" secondAttribute="bottom" constant="8" id="HZd-Bv-fjq"/>
                             <constraint firstItem="jMA-Eb-Nui" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" id="MPt-66-y9r"/>
-                            <constraint firstItem="jMA-Eb-Nui" firstAttribute="top" secondItem="fOi-XD-P5g" secondAttribute="bottom" constant="8" id="dpI-cb-zI7"/>
-                            <constraint firstItem="fOi-XD-P5g" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" id="hKF-pe-e4C"/>
-                            <constraint firstItem="gw0-u4-rvh" firstAttribute="top" secondItem="fOi-XD-P5g" secondAttribute="bottom" constant="8" id="kLq-JI-UBY"/>
+                            <constraint firstItem="jMA-Eb-Nui" firstAttribute="top" secondItem="kgR-Zq-IHO" secondAttribute="bottom" constant="8" id="V7g-hf-9Nf"/>
+                            <constraint firstItem="kgR-Zq-IHO" firstAttribute="top" secondItem="JvP-PH-F77" secondAttribute="bottom" constant="8" id="a6V-SX-hTP"/>
+                            <constraint firstItem="kgR-Zq-IHO" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leading" id="fkA-OF-CAf"/>
+                            <constraint firstItem="gw0-u4-rvh" firstAttribute="top" secondItem="kgR-Zq-IHO" secondAttribute="bottom" constant="8" id="kGm-lX-trT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="0C3-Ep-4vx">
@@ -1651,7 +1652,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="supermanIDField" destination="fOi-XD-P5g" id="mNX-NJ-C94"/>
+                        <outlet property="supermanIDPicker" destination="kgR-Zq-IHO" id="IXE-hD-ELy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nu6-cC-tsl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1693,8 +1694,8 @@
         <image name="table_ic_timer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IPX-Kb-VMm"/>
+        <segue reference="nsV-7A-EyB"/>
+        <segue reference="hdc-jU-KdZ"/>
         <segue reference="nuh-JN-5Kq"/>
-        <segue reference="2qZ-xT-Qet"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -69,7 +69,7 @@ static Environment *environment = nil;
                 contactsManager:(OWSContactsManager *)contactsManager
                 contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
-                  messageSender:(OWSMessageSender *)messageSender
+                  messageSender:(FLMessageSender *)messageSender
 {
     ows_require(errorNoter != nil);
     ows_require(zrtpClientId != nil);
