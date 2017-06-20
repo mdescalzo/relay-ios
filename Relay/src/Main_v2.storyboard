@@ -1645,6 +1645,9 @@
                     <navigationItem key="navigationItem" id="0C3-Ep-4vx">
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="done" id="o1e-VP-Czo">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <segue destination="nB0-Iy-uYP" kind="unwind" unwindAction="unwindToSettings:" id="vps-2H-uFE"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -1652,6 +1655,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nu6-cC-tsl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="nB0-Iy-uYP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="7084" y="-1093.4032983508246"/>
         </scene>
