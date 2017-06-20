@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ir9-Se-0YC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ir9-Se-0YC">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -70,7 +70,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoSignal" translatesAutoresizingMaskIntoConstraints="NO" id="RcM-BM-ob0">
-                                <rect key="frame" x="67" y="20" width="240" height="200"/>
+                                <rect key="frame" x="37" y="20" width="300" height="200"/>
                             </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LdC-Mu-PcV">
                                 <rect key="frame" x="299" y="371" width="20" height="20"/>
@@ -89,7 +89,6 @@
                             <constraint firstAttribute="trailing" secondItem="xA2-XF-1vd" secondAttribute="trailing" id="QUq-qQ-Knz"/>
                             <constraint firstItem="ciA-mF-VaF" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leadingMargin" constant="20" id="ZvP-sl-wse"/>
                             <constraint firstItem="OUA-U8-v9B" firstAttribute="trailing" secondItem="LdC-Mu-PcV" secondAttribute="trailing" constant="10" id="dwE-Tb-TqS"/>
-                            <constraint firstItem="RcM-BM-ob0" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leadingMargin" constant="51" id="gmV-Ls-bkd"/>
                             <constraint firstItem="OUA-U8-v9B" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leadingMargin" constant="30" id="lp3-Fd-CcC"/>
                             <constraint firstItem="zZD-yC-Wls" firstAttribute="top" secondItem="RcM-BM-ob0" secondAttribute="bottom" constant="60" id="n4K-Nu-Zee"/>
                             <constraint firstItem="oIf-Tz-feb" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leadingMargin" constant="20" id="qzQ-rr-6kq"/>

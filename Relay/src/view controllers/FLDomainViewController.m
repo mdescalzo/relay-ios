@@ -1,12 +1,12 @@
 //
-//  ForstaDomainTableViewController.m
+//  FLDomainViewController.m
 //  Forsta
 //
 //  Created by Mark on 6/5/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "ForstaDomainTableViewController.h"
+#import "FLDomainViewController.h"
 #import "InboxTableViewCell.h"
 #import "Environment.h"
 #import "TSDatabaseView.h"
@@ -26,7 +26,7 @@ NSInteger const kTopicsIndex = 4;
 CGFloat const kCellHeight = 72.0;
 CGFloat const kHeaderHeight = 33.0;
 
-@interface ForstaDomainTableViewController ()
+@interface FLDomainViewController ()
 
 @property (nonatomic, strong) NSArray *sectionTitles;
 @property (nonatomic, strong) NSArray *sectionImages;
@@ -43,7 +43,7 @@ CGFloat const kHeaderHeight = 33.0;
 
 @end
 
-@implementation ForstaDomainTableViewController
+@implementation FLDomainViewController
 
 - (id)init
 {
@@ -154,33 +154,34 @@ CGFloat const kHeaderHeight = 33.0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    switch (section) {
-//        case kConversationsIndex:
-//        {
-            return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
-//        }
-//            break;
-//        case kPinnedIndex:
-//        {
-//            return 0;
-//        }
-//            break;
-//        case kAnnouncementsIndex:
-//        {
-//            return 0;
-//        }
-//            break;
-//        case kTopicsIndex:
-//        {
-//            return 0;
-//        }
-//            break;
-//            
-//        default:
-//            // Bad thing.
-//            return 0;
-//            break;
-//    }
+    switch (section) {
+        case kConversationsIndex:
+        {
+            return 0;
+//            return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
+        }
+            break;
+        case kPinnedIndex:
+        {
+            return 0;
+        }
+            break;
+        case kAnnouncementsIndex:
+        {
+            return 0;
+        }
+            break;
+        case kTopicsIndex:
+        {
+            return 0;
+        }
+            break;
+            
+        default:
+            // Bad thing.
+            return 0;
+            break;
+    }
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -257,19 +258,22 @@ CGFloat const kHeaderHeight = 33.0;
     
     // Configure the cell...
     InboxTableViewCell *cell =  [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
-    TSThread *thread = [self threadForIndexPath:indexPath];
     
-    if (!cell) {
-        cell = [InboxTableViewCell inboxTableViewCell];
-    }
+/**********  Disabling this table's content  ****************/
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [cell configureWithThread:thread contactsManager:self.contactsManager];
-    });
-    
-    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
-        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
-    }
+//    TSThread *thread = [self threadForIndexPath:indexPath];
+//    
+//    if (!cell) {
+//        cell = [InboxTableViewCell inboxTableViewCell];
+//    }
+//    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [cell configureWithThread:thread contactsManager:self.contactsManager];
+//    });
+//    
+//    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
+//        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+//    }
     
     return cell;
 }
@@ -280,7 +284,7 @@ CGFloat const kHeaderHeight = 33.0;
     {
         TSThread *selectedThread = [self threadForIndexPath:indexPath];
         [selectedThread markAllAsRead];
-        self.hostViewController.selectedThread = selectedThread;
+//        self.hostViewController.selectedThread = selectedThread;
         [self.hostViewController hideDomainTableView];
         self.hostViewController.newConversation = NO;
         [self.hostViewController reloadTableView];
@@ -434,22 +438,22 @@ CGFloat const kHeaderHeight = 33.0;
 }
 
 #pragma mark - Lazy instantiation
--(YapDatabaseViewMappings *)threadMappings
-{
-    if (_threadMappings == nil) {
-        _threadMappings =
-        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
-        [_threadMappings setIsReversed:NO forGroup:TSInboxGroup];
-        
-        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-            [_threadMappings updateWithTransaction:transaction];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        }];
-    }
-    return _threadMappings;
-}
+//-(YapDatabaseViewMappings *)threadMappings
+//{
+//    if (_threadMappings == nil) {
+//        _threadMappings =
+//        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
+//        [_threadMappings setIsReversed:NO forGroup:TSInboxGroup];
+//        
+//        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+//            [_threadMappings updateWithTransaction:transaction];
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.tableView reloadData];
+//            });
+//        }];
+//    }
+//    return _threadMappings;
+//}
 
 @end

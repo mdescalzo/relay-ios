@@ -1,18 +1,23 @@
 //
-//  DirectoryDetailTableViewController.m
+//  FLDirectoryPopupViewController.m
 //  Forsta
 //
-//  Created by Mark on 6/8/17.
+//  Created by Mark on 6/14/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "DirectoryDetailTableViewController.h"
+#import "CCSMStorage.h"
+#import "FLDirectoryPopupViewController.h"
 
-@interface DirectoryDetailTableViewController ()
+
+@interface FLDirectoryPopupViewController ()
+
+@property (nonatomic, strong) CCSMStorage *ccsmStorage;
+@property (nonatomic, strong) NSDictionary *contentDictionary;
 
 @end
 
-@implementation DirectoryDetailTableViewController
+@implementation FLDirectoryPopupViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,30 +36,38 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rows = (NSInteger)[[self.contentDictionary allKeys] count];
-    return rows;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return (NSInteger)[[self.contentDictionary allKeys] count];
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DirectoryElementCell" forIndexPath:indexPath];
     
-    cell.textLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-    cell.detailTextLabel.text = [[self.contentDictionary objectForKey:cell.textLabel.text] description];
+    // Configure the cell...
+    cell.detailTextLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
+    
+    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [tmpDict objectForKey:@"first_name" ], [tmpDict objectForKey:@"last_name"]];
+    cell.textLabel.text = fullName;
     
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+// Convenience method to break into the dictory to get the user tag
+-(NSDictionary *)detailObjectForIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSString *aKey = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+    
+    NSDictionary *tmpDict = [self.contentDictionary objectForKey:aKey];
+    return [tmpDict objectForKey:[tmpDict allKeys].lastObject];
 }
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -63,6 +76,16 @@
     return YES;
 }
 */
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Everyong a user was selected
+    NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
+
+    NSString *sendString = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromDirectory object:nil userInfo:@{@"tag":sendString}];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 /*
 // Override to support editing the table view.
@@ -103,9 +126,18 @@
 -(NSDictionary *)contentDictionary
 {
     if (_contentDictionary == nil) {
-        _contentDictionary = [NSDictionary new];
+        _contentDictionary = [self.ccsmStorage getTags];
     }
     return _contentDictionary;
 }
+
+-(CCSMStorage *)ccsmStorage
+{
+    if (_ccsmStorage == nil) {
+        _ccsmStorage = [CCSMStorage new];
+    }
+    return _ccsmStorage;
+}
+
 
 @end

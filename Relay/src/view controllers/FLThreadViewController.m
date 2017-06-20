@@ -1,5 +1,5 @@
 //
-//  ForstaMessagesViewController.m
+//  FLThreadViewController.m
 //  Forsta
 //
 //  Created by Mark on 6/2/17.
@@ -7,9 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import "CCSMStorage.h"
 
-#import "ForstaMessagesViewController.h"
-#import "ForstaDomainTableViewController.h"
+#import "FLMessageSender.h"
+#import "FLThreadViewController.h"
+#import "FLDomainViewController.h"
 #import "SettingsPopupMenuViewController.h"
 #import "InboxTableViewCell.h"
 #import "Environment.h"
@@ -58,17 +60,24 @@
 #import <YapDatabase/YapDatabaseViewConnection.h>
 #import <JSQSystemSoundPlayer.h>
 
+#import "MessagesViewController.h"
 
 #define CELL_HEIGHT 72.0f
 
 NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 NSString *kUserIDKey = @"phone";
+NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
-@interface ForstaMessagesViewController ()
+
+@interface FLThreadViewController ()
+
+@property (nonatomic, strong) CCSMStorage *ccsmStorage;
 
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
+//@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) FLMessageSender *messageSender;
+
 @property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
 @property (nonatomic, strong) YapDatabaseViewMappings *messageMappings;
 
@@ -79,14 +88,18 @@ NSString *kUserIDKey = @"phone";
 @property (nonatomic) long inboxCount;
 @property (nonatomic, strong) id previewingContext;
 
+// Gesture recognizers
 @property (strong, nonatomic) UISwipeGestureRecognizer *rightSwipeRecognizer;
 @property (strong, nonatomic) UISwipeGestureRecognizer *leftSwipeRecognizer;
+@property (strong, nonatomic) UILongPressGestureRecognizer *longPressOnDirButton;
 
+@property (nonatomic, strong) NSMutableArray *taggedRecipients;
 @property (nonatomic, strong) NSMutableArray *messages;
 
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) IBOutlet UILabel *bannerLabel;
 
-@property (nonatomic, strong) ForstaDomainTableViewController *domainTableViewController;
+@property (nonatomic, strong) FLDomainViewController *domainTableViewController;
 @property (nonatomic, strong) SettingsPopupMenuViewController *settingsViewController;
 @property (nonatomic, assign) BOOL isDomainViewVisible;
 @property (nonatomic, strong) NSArray *userTags;
@@ -107,9 +120,7 @@ NSString *kUserIDKey = @"phone";
 
 @end
 
-@implementation ForstaMessagesViewController
-
-@synthesize selectedThread = _selectedThread;
+@implementation FLThreadViewController
 
 - (id)init
 {
@@ -120,7 +131,7 @@ NSString *kUserIDKey = @"phone";
     
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:_contactsManager
                                                       contactsUpdater:[Environment getCurrent].contactsUpdater];
@@ -137,7 +148,7 @@ NSString *kUserIDKey = @"phone";
     
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:_contactsManager
                                                       contactsUpdater:[Environment getCurrent].contactsUpdater];
@@ -167,8 +178,7 @@ NSString *kUserIDKey = @"phone";
                                                  name:TSUIDatabaseConnectionDidUpdateNotification
                                                object:nil];
         
-    [[[Environment getCurrent] contactsManager]
-     .getObservableContacts watchLatestValue:^(id latestValue) {
+    [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
          [self.tableView reloadData];
      }
      onThread:[NSThread mainThread]
@@ -190,6 +200,7 @@ NSString *kUserIDKey = @"phone";
     [self configureBottomButtons];
     [self rightSwipeRecognizer];
     [self leftSwipeRecognizer];
+    [self longPressOnDirButton];
 
     // Popover handling
     self.modalPresentationStyle = UIModalPresentationPopover;
@@ -198,17 +209,23 @@ NSString *kUserIDKey = @"phone";
     self.textView.delegate = self;
     
     [self registerPrefixesForAutoCompletion:@[@"@", @"#", @":", @"+:", @"/"]];
-
-    self.newConversation = NO;
     
     // Temporarily disable the searchbar since it isn't funcational yet
     self.searchBar.userInteractionEnabled = NO;
+    
+    self.textView.keyboardType = UIKeyboardTypeDefault;
+    
+    // Banner label - for testing purposes
+    [self.view bringSubviewToFront:self.bannerLabel];
+    self.bannerLabel.backgroundColor = [UIColor lightGrayColor];
+    self.bannerLabel.hidden = YES;
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self scrollToBottom];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedUserNotification:) name:FLUserSelectedFromDirectory object:nil];
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -231,18 +248,40 @@ NSString *kUserIDKey = @"phone";
     if ([[segue identifier] isEqualToString:@"SettingsPopoverSegue"]) {
         [segue destinationViewController].popoverPresentationController.delegate = self;
         [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
-        [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForSettingsBarButton];
+        
+//        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
+//                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
+//                                   self.navigationController.navigationBar.frame.size.height,
+//                                   self.navigationController.navigationBar.frame.size.height + 20);
+
+        [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForLogoBarButton];
+    }
+    else if ([[segue identifier] isEqualToString:@"directoryPopoverSegue"]) {
+        [segue destinationViewController].popoverPresentationController.delegate = self;
+        [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width * 0.75, self.tableView.frame.size.height * 0.75);
+        CGRect aFrame = CGRectMake(self.textInputbar.frame.origin.x,
+                                   self.textInputbar.frame.origin.y,
+                                   self.leftButton.frame.size.width,
+                                   self.leftButton.frame.size.height);
+        [segue destinationViewController].popoverPresentationController.sourceRect = aFrame;
+    }
+
+    else if ([[segue identifier] isEqualToString:@"threadSelectedSegue"]) {
+        self.navigationItem.backBarButtonItem.title = @"";
+
+        MessagesViewController *destination = (MessagesViewController *)segue.destinationViewController;
+        [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
     }
 }
 
--(CGRect)frameForSettingsBarButton
+-(CGRect)frameForLogoBarButton
 {
     // Workaround for UIBarButtomItem not inheriting from UIView
     NSMutableArray* buttons = [[NSMutableArray alloc] init];
     for (UIControl* btn in self.navigationController.navigationBar.subviews)
         if ([btn isKindOfClass:[UIControl class]])
             [buttons addObject:btn];
-    UIView* view = [buttons objectAtIndex:1];
+    UIView* view = [buttons objectAtIndex:0];
     return [view convertRect:view.bounds toView:nil];
 //    return view;
 }
@@ -270,9 +309,11 @@ NSString *kUserIDKey = @"phone";
     return [NSNumber numberWithInt:0];
 }
 
-- (void)composeNew
+
+// Compose new message
+- (void)composeNew:(id)sender
 {
-    
+    [self performSegueWithIdentifier:@"composeNew" sender:nil];
 }
 
 - (void)didPressSendButton:(UIButton *)button
@@ -281,45 +322,68 @@ NSString *kUserIDKey = @"phone";
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
-    if (text.length > 0) {
-//        if ([Environment.preferences soundInForeground]) {
-//            [JSQSystemSoundPlayer jsq_playMessageSentSound];
-//        }
-        
-        // Check for new threadedness
-        if (self.newConversation) {
-            self.selectedThread = [TSContactThread getOrCreateThreadWithContactId:[self.targetUserInfo objectForKey:@"phone"]];
+        // Check the tagged user list.
+    switch ([self.taggedRecipients count]) {
+        case 0:       //  Empty, alert and bail
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            return;
         }
-
-        TSOutgoingMessage *message;
-        OWSDisappearingMessagesConfiguration *configuration =
-        [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.selectedThread.uniqueId];
-        if (configuration.isEnabled) {
-            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                          inThread:self.selectedThread
-                                                       messageBody:text
-                                                     attachmentIds:[NSMutableArray new]
-                                                  expiresInSeconds:configuration.durationSeconds];
-        } else {
-            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                          inThread:self.selectedThread
-                                                       messageBody:text];
+            break;
+        case 1:      // Single recipient, converstaion thread
+        {
+            
         }
+            break;
+        default:   //   Multiple recipients, group thread
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Multiple recipient support is current under development.  Using only the first @tagged recipient." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
 
-        [self.messageSender sendMessage:message
-                                success:^{
-                                    self.newConversation = NO;
-                                    DDLogInfo(@"%@ Successfully sent message.", self.tag);
-                                }
-                                failure:^(NSError *error) {
-                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                    message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
-                                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                    [alert show];
-                                    DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-                                }];
-//        [self finishSendingMessage];
+        }
+            break;
     }
+    
+    // Build the message parts
+#warning Kick this out into a convenience method
+    NSString *recipientTag = [self.taggedRecipients firstObject];
+    NSDictionary *tmpDict = [[self.ccsmStorage getTags] objectForKey:recipientTag];
+    NSDictionary *recipientBlob = [tmpDict objectForKey:[tmpDict allKeys].lastObject];
+    NSString *recipientID = [recipientBlob objectForKey:kUserIDKey];
+    
+    TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
+
+    TSOutgoingMessage *message;
+    
+    OWSDisappearingMessagesConfiguration *configuration =
+    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
+    
+    if (configuration.isEnabled) {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:text
+                                                 attachmentIds:[NSMutableArray new]
+                                              expiresInSeconds:configuration.durationSeconds];
+    } else {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:text];
+    }
+    
+    [self.messageSender sendMessage:message
+                            success:^{
+                                self.newConversation = NO;
+                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                            }
+                            failure:^(NSError *error) {
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
+                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                [alert show];
+                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+                            }];
+    //        [self finishSendingMessage];
 }
 
 
@@ -366,8 +430,10 @@ NSString *kUserIDKey = @"phone";
                                                                , (navBarHeight + statusBarHeight),
                                                                self.tableView.frame.size.width * 2/3,
                                                                self.tableView.frame.size.height);
-        self.domainTableViewController.view.hidden = YES;
-    }];
+    }
+                     completion:^(BOOL finished) {
+                         self.domainTableViewController.view.hidden = YES;
+                     }];
 }
 
 #pragma mark - Message handling
@@ -393,19 +459,19 @@ NSString *kUserIDKey = @"phone";
     return message;
 }
 
-- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
-{
-    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
-    
-    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
-    
-    if (!messageAdapter) {
-        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
-        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
-    }
-    
-    return messageAdapter;
-}
+//- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
+//    
+//    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
+//    
+//    if (!messageAdapter) {
+//        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
+//        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
+//    }
+//    
+//    return messageAdapter;
+//}
 
 #pragma mark - Completion handling
 - (void)didChangeAutoCompletionPrefix:(NSString *)prefix andWord:(NSString *)word
@@ -452,6 +518,7 @@ NSString *kUserIDKey = @"phone";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-]+" options:0 error:nil];
     NSArray *matches = [regex matchesInString:textView.text options:0 range:range];
     
+    [self.taggedRecipients removeAllObjects];
     for (NSTextCheckingResult *match in matches)
     {
         UIColor *highlightColor;
@@ -461,6 +528,9 @@ NSString *kUserIDKey = @"phone";
         // Also, select highlight color based on validity
         if ([self isValidUserID:tag]) {
             highlightColor = [UIColor blueColor];
+            if (![self.taggedRecipients containsObject:tag]) {
+                [self.taggedRecipients addObject:tag];
+            }
         } else {
             highlightColor = [UIColor redColor];
         }
@@ -468,8 +538,9 @@ NSString *kUserIDKey = @"phone";
         [attributedText addAttribute:NSForegroundColorAttributeName value:highlightColor range:match.range];
     }
     
-    // Check to see if new input ends the match and switch color back to black.
+    [self updateBannerLabel];
     
+    // Check to see if new input ends the match and switch color back to black.
     textView.attributedText = attributedText;
     textView.selectedRange = initialSelectedRange;
 }
@@ -482,6 +553,20 @@ NSString *kUserIDKey = @"phone";
         return NO;
 }
 
+// Label used for testing purposes.  Do not include in release or demonstration builds.
+-(void)updateBannerLabel
+{
+    NSMutableString *holdingString = [NSMutableString new];
+    
+    if ([self.taggedRecipients count] > 0) {
+        for (NSString *tag in self.taggedRecipients) {
+            [holdingString appendString:tag];
+            [holdingString appendString:@" "];
+        }
+    }
+    self.bannerLabel.text = holdingString;
+}
+
 
 
 #pragma mark - Database delegates
@@ -491,7 +576,7 @@ NSString *kUserIDKey = @"phone";
     if (!_uiDatabaseConnection) {
         YapDatabase *database = TSStorageManager.sharedManager.database;
         _uiDatabaseConnection = [database newConnection];
-//        [_uiDatabaseConnection beginLongLivedReadTransaction];
+        [_uiDatabaseConnection beginLongLivedReadTransaction];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(yapDatabaseModified:)
                                                      name:YapDatabaseModifiedNotification
@@ -501,29 +586,85 @@ NSString *kUserIDKey = @"phone";
 }
 
 - (void)yapDatabaseModified:(NSNotification *)notification {
-    [self.tableView reloadData];
-}
-
-- (void)scrollToBottom
-{
-    CGFloat yOffset = 0;
+    NSArray *notifications  = [self.uiDatabaseConnection beginLongLivedReadTransaction];
+    NSArray *sectionChanges = nil;
+    NSArray *rowChanges     = nil;
     
-    if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
-        yOffset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
+    [[self.uiDatabaseConnection ext:TSThreadDatabaseViewExtensionName] getSectionChanges:&sectionChanges
+                                                                              rowChanges:&rowChanges
+                                                                        forNotifications:notifications
+                                                                            withMappings:self.threadMappings];
+    
+    // We want this regardless of if we're currently viewing the archive.
+    // So we run it before the early return
+    [self updateInboxCountLabel];
+    
+    if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
+        return;
     }
     
-    [self.tableView setContentOffset:CGPointMake(0, yOffset) animated:YES];
+    [self.tableView beginUpdates];
+    
+    for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
+        switch (sectionChange.type) {
+            case YapDatabaseViewChangeDelete: {
+                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeInsert: {
+                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeUpdate:
+            case YapDatabaseViewChangeMove:
+                break;
+        }
+    }
+    
+    for (YapDatabaseViewRowChange *rowChange in rowChanges) {
+        switch (rowChange.type) {
+            case YapDatabaseViewChangeDelete: {
+                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+                break;
+            }
+            case YapDatabaseViewChangeInsert: {
+                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+                break;
+            }
+            case YapDatabaseViewChangeMove: {
+                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeUpdate: {
+                [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationNone];
+                break;
+            }
+        }
+    }
+    
+    [self.tableView endUpdates];
+//    [self checkIfEmptyView];
 }
+
 
 #pragma mark - TableView delegate and data source methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-//    return (NSInteger)[self.threadMappings numberOfSections];
+    return (NSInteger)[self.threadMappings numberOfSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.tableView]) {
-        return (NSInteger)[self.selectedThread numberOfInteractions];
+        return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
     }
     else {
         return (NSInteger)self.searchResult.count;
@@ -531,7 +672,14 @@ NSString *kUserIDKey = @"phone";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return CELL_HEIGHT;
+
+    if ([tableView isEqual:self.tableView]) {
+        return CELL_HEIGHT;
+    }
+    else {
+        return CELL_HEIGHT - 8.0;
+    }
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -544,29 +692,24 @@ NSString *kUserIDKey = @"phone";
     }
 }
 
--(UITableViewCell *)messageCellForRowAtIndexPath:indexPath
+-(UITableViewCell *)messageCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellID = @"Cell";
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
+    InboxTableViewCell *cell =
+    [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
+    TSThread *thread = [self threadForIndexPath:indexPath];
     
-    if (self.selectedThread == nil) {
-        cell.textLabel.text = @"";
-        cell.detailTextLabel.text = @"";
-    } else {
-        NSArray *array = [self.selectedThread allInteractions];
-        
-        TSInteraction *interaction = [array objectAtIndex:(NSUInteger)[indexPath row]];
-        
-        TSMessageAdapter *message = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
-        
-        // Saving for later use
-        //    if ([interaction isKindOfClass:[TSIncomingMessage class]]) {} ||
-        //    [interaction isKindOfClass:[TSOutgoingMessage class]]) {
-        
-        
-        cell.textLabel.text = message.senderDisplayName;
-        cell.detailTextLabel.text = ((TSMessage *)interaction).body;
+    if (!cell) {
+        cell = [InboxTableViewCell inboxTableViewCell];
     }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [cell configureWithThread:thread contactsManager:self.contactsManager];
+    });
+    
+    if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
+        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+    }
+    
     return cell;
 }
 
@@ -584,7 +727,7 @@ NSString *kUserIDKey = @"phone";
         text = [NSString stringWithFormat:@":%@:", text];
     }
     
-    cell.textLabel.backgroundColor = [UIColor colorWithRed:215.0/255.0 green:230.0/255.0 blue:245.0/255.0 alpha:1.0];
+    cell.backgroundColor = [UIColor colorWithRed:215.0/255.0 green:230.0/255.0 blue:245.0/255.0 alpha:1.0];
     cell.textLabel.text = text;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
@@ -598,7 +741,7 @@ NSString *kUserIDKey = @"phone";
         NSMutableString *item = [[self.searchResult objectAtIndex:(NSUInteger)[indexPath row] ] mutableCopy];
         
         if ([self.foundPrefix isEqualToString:@"@"] && self.foundPrefixRange.location == 0) {
-            [item appendString:@" ®"];
+            [item appendString:@""];
         }
         else if (([self.foundPrefix isEqualToString:@":"] || [self.foundPrefix isEqualToString:@"+:"])) {
             [item appendString:@":"];
@@ -607,9 +750,12 @@ NSString *kUserIDKey = @"phone";
         [item appendString:@" "];
         
         [self acceptAutoCompletionWithString:item keepPrefix:YES];
+        [self textViewDidChange:self.textView];
     }
     else
     {
+         [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+        
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -625,37 +771,61 @@ NSString *kUserIDKey = @"phone";
 }
 
 
-#pragma mark - convenience build methods
+#pragma mark - convenience methods
+-(void)selectedUserNotification:(NSNotification *)notification
+{
+    // Extract the string and insert it
+    NSString *aString = [NSString stringWithFormat:@"@%@ ", [notification.userInfo objectForKey:@"tag"]];
+    [self insertTextIntoTextInputView:aString];
+    
+    if (![self.textView isFirstResponder])
+        [self.textView becomeFirstResponder];
+}
+
+-(void)insertTextIntoTextInputView:(NSString *)string
+{
+    NSRange cursorPosition = self.textView.selectedRange;
+    
+    NSMutableString *textViewText = [self.textView.text mutableCopy];
+    [textViewText insertString:string atIndex:cursorPosition.location];
+    
+    self.textView.text = [NSString stringWithString:textViewText];
+    [self textViewDidChange:self.textView];
+}
+
 -(void)configureBottomButtons
 {
     // Look at using segmentedcontrol to simulate multiple buttons on one side
-    [self.leftButton setImage:[UIImage imageNamed:@"btnAttachments--blue"] forState:UIControlStateNormal];
+    [self.leftButton setImage:[UIImage imageNamed:@"Tag_1"] forState:UIControlStateNormal];
 
-    [self.rightButton setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
+    [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
+    [self.rightButton setImage:[UIImage imageNamed:@"Send_1"] forState:UIControlStateNormal];
     self.textInputbar.autoHideRightButton = NO;
 
 }
 
 -(void)configureNavigationBar
 {
-    UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"logo-40"]
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
-                                                               action:@selector(onLogoTap:)];
-    
-    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
+    UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forsta_logo_blk"]
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
                                                                action:@selector(onSettingsTap:)];
+
+//    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeNew:)];
+
+//    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
+//                                                                style:UIBarButtonItemStylePlain
+//                                                               target:self
+//                                                               action:@selector(onSettingsTap:)];
     self.navigationItem.leftBarButtonItem = logoItem;
     self.navigationItem.titleView = self.searchBar;
-    self.navigationItem.rightBarButtonItem = settingsItem;
+//    self.navigationItem.rightBarButtonItem = settingsItem;
+//    self.navigationItem.rightBarButtonItem = composeItem;
 }
 
 -(void)reloadTableView
 {
     [self.tableView reloadData];
-    [self scrollToBottom];
 }
 
 #pragma mark - Button actions
@@ -670,10 +840,20 @@ NSString *kUserIDKey = @"phone";
     [self performSegueWithIdentifier:@"SettingsPopoverSegue" sender:sender];
 }
 
--(void)didPressLeftButton:(id)sender
+-(void)didPressLeftButton:(id)sender  // Popup directory in popover
 {
+    // insert @ into textview
+    [self insertTextIntoTextInputView:@"@"];
+    
+    if (![self.textView isFirstResponder])
+        [self.textView becomeFirstResponder];
+    
     [super didPressLeftButton:sender];
-    // Attachment logic here
+}
+
+-(void)onLongPressLeftButton:(id)sender
+{
+    [self performSegueWithIdentifier:@"directoryPopoverSegue" sender:self.leftButton];
 }
 
 -(void)didPressRightButton:(id)sender  // This is the send button
@@ -695,7 +875,7 @@ NSString *kUserIDKey = @"phone";
 
 
 #pragma mark - Lazy instantiation
--(ForstaDomainTableViewController *)domainTableViewController
+-(FLDomainViewController *)domainTableViewController
 {
     if (_domainTableViewController == nil) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
@@ -718,6 +898,8 @@ NSString *kUserIDKey = @"phone";
         _settingsViewController.popoverPresentationController.delegate = self;
 //        _settingsViewController.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width/2,
 //                                                             [_settingsViewController tableView:_settingsViewController.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]);
+        
+        [self addChildViewController:_settingsViewController];
     }
     return _settingsViewController;
 }
@@ -750,13 +932,32 @@ NSString *kUserIDKey = @"phone";
     return _leftSwipeRecognizer;
 }
 
--(YapDatabaseViewMappings *)messageMappings
+-(UILongPressGestureRecognizer *)longPressOnDirButton
 {
-    if (_messageMappings == nil) {
-
-    _messageMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ self.selectedThread.uniqueId ] view:TSMessageDatabaseViewExtensionName];
+    if (_longPressOnDirButton == nil) {
+        _longPressOnDirButton = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressLeftButton:)];
+        [self.leftButton addGestureRecognizer:_longPressOnDirButton];
     }
-    return _messageMappings;
+    return _longPressOnDirButton;
+}
+
+-(YapDatabaseViewMappings *)threadMappings
+{
+    if (_threadMappings == nil) {
+        _threadMappings =
+        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
+        [self.threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+        
+        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            [self.threadMappings updateWithTransaction:transaction];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                //            [self checkIfEmptyView];
+            });
+        }];
+
+    }
+        return _threadMappings;
 }
 
 -(NSArray *)userTags
@@ -768,28 +969,6 @@ NSString *kUserIDKey = @"phone";
     return _userTags;
 }
 
--(void)setSelectedThread:(TSThread *)value
-{
-    if (_selectedThread != value) {
-        _selectedThread = value;
-        
-        // Store selected value when set for persistence between launches
-        [[NSUserDefaults standardUserDefaults] setObject:self.selectedThread.uniqueId forKey:kSelectedThreadIDKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-}
-
--(TSThread *)selectedThread
-{
-    if (_selectedThread == nil && !self.newConversation) {
-        
-        NSString *threadId = [[NSUserDefaults standardUserDefaults] objectForKey:kSelectedThreadIDKey];
-        
-        if (threadId != nil)
-        _selectedThread = [TSThread fetchObjectWithUniqueID:threadId];
-    }
-    return _selectedThread;
-}
 
 -(NSString *)userId
 {
@@ -800,6 +979,23 @@ NSString *kUserIDKey = @"phone";
 {
     return [NSString stringWithFormat:@"%@ %@", [[Environment.ccsmStorage getUserInfo] objectForKey:@"first_name"],[[Environment.ccsmStorage getUserInfo] objectForKey:@"last_name"]];
 }
+
+-(NSMutableArray *)taggedRecipients
+{
+    if (_taggedRecipients ==  nil) {
+        _taggedRecipients = [NSMutableArray new];
+    }
+    return _taggedRecipients;
+}
+
+-(CCSMStorage *)ccsmStorage
+{
+    if (_ccsmStorage == nil) {
+        _ccsmStorage = [CCSMStorage new];
+    }
+    return _ccsmStorage;
+}
+
 
 #pragma mark - Logging
 

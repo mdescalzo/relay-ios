@@ -11,6 +11,8 @@
 
 @interface CCSMStorage : NSObject
 
+@property (strong) NSString *supermanId;
+
 - (NSString *)getOrgName;
 - (void)setOrgName:(NSString *)value;
 
@@ -30,6 +32,7 @@
 - (void)setUsers:(NSMutableDictionary *)value;
 
 - (NSDictionary *)getTags;
+
 @end
 
 #endif /* Storage_h */

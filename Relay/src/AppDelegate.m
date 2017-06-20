@@ -24,6 +24,7 @@
 #import <RelayServiceKit/TSAccountManager.h>
 
 #import "CCSMCommunication.h"
+#import "CCSMStorage.h"
 
 NSString *const AppDelegateStoryboardMain = @"Main_v2";
 NSString *const AppDelegateStoryboardRegistration = @"Registration";
@@ -80,8 +81,12 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     // the phone directory being looked up during tests.
     loggingIsEnabled = TRUE;
     [DebugLogger.sharedLogger enableTTYLogging];
+    if ([[Environment ccsmStorage].supermanId isEqualToString:@""] || [Environment ccsmStorage].supermanId == nil) {
+        [[Environment ccsmStorage] setSupermanId:FLSupermanDevID];
+    }
 #elif RELEASE
     loggingIsEnabled = Environment.preferences.loggingIsEnabled;
+    [[Environment ccsmStorage] setSupermanId:FLSupermanProdID];
 #endif
     [self verifyBackgroundBeforeKeysAvailableLaunch];
 
@@ -312,7 +317,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
                completionHandler:(void (^)(BOOL succeeded))completionHandler {
     if ([TSAccountManager isRegistered]) {
-        [[Environment getCurrent].forstaViewController composeNew];
+        [[Environment getCurrent].forstaViewController composeNew:nil];
 //        [[Environment getCurrent].signalsViewController composeNew];
         completionHandler(YES);
     } else {

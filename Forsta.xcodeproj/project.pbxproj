@@ -170,12 +170,18 @@
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB065618170B34006006FC /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
+		7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
+		7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
+		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
-		7D3B865A1EE218FA00190FD5 /* ForstaMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* ForstaMessagesViewController.m */; };
-		7D3B866E1EE5B61700190FD5 /* ForstaDomainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* ForstaDomainTableViewController.m */; };
+		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
+		7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
+		7D516F171EF3124F00E7E15F /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */; };
+		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
+		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
@@ -838,17 +844,28 @@
 		76EB050C18170B33006006FC /* InCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCallViewController.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
+		7D2472691EF0C80B0048126F /* FLConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLConversationViewController.h; sourceTree = "<group>"; };
+		7D24726A1EF0C80B0048126F /* FLConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLConversationViewController.m; sourceTree = "<group>"; };
+		7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSlackTextViewController.a; path = "../Library/Developer/Xcode/DerivedData/Relay-gkridggddzianpfuvzrdybphatso/Build/Products/Debug-iphonesimulator/SlackTextViewController/libSlackTextViewController.a"; sourceTree = "<group>"; };
+		7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDirectoryPopupViewController.h; sourceTree = "<group>"; };
+		7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDirectoryPopupViewController.m; sourceTree = "<group>"; };
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
-		7D3B86581EE218FA00190FD5 /* ForstaMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForstaMessagesViewController.h; sourceTree = "<group>"; };
-		7D3B86591EE218FA00190FD5 /* ForstaMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForstaMessagesViewController.m; sourceTree = "<group>"; };
-		7D3B866C1EE5B61700190FD5 /* ForstaDomainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForstaDomainTableViewController.h; sourceTree = "<group>"; };
-		7D3B866D1EE5B61700190FD5 /* ForstaDomainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForstaDomainTableViewController.m; sourceTree = "<group>"; };
+		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
+		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
+		7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDomainViewController.h; sourceTree = "<group>"; };
+		7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDomainViewController.m; sourceTree = "<group>"; };
 		7D4D89441EE63502003970A5 /* SettingsPopupMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPopupMenuViewController.h; sourceTree = "<group>"; };
 		7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPopupMenuViewController.m; sourceTree = "<group>"; };
 		7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryTableViewController.h; sourceTree = "<group>"; };
 		7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryTableViewController.m; sourceTree = "<group>"; };
 		7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryDetailTableViewController.h; sourceTree = "<group>"; };
 		7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryDetailTableViewController.m; sourceTree = "<group>"; };
+		7D516F151EF3124F00E7E15F /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
+		7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
+		7D516F1B1EF3195100E7E15F /* FLMessageSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLMessageSender.h; path = Services/FLMessageSender.h; sourceTree = "<group>"; };
+		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
+		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
+		7D516F221EF32B6000E7E15F /* CCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCSMJSONService.m; path = Services/CCSMJSONService.m; sourceTree = "<group>"; };
 		7DBA8D661ED9FA62009FCF65 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7DBA8D6A1ED9FCEB009FCF65 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -1173,6 +1190,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */,
 				456C38961DC7B882007536A7 /* PromiseKit.framework in Frameworks */,
 				4520D8D51D417D8E00123472 /* Photos.framework in Frameworks */,
 				B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */,
@@ -1345,6 +1363,7 @@
 		76EB03C118170B33006006FC /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7D516F1A1EF318F000E7E15F /* Services */,
 				DBE1798C1ED9FF8500327B2B /* ccsm */,
 				45CD81A41DBFF8CF004C9430 /* Storyboards */,
 				76EB03C218170B33006006FC /* AppDelegate.h */,
@@ -1842,6 +1861,7 @@
 		76EB04FE18170B33006006FC /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7D516F181EF3125B00E7E15F /* Developer Panel */,
 				7DBA8D681ED9FC49009FCF65 /* Login */,
 				7D3B865B1EE2190700190FD5 /* ForstaMessages */,
 				FC3196311A08141D0094C78E /* Settings */,
@@ -1904,18 +1924,42 @@
 		7D3B865B1EE2190700190FD5 /* ForstaMessages */ = {
 			isa = PBXGroup;
 			children = (
-				7D3B86581EE218FA00190FD5 /* ForstaMessagesViewController.h */,
-				7D3B86591EE218FA00190FD5 /* ForstaMessagesViewController.m */,
-				7D3B866C1EE5B61700190FD5 /* ForstaDomainTableViewController.h */,
-				7D3B866D1EE5B61700190FD5 /* ForstaDomainTableViewController.m */,
+				7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */,
+				7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */,
+				7D2472691EF0C80B0048126F /* FLConversationViewController.h */,
+				7D24726A1EF0C80B0048126F /* FLConversationViewController.m */,
+				7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */,
+				7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */,
 				7D4D89441EE63502003970A5 /* SettingsPopupMenuViewController.h */,
 				7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */,
 				7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */,
 				7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */,
 				7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */,
 				7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */,
+				7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */,
+				7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */,
 			);
 			name = ForstaMessages;
+			sourceTree = "<group>";
+		};
+		7D516F181EF3125B00E7E15F /* Developer Panel */ = {
+			isa = PBXGroup;
+			children = (
+				7D516F151EF3124F00E7E15F /* DeveloperPanelViewController.h */,
+				7D516F161EF3124F00E7E15F /* DeveloperPanelViewController.m */,
+			);
+			name = "Developer Panel";
+			sourceTree = "<group>";
+		};
+		7D516F1A1EF318F000E7E15F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7D516F211EF32B6000E7E15F /* CCSMJSONService.h */,
+				7D516F221EF32B6000E7E15F /* CCSMJSONService.m */,
+				7D516F1B1EF3195100E7E15F /* FLMessageSender.h */,
+				7D516F1C1EF3195100E7E15F /* FLMessageSender.m */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
@@ -2287,6 +2331,7 @@
 		D221A08C169C9E5E00537ABF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */,
 				451DE9F11DC1585F00810E42 /* PromiseKit.framework */,
 				4520D8D41D417D8E00123472 /* Photos.framework */,
 				B6B226961BE4B7D200860F4D /* ContactsUI.framework */,
@@ -2901,7 +2946,9 @@
 				B6BADBE71B88D1AC0086A80D /* LockInteractionController.m in Sources */,
 				76EB061A18170B33006006FC /* DiscardingLog.m in Sources */,
 				45CD81F21DC03A22004C9430 /* OWSLogger.m in Sources */,
+				7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */,
 				76EB05AC18170B33006006FC /* SrtpSocket.m in Sources */,
+				7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */,
 				FCB11D931A12A4AA002F93FB /* FullImageViewController.m in Sources */,
 				B60C16651988999D00E97A6C /* VersionMigrations.m in Sources */,
 				B97940271832BD2400BD66CB /* UIUtil.m in Sources */,
@@ -2938,7 +2985,7 @@
 				45D231771DC7E8F10034FA89 /* SessionResetJob.swift in Sources */,
 				76EB061018170B33006006FC /* EventWindow.m in Sources */,
 				E197B62718BBF63B00F073E5 /* SoundBoard.m in Sources */,
-				7D3B865A1EE218FA00190FD5 /* ForstaMessagesViewController.m in Sources */,
+				7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */,
 				450873C71D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m in Sources */,
 				76EB058418170B33006006FC /* LocalizableText.m in Sources */,
 				76EB057A18170B33006006FC /* OWSContactsManager.m in Sources */,
@@ -2975,7 +3022,7 @@
 				E197B60D18BBEC1A00F073E5 /* AudioSocket.m in Sources */,
 				A5D0699B1A50E9CB004CB540 /* ShowGroupMembersViewController.m in Sources */,
 				45855F371D9498A40084F340 /* OWSContactAvatarBuilder.m in Sources */,
-				7D3B866E1EE5B61700190FD5 /* ForstaDomainTableViewController.m in Sources */,
+				7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */,
 				FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */,
 				76EB061418170B33006006FC /* AnonymousConditionLogger.m in Sources */,
 				76EB05C018170B33006006FC /* DhPacket.m in Sources */,
@@ -3001,6 +3048,7 @@
 				E197B62418BBF5BB00F073E5 /* SoundPlayer.m in Sources */,
 				E197B61018BBEC1A00F073E5 /* EncodedAudioPacket.m in Sources */,
 				458E38341D66873D0094BD24 /* OWSLinkDeviceViewController.m in Sources */,
+				7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */,
 				76EB063618170B33006006FC /* DataUtil.m in Sources */,
 				E197B60C18BBEC1A00F073E5 /* AudioPacker.m in Sources */,
 				E197B61218BBEC1A00F073E5 /* AudioStretcher.m in Sources */,
@@ -3020,6 +3068,7 @@
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
 				76EB05C418170B33006006FC /* HandshakePacket.m in Sources */,
 				76EB05AA18170B33006006FC /* SequenceCounter.m in Sources */,
+				7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */,
 				7038632718F70C0700D4A43F /* CryptoTools.m in Sources */,
 				76EB058C18170B33006006FC /* DnsManager.m in Sources */,
 				B671B2461A93B238002BBD9D /* GroupContactsResult.m in Sources */,
@@ -3085,6 +3134,7 @@
 				76EB05C618170B33006006FC /* HelloAckPacket.m in Sources */,
 				76EB05E818170B33006006FC /* CallFailedServerMessage.m in Sources */,
 				76EB05FA18170B33006006FC /* CallConnectUtil_Responder.m in Sources */,
+				7D516F171EF3124F00E7E15F /* DeveloperPanelViewController.m in Sources */,
 				45B201761DAECBFE00C461E0 /* HighlightableLabel.swift in Sources */,
 				76EB05AE18170B33006006FC /* SrtpStream.m in Sources */,
 				E197B61318BBEC1A00F073E5 /* DesiredBufferDepthController.m in Sources */,
@@ -3555,9 +3605,10 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3617,9 +3668,10 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "App Store Release";

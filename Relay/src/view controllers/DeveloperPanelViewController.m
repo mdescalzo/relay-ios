@@ -1,18 +1,18 @@
 //
-//  DirectoryDetailTableViewController.m
+//  DeveloperPanelViewController.m
 //  Forsta
 //
-//  Created by Mark on 6/8/17.
+//  Created by Mark on 6/15/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "DirectoryDetailTableViewController.h"
+#import "DeveloperPanelViewController.h"
 
-@interface DirectoryDetailTableViewController ()
+@interface DeveloperPanelViewController ()
 
 @end
 
-@implementation DirectoryDetailTableViewController
+@implementation DeveloperPanelViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,29 +32,24 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+#warning Incomplete implementation, return the number of sections
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rows = (NSInteger)[[self.contentDictionary allKeys] count];
-    return rows;
+#warning Incomplete implementation, return the number of rows
+    return 0;
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+/*
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    cell.textLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-    cell.detailTextLabel.text = [[self.contentDictionary objectForKey:cell.textLabel.text] description];
+    // Configure the cell...
     
     return cell;
 }
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
+*/
 
 /*
 // Override to support conditional editing of the table view.
@@ -99,13 +94,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
--(NSDictionary *)contentDictionary
-{
-    if (_contentDictionary == nil) {
-        _contentDictionary = [NSDictionary new];
-    }
-    return _contentDictionary;
-}
 
 @end

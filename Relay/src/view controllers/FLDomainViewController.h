@@ -1,5 +1,5 @@
 //
-//  ForstaDomainTableViewController.h
+//  FLDomainViewController.h
 //  Forsta
 //
 //  Created by Mark on 6/5/17.
@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface ForstaDomainTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface FLDomainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIViewControllerPreviewingDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) ForstaMessagesViewController *hostViewController;
+@property (weak, nonatomic) FLThreadViewController *hostViewController;
 
 @end

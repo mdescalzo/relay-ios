@@ -9,13 +9,14 @@
 #import "DirectoryTableViewController.h"
 #import "CCSMStorage.h"
 #import "DirectoryDetailTableViewController.h"
-#import "ForstaMessagesViewController.h"
+#import "FLThreadViewController.h"
 #import "TSContactThread.h"
 #import "TSGroupThread.h"
 
 @interface DirectoryTableViewController ()
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
+@property (nonatomic, strong) NSDictionary *contentDictionary;
 
 @end
 
@@ -40,13 +41,13 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return (NSInteger)[[self.contentDictionary allKeys] count];
 }
 
@@ -121,11 +122,11 @@
     if ([segue.identifier isEqualToString:@"DirectoryDetailSegue"]) {
         ((DirectoryDetailTableViewController *)[segue destinationViewController]).contentDictionary = payload;
     } else {
-        ForstaMessagesViewController *targetVC = (ForstaMessagesViewController *)[segue destinationViewController];
+        FLThreadViewController *targetVC = (FLThreadViewController *)[segue destinationViewController];
         NSDictionary *tmpDict = [self detailObjectForIndexPath:path];
         targetVC.newConversation = YES;
         targetVC.targetUserInfo = tmpDict;
-        targetVC.selectedThread = nil;
+//        targetVC.selectedThread = nil;
         [targetVC reloadTableView];
     }
 }

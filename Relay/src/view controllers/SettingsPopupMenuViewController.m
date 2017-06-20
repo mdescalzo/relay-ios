@@ -107,6 +107,11 @@ CGFloat const kRowHeight = 40;
             [self performSegueWithIdentifier:@"SettingsSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
         }
             break;
+        case 5:  //  Developer console
+        {
+            [self performSegueWithIdentifier:@"DeveloperPanelSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
+        }
+            break;
         default:
             break;
     }
