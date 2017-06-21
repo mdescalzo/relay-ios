@@ -39,7 +39,6 @@
 #import "TSCall.h"
 #import "TSContactThread.h"
 #import "TSContentAdapters.h"
-#import "TSDatabaseView.h"
 #import "TSErrorMessage.h"
 #import "TSGroupThread.h"
 #import "TSIncomingMessage.h"
