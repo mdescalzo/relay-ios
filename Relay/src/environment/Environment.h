@@ -6,6 +6,7 @@
 #import "TSGroupModel.h"
 #import "TSStorageHeaders.h"
 #import "CCSMStorage.h"
+#import "FLMessageSender.h"
 
 static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
@@ -32,7 +33,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @class TSGroupThread;
 @class ContactsUpdater;
 @class TSNetworkManager;
-@class OWSMessageSender;
+@class FLMessageSender;
 
 @class FLThreadViewController;
 
@@ -54,7 +55,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
                 contactsManager:(OWSContactsManager *)contactsManager
                 contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
-                  messageSender:(OWSMessageSender *)messageSender;
+                  messageSender:(FLMessageSender *)messageSender;
 
 @property (nonatomic, readonly) in_port_t serverPort;
 @property (nonatomic, readonly) id<Logging> logging;
@@ -72,7 +73,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) FLMessageSender *messageSender;
 
 @property (nonatomic, readonly) FLThreadViewController *forstaViewController;
 //@property (nonatomic, readonly) SignalsViewController *signalsViewController;
