@@ -218,6 +218,10 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [self.view bringSubviewToFront:self.bannerLabel];
     self.bannerLabel.backgroundColor = [UIColor lightGrayColor];
     self.bannerLabel.hidden = YES;
+
+    // setup methodology lifted from Signals
+    [self ensureNotificationsUpToDate];
+    [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -225,6 +229,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [super viewDidAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedUserNotification:) name:FLUserSelectedFromDirectory object:nil];
+    
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -236,6 +241,125 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)didAppearForNewlyRegisteredUser
+{
+    ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
+    switch (status) {
+        case kABAuthorizationStatusNotDetermined:
+        case kABAuthorizationStatusRestricted: {
+            UIAlertController *controller =
+            [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
+                                                message:NSLocalizedString(@"REGISTER_CONTACTS_BODY", nil)
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            [controller
+             addAction:[UIAlertAction
+                        actionWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_CONTINUE", nil)
+                        style:UIAlertActionStyleCancel
+                        handler:^(UIAlertAction *action) {
+                            [self ensureNotificationsUpToDate];
+                            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+                        }]];
+            
+            [self presentViewController:controller animated:YES completion:nil];
+            break;
+        }
+        default: {
+            DDLogError(@"%@ Unexpected for new user to have kABAuthorizationStatus:%ld", self.tag, status);
+            [self ensureNotificationsUpToDate];
+            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+            
+            break;
+        }
+    }
+}
+
+- (void)ensureNotificationsUpToDate
+{
+    OWSAccountManager *accountManager =
+    [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
+    
+    OWSSyncPushTokensJob *syncPushTokensJob =
+    [[OWSSyncPushTokensJob alloc] initWithPushManager:[PushManager sharedManager]
+                                       accountManager:accountManager
+                                          preferences:[Environment preferences]];
+    [syncPushTokensJob run];
+}
+
+#pragma mark Table Swipe to Delete
+
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath {
+    return;
+}
+
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewRowAction *deleteAction =
+    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault
+                                       title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
+                                     handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
+                                         [self tableViewCellTappedDelete:swipedIndexPath];
+                                     }];
+    return @[ deleteAction ];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+#pragma mark - HomeFeedTableViewCellDelegate
+
+- (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
+    TSThread *thread = [self threadForIndexPath:indexPath];
+    if ([thread isKindOfClass:[TSGroupThread class]]) {
+        
+        TSGroupThread *gThread = (TSGroupThread *)thread;
+        if ([gThread.groupModel.groupMemberIds containsObject:[TSAccountManager localNumber]]) {
+            UIAlertController *removingFromGroup = [UIAlertController
+                                                    alertControllerWithTitle:[NSString
+                                                                              stringWithFormat:NSLocalizedString(@"GROUP_REMOVING", nil), [thread name]]
+                                                    message:nil
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [self presentViewController:removingFromGroup animated:YES completion:nil];
+            
+            TSOutgoingMessage *message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                             inThread:thread
+                                                                          messageBody:@""
+                                                                        attachmentIds:[NSMutableArray new]];
+            message.groupMetaMessage = TSGroupMessageQuit;
+            [self.messageSender sendMessage:message
+                                    success:^{
+                                        [self dismissViewControllerAnimated:YES
+                                                                 completion:^{
+                                                                     [self deleteThread:thread];
+                                                                 }];
+                                    }
+                                    failure:^(NSError *error) {
+                                        [self dismissViewControllerAnimated:YES
+                                                                 completion:^{
+                                                                     SignalAlertView(NSLocalizedString(@"GROUP_REMOVING_FAILED", nil),
+                                                                                     error.localizedRecoverySuggestion);
+                                                                 }];
+                                    }];
+        } else {
+            [self deleteThread:thread];
+        }
+    } else {
+        [self deleteThread:thread];
+    }
+}
+- (void)deleteThread:(TSThread *)thread {
+    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [thread removeWithTransaction:transaction];
+    }];
+    
+    _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+//    [self checkIfEmptyView];
+}
+
 
 
 #pragma mark - Navigation
