@@ -57,6 +57,7 @@
 
 @property (nonatomic, copy) NSDate *messageDate;
 @property (nonatomic, retain) NSString *messageBody;
+@property (nonatomic, strong) NSAttributedString *attributedMessageBody;
 
 @property NSUInteger identifier;
 
@@ -128,10 +129,17 @@
         NSArray *bodyArray = [self arrayFromMessageBody:message.body];
         if (bodyArray == nil) {
             adapter.messageBody = message.body;
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body];
         } else  if ([self htmlBodyStringFromBlob:bodyArray].length > 0) {
             adapter.messageBody = [self plainBodyStringFromBlob:bodyArray];
+            NSData *data = [[self htmlBodyStringFromBlob:bodyArray] dataUsingEncoding:NSUTF8StringEncoding];
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithData:data
+                                             options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                       NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
+                                  documentAttributes:nil error:nil];
         } else {
             adapter.messageBody = [self plainBodyStringFromBlob:bodyArray];
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:[self plainBodyStringFromBlob:bodyArray]];
         }
         
 
@@ -293,6 +301,11 @@
 
 - (NSString *)text {
     return self.messageBody;
+}
+
+-(NSAttributedString *)attributedText
+{
+    return self.attributedMessageBody;
 }
 
 - (NSUInteger)messageHash
