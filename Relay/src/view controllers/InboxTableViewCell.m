@@ -61,13 +61,21 @@ NS_ASSUME_NONNULL_BEGIN
     }
     UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager];
     self.threadId = thread.uniqueId;
-    NSString *snippetLabel             = thread.lastMessageLabel;
+    
+    NSString *snippetText;
+    NSArray *bodyArray = [self arrayFromMessageBody:thread.lastMessageLabel];
+    if (bodyArray == nil) {
+        snippetText = thread.lastMessageLabel;
+    } else {
+        snippetText = [self plainBodyStringFromBlob:bodyArray];
+    }
+//    NSString *snippetLabel             = thread.lastMessageLabel;
     NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
     NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         self.nameLabel.text = name;
-        self.snippetLabel.text = snippetLabel;
+        self.snippetLabel.text = snippetText;
         self.timeLabel.attributedText = attributedDate;
         self.contactPictureView.image = avatar;
         [UIUtil applyRoundedBorderToImageView:&_contactPictureView];
@@ -184,6 +192,53 @@ NS_ASSUME_NONNULL_BEGIN
                        self.alpha = 0;
                      }];
 }
+
+-(nullable NSArray *)arrayFromMessageBody:(NSString *)body
+{
+    // Checks passed message body to see if it is JSON,
+    //    If it is, return the array of contents
+    //    else, return nil.
+    NSError *error =  nil;
+    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+    if (error) {
+        return nil;
+    } else {
+        return output;
+    }
+}
+
+-(NSString *)plainBodyStringFromBlob:(NSArray *)blob
+{
+    if ([blob count] > 0) {
+        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
+        NSDictionary *data = [tmpDict objectForKey:@"data"];
+        NSArray *body = [data objectForKey:@"body"];
+        for (NSDictionary *dict in body) {
+            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
+                return (NSString *)[dict objectForKey:@"value"];
+            }
+        }
+    }
+    return @"";
+}
+
+-(NSString *)htmlBodyStringFromBlob:(NSArray *)blob
+{
+    if ([blob count] > 0) {
+        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
+        NSDictionary *data = [tmpDict objectForKey:@"data"];
+        NSArray *body = [data objectForKey:@"body"];
+        for (NSDictionary *dict in body) {
+            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/html"]) {
+                return (NSString *)[dict objectForKey:@"value"];
+            }
+        }
+    }
+    return @"";
+}
+
 
 
 @end
