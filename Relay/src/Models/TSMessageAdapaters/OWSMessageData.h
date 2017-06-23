@@ -3,6 +3,7 @@
 
 #import "OWSMessageEditing.h"
 #import <JSQMessagesViewController/JSQMessageData.h>
+#import <JSQMessagesViewController/JSQMessageAttributedData.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +17,7 @@ typedef NS_ENUM(NSInteger, TSMessageAdapterType) {
     TSGenericTextMessageAdapter, // Used when message direction is unknown (outgoing or incoming)
 };
 
-@protocol OWSMessageData <JSQMessageData, OWSMessageEditing>
+@protocol OWSMessageData <JSQMessageAttributedData, OWSMessageEditing>
 
 @property (nonatomic, readonly) TSMessageAdapterType messageType;
 @property (nonatomic, readonly) TSInteraction *interaction;

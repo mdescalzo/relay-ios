@@ -57,6 +57,7 @@
 
 @property (nonatomic, copy) NSDate *messageDate;
 @property (nonatomic, retain) NSString *messageBody;
+@property (nonatomic, strong) NSAttributedString *attributedMessageBody;
 
 @property NSUInteger identifier;
 
@@ -123,7 +124,29 @@
     if ([interaction isKindOfClass:[TSIncomingMessage class]] ||
         [interaction isKindOfClass:[TSOutgoingMessage class]]) {
         TSMessage *message  = (TSMessage *)interaction;
-        adapter.messageBody = message.body;
+        
+#warning Add catch for attributedtext below
+        NSArray *bodyArray = [self arrayFromMessageBody:message.body];
+        NSString *plainString = [self plainBodyStringFromBlob:bodyArray];
+        NSString *htmlString = [self htmlBodyStringFromBlob:bodyArray];
+        
+        if (bodyArray == nil) {
+            adapter.messageBody = message.body;
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body
+                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+        } else if (htmlString.length > 0) {
+            adapter.messageBody = plainString;
+            NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithData:data
+                                             options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                       NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
+                                  documentAttributes:nil error:nil];
+        } else {
+            adapter.messageBody = plainString;
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:plainString
+                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+        }
+        
 
         if ([message hasAttachments]) {
             for (NSString *attachmentID in message.attachmentIds) {
@@ -285,6 +308,11 @@
     return self.messageBody;
 }
 
+-(NSAttributedString *)attributedText
+{
+    return self.attributedMessageBody;
+}
+
 - (NSUInteger)messageHash
 {
     if (self.isMediaMessage) {
@@ -323,6 +351,52 @@
         }
     }
     return NO;
+}
+
++(nullable NSArray *)arrayFromMessageBody:(NSString *)body
+{
+    // Checks passed message body to see if it is JSON,
+    //    If it is, return the array of contents
+    //    else, return nil.
+    NSError *error =  nil;
+    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+    if (error) {
+        return nil;
+    } else {
+        return output;
+    }
+}
+
++(NSString *)plainBodyStringFromBlob:(NSArray *)blob
+{
+    if ([blob count] > 0) {
+        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
+        NSDictionary *data = [tmpDict objectForKey:@"data"];
+        NSArray *body = [data objectForKey:@"body"];
+        for (NSDictionary *dict in body) {
+            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
+                return (NSString *)[dict objectForKey:@"value"];
+            }
+        }
+    }
+    return @"";
+}
+
++(NSString *)htmlBodyStringFromBlob:(NSArray *)blob
+{
+    if ([blob count] > 0) {
+        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
+        NSDictionary *data = [tmpDict objectForKey:@"data"];
+        NSArray *body = [data objectForKey:@"body"];
+        for (NSDictionary *dict in body) {
+            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/html"]) {
+                return (NSString *)[dict objectForKey:@"value"];
+            }
+        }
+    }
+    return @"";
 }
 
 @end
