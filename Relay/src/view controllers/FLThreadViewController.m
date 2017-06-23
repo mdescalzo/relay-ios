@@ -1069,7 +1069,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_threadMappings == nil) {
         _threadMappings =
         [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
-        [self.threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+        [self.threadMappings setIsReversed:NO forGroup:TSInboxGroup];
         
         [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
             [self.threadMappings updateWithTransaction:transaction];
