@@ -1472,7 +1472,18 @@
                                     <constraint firstAttribute="height" constant="44" id="KME-m3-Ie4"/>
                                 </constraints>
                                 <items>
-                                    <navigationItem title="Title" id="I8L-ig-Cvm"/>
+                                    <navigationItem title="Title" id="I8L-ig-Cvm">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="jdf-Lq-SUP">
+                                            <connections>
+                                                <action selector="closeButtonAction:" destination="z8Y-ZN-bWS" id="r6r-KK-2Q4"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="bSx-Gk-Z4L">
+                                            <connections>
+                                                <action selector="didTapShareButton" destination="z8Y-ZN-bWS" id="vGg-vr-Rzo"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -1503,6 +1514,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="dismissModalButton" destination="jdf-Lq-SUP" id="DUj-R5-RWF"/>
                         <outlet property="instructionsContainer" destination="0If-50-zKT" id="v5x-n2-RYZ"/>
                         <outlet property="instructionsLabel" destination="2PR-fE-Pz5" id="EVf-ZC-lrP"/>
                         <outlet property="modalNavigationBar" destination="NVo-qn-Ije" id="4O9-Rz-IXI"/>
@@ -1514,6 +1526,7 @@
                         <outlet property="scanButton" destination="Khg-Mw-ZdQ" id="vvl-bT-yUv"/>
                         <outlet property="scanningContainer" destination="uVh-Q0-OLZ" id="k6v-Ni-TiQ"/>
                         <outlet property="scanningInstructions" destination="UlP-mk-1Fv" id="pJa-Su-wqW"/>
+                        <outlet property="shareButton" destination="bSx-Gk-Z4L" id="vOK-pm-TWN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U81-Ts-chw" userLabel="First Responder" sceneMemberID="firstResponder"/>
