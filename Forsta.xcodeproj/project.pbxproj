@@ -1930,8 +1930,6 @@
 				7D24726A1EF0C80B0048126F /* FLConversationViewController.m */,
 				7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */,
 				7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */,
-				7D4D89441EE63502003970A5 /* SettingsPopupMenuViewController.h */,
-				7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */,
 				7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */,
 				7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */,
 				7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */,
@@ -2486,6 +2484,8 @@
 		FC3196311A08141D0094C78E /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				7D4D89441EE63502003970A5 /* SettingsPopupMenuViewController.h */,
+				7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */,
 				FC31962E1A0814130094C78E /* SettingsTableViewController.h */,
 				FC31962F1A0814130094C78E /* SettingsTableViewController.m */,
 				FCD274E01A5AFD8000202277 /* PrivacySettingsTableViewController.h */,
