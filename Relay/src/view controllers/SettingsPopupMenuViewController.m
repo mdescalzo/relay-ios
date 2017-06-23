@@ -9,11 +9,23 @@
 #import "SettingsPopupMenuViewController.h"
 #import "DirectoryTableViewController.h"
 
+#ifdef DEBUG
+#define kNumberOfSettings 7
+#else
+#define kNumberOfSettings 6
+#endif
+
+#define kDirectoryIndex 0
+#define kLinkedDevicesIndex 1
+#define kSettingsIndex 2
+#define kMarkAllReadIndex 3
+#define kImportExportIndex 4
+#define kHelpIndex 5
+#define kDeveloperConsoleIndex 6
+
 CGFloat const kRowHeight = 40;
 
 @interface SettingsPopupMenuViewController ()
-
-@property (nonatomic, strong) NSArray *settingsTitles;
 
 @end
 
@@ -43,7 +55,7 @@ CGFloat const kRowHeight = 40;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (NSInteger)[self.settingsTitles count];
+    return kNumberOfSettings;
 }
 
 
@@ -51,7 +63,49 @@ CGFloat const kRowHeight = 40;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     // Configure the cell...
-    cell.textLabel.text = [self.settingsTitles objectAtIndex:(NSUInteger)[indexPath row]];
+    switch (indexPath.row) {
+        case kDirectoryIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"Directory", @"");
+        }
+            break;
+        case kLinkedDevicesIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"LINKED_DEVICES_TITLE", @"Menu item and navbar title for the device manager");
+        }
+            break;
+        case kSettingsIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"SETTINGS_NAV_BAR_TITLE", @"Title for settings activity");
+        }
+            break;
+        case kMarkAllReadIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"Mark all read", @"");
+        }
+            break;
+        case kImportExportIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"Import / export", @"");
+        }
+            break;
+        case kHelpIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"Help", @"");
+        }
+            break;
+        case kDeveloperConsoleIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"Debug Dashboard", @"");
+        }
+            break;
+            
+        default:
+        {
+            cell.textLabel.text = @"Undefine Row";
+        }
+            break;
+    }
     
     return cell;
 }
@@ -97,19 +151,24 @@ CGFloat const kRowHeight = 40;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
-        case 0:  //         Directory selected
+        case kDirectoryIndex:  //         Directory selected
         {
             [self performSegueWithIdentifier:@"directorySegue" sender:[tableView cellForRowAtIndexPath:indexPath] ];
         }
             break;
-        case 1:  //  Settings selected
+        case kSettingsIndex:  //  Settings selected
         {
             [self performSegueWithIdentifier:@"SettingsSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
         }
             break;
-        case 5:  //  Developer console
+        case kDeveloperConsoleIndex:  //  Developer console
         {
             [self performSegueWithIdentifier:@"DeveloperPanelSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
+        }
+            break;
+        case kLinkedDevicesIndex:
+        {
+            [self performSegueWithIdentifier:@"LinkedDevicesSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
         }
             break;
         default:
@@ -145,20 +204,5 @@ CGFloat const kRowHeight = 40;
 }
 
 #pragma mark - Lazy instantiation
--(NSArray *)settingsTitles
-{
-    if (_settingsTitles == nil) {
-        _settingsTitles = @[NSLocalizedString(@"Directory", @""),
-                            NSLocalizedString(@"Settings", @""),
-                            NSLocalizedString(@"Mark all read", @""),
-                            NSLocalizedString(@"Import / export", @""),
-                            NSLocalizedString(@"Help", @"")
-#ifdef DEBUG
-                            ,NSLocalizedString(@"Debug Dashboard", @"")
-#endif
-                            ];
-    }
-    return _settingsTitles;
-}
 
 @end
