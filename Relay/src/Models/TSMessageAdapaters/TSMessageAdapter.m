@@ -127,19 +127,24 @@
         
 #warning Add catch for attributedtext below
         NSArray *bodyArray = [self arrayFromMessageBody:message.body];
+        NSString *plainString = [self plainBodyStringFromBlob:bodyArray];
+        NSString *htmlString = [self htmlBodyStringFromBlob:bodyArray];
+        
         if (bodyArray == nil) {
             adapter.messageBody = message.body;
-            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body];
-        } else  if ([self htmlBodyStringFromBlob:bodyArray].length > 0) {
-            adapter.messageBody = [self plainBodyStringFromBlob:bodyArray];
-            NSData *data = [[self htmlBodyStringFromBlob:bodyArray] dataUsingEncoding:NSUTF8StringEncoding];
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body
+                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+        } else if (htmlString.length > 0) {
+            adapter.messageBody = plainString;
+            NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
             adapter.attributedMessageBody = [[NSAttributedString alloc] initWithData:data
                                              options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
                                                        NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
                                   documentAttributes:nil error:nil];
         } else {
-            adapter.messageBody = [self plainBodyStringFromBlob:bodyArray];
-            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:[self plainBodyStringFromBlob:bodyArray]];
+            adapter.messageBody = plainString;
+            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:plainString
+                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
         }
         
 
