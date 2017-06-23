@@ -31,10 +31,10 @@
 #define kNumberOfSections 4
 
 #define kRegisteredNumberRow 0
-#define kPrivacyRow 0
+#define kPrivacyRow 2
 #define kNotificationRow 1
-#define kAdvancedRow 3
-#define kAboutRow 4
+#define kAdvancedRow 4
+#define kAboutRow 0
 #define kNetworkRow 0
 #define kUnregisterRow 0
 
