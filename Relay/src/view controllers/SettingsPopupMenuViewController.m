@@ -12,7 +12,7 @@
 #ifdef DEBUG
 #define kNumberOfSettings 7
 #else
-#defin kNumberOfSettings 6
+#define kNumberOfSettings 6
 #endif
 
 #define kDirectoryIndex 0
