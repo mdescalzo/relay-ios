@@ -170,6 +170,8 @@
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB065618170B34006006FC /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
+		7D123CA21F016C5F003B55EB /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
+		7D123CA51F0197EA003B55EB /* FLContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA41F0197EA003B55EB /* FLContact.m */; };
 		7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
@@ -844,6 +846,10 @@
 		76EB050C18170B33006006FC /* InCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCallViewController.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
+		7D123CA01F016C5F003B55EB /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
+		7D123CA11F016C5F003B55EB /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
+		7D123CA31F0197EA003B55EB /* FLContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContact.h; sourceTree = "<group>"; };
+		7D123CA41F0197EA003B55EB /* FLContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContact.m; sourceTree = "<group>"; };
 		7D2472691EF0C80B0048126F /* FLConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLConversationViewController.h; sourceTree = "<group>"; };
 		7D24726A1EF0C80B0048126F /* FLConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLConversationViewController.m; sourceTree = "<group>"; };
 		7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSlackTextViewController.a; path = "../Library/Developer/Xcode/DerivedData/Relay-gkridggddzianpfuvzrdybphatso/Build/Products/Debug-iphonesimulator/SlackTextViewController/libSlackTextViewController.a"; sourceTree = "<group>"; };
@@ -1423,10 +1429,14 @@
 			isa = PBXGroup;
 			children = (
 				76EB04A818170B33006006FC /* number directory */,
+				7D123CA31F0197EA003B55EB /* FLContact.h */,
+				7D123CA41F0197EA003B55EB /* FLContact.m */,
 				76EB040818170B33006006FC /* OWSContactsManager.h */,
 				76EB040918170B33006006FC /* OWSContactsManager.m */,
 				45843D1D1D2236B30013E85A /* OWSContactsSearcher.h */,
 				45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */,
+				7D123CA01F016C5F003B55EB /* FLContactsManager.h */,
+				7D123CA11F016C5F003B55EB /* FLContactsManager.m */,
 			);
 			path = contact;
 			sourceTree = "<group>";
@@ -3058,6 +3068,7 @@
 				76EB05F018170B33006006FC /* PhoneManager.m in Sources */,
 				452E3C8E1D935C77002A45B0 /* OWSConversationSettingsTableViewController.m in Sources */,
 				E197B60F18BBEC1A00F073E5 /* EncodedAudioFrame.m in Sources */,
+				7D123CA51F0197EA003B55EB /* FLContact.m in Sources */,
 				76EB061818170B33006006FC /* AnonymousValueLogger.m in Sources */,
 				76EB05E618170B33006006FC /* CallController.m in Sources */,
 				FC31962A1A067D8F0094C78E /* MessageComposeTableViewController.m in Sources */,
@@ -3107,6 +3118,7 @@
 				E197B61518BBEC1A00F073E5 /* JitterQueue.m in Sources */,
 				BFB074C919A5611000F2947C /* ObservableValue.m in Sources */,
 				B68EF9BA1C0B1EBD009C3DCD /* FLAnimatedImage.m in Sources */,
+				7D123CA21F016C5F003B55EB /* FLContactsManager.m in Sources */,
 				B68112EA1A4D9EC400BA82FF /* UIImage+normalizeImage.m in Sources */,
 				B609597C1C2C0FC6004E8797 /* iRate.m in Sources */,
 				76EB05C818170B33006006FC /* HelloPacket.m in Sources */,
