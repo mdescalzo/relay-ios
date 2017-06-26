@@ -398,23 +398,71 @@
 }
 
 
-- (ContactTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ContactTableViewCell *cell =
-        (ContactTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"ContactTableViewCell"];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    ContactTableViewCell *cell =
+//        (ContactTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"RightDetailCell"];
+//
+//    if (cell == nil) {
+//        cell = [[ContactTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+//                                           reuseIdentifier:@"ContactTableViewCell"];
+//    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RightDetailCell" forIndexPath:indexPath];
+    
+//    cell.shouldShowContactButtons = NO;
 
-    if (cell == nil) {
-        cell = [[ContactTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                           reuseIdentifier:@"ContactTableViewCell"];
-    }
-
-    cell.shouldShowContactButtons = NO;
-
-    [cell configureWithContact:[self contactForIndexPath:indexPath]];
+//    [cell configureWithContact:[self contactForIndexPath:indexPath]];
+    
+    FLContact *contact = (FLContact *)[self contactForIndexPath:indexPath];
+    
+    cell.textLabel.attributedText = [self attributedStringForContact:contact];
+    cell.detailTextLabel.text = contact.tag;
 
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     return cell;
 }
+
+- (NSAttributedString *)attributedStringForContact:(FLContact *)contact {
+    NSMutableAttributedString *fullNameAttributedString =
+    [[NSMutableAttributedString alloc] initWithString:contact.fullName];
+    
+    UIFont *firstNameFont;
+    UIFont *lastNameFont;
+    
+    CGFloat fontSize = 17.0;
+    
+    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+        firstNameFont = [UIFont ows_mediumFontWithSize:fontSize];
+        lastNameFont  = [UIFont ows_regularFontWithSize:fontSize];
+    } else {
+        firstNameFont = [UIFont ows_regularFontWithSize:fontSize];
+        lastNameFont  = [UIFont ows_mediumFontWithSize:fontSize];
+    }
+    [fullNameAttributedString addAttribute:NSFontAttributeName
+                                     value:firstNameFont
+                                     range:NSMakeRange(0, contact.firstName.length)];
+    [fullNameAttributedString addAttribute:NSFontAttributeName
+                                     value:lastNameFont
+                                     range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
+    [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+                                     value:[UIColor blackColor]
+                                     range:NSMakeRange(0, contact.fullName.length)];
+    
+    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+                                         value:[UIColor ows_darkGrayColor]
+                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
+    } else {
+        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+                                         value:[UIColor ows_darkGrayColor]
+                                         range:NSMakeRange(0, contact.firstName.length)];
+    }
+    
+    
+    return fullNameAttributedString;
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 52.0f;
