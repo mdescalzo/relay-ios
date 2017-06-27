@@ -19,17 +19,17 @@
 
 - (NSArray<Contact *> *)allContacts {
  
-//    NSMutableArray *allContacts = [[super allContacts] mutableCopy];
+    NSMutableArray *abContacts = [[super allContacts] mutableCopy];
 
 //    // Look for duplicates between the two and merge
-//    NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"NONE %@.firstName == firstName", allContacts];
-//    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"NONE %@.lastName == lastName", allContacts];
-//    NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[aPredicate, bPredicate]];
-//    NSArray *resultsArray = [self.ccsmContacts filteredArrayUsingPredicate:predicate];
-//    [allContacts addObjectsFromArray:self.ccsmContacts];
+    NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"NONE %@.firstName == firstName", self.ccsmContacts];
+    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"NONE %@.lastName == lastName", self.ccsmContacts];
+    NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[aPredicate, bPredicate]];
+    NSMutableArray *resultsArray = [[abContacts filteredArrayUsingPredicate:predicate] mutableCopy];
+    [resultsArray addObjectsFromArray:self.ccsmContacts];
     
-//    return [NSArray arrayWithArray:allContacts];
-    return self.ccsmContacts;
+    return resultsArray;
+//    return self.ccsmContacts ;
 }
 
 
