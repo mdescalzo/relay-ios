@@ -8,12 +8,17 @@
 
 #import "CCSMStorage.h"
 #import "FLDirectoryPopupViewController.h"
+#import "FLContactsManager.h"
+
+#import "Environment.h"
 
 
 @interface FLDirectoryPopupViewController ()
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, strong) NSDictionary *contentDictionary;
+@property (nonatomic, strong) NSArray *content;
+@property (nonatomic, strong) FLContactsManager *contactsManager;
 
 @end
 
@@ -43,18 +48,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (NSInteger)[[self.contentDictionary allKeys] count];
+    return (NSInteger)[self.content count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DirectoryElementCell" forIndexPath:indexPath];
     
     // Configure the cell...
-    cell.detailTextLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
+//    cell.detailTextLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+//    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
+//    
+//    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [tmpDict objectForKey:@"first_name" ], [tmpDict objectForKey:@"last_name"]];
+//    cell.textLabel.text = fullName;
     
-    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [tmpDict objectForKey:@"first_name" ], [tmpDict objectForKey:@"last_name"]];
-    cell.textLabel.text = fullName;
+    FLContact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+    cell.textLabel.text = [contact fullName];
+    cell.detailTextLabel.text = contact.tag;
     
     return cell;
 }
@@ -79,11 +88,13 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Everyong a user was selected
+    // Tell Everyone a user was selected
     NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
-    NSString *sendString = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromDirectory object:nil userInfo:@{@"tag":sendString}];
+//    NSString *sendString = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
+    FLContact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromDirectory object:nil userInfo:@{@"tag":contact.tag}];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -139,5 +150,23 @@
     return _ccsmStorage;
 }
 
+-(FLContactsManager *)contactsManager
+{
+    if (_contactsManager == nil) {
+        _contactsManager = [Environment getCurrent].contactsManager;
+    }
+    return _contactsManager;
+}
 
+-(NSArray *)content
+{
+    if (_content == nil) {
+        
+        // Sort the content by last name
+        _content = [[self.contactsManager signalContacts] sortedArrayUsingComparator: ^(FLContact *a1, FLContact *a2) {
+            return [a1.lastName compare:a2.lastName];
+        }];
+    }
+    return _content;
+}
 @end

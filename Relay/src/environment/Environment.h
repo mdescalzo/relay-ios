@@ -7,6 +7,7 @@
 #import "TSStorageHeaders.h"
 #import "CCSMStorage.h"
 #import "FLMessageSender.h"
+#import "FLContactsManager.h"
 
 static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
@@ -27,7 +28,8 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 #define TESTING_OPTION_USE_DH_FOR_HANDSHAKE @"DhKeyAgreementOnly"
 
 @class RecentCallManager;
-@class OWSContactsManager;
+//@class OWSContactsManager;
+@class FLContactsManager;
 @class PhoneManager;
 @class SignalsViewController;
 @class TSGroupThread;
@@ -52,7 +54,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
-                contactsManager:(OWSContactsManager *)contactsManager
+                contactsManager:(FLContactsManager *)contactsManager
                 contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender;
@@ -70,7 +72,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) NSArray *testingAndLegacyOptions;
 @property (nonatomic, readonly) NSData *zrtpClientId;
 @property (nonatomic, readonly) NSData *zrtpVersionId;
-@property (nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;

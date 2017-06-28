@@ -117,30 +117,40 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactTableViewCell" rowHeight="48" id="KtM-je-y7o" customClass="ContactTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RightDetailCell" textLabel="ZBV-8b-MdD" detailTextLabel="BRE-Th-Zzh" rowHeight="48" style="IBUITableViewCellStyleValue1" id="KtM-je-y7o" userLabel="UITableViewCell">
                                 <rect key="frame" x="0.0" y="22" width="375" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KtM-je-y7o" id="zR9-HO-39c">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="47.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GgU-yr-3aC">
-                                            <rect key="frame" x="20" y="4" width="275" height="39"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZBV-8b-MdD">
+                                            <rect key="frame" x="15" y="14" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="Title">
+                                                    <attributes>
+                                                        <font key="NSFont" metaFont="system" size="17"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BRE-Th-Zzh">
+                                            <rect key="frame" x="301" y="14" width="59" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="Subtitle">
+                                                    <attributes>
+                                                        <font key="NSFont" metaFont="system" size="17"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="GgU-yr-3aC" secondAttribute="bottom" constant="-4" id="C3p-dY-JpD"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="GgU-yr-3aC" secondAttribute="trailing" constant="72" id="Gaa-EX-sqd"/>
-                                        <constraint firstItem="GgU-yr-3aC" firstAttribute="top" secondItem="zR9-HO-39c" secondAttribute="topMargin" constant="-4" id="g6z-c2-Xzr"/>
-                                        <constraint firstItem="GgU-yr-3aC" firstAttribute="leading" secondItem="zR9-HO-39c" secondAttribute="leadingMargin" constant="12" id="mLv-dk-4bC"/>
-                                    </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="nameLabel" destination="GgU-yr-3aC" id="U8w-4d-9yg"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

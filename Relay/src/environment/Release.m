@@ -7,6 +7,7 @@
 //#import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSNetworkManager.h>
 #import "FLMessageSender.h"
+#import "FLContactsManager.h"
 
 #define RELEASE_ZRTP_CLIENT_ID @"Whisper 000     ".encodedAsAscii
 #define RELEASE_ZRTP_VERSION_ID @"1.10".encodedAsAscii
@@ -47,7 +48,7 @@ static unsigned char DH3K_PRIME[] = {
     };
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
-    OWSContactsManager *contactsManager = [OWSContactsManager new];
+    FLContactsManager *contactsManager = [FLContactsManager new];
     ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
@@ -78,7 +79,7 @@ static unsigned char DH3K_PRIME[] = {
     };
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
-    OWSContactsManager *contactsManager = [OWSContactsManager new];
+    FLContactsManager *contactsManager = [FLContactsManager new];
     ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
@@ -110,7 +111,7 @@ static unsigned char DH3K_PRIME[] = {
     }
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
-    OWSContactsManager *contactsManager = [OWSContactsManager new];
+    FLContactsManager *contactsManager = [FLContactsManager new];
     ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
