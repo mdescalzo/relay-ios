@@ -25,11 +25,15 @@
         5) send new TSOutgoinMessage
      */
 
+    // Convert message body to JSON blob
+    NSString *messageBlob = [CCSMJSONService blobFromMessage:message];
+    message.body = messageBlob;
+    
     TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[[CCSMStorage new] supermanId]];
     
     TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
                                                                             inThread:supermanThread
-                                                                         messageBody:[CCSMJSONService blobFromMessage:message]];
+                                                                         messageBody:messageBlob];
 
     // send to Superman
 #warning Need alternative handlers for the Superman send
