@@ -25,4 +25,8 @@ static NSString *FLSupermanDevID =   @"+17017328731";
 static NSString *FLSupermanStageID = @"+17017328732";
 static NSString *FLSupermanProdID =  @"+17017328733";
 
+static NSString *FLForstaDevURL = @"https://ccsm-dev-api.forsta.io/";
+static NSString *FLForstaStageURL = @"https://ccsm-stage-api.forsta.io/";
+static NSString *FLForstaProdURL = @"https://ccsm-api.forsta.io/";
+
 #endif
