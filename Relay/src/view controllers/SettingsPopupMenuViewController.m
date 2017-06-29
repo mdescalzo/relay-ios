@@ -171,6 +171,11 @@ CGFloat const kRowHeight = 40;
             [self performSegueWithIdentifier:@"LinkedDevicesSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
         }
             break;
+        case kHelpIndex:
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLForstaSupportURL]];
+        }
+            break;
         default:
             break;
     }

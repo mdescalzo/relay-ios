@@ -62,7 +62,7 @@
     self.footerView.text          = NSLocalizedString(@"SETTINGS_COPYRIGHT", @"");
     self.footerView.textColor     = [UIColor ows_darkGrayColor];
     self.footerView.font          = [UIFont ows_regularFontWithSize:15.0f];
-    self.footerView.numberOfLines = 2;
+    self.footerView.numberOfLines = 10;
     self.footerView.textAlignment = NSTextAlignmentCenter;
 
 
@@ -131,7 +131,7 @@
             [self tappedInviteTwitter];
             break;
         case 2:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://support.forsta.io"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLForstaSupportURL]];
             break;
 
         default:

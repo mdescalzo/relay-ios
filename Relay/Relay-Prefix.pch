@@ -25,4 +25,6 @@ static NSString *FLSupermanDevID =   @"+17017328731";
 static NSString *FLSupermanStageID = @"+17017328732";
 static NSString *FLSupermanProdID =  @"+17017328733";
 
+static NSString *FLForstaSupportURL = @"http://support.forsta.io";
+
 #endif
