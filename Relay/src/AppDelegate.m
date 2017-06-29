@@ -29,6 +29,7 @@
 NSString *const AppDelegateStoryboardMain = @"Main_v2";
 NSString *const AppDelegateStoryboardRegistration = @"Registration";
 NSString *const AppDelegateStoryboardLogin = @"Login";
+NSString *const AppDelegateStoryboardLaunchScreen = @"Launch Screen";
 
 
 static NSString *const kInitialViewControllerIdentifier = @"UserInitialViewController";
@@ -47,7 +48,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 @implementation AppDelegate
 
-#pragma mark Detect updates - perform migrations
+#pragma mark - Detect updates - perform migrations
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
@@ -96,53 +97,10 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     [self setupTSKitEnv];
 
-    __block UIStoryboard *storyboard;
-    
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
-    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
-    {
-        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
-            NSMutableDictionary * users = [Environment.ccsmStorage getUsers];
-            if (!users) {
-                users = [NSMutableDictionary new];
-            }
-            
-            NSString *orgUrl = [[Environment.ccsmStorage getUserInfo] objectForKey:@"org"];
-            [self.ccsmCommManager getThing:orgUrl
-                                   success:^(NSDictionary *org){
-                                       NSLog(@"Retrieved org info after session token refresh");
-                                       [Environment.ccsmStorage setOrgInfo:org];
-                                   } 
-                                   failure:^(NSError *err){
-                                       NSLog(@"Failed to retrieve org info after session token refresh");
-                                   }];
-            [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
-                                          collection:users
-                                             success:^{
-                                                 NSLog(@"Retrieved all users after session token refresh");
-                                                 [Environment.ccsmStorage setUsers:users];
-                                             }
-                                             failure:^(NSError *err){
-                                                 NSLog(@"Failed to retrieve all users after session token refresh");
-                                             }];
-            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
-            {
-                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-            }
-            else {  // Good token, but not registered, go register
-                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
-            }
-        }
-        failure:^(NSError *error){  // Unable to refresh, login
-            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-        }];
-    }
-    else  // No local token, login
-    {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-    }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    __block UIStoryboard *storyboard =[UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
 
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
@@ -288,6 +246,56 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
                                                [TSSocketManager becomeActiveFromForeground];
                                                [[Environment getCurrent].contactsManager verifyABPermission];
                                            }];
+    
+    __block UIStoryboard *storyboard;
+    
+    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
+    {
+        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+            NSMutableDictionary * users = [Environment.ccsmStorage getUsers];
+            if (!users) {
+                users = [NSMutableDictionary new];
+            }
+            
+            NSString *orgUrl = [[Environment.ccsmStorage getUserInfo] objectForKey:@"org"];
+            [self.ccsmCommManager getThing:orgUrl
+                                   success:^(NSDictionary *org){
+                                       DDLogInfo(@"Retrieved org info after session token refresh");
+                                       [Environment.ccsmStorage setOrgInfo:org];
+                                   }
+                                   failure:^(NSError *err){
+                                       DDLogError(@"Failed to retrieve org info after session token refresh");
+                                   }];
+            [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
+                                          collection:users
+                                             success:^{
+                                                 DDLogInfo(@"Retrieved all users after session token refresh");
+                                                 [Environment.ccsmStorage setUsers:users];
+                                             }
+                                             failure:^(NSError *err){
+                                                 DDLogError(@"Failed to retrieve all users after session token refresh");
+                                             }];
+            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
+            {
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+            }
+            else {  // Good token, but not registered, go register
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+            }
+        }
+                                                            failure:^(NSError *error){  // Unable to refresh, login
+                                                                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                            }];
+    }
+    else  // No local token, login
+    {
+        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+    }
+    
+    UIViewController *rootViewController = [storyboard instantiateInitialViewController];
+
+    [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
 
     [self removeScreenProtection];
 }
@@ -376,7 +384,12 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     }
 }
 
-#pragma mark Push Notifications Delegate Methods
+-(void)refreshUsersStore
+{
+    
+}
+
+#pragma mark - Push Notifications Delegate Methods
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     [[PushManager sharedManager] application:application didReceiveRemoteNotification:userInfo];
