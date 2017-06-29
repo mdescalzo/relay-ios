@@ -51,8 +51,8 @@
 {
     NSNumber *version = [NSNumber numberWithInt:1];
 //    NSString *messageId = message.uniqueId; // unused?
-    NSString *threadId = message.uniqueThreadId;
-    NSString *threadTitle = @"forsta";  // forsta for contact threads for now.  group threads have their own title
+//    NSString *threadId = message.uniqueThreadId;
+//    NSString *threadTitle = @"forsta";  // forsta for contact threads for now.  group threads have their own title
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *type = @"ordinary";
     NSDictionary *data = @{@"body": @[
@@ -63,9 +63,9 @@
     NSDictionary *sender = @{ @"tagId": [[CCSMStorage new] getUserName] };
     
     NSDictionary *tmpDict = @{ @"version" : version,
-//                             @"messageId" : messageId,  //  Appears to be unused.
-                               @"threadId" : threadId,
-                               @"threadTitle" : threadTitle,
+//                               @"messageId" : messageId,  //  Appears to be unused.
+//                               @"threadId" : threadId,
+//                               @"threadTitle" : threadTitle,
                                @"sendTime" : sendTime,
                                @"type" : type,
                                @"data" : data,
