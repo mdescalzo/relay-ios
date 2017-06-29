@@ -115,7 +115,10 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) NSString *userDispalyName;
 
-//@property (nonatomic, weak) Message *editingMessage;
+@property (nonatomic, strong) UIBarButtonItem *attachmentButton;
+@property (nonatomic, strong) UIBarButtonItem *sendButton;
+@property (nonatomic, strong) UIBarButtonItem *tagButton;
+@property (nonatomic, strong) UIBarButtonItem *recipientCountButton;
 
 @end
 
@@ -660,8 +663,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         [attributedText addAttribute:NSForegroundColorAttributeName value:highlightColor range:match.range];
     }
-    
-    [self updateBannerLabel];
+        
+    [self updateRecipientsLabel];
     
     // Check to see if new input ends the match and switch color back to black.
     textView.attributedText = attributedText;
@@ -895,6 +898,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 
 #pragma mark - convenience methods
+-(void)updateRecipientsLabel
+{
+    self.recipientCountButton.title = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Recipients", @""), [self.taggedRecipients count]];
+//    .text = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Recipients", @""), [self.taggedRecipients count]];
+}
+
 -(void)selectedUserNotification:(NSNotification *)notification
 {
     // Extract the string and insert it
@@ -923,7 +932,22 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
     [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
     [self.rightButton setImage:[UIImage imageNamed:@"Send_1"] forState:UIControlStateNormal];
+    [self.rightButton setTintColor:[UIColor blueColor]];
     self.textInputbar.autoHideRightButton = NO;
+    
+    UIToolbar *bottomBannerView = [UIToolbar new];
+    bottomBannerView.translatesAutoresizingMaskIntoConstraints = NO;
+    bottomBannerView.backgroundColor = [UIColor clearColor];
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                               target:nil action:nil];
+    bottomBannerView.items = @[ self.attachmentButton, flexSpace, self.recipientCountButton ];
+    
+    NSDictionary *views = NSDictionaryOfVariableBindings(bottomBannerView);
+    
+    [self.textInputbar.contentView addSubview:bottomBannerView];
+    [self.textInputbar.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomBannerView]|" options:0 metrics:nil views:views]];
+    [self.textInputbar.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[bottomBannerView(40)]|" options:0 metrics:nil views:views]];
 
 }
 
@@ -988,6 +1012,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                         date:[NSDate date]];
 
     [super didPressRightButton:sender];
+}
+
+-(void)onAttachmentButtonTap:(id)sender
+{
+    
 }
 
 #pragma mark - UIPopover delegate methods
@@ -1130,6 +1159,54 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 - (NSString *)tag
 {
     return self.class.tag;
+}
+
+-(UIBarButtonItem *)attachmentButton
+{
+    if (_attachmentButton == nil) {
+        _attachmentButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Attachment_1"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onAttachmentButtonTap:)];
+        _attachmentButton.tintColor = [UIColor blackColor];
+    }
+    return _attachmentButton;
+}
+
+-(UIBarButtonItem *)sendButton
+{
+    if (_sendButton == nil) {
+        _sendButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Send_1"]
+                                                      style:UIBarButtonItemStylePlain
+                                                     target:self
+                                                     action:@selector(didPressRightButton:)];
+        _sendButton.tintColor = [UIColor blueColor];
+    }
+    return _sendButton;
+}
+
+-(UIBarButtonItem *)tagButton
+{
+    if (_tagButton == nil) {
+        _tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Tag_1"]
+                                                     style:UIBarButtonItemStylePlain
+                                                    target:self
+                                                    action:@selector(didPressLeftButton:)];
+        _tagButton.tintColor = [UIColor blackColor];
+    }
+    return _tagButton;
+}
+
+-(UIBarButtonItem *)recipientCountButton
+{
+    if (_recipientCountButton == nil) {
+        _recipientCountButton = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Recipients", @""), [self.taggedRecipients count]]
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:nil
+                                                                action:nil];
+        _recipientCountButton.tintColor = [UIColor darkGrayColor];
+    }
+    return _recipientCountButton;
 }
 
 @end
