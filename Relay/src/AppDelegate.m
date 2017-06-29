@@ -253,29 +253,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
     {
         [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
-            NSMutableDictionary * users = [Environment.ccsmStorage getUsers];
-            if (!users) {
-                users = [NSMutableDictionary new];
-            }
+            [self refreshUsersStore];
             
-            NSString *orgUrl = [[Environment.ccsmStorage getUserInfo] objectForKey:@"org"];
-            [self.ccsmCommManager getThing:orgUrl
-                                   success:^(NSDictionary *org){
-                                       DDLogInfo(@"Retrieved org info after session token refresh");
-                                       [Environment.ccsmStorage setOrgInfo:org];
-                                   }
-                                   failure:^(NSError *err){
-                                       DDLogError(@"Failed to retrieve org info after session token refresh");
-                                   }];
-            [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
-                                          collection:users
-                                             success:^{
-                                                 DDLogInfo(@"Retrieved all users after session token refresh");
-                                                 [Environment.ccsmStorage setUsers:users];
-                                             }
-                                             failure:^(NSError *err){
-                                                 DDLogError(@"Failed to retrieve all users after session token refresh");
-                                             }];
             if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
             {
                 storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
@@ -311,7 +290,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
           dispatch_sync(dispatch_get_main_queue(), ^{
             [self protectScreen];
               [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
-//              [[[Environment getCurrent] signalsViewController] updateInboxCountLabel];
           });
           [TSSocketManager resignActivity];
       }
@@ -326,7 +304,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
                completionHandler:(void (^)(BOOL succeeded))completionHandler {
     if ([TSAccountManager isRegistered]) {
         [[Environment getCurrent].forstaViewController composeNew:nil];
-//        [[Environment getCurrent].signalsViewController composeNew];
         completionHandler(YES);
     } else {
         UIAlertController *controller =
@@ -345,13 +322,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
          completion:^{
              completionHandler(NO);
          }];
-
-//        [[Environment getCurrent]
-//                .signalsViewController.presentedViewController presentViewController:controller
-//                                                                            animated:YES
-//                                                                          completion:^{
-//                                                                            completionHandler(NO);
-//                                                                          }];
     }
 }
 
@@ -386,7 +356,29 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 -(void)refreshUsersStore
 {
+    NSMutableDictionary * users = [Environment.ccsmStorage getUsers];
+    if (!users) {
+        users = [NSMutableDictionary new];
+    }
     
+    NSString *orgUrl = [[Environment.ccsmStorage getUserInfo] objectForKey:@"org"];
+    [self.ccsmCommManager getThing:orgUrl
+                           success:^(NSDictionary *org){
+                               DDLogInfo(@"Retrieved org info after session token refresh");
+                               [Environment.ccsmStorage setOrgInfo:org];
+                           }
+                           failure:^(NSError *err){
+                               DDLogError(@"Failed to retrieve org info after session token refresh");
+                           }];
+    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
+                                  collection:users
+                                     success:^{
+                                         DDLogInfo(@"Retrieved all users after session token refresh");
+                                         [Environment.ccsmStorage setUsers:users];
+                                     }
+                                     failure:^(NSError *err){
+                                         DDLogError(@"Failed to retrieve all users after session token refresh");
+                                     }];
 }
 
 #pragma mark - Push Notifications Delegate Methods
