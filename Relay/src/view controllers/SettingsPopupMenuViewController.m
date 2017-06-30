@@ -176,6 +176,12 @@ CGFloat const kRowHeight = 40;
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLForstaSupportURL]];
         }
             break;
+        case kMarkAllReadIndex:
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:FLMarkAllReadNotification object:nil userInfo:nil];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+            break;
         default:
             break;
     }

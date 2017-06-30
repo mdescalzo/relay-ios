@@ -233,6 +233,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [super viewDidAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedUserNotification:) name:FLUserSelectedFromDirectory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markAllRead) name:FLMarkAllReadNotification object:nil];
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -290,7 +291,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [syncPushTokensJob run];
 }
 
-#pragma mark Table Swipe to Delete
+#pragma mark - Table Swipe to Delete
 
 - (void)tableView:(UITableView *)tableView
 commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
@@ -520,6 +521,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 
 #pragma mark - swipe handlers
+#pragma mark Currently Disabled
 //-(IBAction)onSwipeToTheRight:(id)sender
 //{
 //    if (self.domainTableViewController.view.hidden) {
@@ -926,6 +928,15 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (![self.textView isFirstResponder])
         [self.textView becomeFirstResponder];
+}
+
+-(void)markAllRead
+{
+    for (NSInteger row=0; row < [self.tableView numberOfRowsInSection:0]; row++) {
+        TSThread *thread = [self threadForIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+        [thread markAllAsRead];
+    }
+    DDLogInfo(@"Marked all threads as read.");
 }
 
 -(void)insertTextIntoTextInputView:(NSString *)string

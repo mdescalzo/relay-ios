@@ -89,12 +89,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Tell Everyone a user was selected
-    NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
-
-//    NSString *sendString = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
     FLContact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromDirectory object:nil userInfo:@{@"tag":contact.tag}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{@"tag":contact.tag}];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
