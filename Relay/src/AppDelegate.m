@@ -26,6 +26,9 @@
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
 
+@import Fabric;
+@import Crashlytics;
+
 NSString *const AppDelegateStoryboardMain = @"Main_v2";
 NSString *const AppDelegateStoryboardRegistration = @"Registration";
 NSString *const AppDelegateStoryboardLogin = @"Login";
@@ -55,6 +58,12 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Initialize crash reporting
+    [Fabric with:@[ [Crashlytics class] ]];
+    if ([Environment.ccsmStorage getUserName] != nil) {
+        [CrashlyticsKit setUserName:[Environment.ccsmStorage getUserName]];
+    }
+    
     // Initializing logger
     CategorizingLogger *logger = [CategorizingLogger categorizingLogger];
     [logger addLoggingCallback:^(NSString *category, id details, NSUInteger index){
