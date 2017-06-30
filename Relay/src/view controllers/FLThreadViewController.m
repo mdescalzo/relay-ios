@@ -88,8 +88,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) id previewingContext;
 
 // Gesture recognizers
-@property (strong, nonatomic) UISwipeGestureRecognizer *rightSwipeRecognizer;
-@property (strong, nonatomic) UISwipeGestureRecognizer *leftSwipeRecognizer;
+//@property (strong, nonatomic) UISwipeGestureRecognizer *rightSwipeRecognizer;
+//@property (strong, nonatomic) UISwipeGestureRecognizer *leftSwipeRecognizer;
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPressOnDirButton;
 
 @property (nonatomic, strong) NSMutableArray *taggedRecipients;
@@ -200,8 +200,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     self.inverted = NO;
     [self configureNavigationBar];
     [self configureBottomButtons];
-    [self rightSwipeRecognizer];
-    [self leftSwipeRecognizer];
+//    [self rightSwipeRecognizer];
+//    [self leftSwipeRecognizer];
     [self longPressOnDirButton];
 
     // Popover handling
@@ -514,21 +514,21 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 
 #pragma mark - swipe handlers
--(IBAction)onSwipeToTheRight:(id)sender
-{
-    if (self.domainTableViewController.view.hidden) {
-        if ([self.textView isFirstResponder])
-            [self.textView resignFirstResponder];
-        [self showDomainTableView];
-    }
-}
-
--(IBAction)onSwipeToTheLeft:(id)sender
-{
-    if (!self.domainTableViewController.view.hidden) {
-        [self hideDomainTableView];
-    }
-}
+//-(IBAction)onSwipeToTheRight:(id)sender
+//{
+//    if (self.domainTableViewController.view.hidden) {
+//        if ([self.textView isFirstResponder])
+//            [self.textView resignFirstResponder];
+//        [self showDomainTableView];
+//    }
+//}
+//
+//-(IBAction)onSwipeToTheLeft:(id)sender
+//{
+//    if (!self.domainTableViewController.view.hidden) {
+//        [self hideDomainTableView];
+//    }
+//}
 
 #pragma mark - Domain View handling
 -(void)showDomainTableView
@@ -1064,25 +1064,25 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     return _searchBar;
 }
 
--(UISwipeGestureRecognizer *)rightSwipeRecognizer
-{
-    if (_rightSwipeRecognizer == nil) {
-        _rightSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeToTheRight:)];
-        _rightSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.tableView addGestureRecognizer:_rightSwipeRecognizer];
-    }
-    return _rightSwipeRecognizer;
-}
-
--(UISwipeGestureRecognizer *)leftSwipeRecognizer
-{
-    if (_leftSwipeRecognizer == nil) {
-        _leftSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeToTheLeft:)];
-        _leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-        [self.tableView addGestureRecognizer:_leftSwipeRecognizer];
-    }
-    return _leftSwipeRecognizer;
-}
+//-(UISwipeGestureRecognizer *)rightSwipeRecognizer
+//{
+//    if (_rightSwipeRecognizer == nil) {
+//        _rightSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeToTheRight:)];
+//        _rightSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+//        [self.tableView addGestureRecognizer:_rightSwipeRecognizer];
+//    }
+//    return _rightSwipeRecognizer;
+//}
+//
+//-(UISwipeGestureRecognizer *)leftSwipeRecognizer
+//{
+//    if (_leftSwipeRecognizer == nil) {
+//        _leftSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeToTheLeft:)];
+//        _leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+//        [self.tableView addGestureRecognizer:_leftSwipeRecognizer];
+//    }
+//    return _leftSwipeRecognizer;
+//}
 
 -(UILongPressGestureRecognizer *)longPressOnDirButton
 {
