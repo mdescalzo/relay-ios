@@ -33,14 +33,14 @@
 #define kRegisteredNumberRow 0
 #define kPrivacyRow 2
 #define kNotificationRow 1
-#define kAdvancedRow 4
+#define kAdvancedRow 3
 #define kAboutRow 0
 #define kNetworkRow 0
 #define kUnregisterRow 0
 
 typedef enum {
     kRegisteredRows = 1,
-    kGeneralRows = 5,
+    kGeneralRows = 4,
     kNetworkStatusRows = 1,
     kUnregisterRows = 1,
 } kRowsForSection;
