@@ -4,6 +4,8 @@ project './Forsta.xcodeproj'
 
 
 target 'Relay' do
+    pod 'Fabric'
+    pod 'Crashlytics'
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :commit => '877ac7438be3ad0b45ef5ca3969574e4b97112bf'
     pod 'RelayServiceKit',            :git => 'git@github.com:ForstaLabs/RelayServiceKit.git', :commit => '7bd9c92'
     pod 'OpenSSL', '~> 1.0.210'
