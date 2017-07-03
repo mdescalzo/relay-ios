@@ -106,10 +106,39 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     [self setupTSKitEnv];
 
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    __block UIStoryboard *storyboard =[UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
+    __block UIStoryboard *storyboard;
+    
+    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
+    {
+        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+            [self refreshUsersStore];
+            
+            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
+            {
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+            }
+            else {  // Good token, but not registered, go register
+                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+            }
+        }
+                                                            failure:^(NSError *error){  // Unable to refresh, login
+                                                                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                            }];
+    }
+    else  // No local token, login
+    {
+        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+    }
+    
+//    UIViewController *rootViewController = [storyboard instantiateInitialViewController];
+//    
+//    [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+
+    
+//    __block UIStoryboard *storyboard =[UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
 
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
@@ -256,34 +285,34 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
                                                [[Environment getCurrent].contactsManager verifyABPermission];
                                            }];
     
-    __block UIStoryboard *storyboard;
-    
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
-    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
-    {
-        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
-            [self refreshUsersStore];
-            
-            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
-            {
-                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-            }
-            else {  // Good token, but not registered, go register
-                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
-            }
-        }
-                                                            failure:^(NSError *error){  // Unable to refresh, login
-                                                                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-                                                            }];
-    }
-    else  // No local token, login
-    {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-    }
-    
-    UIViewController *rootViewController = [storyboard instantiateInitialViewController];
-
-    [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+//    __block UIStoryboard *storyboard;
+//    
+//    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+//    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
+//    {
+//        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+//            [self refreshUsersStore];
+//            
+//            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
+//            {
+//                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+//            }
+//            else {  // Good token, but not registered, go register
+//                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
+//            }
+//        }
+//                                                            failure:^(NSError *error){  // Unable to refresh, login
+//                                                                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+//                                                            }];
+//    }
+//    else  // No local token, login
+//    {
+//        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+//    }
+//    
+//    UIViewController *rootViewController = [storyboard instantiateInitialViewController];
+//
+//    [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
 
     [self removeScreenProtection];
 }
