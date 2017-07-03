@@ -10,18 +10,18 @@
 #import "DirectoryTableViewController.h"
 
 #ifdef DEBUG
-#define kNumberOfSettings 7
-#else
 #define kNumberOfSettings 6
+#else
+#define kNumberOfSettings 5
 #endif
 
 #define kDirectoryIndex 0
 #define kLinkedDevicesIndex 1
 #define kSettingsIndex 2
 #define kMarkAllReadIndex 3
-#define kImportExportIndex 4
-#define kHelpIndex 5
-#define kDeveloperConsoleIndex 6
+#define kImportExportIndex 999
+#define kHelpIndex 4
+#define kDeveloperConsoleIndex 5
 
 CGFloat const kRowHeight = 40;
 
@@ -169,6 +169,17 @@ CGFloat const kRowHeight = 40;
         case kLinkedDevicesIndex:
         {
             [self performSegueWithIdentifier:@"LinkedDevicesSegue" sender:[tableView cellForRowAtIndexPath:indexPath]];
+        }
+            break;
+        case kHelpIndex:
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLForstaSupportURL]];
+        }
+            break;
+        case kMarkAllReadIndex:
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:FLMarkAllReadNotification object:nil userInfo:nil];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
             break;
         default:

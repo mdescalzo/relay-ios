@@ -416,7 +416,11 @@
     FLContact *contact = (FLContact *)[self contactForIndexPath:indexPath];
     
     cell.textLabel.attributedText = [self attributedStringForContact:contact];
-    cell.detailTextLabel.text = contact.tag;
+    if ([contact respondsToSelector:@selector(tag)]) {
+        cell.detailTextLabel.text = contact.tag;
+    } else {
+        cell.detailTextLabel.text = @"";
+    }
 
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
