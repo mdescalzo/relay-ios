@@ -62,6 +62,7 @@
 #import "MessagesViewController.h"
 
 #define CELL_HEIGHT 72.0f
+#define kLogoButtonTag 1001
 
 NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 NSString *kUserIDKey = @"phone";
@@ -232,7 +233,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [super viewDidAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedUserNotification:) name:FLUserSelectedFromDirectory object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markAllRead) name:FLMarkAllReadNotification object:nil];
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -290,7 +291,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [syncPushTokensJob run];
 }
 
-#pragma mark Table Swipe to Delete
+#pragma mark - Table Swipe to Delete
 
 - (void)tableView:(UITableView *)tableView
 commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
@@ -373,7 +374,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     // Pass the selected object to the new view controller.
     if ([[segue identifier] isEqualToString:@"SettingsPopoverSegue"]) {
         [segue destinationViewController].popoverPresentationController.delegate = self;
-        [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width/2, [self.settingsViewController heightForTableView]);
+        [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width*2/3, [self.settingsViewController heightForTableView]);
         
 //        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
 //                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
@@ -404,12 +405,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 {
     // Workaround for UIBarButtomItem not inheriting from UIView
     NSMutableArray* buttons = [[NSMutableArray alloc] init];
-    for (UIControl* btn in self.navigationController.navigationBar.subviews)
-        if ([btn isKindOfClass:[UIControl class]])
+    for (UIControl* btn in self.navigationController.navigationBar.subviews) {
+        if ([btn isKindOfClass:[UIControl class]] && btn.tag == kLogoButtonTag) {
             [buttons addObject:btn];
-    UIView* view = [buttons objectAtIndex:0];
-    return [view convertRect:view.bounds toView:nil];
-//    return view;
+        }
+    }
+    CGRect buttonFrame = ((UIView*)[buttons lastObject]).frame;
+    CGRect returnFrame = CGRectMake(buttonFrame.origin.x,
+                                    buttonFrame.origin.y,
+                                    buttonFrame.size.width + 72,
+                                    buttonFrame.size.height + 60);
+
+    return returnFrame;
 }
 
 -(IBAction)unwindToMessagesView:(UIStoryboardSegue *)sender
@@ -514,6 +521,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 
 #pragma mark - swipe handlers
+#pragma mark Currently Disabled
 //-(IBAction)onSwipeToTheRight:(id)sender
 //{
 //    if (self.domainTableViewController.view.hidden) {
@@ -782,6 +790,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    [self checkIfEmptyView];
 }
 
+-(void)scrollTableViewToBottom
+{
+    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    {
+        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+        [self.tableView setContentOffset:offset animated:YES];
+    }
+}
 
 #pragma mark - TableView delegate and data source methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -914,6 +930,15 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [self.textView becomeFirstResponder];
 }
 
+-(void)markAllRead
+{
+    for (NSInteger row=0; row < [self.tableView numberOfRowsInSection:0]; row++) {
+        TSThread *thread = [self threadForIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+        [thread markAllAsRead];
+    }
+    DDLogInfo(@"Marked all threads as read.");
+}
+
 -(void)insertTextIntoTextInputView:(NSString *)string
 {
     NSRange cursorPosition = self.textView.selectedRange;
@@ -957,6 +982,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
                                                                action:@selector(onSettingsTap:)];
+    logoItem.tag = kLogoButtonTag;
 
 //    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeNew:)];
 
