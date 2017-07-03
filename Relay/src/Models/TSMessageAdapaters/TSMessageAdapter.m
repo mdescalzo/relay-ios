@@ -360,6 +360,11 @@
     //    else, return nil.
     NSError *error =  nil;
     NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+    
+    if (data == nil) { // Not parseable.  Bounce out.
+        return nil;
+    }
+    
     NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     
     if (error) {
