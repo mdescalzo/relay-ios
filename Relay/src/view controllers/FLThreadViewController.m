@@ -1047,13 +1047,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [super didPressRightButton:sender];
 }
 
-- (BOOL)canPressRightButton
-{
-    if ([self.taggedRecipients count] > 0 && ![self.textInputbar limitExceeded]) {
-        return YES;
-    }
-    return NO;
-}
+//- (BOOL)canPressRightButton
+//{
+//    if ([self.taggedRecipients count] > 0 && ![self.textInputbar limitExceeded]) {
+//        return YES;
+//    }
+//    return NO;
+//}
 
 
 -(void)onAttachmentButtonTap:(id)sender
