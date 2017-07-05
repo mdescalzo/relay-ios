@@ -137,10 +137,18 @@
         } else if (htmlString.length > 0) {
             adapter.messageBody = plainString;
             NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
-            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithData:data
-                                             options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                       NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
-                                  documentAttributes:nil error:nil];
+            NSError *error = nil;
+            NSDictionary *attributes;
+            NSAttributedString *string = [[NSAttributedString alloc] initWithData:data
+                                                                          options: @{ NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
+                                                               documentAttributes:&attributes
+                                                                            error:&error];
+            /*@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+             NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] } */
+            adapter.attributedMessageBody = string;
+            if (error) {
+                DDLogError(@"%@", error.description);
+            }
         } else {
             adapter.messageBody = plainString;
             adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:plainString
@@ -360,6 +368,11 @@
     //    else, return nil.
     NSError *error =  nil;
     NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+    
+    if (data == nil) { // Not parseable.  Bounce out.
+        return nil;
+    }
+    
     NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     
     if (error) {

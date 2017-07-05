@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zqr-Ab-axp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zqr-Ab-axp">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -502,54 +502,6 @@
                                     <constraint firstAttribute="bottom" secondItem="9I1-dc-HZS" secondAttribute="bottom" constant="-2" id="yCa-Uj-O22"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fB9-73-vmG" userLabel="_1.1e Verification Call Me Button">
-                                <rect key="frame" x="0.0" y="624" width="414" height="57"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PCA-qm-tfG">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="57"/>
-                                        <color key="backgroundColor" red="0.50196078430000002" green="0.80784313730000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="57" id="Ybh-4m-PKB"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="     Call Me Instead">
-                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="sendCodeVoiceAction:" destination="vAf-74-zQH" eventType="touchUpInside" id="g3n-Fx-vmT"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(555) 555-5555" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQO-ap-IfU">
-                                        <rect key="frame" x="223" y="18.666666666666629" width="164" height="20.333333333333371"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="164" id="aAa-XO-3vj"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.23574128750000001" green="0.2357865572" blue="0.23573371770000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oGX-bv-Nfu">
-                                        <rect key="frame" x="149" y="18.666666666666629" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="7Mu-pr-9bR"/>
-                                            <constraint firstAttribute="width" constant="20" id="wXe-eH-lNb"/>
-                                        </constraints>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="PCA-qm-tfG" secondAttribute="centerX" id="5UD-Cp-LFZ"/>
-                                    <constraint firstItem="PCA-qm-tfG" firstAttribute="width" secondItem="fB9-73-vmG" secondAttribute="width" id="5Vq-bx-OAS"/>
-                                    <constraint firstItem="oGX-bv-Nfu" firstAttribute="leading" secondItem="PCA-qm-tfG" secondAttribute="leading" constant="149" id="GoE-Yy-Cxd"/>
-                                    <constraint firstAttribute="centerY" secondItem="PCA-qm-tfG" secondAttribute="centerY" id="Q4D-d0-E4R"/>
-                                    <constraint firstAttribute="centerY" secondItem="RQO-ap-IfU" secondAttribute="centerY" id="QFq-1a-Bsx"/>
-                                    <constraint firstAttribute="trailing" secondItem="RQO-ap-IfU" secondAttribute="trailing" constant="27" id="Ymg-OD-cqz"/>
-                                    <constraint firstItem="oGX-bv-Nfu" firstAttribute="centerY" secondItem="PCA-qm-tfG" secondAttribute="centerY" constant="0.5" id="vpn-oi-l2A"/>
-                                    <constraint firstAttribute="height" constant="57" id="wTr-g0-DlL"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -557,15 +509,12 @@
                             <constraint firstAttribute="trailingMargin" secondItem="kGf-fT-Xa9" secondAttribute="trailing" constant="-16" id="8B2-wI-hyc"/>
                             <constraint firstAttribute="width" secondItem="X6Y-tl-Cgw" secondAttribute="width" id="8bE-il-HeC"/>
                             <constraint firstItem="ZPv-Ds-6PW" firstAttribute="leading" secondItem="psv-5C-Zla" secondAttribute="leadingMargin" constant="-16" id="8tQ-bH-Ofx"/>
-                            <constraint firstItem="fB9-73-vmG" firstAttribute="width" secondItem="psv-5C-Zla" secondAttribute="width" id="Fpf-eA-723"/>
                             <constraint firstItem="RIh-Jf-Ksm" firstAttribute="width" secondItem="psv-5C-Zla" secondAttribute="width" id="JqZ-V3-U9S"/>
-                            <constraint firstItem="bCG-HQ-yTo" firstAttribute="top" secondItem="fB9-73-vmG" secondAttribute="bottom" constant="55" id="Rai-zy-BWp"/>
                             <constraint firstItem="ZPv-Ds-6PW" firstAttribute="top" secondItem="kGf-fT-Xa9" secondAttribute="bottom" constant="3" id="Vg4-ED-Tfd"/>
                             <constraint firstItem="bCG-HQ-yTo" firstAttribute="top" secondItem="RIh-Jf-Ksm" secondAttribute="bottom" id="Vqs-Kv-skP"/>
                             <constraint firstItem="kGf-fT-Xa9" firstAttribute="leading" secondItem="psv-5C-Zla" secondAttribute="leadingMargin" constant="-16" id="d09-KR-EtL"/>
                             <constraint firstAttribute="centerX" secondItem="X6Y-tl-Cgw" secondAttribute="centerX" id="dxr-yW-gjo"/>
                             <constraint firstItem="kGf-fT-Xa9" firstAttribute="top" secondItem="YJG-aq-61Z" secondAttribute="bottom" constant="8" id="gWq-ll-Ur2"/>
-                            <constraint firstAttribute="centerX" secondItem="fB9-73-vmG" secondAttribute="centerX" id="hbs-so-xXl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="YJG-aq-61Z" secondAttribute="trailing" constant="-16" id="qLY-R2-kar"/>
                             <constraint firstItem="YJG-aq-61Z" firstAttribute="leading" secondItem="psv-5C-Zla" secondAttribute="leadingMargin" constant="-16" id="qbs-la-idW"/>
                             <constraint firstItem="X6Y-tl-Cgw" firstAttribute="top" secondItem="FTb-jf-cJ8" secondAttribute="bottom" constant="-20" id="rhk-bp-Fcp"/>
@@ -581,11 +530,8 @@
                         <outlet property="changeNumberButton" destination="9I1-dc-HZS" id="IpJ-m0-1Q4"/>
                         <outlet property="headerConstraint" destination="nNa-2d-2TY" id="emq-Ub-aWV"/>
                         <outlet property="headerLabel" destination="ARw-Wq-shF" id="DKK-ZU-l6m"/>
-                        <outlet property="phoneNumberEntered" destination="RQO-ap-IfU" id="cp9-aW-BxL"/>
-                        <outlet property="requestCallSpinner" destination="oGX-bv-Nfu" id="o1h-SH-RL4"/>
                         <outlet property="requestCodeAgainSpinner" destination="6DZ-uI-Flr" id="8oS-y6-cZU"/>
                         <outlet property="sendCodeViaSMSAgainButton" destination="oZ5-7X-Fql" id="Kqf-62-oHh"/>
-                        <outlet property="sendCodeViaVoiceButton" destination="PCA-qm-tfG" id="iDq-eo-lBl"/>
                         <outlet property="signalLogo" destination="Yql-X5-USw" id="IWh-Uo-sHf"/>
                         <outlet property="submitCodeSpinner" destination="v7i-Ei-OY8" id="Kmb-V5-efV"/>
                         <segue destination="ZlQ-iw-Vxb" kind="presentation" identifier="CompletedRegistration" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="Hry-60-bHY"/>
