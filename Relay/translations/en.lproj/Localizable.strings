@@ -837,3 +837,9 @@
 
 /* Info message embedding a {{time amount}}, see the *_TIME_AMOUNT strings for context. */
 "YOU_UPDATED_DISAPPEARING_MESSAGES_CONFIGURATION" = "You set disappearing message time to %@.";
+
+/* Alert message for attempt to send message with no recipients */
+"NO_RECIPIENTS_IN_MESSAGE" = "There are no recipients in this message.";
+
+/* Alert */
+"ALERT" = "Alert";
