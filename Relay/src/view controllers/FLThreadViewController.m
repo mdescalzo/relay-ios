@@ -957,7 +957,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
     [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
     [self.rightButton setImage:[UIImage imageNamed:@"Send_solid"] forState:UIControlStateNormal];
-    [self.rightButton setTintColor:[UIColor blueColor]];
+    [self.rightButton setTintColor:[UIColor colorWithRed:0.0/255.0 green:144.0/255.0 blue:226.0/255.0 alpha:1.0]];
     self.textInputbar.autoHideRightButton = NO;
     
     UIToolbar *bottomBannerView = [UIToolbar new];
