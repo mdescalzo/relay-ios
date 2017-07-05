@@ -956,7 +956,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.leftButton setImage:[UIImage imageNamed:@"Tag_1"] forState:UIControlStateNormal];
 
     [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
-    [self.rightButton setImage:[UIImage imageNamed:@"Send_1"] forState:UIControlStateNormal];
+    [self.rightButton setImage:[UIImage imageNamed:@"Send_solid"] forState:UIControlStateNormal];
     [self.rightButton setTintColor:[UIColor blueColor]];
     self.textInputbar.autoHideRightButton = NO;
     
@@ -1202,7 +1202,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 -(UIBarButtonItem *)sendButton
 {
     if (_sendButton == nil) {
-        _sendButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Send_1"]
+        _sendButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Send_solid"]
                                                       style:UIBarButtonItemStylePlain
                                                      target:self
                                                      action:@selector(didPressRightButton:)];
