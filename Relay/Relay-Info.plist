@@ -2,20 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>Fabric</key>
-    <dict>
-        <key>APIKey</key>
-        <string>402e249164f7a639103f082f592a694e92ff9318</string>
-        <key>Kits</key>
-        <array>
-            <dict>
-                <key>KitInfo</key>
-                <dict/>
-                <key>KitName</key>
-                <string>Crashlytics</string>
-            </dict>
-        </array>
-    </dict>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>402e249164f7a639103f082f592a694e92ff9318</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -58,7 +58,7 @@
 	<key>LOGS_EMAIL</key>
 	<string>support@forsta.io</string>
 	<key>LOGS_URL</key>
-	<string>https://github.com/forstlabs/relay-ios/issues</string>
+	<string>https://github.com/ForstaLabs/relay-ios/issues</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSRequiresIPhoneOS</key>
