@@ -459,8 +459,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     switch ([self.taggedRecipients count]) {
         case 0:       //  Empty, alert and bail
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
+                                                                           message:NSLocalizedString(@"NO_RECIPIENTS_IN_MESSAGE", @"")
+                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
+            UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+            [alert addAction:okButton];
+            [self presentViewController:alert animated:YES completion:nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//            [alert show];
             return;
         }
             break;
