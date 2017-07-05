@@ -15,7 +15,7 @@ target 'Relay' do
     pod 'ZXingObjC', '~> 3.1.0'
     pod 'DJWActionSheet', '~> 1.0.4'
     pod 'JSQMessagesViewController', git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: '7.3.4-attributedText'
-    pod 'SlackTextViewController'
+    pod 'SlackTextViewController', git: 'git@github.com:ForstaLabs/SlackTextViewController.git', branch: 'master'
     target 'SignalTests' do
         inherit! :search_paths
     end
