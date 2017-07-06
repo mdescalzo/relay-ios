@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) UITableViewCell *versionCell;
 @property (strong, nonatomic) UITableViewCell *supportCell;
-@property (strong, nonatomic) UITableViewCell *twitterInviteCell;
+//@property (strong, nonatomic) UITableViewCell *twitterInviteCell;
 
 @property (strong, nonatomic) UILabel *versionLabel;
 
@@ -44,7 +44,7 @@
     self.versionCell.textLabel.text = NSLocalizedString(@"SETTINGS_VERSION", @"");
 
     self.versionLabel           = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 75, 30)];
-    self.versionLabel.text      = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    self.versionLabel.text      = [NSString stringWithFormat:@"%@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     self.versionLabel.textColor = [UIColor lightGrayColor];
     self.versionLabel.font      = [UIFont ows_regularFontWithSize:16.0f];
     self.versionLabel.textAlignment = NSTextAlignmentRight;
@@ -67,20 +67,20 @@
 
 
     // Twitter Invite
-    self.twitterInviteCell                = [[UITableViewCell alloc] init];
-    self.twitterInviteCell.textLabel.text = NSLocalizedString(@"SETTINGS_SHARE_INSTALL", @"");
+//    self.twitterInviteCell                = [[UITableViewCell alloc] init];
+//    self.twitterInviteCell.textLabel.text = NSLocalizedString(@"SETTINGS_SHARE_INSTALL", @"");
 
-    UIImageView *twitterImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"twitter_logo"]];
-    [twitterImageView setFrame:CGRectMake(0, 0, 34, 34)];
-    twitterImageView.contentMode = UIViewContentModeScaleAspectFit;
+//    UIImageView *twitterImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"twitter_logo"]];
+//    [twitterImageView setFrame:CGRectMake(0, 0, 34, 34)];
+//    twitterImageView.contentMode = UIViewContentModeScaleAspectFit;
 
-    self.twitterInviteCell.accessoryView = twitterImageView;
+//    self.twitterInviteCell.accessoryView = twitterImageView;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -88,8 +88,8 @@
         case 0:
             return 1;
         case 1:
-            return 1;
-        case 2:
+//            return 1;
+//        case 2:
             return 1;
         default:
             return 0;
@@ -101,8 +101,8 @@
         case 0:
             return NSLocalizedString(@"SETTINGS_INFORMATION_HEADER", @"");
         case 1:
-            return NSLocalizedString(@"SETTINGS_INVITE_HEADER", @"");
-        case 2:
+//            return NSLocalizedString(@"SETTINGS_INVITE_HEADER", @"");
+//        case 2:
             return NSLocalizedString(@"SETTINGS_HELP_HEADER", @"");
 
         default:
@@ -115,8 +115,8 @@
         case 0:
             return self.versionCell;
         case 1:
-            return self.twitterInviteCell;
-        case 2:
+//            return self.twitterInviteCell;
+//        case 2:
             return self.supportCell;
     }
 
@@ -128,9 +128,9 @@
 
     switch (indexPath.section) {
         case 1:
-            [self tappedInviteTwitter];
-            break;
-        case 2:
+//            [self tappedInviteTwitter];
+//            break;
+//        case 2:
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLForstaSupportURL]];
             break;
 
@@ -140,11 +140,13 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return section == 2 ? self.footerView : nil;
+//    return section == 2 ? self.footerView : nil;
+    return section == 1 ? self.footerView : nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return section == 2 ? 60.0f : 0;
+//    return section == 2 ? 60.0f : 0;
+    return section == 1 ? 60.0f : 0;
 }
 
 - (void)tappedInviteTwitter {

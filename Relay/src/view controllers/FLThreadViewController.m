@@ -459,8 +459,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     switch ([self.taggedRecipients count]) {
         case 0:       //  Empty, alert and bail
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
+                                                                           message:NSLocalizedString(@"NO_RECIPIENTS_IN_MESSAGE", @"")
+                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
+            UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+            [alert addAction:okButton];
+            [self presentViewController:alert animated:YES completion:nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//            [alert show];
             return;
         }
             break;
@@ -963,8 +969,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.leftButton setImage:[UIImage imageNamed:@"Tag_1"] forState:UIControlStateNormal];
 
     [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
-    [self.rightButton setImage:[UIImage imageNamed:@"Send_1"] forState:UIControlStateNormal];
-    [self.rightButton setTintColor:[UIColor blueColor]];
+    [self.rightButton setImage:[UIImage imageNamed:@"Send_solid"] forState:UIControlStateNormal];
+    [self.rightButton setTintColor:[UIColor colorWithRed:0.0/255.0 green:144.0/255.0 blue:226.0/255.0 alpha:1.0]];
     self.textInputbar.autoHideRightButton = NO;
     
     UIToolbar *bottomBannerView = [UIToolbar new];
@@ -1218,7 +1224,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 -(UIBarButtonItem *)sendButton
 {
     if (_sendButton == nil) {
-        _sendButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Send_1"]
+        _sendButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Send_solid"]
                                                       style:UIBarButtonItemStylePlain
                                                      target:self
                                                      action:@selector(didPressRightButton:)];

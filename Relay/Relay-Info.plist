@@ -58,7 +58,7 @@
 	<key>LOGS_EMAIL</key>
 	<string>support@forsta.io</string>
 	<key>LOGS_URL</key>
-	<string>https://github.com/forstlabs/relay-ios/issues</string>
+	<string>https://github.com/ForstaLabs/relay-ios/issues</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSRequiresIPhoneOS</key>
