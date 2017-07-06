@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		154090EF8894C3022EB33631 /* libPods-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E415B27F9DCDC3C9CA880C5 /* libPods-Relay.a */; };
 		341BB7491DB727EE001E2975 /* JSQMediaItem+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */; };
+		399940E077E8BB7FCBF95213 /* libPods-Common-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */; };
 		450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		450873C71D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C61D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m */; };
@@ -68,6 +70,7 @@
 		45F2B1971D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1951D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib */; };
 		45F2B1981D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1961D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib */; };
 		4CE0E3771B954546007210CF /* TSAnimatedAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */; };
+		6BBF2F3D8E8F2BB8D2BDF455 /* libPods-Common-SignalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */; };
 		701231B518ECAA4500D456C4 /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
 		70377AAB1918450100CAF501 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70377AAA1918450100CAF501 /* MobileCoreServices.framework */; };
 		7038632718F70C0700D4A43F /* CryptoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632418F70C0700D4A43F /* CryptoTools.m */; };
@@ -427,7 +430,6 @@
 		7DCFFE581F0EE4490003CD95 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A08F169C9E5E00537ABF /* Foundation.framework */; };
 		7DCFFE591F0EE4490003CD95 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A0E7169DFFC500537ABF /* AVFoundation.framework */; };
 		7DCFFE5A1F0EE4490003CD95 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B5BD4169F568C00681372 /* AudioToolbox.framework */; };
-		7DCFFE5B1F0EE4490003CD95 /* libPods-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E415B27F9DCDC3C9CA880C5 /* libPods-Relay.a */; };
 		7DCFFE5D1F0EE4490003CD95 /* play_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD41D7B41A6F6F0600241130 /* play_button@2x.png */; };
 		7DCFFE5E1F0EE4490003CD95 /* audio_pause_button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF381A73426500B5C81A /* audio_pause_button_blue.png */; };
 		7DCFFE5F1F0EE4490003CD95 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5509EC91A69AB8B00ABA4BC /* Main.storyboard */; };
@@ -864,8 +866,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06961A204D976833565F2966 /* libPods-RelayStage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RelayStage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		275E0CCDE98544FCC6FCE2EE /* Pods-Common-Relay.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-Relay.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay.app store release.xcconfig"; sourceTree = "<group>"; };
 		341BB7471DB727EE001E2975 /* JSQMediaItem+OWS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JSQMediaItem+OWS.h"; sourceTree = "<group>"; };
 		341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JSQMediaItem+OWS.m"; sourceTree = "<group>"; };
+		4039F9CDF04CB03D593607EB /* Pods-Relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Relay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Relay/Pods-Relay.debug.xcconfig"; sourceTree = "<group>"; };
 		450873C11D9D5149006B54F2 /* OWSExpirationTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSExpirationTimerView.h; sourceTree = "<group>"; };
 		450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSExpirationTimerView.m; sourceTree = "<group>"; };
 		450873C51D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSIncomingMessageCollectionViewCell.h; sourceTree = "<group>"; };
@@ -877,6 +882,7 @@
 		451DE9FC1DC1A28200810E42 /* SyncPushTokensJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncPushTokensJob.swift; path = Models/SyncPushTokensJob.swift; sourceTree = "<group>"; };
 		4520D8D41D417D8E00123472 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		4526BD481CA61C8D00166BC8 /* OWSMessageEditing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSMessageEditing.h; sourceTree = "<group>"; };
+		452A65E88869E95A61CB9601 /* Pods-Common-SignalTests.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-SignalTests.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests.app store release.xcconfig"; sourceTree = "<group>"; };
 		452D1EE71DCA90D100A57EC4 /* MesssagesBubblesSizeCalculatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MesssagesBubblesSizeCalculatorTest.swift; path = Models/MesssagesBubblesSizeCalculatorTest.swift; sourceTree = "<group>"; };
 		452E3C8C1D935C77002A45B0 /* OWSConversationSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSConversationSettingsTableViewController.h; sourceTree = "<group>"; };
 		452E3C8D1D935C77002A45B0 /* OWSConversationSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OWSConversationSettingsTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1186,10 +1192,12 @@
 		7DBA8D6E1ED9FD0D009FCF65 /* LoginValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginValidationViewController.h; sourceTree = "<group>"; };
 		7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginValidationViewController.m; sourceTree = "<group>"; };
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
-		7DCFFE941F0EE4490003CD95 /* Relay Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Relay Stage.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFE9C1F0EE5AA0003CD95 /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = "<group>"; };
 		7DCFFE9E1F0EE5B50003CD95 /* Relay Stage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay Stage-Info.plist"; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-Relay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A163E8AA16F3F6A90094D68B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A1C32D4D17A0652C000A904E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -1398,8 +1406,7 @@
 		DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
 		DBE179921EDF37E900327B2B /* CCSMCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMCommunication.m; sourceTree = "<group>"; };
 		DBE179941EDF381400327B2B /* CCSMCommunication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMCommunication.h; sourceTree = "<group>"; };
-		DE2DD605305BC6EFAD731723 /* Pods-Relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Relay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Relay/Pods-Relay.debug.xcconfig"; sourceTree = "<group>"; };
-		DF728B4B438716EAF95CEC18 /* Pods-Relay.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Relay.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Relay/Pods-Relay.app store release.xcconfig"; sourceTree = "<group>"; };
+		DDF434CA3373A266854BEDC2 /* Pods-Relay.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Relay.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Relay/Pods-Relay.app store release.xcconfig"; sourceTree = "<group>"; };
 		E16E5BE818AAC40200B7C403 /* EC25KeyAgreementParticipant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EC25KeyAgreementParticipant.h; sourceTree = "<group>"; };
 		E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EC25KeyAgreementParticipant.m; sourceTree = "<group>"; };
 		E16E5BEA18AAC40200B7C403 /* EC25KeyAgreementProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EC25KeyAgreementProtocol.h; sourceTree = "<group>"; };
@@ -1462,6 +1469,8 @@
 		E85DB184824BA9DC302EC8B3 /* Pods-SignalTests.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.app store release.xcconfig"; sourceTree = "<group>"; };
 		EF764C331DB67CC5000D9A87 /* UIViewController+CameraPermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+CameraPermissions.h"; path = "util/UIViewController+CameraPermissions.h"; sourceTree = "<group>"; };
 		EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+CameraPermissions.m"; path = "util/UIViewController+CameraPermissions.m"; sourceTree = "<group>"; };
+		F3104673105562C09C636C3D /* Pods-Common-SignalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-SignalTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F7BEFF9560BDFB012DD85B4F /* Pods-Common-Relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-Relay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay.debug.xcconfig"; sourceTree = "<group>"; };
 		FC3196281A067D8F0094C78E /* MessageComposeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageComposeTableViewController.h; sourceTree = "<group>"; };
 		FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageComposeTableViewController.m; sourceTree = "<group>"; };
 		FC31962B1A06A2190094C78E /* FingerprintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FingerprintViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1530,7 +1539,6 @@
 				7DCFFE581F0EE4490003CD95 /* Foundation.framework in Frameworks */,
 				7DCFFE591F0EE4490003CD95 /* AVFoundation.framework in Frameworks */,
 				7DCFFE5A1F0EE4490003CD95 /* AudioToolbox.framework in Frameworks */,
-				7DCFFE5B1F0EE4490003CD95 /* libPods-Relay.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1563,6 +1571,8 @@
 				D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */,
 				D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */,
 				A39860370D9DE1A0E34EDBF2 /* libPods-Relay.a in Frameworks */,
+				154090EF8894C3022EB33631 /* libPods-Relay.a in Frameworks */,
+				399940E077E8BB7FCBF95213 /* libPods-Common-Relay.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1586,6 +1596,7 @@
 				D221A0AD169C9E5F00537ABF /* UIKit.framework in Frameworks */,
 				D221A0AE169C9E5F00537ABF /* Foundation.framework in Frameworks */,
 				F44C8FB073F65C830B188C53 /* libPods-SignalTests.a in Frameworks */,
+				6BBF2F3D8E8F2BB8D2BDF455 /* libPods-Common-SignalTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2326,10 +2337,14 @@
 		9404664EC513585B05DF1350 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DE2DD605305BC6EFAD731723 /* Pods-Relay.debug.xcconfig */,
-				DF728B4B438716EAF95CEC18 /* Pods-Relay.app store release.xcconfig */,
 				AD2AB1207E8888E4262D781B /* Pods-SignalTests.debug.xcconfig */,
 				E85DB184824BA9DC302EC8B3 /* Pods-SignalTests.app store release.xcconfig */,
+				4039F9CDF04CB03D593607EB /* Pods-Relay.debug.xcconfig */,
+				DDF434CA3373A266854BEDC2 /* Pods-Relay.app store release.xcconfig */,
+				F7BEFF9560BDFB012DD85B4F /* Pods-Common-Relay.debug.xcconfig */,
+				275E0CCDE98544FCC6FCE2EE /* Pods-Common-Relay.app store release.xcconfig */,
+				F3104673105562C09C636C3D /* Pods-Common-SignalTests.debug.xcconfig */,
+				452A65E88869E95A61CB9601 /* Pods-Common-SignalTests.app store release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2674,7 +2689,7 @@
 			children = (
 				D221A089169C9E5E00537ABF /* Relay.app */,
 				D221A0AA169C9E5F00537ABF /* SignalTests.xctest */,
-				7DCFFE941F0EE4490003CD95 /* Relay Stage.app */,
+				7DCFFE941F0EE4490003CD95 /* RelayStage.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2711,6 +2726,9 @@
 				D221A091169C9E5E00537ABF /* CoreGraphics.framework */,
 				4E415B27F9DCDC3C9CA880C5 /* libPods-Relay.a */,
 				8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */,
+				06961A204D976833565F2966 /* libPods-RelayStage.a */,
+				9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */,
+				9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2918,16 +2936,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7DCFFD621F0EE4490003CD95 /* Relay Stage */ = {
+		7DCFFD621F0EE4490003CD95 /* RelayStage */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7DCFFE911F0EE4490003CD95 /* Build configuration list for PBXNativeTarget "Relay Stage" */;
+			buildConfigurationList = 7DCFFE911F0EE4490003CD95 /* Build configuration list for PBXNativeTarget "RelayStage" */;
 			buildPhases = (
-				7DCFFD671F0EE4490003CD95 /* [CP] Check Pods Manifest.lock */,
 				7DCFFD681F0EE4490003CD95 /* Sources */,
 				7DCFFE421F0EE4490003CD95 /* Frameworks */,
 				7DCFFE5C1F0EE4490003CD95 /* Resources */,
-				7DCFFE8D1F0EE4490003CD95 /* [CP] Embed Pods Frameworks */,
-				7DCFFE8E1F0EE4490003CD95 /* [CP] Copy Pods Resources */,
 				7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */,
 				7DCFFE901F0EE4490003CD95 /* ShellScript */,
 			);
@@ -2937,9 +2952,9 @@
 				7DCFFD631F0EE4490003CD95 /* PBXTargetDependency */,
 				7DCFFD651F0EE4490003CD95 /* PBXTargetDependency */,
 			);
-			name = "Relay Stage";
+			name = RelayStage;
 			productName = RedPhone;
-			productReference = 7DCFFE941F0EE4490003CD95 /* Relay Stage.app */;
+			productReference = 7DCFFE941F0EE4490003CD95 /* RelayStage.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D221A088169C9E5E00537ABF /* Relay */ = {
@@ -3094,7 +3109,7 @@
 			projectRoot = "";
 			targets = (
 				D221A088169C9E5E00537ABF /* Relay */,
-				7DCFFD621F0EE4490003CD95 /* Relay Stage */,
+				7DCFFD621F0EE4490003CD95 /* RelayStage */,
 				D221A0A9169C9E5F00537ABF /* SignalTests */,
 			);
 		};
@@ -3271,7 +3286,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Relay/Pods-Relay-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		451DE9EE1DC1546A00810E42 /* [Carthage] Copy Frameworks */ = {
@@ -3316,7 +3331,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Relay/Pods-Relay-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6565655F4068F9E5CDC5687F /* [CP] Check Pods Manifest.lock */ = {
@@ -3346,51 +3361,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 402e249164f7a639103f082f592a694e92ff9318 4315712d641b4a295cb0511ad4f27b0323ee2fd074dbd63c41263dca22e506ab";
-		};
-		7DCFFD671F0EE4490003CD95 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		7DCFFE8D1F0EE4490003CD95 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Relay/Pods-Relay-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7DCFFE8E1F0EE4490003CD95 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Relay/Pods-Relay-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3432,7 +3402,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F76686434770E2BBEBD9665A /* [CP] Copy Pods Resources */ = {
@@ -3447,7 +3417,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4187,7 +4157,6 @@
 /* Begin XCBuildConfiguration section */
 		7DCFFE921F0EE4490003CD95 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE2DD605305BC6EFAD731723 /* Pods-Relay.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -4208,6 +4177,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					HAVE_CONFIG_H,
+					"STAGE=1",
 				);
 				GCC_STRICT_ALIASING = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
@@ -4238,6 +4208,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -4250,7 +4221,6 @@
 		};
 		7DCFFE931F0EE4490003CD95 /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF728B4B438716EAF95CEC18 /* Pods-Relay.app store release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -4303,6 +4273,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
@@ -4445,7 +4416,7 @@
 		};
 		D221A0BD169C9E5F00537ABF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE2DD605305BC6EFAD731723 /* Pods-Relay.debug.xcconfig */;
+			baseConfigurationReference = F7BEFF9560BDFB012DD85B4F /* Pods-Common-Relay.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -4509,7 +4480,7 @@
 		};
 		D221A0BE169C9E5F00537ABF /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF728B4B438716EAF95CEC18 /* Pods-Relay.app store release.xcconfig */;
+			baseConfigurationReference = 275E0CCDE98544FCC6FCE2EE /* Pods-Common-Relay.app store release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -4573,7 +4544,7 @@
 		};
 		D221A0C0169C9E5F00537ABF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD2AB1207E8888E4262D781B /* Pods-SignalTests.debug.xcconfig */;
+			baseConfigurationReference = F3104673105562C09C636C3D /* Pods-Common-SignalTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Relay.app/Relay";
@@ -4630,7 +4601,7 @@
 		};
 		D221A0C1169C9E5F00537ABF /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E85DB184824BA9DC302EC8B3 /* Pods-SignalTests.app store release.xcconfig */;
+			baseConfigurationReference = 452A65E88869E95A61CB9601 /* Pods-Common-SignalTests.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Relay.app/Relay";
@@ -4688,7 +4659,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7DCFFE911F0EE4490003CD95 /* Build configuration list for PBXNativeTarget "Relay Stage" */ = {
+		7DCFFE911F0EE4490003CD95 /* Build configuration list for PBXNativeTarget "RelayStage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7DCFFE921F0EE4490003CD95 /* Debug */,

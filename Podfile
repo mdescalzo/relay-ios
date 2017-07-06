@@ -2,8 +2,8 @@ platform :ios, '8.0'
 source 'https://github.com/CocoaPods/Specs.git'
 project './Forsta.xcodeproj'
 
-
-target 'Relay' do
+abstract_target 'Common' do
+    
     pod 'Fabric'
     pod 'Crashlytics'
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :commit => '877ac7438be3ad0b45ef5ca3969574e4b97112bf'
@@ -16,7 +16,10 @@ target 'Relay' do
     pod 'DJWActionSheet', '~> 1.0.4'
     pod 'JSQMessagesViewController', git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: '7.3.4-attributedText'
     pod 'SlackTextViewController', git: 'git@github.com:ForstaLabs/SlackTextViewController.git', branch: 'master'
+    
+    target 'Relay' do
+    end
+    
     target 'SignalTests' do
-        inherit! :search_paths
     end
 end
