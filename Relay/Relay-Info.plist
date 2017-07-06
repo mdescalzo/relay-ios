@@ -42,7 +42,7 @@
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-		<string>402e249164f7a639103f082f592a694e92ff9318</string>
+        <string>402e249164f7a639103f082f592a694e92ff9318</string>
 		<key>Kits</key>
 		<array>
 			<dict>
