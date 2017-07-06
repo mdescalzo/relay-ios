@@ -4271,6 +4271,7 @@
 					"$(inherited)",
 					HAVE_CONFIG_H,
 					"RELEASE=1",
+					"STAGE=1",
 				);
 				GCC_STRICT_ALIASING = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
@@ -4465,6 +4466,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					HAVE_CONFIG_H,
+					"DEVELOPMENT=1",
 				);
 				GCC_STRICT_ALIASING = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
@@ -4528,6 +4530,7 @@
 					"$(inherited)",
 					HAVE_CONFIG_H,
 					"RELEASE=1",
+					"DEVELOPMENT=1",
 				);
 				GCC_STRICT_ALIASING = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
