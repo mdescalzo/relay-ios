@@ -737,7 +737,8 @@
 "SINGLE_WEEK_TIME_AMOUNT" = "%u week";
 
 /* No comment provided by engineer. */
-"SMS_INVITE_BODY" = "I'm inviting you to install Forsta! Here is the link:";
+/* "SMS_INVITE_BODY" = "I'm inviting you to install Forsta! Here is the link:"; */
+"SMS_INVITE_BODY" = "Please download the Forsta secure messaging app for encrypted messaging."
 
 /* Alert body after verifying privacy with {{other user's name}} */
 "SUCCESSFUL_VERIFICATION_DESCRIPTION" = "Your safety numbers have been verified. You can be confident your communication with %@ is private.";

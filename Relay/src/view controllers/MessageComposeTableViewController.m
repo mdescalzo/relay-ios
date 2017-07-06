@@ -316,7 +316,7 @@
                           [self.currentSearchTerm length] > 0 ? [NSArray arrayWithObject:self.currentSearchTerm] : nil;
                       picker.body = [NSLocalizedString(@"SMS_INVITE_BODY", @"")
                           stringByAppendingString:
-                              @" https://itunes.apple.com/us/app/signal-private-messenger/id874139669?mt=8"];
+                              @"http://forsta.io/features"];
                       [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
                   } else {
                       UIAlertView *notPermitted =

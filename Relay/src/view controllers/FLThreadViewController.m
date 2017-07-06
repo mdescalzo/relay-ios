@@ -510,6 +510,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                                    messageBody:text];
     }
     
+    [self.taggedRecipients removeAllObjects];
+    [self updateRecipientsLabel];
+    
     [self.messageSender sendMessage:message
                             success:^{
                                 self.newConversation = NO;
@@ -522,7 +525,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                 [alert show];
                                 DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
                             }];
-    //        [self finishSendingMessage];
 }
 
 
@@ -683,6 +685,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check to see if new input ends the match and switch color back to black.
     textView.attributedText = attributedText;
     textView.selectedRange = initialSelectedRange;
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView
+{
+    [super textViewDidEndEditing:textView];
+    [self updateRecipientsLabel];
 }
 
 -(BOOL)isValidUserID:(NSString *)userid
@@ -922,8 +930,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark - convenience methods
 -(void)updateRecipientsLabel
 {
-    self.recipientCountButton.title = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Recipients", @""), [self.taggedRecipients count]];
-//    .text = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Recipients", @""), [self.taggedRecipients count]];
+    self.recipientCountButton.title = [NSString stringWithFormat:@"%@: %lu", NSLocalizedString(@"Recipients", @""), (unsigned long)[self.taggedRecipients count]];
 }
 
 -(void)selectedUserNotification:(NSNotification *)notification
@@ -1045,6 +1052,15 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
     [super didPressRightButton:sender];
 }
+
+//- (BOOL)canPressRightButton
+//{
+//    if ([self.taggedRecipients count] > 0 && ![self.textInputbar limitExceeded]) {
+//        return YES;
+//    }
+//    return NO;
+//}
+
 
 -(void)onAttachmentButtonTap:(id)sender
 {
