@@ -185,6 +185,7 @@
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
+		7DCFF9711F0C700F0003CD95 /* forsta_splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFF9701F0C700F0003CD95 /* forsta_splash.png */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A123C14916F902EE000AE905 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
@@ -878,6 +879,7 @@
 		7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7DBA8D6E1ED9FD0D009FCF65 /* LoginValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginValidationViewController.h; sourceTree = "<group>"; };
 		7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginValidationViewController.m; sourceTree = "<group>"; };
+		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A163E8AA16F3F6A90094D68B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -2392,6 +2394,7 @@
 				B6C6AE521A305ED1006BAF8F /* Certificates */,
 				B6B6C3C419193F5B00C0B76B /* Translations */,
 				E18AB40618A05754001A532A /* AudioFiles */,
+				7DCFF9701F0C700F0003CD95 /* forsta_splash.png */,
 				D221A099169C9E5E00537ABF /* main.m */,
 				D221A095169C9E5E00537ABF /* Relay-Info.plist */,
 				D221A09B169C9E5E00537ABF /* Relay-Prefix.pch */,
@@ -2778,6 +2781,7 @@
 				FC5CDF3A1A3393DD00B47253 /* warning_white@2x.png in Resources */,
 				E1370BE018A0686600826894 /* busy.mp3 in Resources */,
 				E1370BE118A0686C00826894 /* completed.mp3 in Resources */,
+				7DCFF9711F0C700F0003CD95 /* forsta_splash.png in Resources */,
 				E1370BE218A0686C00826894 /* failure.mp3 in Resources */,
 				7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */,
 				E1370BE318A0686C00826894 /* handshake.mp3 in Resources */,
