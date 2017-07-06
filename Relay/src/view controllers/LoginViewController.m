@@ -101,12 +101,15 @@
     }
     else  // Bad organization or username
     {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-                                    message:NSLocalizedString(@"Please enter a valid organization/username.", @"")
-                                   delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                          otherButtonTitles:nil]
-         show];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", @"")
+                                             message:NSLocalizedString(@"Please enter a valid organization/username.", @"")
+                                      preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action) {} ];
+        [alert addAction:okButton];
+        [self presentViewController:alert animated:YES completion:nil];
+        
     }
 }
 
@@ -191,12 +194,14 @@
         self.loginButton.alpha = 1.0;
         [self.spinner stopAnimating];
         
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                    message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
-                                   delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                          otherButtonTitles:nil]
-         show];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
+                                                                       message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {} ];
+        [alert addAction:okButton];
+        [self presentViewController:alert animated:YES completion:nil];
     });
 }
 
