@@ -416,8 +416,8 @@
     FLContact *contact = (FLContact *)[self contactForIndexPath:indexPath];
     
     cell.textLabel.attributedText = [self attributedStringForContact:contact];
-    if ([contact respondsToSelector:@selector(tag)]) {
-        cell.detailTextLabel.text = contact.tag;
+    if ([contact respondsToSelector:@selector(tagPresentation)]) {
+        cell.detailTextLabel.text = contact.tagPresentation;
     } else {
         cell.detailTextLabel.text = @"";
     }
