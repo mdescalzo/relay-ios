@@ -6,11 +6,13 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
+#import "Environment.h"
 #import "CCSMJSONService.h"
 #import "TSOutgoingMessage.h"
 #import "TSGroupThread.h"
 #import "TSContactThread.h"
 #import "CCSMStorage.h"
+#import "DeviceTypes.h"
 
 @interface CCSMJSONService()
 
@@ -50,26 +52,60 @@
 +(NSArray *)arrayForTypeOrdinaryFromMessage:(TSOutgoingMessage *)message
 {
     NSNumber *version = [NSNumber numberWithInt:1];
-//    NSString *messageId = message.uniqueId; // unused?
-//    NSString *threadId = message.uniqueThreadId;
-//    NSString *threadTitle = @"forsta";  // forsta for contact threads for now.  group threads have their own title
+    NSString *userAgent = [DeviceTypes deviceModelName];
+    NSString *messageId = (message.uniqueId ? message.uniqueId : @"undefined"); // unused?
+    NSString *threadId = message.uniqueThreadId;
+    NSString *threadTitle = message.thread.name;
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *type = @"ordinary";
-    NSDictionary *data = @{@"body": @[
-                                        @{ @"type": @"text/plain",
-                                           @"value": message.body }
-                                     ]
+    NSDictionary *data = @{ @"body": @[ @{ @"type": @"text/plain",
+                                          @"value": message.body } ]
                           };
-    NSDictionary *sender = @{ @"tagId": [[CCSMStorage new] getUserName] };
+    
+    NSDictionary *senderDict = [Environment.ccsmStorage getUserInfo];
+    NSArray *tagsArray = [senderDict objectForKey:@"tags"];
+    NSString *tagId;
+    for (NSDictionary *tag in tagsArray) {
+        if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
+            tagId = [tag objectForKey:@"id"];
+            break;
+        }
+    }
+    NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @"undefined"),
+                              @"tagPresentation" : [NSString stringWithFormat:@"@%@", [Environment.ccsmStorage getUserName]],
+                              @"resolvedUser" :  [senderDict objectForKey:@"id"],
+                              @"resolvedNumber" : [senderDict objectForKey:@"phone"]
+                              };
+    
+    
+    FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:message.thread.contactIdentifier]];
+    NSString *recipientTag;
+    NSString *recipientID;
+    if ([contact respondsToSelector:@selector(tagPresentation)]) {
+        recipientTag = contact.tagPresentation;
+        recipientID = contact.userID;
+    } else {
+        recipientTag = @"Non-CCSM-user";
+        recipientID = @"Non-CCSM-user";
+    }
+    
+    
+    
+    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : [NSString stringWithFormat:@"@%@", recipientTag] },
+                                  @"resolvedUsers" : @[ recipientID ]
+//                                  @"resolvedNumbers" : [contact textSecureIdentifiers]
+                                  };
     
     NSDictionary *tmpDict = @{ @"version" : version,
-//                               @"messageId" : messageId,  //  Appears to be unused.
-//                               @"threadId" : threadId,
-//                               @"threadTitle" : threadTitle,
+                               @"userAgent" : userAgent,
+                               @"messageId" : messageId,  //  Appears to be unused.
+                               @"threadId" : threadId,
+                               @"threadTitle" : threadTitle,
                                @"sendTime" : sendTime,
                                @"type" : type,
                                @"data" : data,
-                               @"sender" : sender
+                               @"sender" : sender,
+                               @"recipients" : recipients
                                };
     
     NSArray *returnArray = @[ tmpDict ];

@@ -394,7 +394,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 -(void)refreshUsersStore
 {
-    NSMutableDictionary * users = [Environment.ccsmStorage getUsers];
+    NSMutableDictionary * users = [[Environment.ccsmStorage getUsers] mutableCopy];
     if (!users) {
         users = [NSMutableDictionary new];
     }

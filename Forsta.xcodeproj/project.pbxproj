@@ -186,6 +186,7 @@
 		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
 		7DCFF9711F0C700F0003CD95 /* forsta_splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFF9701F0C700F0003CD95 /* forsta_splash.png */; };
+		7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A123C14916F902EE000AE905 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
@@ -880,6 +881,8 @@
 		7DBA8D6E1ED9FD0D009FCF65 /* LoginValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginValidationViewController.h; sourceTree = "<group>"; };
 		7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginValidationViewController.m; sourceTree = "<group>"; };
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
+		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
+		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A163E8AA16F3F6A90094D68B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1964,6 +1967,7 @@
 		7D516F1A1EF318F000E7E15F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				7DCFFEC41F0FE2330003CD95 /* DeviceTypes */,
 				7D516F211EF32B6000E7E15F /* CCSMJSONService.h */,
 				7D516F221EF32B6000E7E15F /* CCSMJSONService.m */,
 				7D516F1B1EF3195100E7E15F /* FLMessageSender.h */,
@@ -1981,6 +1985,15 @@
 				7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		7DCFFEC41F0FE2330003CD95 /* DeviceTypes */ = {
+			isa = PBXGroup;
+			children = (
+				7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */,
+				7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */,
+			);
+			path = DeviceTypes;
 			sourceTree = "<group>";
 		};
 		9404664EC513585B05DF1350 /* Pods */ = {
@@ -3050,6 +3063,7 @@
 				E197B60D18BBEC1A00F073E5 /* AudioSocket.m in Sources */,
 				A5D0699B1A50E9CB004CB540 /* ShowGroupMembersViewController.m in Sources */,
 				45855F371D9498A40084F340 /* OWSContactAvatarBuilder.m in Sources */,
+				7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */,
 				7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */,
 				FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */,
 				76EB061418170B33006006FC /* AnonymousConditionLogger.m in Sources */,
@@ -3633,7 +3647,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
@@ -3659,7 +3673,7 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Relay/Relay-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
