@@ -1064,7 +1064,36 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 -(void)onAttachmentButtonTap:(id)sender
 {
-    
+//    BOOL preserveKeyboard = [self.inputToolbar.contentView.textView isFirstResponder];
+//    
+//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+//                                                                   message:nil
+//                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+//    UIAlertAction *takePictureButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TAKE_MEDIA_BUTTON", @"")
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *_Nonnull action){ [self takePictureOrVideo];
+//                                                                  if (preserveKeyboard) {
+//                                                                      [self.textInputbar.textView becomeFirstResponder];
+//                                                                  }
+//                                                              }];
+//    UIAlertAction *chooseMediaButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *_Nonnull action){ [self chooseFromLibrary];
+//                                                                  if (preserveKeyboard) {
+//                                                                      [self.textInputbar.textView becomeFirstResponder];
+//                                                                  }
+//                                                              }];
+//    UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+//                                                           style:UIAlertActionStyleCancel
+//                                                         handler:^(UIAlertAction *_Nonnull action){
+//                                                             if (preserveKeyboard) {
+//                                                                 [self.textInputbar.textView becomeFirstResponder];
+//                                                             }
+//                                                         }];
+//    [alert addAction:takePictureButton];
+//    [alert addAction:chooseMediaButton];
+//    [alert addAction:cancelButton];
+//    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UIPopover delegate methods
