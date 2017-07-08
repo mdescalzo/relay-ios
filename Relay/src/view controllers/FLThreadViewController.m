@@ -455,78 +455,58 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
-        // Check the tagged user list.
-    switch ([self.taggedRecipients count]) {
-        case 0:       //  Empty, alert and bail
-        {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
-                                                                           message:NSLocalizedString(@"NO_RECIPIENTS_IN_MESSAGE", @"")
-                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
-            UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
-            [alert addAction:okButton];
-            [self presentViewController:alert animated:YES completion:nil];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please @tag recipients." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//            [alert show];
-            return;
-        }
-            break;
-        case 1:      // Single recipient, converstaion thread
-        {
-            
-        }
-            break;
-        default:   //   Multiple recipients, group thread
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Multiple recipient support is current under development.  Using only the first @tagged recipient." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-
-        }
-            break;
-    }
-    
-    // Build the message parts
-#warning Kick this out into a convenience method
-    NSString *recipientTag = [self.taggedRecipients firstObject];
-    NSDictionary *tmpDict = [[self.ccsmStorage getTags] objectForKey:recipientTag];
-    NSDictionary *recipientBlob = [tmpDict objectForKey:[tmpDict allKeys].lastObject];
-    NSString *recipientID = [recipientBlob objectForKey:kUserIDKey];
-    
-    TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
-
-    TSOutgoingMessage *message;
-    
-    OWSDisappearingMessagesConfiguration *configuration =
-    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
-    
-    if (configuration.isEnabled) {
-        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                      inThread:thread
-                                                   messageBody:text
-                                                 attachmentIds:[NSMutableArray new]
-                                              expiresInSeconds:configuration.durationSeconds];
+    // Check the tagged user list.
+    if ([self.taggedRecipients count] > 1) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
+                                                                       message:@"Multiple recipient support is current under development.  Using only the first @tagged recipient."
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+        [alert addAction:okButton];
+        [self presentViewController:alert animated:YES completion:nil];
     } else {
-        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                      inThread:thread
-                                                   messageBody:text];
+        
+        // Build the message parts
+        NSString *recipientTag = [self.taggedRecipients firstObject];
+        NSDictionary *tmpDict = [[self.ccsmStorage getTags] objectForKey:recipientTag];
+        NSDictionary *recipientBlob = [tmpDict objectForKey:[tmpDict allKeys].lastObject];
+        NSString *recipientID = [recipientBlob objectForKey:kUserIDKey];
+        
+        TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
+        
+        TSOutgoingMessage *message;
+        
+        OWSDisappearingMessagesConfiguration *configuration =
+        [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
+        
+        if (configuration.isEnabled) {
+            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                          inThread:thread
+                                                       messageBody:text
+                                                     attachmentIds:[NSMutableArray new]
+                                                  expiresInSeconds:configuration.durationSeconds];
+        } else {
+            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                          inThread:thread
+                                                       messageBody:text];
+        }
+        
+        [self.taggedRecipients removeAllObjects];
+        [self updateRecipientsLabel];
+        
+        [self.messageSender sendMessage:message
+                                success:^{
+                                    self.newConversation = NO;
+                                    DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                                }
+                                failure:^(NSError *error) {
+                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                    message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
+                                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                    [alert show];
+                                    DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+                                }];
     }
-    
-    [self.taggedRecipients removeAllObjects];
-    [self updateRecipientsLabel];
-    
-    [self.messageSender sendMessage:message
-                            success:^{
-                                self.newConversation = NO;
-                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
-                            }
-                            failure:^(NSError *error) {
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
-                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                [alert show];
-                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-                            }];
 }
-
 
 #pragma mark - swipe handlers
 #pragma mark Currently Disabled
@@ -1044,13 +1024,23 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 -(void)didPressRightButton:(id)sender  // This is the send button
 {
-    [self didPressSendButton:self.rightButton
-             withMessageText:self.textView.text
-                    senderId:self.userId
-           senderDisplayName:self.userDispalyName
-                        date:[NSDate date]];
-
-    [super didPressRightButton:sender];
+    if ([self.taggedRecipients count] == 0) {  // No recipients, bail
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
+                                                                       message:NSLocalizedString(@"NO_RECIPIENTS_IN_MESSAGE", @"")
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+        [alert addAction:okButton];
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        
+        [self didPressSendButton:self.rightButton
+                 withMessageText:self.textView.text
+                        senderId:self.userId
+               senderDisplayName:self.userDispalyName
+                            date:[NSDate date]];
+        
+        [super didPressRightButton:sender];
+    }
 }
 
 //- (BOOL)canPressRightButton
