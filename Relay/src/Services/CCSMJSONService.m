@@ -13,6 +13,7 @@
 #import "TSContactThread.h"
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
+#import "TSAttachment.h"
 
 @interface CCSMJSONService()
 
@@ -58,9 +59,7 @@
     NSString *threadTitle = message.thread.name;
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *type = @"ordinary";
-    NSDictionary *data = @{ @"body": @[ @{ @"type": @"text/plain",
-                                          @"value": message.body } ]
-                          };
+    
     
     NSDictionary *senderDict = [Environment.ccsmStorage getUserInfo];
     NSArray *tagsArray = [senderDict objectForKey:@"tags"];
@@ -96,17 +95,34 @@
 //                                  @"resolvedNumbers" : [contact textSecureIdentifiers]
                                   };
     
-    NSDictionary *tmpDict = @{ @"version" : version,
+    NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
+                            @{ @"version" : version,
                                @"userAgent" : userAgent,
                                @"messageId" : messageId,  //  Appears to be unused.
                                @"threadId" : threadId,
                                @"threadTitle" : threadTitle,
                                @"sendTime" : sendTime,
                                @"type" : type,
-                               @"data" : data,
+//                               @"data" : data,
                                @"sender" : sender,
                                @"recipients" : recipients
-                               };
+                               }];
+    // Handler for nil message.body
+    NSDictionary *data;
+    if (message.body) {
+        data = @{ @"body": @[ @{ @"type": @"text/plain",
+                                 @"value": message.body } ]
+                  };
+        [tmpDict setObject:data forKey:@"data"];
+    }
+    // Attachment Handler
+//    NSMutableArray *attachments;
+//    if (message.hasAttachments) {
+//        for (TSAttachment *attachmentIds in message.attachmentIds) {
+//            
+//        }
+//    }
+
     
     NSArray *returnArray = @[ tmpDict ];
 
