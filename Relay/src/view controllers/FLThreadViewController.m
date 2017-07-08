@@ -783,6 +783,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                });
                 break;
             }
             case YapDatabaseViewChangeMove: {
@@ -790,6 +793,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                });
+
                 break;
             }
             case YapDatabaseViewChangeUpdate: {
