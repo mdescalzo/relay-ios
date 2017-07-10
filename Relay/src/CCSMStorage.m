@@ -124,7 +124,7 @@ NSString *const CCSMStorageKeySupermanId = @"SupermanID";
 
 - (void)setUsers:(NSMutableDictionary *)value
 {
-//    [self setValueForKey:CCSMStorageKeyUsers toValue:value];
+    [self setValueForKey:CCSMStorageKeyUsers toValue:value];
     NSDictionary * tags = extractTagsForUsers(value);
     [self setTags:tags];
 }
