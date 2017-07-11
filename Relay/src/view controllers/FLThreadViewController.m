@@ -767,6 +767,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
+
                 [self.tableView endUpdates];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
