@@ -122,7 +122,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;

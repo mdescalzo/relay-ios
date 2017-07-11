@@ -58,8 +58,9 @@
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
 #import <JSQSystemSoundPlayer.h>
-
 #import "MessagesViewController.h"
+
+@import Photos;
 
 #define CELL_HEIGHT 72.0f
 #define kLogoButtonTag 1001
@@ -94,6 +95,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPressOnDirButton;
 
 @property (nonatomic, strong) NSMutableArray *taggedRecipients;
+@property (nonatomic, strong) NSMutableArray *attachmentIDs;
 @property (nonatomic, strong) NSMutableArray *messages;
 
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
@@ -482,12 +484,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                           inThread:thread
                                                        messageBody:text
-                                                     attachmentIds:[NSMutableArray new]
+                                                     attachmentIds:_attachmentIDs
                                                   expiresInSeconds:configuration.durationSeconds];
         } else {
             message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                           inThread:thread
-                                                       messageBody:text];
+                                                       messageBody:text
+                                                     attachmentIds:_attachmentIDs];
         }
         
         [self.taggedRecipients removeAllObjects];
@@ -906,6 +909,303 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     return thread;
 }
 
+#pragma mark - UIImagePickerController
+
+/*
+ *  Presenting UIImagePickerController
+ */
+
+- (void)takePictureOrVideo {
+    NSString *mediaType = AVMediaTypeVideo;
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
+    if(authStatus == AVAuthorizationStatusAuthorized) {
+        [self showCamera];
+//    } else if(authStatus == AVAuthorizationStatusDenied){
+//    } else if(authStatus == AVAuthorizationStatusRestricted){
+    } else if(authStatus == AVAuthorizationStatusNotDetermined){
+        // not determined?!
+        [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
+            [self showCamera];
+        }];
+    } else {
+        // impossible, unknown authorization status
+        [self noCameraAccess];
+    }
+}
+
+-(void)showCamera
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.mediaTypes = @[ (__bridge NSString *)kUTTypeImage, (__bridge NSString *)kUTTypeMovie ];
+    picker.allowsEditing = NO;
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
+}
+
+-(void)noCameraAccess
+{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"MISSING_CAMERA_PERMISSION_TITLE", @"Alert title")
+                                                                   message:NSLocalizedString(@"MISSING_CAMERA_PERMISSION_MESSAGE", @"Alert body")
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    NSString *settingsTitle = NSLocalizedString(@"OPEN_SETTINGS_BUTTON", @"Button text which opens the settings app");
+    UIAlertAction *openSettingsAction = [UIAlertAction actionWithTitle:settingsTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    }];
+    [alert addAction:openSettingsAction];
+    
+    UIAlertAction *dismissAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"DISMISS_BUTTON_TEXT", nil)
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction *action) { } ];
+    [alert addAction:dismissAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+- (void)chooseFromLibrary {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        DDLogError(@"PhotoLibrary ImagePicker source not available");
+        return;
+    }
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.delegate = self;
+    picker.mediaTypes = @[ (__bridge NSString *)kUTTypeImage, (__bridge NSString *)kUTTypeMovie ];
+    [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
+}
+
+/*
+ *  Dismissing UIImagePickerController
+ */
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [UIUtil modalCompletionBlock]();
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)resetFrame {
+    // fixes bug on frame being off after this selection
+    CGRect frame    = [UIScreen mainScreen].applicationFrame;
+    self.view.frame = frame;
+}
+
+/*
+ *  Fetching data from UIImagePickerController
+ */
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
+{
+    [UIUtil modalCompletionBlock]();
+    [self resetFrame];
+    
+    void (^failedToPickAttachment)(NSError *error) = ^void(NSError *error) {
+        DDLogError(@"failed to pick attachment with error: %@", error);
+    };
+    
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie]) {
+        // Video picked from library or captured with camera
+        
+        NSURL *videoURL = info[UIImagePickerControllerMediaURL];
+        [self sendQualityAdjustedAttachmentForVideo:videoURL];
+    } else if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        // Static Image captured from camera
+        
+        UIImage *imageFromCamera = [info[UIImagePickerControllerOriginalImage] normalizedImage];
+        if (imageFromCamera) {
+            [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:imageFromCamera] ofType:@"image/jpeg"];
+        } else {
+            failedToPickAttachment(nil);
+        }
+    } else {
+        // Non-Video image picked from library
+        
+        NSURL *assetURL = info[UIImagePickerControllerReferenceURL];
+        PHAsset *asset = [[PHAsset fetchAssetsWithALAssetURLs:@[ assetURL ] options:nil] lastObject];
+        if (!asset) {
+            return failedToPickAttachment(nil);
+        }
+        
+        PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+        options.synchronous = YES; // We're only fetching one asset.
+        options.networkAccessAllowed = YES; // iCloud OK
+        options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat; // Don't need quick/dirty version
+        [[PHImageManager defaultManager]
+         requestImageDataForAsset:asset
+         options:options
+         resultHandler:^(NSData *_Nullable imageData,
+                         NSString *_Nullable dataUTI,
+                         UIImageOrientation orientation,
+                         NSDictionary *_Nullable assetInfo) {
+             
+             NSError *assetFetchingError = assetInfo[PHImageErrorKey];
+             if (assetFetchingError || !imageData) {
+                 return failedToPickAttachment(assetFetchingError);
+             }
+             DDLogVerbose(
+                          @"Size in bytes: %lu; detected filetype: %@", (unsigned long)imageData.length, dataUTI);
+             
+             if ([dataUTI isEqualToString:(__bridge NSString *)kUTTypeGIF]
+                 && imageData.length <= 5 * 1024 * 1024) {
+                 DDLogVerbose(@"Sending raw image/gif to retain any animation");
+                 /**
+                  * Media Size constraints lifted from Signal-Android
+                  * (org/thoughtcrime/securesms/mms/PushMediaConstraints.java)
+                  *
+                  * GifMaxSize return 5 * MB;
+                  * For reference, other media size limits we're not explicitly enforcing:
+                  * ImageMaxSize return 420 * KB;
+                  * VideoMaxSize return 100 * MB;
+                  * getAudioMaxSize 100 * MB;
+                  */
+                 [self sendMessageAttachment:imageData ofType:@"image/gif"];
+             } else {
+                 DDLogVerbose(@"Compressing attachment as image/jpeg");
+                 UIImage *pickedImage = [[UIImage alloc] initWithData:imageData];
+                 [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:pickedImage]
+                                      ofType:@"image/jpeg"];
+             }
+         }];
+    }
+}
+
+- (void)sendMessageAttachment:(NSData *)attachmentData ofType:(NSString *)attachmentType
+{
+//    TSOutgoingMessage *message;
+//    OWSDisappearingMessagesConfiguration *configuration =
+//    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
+//    if (configuration.isEnabled) {
+//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                      inThread:self.thread
+//                                                   messageBody:nil
+//                                                 attachmentIds:[NSMutableArray new]
+//                                              expiresInSeconds:configuration.durationSeconds];
+//    } else {
+//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                      inThread:self.thread
+//                                                   messageBody:nil
+//                                                 attachmentIds:[NSMutableArray new]];
+//    }
+//    
+//    [self dismissViewControllerAnimated:YES
+//                             completion:^{
+//                                 DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",
+//                                              (unsigned long)attachmentData.length,
+//                                              attachmentType);
+//                                 [self.messageSender sendAttachmentData:attachmentData
+//                                                            contentType:attachmentType
+//                                                              inMessage:message
+//                                                                success:^{
+//                                                                    DDLogDebug(@"%@ Successfully sent message attachment.", self.tag);
+//                                                                }
+//                                                                failure:^(NSError *error) {
+//                                                                    DDLogError(
+//                                                                               @"%@ Failed to send message attachment with error: %@", self.tag, error);
+//                                                                }];
+//                             }];
+}
+
+- (NSURL *)videoTempFolder {
+    NSArray *paths     = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    basePath           = [basePath stringByAppendingPathComponent:@"videos"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:basePath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:basePath
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    return [NSURL fileURLWithPath:basePath];
+}
+
+- (void)sendQualityAdjustedAttachmentForVideo:(NSURL *)movieURL {
+    AVAsset *video = [AVAsset assetWithURL:movieURL];
+    AVAssetExportSession *exportSession =
+    [AVAssetExportSession exportSessionWithAsset:video presetName:AVAssetExportPresetMediumQuality];
+    exportSession.shouldOptimizeForNetworkUse = YES;
+    exportSession.outputFileType              = AVFileTypeMPEG4;
+    
+    double currentTime     = [[NSDate date] timeIntervalSince1970];
+    NSString *strImageName = [NSString stringWithFormat:@"%f", currentTime];
+    NSURL *compressedVideoUrl =
+    [[self videoTempFolder] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4", strImageName]];
+    
+    exportSession.outputURL = compressedVideoUrl;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^{
+        NSError *error;
+        [self sendMessageAttachment:[NSData dataWithContentsOfURL:compressedVideoUrl] ofType:@"video/mp4"];
+        [[NSFileManager defaultManager] removeItemAtURL:compressedVideoUrl error:&error];
+        if (error) {
+            DDLogWarn(@"Failed to remove cached video file: %@", error.debugDescription);
+        }
+    }];
+}
+
+- (NSData *)qualityAdjustedAttachmentForImage:(UIImage *)image {
+    return UIImageJPEGRepresentation([self adjustedImageSizedForSending:image], [self compressionRate]);
+}
+
+- (UIImage *)adjustedImageSizedForSending:(UIImage *)image {
+    CGFloat correctedWidth;
+    switch ([Environment.preferences imageUploadQuality]) {
+        case TSImageQualityUncropped:
+            return image;
+            
+        case TSImageQualityHigh:
+            correctedWidth = 2048;
+            break;
+        case TSImageQualityMedium:
+            correctedWidth = 1024;
+            break;
+        case TSImageQualityLow:
+            correctedWidth = 512;
+            break;
+        default:
+            break;
+    }
+    
+    return [self imageScaled:image toMaxSize:correctedWidth];
+}
+
+- (UIImage *)imageScaled:(UIImage *)image toMaxSize:(CGFloat)size {
+    CGFloat scaleFactor;
+    CGFloat aspectRatio = image.size.height / image.size.width;
+    
+    if (aspectRatio > 1) {
+        scaleFactor = size / image.size.width;
+    } else {
+        scaleFactor = size / image.size.height;
+    }
+    
+    CGSize newSize = CGSizeMake(image.size.width * scaleFactor, image.size.height * scaleFactor);
+    
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *updatedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return updatedImage;
+}
+
+- (CGFloat)compressionRate {
+    switch ([Environment.preferences imageUploadQuality]) {
+        case TSImageQualityUncropped:
+            return 1;
+        case TSImageQualityHigh:
+            return 0.9f;
+        case TSImageQualityMedium:
+            return 0.5f;
+        case TSImageQualityLow:
+            return 0.3f;
+        default:
+            break;
+    }
+}
+
+
 
 #pragma mark - convenience methods
 -(void)updateRecipientsLabel
@@ -959,7 +1259,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                target:nil action:nil];
-    bottomBannerView.items = @[ self.attachmentButton, flexSpace, self.recipientCountButton ];
+    bottomBannerView.items = @[ /* self.attachmentButton, */ flexSpace, self.recipientCountButton ];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(bottomBannerView);
     
@@ -1054,36 +1354,36 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 -(void)onAttachmentButtonTap:(id)sender
 {
-//    BOOL preserveKeyboard = [self.inputToolbar.contentView.textView isFirstResponder];
-//    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-//                                                                   message:nil
-//                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-//    UIAlertAction *takePictureButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TAKE_MEDIA_BUTTON", @"")
-//                                                                style:UIAlertActionStyleDefault
-//                                                              handler:^(UIAlertAction *_Nonnull action){ [self takePictureOrVideo];
-//                                                                  if (preserveKeyboard) {
-//                                                                      [self.textInputbar.textView becomeFirstResponder];
-//                                                                  }
-//                                                              }];
-//    UIAlertAction *chooseMediaButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
-//                                                                style:UIAlertActionStyleDefault
-//                                                              handler:^(UIAlertAction *_Nonnull action){ [self chooseFromLibrary];
-//                                                                  if (preserveKeyboard) {
-//                                                                      [self.textInputbar.textView becomeFirstResponder];
-//                                                                  }
-//                                                              }];
-//    UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-//                                                           style:UIAlertActionStyleCancel
-//                                                         handler:^(UIAlertAction *_Nonnull action){
-//                                                             if (preserveKeyboard) {
-//                                                                 [self.textInputbar.textView becomeFirstResponder];
-//                                                             }
-//                                                         }];
-//    [alert addAction:takePictureButton];
-//    [alert addAction:chooseMediaButton];
-//    [alert addAction:cancelButton];
-//    [self presentViewController:alert animated:YES completion:nil];
+    BOOL preserveKeyboard = [self.textInputbar.textView isFirstResponder];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *takePictureButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TAKE_MEDIA_BUTTON", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action){ [self takePictureOrVideo];
+                                                                  if (preserveKeyboard) {
+                                                                      [self.textInputbar.textView becomeFirstResponder];
+                                                                  }
+                                                              }];
+    UIAlertAction *chooseMediaButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action){ [self chooseFromLibrary];
+                                                                  if (preserveKeyboard) {
+                                                                      [self.textInputbar.textView becomeFirstResponder];
+                                                                  }
+                                                              }];
+    UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *_Nonnull action){
+                                                             if (preserveKeyboard) {
+                                                                 [self.textInputbar.textView becomeFirstResponder];
+                                                             }
+                                                         }];
+    [alert addAction:takePictureButton];
+    [alert addAction:chooseMediaButton];
+    [alert addAction:cancelButton];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UIPopover delegate methods
@@ -1205,6 +1505,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         _taggedRecipients = [NSMutableArray new];
     }
     return _taggedRecipients;
+}
+
+-(NSMutableArray *)attachmentIDs
+{
+    if (_attachmentIDs == nil) {
+        _attachmentIDs = [NSMutableArray new];
+    }
+    return _attachmentIDs;
 }
 
 -(CCSMStorage *)ccsmStorage
