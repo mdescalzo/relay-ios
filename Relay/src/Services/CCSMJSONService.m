@@ -76,24 +76,60 @@
                               @"resolvedNumber" : [senderDict objectForKey:@"phone"]
                               };
     
-    
-    FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:message.thread.contactIdentifier]];
-    NSString *recipientTag;
-    NSString *recipientID;
-    if ([contact respondsToSelector:@selector(tagPresentation)]) {
-        recipientTag = contact.tagPresentation;
-        recipientID = contact.userID;
+    // Build recipient blob
+#warning make a private method
+    NSArray *recipientUsers;
+    if (message.thread.isGroupThread) {
+        recipientUsers = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
     } else {
-        recipientTag = @"Non-CCSM-user";
-        recipientID = @"Non-CCSM-user";
+        recipientUsers = @[ ((TSContactThread *)message.thread).contactIdentifier ];
     }
     
+    NSMutableString *presentation = [NSMutableString new];
+    NSMutableArray *userIds = [NSMutableArray new];
     
+    for (NSString *memberID in recipientUsers) {
+        FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
+        NSString *recipientTag;
+        NSString *recipientID;
+        if ([contact respondsToSelector:@selector(tagPresentation)]) {
+            recipientTag = contact.tagPresentation;
+            recipientID = contact.userID;
+        } else {
+            recipientTag = @"Non-CCSM-user";
+            recipientID = @"Non-CCSM-user";
+        }
+        
+        [userIds addObject:recipientID];
+        
+        if (presentation.length == 0) {
+            [presentation appendString:[NSString stringWithFormat:@"@%@", recipientTag]];
+        } else {
+            [presentation appendString:[NSString stringWithFormat:@" @%@", recipientTag]];
+        }
+    }
     
-    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : [NSString stringWithFormat:@"@%@", recipientTag] },
-                                  @"resolvedUsers" : @[ recipientID ]
-//                                  @"resolvedNumbers" : [contact textSecureIdentifiers]
+    NSDictionary *recipients = @{ @"tagExpression" : @{ @"presentation" : presentation },
+                                  @"userIds" : userIds
                                   };
+    
+//    FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:message.thread.contactIdentifier]];
+//    NSString *recipientTag;
+//    NSString *recipientID;
+//    if ([contact respondsToSelector:@selector(tagPresentation)]) {
+//        recipientTag = contact.tagPresentation;
+//        recipientID = contact.userID;
+//    } else {
+//        recipientTag = @"Non-CCSM-user";
+//        recipientID = @"Non-CCSM-user";
+//    }
+//    
+//    
+//    
+//    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : [NSString stringWithFormat:@"@%@", recipientTag] },
+//                                  @"resolvedUsers" : @[ recipientID ]
+////                                  @"resolvedNumbers" : [contact textSecureIdentifiers]
+//                                  };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
                             @{ @"version" : version,
