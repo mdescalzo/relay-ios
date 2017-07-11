@@ -16,7 +16,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (weak, nonatomic) IBOutlet UIButton *createDomainButton;
+@property (weak, nonatomic) IBOutlet UILabel *needDomainLabel;
 
 -(IBAction)onLoginButtonTap:(id)sender;
+-(IBAction)onCreateDomainTap:(id)sender;
 
 @end

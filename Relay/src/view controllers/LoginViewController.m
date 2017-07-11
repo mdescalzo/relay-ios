@@ -15,7 +15,6 @@
 
 @property (strong) CCSMStorage *ccsmStorage;
 @property (strong) CCSMCommManager *ccsmCommManager;
-
 @property (nonatomic, assign) BOOL keyboardShowing;
 
 @end
@@ -73,7 +72,7 @@
 }
 */
 
-#pragma mark -
+#pragma mark - Button Methods
 
 -(IBAction)onLoginButtonTap:(id)sender
 {
@@ -111,6 +110,13 @@
         [self presentViewController:alert animated:YES completion:nil];
         
     }
+}
+
+-(IBAction)onCreateDomainTap:(id)sender
+{
+    // Hop out to the domain creation page
+    NSString *domainCreateURL = @"https://console.forsta.io/create";
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:domainCreateURL]];
 }
 
 #pragma mark - move controls up to accomodate keyboard.
