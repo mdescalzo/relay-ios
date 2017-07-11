@@ -645,7 +645,7 @@ typedef enum : NSUInteger {
 }
 
 - (BOOL)canCall {
-    return !(isGroupConversation || [((TSContactThread *)self.thread).contactIdentifier isEqualToString:[TSAccountManager localNumber]]);
+    return NO; // !(isGroupConversation || [((TSContactThread *)self.thread).contactIdentifier isEqualToString:[TSAccountManager localNumber]]);
 }
 
 #pragma mark - JSQMessagesViewController method overrides

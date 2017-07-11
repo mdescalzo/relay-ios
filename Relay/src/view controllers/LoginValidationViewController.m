@@ -139,16 +139,18 @@ NSUInteger maximumValidationAttempts = 9999;
                                      }
                                      failure:^(NSError *err){
                                          NSLog(@"Failed to retrieve all users after login validation");
+
                                      }];
-    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/tag/"
-                                  collection:tags
-                                     success:^{
-                                         NSLog(@"Retrieved all tags after login validation");
-                                         [self.ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
-                                     }
-                                     failure:^(NSError *err){
-                                         NSLog(@"Failed to retrieve all tags after login validation");
-                                     }];
+#warning For future implementation.
+//    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/tag/"
+//                                  collection:tags
+//                                     success:^{
+//                                         NSLog(@"Retrieved all tags after login validation");
+//                                         [self.ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
+//                                     }
+//                                     failure:^(NSError *err){
+//                                         NSLog(@"Failed to retrieve all tags after login validation");
+//                                     }];
 
     
     // Check if registered and proceed to next storyboard accordingly
