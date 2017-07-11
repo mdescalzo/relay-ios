@@ -14,6 +14,8 @@
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
 #import "TSAttachment.h"
+#import "TSAttachmentPointer.h"
+#import "TSAttachmentStream.h"
 
 @interface CCSMJSONService()
 
@@ -109,27 +111,9 @@
         }
     }
     
-    NSDictionary *recipients = @{ @"tagExpression" : @{ @"presentation" : presentation },
+    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : presentation },
                                   @"userIds" : userIds
                                   };
-    
-//    FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:message.thread.contactIdentifier]];
-//    NSString *recipientTag;
-//    NSString *recipientID;
-//    if ([contact respondsToSelector:@selector(tagPresentation)]) {
-//        recipientTag = contact.tagPresentation;
-//        recipientID = contact.userID;
-//    } else {
-//        recipientTag = @"Non-CCSM-user";
-//        recipientID = @"Non-CCSM-user";
-//    }
-//    
-//    
-//    
-//    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : [NSString stringWithFormat:@"@%@", recipientTag] },
-//                                  @"resolvedUsers" : @[ recipientID ]
-////                                  @"resolvedNumbers" : [contact textSecureIdentifiers]
-//                                  };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
                             @{ @"version" : version,
@@ -151,13 +135,53 @@
                   };
         [tmpDict setObject:data forKey:@"data"];
     }
+    
     // Attachment Handler
-//    NSMutableArray *attachments;
-//    if (message.hasAttachments) {
-//        for (TSAttachment *attachmentIds in message.attachmentIds) {
-//            
-//        }
-//    }
+    NSMutableArray *attachments = [NSMutableArray new];
+    if ([message hasAttachments]) {
+        for (NSString *attachmentID in message.attachmentIds) {
+            TSAttachment *attachment = [TSAttachment fetchObjectWithUniqueID:attachmentID];
+            if ([attachment isKindOfClass:[TSAttachmentStream class]]) {
+                TSAttachmentStream *stream = (TSAttachmentStream *)attachment;
+                NSFileManager *fm = [NSFileManager defaultManager];
+                if ([fm fileExistsAtPath:stream.filePath]) {
+                    NSString *filename = [stream.mediaURL.pathComponents lastObject];
+                    NSString *contentType = stream.contentType;
+                    NSDictionary *attribs = [fm attributesOfItemAtPath:stream.filePath error:nil];
+                    NSNumber *size = [attribs objectForKey:NSFileSize];
+                    NSDate *modDate = [attribs objectForKey:NSFileModificationDate];
+                    NSString *dateString = [self formattedStringFromDate:modDate];
+                    NSDictionary *attachmentDict = @{ @"name" : filename,
+                                                      @"size" : size,
+                                                      @"type" : contentType,
+                                                      @"mtime" : dateString
+                                                      };
+                    [attachments addObject:attachmentDict];
+                }
+                
+            }
+//            else if ([attachment isKindOfClass:[TSAttachmentPointer class]]) {
+//                TSAttachmentPointer *pointer = (TSAttachmentPointer *)attachment;
+//                adapter.messageType          = TSInfoMessageAdapter;
+//                
+//                if (pointer.isDownloading) {
+//                    adapter.messageBody = NSLocalizedString(@"ATTACHMENT_DOWNLOADING", nil);
+//                } else {
+//                    if (pointer.hasFailed) {
+//                        adapter.messageBody = NSLocalizedString(@"ATTACHMENT_QUEUED", nil);
+//                    } else {
+//                        adapter.messageBody = NSLocalizedString(@"ATTACHMENT_DOWNLOAD_FAILED", nil);
+//                    }
+//                }
+//            } else {
+//                DDLogError(@"We retrieved an attachment that doesn't have a known type : %@",
+//                           NSStringFromClass([attachment class]));
+//            }
+        }
+        if ([attachments count] > 1) {
+            [tmpDict setObject:attachments forKey:@"attachments"];
+        }
+    }
 
     
     NSArray *returnArray = @[ tmpDict ];
