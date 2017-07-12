@@ -1638,17 +1638,35 @@
                                     <outlet property="delegate" destination="RfC-zh-ph2" id="NBY-pa-f4L"/>
                                 </connections>
                             </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9r7-0d-7sF">
+                                <rect key="frame" x="36" y="562" width="303" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fr4-p6-F8n">
+                                <rect key="frame" x="36" y="533" width="303" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="9r7-0d-7sF" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" constant="20" id="0i0-Cz-Kgl"/>
                             <constraint firstAttribute="trailing" secondItem="kgR-Zq-IHO" secondAttribute="trailing" id="2V7-48-WE5"/>
                             <constraint firstItem="gw0-u4-rvh" firstAttribute="leading" secondItem="jMA-Eb-Nui" secondAttribute="trailing" constant="8" id="3wA-av-oGG"/>
                             <constraint firstItem="JvP-PH-F77" firstAttribute="top" secondItem="B3C-OE-3V9" secondAttribute="bottom" constant="20" id="43t-wn-gLO"/>
+                            <constraint firstItem="9r7-0d-7sF" firstAttribute="top" secondItem="fr4-p6-F8n" secondAttribute="bottom" constant="8" id="4WB-gq-l33"/>
                             <constraint firstItem="JvP-PH-F77" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" id="8ls-8e-Xqf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JvP-PH-F77" secondAttribute="trailing" constant="159" id="EiA-g1-o36"/>
                             <constraint firstItem="jMA-Eb-Nui" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" id="MPt-66-y9r"/>
+                            <constraint firstItem="JaB-bo-Ge9" firstAttribute="top" secondItem="9r7-0d-7sF" secondAttribute="bottom" constant="20" id="OIF-Xd-fAg"/>
+                            <constraint firstItem="fr4-p6-F8n" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" constant="20" id="SFe-Ar-7KW"/>
                             <constraint firstItem="jMA-Eb-Nui" firstAttribute="top" secondItem="kgR-Zq-IHO" secondAttribute="bottom" constant="8" id="V7g-hf-9Nf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9r7-0d-7sF" secondAttribute="trailing" constant="20" id="ZOx-IQ-lwv"/>
                             <constraint firstItem="kgR-Zq-IHO" firstAttribute="top" secondItem="JvP-PH-F77" secondAttribute="bottom" constant="8" id="a6V-SX-hTP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fr4-p6-F8n" secondAttribute="trailing" constant="20" id="bVd-fC-iry"/>
                             <constraint firstItem="kgR-Zq-IHO" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leading" id="fkA-OF-CAf"/>
                             <constraint firstItem="gw0-u4-rvh" firstAttribute="top" secondItem="kgR-Zq-IHO" secondAttribute="bottom" constant="8" id="kGm-lX-trT"/>
                         </constraints>
@@ -1662,6 +1680,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="forstaURLLabel" destination="9r7-0d-7sF" id="Jo5-Po-AcX"/>
+                        <outlet property="supermanIDLabel" destination="fr4-p6-F8n" id="vgu-Ym-ZGU"/>
                         <outlet property="supermanIDPicker" destination="kgR-Zq-IHO" id="IXE-hD-ELy"/>
                     </connections>
                 </viewController>
