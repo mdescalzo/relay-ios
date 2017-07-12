@@ -63,7 +63,7 @@
     
     FLContact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
     cell.textLabel.text = [contact fullName];
-    cell.detailTextLabel.text = contact.tag;
+    cell.detailTextLabel.text = contact.tagPresentation;
     
     return cell;
 }
@@ -91,7 +91,7 @@
     // Tell Everyone a user was selected
     FLContact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{@"tag":contact.tag}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{ @"tag":contact.tagPresentation }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

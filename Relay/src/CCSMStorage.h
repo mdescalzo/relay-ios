@@ -28,10 +28,11 @@
 - (NSDictionary *)getOrgInfo;
 - (void)setOrgInfo:(NSDictionary *)value;
 
-- (NSMutableDictionary *)getUsers;
-- (void)setUsers:(NSMutableDictionary *)value;
+- (NSDictionary *)getUsers;
+- (void)setUsers:(NSDictionary *)value;
 
 - (NSDictionary *)getTags;
+-(void)setTags:(NSDictionary *)value;
 
 @end
 

@@ -112,10 +112,15 @@ NSUInteger maximumValidationAttempts = 9999;
 -(void)validationSucceeded
 {
     // refresh other stuff now that we have the user info...
-    NSMutableDictionary * users = [self.ccsmStorage getUsers];
+    NSMutableDictionary * users= [[self.ccsmStorage getUsers] mutableCopy];
     if (!users) {
         users = [NSMutableDictionary new];
     }
+    NSMutableDictionary *tags = [[self.ccsmStorage getTags] mutableCopy];
+    if (!tags) {
+        tags = [NSMutableDictionary new];
+    }
+
     
     NSString *orgUrl = [[self.ccsmStorage getUserInfo] objectForKey:@"org"];
     [self.ccsmCommManager getThing:orgUrl
@@ -130,11 +135,23 @@ NSUInteger maximumValidationAttempts = 9999;
                                   collection:users
                                      success:^{
                                          NSLog(@"Retrieved all users after login validation");
-                                         [self.ccsmStorage setUsers:users];
+                                         [self.ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
                                      }
                                      failure:^(NSError *err){
                                          NSLog(@"Failed to retrieve all users after login validation");
+
                                      }];
+#warning For future implementation.
+//    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/tag/"
+//                                  collection:tags
+//                                     success:^{
+//                                         NSLog(@"Retrieved all tags after login validation");
+//                                         [self.ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
+//                                     }
+//                                     failure:^(NSError *err){
+//                                         NSLog(@"Failed to retrieve all tags after login validation");
+//                                     }];
+
     
     // Check if registered and proceed to next storyboard accordingly
     NSString *targetSegue = nil;

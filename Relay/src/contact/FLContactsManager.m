@@ -7,7 +7,7 @@
 //
 
 #import "FLContactsManager.h"
-#import "CCSMStorage.h"
+#import "Environment.h"
 
 @interface FLContactsManager()
 
@@ -39,8 +39,11 @@
     if (_ccsmContacts == nil) {
         NSMutableArray *tmpArray = [NSMutableArray new];
         
-        NSDictionary *tagsBlob = [[CCSMStorage new] getTags];
+        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
+        NSDictionary *usersBlob = [Environment.ccsmStorage getUsers];
+        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
         
+        NSLog(@"%@", userInfo);
         for (NSString *key in tagsBlob.allKeys) {
             NSDictionary *tmpDict = [tagsBlob objectForKey:key];
             NSDictionary *userDict = [tmpDict objectForKey:tmpDict.allKeys.lastObject];
@@ -55,7 +58,16 @@
                                                              andUserTextPhoneNumbers:@[ [userDict objectForKey:@"phone"] ]
                                                                             andImage:nil
                                                                         andContactID:0];
-                contact.tag = key;
+                contact.tagPresentation = key;
+                contact.userID = [userDict objectForKey:@"id"];
+                
+                NSArray *tagsArray = [userDict objectForKey:@"tags"];
+                for (NSDictionary *tag in tagsArray) {
+                    if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
+                        contact.tagID = [tag objectForKey:@"id"];
+                        break;
+                    }
+                }
                 
                 [tmpArray addObject:contact];
             }
