@@ -20,6 +20,12 @@ abstract_target 'Common' do
     target 'Relay' do
     end
     
+    target 'RelayStage' do
+    end
+    
+    target 'RelayDev' do
+    end
+    
     target 'SignalTests' do
     end
 end

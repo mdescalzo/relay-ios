@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		154090EF8894C3022EB33631 /* libPods-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E415B27F9DCDC3C9CA880C5 /* libPods-Relay.a */; };
 		341BB7491DB727EE001E2975 /* JSQMediaItem+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */; };
 		399940E077E8BB7FCBF95213 /* libPods-Common-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */; };
+		3CD90A2E419629F36269D7B5 /* libPods-Common-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */; };
 		450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		450873C71D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C61D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m */; };
@@ -70,6 +70,7 @@
 		45F2B1971D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1951D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib */; };
 		45F2B1981D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1961D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib */; };
 		4CE0E3771B954546007210CF /* TSAnimatedAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */; };
+		69B9FFA8E0FFF68A249E18B7 /* libPods-Common-RelayStage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF72580AFF17D60EA5DADF4 /* libPods-Common-RelayStage.a */; };
 		6BBF2F3D8E8F2BB8D2BDF455 /* libPods-Common-SignalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */; };
 		701231B518ECAA4500D456C4 /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
 		70377AAB1918450100CAF501 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70377AAA1918450100CAF501 /* MobileCoreServices.framework */; };
@@ -171,6 +172,7 @@
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB065618170B34006006FC /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
+		7876F393547EC92421AF7CCD /* libPods-Common-RelayStage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF72580AFF17D60EA5DADF4 /* libPods-Common-RelayStage.a */; };
 		7D123CA21F016C5F003B55EB /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
 		7D123CA51F0197EA003B55EB /* FLContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA41F0197EA003B55EB /* FLContact.m */; };
 		7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
@@ -179,7 +181,297 @@
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
-		7D4A399E1F1689200023C29B /* RelayStage-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D4A399D1F1689200023C29B /* RelayStage-Info.plist */; };
+		7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
+		7D4A39C11F1693930023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
+		7D4A39C21F1693930023C29B /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
+		7D4A39C31F1693930023C29B /* RPAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B640BFA71C257843006038B3 /* RPAccountManager.m */; };
+		7D4A39C41F1693930023C29B /* CountryCodeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5509ECC1A69B1D600ABA4BC /* CountryCodeTableViewCell.m */; };
+		7D4A39C51F1693930023C29B /* CallConnectUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049C18170B33006006FC /* CallConnectUtil.m */; };
+		7D4A39C61F1693930023C29B /* LoggingUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B918170B33006006FC /* LoggingUtil.m */; };
+		7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B518170B33006006FC /* DecayingSampleEstimator.m */; };
+		7D4A39C81F1693930023C29B /* CommitPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045618170B33006006FC /* CommitPacket.m */; };
+		7D4A39C91F1693930023C29B /* InitiatorSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A718170B33006006FC /* InitiatorSessionDescriptor.m */; };
+		7D4A39CA1F1693930023C29B /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
+		7D4A39CB1F1693930023C29B /* CallConnectUtil_Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A218170B33006006FC /* CallConnectUtil_Server.m */; };
+		7D4A39CC1F1693930023C29B /* AppStoreRating.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */; };
+		7D4A39CD1F1693930023C29B /* OWSQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38301D6682450094BD24 /* OWSQRCodeScanningViewController.m */; };
+		7D4A39CE1F1693930023C29B /* PriorityQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04D318170B33006006FC /* PriorityQueue.m */; };
+		7D4A39CF1F1693930023C29B /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
+		7D4A39D01F1693930023C29B /* LockInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */; };
+		7D4A39D11F1693930023C29B /* DiscardingLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C618170B33006006FC /* DiscardingLog.m */; };
+		7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
+		7D4A39D31F1693930023C29B /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
+		7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
+		7D4A39D51F1693930023C29B /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
+		7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB11D921A12A4AA002F93FB /* FullImageViewController.m */; };
+		7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = B60C16641988999D00E97A6C /* VersionMigrations.m */; };
+		7D4A39D81F1693930023C29B /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B97940261832BD2400BD66CB /* UIUtil.m */; };
+		7D4A39D91F1693930023C29B /* TSAnimatedAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */; };
+		7D4A39DA1F1693930023C29B /* ConfirmPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045A18170B33006006FC /* ConfirmPacket.m */; };
+		7D4A39DB1F1693930023C29B /* JSQMessagesCollectionViewCell+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531C9C31DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m */; };
+		7D4A39DC1F1693930023C29B /* OWS101ExistingUsersBlockOnIdentityChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 4516E3FE1DD2193B00DC4206 /* OWS101ExistingUsersBlockOnIdentityChange.m */; };
+		7D4A39DD1F1693930023C29B /* RtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044018170B33006006FC /* RtpSocket.m */; };
+		7D4A39DE1F1693930023C29B /* RemoteIOAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B60718BBEC1A00F073E5 /* RemoteIOAudio.m */; };
+		7D4A39DF1F1693930023C29B /* RPServerRequestsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B67ADDC31989FF8700E1A773 /* RPServerRequestsManager.m */; };
+		7D4A39E01F1693930023C29B /* UIViewController+CameraPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */; };
+		7D4A39E11F1693930023C29B /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042A18170B33006006FC /* HttpManager.m */; };
+		7D4A39E21F1693930023C29B /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81EE1DC030E7004C9430 /* AccountManager.swift */; };
+		7D4A39E31F1693930023C29B /* CallState.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049118170B33006006FC /* CallState.m */; };
+		7D4A39E41F1693930023C29B /* ZrtpInitiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047218170B33006006FC /* ZrtpInitiator.m */; };
+		7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048218170B33006006FC /* NetworkStream.m */; };
+		7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B61A24F6730007FB87 /* UIFont+OWS.m */; };
+		7D4A39E71F1693930023C29B /* PushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B9ECFB198B31BA00C620D3 /* PushManager.m */; };
+		7D4A39E81F1693930023C29B /* ZrtpResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047618170B33006006FC /* ZrtpResponder.m */; };
+		7D4A39E91F1693930023C29B /* TSMessageAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D53F61A23CCAD009AAF82 /* TSMessageAdapter.m */; };
+		7D4A39EA1F1693930023C29B /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274EA1A5AFDDB00202277 /* AboutTableViewController.m */; };
+		7D4A39EB1F1693930023C29B /* StretchFactorController.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FE18BBEC1A00F073E5 /* StretchFactorController.m */; };
+		7D4A39EC1F1693930023C29B /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD257E1A154B2C00F4C644 /* RegistrationViewController.m */; };
+		7D4A39ED1F1693930023C29B /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
+		7D4A39EE1F1693930023C29B /* CyclicalBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04D118170B33006006FC /* CyclicalBuffer.m */; };
+		7D4A39EF1F1693930023C29B /* NumberUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04ED18170B33006006FC /* NumberUtil.m */; };
+		7D4A39F01F1693930023C29B /* TSPhotoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A3EB4A1A423B3800B2236B /* TSPhotoAdapter.m */; };
+		7D4A39F11F1693930023C29B /* FunctionalUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EB18170B33006006FC /* FunctionalUtil.m */; };
+		7D4A39F21F1693930023C29B /* SignalUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B018170B33006006FC /* SignalUtil.m */; };
+		7D4A39F31F1693930023C29B /* AnonymousAudioCallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B60518BBEC1A00F073E5 /* AnonymousAudioCallbackHandler.m */; };
+		7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045818170B33006006FC /* ConfirmAckPacket.m */; };
+		7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B318170B33006006FC /* CategorizingLogger.m */; };
+		7D4A39F61F1693930023C29B /* Release.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041B18170B33006006FC /* Release.m */; };
+		7D4A39F71F1693930023C29B /* SessionResetJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D231761DC7E8F10034FA89 /* SessionResetJob.swift */; };
+		7D4A39F81F1693930023C29B /* EventWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B718170B33006006FC /* EventWindow.m */; };
+		7D4A39F91F1693930023C29B /* SoundBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62618BBF63B00F073E5 /* SoundBoard.m */; };
+		7D4A39FA1F1693930023C29B /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
+		7D4A39FB1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C61D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m */; };
+		7D4A39FC1F1693930023C29B /* LocalizableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041518170B33006006FC /* LocalizableText.m */; };
+		7D4A39FD1F1693930023C29B /* OWSContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040918170B33006006FC /* OWSContactsManager.m */; };
+		7D4A39FE1F1693930023C29B /* RemoteIOBufferListWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B60918BBEC1A00F073E5 /* RemoteIOBufferListWrapper.m */; };
+		7D4A39FF1F1693930023C29B /* RtpPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043E18170B33006006FC /* RtpPacket.m */; };
+		7D4A3A001F1693930023C29B /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F618170B33006006FC /* StringUtil.m */; };
+		7D4A3A011F1693930023C29B /* OWSStaleNotificationObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BFFFA71D898AF0004A12A7 /* OWSStaleNotificationObserver.m */; };
+		7D4A3A021F1693930023C29B /* DJWActionSheet+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = A547DD721A70A87800103EC7 /* DJWActionSheet+OWS.m */; };
+		7D4A3A031F1693930023C29B /* OWSCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681B61D305A580050903A /* OWSCall.m */; };
+		7D4A3A041F1693930023C29B /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04D518170B33006006FC /* Queue.m */; };
+		7D4A3A051F1693930023C29B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D221A099169C9E5E00537ABF /* main.m */; };
+		7D4A3A061F1693930023C29B /* OWSContactsSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */; };
+		7D4A3A071F1693930023C29B /* AnonymousOccurrenceLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C218170B33006006FC /* AnonymousOccurrenceLogger.m */; };
+		7D4A3A081F1693930023C29B /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
+		7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
+		7D4A3A0A1F1693930023C29B /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC81D994C0D008FE134 /* OWSGroupAvatarBuilder.m */; };
+		7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E118170B33006006FC /* Conversions.m */; };
+		7D4A3A0C1F1693930023C29B /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
+		7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A418170B33006006FC /* InitiateSignal.pb.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		7D4A3A0E1F1693930023C29B /* RecipientUnavailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046A18170B33006006FC /* RecipientUnavailable.m */; };
+		7D4A3A0F1F1693930023C29B /* DropoutTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FA18BBEC1A00F073E5 /* DropoutTracker.m */; };
+		7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047B18170B33006006FC /* LowLatencyConnector.m */; };
+		7D4A3A111F1693930023C29B /* CallTermination.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049318170B33006006FC /* CallTermination.m */; };
+		7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66B9F7C1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m */; };
+		7D4A3A131F1693930023C29B /* SoundInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CD329518BCFF9900B1A496 /* SoundInstance.m */; };
+		7D4A3A141F1693930023C29B /* HashChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044F18170B33006006FC /* HashChain.m */; };
+		7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048718170B33006006FC /* UdpSocket.m */; };
+		7D4A3A161F1693930023C29B /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
+		7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F818170B33006006FC /* ThreadManager.m */; };
+		7D4A3A181F1693930023C29B /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
+		7D4A3A191F1693930023C29B /* OWSScrubbingLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F551D9B2827008FE134 /* OWSScrubbingLogFormatter.m */; };
+		7D4A3A1A1F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681C21D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m */; };
+		7D4A3A1B1F1693930023C29B /* AudioRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B61D18BBEC6D00F073E5 /* AudioRouter.m */; };
+		7D4A3A1C1F1693930023C29B /* AudioSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EB18BBEC1A00F073E5 /* AudioSocket.m */; };
+		7D4A3A1D1F1693930023C29B /* ShowGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */; };
+		7D4A3A1E1F1693930023C29B /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45855F361D9498A40084F340 /* OWSContactAvatarBuilder.m */; };
+		7D4A3A1F1F1693930023C29B /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
+		7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
+		7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C018170B33006006FC /* AnonymousConditionLogger.m */; };
+		7D4A3A221F1693930023C29B /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
+		7D4A3A231F1693930023C29B /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
+		7D4A3A241F1693930023C29B /* OWSAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC51D99483D008FE134 /* OWSAvatarBuilder.m */; };
+		7D4A3A251F1693930023C29B /* EvpSymetricUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632618F70C0700D4A43F /* EvpSymetricUtil.m */; };
+		7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE179921EDF37E900327B2B /* CCSMCommunication.m */; };
+		7D4A3A271F1693930023C29B /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
+		7D4A3A281F1693930023C29B /* HttpRequestOrResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E719E1FBE8005735D1 /* HttpRequestOrResponse.m */; };
+		7D4A3A291F1693930023C29B /* IpAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043618170B33006006FC /* IpAddress.m */; };
+		7D4A3A2A1F1693930023C29B /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAC965019FF0A6E0046DFC5 /* MessagesViewController.m */; };
+		7D4A3A2B1F1693930023C29B /* OWSMessagesBubblesSizeCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B91D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m */; };
+		7D4A3A2C1F1693930023C29B /* FLAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B91C0B1EBD009C3DCD /* FLAnimatedImageView.m */; };
+		7D4A3A2D1F1693930023C29B /* TSVideoAttachmentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E9D4B91A65FAD800E4481C /* TSVideoAttachmentAdapter.m */; };
+		7D4A3A2E1F1693930023C29B /* AudioProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F418BBEC1A00F073E5 /* AudioProcessor.m */; };
+		7D4A3A2F1F1693930023C29B /* InboxTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAC963E19FEF99A0046DFC5 /* InboxTableViewCell.m */; };
+		7D4A3A301F1693930023C29B /* CallProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048F18170B33006006FC /* CallProgress.m */; };
+		7D4A3A311F1693930023C29B /* OWSDeviceProvisioningURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38361D668EBF0094BD24 /* OWSDeviceProvisioningURLParser.m */; };
+		7D4A3A321F1693930023C29B /* UIColor+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B31A24F3880007FB87 /* UIColor+OWS.m */; };
+		7D4A3A331F1693930023C29B /* DhPacketSharedSecretHashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045E18170B33006006FC /* DhPacketSharedSecretHashes.m */; };
+		7D4A3A341F1693930023C29B /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C93C4D199567AD00EDF894 /* DebugLogger.m */; };
+		7D4A3A351F1693930023C29B /* Crc32.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E318170B33006006FC /* Crc32.m */; };
+		7D4A3A361F1693930023C29B /* SoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62318BBF5BB00F073E5 /* SoundPlayer.m */; };
+		7D4A3A371F1693930023C29B /* EncodedAudioPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F118BBEC1A00F073E5 /* EncodedAudioPacket.m */; };
+		7D4A3A381F1693930023C29B /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
+		7D4A3A391F1693930023C29B /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
+		7D4A3A3A1F1693930023C29B /* DataUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E718170B33006006FC /* DataUtil.m */; };
+		7D4A3A3B1F1693930023C29B /* AudioPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5E918BBEC1A00F073E5 /* AudioPacker.m */; };
+		7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F618BBEC1A00F073E5 /* AudioStretcher.m */; };
+		7D4A3A3D1F1693930023C29B /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
+		7D4A3A3E1F1693930023C29B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
+		7D4A3A3F1F1693930023C29B /* SpeexCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B60B18BBEC1A00F073E5 /* SpeexCodec.m */; };
+		7D4A3A401F1693930023C29B /* PhoneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049518170B33006006FC /* PhoneManager.m */; };
+		7D4A3A411F1693930023C29B /* OWSConversationSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452E3C8D1D935C77002A45B0 /* OWSConversationSettingsTableViewController.m */; };
+		7D4A3A421F1693930023C29B /* EncodedAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EF18BBEC1A00F073E5 /* EncodedAudioFrame.m */; };
+		7D4A3A431F1693930023C29B /* FLContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA41F0197EA003B55EB /* FLContact.m */; };
+		7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
+		7D4A3A451F1693930023C29B /* CallController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048B18170B33006006FC /* CallController.m */; };
+		7D4A3A461F1693930023C29B /* MessageComposeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */; };
+		7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
+		7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
+		7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
+		7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04CA18170B33006006FC /* ArrayUtil.m */; };
+		7D4A3A4B1F1693930023C29B /* AdvancedSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */; };
+		7D4A3A4C1F1693930023C29B /* HandshakePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046018170B33006006FC /* HandshakePacket.m */; };
+		7D4A3A4D1F1693930023C29B /* SequenceCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044318170B33006006FC /* SequenceCounter.m */; };
+		7D4A3A4E1F1693930023C29B /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
+		7D4A3A4F1F1693930023C29B /* CryptoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632418F70C0700D4A43F /* CryptoTools.m */; };
+		7D4A3A501F1693930023C29B /* DnsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042018170B33006006FC /* DnsManager.m */; };
+		7D4A3A511F1693930023C29B /* GroupContactsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B2451A93B238002BBD9D /* GroupContactsResult.m */; };
+		7D4A3A521F1693930023C29B /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66B9F711AEA6D1100E2E609 /* NotificationSettingsViewController.m */; };
+		7D4A3A531F1693930023C29B /* IgnoredPacketFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042518170B33006006FC /* IgnoredPacketFailure.m */; };
+		7D4A3A541F1693930023C29B /* ZrtpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047418170B33006006FC /* ZrtpManager.m */; };
+		7D4A3A551F1693930023C29B /* HostNameEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042218170B33006006FC /* HostNameEndPoint.m */; };
+		7D4A3A561F1693930023C29B /* DH3KKeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */; };
+		7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */; };
+		7D4A3A581F1693930023C29B /* CodeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD25811A154B3800F4C644 /* CodeVerificationViewController.m */; };
+		7D4A3A591F1693930023C29B /* RPAPICall.m in Sources */ = {isa = PBXBuildFile; fileRef = B65EDA1119E1BE6400AAA7CB /* RPAPICall.m */; };
+		7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */; };
+		7D4A3A5B1F1693930023C29B /* StreamPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047D18170B33006006FC /* StreamPair.m */; };
+		7D4A3A5C1F1693930023C29B /* TimeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FA18170B33006006FC /* TimeUtil.m */; };
+		7D4A3A5D1F1693930023C29B /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
+		7D4A3A5E1F1693930023C29B /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
+		7D4A3A5F1F1693930023C29B /* AppAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62018BBF12700F073E5 /* AppAudioManager.m */; };
+		7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */; };
+		7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E918170B33006006FC /* DictionaryUtil.m */; };
+		7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
+		7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EB32CE1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m */; };
+		7D4A3A641F1693930023C29B /* HttpRequestUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E919E1FBE8005735D1 /* HttpRequestUtil.m */; };
+		7D4A3A651F1693930023C29B /* SyncPushTokensJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451DE9FC1DC1A28200810E42 /* SyncPushTokensJob.swift */; };
+		7D4A3A661F1693930023C29B /* MasterSecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045118170B33006006FC /* MasterSecret.m */; };
+		7D4A3A671F1693930023C29B /* CallConnectResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049A18170B33006006FC /* CallConnectResult.m */; };
+		7D4A3A681F1693930023C29B /* NewGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD256E1A151BCB00F4C644 /* NewGroupViewController.m */; };
+		7D4A3A691F1693930023C29B /* HttpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043418170B33006006FC /* HttpSocket.m */; };
+		7D4A3A6A1F1693930023C29B /* OWS100RemoveTSRecipientsMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F751D9BFE00008FE134 /* OWS100RemoveTSRecipientsMigration.m */; };
+		7D4A3A6B1F1693930023C29B /* CallAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5ED18BBEC1A00F073E5 /* CallAudioManager.m */; };
+		7D4A3A6C1F1693930023C29B /* UIDevice+TSHardwareVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC81A971A44558300DFEC7D /* UIDevice+TSHardwareVersion.m */; };
+		7D4A3A6D1F1693930023C29B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB03C318170B33006006FC /* AppDelegate.m */; };
+		7D4A3A6E1F1693930023C29B /* JSQMediaItem+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */; };
+		7D4A3A6F1F1693930023C29B /* ZrtpHandshakeSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047018170B33006006FC /* ZrtpHandshakeSocket.m */; };
+		7D4A3A701F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F2B1931D9C9F48000D2C69 /* OWSOutgoingMessageCollectionViewCell.m */; };
+		7D4A3A711F1693930023C29B /* HttpResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761EB19E1FBE8005735D1 /* HttpResponse.m */; };
+		7D4A3A721F1693930023C29B /* JitterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FC18BBEC1A00F073E5 /* JitterQueue.m */; };
+		7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
+		7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
+		7D4A3A751F1693930023C29B /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
+		7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
+		7D4A3A771F1693930023C29B /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
+		7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
+		7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
+		7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
+		7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
+		7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B97CBFA618860EA3008E0DE9 /* CountryCodeViewController.m */; };
+		7D4A3A7D1F1693930023C29B /* SignalKeyingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B1013B196D213F007E3930 /* SignalKeyingStorage.m */; };
+		7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042718170B33006006FC /* UnrecognizedRequestFailure.m */; };
+		7D4A3A7F1F1693930023C29B /* CallConnectUtil_Initiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049E18170B33006006FC /* CallConnectUtil_Initiator.m */; };
+		7D4A3A801F1693930023C29B /* NSData+ows_StripToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B62F5E0F1C2980B4000D370C /* NSData+ows_StripToken.m */; };
+		7D4A3A811F1693930023C29B /* OWSDatabaseMigrationRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7D1D9C0814008FE134 /* OWSDatabaseMigrationRunner.m */; };
+		7D4A3A821F1693930023C29B /* AFHTTPSessionManager+SignalMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E219E1F487005735D1 /* AFHTTPSessionManager+SignalMethods.m */; };
+		7D4A3A831F1693930023C29B /* ShortAuthenticationStringGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046C18170B33006006FC /* ShortAuthenticationStringGenerator.m */; };
+		7D4A3A841F1693930023C29B /* EC25KeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BEB18AAC40200B7C403 /* EC25KeyAgreementProtocol.m */; };
+		7D4A3A851F1693930023C29B /* OWSCallCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681BA1D305C080050903A /* OWSCallCollectionViewCell.m */; };
+		7D4A3A861F1693930023C29B /* AnonymousTerminator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F418170B33006006FC /* AnonymousTerminator.m */; };
+		7D4A3A871F1693930023C29B /* PropertyListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041918170B33006006FC /* PropertyListPreferences.m */; };
+		7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
+		7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E519E1FBE8005735D1 /* HttpRequest.m */; };
+		7D4A3A8A1F1693930023C29B /* OWSDatabaseMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7A1D9C0533008FE134 /* OWSDatabaseMigration.m */; };
+		7D4A3A8B1F1693930023C29B /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */; };
+		7D4A3A8C1F1693930023C29B /* ResponderSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04AE18170B33006006FC /* ResponderSessionDescriptor.m */; };
+		7D4A3A8D1F1693930023C29B /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
+		7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
+		7D4A3A8F1F1693930023C29B /* CallFailedServerMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048D18170B33006006FC /* CallFailedServerMessage.m */; };
+		7D4A3A901F1693930023C29B /* CallConnectUtil_Responder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A018170B33006006FC /* CallConnectUtil_Responder.m */; };
+		7D4A3A911F1693930023C29B /* HighlightableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B201751DAECBFE00C461E0 /* HighlightableLabel.swift */; };
+		7D4A3A921F1693930023C29B /* SrtpStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044718170B33006006FC /* SrtpStream.m */; };
+		7D4A3A931F1693930023C29B /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
+		7D4A3A941F1693930023C29B /* DesiredBufferDepthController.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F818BBEC1A00F073E5 /* DesiredBufferDepthController.m */; };
+		7D4A3A951F1693930023C29B /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
+		7D4A3A961F1693930023C29B /* OWSDeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459311FB1D75C948008DD4F0 /* OWSDeviceTableViewCell.m */; };
+		7D4A3A971F1693930023C29B /* SecureEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048418170B33006006FC /* SecureEndPoint.m */; };
+		7D4A3A981F1693930023C29B /* Certificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048018170B33006006FC /* Certificate.m */; };
+		7D4A3A991F1693930023C29B /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
+		7D4A3A9A1F1693930023C29B /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
+		7D4A3A9C1F1693930023C29B /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
+		7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
+		7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4520D8D41D417D8E00123472 /* Photos.framework */; };
+		7D4A3A9F1F1693930023C29B /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7D4A3AA01F1693930023C29B /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6FE7EB61ADD62FA00A6D22F /* PushKit.framework */; };
+		7D4A3AA11F1693930023C29B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3BD9871A30A790005B96BB /* Social.framework */; };
+		7D4A3AA21F1693930023C29B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB11D8B1A129A76002F93FB /* CoreMedia.framework */; };
+		7D4A3AA31F1693930023C29B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70377AAA1918450100CAF501 /* MobileCoreServices.framework */; };
+		7D4A3AA41F1693930023C29B /* libspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B800AC190C54790042E3F0 /* libspeex.a */; };
+		7D4A3AA51F1693930023C29B /* libspandsp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B800A3190C529C0042E3F0 /* libspandsp.a */; };
+		7D4A3AA61F1693930023C29B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EB5ABC1884C002007CBB57 /* MessageUI.framework */; };
+		7D4A3AA71F1693930023C29B /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
+		7D4A3AA81F1693930023C29B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 768A1A2A17FC9CD300E00ED8 /* libz.dylib */; };
+		7D4A3AA91F1693930023C29B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
+		7D4A3AAA1F1693930023C29B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
+		7D4A3AAB1F1693930023C29B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4D17A0652C000A904E /* AddressBook.framework */; };
+		7D4A3AAC1F1693930023C29B /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4F17A06537000A904E /* AddressBookUI.framework */; };
+		7D4A3AAD1F1693930023C29B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AEACDB16C426DA00C364C0 /* CFNetwork.framework */; };
+		7D4A3AAE1F1693930023C29B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2179CFD16BB0B480006F3AB /* SystemConfiguration.framework */; };
+		7D4A3AAF1F1693930023C29B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2179CFB16BB0B3A0006F3AB /* CoreTelephony.framework */; };
+		7D4A3AB01F1693930023C29B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A08D169C9E5E00537ABF /* UIKit.framework */; };
+		7D4A3AB11F1693930023C29B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A08F169C9E5E00537ABF /* Foundation.framework */; };
+		7D4A3AB21F1693930023C29B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A0E7169DFFC500537ABF /* AVFoundation.framework */; };
+		7D4A3AB31F1693930023C29B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B5BD4169F568C00681372 /* AudioToolbox.framework */; };
+		7D4A3AB61F1693930023C29B /* play_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD41D7B41A6F6F0600241130 /* play_button@2x.png */; };
+		7D4A3AB71F1693930023C29B /* audio_pause_button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF381A73426500B5C81A /* audio_pause_button_blue.png */; };
+		7D4A3AB81F1693930023C29B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5509EC91A69AB8B00ABA4BC /* Main.storyboard */; };
+		7D4A3AB91F1693930023C29B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A507A3AF1A6C60E300BEED0D /* InboxTableViewCell.xib */; };
+		7D4A3ABA1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1951D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib */; };
+		7D4A3ABB1F1693930023C29B /* audio_play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3B1A73426500B5C81A /* audio_play_button.png */; };
+		7D4A3ABC1F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1961D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib */; };
+		7D4A3ABD1F1693930023C29B /* OWSCallCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C681C01D305C9E0050903A /* OWSCallCollectionViewCell.xib */; };
+		7D4A3ABE1F1693930023C29B /* mute_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5421A1D190B0059AC12 /* mute_on@2x.png */; };
+		7D4A3ABF1F1693930023C29B /* quit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C54C1A1D190B0059AC12 /* quit@2x.png */; };
+		7D4A3AC01F1693930023C29B /* audio_pause_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3D1A73426500B5C81A /* audio_pause_button.png */; };
+		7D4A3AC11F1693930023C29B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
+		7D4A3AC21F1693930023C29B /* play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AD41D7B31A6F6F0600241130 /* play_button.png */; };
+		7D4A3AC31F1693930023C29B /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CD81A51DBFF8FC004C9430 /* Registration.storyboard */; };
+		7D4A3AC41F1693930023C29B /* endcall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C51B1A1D190B0059AC12 /* endcall@2x.png */; };
+		7D4A3AC51F1693930023C29B /* error_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF371A3393DD00B47253 /* error_white@2x.png */; };
+		7D4A3AC61F1693930023C29B /* savephoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5501A1D190B0059AC12 /* savephoto@2x.png */; };
+		7D4A3AC71F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C681C31D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.xib */; };
+		7D4A3AC81F1693930023C29B /* play_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5D1A7049EC00ECA2BF /* play_icon.png */; };
+		7D4A3AC91F1693930023C29B /* audio_pause_button_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF391A73426500B5C81A /* audio_pause_button_blue@2x.png */; };
+		7D4A3ACA1F1693930023C29B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B66DBF4919D5BBC8006EA940 /* Images.xcassets */; };
+		7D4A3ACB1F1693930023C29B /* 171756__nenadsimic__picked-coin-echo-2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 70B8FEE11909FE360042E3F0 /* 171756__nenadsimic__picked-coin-echo-2.wav */; };
+		7D4A3ACC1F1693930023C29B /* audio_play_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3C1A73426500B5C81A /* audio_play_button@2x.png */; };
+		7D4A3ACD1F1693930023C29B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CB2FA71CB7146C00E1B343 /* Launch Screen.storyboard */; };
+		7D4A3ACE1F1693930023C29B /* mute_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5411A1D190B0059AC12 /* mute_off@2x.png */; };
+		7D4A3AD01F1693930023C29B /* audio_play_button_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3A1A73426500B5C81A /* audio_play_button_blue@2x.png */; };
+		7D4A3AD11F1693930023C29B /* warning_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF381A3393DD00B47253 /* warning_white@2x.png */; };
+		7D4A3AD21F1693930023C29B /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40718A05754001A532A /* busy.mp3 */; };
+		7D4A3AD31F1693930023C29B /* completed.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40818A05754001A532A /* completed.mp3 */; };
+		7D4A3AD41F1693930023C29B /* forsta_splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFF9701F0C700F0003CD95 /* forsta_splash.png */; };
+		7D4A3AD51F1693930023C29B /* failure.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40918A05754001A532A /* failure.mp3 */; };
+		7D4A3AD61F1693930023C29B /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
+		7D4A3AD71F1693930023C29B /* handshake.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40A18A05754001A532A /* handshake.mp3 */; };
+		7D4A3AD81F1693930023C29B /* NewMessage.aifc in Resources */ = {isa = PBXBuildFile; fileRef = B625CD551ABB589C00E8B23C /* NewMessage.aifc */; };
+		7D4A3AD91F1693930023C29B /* contact_default_feed.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C50B1A1D190B0059AC12 /* contact_default_feed.png */; };
+		7D4A3ADA1F1693930023C29B /* play_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5E1A7049EC00ECA2BF /* play_icon@2x.png */; };
+		7D4A3ADB1F1693930023C29B /* call@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5041A1D190B0059AC12 /* call@2x.png */; };
+		7D4A3ADC1F1693930023C29B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B67EBF5C19194AC60084CCFD /* Settings.bundle */; };
+		7D4A3ADD1F1693930023C29B /* outring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40B18A05754001A532A /* outring.mp3 */; };
+		7D4A3ADE1F1693930023C29B /* pause_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5C1A7049EC00ECA2BF /* pause_icon@2x.png */; };
+		7D4A3ADF1F1693930023C29B /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = B6C6AE531A305ED1006BAF8F /* redphone.cer */; };
+		7D4A3AE01F1693930023C29B /* r.caf in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40C18A05754001A532A /* r.caf */; };
+		7D4A3AE11F1693930023C29B /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
+		7D4A3AE21F1693930023C29B /* sonarping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40D18A05754001A532A /* sonarping.mp3 */; };
+		7D4A3AE31F1693930023C29B /* pause_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5B1A7049EC00ECA2BF /* pause_icon.png */; };
+		7D4A3AE41F1693930023C29B /* audio_play_button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF461A73428300B5C81A /* audio_play_button_blue.png */; };
+		7D4A3AE51F1693930023C29B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
+		7D4A3AE61F1693930023C29B /* audio_pause_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3E1A73426500B5C81A /* audio_pause_button@2x.png */; };
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
@@ -479,7 +771,6 @@
 		7DCFFE8A1F0EE4490003CD95 /* audio_play_button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF461A73428300B5C81A /* audio_play_button_blue.png */; };
 		7DCFFE8B1F0EE4490003CD95 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DCFFE8C1F0EE4490003CD95 /* audio_pause_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3E1A73426500B5C81A /* audio_pause_button@2x.png */; };
-		7DCFFE9D1F0EE5AA0003CD95 /* Relay-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFFE9C1F0EE5AA0003CD95 /* Relay-Info.plist */; };
 		7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
@@ -491,6 +782,7 @@
 		A1A018531805C60D00A052A6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A091169C9E5E00537ABF /* CoreGraphics.framework */; };
 		A1C32D5017A06538000A904E /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4F17A06537000A904E /* AddressBookUI.framework */; };
 		A1C32D5117A06544000A904E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4D17A0652C000A904E /* AddressBook.framework */; };
+		A2EF2C37452EBA750B517849 /* libPods-Common-RelayStage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF72580AFF17D60EA5DADF4 /* libPods-Common-RelayStage.a */; };
 		A39860370D9DE1A0E34EDBF2 /* libPods-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E415B27F9DCDC3C9CA880C5 /* libPods-Relay.a */; };
 		A507A3B11A6C60E300BEED0D /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A507A3AF1A6C60E300BEED0D /* InboxTableViewCell.xib */; };
 		A547DD741A70A87800103EC7 /* DJWActionSheet+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = A547DD721A70A87800103EC7 /* DJWActionSheet+OWS.m */; };
@@ -741,6 +1033,7 @@
 		B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EB5ABC1884C002007CBB57 /* MessageUI.framework */; };
 		BFB074C719A5611000F2947C /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		BFB074C919A5611000F2947C /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
+		CB3AE61D70908CA1ED416ED6 /* libPods-Common-RelayDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89AD8E9D7C03FA606826376F /* libPods-Common-RelayDev.a */; };
 		D202868116DBE0E7009068E9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AEACDB16C426DA00C364C0 /* CFNetwork.framework */; };
 		D202868216DBE0F4009068E9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2179CFD16BB0B480006F3AB /* SystemConfiguration.framework */; };
 		D202868316DBE0FC009068E9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2179CFB16BB0B3A0006F3AB /* CoreTelephony.framework */; };
@@ -842,6 +1135,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = A1FDCBF916DBC57D00868894;
 			remoteInfo = speex;
+		};
+		7D4A39BC1F1693930023C29B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 70B800A7190C54790042E3F0 /* speex.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A1FDCBF916DBC57D00868894;
+			remoteInfo = speex;
+		};
+		7D4A39BE1F1693930023C29B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 70B8009E190C529C0042E3F0 /* spandsp.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A1B989631725EC1300B6E8B5;
+			remoteInfo = spandsp;
 		};
 		7DCFFD641F0EE4490003CD95 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -957,6 +1264,8 @@
 		4CE0E3751B95453C007210CF /* TSAnimatedAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSAnimatedAdapter.h; sourceTree = "<group>"; };
 		4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSAnimatedAdapter.m; sourceTree = "<group>"; };
 		4E415B27F9DCDC3C9CA880C5 /* libPods-Relay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Relay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		698DA70C81F48D4FBF8BE17D /* Pods-Common-RelayDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-RelayDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev.debug.xcconfig"; sourceTree = "<group>"; };
+		6BF72580AFF17D60EA5DADF4 /* libPods-Common-RelayStage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-RelayStage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		701231B318ECAA4500D456C4 /* EvpMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvpMessageDigest.h; sourceTree = "<group>"; };
 		701231B418ECAA4500D456C4 /* EvpMessageDigest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvpMessageDigest.m; sourceTree = "<group>"; };
 		70377AAA1918450100CAF501 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -1175,7 +1484,11 @@
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDomainViewController.h; sourceTree = "<group>"; };
 		7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDomainViewController.m; sourceTree = "<group>"; };
-		7D4A399D1F1689200023C29B /* RelayStage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayStage-Info.plist"; sourceTree = "<group>"; };
+		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
+		7D4A39B61F1693140023C29B /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = SOURCE_ROOT; };
+		7D4A39B81F16931F0023C29B /* RelayStage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayStage-Info.plist"; sourceTree = SOURCE_ROOT; };
+		7D4A3AEE1F1693930023C29B /* RelayDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D4A3AF01F1693D00023C29B /* RelayDev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayDev-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7D4D89441EE63502003970A5 /* SettingsPopupMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPopupMenuViewController.h; sourceTree = "<group>"; };
 		7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPopupMenuViewController.m; sourceTree = "<group>"; };
 		7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryTableViewController.h; sourceTree = "<group>"; };
@@ -1195,10 +1508,10 @@
 		7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginValidationViewController.m; sourceTree = "<group>"; };
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DCFFE9C1F0EE5AA0003CD95 /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = "<group>"; };
 		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
 		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		89AD8E9D7C03FA606826376F /* libPods-Common-RelayDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-RelayDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-Relay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1216,6 +1529,7 @@
 		A5D0699A1A50E9CB004CB540 /* ShowGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowGroupMembersViewController.h; sourceTree = "<group>"; };
 		A5E9D4B91A65FAD800E4481C /* TSVideoAttachmentAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSVideoAttachmentAdapter.m; sourceTree = "<group>"; };
 		A5E9D4BA1A65FAD800E4481C /* TSVideoAttachmentAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSVideoAttachmentAdapter.h; sourceTree = "<group>"; };
+		AC91192815E6509A42F26823 /* Pods-Common-RelayStage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-RelayStage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage.debug.xcconfig"; sourceTree = "<group>"; };
 		AD2AB1207E8888E4262D781B /* Pods-SignalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AD41D7B31A6F6F0600241130 /* play_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play_button.png; sourceTree = "<group>"; };
 		AD41D7B41A6F6F0600241130 /* play_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play_button@2x.png"; sourceTree = "<group>"; };
@@ -1231,6 +1545,8 @@
 		B10C9B5C1A7049EC00ECA2BF /* pause_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause_icon@2x.png"; sourceTree = "<group>"; };
 		B10C9B5D1A7049EC00ECA2BF /* play_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play_icon.png; sourceTree = "<group>"; };
 		B10C9B5E1A7049EC00ECA2BF /* play_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play_icon@2x.png"; sourceTree = "<group>"; };
+		B20485A9B4860E2BCDF77692 /* Pods-Common-RelayStage.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-RelayStage.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage.app store release.xcconfig"; sourceTree = "<group>"; };
+		B462E78DB73BA9EF43380A26 /* Pods-Common-RelayDev.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-RelayDev.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev.app store release.xcconfig"; sourceTree = "<group>"; };
 		B60341CD1AA5469800A01E42 /* ja_JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja_JP; path = translations/ja_JP.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B609597A1C2C0FC6004E8797 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRate.h; path = Libraries/iRate/iRate.h; sourceTree = SOURCE_ROOT; };
 		B609597B1C2C0FC6004E8797 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iRate.m; path = Libraries/iRate/iRate.m; sourceTree = SOURCE_ROOT; };
@@ -1514,6 +1830,38 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7D4A3A9B1F1693930023C29B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D4A3A9C1F1693930023C29B /* libSlackTextViewController.a in Frameworks */,
+				7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */,
+				7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */,
+				7D4A3A9F1F1693930023C29B /* ContactsUI.framework in Frameworks */,
+				7D4A3AA01F1693930023C29B /* PushKit.framework in Frameworks */,
+				7D4A3AA11F1693930023C29B /* Social.framework in Frameworks */,
+				7D4A3AA21F1693930023C29B /* CoreMedia.framework in Frameworks */,
+				7D4A3AA31F1693930023C29B /* MobileCoreServices.framework in Frameworks */,
+				7D4A3AA41F1693930023C29B /* libspeex.a in Frameworks */,
+				7D4A3AA51F1693930023C29B /* libspandsp.a in Frameworks */,
+				7D4A3AA61F1693930023C29B /* MessageUI.framework in Frameworks */,
+				7D4A3AA71F1693930023C29B /* MediaPlayer.framework in Frameworks */,
+				7D4A3AA81F1693930023C29B /* libz.dylib in Frameworks */,
+				7D4A3AA91F1693930023C29B /* QuartzCore.framework in Frameworks */,
+				7D4A3AAA1F1693930023C29B /* Security.framework in Frameworks */,
+				7D4A3AAB1F1693930023C29B /* AddressBook.framework in Frameworks */,
+				7D4A3AAC1F1693930023C29B /* AddressBookUI.framework in Frameworks */,
+				7D4A3AAD1F1693930023C29B /* CFNetwork.framework in Frameworks */,
+				7D4A3AAE1F1693930023C29B /* SystemConfiguration.framework in Frameworks */,
+				7D4A3AAF1F1693930023C29B /* CoreTelephony.framework in Frameworks */,
+				7D4A3AB01F1693930023C29B /* UIKit.framework in Frameworks */,
+				7D4A3AB11F1693930023C29B /* Foundation.framework in Frameworks */,
+				7D4A3AB21F1693930023C29B /* AVFoundation.framework in Frameworks */,
+				7D4A3AB31F1693930023C29B /* AudioToolbox.framework in Frameworks */,
+				CB3AE61D70908CA1ED416ED6 /* libPods-Common-RelayDev.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7DCFFE421F0EE4490003CD95 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1542,6 +1890,9 @@
 				7DCFFE581F0EE4490003CD95 /* Foundation.framework in Frameworks */,
 				7DCFFE591F0EE4490003CD95 /* AVFoundation.framework in Frameworks */,
 				7DCFFE5A1F0EE4490003CD95 /* AudioToolbox.framework in Frameworks */,
+				A2EF2C37452EBA750B517849 /* libPods-Common-RelayStage.a in Frameworks */,
+				7876F393547EC92421AF7CCD /* libPods-Common-RelayStage.a in Frameworks */,
+				69B9FFA8E0FFF68A249E18B7 /* libPods-Common-RelayStage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1574,8 +1925,8 @@
 				D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */,
 				D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */,
 				A39860370D9DE1A0E34EDBF2 /* libPods-Relay.a in Frameworks */,
-				154090EF8894C3022EB33631 /* libPods-Relay.a in Frameworks */,
 				399940E077E8BB7FCBF95213 /* libPods-Common-Relay.a in Frameworks */,
+				3CD90A2E419629F36269D7B5 /* libPods-Common-Relay.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2358,6 +2709,10 @@
 				275E0CCDE98544FCC6FCE2EE /* Pods-Common-Relay.app store release.xcconfig */,
 				F3104673105562C09C636C3D /* Pods-Common-SignalTests.debug.xcconfig */,
 				452A65E88869E95A61CB9601 /* Pods-Common-SignalTests.app store release.xcconfig */,
+				AC91192815E6509A42F26823 /* Pods-Common-RelayStage.debug.xcconfig */,
+				B20485A9B4860E2BCDF77692 /* Pods-Common-RelayStage.app store release.xcconfig */,
+				698DA70C81F48D4FBF8BE17D /* Pods-Common-RelayDev.debug.xcconfig */,
+				B462E78DB73BA9EF43380A26 /* Pods-Common-RelayDev.app store release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2703,6 +3058,7 @@
 				D221A089169C9E5E00537ABF /* Relay.app */,
 				D221A0AA169C9E5F00537ABF /* SignalTests.xctest */,
 				7DCFFE941F0EE4490003CD95 /* RelayStage.app */,
+				7D4A3AEE1F1693930023C29B /* RelayDev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2710,6 +3066,7 @@
 		D221A08C169C9E5E00537ABF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */,
 				7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */,
 				451DE9F11DC1585F00810E42 /* PromiseKit.framework */,
 				4520D8D41D417D8E00123472 /* Photos.framework */,
@@ -2742,6 +3099,8 @@
 				06961A204D976833565F2966 /* libPods-RelayStage.a */,
 				9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */,
 				9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */,
+				6BF72580AFF17D60EA5DADF4 /* libPods-Common-RelayStage.a */,
+				89AD8E9D7C03FA606826376F /* libPods-Common-RelayDev.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2763,8 +3122,9 @@
 		D221A094169C9E5E00537ABF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7DCFFE9C1F0EE5AA0003CD95 /* Relay-Info.plist */,
-				7D4A399D1F1689200023C29B /* RelayStage-Info.plist */,
+				7D4A3AF01F1693D00023C29B /* RelayDev-Info.plist */,
+				7D4A39B81F16931F0023C29B /* RelayStage-Info.plist */,
+				7D4A39B61F1693140023C29B /* Relay-Info.plist */,
 				B6C6AE521A305ED1006BAF8F /* Certificates */,
 				B6B6C3C419193F5B00C0B76B /* Translations */,
 				E18AB40618A05754001A532A /* AudioFiles */,
@@ -2949,15 +3309,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7D4A39BA1F1693930023C29B /* RelayDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7D4A3AEB1F1693930023C29B /* Build configuration list for PBXNativeTarget "RelayDev" */;
+			buildPhases = (
+				C56AFA6802F66B7A80DE8503 /* [CP] Check Pods Manifest.lock */,
+				7D4A39C01F1693930023C29B /* Sources */,
+				7D4A3A9B1F1693930023C29B /* Frameworks */,
+				7D4A3AB51F1693930023C29B /* Resources */,
+				D12FC9EC4E7001CD1E0419A2 /* [CP] Embed Pods Frameworks */,
+				89BF8206C5A256227EB0EB8C /* [CP] Copy Pods Resources */,
+				7D4A3AE71F1693930023C29B /* [Carthage] Copy Frameworks */,
+				7D4A3AE81F1693930023C29B /* Fabric start */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7D4A39BB1F1693930023C29B /* PBXTargetDependency */,
+				7D4A39BD1F1693930023C29B /* PBXTargetDependency */,
+			);
+			name = RelayDev;
+			productName = RedPhone;
+			productReference = 7D4A3AEE1F1693930023C29B /* RelayDev.app */;
+			productType = "com.apple.product-type.application";
+		};
 		7DCFFD621F0EE4490003CD95 /* RelayStage */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7DCFFE911F0EE4490003CD95 /* Build configuration list for PBXNativeTarget "RelayStage" */;
 			buildPhases = (
+				E838343721E3E1A8F2C9B87B /* [CP] Check Pods Manifest.lock */,
 				7DCFFD681F0EE4490003CD95 /* Sources */,
 				7DCFFE421F0EE4490003CD95 /* Frameworks */,
 				7DCFFE5C1F0EE4490003CD95 /* Resources */,
+				833D2BBCF87EAAE07502F1E3 /* [CP] Embed Pods Frameworks */,
+				697B8CE9DD615771382AAB55 /* [CP] Copy Pods Resources */,
 				7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */,
-				7DCFFE901F0EE4490003CD95 /* ShellScript */,
+				7DCFFE901F0EE4490003CD95 /* Fabric start */,
 			);
 			buildRules = (
 			);
@@ -2981,7 +3368,7 @@
 				59C9DBA462715B5C999FFB02 /* [CP] Embed Pods Frameworks */,
 				3465F381B1856CC06933B3A8 /* [CP] Copy Pods Resources */,
 				451DE9EE1DC1546A00810E42 /* [Carthage] Copy Frameworks */,
-				7DB8FEDD1F06E8160031BA89 /* ShellScript */,
+				7DB8FEDD1F06E8160031BA89 /* Fabric start */,
 			);
 			buildRules = (
 			);
@@ -3024,9 +3411,12 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
 				LastTestingUpgradeCheck = 0600;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Forsta;
 				TargetAttributes = {
+					7D4A39BA1F1693930023C29B = {
+						DevelopmentTeam = THHR8L4QV3;
+					};
 					7DCFFD621F0EE4490003CD95 = {
 						DevelopmentTeam = THHR8L4QV3;
 					};
@@ -3121,8 +3511,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				D221A088169C9E5E00537ABF /* Relay */,
+				7D4A39BA1F1693930023C29B /* RelayDev */,
 				7DCFFD621F0EE4490003CD95 /* RelayStage */,
+				D221A088169C9E5E00537ABF /* Relay */,
 				D221A0A9169C9E5F00537ABF /* SignalTests */,
 			);
 		};
@@ -3146,6 +3537,61 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7D4A3AB51F1693930023C29B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D4A3AB61F1693930023C29B /* play_button@2x.png in Resources */,
+				7D4A3AB71F1693930023C29B /* audio_pause_button_blue.png in Resources */,
+				7D4A3AB81F1693930023C29B /* Main.storyboard in Resources */,
+				7D4A3AB91F1693930023C29B /* InboxTableViewCell.xib in Resources */,
+				7D4A3ABA1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.xib in Resources */,
+				7D4A3ABB1F1693930023C29B /* audio_play_button.png in Resources */,
+				7D4A3ABC1F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.xib in Resources */,
+				7D4A3ABD1F1693930023C29B /* OWSCallCollectionViewCell.xib in Resources */,
+				7D4A3ABE1F1693930023C29B /* mute_on@2x.png in Resources */,
+				7D4A3ABF1F1693930023C29B /* quit@2x.png in Resources */,
+				7D4A3AC01F1693930023C29B /* audio_pause_button.png in Resources */,
+				7D4A3AC11F1693930023C29B /* Localizable.strings in Resources */,
+				7D4A3AC21F1693930023C29B /* play_button.png in Resources */,
+				7D4A3AC31F1693930023C29B /* Registration.storyboard in Resources */,
+				7D4A3AC41F1693930023C29B /* endcall@2x.png in Resources */,
+				7D4A3AC51F1693930023C29B /* error_white@2x.png in Resources */,
+				7D4A3AC61F1693930023C29B /* savephoto@2x.png in Resources */,
+				7D4A3AC71F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.xib in Resources */,
+				7D4A3AC81F1693930023C29B /* play_icon.png in Resources */,
+				7D4A3AC91F1693930023C29B /* audio_pause_button_blue@2x.png in Resources */,
+				7D4A3ACA1F1693930023C29B /* Images.xcassets in Resources */,
+				7D4A3ACB1F1693930023C29B /* 171756__nenadsimic__picked-coin-echo-2.wav in Resources */,
+				7D4A3ACC1F1693930023C29B /* audio_play_button@2x.png in Resources */,
+				7D4A3ACD1F1693930023C29B /* Launch Screen.storyboard in Resources */,
+				7D4A3ACE1F1693930023C29B /* mute_off@2x.png in Resources */,
+				7D4A3AD01F1693930023C29B /* audio_play_button_blue@2x.png in Resources */,
+				7D4A3AD11F1693930023C29B /* warning_white@2x.png in Resources */,
+				7D4A3AD21F1693930023C29B /* busy.mp3 in Resources */,
+				7D4A3AD31F1693930023C29B /* completed.mp3 in Resources */,
+				7D4A3AD41F1693930023C29B /* forsta_splash.png in Resources */,
+				7D4A3AD51F1693930023C29B /* failure.mp3 in Resources */,
+				7D4A3AD61F1693930023C29B /* Main_v2.storyboard in Resources */,
+				7D4A3AD71F1693930023C29B /* handshake.mp3 in Resources */,
+				7D4A3AD81F1693930023C29B /* NewMessage.aifc in Resources */,
+				7D4A3AD91F1693930023C29B /* contact_default_feed.png in Resources */,
+				7D4A3ADA1F1693930023C29B /* play_icon@2x.png in Resources */,
+				7D4A3ADB1F1693930023C29B /* call@2x.png in Resources */,
+				7D4A3ADC1F1693930023C29B /* Settings.bundle in Resources */,
+				7D4A3ADD1F1693930023C29B /* outring.mp3 in Resources */,
+				7D4A3ADE1F1693930023C29B /* pause_icon@2x.png in Resources */,
+				7D4A3ADF1F1693930023C29B /* redphone.cer in Resources */,
+				7D4A3AE01F1693930023C29B /* r.caf in Resources */,
+				7D4A3AE11F1693930023C29B /* qr@2x.png in Resources */,
+				7D4A3AE21F1693930023C29B /* sonarping.mp3 in Resources */,
+				7D4A3AE31F1693930023C29B /* pause_icon.png in Resources */,
+				7D4A3AE41F1693930023C29B /* audio_play_button_blue.png in Resources */,
+				7D4A3AE51F1693930023C29B /* Login.storyboard in Resources */,
+				7D4A3AE61F1693930023C29B /* audio_pause_button@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7DCFFE5C1F0EE4490003CD95 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3175,7 +3621,6 @@
 				7DCFFE731F0EE4490003CD95 /* audio_play_button@2x.png in Resources */,
 				7DCFFE741F0EE4490003CD95 /* Launch Screen.storyboard in Resources */,
 				7DCFFE751F0EE4490003CD95 /* mute_off@2x.png in Resources */,
-				7D4A399E1F1689200023C29B /* RelayStage-Info.plist in Resources */,
 				7DCFFE761F0EE4490003CD95 /* audio_play_button_blue@2x.png in Resources */,
 				7DCFFE771F0EE4490003CD95 /* warning_white@2x.png in Resources */,
 				7DCFFE781F0EE4490003CD95 /* busy.mp3 in Resources */,
@@ -3227,7 +3672,6 @@
 				B10C9B611A7049EC00ECA2BF /* play_icon.png in Resources */,
 				AD83FF401A73426500B5C81A /* audio_pause_button_blue@2x.png in Resources */,
 				B66DBF4A19D5BBC8006EA940 /* Images.xcassets in Resources */,
-				7DCFFE9D1F0EE5AA0003CD95 /* Relay-Info.plist in Resources */,
 				70B8FEE21909FE360042E3F0 /* 171756__nenadsimic__picked-coin-echo-2.wav in Resources */,
 				AD83FF431A73426500B5C81A /* audio_play_button@2x.png in Resources */,
 				45CB2FA81CB7146C00E1B343 /* Launch Screen.storyboard in Resources */,
@@ -3362,13 +3806,58 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		7DB8FEDD1F06E8160031BA89 /* ShellScript */ = {
+		697B8CE9DD615771382AAB55 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7D4A3AE71F1693930023C29B /* [Carthage] Copy Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
+			);
+			name = "[Carthage] Copy Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+		7D4A3AE81F1693930023C29B /* Fabric start */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Fabric start";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 402e249164f7a639103f082f592a694e92ff9318 4315712d641b4a295cb0511ad4f27b0323ee2fd074dbd63c41263dca22e506ab";
+		};
+		7DB8FEDD1F06E8160031BA89 /* Fabric start */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Fabric start";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3390,18 +3879,49 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		7DCFFE901F0EE4490003CD95 /* ShellScript */ = {
+		7DCFFE901F0EE4490003CD95 /* Fabric start */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Fabric start";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 402e249164f7a639103f082f592a694e92ff9318 4315712d641b4a295cb0511ad4f27b0323ee2fd074dbd63c41263dca22e506ab";
+		};
+		833D2BBCF87EAAE07502F1E3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		89BF8206C5A256227EB0EB8C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		B4E9B04E862FB64FC9A8F79B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3416,6 +3936,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C56AFA6802F66B7A80DE8503 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D12FC9EC4E7001CD1E0419A2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E838343721E3E1A8F2C9B87B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F76686434770E2BBEBD9665A /* [CP] Copy Pods Resources */ = {
@@ -3436,10 +4001,236 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7D4A39C01F1693930023C29B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D4A39C11F1693930023C29B /* DeviceTypes.m in Sources */,
+				7D4A39C21F1693930023C29B /* Operation.m in Sources */,
+				7D4A39C31F1693930023C29B /* RPAccountManager.m in Sources */,
+				7D4A39C41F1693930023C29B /* CountryCodeTableViewCell.m in Sources */,
+				7D4A39C51F1693930023C29B /* CallConnectUtil.m in Sources */,
+				7D4A39C61F1693930023C29B /* LoggingUtil.m in Sources */,
+				7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */,
+				7D4A39C81F1693930023C29B /* CommitPacket.m in Sources */,
+				7D4A39C91F1693930023C29B /* InitiatorSessionDescriptor.m in Sources */,
+				7D4A39CA1F1693930023C29B /* DirectoryTableViewController.m in Sources */,
+				7D4A39CB1F1693930023C29B /* CallConnectUtil_Server.m in Sources */,
+				7D4A39CC1F1693930023C29B /* AppStoreRating.m in Sources */,
+				7D4A39CD1F1693930023C29B /* OWSQRCodeScanningViewController.m in Sources */,
+				7D4A39CE1F1693930023C29B /* PriorityQueue.m in Sources */,
+				7D4A39CF1F1693930023C29B /* SettingsPopupMenuViewController.m in Sources */,
+				7D4A39D01F1693930023C29B /* LockInteractionController.m in Sources */,
+				7D4A39D11F1693930023C29B /* DiscardingLog.m in Sources */,
+				7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */,
+				7D4A39D31F1693930023C29B /* CCSMJSONService.m in Sources */,
+				7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */,
+				7D4A39D51F1693930023C29B /* FLDirectoryPopupViewController.m in Sources */,
+				7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */,
+				7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */,
+				7D4A39D81F1693930023C29B /* UIUtil.m in Sources */,
+				7D4A39D91F1693930023C29B /* TSAnimatedAdapter.m in Sources */,
+				7D4A39DA1F1693930023C29B /* ConfirmPacket.m in Sources */,
+				7D4A39DB1F1693930023C29B /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
+				7D4A39DC1F1693930023C29B /* OWS101ExistingUsersBlockOnIdentityChange.m in Sources */,
+				7D4A39DD1F1693930023C29B /* RtpSocket.m in Sources */,
+				7D4A39DE1F1693930023C29B /* RemoteIOAudio.m in Sources */,
+				7D4A39DF1F1693930023C29B /* RPServerRequestsManager.m in Sources */,
+				7D4A39E01F1693930023C29B /* UIViewController+CameraPermissions.m in Sources */,
+				7D4A39E11F1693930023C29B /* HttpManager.m in Sources */,
+				7D4A39E21F1693930023C29B /* AccountManager.swift in Sources */,
+				7D4A39E31F1693930023C29B /* CallState.m in Sources */,
+				7D4A39E41F1693930023C29B /* ZrtpInitiator.m in Sources */,
+				7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */,
+				7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */,
+				7D4A39E71F1693930023C29B /* PushManager.m in Sources */,
+				7D4A39E81F1693930023C29B /* ZrtpResponder.m in Sources */,
+				7D4A39E91F1693930023C29B /* TSMessageAdapter.m in Sources */,
+				7D4A39EA1F1693930023C29B /* AboutTableViewController.m in Sources */,
+				7D4A39EB1F1693930023C29B /* StretchFactorController.m in Sources */,
+				7D4A39EC1F1693930023C29B /* RegistrationViewController.m in Sources */,
+				7D4A39ED1F1693930023C29B /* EvpMessageDigest.m in Sources */,
+				7D4A39EE1F1693930023C29B /* CyclicalBuffer.m in Sources */,
+				7D4A39EF1F1693930023C29B /* NumberUtil.m in Sources */,
+				7D4A39F01F1693930023C29B /* TSPhotoAdapter.m in Sources */,
+				7D4A39F11F1693930023C29B /* FunctionalUtil.m in Sources */,
+				7D4A39F21F1693930023C29B /* SignalUtil.m in Sources */,
+				7D4A39F31F1693930023C29B /* AnonymousAudioCallbackHandler.m in Sources */,
+				7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */,
+				7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */,
+				7D4A39F61F1693930023C29B /* Release.m in Sources */,
+				7D4A39F71F1693930023C29B /* SessionResetJob.swift in Sources */,
+				7D4A39F81F1693930023C29B /* EventWindow.m in Sources */,
+				7D4A39F91F1693930023C29B /* SoundBoard.m in Sources */,
+				7D4A39FA1F1693930023C29B /* FLThreadViewController.m in Sources */,
+				7D4A39FB1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.m in Sources */,
+				7D4A39FC1F1693930023C29B /* LocalizableText.m in Sources */,
+				7D4A39FD1F1693930023C29B /* OWSContactsManager.m in Sources */,
+				7D4A39FE1F1693930023C29B /* RemoteIOBufferListWrapper.m in Sources */,
+				7D4A39FF1F1693930023C29B /* RtpPacket.m in Sources */,
+				7D4A3A001F1693930023C29B /* StringUtil.m in Sources */,
+				7D4A3A011F1693930023C29B /* OWSStaleNotificationObserver.m in Sources */,
+				7D4A3A021F1693930023C29B /* DJWActionSheet+OWS.m in Sources */,
+				7D4A3A031F1693930023C29B /* OWSCall.m in Sources */,
+				7D4A3A041F1693930023C29B /* Queue.m in Sources */,
+				7D4A3A051F1693930023C29B /* main.m in Sources */,
+				7D4A3A061F1693930023C29B /* OWSContactsSearcher.m in Sources */,
+				7D4A3A071F1693930023C29B /* AnonymousOccurrenceLogger.m in Sources */,
+				7D4A3A081F1693930023C29B /* OWSExpirationTimerView.m in Sources */,
+				7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */,
+				7D4A3A0A1F1693930023C29B /* OWSGroupAvatarBuilder.m in Sources */,
+				7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */,
+				7D4A3A0C1F1693930023C29B /* InCallViewController.m in Sources */,
+				7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */,
+				7D4A3A0E1F1693930023C29B /* RecipientUnavailable.m in Sources */,
+				7D4A3A0F1F1693930023C29B /* DropoutTracker.m in Sources */,
+				7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */,
+				7D4A3A111F1693930023C29B /* CallTermination.m in Sources */,
+				7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */,
+				7D4A3A131F1693930023C29B /* SoundInstance.m in Sources */,
+				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
+				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
+				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
+				7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */,
+				7D4A3A181F1693930023C29B /* DirectoryDetailTableViewController.m in Sources */,
+				7D4A3A191F1693930023C29B /* OWSScrubbingLogFormatter.m in Sources */,
+				7D4A3A1A1F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
+				7D4A3A1B1F1693930023C29B /* AudioRouter.m in Sources */,
+				7D4A3A1C1F1693930023C29B /* AudioSocket.m in Sources */,
+				7D4A3A1D1F1693930023C29B /* ShowGroupMembersViewController.m in Sources */,
+				7D4A3A1E1F1693930023C29B /* OWSContactAvatarBuilder.m in Sources */,
+				7D4A3A1F1F1693930023C29B /* FLDomainViewController.m in Sources */,
+				7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */,
+				7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */,
+				7D4A3A221F1693930023C29B /* DhPacket.m in Sources */,
+				7D4A3A231F1693930023C29B /* SettingsTableViewController.m in Sources */,
+				7D4A3A241F1693930023C29B /* OWSAvatarBuilder.m in Sources */,
+				7D4A3A251F1693930023C29B /* EvpSymetricUtil.m in Sources */,
+				7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */,
+				7D4A3A271F1693930023C29B /* ContactTableViewCell.m in Sources */,
+				7D4A3A281F1693930023C29B /* HttpRequestOrResponse.m in Sources */,
+				7D4A3A291F1693930023C29B /* IpAddress.m in Sources */,
+				7D4A3A2A1F1693930023C29B /* MessagesViewController.m in Sources */,
+				7D4A3A2B1F1693930023C29B /* OWSMessagesBubblesSizeCalculator.m in Sources */,
+				7D4A3A2C1F1693930023C29B /* FLAnimatedImageView.m in Sources */,
+				7D4A3A2D1F1693930023C29B /* TSVideoAttachmentAdapter.m in Sources */,
+				7D4A3A2E1F1693930023C29B /* AudioProcessor.m in Sources */,
+				7D4A3A2F1F1693930023C29B /* InboxTableViewCell.m in Sources */,
+				7D4A3A301F1693930023C29B /* CallProgress.m in Sources */,
+				7D4A3A311F1693930023C29B /* OWSDeviceProvisioningURLParser.m in Sources */,
+				7D4A3A321F1693930023C29B /* UIColor+OWS.m in Sources */,
+				7D4A3A331F1693930023C29B /* DhPacketSharedSecretHashes.m in Sources */,
+				7D4A3A341F1693930023C29B /* DebugLogger.m in Sources */,
+				7D4A3A351F1693930023C29B /* Crc32.m in Sources */,
+				7D4A3A361F1693930023C29B /* SoundPlayer.m in Sources */,
+				7D4A3A371F1693930023C29B /* EncodedAudioPacket.m in Sources */,
+				7D4A3A381F1693930023C29B /* OWSLinkDeviceViewController.m in Sources */,
+				7D4A3A391F1693930023C29B /* FLConversationViewController.m in Sources */,
+				7D4A3A3A1F1693930023C29B /* DataUtil.m in Sources */,
+				7D4A3A3B1F1693930023C29B /* AudioPacker.m in Sources */,
+				7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */,
+				7D4A3A3D1F1693930023C29B /* IpEndPoint.m in Sources */,
+				7D4A3A3E1F1693930023C29B /* LoginViewController.m in Sources */,
+				7D4A3A3F1F1693930023C29B /* SpeexCodec.m in Sources */,
+				7D4A3A401F1693930023C29B /* PhoneManager.m in Sources */,
+				7D4A3A411F1693930023C29B /* OWSConversationSettingsTableViewController.m in Sources */,
+				7D4A3A421F1693930023C29B /* EncodedAudioFrame.m in Sources */,
+				7D4A3A431F1693930023C29B /* FLContact.m in Sources */,
+				7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */,
+				7D4A3A451F1693930023C29B /* CallController.m in Sources */,
+				7D4A3A461F1693930023C29B /* MessageComposeTableViewController.m in Sources */,
+				7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */,
+				7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */,
+				7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */,
+				7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */,
+				7D4A3A4B1F1693930023C29B /* AdvancedSettingsTableViewController.m in Sources */,
+				7D4A3A4C1F1693930023C29B /* HandshakePacket.m in Sources */,
+				7D4A3A4D1F1693930023C29B /* SequenceCounter.m in Sources */,
+				7D4A3A4E1F1693930023C29B /* FLMessageSender.m in Sources */,
+				7D4A3A4F1F1693930023C29B /* CryptoTools.m in Sources */,
+				7D4A3A501F1693930023C29B /* DnsManager.m in Sources */,
+				7D4A3A511F1693930023C29B /* GroupContactsResult.m in Sources */,
+				7D4A3A521F1693930023C29B /* NotificationSettingsViewController.m in Sources */,
+				7D4A3A531F1693930023C29B /* IgnoredPacketFailure.m in Sources */,
+				7D4A3A541F1693930023C29B /* ZrtpManager.m in Sources */,
+				7D4A3A551F1693930023C29B /* HostNameEndPoint.m in Sources */,
+				7D4A3A561F1693930023C29B /* DH3KKeyAgreementParticipant.m in Sources */,
+				7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */,
+				7D4A3A581F1693930023C29B /* CodeVerificationViewController.m in Sources */,
+				7D4A3A591F1693930023C29B /* RPAPICall.m in Sources */,
+				7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */,
+				7D4A3A5B1F1693930023C29B /* StreamPair.m in Sources */,
+				7D4A3A5C1F1693930023C29B /* TimeUtil.m in Sources */,
+				7D4A3A5D1F1693930023C29B /* NotificationTracker.m in Sources */,
+				7D4A3A5E1F1693930023C29B /* PacketHandler.m in Sources */,
+				7D4A3A5F1F1693930023C29B /* AppAudioManager.m in Sources */,
+				7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */,
+				7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */,
+				7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */,
+				7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */,
+				7D4A3A641F1693930023C29B /* HttpRequestUtil.m in Sources */,
+				7D4A3A651F1693930023C29B /* SyncPushTokensJob.swift in Sources */,
+				7D4A3A661F1693930023C29B /* MasterSecret.m in Sources */,
+				7D4A3A671F1693930023C29B /* CallConnectResult.m in Sources */,
+				7D4A3A681F1693930023C29B /* NewGroupViewController.m in Sources */,
+				7D4A3A691F1693930023C29B /* HttpSocket.m in Sources */,
+				7D4A3A6A1F1693930023C29B /* OWS100RemoveTSRecipientsMigration.m in Sources */,
+				7D4A3A6B1F1693930023C29B /* CallAudioManager.m in Sources */,
+				7D4A3A6C1F1693930023C29B /* UIDevice+TSHardwareVersion.m in Sources */,
+				7D4A3A6D1F1693930023C29B /* AppDelegate.m in Sources */,
+				7D4A3A6E1F1693930023C29B /* JSQMediaItem+OWS.m in Sources */,
+				7D4A3A6F1F1693930023C29B /* ZrtpHandshakeSocket.m in Sources */,
+				7D4A3A701F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.m in Sources */,
+				7D4A3A711F1693930023C29B /* HttpResponse.m in Sources */,
+				7D4A3A721F1693930023C29B /* JitterQueue.m in Sources */,
+				7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */,
+				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
+				7D4A3A751F1693930023C29B /* FLContactsManager.m in Sources */,
+				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
+				7D4A3A771F1693930023C29B /* iRate.m in Sources */,
+				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
+				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
+				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
+				7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */,
+				7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */,
+				7D4A3A7D1F1693930023C29B /* SignalKeyingStorage.m in Sources */,
+				7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */,
+				7D4A3A7F1F1693930023C29B /* CallConnectUtil_Initiator.m in Sources */,
+				7D4A3A801F1693930023C29B /* NSData+ows_StripToken.m in Sources */,
+				7D4A3A811F1693930023C29B /* OWSDatabaseMigrationRunner.m in Sources */,
+				7D4A3A821F1693930023C29B /* AFHTTPSessionManager+SignalMethods.m in Sources */,
+				7D4A3A831F1693930023C29B /* ShortAuthenticationStringGenerator.m in Sources */,
+				7D4A3A841F1693930023C29B /* EC25KeyAgreementProtocol.m in Sources */,
+				7D4A3A851F1693930023C29B /* OWSCallCollectionViewCell.m in Sources */,
+				7D4A3A861F1693930023C29B /* AnonymousTerminator.m in Sources */,
+				7D4A3A871F1693930023C29B /* PropertyListPreferences.m in Sources */,
+				7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */,
+				7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */,
+				7D4A3A8A1F1693930023C29B /* OWSDatabaseMigration.m in Sources */,
+				7D4A3A8B1F1693930023C29B /* CCSMStorage.m in Sources */,
+				7D4A3A8C1F1693930023C29B /* ResponderSessionDescriptor.m in Sources */,
+				7D4A3A8D1F1693930023C29B /* DateUtil.m in Sources */,
+				7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */,
+				7D4A3A8F1F1693930023C29B /* CallFailedServerMessage.m in Sources */,
+				7D4A3A901F1693930023C29B /* CallConnectUtil_Responder.m in Sources */,
+				7D4A3A911F1693930023C29B /* HighlightableLabel.swift in Sources */,
+				7D4A3A921F1693930023C29B /* SrtpStream.m in Sources */,
+				7D4A3A931F1693930023C29B /* DeveloperPanelViewController.m in Sources */,
+				7D4A3A941F1693930023C29B /* DesiredBufferDepthController.m in Sources */,
+				7D4A3A951F1693930023C29B /* Zid.m in Sources */,
+				7D4A3A961F1693930023C29B /* OWSDeviceTableViewCell.m in Sources */,
+				7D4A3A971F1693930023C29B /* SecureEndPoint.m in Sources */,
+				7D4A3A981F1693930023C29B /* Certificate.m in Sources */,
+				7D4A3A991F1693930023C29B /* NegotiationFailed.m in Sources */,
+				7D4A3A9A1F1693930023C29B /* LowLatencyCandidate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7DCFFD681F0EE4490003CD95 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */,
 				7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */,
 				7DCFFD6A1F0EE4490003CD95 /* RPAccountManager.m in Sources */,
 				7DCFFD6B1F0EE4490003CD95 /* CountryCodeTableViewCell.m in Sources */,
@@ -4105,6 +4896,16 @@
 			name = speex;
 			targetProxy = 70B800AD190C54870042E3F0 /* PBXContainerItemProxy */;
 		};
+		7D4A39BB1F1693930023C29B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = speex;
+			targetProxy = 7D4A39BC1F1693930023C29B /* PBXContainerItemProxy */;
+		};
+		7D4A39BD1F1693930023C29B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = spandsp;
+			targetProxy = 7D4A39BE1F1693930023C29B /* PBXContainerItemProxy */;
+		};
 		7DCFFD631F0EE4490003CD95 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = speex;
@@ -4169,15 +4970,148 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		7DCFFE921F0EE4490003CD95 /* Debug */ = {
+		7D4A3AEC1F1693930023C29B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698DA70C81F48D4FBF8BE17D /* Pods-Common-RelayDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
+				DEVELOPMENT_TEAM = THHR8L4QV3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Relay/Relay-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					HAVE_CONFIG_H,
+					"DEVELOPMENT=1",
+				);
+				GCC_STRICT_ALIASING = NO;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${SRCROOT}/RedPhone/lib/speex/include\"",
+					"\"${SRCROOT}/RedPhone/lib/ogg/include\"",
+					"\"${SRCROOT}/RedPhone/lib/debug/include\"",
+					"\"$(SRCROOT)/libtommath\"",
+					"\"$(SRCROOT)/libtomcrypt/headers\"",
+					"\"$(SRCROOT)/spandsp/spandsp/spandsp\"",
+					"\"$(SRCROOT)/MMDrawerController\"",
+					"\"$(SRCROOT)/Libraries\"/**",
+				);
+				INFOPLIST_FILE = "RelayDev-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
+				LLVM_LTO = NO;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.forsta.forsta;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_AFTER_BUILD = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
+				VERSIONING_SYSTEM = "apple-generic";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		7D4A3AED1F1693930023C29B /* App Store Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B462E78DB73BA9EF43380A26 /* Pods-Common-RelayDev.app store release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 26;
+				DEVELOPMENT_TEAM = THHR8L4QV3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Relay/Relay-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					HAVE_CONFIG_H,
+					"RELEASE=1",
+					"DEVELOPMENT=1",
+				);
+				GCC_STRICT_ALIASING = NO;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${SRCROOT}/RedPhone/lib/speex/include\"",
+					"\"${SRCROOT}/RedPhone/lib/ogg/include\"",
+					"\"${SRCROOT}/RedPhone/lib/debug/include\"",
+					"\"$(SRCROOT)/libtommath\"",
+					"\"$(SRCROOT)/libtomcrypt/headers\"",
+					"\"$(SRCROOT)/spandsp/spandsp/spandsp\"",
+					"\"$(SRCROOT)/MMDrawerController\"",
+					"\"$(SRCROOT)/Libraries\"/**",
+				);
+				INFOPLIST_FILE = "RelayDev-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
+				LLVM_LTO = NO;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.forsta.forsta;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_AFTER_BUILD = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
+				VERSIONING_SYSTEM = "apple-generic";
+				WRAPPER_EXTENSION = app;
+			};
+			name = "App Store Release";
+		};
+		7DCFFE921F0EE4490003CD95 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC91192815E6509A42F26823 /* Pods-Common-RelayStage.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4208,12 +5142,13 @@
 					"\"$(SRCROOT)/MMDrawerController\"",
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
-				INFOPLIST_FILE = "Relay Stage-Info.plist";
+				INFOPLIST_FILE = "RelayStage-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -4235,13 +5170,14 @@
 		};
 		7DCFFE931F0EE4490003CD95 /* App Store Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B20485A9B4860E2BCDF77692 /* Pods-Common-RelayStage.app store release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4272,12 +5208,13 @@
 					"\"$(SRCROOT)/MMDrawerController\"",
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
-				INFOPLIST_FILE = "Relay Stage-Info.plist";
+				INFOPLIST_FILE = "RelayStage-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -4437,7 +5374,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4451,7 +5388,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					HAVE_CONFIG_H,
-					"DEVELOPMENT=1",
+					"PRODUCTION=1",
 				);
 				GCC_STRICT_ALIASING = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
@@ -4501,7 +5438,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4515,7 +5452,7 @@
 					"$(inherited)",
 					HAVE_CONFIG_H,
 					"RELEASE=1",
-					"DEVELOPMENT=1",
+					"PRODUCTION=1",
 				);
 				GCC_STRICT_ALIASING = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
@@ -4673,6 +5610,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7D4A3AEB1F1693930023C29B /* Build configuration list for PBXNativeTarget "RelayDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D4A3AEC1F1693930023C29B /* Debug */,
+				7D4A3AED1F1693930023C29B /* App Store Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "App Store Release";
+		};
 		7DCFFE911F0EE4490003CD95 /* Build configuration list for PBXNativeTarget "RelayStage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
