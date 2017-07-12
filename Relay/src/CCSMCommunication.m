@@ -23,7 +23,7 @@
              success:(void (^)())successBlock
              failure:(void (^)(NSError *error))failureBlock ;
 {
-    NSString * urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/login/send/%@/%@/?format=json", orgName, userName];
+    NSString * urlString = [NSString stringWithFormat:@"%@/v1/login/send/%@/%@/?format=json", FLHomeURL, orgName, userName];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request
@@ -64,7 +64,7 @@
 {
     NSString *orgName = [Environment.ccsmStorage getOrgName];
     NSString *userName = [Environment.ccsmStorage getUserName];
-    NSString * urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/login/authtoken/"];
+    NSString * urlString = [NSString stringWithFormat:@"%@/v1/login/authtoken/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
@@ -109,7 +109,7 @@
                            failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
-    NSString *urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/api-token-refresh/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
@@ -153,7 +153,7 @@
                            failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
-    NSString *urlString = [NSString stringWithFormat:@"https://ccsm-dev-api.forsta.io/v1/api-token-refresh/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];

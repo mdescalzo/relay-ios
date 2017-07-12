@@ -12,8 +12,11 @@
 @interface DeveloperPanelViewController ()
 
 @property (nonatomic, weak) IBOutlet UIPickerView *supermanIDPicker;
+@property (nonatomic, weak) IBOutlet UILabel *supermanIDLabel;
+@property (nonatomic, weak) IBOutlet UILabel *forstaURLLabel;
 
 @property (nonatomic, strong) NSArray *validSupermanIDs;
+
 
 -(IBAction)didPressSave:(id)sender;
 -(IBAction)didPressReset:(id)sender;
@@ -27,6 +30,9 @@
     // Do any additional setup after loading the view.
     
     self.validSupermanIDs = @[ FLSupermanDevID, FLSupermanStageID, FLSupermanProdID ];
+    
+    self.supermanIDLabel.text = FLSupermanID;
+    self.forstaURLLabel.text = FLHomeURL;
     
     [self updateView];
 }
