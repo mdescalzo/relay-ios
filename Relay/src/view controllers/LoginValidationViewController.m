@@ -131,7 +131,7 @@ NSUInteger maximumValidationAttempts = 9999;
                            failure:^(NSError *err){
                                NSLog(@"Failed to retrieve org info after login validation");
                            }];
-    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
+    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
                                   collection:users
                                      success:^{
                                          NSLog(@"Retrieved all users after login validation");

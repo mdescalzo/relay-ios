@@ -86,18 +86,18 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     BOOL loggingIsEnabled;
 
+    // Set SupermanID
+    [[Environment ccsmStorage] setSupermanId:FLSupermanID];
+    
 #ifdef DEBUG
     // Specified at Product -> Scheme -> Edit Scheme -> Test -> Arguments -> Environment to avoid things like
     // the phone directory being looked up during tests.
     loggingIsEnabled = TRUE;
     [DebugLogger.sharedLogger enableTTYLogging];
-    if ([[Environment ccsmStorage].supermanId isEqualToString:@""] || [Environment ccsmStorage].supermanId == nil) {
-        [[Environment ccsmStorage] setSupermanId:FLSupermanDevID];
-    }
 #elif RELEASE
     loggingIsEnabled = Environment.preferences.loggingIsEnabled;
-    [[Environment ccsmStorage] setSupermanId:FLSupermanProdID];
 #endif
+
     [self verifyBackgroundBeforeKeysAvailableLaunch];
 
     if (loggingIsEnabled) {
@@ -408,7 +408,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
                            failure:^(NSError *err){
                                DDLogError(@"Failed to retrieve org info after session token refresh");
                            }];
-    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/user/"
+    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
                                   collection:users
                                      success:^{
                                          DDLogInfo(@"Retrieved all users after session token refresh");

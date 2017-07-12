@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0810"
+   LastUpgradeVersion = "0830"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A1B989631725EC1300B6E8B5"
-               BuildableName = "libspandsp.a"
-               BlueprintName = "spandsp"
-               ReferencedContainer = "container:spandsp.xcodeproj">
+               BlueprintIdentifier = "7D4A39BA1F1693930023C29B"
+               BuildableName = "RelayDev.app"
+               BlueprintName = "RelayDev"
+               ReferencedContainer = "container:Forsta.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,6 +29,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7D4A39BA1F1693930023C29B"
+            BuildableName = "RelayDev.app"
+            BlueprintName = "RelayDev"
+            ReferencedContainer = "container:Forsta.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -42,30 +51,41 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A1B989631725EC1300B6E8B5"
-            BuildableName = "libspandsp.a"
-            BlueprintName = "spandsp"
-            ReferencedContainer = "container:spandsp.xcodeproj">
+            BlueprintIdentifier = "7D4A39BA1F1693930023C29B"
+            BuildableName = "RelayDev.app"
+            BlueprintName = "RelayDev"
+            ReferencedContainer = "container:Forsta.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Release"
+      buildConfiguration = "App Store Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7D4A39BA1F1693930023C29B"
+            BuildableName = "RelayDev.app"
+            BlueprintName = "RelayDev"
+            ReferencedContainer = "container:Forsta.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "App Store Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

@@ -9,7 +9,7 @@
 #import "SettingsPopupMenuViewController.h"
 #import "DirectoryTableViewController.h"
 
-#ifdef DEBUG
+#ifdef DEVELOPMENT
 #define kNumberOfSettings 6
 #else
 #define kNumberOfSettings 5
