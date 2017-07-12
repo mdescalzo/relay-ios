@@ -179,6 +179,7 @@
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
+		7D4A399E1F1689200023C29B /* RelayStage-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D4A399D1F1689200023C29B /* RelayStage-Info.plist */; };
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
@@ -479,7 +480,7 @@
 		7DCFFE8B1F0EE4490003CD95 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DCFFE8C1F0EE4490003CD95 /* audio_pause_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3E1A73426500B5C81A /* audio_pause_button@2x.png */; };
 		7DCFFE9D1F0EE5AA0003CD95 /* Relay-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFFE9C1F0EE5AA0003CD95 /* Relay-Info.plist */; };
-		7DCFFE9F1F0EE5B60003CD95 /* Relay Stage-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFFE9E1F0EE5B50003CD95 /* Relay Stage-Info.plist */; };
+		7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A123C14916F902EE000AE905 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
@@ -1174,6 +1175,7 @@
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDomainViewController.h; sourceTree = "<group>"; };
 		7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDomainViewController.m; sourceTree = "<group>"; };
+		7D4A399D1F1689200023C29B /* RelayStage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayStage-Info.plist"; sourceTree = "<group>"; };
 		7D4D89441EE63502003970A5 /* SettingsPopupMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPopupMenuViewController.h; sourceTree = "<group>"; };
 		7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPopupMenuViewController.m; sourceTree = "<group>"; };
 		7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryTableViewController.h; sourceTree = "<group>"; };
@@ -1194,7 +1196,8 @@
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFE9C1F0EE5AA0003CD95 /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = "<group>"; };
-		7DCFFE9E1F0EE5B50003CD95 /* Relay Stage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay Stage-Info.plist"; sourceTree = "<group>"; };
+		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
+		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B66C127F311E66A37E1CA20 /* libPods-Common-Relay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-Relay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2761,7 +2764,7 @@
 			isa = PBXGroup;
 			children = (
 				7DCFFE9C1F0EE5AA0003CD95 /* Relay-Info.plist */,
-				7DCFFE9E1F0EE5B50003CD95 /* Relay Stage-Info.plist */,
+				7D4A399D1F1689200023C29B /* RelayStage-Info.plist */,
 				B6C6AE521A305ED1006BAF8F /* Certificates */,
 				B6B6C3C419193F5B00C0B76B /* Translations */,
 				E18AB40618A05754001A532A /* AudioFiles */,
@@ -3147,7 +3150,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DCFFE9F1F0EE5B60003CD95 /* Relay Stage-Info.plist in Resources */,
 				7DCFFE5D1F0EE4490003CD95 /* play_button@2x.png in Resources */,
 				7DCFFE5E1F0EE4490003CD95 /* audio_pause_button_blue.png in Resources */,
 				7DCFFE5F1F0EE4490003CD95 /* Main.storyboard in Resources */,
@@ -3173,6 +3175,7 @@
 				7DCFFE731F0EE4490003CD95 /* audio_play_button@2x.png in Resources */,
 				7DCFFE741F0EE4490003CD95 /* Launch Screen.storyboard in Resources */,
 				7DCFFE751F0EE4490003CD95 /* mute_off@2x.png in Resources */,
+				7D4A399E1F1689200023C29B /* RelayStage-Info.plist in Resources */,
 				7DCFFE761F0EE4490003CD95 /* audio_play_button_blue@2x.png in Resources */,
 				7DCFFE771F0EE4490003CD95 /* warning_white@2x.png in Resources */,
 				7DCFFE781F0EE4490003CD95 /* busy.mp3 in Resources */,
