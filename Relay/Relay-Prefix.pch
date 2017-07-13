@@ -39,7 +39,10 @@
 #define FLDomainCreateProdURL @"https://console.forsta.io/create"
 
 // Forsta support URL
-#define FLForstaSupportURL @"http://support.forsta.io"
+#define FLForstaSupportURL @"https://support.forsta.io"
+
+// Forsta SMS invitation URL
+#define FLSMSInvitationURL @"https://www.forsta.io/benefits"
 
 // Select based upon build target
 #ifdef DEVELOPMENT

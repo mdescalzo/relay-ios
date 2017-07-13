@@ -64,6 +64,10 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         [CrashlyticsKit setUserName:[Environment.ccsmStorage getUserName]];
     }
     
+    // Navbar background color iOS10 bug workaround
+    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
+    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
+    
     // Initializing logger
     CategorizingLogger *logger = [CategorizingLogger categorizingLogger];
     [logger addLoggingCallback:^(NSString *category, id details, NSUInteger index){
