@@ -15,7 +15,6 @@
 
 @property (strong) CCSMStorage *ccsmStorage;
 @property (strong) CCSMCommManager *ccsmCommManager;
-
 @property (nonatomic, assign) BOOL keyboardShowing;
 
 -(IBAction)mainViewTapped:(id)sender;
@@ -119,6 +118,7 @@
     }
 }
 
+// Dismiss keyboard
 -(IBAction)mainViewTapped:(id)sender
 {
     if ([self.usernameTextField isFirstResponder]) {
@@ -127,6 +127,12 @@
     if ([self.organizationTextField isFirstResponder]) {
         [self.organizationTextField resignFirstResponder];
     }
+}
+
+// Hop out to the domain creation page
+-(IBAction)onCreateDomainTap:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLDomainCreateURL]];
 }
 
 

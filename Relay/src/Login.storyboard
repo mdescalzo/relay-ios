@@ -75,11 +75,34 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LdC-Mu-PcV">
                                 <rect key="frame" x="299" y="371" width="20" height="20"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- OR -" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CfS-g8-tLi">
+                                <rect key="frame" x="163.5" y="412" width="48" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kmi-I0-Nhe">
+                                <rect key="frame" x="46" y="441" width="283" height="47"/>
+                                <color key="backgroundColor" red="0.16862745100000001" green="0.67450980390000004" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="ggF-IJ-0GO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Create Domain">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onCreateDomainTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="5b9-Kf-EEw"/>
+                                    <action selector="onLoginButtonTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="bWP-W5-ZnP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="OUA-U8-v9B" secondAttribute="trailing" constant="30" id="0h8-7c-L4X"/>
                             <constraint firstItem="xA2-XF-1vd" firstAttribute="top" secondItem="ciA-mF-VaF" secondAttribute="centerY" constant="30" id="1mB-qM-xqK"/>
+                            <constraint firstItem="Kmi-I0-Nhe" firstAttribute="top" secondItem="CfS-g8-tLi" secondAttribute="bottom" constant="8" id="36X-LM-k1G"/>
+                            <constraint firstItem="CfS-g8-tLi" firstAttribute="centerX" secondItem="K5c-0X-7jd" secondAttribute="centerX" id="5hW-T2-EHx"/>
                             <constraint firstItem="xA2-XF-1vd" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leading" id="7yb-Uf-C4Y"/>
                             <constraint firstItem="zZD-yC-Wls" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leading" id="D7B-qg-wX7"/>
                             <constraint firstItem="LdC-Mu-PcV" firstAttribute="centerY" secondItem="OUA-U8-v9B" secondAttribute="centerY" id="Din-2A-I1p"/>
@@ -87,6 +110,10 @@
                             <constraint firstItem="RcM-BM-ob0" firstAttribute="centerX" secondItem="zZD-yC-Wls" secondAttribute="centerX" id="JAn-gP-nWd"/>
                             <constraint firstItem="OUA-U8-v9B" firstAttribute="top" secondItem="xA2-XF-1vd" secondAttribute="bottom" constant="15" id="KRZ-vM-sN5"/>
                             <constraint firstAttribute="trailing" secondItem="xA2-XF-1vd" secondAttribute="trailing" id="QUq-qQ-Knz"/>
+                            <constraint firstItem="Kmi-I0-Nhe" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leadingMargin" constant="30" id="TVi-xW-fNq"/>
+                            <constraint firstItem="Kmi-I0-Nhe" firstAttribute="centerX" secondItem="K5c-0X-7jd" secondAttribute="centerX" id="VAG-g5-ZkI"/>
+                            <constraint firstItem="CfS-g8-tLi" firstAttribute="top" secondItem="OUA-U8-v9B" secondAttribute="bottom" constant="8" id="Ywp-SH-veg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Kmi-I0-Nhe" secondAttribute="trailing" constant="30" id="ZPH-N1-UAc"/>
                             <constraint firstItem="ciA-mF-VaF" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leadingMargin" constant="20" id="ZvP-sl-wse"/>
                             <constraint firstItem="OUA-U8-v9B" firstAttribute="trailing" secondItem="LdC-Mu-PcV" secondAttribute="trailing" constant="10" id="dwE-Tb-TqS"/>
                             <constraint firstItem="OUA-U8-v9B" firstAttribute="leading" secondItem="K5c-0X-7jd" secondAttribute="leadingMargin" constant="30" id="lp3-Fd-CcC"/>
@@ -101,7 +128,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="HVa-hP-Pv9"/>
                     <connections>
+                        <outlet property="createDomainButton" destination="Kmi-I0-Nhe" id="PUp-E6-SDs"/>
                         <outlet property="loginButton" destination="OUA-U8-v9B" id="xP9-9Q-WQR"/>
+                        <outlet property="needDomainLabel" destination="CfS-g8-tLi" id="AiE-yr-elY"/>
                         <outlet property="organizationTextField" destination="oIf-Tz-feb" id="EGb-Em-cLD"/>
                         <outlet property="spinner" destination="LdC-Mu-PcV" id="Lw3-Bx-FFB"/>
                         <outlet property="usernameTextField" destination="ciA-mF-VaF" id="Ujm-Jg-3P2"/>
