@@ -28,23 +28,32 @@
 #define FLSupermanStageID @"+17017328732"
 #define FLSupermanProdID @"+17017328733"
 
-// Forsta URLs
+// Forsta home URLs
 #define FLForstaDevURL @"https://ccsm-dev-api.forsta.io"
 #define FLForstaStageURL @"https://ccsm-stage-api.forsta.io"
 #define FLForstaProdURL @"https://ccsm-api.forsta.io"
 
+// Domain creation URLs
+#define FLDomainCreateDevURL @"https://ccsm-dev.forsta.io/create"
+#define FLDomainCreateStageURL @"https://ccsm-stage.forsta.io/create"
+#define FLDomainCreateProdURL @"https://console.forsta.io/create"
+
+// Forsta support URL
 #define FLForstaSupportURL @"http://support.forsta.io"
 
 // Select based upon build target
 #ifdef DEVELOPMENT
     #define FLHomeURL FLForstaDevURL
     #define FLSupermanID FLSupermanDevID
+    #define FLDomainCreateURL FLDomainCreateDevURL
 #elif STAGE
     #define FLHomeURL FLForstaStageURL
     #define FLSupermanID FLSupermanStageID
+    #define FLDomainCreateURL FLDomainCreateStageURL
 #elif PRODUCTION
     #define FLHomeURL FLForstaProdURL
     #define FLSupermanID FLSupermanProdID
+    #define FLDomainCreateURL FLDomainCreateProdURL
 #endif
 
 #endif

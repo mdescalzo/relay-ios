@@ -115,8 +115,7 @@
 -(IBAction)onCreateDomainTap:(id)sender
 {
     // Hop out to the domain creation page
-    NSString *domainCreateURL = @"https://console.forsta.io/create";
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:domainCreateURL]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLDomainCreateURL]];
 }
 
 #pragma mark - move controls up to accomodate keyboard.
