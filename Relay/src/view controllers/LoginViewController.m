@@ -17,6 +17,8 @@
 @property (strong) CCSMCommManager *ccsmCommManager;
 @property (nonatomic, assign) BOOL keyboardShowing;
 
+-(IBAction)mainViewTapped:(id)sender;
+
 @end
 
 @implementation LoginViewController
@@ -32,6 +34,10 @@
     self.organizationTextField.placeholder = NSLocalizedString(@"Enter Domain", @"");
     self.usernameTextField.placeholder = NSLocalizedString(@"Enter Username", @"");
     self.loginButton.titleLabel.text = NSLocalizedString(@"Login", @"");
+    
+    // Setup tap recognizer for keyboard dismissal
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewTapped:)];
+    [self.view addGestureRecognizer:tgr];
 }
 
 -(void)viewWillAppear:(BOOL)animated
