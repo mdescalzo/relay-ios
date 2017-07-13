@@ -13,6 +13,9 @@
 #import "TSContactThread.h"
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
+#import "TSAttachment.h"
+#import "TSAttachmentPointer.h"
+#import "TSAttachmentStream.h"
 
 @interface CCSMJSONService()
 
@@ -58,9 +61,7 @@
     NSString *threadTitle = message.thread.name;
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *type = @"ordinary";
-    NSDictionary *data = @{ @"body": @[ @{ @"type": @"text/plain",
-                                          @"value": message.body } ]
-                          };
+    
     
     NSDictionary *senderDict = [Environment.ccsmStorage getUserInfo];
     NSArray *tagsArray = [senderDict objectForKey:@"tags"];
@@ -77,36 +78,111 @@
                               @"resolvedNumber" : [senderDict objectForKey:@"phone"]
                               };
     
-    
-    FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:message.thread.contactIdentifier]];
-    NSString *recipientTag;
-    NSString *recipientID;
-    if ([contact respondsToSelector:@selector(tagPresentation)]) {
-        recipientTag = contact.tagPresentation;
-        recipientID = contact.userID;
+    // Build recipient blob
+#warning make a private method
+    NSArray *recipientUsers;
+    if (message.thread.isGroupThread) {
+        recipientUsers = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
     } else {
-        recipientTag = @"Non-CCSM-user";
-        recipientID = @"Non-CCSM-user";
+        recipientUsers = @[ ((TSContactThread *)message.thread).contactIdentifier ];
     }
     
+    NSMutableString *presentation = [NSMutableString new];
+    NSMutableArray *userIds = [NSMutableArray new];
     
+    for (NSString *memberID in recipientUsers) {
+        FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
+        NSString *recipientTag;
+        NSString *recipientID;
+        if ([contact respondsToSelector:@selector(tagPresentation)]) {
+            recipientTag = contact.tagPresentation;
+            recipientID = contact.userID;
+        } else {
+            recipientTag = @"Non-CCSM-user";
+            recipientID = @"Non-CCSM-user";
+        }
+        
+        [userIds addObject:recipientID];
+        
+        if (presentation.length == 0) {
+            [presentation appendString:[NSString stringWithFormat:@"@%@", recipientTag]];
+        } else {
+            [presentation appendString:[NSString stringWithFormat:@" @%@", recipientTag]];
+        }
+    }
     
-    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : [NSString stringWithFormat:@"@%@", recipientTag] },
-                                  @"resolvedUsers" : @[ recipientID ]
-//                                  @"resolvedNumbers" : [contact textSecureIdentifiers]
+    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : presentation },
+                                  @"userIds" : userIds
                                   };
     
-    NSDictionary *tmpDict = @{ @"version" : version,
+    NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
+                            @{ @"version" : version,
                                @"userAgent" : userAgent,
                                @"messageId" : messageId,  //  Appears to be unused.
                                @"threadId" : threadId,
                                @"threadTitle" : threadTitle,
                                @"sendTime" : sendTime,
                                @"type" : type,
-                               @"data" : data,
+//                               @"data" : data,
                                @"sender" : sender,
                                @"recipients" : recipients
-                               };
+                               }];
+    // Handler for nil message.body
+    NSDictionary *data;
+    if (message.body) {
+        data = @{ @"body": @[ @{ @"type": @"text/plain",
+                                 @"value": message.body } ]
+                  };
+        [tmpDict setObject:data forKey:@"data"];
+    }
+    
+    // Attachment Handler
+    NSMutableArray *attachments = [NSMutableArray new];
+    if ([message hasAttachments]) {
+        for (NSString *attachmentID in message.attachmentIds) {
+            TSAttachment *attachment = [TSAttachment fetchObjectWithUniqueID:attachmentID];
+            if ([attachment isKindOfClass:[TSAttachmentStream class]]) {
+                TSAttachmentStream *stream = (TSAttachmentStream *)attachment;
+                NSFileManager *fm = [NSFileManager defaultManager];
+                if ([fm fileExistsAtPath:stream.filePath]) {
+                    NSString *filename = [stream.mediaURL.pathComponents lastObject];
+                    NSString *contentType = stream.contentType;
+                    NSDictionary *attribs = [fm attributesOfItemAtPath:stream.filePath error:nil];
+                    NSNumber *size = [attribs objectForKey:NSFileSize];
+                    NSDate *modDate = [attribs objectForKey:NSFileModificationDate];
+                    NSString *dateString = [self formattedStringFromDate:modDate];
+                    NSDictionary *attachmentDict = @{ @"name" : filename,
+                                                      @"size" : size,
+                                                      @"type" : contentType,
+                                                      @"mtime" : dateString
+                                                      };
+                    [attachments addObject:attachmentDict];
+                }
+                
+            }
+//            else if ([attachment isKindOfClass:[TSAttachmentPointer class]]) {
+//                TSAttachmentPointer *pointer = (TSAttachmentPointer *)attachment;
+//                adapter.messageType          = TSInfoMessageAdapter;
+//                
+//                if (pointer.isDownloading) {
+//                    adapter.messageBody = NSLocalizedString(@"ATTACHMENT_DOWNLOADING", nil);
+//                } else {
+//                    if (pointer.hasFailed) {
+//                        adapter.messageBody = NSLocalizedString(@"ATTACHMENT_QUEUED", nil);
+//                    } else {
+//                        adapter.messageBody = NSLocalizedString(@"ATTACHMENT_DOWNLOAD_FAILED", nil);
+//                    }
+//                }
+//            } else {
+//                DDLogError(@"We retrieved an attachment that doesn't have a known type : %@",
+//                           NSStringFromClass([attachment class]));
+//            }
+        }
+        if ([attachments count] > 1) {
+            [tmpDict setObject:attachments forKey:@"attachments"];
+        }
+    }
+
     
     NSArray *returnArray = @[ tmpDict ];
 

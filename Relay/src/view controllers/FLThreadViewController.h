@@ -8,12 +8,14 @@
 
 #import "SLKTextViewController.h"
 #include "InboxTableViewCell.h"
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 #import "CallState.h"
 #import "Contact.h"
 #import "TSGroupModel.h"
 
-@interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate>
+@interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL newlyRegisteredUser;
 @property (nonatomic, strong) CallState * _Nullable latestCall;

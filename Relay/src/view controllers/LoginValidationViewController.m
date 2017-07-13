@@ -145,7 +145,6 @@ NSUInteger maximumValidationAttempts = 9999;
                                      }
                                      failure:^(NSError *err){
                                          NSLog(@"Failed to retrieve all users after login validation");
-
                                      }];
 #warning For future implementation.
 //    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/tag/"
