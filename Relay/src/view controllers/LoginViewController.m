@@ -78,7 +78,7 @@
 }
 */
 
-#pragma mark - Button Methods
+#pragma mark - Tap actions
 
 -(IBAction)onLoginButtonTap:(id)sender
 {
@@ -118,11 +118,23 @@
     }
 }
 
+// Dismiss keyboard
+-(IBAction)mainViewTapped:(id)sender
+{
+    if ([self.usernameTextField isFirstResponder]) {
+        [self.usernameTextField resignFirstResponder];
+    }
+    if ([self.organizationTextField isFirstResponder]) {
+        [self.organizationTextField resignFirstResponder];
+    }
+}
+
+// Hop out to the domain creation page
 -(IBAction)onCreateDomainTap:(id)sender
 {
-    // Hop out to the domain creation page
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLDomainCreateURL]];
 }
+
 
 #pragma mark - move controls up to accomodate keyboard.
 -(void)keyboardWillShow:(NSNotification *)notification
