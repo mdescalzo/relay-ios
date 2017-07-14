@@ -10,6 +10,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <JSQMessagesViewController/JSQMessagesViewController.h>
 #import "TSGroupModel.h"
+
 @class TSThread;
 
 extern NSString *const OWSMessagesViewControllerDidAppearNotification;

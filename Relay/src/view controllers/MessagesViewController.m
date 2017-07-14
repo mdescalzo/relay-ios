@@ -122,7 +122,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
@@ -2019,39 +2019,68 @@ typedef enum : NSUInteger {
 #pragma mark Accessory View
 
 - (void)didPressAccessoryButton:(UIButton *)sender {
-    [self dismissKeyBoard];
 
-    UIView *presenter = self.parentViewController.view;
+    BOOL preserveKeyboard = [self.inputToolbar.contentView.textView isFirstResponder];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *takePictureButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TAKE_MEDIA_BUTTON", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action){ [self takePictureOrVideo];
+                                                                  if (preserveKeyboard) {
+                                                                      [self popKeyBoard];
+                                                                  }
+                                                              }];
+    UIAlertAction *chooseMediaButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action){ [self chooseFromLibrary];
+                                                                  if (preserveKeyboard) {
+                                                                      [self popKeyBoard];
+                                                                  }
+                                                              }];
+    UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *_Nonnull action){
+                                                             if (preserveKeyboard) {
+                                                                 [self popKeyBoard];
+                                                             }
+                                                         }];
+    [alert addAction:takePictureButton];
+    [alert addAction:chooseMediaButton];
+    [alert addAction:cancelButton];
+    [self presentViewController:alert animated:YES completion:nil];
 
-    [DJWActionSheet showInView:presenter
-                     withTitle:nil
-             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-        destructiveButtonTitle:nil
-             otherButtonTitles:@[
-                 NSLocalizedString(@"TAKE_MEDIA_BUTTON", @""),
-                 NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
-             ] //,@"Record audio"]
-                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-                        if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-                            DDLogVerbose(@"User Cancelled");
-                        } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-                            DDLogVerbose(@"Destructive button tapped");
-                        } else {
-                            switch (tappedButtonIndex) {
-                                case 0:
-                                    [self takePictureOrVideo];
-                                    break;
-                                case 1:
-                                    [self chooseFromLibrary];
-                                    break;
-                                case 2:
-                                    [self recordAudio];
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                      }];
+//    UIView *presenter = self.parentViewController.view;
+//    [DJWActionSheet showInView:presenter
+//                     withTitle:nil
+//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+//        destructiveButtonTitle:nil
+//             otherButtonTitles:@[
+//                 NSLocalizedString(@"TAKE_MEDIA_BUTTON", @""),
+//                 NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
+//             ] //,@"Record audio"]
+//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
+//                        if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
+//                            DDLogVerbose(@"User Cancelled");
+//                        } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
+//                            DDLogVerbose(@"Destructive button tapped");
+//                        } else {
+//                            switch (tappedButtonIndex) {
+//                                case 0:
+//                                    [self takePictureOrVideo];
+//                                    break;
+//                                case 1:
+//                                    [self chooseFromLibrary];
+//                                    break;
+//                                case 2:
+//                                    [self recordAudio];
+//                                    break;
+//                                default:
+//                                    break;
+//                            }
+//                        }
+//                      }];
 }
 
 - (void)markAllMessagesAsRead

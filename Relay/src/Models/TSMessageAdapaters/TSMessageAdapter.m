@@ -131,9 +131,11 @@
         NSString *htmlString = [self htmlBodyStringFromBlob:bodyArray];
         
         if (bodyArray == nil) {
-            adapter.messageBody = message.body;
-            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body
-                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+            if (message.body) {
+                adapter.messageBody = message.body;
+                adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body
+                                                                                attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+            }
         } else if (htmlString.length > 0) {
             adapter.messageBody = plainString;
             NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];

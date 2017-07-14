@@ -25,6 +25,11 @@
         5) send new TSOutgoinMessage
      */
 
+    // Make sure we have a UUID for the message
+    if (!message.uniqueId) {
+        message.uniqueId = [[NSUUID UUID] UUIDString];
+    }
+
     // Convert message body to JSON blob
     NSString *messageBlob = [CCSMJSONService blobFromMessage:message];
     message.body = messageBlob;
@@ -35,6 +40,10 @@
                                                                             inThread:supermanThread
                                                                          messageBody:messageBlob];
 
+//    if (!supermanMessage.uniqueId) {
+//        supermanMessage.uniqueId = message.uniqueId;
+//    }
+    
     // send to Superman
 #warning Need alternative handlers for the Superman send
     [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
