@@ -40,13 +40,15 @@
     
     if ([NSJSONSerialization isValidJSONObject:holdingArray]) {
         NSData* jsonData = [NSJSONSerialization dataWithJSONObject:holdingArray
-                                                           options:NSJSONWritingPrettyPrinted error:&error];
+                                                           options:NSJSONWritingPrettyPrinted
+                                                             error:&error];
         if (error) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         }
-        return [[NSString alloc] initWithData:jsonData
+        NSString *json = [[NSString alloc] initWithData:jsonData
                                      encoding:NSUTF8StringEncoding];
+        return json;
     } else {
         return nil;
     }
@@ -56,9 +58,9 @@
 {
     NSNumber *version = [NSNumber numberWithInt:1];
     NSString *userAgent = [DeviceTypes deviceModelName];
-    NSString *messageId = (message.uniqueId ? message.uniqueId : @"undefined"); // unused?
-    NSString *threadId = message.uniqueThreadId;
-    NSString *threadTitle = message.thread.name;
+    NSString *messageId = (message.uniqueId ? message.uniqueId : @""); // unused?
+    NSString *threadId = @""; // (message.thread.uniqueId ? message.thread.uniqueId : @"");
+    NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *type = @"ordinary";
     
@@ -72,9 +74,16 @@
             break;
         }
     }
-    NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @"undefined"),
-                              @"tagPresentation" : [NSString stringWithFormat:@"@%@", [Environment.ccsmStorage getUserName]],
-                              @"resolvedUser" :  [senderDict objectForKey:@"id"],
+    NSDictionary *orgDict = [Environment.ccsmStorage getOrgInfo];
+    NSString *orgId = [orgDict objectForKey:@"id"];
+
+    
+    NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
+                              @"tagPresentation" : [NSString stringWithFormat:@"%@", [Environment.ccsmStorage getUserName]],
+                              @"resolvedUser" : @{
+                                      @"orgId" : (orgId ? orgId : @""),
+                                      @"userId" :  [senderDict objectForKey:@"id"]
+                                      },
                               @"resolvedNumber" : [senderDict objectForKey:@"phone"]
                               };
     
@@ -89,7 +98,7 @@
     
     NSMutableString *presentation = [NSMutableString new];
     NSMutableArray *userIds = [NSMutableArray new];
-    
+
     for (NSString *memberID in recipientUsers) {
         FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
         NSString *recipientTag;
@@ -105,14 +114,15 @@
         [userIds addObject:recipientID];
         
         if (presentation.length == 0) {
-            [presentation appendString:[NSString stringWithFormat:@"@%@", recipientTag]];
+            [presentation appendString:[NSString stringWithFormat:@"%@", recipientTag]];
         } else {
-            [presentation appendString:[NSString stringWithFormat:@" @%@", recipientTag]];
+            [presentation appendString:[NSString stringWithFormat:@" %@", recipientTag]];
         }
     }
     
     NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : presentation },
-                                  @"userIds" : userIds
+                                  @"resolvedNumbers" : recipientUsers,
+                                  @"resolvedUsers" : userIds
                                   };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
@@ -131,7 +141,10 @@
     NSDictionary *data;
     if (message.body) {
         data = @{ @"body": @[ @{ @"type": @"text/plain",
-                                 @"value": message.body } ]
+                                 @"value": message.body }
+//                              @{ @"type": @"text/html",
+//                                 @"value": message.body }
+                              ]
                   };
         [tmpDict setObject:data forKey:@"data"];
     }
@@ -160,23 +173,6 @@
                 }
                 
             }
-//            else if ([attachment isKindOfClass:[TSAttachmentPointer class]]) {
-//                TSAttachmentPointer *pointer = (TSAttachmentPointer *)attachment;
-//                adapter.messageType          = TSInfoMessageAdapter;
-//                
-//                if (pointer.isDownloading) {
-//                    adapter.messageBody = NSLocalizedString(@"ATTACHMENT_DOWNLOADING", nil);
-//                } else {
-//                    if (pointer.hasFailed) {
-//                        adapter.messageBody = NSLocalizedString(@"ATTACHMENT_QUEUED", nil);
-//                    } else {
-//                        adapter.messageBody = NSLocalizedString(@"ATTACHMENT_DOWNLOAD_FAILED", nil);
-//                    }
-//                }
-//            } else {
-//                DDLogError(@"We retrieved an attachment that doesn't have a known type : %@",
-//                           NSStringFromClass([attachment class]));
-//            }
         }
         if ([attachments count] > 1) {
             [tmpDict setObject:attachments forKey:@"attachments"];
