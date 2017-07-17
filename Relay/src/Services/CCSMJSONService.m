@@ -100,15 +100,20 @@
     NSMutableArray *userIds = [NSMutableArray new];
 
     for (NSString *memberID in recipientUsers) {
-        FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
         NSString *recipientTag;
         NSString *recipientID;
-        if ([contact respondsToSelector:@selector(tagPresentation)]) {
-            recipientTag = contact.tagPresentation;
-            recipientID = contact.userID;
+        if (memberID) {
+            FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
+            if ([contact respondsToSelector:@selector(tagPresentation)]) {
+                recipientTag = contact.tagPresentation;
+                recipientID = contact.userID;
+            } else {
+                recipientTag = @"non_CCSM_user";
+                recipientID = @"non_CCSM_user";
+            }
         } else {
-            recipientTag = @"Non-CCSM-user";
-            recipientID = @"Non-CCSM-user";
+            recipientTag = @"unknown_user";
+            recipientID = @"unknown_user";
         }
         
         [userIds addObject:recipientID];

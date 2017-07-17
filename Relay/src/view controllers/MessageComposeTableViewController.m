@@ -315,8 +315,7 @@
                       picker.recipients =
                           [self.currentSearchTerm length] > 0 ? [NSArray arrayWithObject:self.currentSearchTerm] : nil;
                       picker.body = [NSLocalizedString(@"SMS_INVITE_BODY", @"")
-                          stringByAppendingString:
-                              @"http://forsta.io/features"];
+                          stringByAppendingString:[NSString stringWithFormat:@"\n%@", FLSMSInvitationURL]];                    
                       [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
                   } else {
                       UIAlertView *notPermitted =

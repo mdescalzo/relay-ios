@@ -10,18 +10,18 @@
 #import "DirectoryTableViewController.h"
 
 #ifdef DEVELOPMENT
-#define kNumberOfSettings 6
-#else
 #define kNumberOfSettings 5
+#else
+#define kNumberOfSettings 4
 #endif
 
-#define kDirectoryIndex 0
-#define kLinkedDevicesIndex 1
-#define kSettingsIndex 2
-#define kMarkAllReadIndex 3
-#define kImportExportIndex 999
-#define kHelpIndex 4
-#define kDeveloperConsoleIndex 5
+#define kLinkedDevicesIndex 0
+#define kSettingsIndex 1
+#define kMarkAllReadIndex 2
+#define kHelpIndex 3
+#define kDeveloperConsoleIndex 4
+#define kImportExportIndex 998
+#define kDirectoryIndex 999
 
 CGFloat const kRowHeight = 40;
 
