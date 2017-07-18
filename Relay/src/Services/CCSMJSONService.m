@@ -100,8 +100,8 @@
     NSMutableArray *userIds = [NSMutableArray new];
 
     for (NSString *memberID in recipientUsers) {
-        NSString *recipientTag;
-        NSString *recipientID;
+        NSString *recipientTag = nil;
+        NSString *recipientID = nil;
         if (memberID) {
             FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
             if ([contact respondsToSelector:@selector(tagPresentation)]) {
@@ -109,14 +109,14 @@
                 recipientID = contact.userID;
             } else {
                 recipientTag = @"non_CCSM_user";
-                recipientID = @"non_CCSM_user";
             }
         } else {
             recipientTag = @"unknown_user";
-            recipientID = @"unknown_user";
         }
-        
-        [userIds addObject:recipientID];
+
+        if (recipientID) {
+            [userIds addObject:recipientID];
+        }
         
         if (presentation.length == 0) {
             [presentation appendString:[NSString stringWithFormat:@"%@", recipientTag]];
