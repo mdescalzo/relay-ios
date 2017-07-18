@@ -745,6 +745,17 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         return;
     }
     
+    __block BOOL scrollToBottom = NO;
+    
+    // Wrapping the table update in order to attach a completion handler in order to
+    //   scroll to bottom if necessary.
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        if (scrollToBottom) {
+            [self scrollTableViewToBottom];
+        }
+    }],
+    
     [self.tableView beginUpdates];
     
     for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
@@ -771,18 +782,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                 [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
-                [self.tableView endUpdates];
+//                [self.tableView endUpdates];
                 break;
             }
             case YapDatabaseViewChangeInsert: {
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
-
-                [self.tableView endUpdates];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                });
+                scrollToBottom = YES;
+                //                [self.tableView endUpdates];
+                //                dispatch_async(dispatch_get_main_queue(), ^{
+                //                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                //                });
                 break;
             }
             case YapDatabaseViewChangeMove: {
@@ -790,35 +801,43 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                });
+                scrollToBottom = YES;
+                //                [self.tableView endUpdates];
+                //                dispatch_async(dispatch_get_main_queue(), ^{
+                //                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                //                });
                 break;
             }
             case YapDatabaseViewChangeUpdate: {
                 [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
+                //                [self.tableView endUpdates];
                 break;
             }
             default: {
-                [self.tableView endUpdates];
+                //                [self.tableView endUpdates];
             }
         }
     }
     
-//    [self.tableView endUpdates];
-//    [self checkIfEmptyView];
+    [self.tableView endUpdates];
+    [CATransaction commit];
+    
+    //    [self checkIfEmptyView];
 }
 
 -(void)scrollTableViewToBottom
 {
-    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
-    {
-        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
-        [self.tableView setContentOffset:offset animated:YES];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0]-1 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    });
+
+//    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+//    {
+//        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+//        [self.tableView setContentOffset:offset animated:YES];
+//    }
 }
 
 #pragma mark - TableView delegate and data source methods
