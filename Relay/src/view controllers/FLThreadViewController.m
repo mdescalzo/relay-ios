@@ -430,13 +430,24 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 // One of the following should be implemented at some later date
 - (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing
 {
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MessagesViewController *mvc = [[UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:NULL]
+                                       instantiateViewControllerWithIdentifier:@"MessagesViewController"];
+        
+        if (self.presentedViewController) {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+        [mvc configureForThread:thread keyboardOnViewAppearing:keyboardOnViewAppearing];
+        [self.navigationController pushViewController:mvc animated:YES];
+    });
 }
 
-- (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing
-{
-    
-}
+//- (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing
+//{
+//    
+//}
 
 
 - (NSNumber *)updateInboxCountLabel
