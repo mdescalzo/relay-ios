@@ -783,7 +783,6 @@
 		A1C32D5017A06538000A904E /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4F17A06537000A904E /* AddressBookUI.framework */; };
 		A1C32D5117A06544000A904E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4D17A0652C000A904E /* AddressBook.framework */; };
 		A2EF2C37452EBA750B517849 /* libPods-Common-RelayStage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF72580AFF17D60EA5DADF4 /* libPods-Common-RelayStage.a */; };
-		A39860370D9DE1A0E34EDBF2 /* libPods-Relay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E415B27F9DCDC3C9CA880C5 /* libPods-Relay.a */; };
 		A507A3B11A6C60E300BEED0D /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A507A3AF1A6C60E300BEED0D /* InboxTableViewCell.xib */; };
 		A547DD741A70A87800103EC7 /* DJWActionSheet+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = A547DD721A70A87800103EC7 /* DJWActionSheet+OWS.m */; };
 		A5509ECA1A69AB8B00ABA4BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5509EC91A69AB8B00ABA4BC /* Main.storyboard */; };
@@ -1924,7 +1923,6 @@
 				D221A090169C9E5E00537ABF /* Foundation.framework in Frameworks */,
 				D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */,
 				D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */,
-				A39860370D9DE1A0E34EDBF2 /* libPods-Relay.a in Frameworks */,
 				399940E077E8BB7FCBF95213 /* libPods-Common-Relay.a in Frameworks */,
 				3CD90A2E419629F36269D7B5 /* libPods-Common-Relay.a in Frameworks */,
 			);
