@@ -34,19 +34,18 @@
 
 
 #pragma mark - Lazy Instantiation
--(NSArray<Contact *> *)ccsmContacts
+- (NSArray<FLContact *> *)ccsmContacts;
 {
     if (_ccsmContacts == nil) {
         NSMutableArray *tmpArray = [NSMutableArray new];
         
-        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
+//        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
         NSDictionary *usersBlob = [Environment.ccsmStorage getUsers];
-        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
+//        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
         
-        NSLog(@"%@", userInfo);
-        for (NSString *key in tagsBlob.allKeys) {
-            NSDictionary *tmpDict = [tagsBlob objectForKey:key];
-            NSDictionary *userDict = [tmpDict objectForKey:tmpDict.allKeys.lastObject];
+        for (NSString *key in usersBlob.allKeys) {
+//            NSDictionary *tmpDict = [usersBlob objectForKey:key];
+            NSDictionary *userDict = [usersBlob objectForKey:key]; //[tmpDict objectForKey:tmpDict.allKeys.lastObject];
             
             // Filter out superman, no one sees superman
             if (!([[userDict objectForKey:@"phone"] isEqualToString:FLSupermanDevID] ||
@@ -58,13 +57,13 @@
                                                              andUserTextPhoneNumbers:@[ [userDict objectForKey:@"phone"] ]
                                                                             andImage:nil
                                                                         andContactID:0];
-                contact.tagPresentation = key;
-                contact.userID = [userDict objectForKey:@"id"];
+                 contact.userID = [userDict objectForKey:@"id"];
                 
                 NSArray *tagsArray = [userDict objectForKey:@"tags"];
                 for (NSDictionary *tag in tagsArray) {
                     if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
                         contact.tagID = [tag objectForKey:@"id"];
+                        contact.tagPresentation = [tag objectForKey:@"slug"];
                         break;
                     }
                 }
