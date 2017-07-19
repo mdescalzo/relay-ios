@@ -80,10 +80,11 @@
     
     NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
                               @"tagPresentation" : [NSString stringWithFormat:@"%@", [Environment.ccsmStorage getUserName]],
-                              @"resolvedUser" : @{
-                                      @"orgId" : (orgId ? orgId : @""),
-                                      @"userId" :  [senderDict objectForKey:@"id"]
-                                      },
+                              @"userId" :  [senderDict objectForKey:@"id"],
+//                              @"resolvedUser" : @{
+//                                      @"orgId" : (orgId ? orgId : @""),
+//                                      @"userId" :  [senderDict objectForKey:@"id"]
+//                                      },
                               @"resolvedNumber" : [senderDict objectForKey:@"phone"]
                               };
     
@@ -127,7 +128,7 @@
     
     NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : presentation },
                                   @"resolvedNumbers" : recipientUsers,
-                                  @"resolvedUsers" : userIds
+                                  @"userIds" : userIds
                                   };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
