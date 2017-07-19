@@ -63,7 +63,9 @@
                 for (NSDictionary *tag in tagsArray) {
                     if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
                         contact.tagID = [tag objectForKey:@"id"];
-                        contact.tagPresentation = [tag objectForKey:@"slug"];
+                        
+                        NSDictionary *subTag = [tag objectForKey:@"tag"];
+                        contact.tagPresentation = [subTag objectForKey:@"slug"];
                         break;
                     }
                 }
