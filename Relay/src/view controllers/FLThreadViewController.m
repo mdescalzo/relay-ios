@@ -1315,7 +1315,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 
 -(void)configureNavigationBar
 {
-    UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forsta_logo_blk"]
+    UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_text_logo"]
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
                                                                action:@selector(onSettingsTap:)];
