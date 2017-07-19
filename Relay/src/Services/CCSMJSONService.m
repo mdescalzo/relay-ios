@@ -80,7 +80,7 @@
     
     NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
                               @"tagPresentation" : [NSString stringWithFormat:@"%@", [Environment.ccsmStorage getUserName]],
-                              @"userId" :  [senderDict objectForKey:@"id"],
+                              @"userIds" :  [senderDict objectForKey:@"id"],
 //                              @"resolvedUser" : @{
 //                                      @"orgId" : (orgId ? orgId : @""),
 //                                      @"userId" :  [senderDict objectForKey:@"id"]
