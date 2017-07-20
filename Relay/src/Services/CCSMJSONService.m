@@ -126,7 +126,7 @@
         }
     }
     
-    NSDictionary *recipients = @{ @"distributionExpression" : @{ @"presentation" : presentation },
+    NSDictionary *recipients = @{ @"expression" : @{ @"presentation" : presentation },
                                   @"resolvedNumbers" : recipientUsers,
                                   @"userIds" : userIds
                                   };
