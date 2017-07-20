@@ -215,8 +215,24 @@ NS_ASSUME_NONNULL_BEGIN
                          completion:nil];
         
         [self.qrScanningController startCapture];
-    }
-                   alertActionHandler:nil];
+    }];
+//    [self ows_askForCameraPermissions:^{
+//        DDLogInfo(@"%@ Showing Scanner", self.tag);
+//        self.qrScanningView.hidden = NO;
+//        self.scanningInstructions.hidden = NO;
+//        [UIView animateWithDuration:0.4
+//                              delay:0.0
+//                           options:UIViewAnimationOptionCurveEaseInOut
+//                        animations:^{
+//                            self.scanningContainer.frame = self.qrContainer.frame;
+//                            self.qrContainer.frame = self.instructionsContainer.frame;
+//                            self.instructionsContainer.alpha = 0.0f;
+//                        }
+///                        completion:nil];
+//
+//        [self.qrScanningController startCapture];
+//    }
+//                   alertActionHandler:nil];
 }
 
 #pragma mark - OWSQRScannerDelegate
