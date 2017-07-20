@@ -1484,55 +1484,62 @@ typedef enum : NSUInteger {
 
 - (void)tappedInvalidIdentityKeyErrorMessage:(TSInvalidIdentityKeyErrorMessage *)errorMessage
 {
-    NSString *keyOwner = [self.contactsManager nameStringForPhoneIdentifier:errorMessage.theirSignalId];
-    NSString *titleFormat = NSLocalizedString(@"SAFETY_NUMBERS_ACTIONSHEET_TITLE", @"Action sheet heading");
-    NSString *titleText = [NSString stringWithFormat:titleFormat, keyOwner];
-    NSArray *actions = @[
-        NSLocalizedString(@"SHOW_SAFETY_NUMBER_ACTION", @"Action sheet item"),
-        NSLocalizedString(@"ACCEPT_NEW_IDENTITY_ACTION", @"Action sheet item")
-    ];
+    [self acceptNewIDKeyWithMessage:errorMessage];
+//    NSString *keyOwner = [self.contactsManager nameStringForPhoneIdentifier:errorMessage.theirSignalId];
+//    NSString *titleFormat = NSLocalizedString(@"SAFETY_NUMBERS_ACTIONSHEET_TITLE", @"Action sheet heading");
+//    NSString *titleText = [NSString stringWithFormat:titleFormat, keyOwner];
+//    NSArray *actions = @[
+//        NSLocalizedString(@"SHOW_SAFETY_NUMBER_ACTION", @"Action sheet item"),
+//        NSLocalizedString(@"ACCEPT_NEW_IDENTITY_ACTION", @"Action sheet item")
+//    ];
 
-    [DJWActionSheet showInView:self.parentViewController.view
-                     withTitle:titleText
-             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-        destructiveButtonTitle:nil
-             otherButtonTitles:actions
-                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-                              DDLogDebug(@"%@ Remote Key Changed actions: Tapped cancel", self.tag);
-                          } else {
-                              switch (tappedButtonIndex) {
-                                  case 0:
-                                      DDLogInfo(@"%@ Remote Key Changed actions: Show fingerprint display", self.tag);
-                                      [self showFingerprintWithTheirIdentityKey:errorMessage.newIdentityKey
-                                                                  theirSignalId:errorMessage.theirSignalId];
-                                      break;
-                                  case 1:
-                                      DDLogInfo(@"%@ Remote Key Changed actions: Accepted new identity key", self.tag);
+//    [DJWActionSheet showInView:self.parentViewController.view
+//                     withTitle:titleText
+//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+//        destructiveButtonTitle:nil
+//             otherButtonTitles:actions
+//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
+//                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
+//                              DDLogDebug(@"%@ Remote Key Changed actions: Tapped cancel", self.tag);
+//                          } else {
+//                              switch (tappedButtonIndex) {
+//                                  case 0:
+//                                      DDLogInfo(@"%@ Remote Key Changed actions: Show fingerprint display", self.tag);
+//                                      [self showFingerprintWithTheirIdentityKey:errorMessage.newIdentityKey
+//                                                                  theirSignalId:errorMessage.theirSignalId];
+//                                      break;
+//                                  case 1: {
+//                                      [self acceptNewIDKeyWithMessage:errorMessage];
+//                                  }
+//                                      break;
+//                                  default:
+//                                      DDLogInfo(@"%@ Remote Key Changed actions: Unhandled button pressed: %d",
+//                                          self.tag,
+//                                          (int)tappedButtonIndex);
+//                                      break;
+//                              }
+//                          }
+//                      }];
+}
 
-                                      [errorMessage acceptNewIdentityKey];
-                                      if ([errorMessage isKindOfClass:[TSInvalidIdentityKeySendingErrorMessage class]]) {
-                                          [self.messageSender
-                                              resendMessageFromKeyError:(TSInvalidIdentityKeySendingErrorMessage *)
-                                                                            errorMessage
-                                              success:^{
-                                                  DDLogDebug(@"%@ Successfully resent key-error message.", self.tag);
-                                              }
-                                              failure:^(NSError *_Nonnull error) {
-                                                  DDLogError(@"%@ Failed to resend key-error message with error:%@",
-                                                      self.tag,
-                                                      error);
-                                              }];
-                                      }
-                                      break;
-                                  default:
-                                      DDLogInfo(@"%@ Remote Key Changed actions: Unhandled button pressed: %d",
-                                          self.tag,
-                                          (int)tappedButtonIndex);
-                                      break;
-                              }
-                          }
-                      }];
+-(void)acceptNewIDKeyWithMessage:(TSInvalidIdentityKeyErrorMessage *)errorMessage
+{
+    DDLogInfo(@"%@ Remote Key Changed actions: Accepted new identity key", self.tag);
+    
+    [errorMessage acceptNewIdentityKey];
+    if ([errorMessage isKindOfClass:[TSInvalidIdentityKeySendingErrorMessage class]]) {
+        [self.messageSender
+         resendMessageFromKeyError:(TSInvalidIdentityKeySendingErrorMessage *)
+         errorMessage
+         success:^{
+             DDLogDebug(@"%@ Successfully resent key-error message.", self.tag);
+         }
+         failure:^(NSError *_Nonnull error) {
+             DDLogError(@"%@ Failed to resend key-error message with error:%@",
+                        self.tag,
+                        error);
+         }];
+    }
 }
 
 #pragma mark - Navigation
