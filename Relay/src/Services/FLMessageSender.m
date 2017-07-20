@@ -33,9 +33,11 @@
     // Check to see if blob is already JSON
     // Convert message body to JSON blob if necessary
     NSString *messageBlob = nil;
-    if (![NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil]) {
-        messageBlob = [CCSMJSONService blobFromMessage:message];
-        message.body = messageBlob;
+    if (message.body) {
+        if (![NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil]) {
+            messageBlob = [CCSMJSONService blobFromMessage:message];
+            message.body = messageBlob;
+        }
     }
     
     
