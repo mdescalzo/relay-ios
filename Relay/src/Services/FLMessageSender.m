@@ -30,9 +30,14 @@
         message.uniqueId = [[NSUUID UUID] UUIDString];
     }
 
-    // Convert message body to JSON blob
-    NSString *messageBlob = [CCSMJSONService blobFromMessage:message];
-    message.body = messageBlob;
+    // Check to see if blob is already JSON
+    // Convert message body to JSON blob if necessary
+    NSString *messageBlob = nil;
+    if (![NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil]) {
+        messageBlob = [CCSMJSONService blobFromMessage:message];
+        message.body = messageBlob;
+    }
+    
     
     TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[[CCSMStorage new] supermanId]];
     
