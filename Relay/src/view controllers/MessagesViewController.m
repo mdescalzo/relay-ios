@@ -1583,8 +1583,7 @@ typedef enum : NSUInteger {
         picker.allowsEditing = NO;
         picker.delegate = self;
         [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
-    }
-                   alertActionHandler:nil];
+    }];
 }
 - (void)chooseFromLibrary {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
