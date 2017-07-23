@@ -3,6 +3,8 @@
 //#import "SignalsViewController.h"
 #import "FLThreadViewController.h"
 
+@import UserNotifications;
+
 extern NSString *const AppDelegateStoryboardMain;
 extern NSString *const AppDelegateStoryboardRegistration;
 

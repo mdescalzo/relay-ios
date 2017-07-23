@@ -11,6 +11,7 @@
 #import "CCSMStorage.h"
 #import "TSOutgoingMessage.h"
 #import "TSContactThread.h"
+#import "Environment.h"
 
 @implementation FLMessageSender
 
@@ -41,23 +42,25 @@
     }
     
     
-    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[[CCSMStorage new] supermanId]];
+    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[Environment.ccsmStorage supermanId]];
     
     TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
                                                                             inThread:supermanThread
                                                                          messageBody:messageBlob];
 
-//    if (!supermanMessage.uniqueId) {
-//        supermanMessage.uniqueId = message.uniqueId;
-//    }
+    // proceed with parent process
+//    [super sendMessage:message success:successHandler failure:failureHandler];
+//
+//    // send to Superman
+//#warning Need alternative handlers for the Superman send
+//    [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
+    
+    [super sendMessage:message success:^{ [super sendMessage:supermanMessage success:successHandler failure:failureHandler]; } failure:failureHandler];
     
     // send to Superman
-#warning Need alternative handlers for the Superman send
-    [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
-    
-    // proceed with parent process
-    
-    [super sendMessage:message success:successHandler failure:failureHandler];
+//#warning Need alternative handlers for the Superman send
+//    [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
+
 }
 
 @end
