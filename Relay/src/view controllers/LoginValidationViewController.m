@@ -167,7 +167,7 @@ NSUInteger maximumValidationAttempts = 9999;
     
     // Move on to the Registration storyboard
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner startAnimating];
+        [self.spinner stopAnimating];
         self.validationButton.enabled = YES;
         self.validationButton.alpha = 1.0;
         [self performSegueWithIdentifier:targetSegue sender:self];
@@ -177,7 +177,7 @@ NSUInteger maximumValidationAttempts = 9999;
 -(void)validationFailed
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner startAnimating];
+        [self.spinner stopAnimating];
         self.validationButton.enabled = YES;
         self.validationButton.alpha = 1.0;
     });
