@@ -142,7 +142,7 @@
             NSError *error = nil;
             NSDictionary *attributes;
             NSAttributedString *string = [[NSAttributedString alloc] initWithData:data
-                                                                          options: @{ NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
+                                                                          options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
                                                                documentAttributes:&attributes
                                                                             error:&error];
             /*@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
