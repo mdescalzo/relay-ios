@@ -124,8 +124,12 @@
         [interaction isKindOfClass:[TSOutgoingMessage class]]) {
         TSMessage *message  = (TSMessage *)interaction;
         
-        adapter.messageBody = message.plainTextBody;
-        adapter.attributedMessageBody = message.attributedTextBody;
+        if (message.plainTextBody.length > 0) {
+            adapter.messageBody = message.plainTextBody;
+        }
+        if (message.attributedTextBody.string.length > 0) {
+            adapter.attributedMessageBody = message.attributedTextBody;
+        }
         
 #warning Add catch for attributedtext below
 //        NSArray *bodyArray = [self arrayFromMessageBody:message.body];
