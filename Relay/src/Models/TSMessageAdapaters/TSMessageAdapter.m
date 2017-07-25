@@ -124,45 +124,48 @@
         [interaction isKindOfClass:[TSOutgoingMessage class]]) {
         TSMessage *message  = (TSMessage *)interaction;
         
+        adapter.messageBody = message.plainTextBody;
+        adapter.attributedMessageBody = message.attributedTextBody;
+        
 #warning Add catch for attributedtext below
-        NSArray *bodyArray = [self arrayFromMessageBody:message.body];
-        NSString *plainString = [self plainBodyStringFromBlob:bodyArray];
-        NSString *htmlString = [self htmlBodyStringFromBlob:bodyArray];
-        
-        
-        if (bodyArray == nil) {
-            if (message.body) {
-                adapter.messageBody = message.body;
-                adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body
-                                                                                attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
-            }
-        } else if (htmlString.length > 0) {
-            adapter.messageBody = plainString;
-            NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
-
-            NSError *error = nil;
-//            NSDictionary *attributes;
-            
-            NSAttributedString *atrString = [[NSAttributedString alloc] initWithData:data
-                                                                          options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                                                      NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
-                                                               documentAttributes:nil
-                                                                            error:&error];
-            if (error) {
-                DDLogError(@"%@", error.description);
-            }
-
-            // hack to deal with appended newline on attributedStrings
-            NSString *lastChar = [atrString.string substringWithRange:NSMakeRange(atrString.string.length-1, 1)];
-            if ([lastChar isEqualToString:[NSString stringWithFormat:@"\n"]]) {
-                atrString = [atrString attributedSubstringFromRange:NSMakeRange(0, atrString.string.length-1)];
-            }
-            adapter.attributedMessageBody = atrString;
-        } else {
-            adapter.messageBody = plainString;
-            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:plainString
-                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
-        }
+//        NSArray *bodyArray = [self arrayFromMessageBody:message.body];
+//        NSString *plainString = [self plainBodyStringFromBlob:bodyArray];
+//        NSString *htmlString = [self htmlBodyStringFromBlob:bodyArray];
+//        
+//        
+//        if (bodyArray == nil) {
+//            if (message.body) {
+//                adapter.messageBody = message.body;
+//                adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body
+//                                                                                attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+//            }
+//        } else if (htmlString.length > 0) {
+//            adapter.messageBody = plainString;
+//            NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
+//
+//            NSError *error = nil;
+////            NSDictionary *attributes;
+//            
+//            NSAttributedString *atrString = [[NSAttributedString alloc] initWithData:data
+//                                                                          options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+//                                                                                      NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
+//                                                               documentAttributes:nil
+//                                                                            error:&error];
+//            if (error) {
+//                DDLogError(@"%@", error.description);
+//            }
+//
+//            // hack to deal with appended newline on attributedStrings
+//            NSString *lastChar = [atrString.string substringWithRange:NSMakeRange(atrString.string.length-1, 1)];
+//            if ([lastChar isEqualToString:[NSString stringWithFormat:@"\n"]]) {
+//                atrString = [atrString attributedSubstringFromRange:NSMakeRange(0, atrString.string.length-1)];
+//            }
+//            adapter.attributedMessageBody = atrString;
+//        } else {
+//            adapter.messageBody = plainString;
+//            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:plainString
+//                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+//        }
        
 
         if ([message hasAttachments]) {

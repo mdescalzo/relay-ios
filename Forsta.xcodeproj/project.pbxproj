@@ -1967,6 +1967,7 @@
 		457F3AC01D14A0F700C51351 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				7D8AD3991F26ED3900727C4A /* FLMessages */,
 				B62D53F41A23CC8B009AAF82 /* TSMessageAdapters */,
 				453D28B51D32BA5F00D523F0 /* OWSDisplayedMessage.h */,
 				453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */,
@@ -2668,6 +2669,13 @@
 				7D516F1C1EF3195100E7E15F /* FLMessageSender.m */,
 			);
 			name = Services;
+			sourceTree = "<group>";
+		};
+		7D8AD3991F26ED3900727C4A /* FLMessages */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = FLMessages;
 			sourceTree = "<group>";
 		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
