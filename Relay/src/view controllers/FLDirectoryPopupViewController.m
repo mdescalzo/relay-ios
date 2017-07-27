@@ -160,7 +160,7 @@
     if (_content == nil) {
         
         // Sort the content by last name
-        _content = [[self.contactsManager signalContacts] sortedArrayUsingComparator: ^(FLContact *a1, FLContact *a2) {
+        _content = [[self.contactsManager allValidContacts] sortedArrayUsingComparator: ^(FLContact *a1, FLContact *a2) {
             return [a1.lastName compare:a2.lastName];
         }];
     }
