@@ -54,7 +54,7 @@
         NSMutableArray *tmpArray = [NSMutableArray new];
         
 //        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
-        NSDictionary *usersBlob = [Environment.ccsmStorage getUsers];
+        NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
 //        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
         
         for (NSString *key in usersBlob.allKeys) {
