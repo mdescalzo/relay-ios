@@ -58,24 +58,24 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Initializing logger
+    CategorizingLogger *logger = [CategorizingLogger categorizingLogger];
+    [logger addLoggingCallback:^(NSString *category, id details, NSUInteger index){
+    }];
+    
+    // Setting up environment
+    [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
+    
     // Initialize crash reporting
     [Fabric with:@[ [Crashlytics class] ]];
-    if ([Environment.ccsmStorage getUserName] != nil) {
-        [CrashlyticsKit setUserName:[Environment.ccsmStorage getUserName]];
+    if ([[Environment getCurrent].ccsmStorage getUserName] != nil) {
+        [CrashlyticsKit setUserName:[[Environment getCurrent].ccsmStorage getUserName]];
     }
     
     // Navbar background color iOS10 bug workaround
     [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
     [UINavigationBar appearance].barTintColor = [UIColor blackColor];
     
-    // Initializing logger
-    CategorizingLogger *logger = [CategorizingLogger categorizingLogger];
-    [logger addLoggingCallback:^(NSString *category, id details, NSUInteger index){
-    }];
-
-    // Setting up environment
-    [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
-
     [UIUtil applySignalAppearence];
     [[PushManager sharedManager] registerPushKitNotificationFuture];
 
@@ -91,7 +91,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     BOOL loggingIsEnabled;
 
     // Set SupermanID
-    [[Environment ccsmStorage] setSupermanId:FLSupermanID];
+    [[Environment getCurrent].ccsmStorage setSupermanId:FLSupermanID];
     
 #ifdef DEBUG
     // Specified at Product -> Scheme -> Edit Scheme -> Test -> Arguments -> Environment to avoid things like
@@ -114,7 +114,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     __block UIStoryboard *storyboard;
     
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
     {
         [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
@@ -291,7 +291,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     
 //    __block UIStoryboard *storyboard;
 //    
-//    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+//    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
 //    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
 //    {
 //        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
@@ -398,16 +398,16 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 -(void)refreshUsersStore
 {
-    NSMutableDictionary * users = [[Environment.ccsmStorage getUsers] mutableCopy];
+    NSMutableDictionary * users = [[[Environment getCurrent].ccsmStorage getUsers] mutableCopy];
     if (!users) {
         users = [NSMutableDictionary new];
     }
     
-    NSString *orgUrl = [[Environment.ccsmStorage getUserInfo] objectForKey:@"org"];
+    NSString *orgUrl = [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"];
     [self.ccsmCommManager getThing:orgUrl
                            success:^(NSDictionary *org){
                                DDLogInfo(@"Retrieved org info after session token refresh");
-                               [Environment.ccsmStorage setOrgInfo:org];
+                               [[Environment getCurrent].ccsmStorage setOrgInfo:org];
                            }
                            failure:^(NSError *err){
                                DDLogError(@"Failed to retrieve org info after session token refresh");
@@ -417,7 +417,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
                                  synchronous:NO
                                      success:^{
                                          DDLogInfo(@"Retrieved all users after session token refresh");
-                                         [Environment.ccsmStorage setUsers:users];
+                                         [[Environment getCurrent].ccsmStorage setUsers:users];
                                      }
                                      failure:^(NSError *err){
                                          DDLogError(@"Failed to retrieve all users after session token refresh");
