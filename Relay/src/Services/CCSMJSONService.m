@@ -65,7 +65,7 @@
     NSString *type = @"ordinary";
     
     
-    NSDictionary *senderDict = [Environment.ccsmStorage getUserInfo];
+    NSDictionary *senderDict = [[Environment getCurrent].ccsmStorage getUserInfo];
     NSArray *tagsArray = [senderDict objectForKey:@"tags"];
     NSString *tagId;
     for (NSDictionary *tag in tagsArray) {
@@ -74,12 +74,12 @@
             break;
         }
     }
-    NSDictionary *orgDict = [Environment.ccsmStorage getOrgInfo];
+    NSDictionary *orgDict = [[Environment getCurrent].ccsmStorage getOrgInfo];
     NSString *orgId = [orgDict objectForKey:@"id"];
 
     
     NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
-                              @"tagPresentation" : [NSString stringWithFormat:@"%@", [Environment.ccsmStorage getUserName]],
+                              @"tagPresentation" : [NSString stringWithFormat:@"%@", [[Environment getCurrent].ccsmStorage getUserName]],
                               @"userId" :  [senderDict objectForKey:@"id"],
 //                              @"resolvedUser" : @{
 //                                      @"orgId" : (orgId ? orgId : @""),
