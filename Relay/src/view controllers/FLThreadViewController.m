@@ -167,7 +167,10 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [[Environment getCurrent] setForstaViewController:self];
 }
 
-
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -182,7 +185,12 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
                                              selector:@selector(yapDatabaseModified:)
                                                  name:TSUIDatabaseConnectionDidUpdateNotification
                                                object:nil];
-        
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(tagsRefreshed)
+                                                 name:FLCCSMTagsUpdated
+                                               object:nil];
+    
     [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
          [self.tableView reloadData];
      }
@@ -1338,6 +1346,12 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     [self.tableView reloadData];
 }
 
+-(void)tagsRefreshed
+{
+    // set to nil, it will rebuild through lazy instantiation.
+    self.userTags = nil;
+}
+
 #pragma mark - Button actions
 -(IBAction)onLogoTap:(id)sender
 {
@@ -1535,12 +1549,12 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 
 -(NSString *)userId
 {
-    return [[Environment.ccsmStorage getUserInfo] objectForKey:kUserIDKey];
+    return [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:kUserIDKey];
 }
 
 -(NSString *)userDispalyName
 {
-    return [NSString stringWithFormat:@"%@ %@", [[Environment.ccsmStorage getUserInfo] objectForKey:@"first_name"],[[Environment.ccsmStorage getUserInfo] objectForKey:@"last_name"]];
+    return [NSString stringWithFormat:@"%@ %@", [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"first_name"],[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"last_name"]];
 }
 
 -(NSMutableArray *)taggedRecipients
