@@ -414,6 +414,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
                            }];
     [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
                                   collection:users
+                                 synchronous:NO
                                      success:^{
                                          DDLogInfo(@"Retrieved all users after session token refresh");
                                          [Environment.ccsmStorage setUsers:users];
