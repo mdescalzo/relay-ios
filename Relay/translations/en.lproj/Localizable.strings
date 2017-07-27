@@ -844,3 +844,16 @@
 
 /* Alert */
 "ALERT" = "Alert";
+
+/* action sheet item to open native mail app */
+"SHARE_ACTION_MAIL" = "Mail";
+
+/* action sheet item to open native messages app */
+"SHARE_ACTION_MESSAGE" = "Message";
+
+/* action sheet item */
+"SHARE_ACTION_TWEET" = "Twitter";
+
+/* Invite contacts */
+"SHARE_INVITE_USERS" = "Invite contacts";
+
