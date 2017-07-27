@@ -43,8 +43,8 @@
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-             [Environment.ccsmStorage setOrgName:orgName];
-             [Environment.ccsmStorage setUserName:userName];
+             [[Environment getCurrent].ccsmStorage setOrgName:orgName];
+             [[Environment getCurrent].ccsmStorage setUserName:userName];
              DDLogDebug(@"login result's msg is: %@", [result objectForKey:@"msg"]);
              successBlock();
          }
@@ -62,8 +62,8 @@
             success:(void (^)())successBlock
             failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *orgName = [Environment.ccsmStorage getOrgName];
-    NSString *userName = [Environment.ccsmStorage getUserName];
+    NSString *orgName = [[Environment getCurrent].ccsmStorage getOrgName];
+    NSString *userName = [[Environment getCurrent].ccsmStorage getUserName];
     NSString * urlString = [NSString stringWithFormat:@"%@/v1/login/authtoken/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -89,8 +89,8 @@
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-             [Environment.ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-             [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
+             [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
@@ -108,7 +108,7 @@
 - (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
                            failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -135,8 +135,8 @@
         NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                options:0
                                                                  error:NULL];
-        [Environment.ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-        [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+        [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
+        [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
         // TODO: fetch/sync other goodies, like all of the the user's potential :^)
         successBlock();
     }
@@ -152,7 +152,7 @@
 - (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                            failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -179,8 +179,8 @@
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-             [Environment.ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-             [Environment.ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
+             [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
@@ -255,7 +255,7 @@
         success:(void (^)(NSDictionary *result))successBlock
         failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -296,7 +296,7 @@
         success:(void (^)(NSDictionary *result))successBlock
         failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -325,7 +325,7 @@
          failure:(void (^)(NSError *error))failureBlock;
 {
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSString *sessionToken = [Environment.ccsmStorage getSessionToken];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -364,7 +364,7 @@
                  synchronous:YES
                      success:^{
                          DDLogDebug(@"Refreshed all users.");
-                         [Environment.ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
+                         [[Environment getCurrent].ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
                          [self notifyOfUsersRefresh];
 #warning Tags notification needs to leave here when group tags are implemented
                          [self notifyOfTagsRefresh];
@@ -384,7 +384,7 @@
                  synchronous:YES
                      success:^{
                          DDLogDebug(@"Refreshed all tags.");
-                         [Environment.ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
+                         [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
                          [self notifyOfTagsRefresh];
                      }
                      failure:^(NSError *err){
