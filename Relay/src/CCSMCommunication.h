@@ -11,6 +11,10 @@
 
 @interface CCSMCommManager : NSObject
 
+-(void)refreshCCSMData;
+-(void)refreshCCSMUsers;
+-(void)refreshCCSMtags;
+
 - (void)requestLogin:(NSString *)userName
              orgName:(NSString *)orgName
              success:(void (^)())successBlock
@@ -21,13 +25,14 @@
             failure:(void (^)(NSError *error))failureBlock;
 
 - (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
-                           failure:(void (^)(NSError *error))failureBlock;
+                                       failure:(void (^)(NSError *error))failureBlock;
 
 - (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
                                       failure:(void (^)(NSError *))failureBlock;
 
 - (void)updateAllTheThings:(NSString *)urlString
                 collection:(NSMutableDictionary *)collection
+               synchronous:(BOOL)sync
                    success:(void (^)())successBlock
                    failure:(void (^)(NSError *error))failureBlock;
 
