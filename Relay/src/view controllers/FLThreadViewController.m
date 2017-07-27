@@ -230,12 +230,29 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedUserNotification:) name:FLUserSelectedFromDirectory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markAllRead) name:FLMarkAllReadNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(selectedUserNotification:)
+                                                 name:FLUserSelectedFromPopoverDirectoryNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(markAllRead)
+                                                 name:FLMarkAllReadNotification
+                                               object:nil];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:FLUserSelectedFromPopoverDirectoryNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:FLMarkAllReadNotification
+                                                  object:nil];
+    [super viewDidDisappear:animated];
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
