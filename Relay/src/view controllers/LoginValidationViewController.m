@@ -139,6 +139,7 @@ NSUInteger maximumValidationAttempts = 9999;
                            }];
     [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
                                   collection:users
+                                 synchronous:NO
                                      success:^{
                                          NSLog(@"Retrieved all users after login validation");
                                          [self.ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
@@ -146,17 +147,6 @@ NSUInteger maximumValidationAttempts = 9999;
                                      failure:^(NSError *err){
                                          NSLog(@"Failed to retrieve all users after login validation");
                                      }];
-#warning For future implementation.
-//    [self.ccsmCommManager updateAllTheThings:@"https://ccsm-dev-api.forsta.io/v1/tag/"
-//                                  collection:tags
-//                                     success:^{
-//                                         NSLog(@"Retrieved all tags after login validation");
-//                                         [self.ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
-//                                     }
-//                                     failure:^(NSError *err){
-//                                         NSLog(@"Failed to retrieve all tags after login validation");
-//                                     }];
-
     
     // Check if registered and proceed to next storyboard accordingly
     NSString *targetSegue = nil;
