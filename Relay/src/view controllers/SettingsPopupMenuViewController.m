@@ -9,6 +9,7 @@
 #import "SettingsPopupMenuViewController.h"
 #import "DirectoryTableViewController.h"
 #import "FLInvitationService.h"
+#import "Environment.h"
 
 #ifdef DEVELOPMENT
 #define kNumberOfSettings 6
@@ -160,9 +161,15 @@ CGFloat const kRowHeight = 40;
     switch (indexPath.row) {
         case kInvitationIndex :  //  Invite people
         {
+            // dismiss self
             [self dismissViewControllerAnimated:YES completion:nil];
-            FLInvitationService *inviter = [FLInvitationService new];
-            [inviter inviteUsers];
+            
+            // get top controller
+            UINavigationController *navController = (UINavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+            UIViewController *vc = [navController topViewController];
+
+            // Call service to make the invitation
+            [[[Environment getCurrent] invitationService] inviteUsersFrom:vc];
         }
             break;
         case kDirectoryIndex:  //         Directory selected
