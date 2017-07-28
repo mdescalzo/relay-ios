@@ -738,7 +738,7 @@
 
 /* No comment provided by engineer. */
 /* "SMS_INVITE_BODY" = "I'm inviting you to install Forsta! Here is the link:"; */
-"SMS_INVITE_BODY" = "Please download the Forsta secure messaging app for encrypted messaging.";
+"SMS_INVITE_BODY" = "Chat securely with Forsta's messaging App. Encrypted messaging for today's professionals.";
 
 /* Alert body after verifying privacy with {{other user's name}} */
 "SUCCESSFUL_VERIFICATION_DESCRIPTION" = "Your safety numbers have been verified. You can be confident your communication with %@ is private.";
@@ -856,4 +856,7 @@
 
 /* Invite contacts */
 "SHARE_INVITE_USERS" = "Invite Contacts";
+
+/* Mail invite subject */
+"SHARE_INVITE_SUBJECT" = "Forsta | You've been invited.";
 
