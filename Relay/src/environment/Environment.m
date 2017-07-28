@@ -240,4 +240,12 @@ static Environment *environment = nil;
     exit(0);
 }
 
+-(FLInvitationService *)invitationService
+{
+    if (_invitationService == nil) {
+        _invitationService = [FLInvitationService new];
+    }
+    return _invitationService;
+}
+
 @end
