@@ -10,8 +10,12 @@
 @import MessageUI;
 @import Social;
 
-@interface FLInvitationService : NSObject <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
+@interface FLInvitationService : NSObject 
 
--(void)inviteUsers;
+-(void)inviteUsersFrom:(nonnull UIViewController *)viewController;
+
+-(void)inviteViaSMSFrom:(nonnull UIViewController *)viewController to:(nullable NSArray *)recipients;
+-(void)inviteViaMailFrom:(nonnull UIViewController *)viewController to:(nullable NSArray *)recipients;
+-(void)inviteViaTwitterFrom:(nonnull UIViewController *)viewController to:(nullable NSArray *)recipients;
 
 @end
