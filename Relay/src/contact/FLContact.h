@@ -10,6 +10,7 @@
 
 @interface FLContact : Contact
 
+@property (nonatomic, readonly) NSString *fullName;
 @property (nonatomic, strong) NSString *tagPresentation;
 @property (nonatomic, strong) NSString *tagID;
 @property (nonatomic, strong) NSString *userID;
