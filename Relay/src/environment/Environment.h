@@ -6,6 +6,7 @@
 #import "TSGroupModel.h"
 #import "TSStorageHeaders.h"
 #import "CCSMStorage.h"
+#import "CCSMCommunication.h"
 #import "FLMessageSender.h"
 #import "FLContactsManager.h"
 
@@ -76,6 +77,8 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
+@property (nonatomic, strong) CCSMStorage *ccsmStorage;
+@property (nonatomic, strong) CCSMCommManager *ccsmCommManager;
 
 @property (nonatomic, readonly) FLThreadViewController *forstaViewController;
 //@property (nonatomic, readonly) SignalsViewController *signalsViewController;
@@ -94,7 +97,6 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (PhoneManager *)phoneManager;
 
 + (PropertyListPreferences *)preferences;
-+ (CCSMStorage *)ccsmStorage;
 
 + (BOOL)isRedPhoneRegistered;
 + (void)resetAppData;

@@ -163,10 +163,6 @@ static Environment *environment = nil;
     return [PropertyListPreferences new];
 }
 
-+ (CCSMStorage *)ccsmStorage {
-    return [CCSMStorage new];
-}
-
 -(void)setForstaViewController:(FLThreadViewController *)forstaViewController
 {
     _forstaViewController = forstaViewController;
@@ -238,6 +234,22 @@ static Environment *environment = nil;
     [Environment.preferences clear];
     [DebugLogger.sharedLogger wipeLogs];
     exit(0);
+}
+
+-(CCSMStorage *)ccsmStorage
+{
+    if (_ccsmStorage == nil) {
+        _ccsmStorage = [CCSMStorage new];
+    }
+    return _ccsmStorage;
+}
+
+-(CCSMCommManager *)ccsmCommManager
+{
+    if (_ccsmCommManager == nil) {
+        _ccsmCommManager = [CCSMCommManager new];
+    }
+    return _ccsmCommManager;
 }
 
 @end
