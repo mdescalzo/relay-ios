@@ -59,7 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (name.length == 0 && [thread isKindOfClass:[TSGroupThread class]]) {
         name = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
     }
-    UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager];
+    UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
+//    UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager];
     self.threadId = thread.uniqueId;
     
     NSString *snippetText;

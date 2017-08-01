@@ -25,8 +25,6 @@
 		453D28B71D32BA5F00D523F0 /* OWSDisplayedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */; };
 		453D28BA1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B91D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m */; };
 		453D28BB1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B91D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m */; };
-		45666EC61D99483D008FE134 /* OWSAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC51D99483D008FE134 /* OWSAvatarBuilder.m */; };
-		45666EC91D994C0D008FE134 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC81D994C0D008FE134 /* OWSGroupAvatarBuilder.m */; };
 		45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F551D9B2827008FE134 /* OWSScrubbingLogFormatter.m */; };
 		45666F581D9B2880008FE134 /* OWSScrubbingLogFormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F571D9B2880008FE134 /* OWSScrubbingLogFormatterTest.m */; };
 		45666F761D9BFE00008FE134 /* OWS100RemoveTSRecipientsMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F751D9BFE00008FE134 /* OWS100RemoveTSRecipientsMigration.m */; };
@@ -36,8 +34,6 @@
 		45843D1F1D2236B30013E85A /* OWSContactsSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */; };
 		45843D201D2236B30013E85A /* OWSContactsSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */; };
 		45843D221D223BA10013E85A /* OWSContactsSearcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 45843D211D223BA10013E85A /* OWSContactsSearcherTest.m */; };
-		45855F371D9498A40084F340 /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45855F361D9498A40084F340 /* OWSContactAvatarBuilder.m */; };
-		45855F381D9498A40084F340 /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45855F361D9498A40084F340 /* OWSContactAvatarBuilder.m */; };
 		458967111DC117CC00E9DD21 /* AccountManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458967101DC117CC00E9DD21 /* AccountManagerTest.swift */; };
 		458E38311D6682450094BD24 /* OWSQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38301D6682450094BD24 /* OWSQRCodeScanningViewController.m */; };
 		458E38341D66873D0094BD24 /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
@@ -252,7 +248,6 @@
 		7D4A3A071F1693930023C29B /* AnonymousOccurrenceLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C218170B33006006FC /* AnonymousOccurrenceLogger.m */; };
 		7D4A3A081F1693930023C29B /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
-		7D4A3A0A1F1693930023C29B /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC81D994C0D008FE134 /* OWSGroupAvatarBuilder.m */; };
 		7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E118170B33006006FC /* Conversions.m */; };
 		7D4A3A0C1F1693930023C29B /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A418170B33006006FC /* InitiateSignal.pb.m */; settings = {COMPILER_FLAGS = "-w"; }; };
@@ -272,13 +267,11 @@
 		7D4A3A1B1F1693930023C29B /* AudioRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B61D18BBEC6D00F073E5 /* AudioRouter.m */; };
 		7D4A3A1C1F1693930023C29B /* AudioSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EB18BBEC1A00F073E5 /* AudioSocket.m */; };
 		7D4A3A1D1F1693930023C29B /* ShowGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */; };
-		7D4A3A1E1F1693930023C29B /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45855F361D9498A40084F340 /* OWSContactAvatarBuilder.m */; };
 		7D4A3A1F1F1693930023C29B /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
 		7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C018170B33006006FC /* AnonymousConditionLogger.m */; };
 		7D4A3A221F1693930023C29B /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
 		7D4A3A231F1693930023C29B /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
-		7D4A3A241F1693930023C29B /* OWSAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC51D99483D008FE134 /* OWSAvatarBuilder.m */; };
 		7D4A3A251F1693930023C29B /* EvpSymetricUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632618F70C0700D4A43F /* EvpSymetricUtil.m */; };
 		7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE179921EDF37E900327B2B /* CCSMCommunication.m */; };
 		7D4A3A271F1693930023C29B /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
@@ -474,6 +467,18 @@
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
+		7D7DA5871F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirecotryCell.m */; };
+		7D7DA5881F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirecotryCell.m */; };
+		7D7DA5891F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirecotryCell.m */; };
+		7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58B1F2FBA66007FE6E4 /* OWSAvatarBuilder.m */; };
+		7D7DA5911F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58B1F2FBA66007FE6E4 /* OWSAvatarBuilder.m */; };
+		7D7DA5921F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58B1F2FBA66007FE6E4 /* OWSAvatarBuilder.m */; };
+		7D7DA5931F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58D1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m */; };
+		7D7DA5941F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58D1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m */; };
+		7D7DA5951F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58D1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m */; };
+		7D7DA5961F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */; };
+		7D7DA5971F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */; };
+		7D7DA5981F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
 		7DB55A9A1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
@@ -554,7 +559,6 @@
 		7DCFFDAE1F0EE4490003CD95 /* AnonymousOccurrenceLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C218170B33006006FC /* AnonymousOccurrenceLogger.m */; };
 		7DCFFDAF1F0EE4490003CD95 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		7DCFFDB01F0EE4490003CD95 /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
-		7DCFFDB11F0EE4490003CD95 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC81D994C0D008FE134 /* OWSGroupAvatarBuilder.m */; };
 		7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E118170B33006006FC /* Conversions.m */; };
 		7DCFFDB31F0EE4490003CD95 /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		7DCFFDB41F0EE4490003CD95 /* InitiateSignal.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A418170B33006006FC /* InitiateSignal.pb.m */; settings = {COMPILER_FLAGS = "-w"; }; };
@@ -574,13 +578,11 @@
 		7DCFFDC21F0EE4490003CD95 /* AudioRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B61D18BBEC6D00F073E5 /* AudioRouter.m */; };
 		7DCFFDC31F0EE4490003CD95 /* AudioSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EB18BBEC1A00F073E5 /* AudioSocket.m */; };
 		7DCFFDC41F0EE4490003CD95 /* ShowGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */; };
-		7DCFFDC51F0EE4490003CD95 /* OWSContactAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45855F361D9498A40084F340 /* OWSContactAvatarBuilder.m */; };
 		7DCFFDC61F0EE4490003CD95 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
 		7DCFFDC71F0EE4490003CD95 /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		7DCFFDC81F0EE4490003CD95 /* AnonymousConditionLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C018170B33006006FC /* AnonymousConditionLogger.m */; };
 		7DCFFDC91F0EE4490003CD95 /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
 		7DCFFDCA1F0EE4490003CD95 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
-		7DCFFDCB1F0EE4490003CD95 /* OWSAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666EC51D99483D008FE134 /* OWSAvatarBuilder.m */; };
 		7DCFFDCC1F0EE4490003CD95 /* EvpSymetricUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632618F70C0700D4A43F /* EvpSymetricUtil.m */; };
 		7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE179921EDF37E900327B2B /* CCSMCommunication.m */; };
 		7DCFFDCE1F0EE4490003CD95 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
@@ -1201,10 +1203,6 @@
 		453D28B81D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSMessagesBubblesSizeCalculator.h; sourceTree = "<group>"; };
 		453D28B91D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSMessagesBubblesSizeCalculator.m; sourceTree = "<group>"; };
 		454B35071D08EED80026D658 /* mk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = mk; path = translations/mk.lproj/Localizable.strings; sourceTree = "<group>"; };
-		45666EC41D99483D008FE134 /* OWSAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSAvatarBuilder.h; sourceTree = "<group>"; };
-		45666EC51D99483D008FE134 /* OWSAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSAvatarBuilder.m; sourceTree = "<group>"; };
-		45666EC71D994C0D008FE134 /* OWSGroupAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSGroupAvatarBuilder.h; sourceTree = "<group>"; };
-		45666EC81D994C0D008FE134 /* OWSGroupAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSGroupAvatarBuilder.m; sourceTree = "<group>"; };
 		45666ECE1D995B94008FE134 /* OWSMessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSMessageData.h; sourceTree = "<group>"; };
 		45666F541D9B2827008FE134 /* OWSScrubbingLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSScrubbingLogFormatter.h; sourceTree = "<group>"; };
 		45666F551D9B2827008FE134 /* OWSScrubbingLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSScrubbingLogFormatter.m; sourceTree = "<group>"; };
@@ -1218,8 +1216,6 @@
 		45843D1D1D2236B30013E85A /* OWSContactsSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSContactsSearcher.h; sourceTree = "<group>"; };
 		45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSContactsSearcher.m; sourceTree = "<group>"; };
 		45843D211D223BA10013E85A /* OWSContactsSearcherTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSContactsSearcherTest.m; sourceTree = "<group>"; };
-		45855F351D9498A40084F340 /* OWSContactAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSContactAvatarBuilder.h; sourceTree = "<group>"; };
-		45855F361D9498A40084F340 /* OWSContactAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSContactAvatarBuilder.m; sourceTree = "<group>"; };
 		4589670F1DC117CC00E9DD21 /* SignalTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SignalTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		458967101DC117CC00E9DD21 /* AccountManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountManagerTest.swift; path = Models/AccountManagerTest.swift; sourceTree = "<group>"; };
 		458E382F1D6682450094BD24 /* OWSQRCodeScanningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSQRCodeScanningViewController.h; sourceTree = "<group>"; };
@@ -1498,6 +1494,14 @@
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
 		7D516F221EF32B6000E7E15F /* CCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCSMJSONService.m; path = Services/CCSMJSONService.m; sourceTree = "<group>"; };
+		7D7DA5851F2F8797007FE6E4 /* FLDirecotryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLDirecotryCell.m; path = "Relay/src/view controllers/FLDirecotryCell.m"; sourceTree = SOURCE_ROOT; };
+		7D7DA5861F2F8797007FE6E4 /* FLDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLDirectoryCell.h; path = "Relay/src/view controllers/FLDirectoryCell.h"; sourceTree = SOURCE_ROOT; };
+		7D7DA58A1F2FBA66007FE6E4 /* OWSAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSAvatarBuilder.h; sourceTree = "<group>"; };
+		7D7DA58B1F2FBA66007FE6E4 /* OWSAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSAvatarBuilder.m; sourceTree = "<group>"; };
+		7D7DA58C1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSContactAvatarBuilder.h; sourceTree = "<group>"; };
+		7D7DA58D1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSContactAvatarBuilder.m; sourceTree = "<group>"; };
+		7D7DA58E1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSGroupAvatarBuilder.h; sourceTree = "<group>"; };
+		7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSGroupAvatarBuilder.m; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
 		7DB55A981F2A7F10001D3058 /* FLInvitationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLInvitationService.h; sourceTree = "<group>"; };
@@ -1973,6 +1977,12 @@
 			isa = PBXGroup;
 			children = (
 				B62D53F41A23CC8B009AAF82 /* TSMessageAdapters */,
+				7D7DA58A1F2FBA66007FE6E4 /* OWSAvatarBuilder.h */,
+				7D7DA58B1F2FBA66007FE6E4 /* OWSAvatarBuilder.m */,
+				7D7DA58C1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.h */,
+				7D7DA58D1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m */,
+				7D7DA58E1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.h */,
+				7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */,
 				453D28B51D32BA5F00D523F0 /* OWSDisplayedMessage.h */,
 				453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */,
 				45C681B51D305A580050903A /* OWSCall.h */,
@@ -1981,12 +1991,6 @@
 				453D28B91D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m */,
 				458E38351D668EBF0094BD24 /* OWSDeviceProvisioningURLParser.h */,
 				458E38361D668EBF0094BD24 /* OWSDeviceProvisioningURLParser.m */,
-				45855F351D9498A40084F340 /* OWSContactAvatarBuilder.h */,
-				45855F361D9498A40084F340 /* OWSContactAvatarBuilder.m */,
-				45666EC41D99483D008FE134 /* OWSAvatarBuilder.h */,
-				45666EC51D99483D008FE134 /* OWSAvatarBuilder.m */,
-				45666EC71D994C0D008FE134 /* OWSGroupAvatarBuilder.h */,
-				45666EC81D994C0D008FE134 /* OWSGroupAvatarBuilder.m */,
 				45CD81EE1DC030E7004C9430 /* AccountManager.swift */,
 			);
 			path = Models;
@@ -2595,6 +2599,8 @@
 		76EB052B18170B33006006FC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7D7DA5861F2F8797007FE6E4 /* FLDirectoryCell.h */,
+				7D7DA5851F2F8797007FE6E4 /* FLDirecotryCell.m */,
 				45B201751DAECBFE00C461E0 /* HighlightableLabel.swift */,
 				45C681C11D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.h */,
 				45C681C21D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m */,
@@ -4077,7 +4083,6 @@
 				7D4A3A071F1693930023C29B /* AnonymousOccurrenceLogger.m in Sources */,
 				7D4A3A081F1693930023C29B /* OWSExpirationTimerView.m in Sources */,
 				7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */,
-				7D4A3A0A1F1693930023C29B /* OWSGroupAvatarBuilder.m in Sources */,
 				7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */,
 				7D4A3A0C1F1693930023C29B /* InCallViewController.m in Sources */,
 				7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */,
@@ -4097,13 +4102,11 @@
 				7D4A3A1B1F1693930023C29B /* AudioRouter.m in Sources */,
 				7D4A3A1C1F1693930023C29B /* AudioSocket.m in Sources */,
 				7D4A3A1D1F1693930023C29B /* ShowGroupMembersViewController.m in Sources */,
-				7D4A3A1E1F1693930023C29B /* OWSContactAvatarBuilder.m in Sources */,
 				7D4A3A1F1F1693930023C29B /* FLDomainViewController.m in Sources */,
 				7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */,
 				7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */,
 				7D4A3A221F1693930023C29B /* DhPacket.m in Sources */,
 				7D4A3A231F1693930023C29B /* SettingsTableViewController.m in Sources */,
-				7D4A3A241F1693930023C29B /* OWSAvatarBuilder.m in Sources */,
 				7D4A3A251F1693930023C29B /* EvpSymetricUtil.m in Sources */,
 				7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */,
 				7D4A3A271F1693930023C29B /* ContactTableViewCell.m in Sources */,
@@ -4174,14 +4177,17 @@
 				7D4A3A671F1693930023C29B /* CallConnectResult.m in Sources */,
 				7D4A3A681F1693930023C29B /* NewGroupViewController.m in Sources */,
 				7D4A3A691F1693930023C29B /* HttpSocket.m in Sources */,
+				7D7DA5871F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */,
 				7D4A3A6A1F1693930023C29B /* OWS100RemoveTSRecipientsMigration.m in Sources */,
 				7D4A3A6B1F1693930023C29B /* CallAudioManager.m in Sources */,
 				7D4A3A6C1F1693930023C29B /* UIDevice+TSHardwareVersion.m in Sources */,
 				7D4A3A6D1F1693930023C29B /* AppDelegate.m in Sources */,
+				7D7DA5961F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */,
 				7D4A3A6E1F1693930023C29B /* JSQMediaItem+OWS.m in Sources */,
 				7D4A3A6F1F1693930023C29B /* ZrtpHandshakeSocket.m in Sources */,
 				7D4A3A701F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.m in Sources */,
 				7D4A3A711F1693930023C29B /* HttpResponse.m in Sources */,
+				7D7DA5931F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m in Sources */,
 				7D4A3A721F1693930023C29B /* JitterQueue.m in Sources */,
 				7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */,
 				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
@@ -4190,6 +4196,7 @@
 				7D4A3A771F1693930023C29B /* iRate.m in Sources */,
 				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
+				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
 				7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */,
 				7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */,
@@ -4303,7 +4310,6 @@
 				7DCFFDAE1F0EE4490003CD95 /* AnonymousOccurrenceLogger.m in Sources */,
 				7DCFFDAF1F0EE4490003CD95 /* OWSExpirationTimerView.m in Sources */,
 				7DCFFDB01F0EE4490003CD95 /* NotificationsManager.m in Sources */,
-				7DCFFDB11F0EE4490003CD95 /* OWSGroupAvatarBuilder.m in Sources */,
 				7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */,
 				7DCFFDB31F0EE4490003CD95 /* InCallViewController.m in Sources */,
 				7DCFFDB41F0EE4490003CD95 /* InitiateSignal.pb.m in Sources */,
@@ -4323,13 +4329,11 @@
 				7DCFFDC21F0EE4490003CD95 /* AudioRouter.m in Sources */,
 				7DCFFDC31F0EE4490003CD95 /* AudioSocket.m in Sources */,
 				7DCFFDC41F0EE4490003CD95 /* ShowGroupMembersViewController.m in Sources */,
-				7DCFFDC51F0EE4490003CD95 /* OWSContactAvatarBuilder.m in Sources */,
 				7DCFFDC61F0EE4490003CD95 /* FLDomainViewController.m in Sources */,
 				7DCFFDC71F0EE4490003CD95 /* FingerprintViewController.m in Sources */,
 				7DCFFDC81F0EE4490003CD95 /* AnonymousConditionLogger.m in Sources */,
 				7DCFFDC91F0EE4490003CD95 /* DhPacket.m in Sources */,
 				7DCFFDCA1F0EE4490003CD95 /* SettingsTableViewController.m in Sources */,
-				7DCFFDCB1F0EE4490003CD95 /* OWSAvatarBuilder.m in Sources */,
 				7DCFFDCC1F0EE4490003CD95 /* EvpSymetricUtil.m in Sources */,
 				7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */,
 				7DCFFDCE1F0EE4490003CD95 /* ContactTableViewCell.m in Sources */,
@@ -4400,14 +4404,17 @@
 				7DCFFE0E1F0EE4490003CD95 /* CallConnectResult.m in Sources */,
 				7DCFFE0F1F0EE4490003CD95 /* NewGroupViewController.m in Sources */,
 				7DCFFE101F0EE4490003CD95 /* HttpSocket.m in Sources */,
+				7D7DA5881F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */,
 				7DCFFE111F0EE4490003CD95 /* OWS100RemoveTSRecipientsMigration.m in Sources */,
 				7DCFFE121F0EE4490003CD95 /* CallAudioManager.m in Sources */,
 				7DCFFE131F0EE4490003CD95 /* UIDevice+TSHardwareVersion.m in Sources */,
 				7DCFFE141F0EE4490003CD95 /* AppDelegate.m in Sources */,
+				7D7DA5971F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */,
 				7DCFFE151F0EE4490003CD95 /* JSQMediaItem+OWS.m in Sources */,
 				7DCFFE161F0EE4490003CD95 /* ZrtpHandshakeSocket.m in Sources */,
 				7DCFFE171F0EE4490003CD95 /* OWSOutgoingMessageCollectionViewCell.m in Sources */,
 				7DCFFE181F0EE4490003CD95 /* HttpResponse.m in Sources */,
+				7D7DA5941F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m in Sources */,
 				7DCFFE191F0EE4490003CD95 /* JitterQueue.m in Sources */,
 				7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */,
 				7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */,
@@ -4416,6 +4423,7 @@
 				7DCFFE1E1F0EE4490003CD95 /* iRate.m in Sources */,
 				7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */,
 				7DCFFE201F0EE4490003CD95 /* FutureUtil.m in Sources */,
+				7D7DA5911F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7DCFFE211F0EE4490003CD95 /* PrivacySettingsTableViewController.m in Sources */,
 				7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */,
 				7DCFFE231F0EE4490003CD95 /* CountryCodeViewController.m in Sources */,
@@ -4528,7 +4536,6 @@
 				76EB061618170B33006006FC /* AnonymousOccurrenceLogger.m in Sources */,
 				450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B6258B331C29E2E60014138E /* NotificationsManager.m in Sources */,
-				45666EC91D994C0D008FE134 /* OWSGroupAvatarBuilder.m in Sources */,
 				76EB063018170B33006006FC /* Conversions.m in Sources */,
 				76EB065618170B34006006FC /* InCallViewController.m in Sources */,
 				76EB05FE18170B33006006FC /* InitiateSignal.pb.m in Sources */,
@@ -4548,14 +4555,12 @@
 				E197B61E18BBEC6D00F073E5 /* AudioRouter.m in Sources */,
 				E197B60D18BBEC1A00F073E5 /* AudioSocket.m in Sources */,
 				A5D0699B1A50E9CB004CB540 /* ShowGroupMembersViewController.m in Sources */,
-				45855F371D9498A40084F340 /* OWSContactAvatarBuilder.m in Sources */,
 				7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */,
 				7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */,
 				FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */,
 				76EB061418170B33006006FC /* AnonymousConditionLogger.m in Sources */,
 				76EB05C018170B33006006FC /* DhPacket.m in Sources */,
 				FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */,
-				45666EC61D99483D008FE134 /* OWSAvatarBuilder.m in Sources */,
 				7038632818F70C0700D4A43F /* EvpSymetricUtil.m in Sources */,
 				DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */,
 				76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */,
@@ -4626,14 +4631,17 @@
 				76EB05F418170B33006006FC /* CallConnectResult.m in Sources */,
 				FCFD256F1A151BCB00F4C644 /* NewGroupViewController.m in Sources */,
 				76EB059E18170B33006006FC /* HttpSocket.m in Sources */,
+				7D7DA5891F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */,
 				45666F761D9BFE00008FE134 /* OWS100RemoveTSRecipientsMigration.m in Sources */,
 				E197B60E18BBEC1A00F073E5 /* CallAudioManager.m in Sources */,
 				FCC81A981A44558300DFEC7D /* UIDevice+TSHardwareVersion.m in Sources */,
 				76EB054018170B33006006FC /* AppDelegate.m in Sources */,
+				7D7DA5981F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */,
 				341BB7491DB727EE001E2975 /* JSQMediaItem+OWS.m in Sources */,
 				76EB05D018170B33006006FC /* ZrtpHandshakeSocket.m in Sources */,
 				45F2B1941D9C9F48000D2C69 /* OWSOutgoingMessageCollectionViewCell.m in Sources */,
 				B63761EF19E1FBE8005735D1 /* HttpResponse.m in Sources */,
+				7D7DA5951F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m in Sources */,
 				E197B61518BBEC1A00F073E5 /* JitterQueue.m in Sources */,
 				BFB074C919A5611000F2947C /* ObservableValue.m in Sources */,
 				B68EF9BA1C0B1EBD009C3DCD /* FLAnimatedImage.m in Sources */,
@@ -4642,6 +4650,7 @@
 				B609597C1C2C0FC6004E8797 /* iRate.m in Sources */,
 				76EB05C818170B33006006FC /* HelloPacket.m in Sources */,
 				BFB074C719A5611000F2947C /* FutureUtil.m in Sources */,
+				7D7DA5921F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				FCD274E21A5AFD8000202277 /* PrivacySettingsTableViewController.m in Sources */,
 				76EB057218170B33006006FC /* RecentCall.m in Sources */,
 				B97CBFA818860EA3008E0DE9 /* CountryCodeViewController.m in Sources */,
@@ -4800,7 +4809,6 @@
 				B660F7661C29988E00687D6E /* ResponderSessionDescriptor.m in Sources */,
 				45C681B81D305A580050903A /* OWSCall.m in Sources */,
 				B660F7671C29988E00687D6E /* SignalUtil.m in Sources */,
-				45855F381D9498A40084F340 /* OWSContactAvatarBuilder.m in Sources */,
 				B660F7681C29988E00687D6E /* CategorizingLogger.m in Sources */,
 				B660F7691C29988E00687D6E /* DecayingSampleEstimator.m in Sources */,
 				B660F76A1C29988E00687D6E /* EventWindow.m in Sources */,
