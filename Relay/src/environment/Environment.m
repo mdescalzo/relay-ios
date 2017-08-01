@@ -110,6 +110,7 @@ static Environment *environment = nil;
     _contactsUpdater = contactsUpdater;
     _networkManager = networkManager;
     _messageSender = messageSender;
+    _invitationService = [FLInvitationService new];
 
     if (recentCallManager != nil) {
         // recentCallManagers are nil in unit tests because they would require unnecessary allocations. Detailed
@@ -240,12 +241,12 @@ static Environment *environment = nil;
     exit(0);
 }
 
--(FLInvitationService *)invitationService
-{
-    if (_invitationService == nil) {
-        _invitationService = [FLInvitationService new];
-    }
-    return _invitationService;
-}
+//-(FLInvitationService *)invitationService
+//{
+//    if (_invitationService == nil) {
+//        _invitationService = [FLInvitationService new];
+//    }
+//    return _invitationService;
+//}
 
 @end

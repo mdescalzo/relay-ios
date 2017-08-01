@@ -6,11 +6,13 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
+#import "FLContactSelectionTableViewController.h"
+
 @import Foundation;
 @import MessageUI;
 @import Social;
 
-@interface FLInvitationService : NSObject 
+@interface FLInvitationService : NSObject <FLContactSelectionTableViewControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
 -(void)inviteUsersFrom:(nonnull UIViewController *)viewController;
 

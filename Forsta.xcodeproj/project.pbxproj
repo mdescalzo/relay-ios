@@ -479,6 +479,9 @@
 		7D7DA5961F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */; };
 		7D7DA5971F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */; };
 		7D7DA5981F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */; };
+		7D7DA5B11F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */; };
+		7D7DA5B21F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */; };
+		7D7DA5B31F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
 		7DB55A9A1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
@@ -1502,6 +1505,8 @@
 		7D7DA58D1F2FBA66007FE6E4 /* OWSContactAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSContactAvatarBuilder.m; sourceTree = "<group>"; };
 		7D7DA58E1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSGroupAvatarBuilder.h; sourceTree = "<group>"; };
 		7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSGroupAvatarBuilder.m; sourceTree = "<group>"; };
+		7D7DA5AF1F30CB32007FE6E4 /* FLContactSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactSelectionTableViewController.h; sourceTree = "<group>"; };
+		7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactSelectionTableViewController.m; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
 		7DB55A981F2A7F10001D3058 /* FLInvitationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLInvitationService.h; sourceTree = "<group>"; };
@@ -2582,6 +2587,7 @@
 				7D516F181EF3125B00E7E15F /* Developer Panel */,
 				7DBA8D681ED9FC49009FCF65 /* Login */,
 				7D3B865B1EE2190700190FD5 /* ForstaMessages */,
+				7D7DA5B41F30CB3B007FE6E4 /* ContactsPicker */,
 				FC3196311A08141D0094C78E /* Settings */,
 				FC3196321A08142D0094C78E /* Signals */,
 				FCFD25791A1543D500F4C644 /* Signup */,
@@ -2681,6 +2687,15 @@
 				7DB55A991F2A7F10001D3058 /* FLInvitationService.m */,
 			);
 			name = Services;
+			sourceTree = "<group>";
+		};
+		7D7DA5B41F30CB3B007FE6E4 /* ContactsPicker */ = {
+			isa = PBXGroup;
+			children = (
+				7D7DA5AF1F30CB32007FE6E4 /* FLContactSelectionTableViewController.h */,
+				7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */,
+			);
+			name = ContactsPicker;
 			sourceTree = "<group>";
 		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
@@ -4010,6 +4025,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D7DA5B11F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D4A39C11F1693930023C29B /* DeviceTypes.m in Sources */,
 				7D4A39C21F1693930023C29B /* Operation.m in Sources */,
 				7D4A39C31F1693930023C29B /* RPAccountManager.m in Sources */,
@@ -4237,6 +4253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D7DA5B21F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */,
 				7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */,
 				7DCFFD6A1F0EE4490003CD95 /* RPAccountManager.m in Sources */,
@@ -4464,6 +4481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D7DA5B31F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				76EB063E18170B33006006FC /* Operation.m in Sources */,
 				B640BFA81C257843006038B3 /* RPAccountManager.m in Sources */,
 				A5509ECD1A69B1D600ABA4BC /* CountryCodeTableViewCell.m in Sources */,

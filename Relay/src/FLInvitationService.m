@@ -9,7 +9,12 @@
 #import "FLInvitationService.h"
 #import "UIUtil.h"
 
-@interface FLInvitationService() <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
+@interface FLInvitationService()
+
+@property (nonatomic, strong) UIViewController *sourceController;
+@property (nonatomic, assign) BOOL sendingMail;
+@property (nonatomic, assign) BOOL sendingSMS;
+@property (nonatomic, strong) FLContactSelectionTableViewController *pickerController;
 
 @end
 
@@ -17,6 +22,8 @@
 
 -(void)inviteUsersFrom:(nonnull UIViewController *)viewController;
 {
+    self.sourceController = viewController;
+    
     UIAlertController *invitationSheet = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
@@ -25,7 +32,7 @@
         UIAlertAction *smsButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"SHARE_ACTION_MESSAGE", @"")
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *_Nonnull action) {
-                                                              [self inviteViaSMSFrom:viewController to:nil];
+                                                              [self smsTapped];
                                                           }];
         [invitationSheet addAction:smsButton];
     }
@@ -34,7 +41,7 @@
         UIAlertAction *mailButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"SHARE_ACTION_MAIL", @"")
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction *_Nonnull action) {
-                                                               [self inviteViaMailFrom:viewController to:nil];
+                                                               [self mailTapped];
                                                            }];
         [invitationSheet addAction:mailButton];
     }
@@ -43,7 +50,7 @@
         UIAlertAction *twitterButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"SHARE_ACTION_TWEET", @"")
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction *_Nonnull action) {
-                                                                  [self inviteViaTwitterFrom:viewController to:nil];
+                                                                  [self twitterTapped];
                                                               }];
         [invitationSheet addAction:twitterButton];
     }
@@ -51,12 +58,36 @@
     // Cancel Button
     UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
                                                            style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *_Nonnull action) { }];
+                                                         handler:^(UIAlertAction *_Nonnull action) { /* do nothing */ }];
     [invitationSheet addAction:cancelButton];
     
     [viewController presentViewController:invitationSheet animated:YES completion:[UIUtil modalCompletionBlock]];
 }
 
+#pragma mark - action button methods
+-(void)mailTapped
+{
+    self.sendingMail = YES;
+    self.sendingSMS = NO;
+    
+    [self.sourceController presentViewController:self.pickerController animated:YES completion:nil];
+}
+
+-(void)smsTapped
+{
+    self.sendingSMS = YES;
+    self.sendingMail = NO;
+    
+    [self.sourceController presentViewController:self.pickerController animated:YES completion:nil];
+}
+
+-(void)twitterTapped
+{
+    // just go to Twitter
+    [self inviteViaTwitterFrom:self.sourceController to:nil];
+}
+
+#pragma mark - invitation methods
 -(void)inviteViaSMSFrom:(nonnull UIViewController *)viewController to:(nullable NSArray *)recipients;
 {
     if ([MFMessageComposeViewController canSendText]) {
@@ -104,6 +135,31 @@
     tweetSheet.completionHandler = ^(SLComposeViewControllerResult result) {
     };
     [viewController presentViewController:tweetSheet animated:YES completion:[UIUtil modalCompletionBlock]];
+}
+
+#pragma mark - contact picker delegate methods
+-(void)contactPickerDidCancelSelection:(id)sender
+{
+    self.sendingMail = NO;
+    self.sendingSMS = NO;
+    
+    UIViewController *source = (UIViewController *)sender;
+    [source dismissViewControllerAnimated:YES completion:[UIUtil modalCompletionBlock]];
+}
+
+-(void)contactPicker:(id)sender didCompleteSelectionWithContacts:(NSArray *)selectedContacts
+{
+    UIViewController *source = (UIViewController *)sender;
+    [source dismissViewControllerAnimated:YES completion:[UIUtil modalCompletionBlock]];
+    
+    if (self.sendingSMS) {
+        [self inviteViaSMSFrom:self.sourceController to:selectedContacts];
+    } else if (self.sendingMail) {
+        [self inviteViaMailFrom:self.sourceController to:selectedContacts];
+    }
+    
+    self.sendingMail = NO;
+    self.sendingSMS = NO;
 }
 
 #pragma mark - message controller delegate method
@@ -162,6 +218,16 @@
         }
             break;
     }
+}
+
+-(FLContactSelectionTableViewController *)pickerController
+{
+    if (_pickerController == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+        _pickerController = (FLContactSelectionTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ContactsPicker"];
+        _pickerController.delegate = self;
+    }
+    return _pickerController;
 }
 
 @end

@@ -32,8 +32,19 @@
     if (contact.image) {
         self.avatarImageView.image = contact.image;
     } else {
-        OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:contact.userID
-                                                                                               name:contact.fullName
+        // Workaround for non-CCSM contacts
+        NSString *contactID;
+        NSString *fullName;
+        if ([contact respondsToSelector:@selector(userID)]) {
+            contactID = contact.userID;
+            fullName = contact.fullName;
+        } else {
+            contactID = [contact.textSecureIdentifiers firstObject];
+            fullName = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
+        }
+        ///////
+        OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:contactID
+                                                                                               name:fullName
                                                                                     contactsManager:[Environment getCurrent].contactsManager
                                                                                            diameter:self.contentView.frame.size.height];
         self.avatarImageView.image = [avatarBuilder buildDefaultImage];
