@@ -78,6 +78,8 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
+@property (nonatomic, strong) CCSMStorage *ccsmStorage;
+@property (nonatomic, strong) CCSMCommManager *ccsmCommManager;
 @property (nonatomic, readonly) FLInvitationService *invitationService;
 
 @property (nonatomic, readonly) FLThreadViewController *forstaViewController;

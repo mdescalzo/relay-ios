@@ -245,4 +245,20 @@ static Environment *environment = nil;
 //    return _invitationService;
 //}
 
+-(CCSMStorage *)ccsmStorage
+{
+    if (_ccsmStorage == nil) {
+        _ccsmStorage = [CCSMStorage new];
+    }
+    return _ccsmStorage;
+}
+
+-(CCSMCommManager *)ccsmCommManager
+{
+    if (_ccsmCommManager == nil) {
+        _ccsmCommManager = [CCSMCommManager new];
+    }
+    return _ccsmCommManager;
+}
+
 @end
