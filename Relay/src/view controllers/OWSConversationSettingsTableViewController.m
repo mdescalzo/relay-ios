@@ -148,7 +148,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
         // Don't print anything for groups.
         self.signalIdLabel.text = nil;
     }
-    self.avatar.image = [OWSAvatarBuilder buildImageForThread:self.thread contactsManager:self.contactsManager];
+    self.avatar.image = [OWSAvatarBuilder buildImageForThread:self.thread contactsManager:self.contactsManager diameter:self.avatar.frame.size.height];
     self.nameLabel.font = [UIFont ows_dynamicTypeTitle2Font];
 
     // Translations
