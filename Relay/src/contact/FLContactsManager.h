@@ -14,6 +14,8 @@
 // Override to include CCSM sourced contacts.
 - (NSArray<FLContact *> *)ccsmContacts;
 - (NSArray<Contact *> *)allContacts;
+- (NSArray<Contact *> *)allValidContacts;
 
+-(void)refreshCCSMContacts;
 
 @end

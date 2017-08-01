@@ -42,7 +42,7 @@
     }
     
     
-    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[Environment.ccsmStorage supermanId]];
+    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[[Environment getCurrent].ccsmStorage supermanId]];
     
     TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
                                                                             inThread:supermanThread
