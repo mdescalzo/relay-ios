@@ -14,7 +14,7 @@
 #import "OWSContactsManager.h"
 #import "Environment.h"
 #import "GroupContactsResult.h"
-
+#import "FLDirectoryCell.h"
 #import "UIUtil.h"
 
 #import <AddressBookUI/AddressBookUI.h>
@@ -75,21 +75,26 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
-
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:indexPath.row == 0 ? @"HeaderCell" : @"GroupSearchCell"];
-    }
-    if (indexPath.row > 0) {
+    UITableViewCell *cell;// = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
+//
+//    if (cell == nil) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+//                                      reuseIdentifier:indexPath.row == 0 ? @"HeaderCell" : @"GroupSearchCell"];
+//    }
+    if (indexPath.row > 0) {  //  Not the header.
+        FLDirectoryCell *tmpCell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
+        
         NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
         if ([self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
-            Contact *contact              = [self contactForIndexPath:relativeIndexPath];
-            cell.textLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
+            FLContact *contact = (FLContact *)[self contactForIndexPath:relativeIndexPath];
+            [tmpCell configureCellWithContact:contact];
+//            cell.textLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
+            
         } else {
-            cell.textLabel.text = [self.groupContacts identifierForIndexPath:relativeIndexPath];
+            tmpCell.nameLabel.text = [self.groupContacts identifierForIndexPath:relativeIndexPath];
         }
-    } else {
+    } else {     //  Configure the header
+        cell = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:indexPath];
         cell.textLabel.text      = NSLocalizedString(@"GROUP_MEMBERS_HEADER", @"header for table which lists the members of this group thread");
         cell.textLabel.textColor = [UIColor lightGrayColor];
         cell.selectionStyle      = UITableViewCellSelectionStyleNone;

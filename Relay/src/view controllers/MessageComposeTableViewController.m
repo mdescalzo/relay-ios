@@ -7,15 +7,15 @@
 //
 
 #import "MessageComposeTableViewController.h"
-
-#import <MessageUI/MessageUI.h>
-
 #import "ContactTableViewCell.h"
 #import "ContactsUpdater.h"
 #import "OWSContactsSearcher.h"
 #import "Environment.h"
 #import "UIColor+OWS.h"
 #import "UIUtil.h"
+#import "FLDirectoryCell.h"
+
+@import MessageUI;
 
 @interface MessageComposeTableViewController () <UISearchBarDelegate,
                                                  UISearchResultsUpdating,
@@ -399,6 +399,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"DirectoryCell" forIndexPath:indexPath];
+    
+    FLContact *contact = (FLContact *)[self contactForIndexPath:indexPath];
+    
+    [cell configureCellWithContact:contact];
+    
+//    cell.nameLabel.attributedText = [self attributedStringForContact:contact];
+//    
+//    cell.avatarImageView.image = contact.image;
+    
+    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    return cell;
+
 //    ContactTableViewCell *cell =
 //        (ContactTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"RightDetailCell"];
 //
@@ -406,24 +420,15 @@
 //        cell = [[ContactTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 //                                           reuseIdentifier:@"ContactTableViewCell"];
 //    }
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RightDetailCell" forIndexPath:indexPath];
     
 //    cell.shouldShowContactButtons = NO;
 
 //    [cell configureWithContact:[self contactForIndexPath:indexPath]];
-    
-    FLContact *contact = (FLContact *)[self contactForIndexPath:indexPath];
-    
-    cell.textLabel.attributedText = [self attributedStringForContact:contact];
-    if ([contact respondsToSelector:@selector(tagPresentation)]) {
-        cell.detailTextLabel.text = contact.tagPresentation;
-    } else {
-        cell.detailTextLabel.text = @"";
-    }
-
-    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
-    return cell;
+    //    if ([contact respondsToSelector:@selector(tagPresentation)]) {
+    //        cell.detailTextLabel.text = contact.tagPresentation;
+    //    } else {
+    //        cell.detailTextLabel.text = @"";
+    //    }
 }
 
 - (NSAttributedString *)attributedStringForContact:(FLContact *)contact {
