@@ -164,10 +164,6 @@ static Environment *environment = nil;
     return [PropertyListPreferences new];
 }
 
-+ (CCSMStorage *)ccsmStorage {
-    return [CCSMStorage new];
-}
-
 -(void)setForstaViewController:(FLThreadViewController *)forstaViewController
 {
     _forstaViewController = forstaViewController;

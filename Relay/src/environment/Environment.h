@@ -6,6 +6,7 @@
 #import "TSGroupModel.h"
 #import "TSStorageHeaders.h"
 #import "CCSMStorage.h"
+#import "CCSMCommunication.h"
 #import "FLMessageSender.h"
 #import "FLContactsManager.h"
 #import "FLInvitationService.h"
@@ -96,7 +97,6 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (PhoneManager *)phoneManager;
 
 + (PropertyListPreferences *)preferences;
-+ (CCSMStorage *)ccsmStorage;
 
 + (BOOL)isRedPhoneRegistered;
 + (void)resetAppData;

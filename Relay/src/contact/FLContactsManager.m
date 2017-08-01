@@ -32,6 +32,20 @@
 //    return self.ccsmContacts ;
 }
 
+- (NSArray<Contact *> *)allValidContacts
+{
+    NSMutableArray *abContacts = [[super signalContacts] mutableCopy];
+    
+    //    // Look for duplicates between the two and merge
+    NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"NONE %@.firstName == firstName", self.ccsmContacts];
+    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"NONE %@.lastName == lastName", self.ccsmContacts];
+    NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[aPredicate, bPredicate]];
+    NSMutableArray *resultsArray = [[abContacts filteredArrayUsingPredicate:predicate] mutableCopy];
+    [resultsArray addObjectsFromArray:self.ccsmContacts];
+    
+    return resultsArray;
+}
+
 
 #pragma mark - Lazy Instantiation
 - (NSArray<FLContact *> *)ccsmContacts;
@@ -40,7 +54,7 @@
         NSMutableArray *tmpArray = [NSMutableArray new];
         
 //        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
-        NSDictionary *usersBlob = [Environment.ccsmStorage getUsers];
+        NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
 //        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
         
         for (NSString *key in usersBlob.allKeys) {
@@ -76,6 +90,12 @@
         _ccsmContacts = [NSArray arrayWithArray:tmpArray];
     }
     return _ccsmContacts;
+}
+
+-(void)refreshCCSMContacts
+{
+    _ccsmContacts = nil;
+    [self ccsmContacts];
 }
 
 @end
