@@ -10,4 +10,16 @@
 
 @implementation FLContact
 
+-(NSString *)fullName
+{
+    if (self.firstName && self.lastName)
+        return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
+    else if (self.lastName)
+        return self.lastName;
+    else if (self.firstName)
+        return self.firstName;
+    else
+        return nil;
+}
+
 @end

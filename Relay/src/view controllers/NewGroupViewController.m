@@ -17,11 +17,13 @@
 #import "TSOutgoingMessage.h"
 #import "UIImage+normalizeImage.h"
 #import "UIUtil.h"
-#import <MobileCoreServices/UTCoreTypes.h>
 #import <RelayServiceKit/MimeTypeUtil.h>
 #import <RelayServiceKit/NSDate+millisecondTimeStamp.h>
 #import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSAccountManager.h>
+#import "FLDirectoryCell.h"
+
+@import MobileCoreServices;
 
 static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue";
 
@@ -336,16 +338,19 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
-
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GroupSearchCell"];
-    }
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
+//
+//    if (cell == nil) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GroupSearchCell"];
+//    }
+    
+    FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
     NSUInteger row   = (NSUInteger)indexPath.row;
-    Contact *contact = contacts[row];
+    FLContact *contact = contacts[row];
 
-    cell.textLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
+    [cell configureCellWithContact:contact];
+//    cell.nameLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
 
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
