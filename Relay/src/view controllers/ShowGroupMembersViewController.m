@@ -93,6 +93,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         } else {
             tmpCell.nameLabel.text = [self.groupContacts identifierForIndexPath:relativeIndexPath];
         }
+        cell = tmpCell;
     } else {     //  Configure the header
         cell = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:indexPath];
         cell.textLabel.text      = NSLocalizedString(@"GROUP_MEMBERS_HEADER", @"header for table which lists the members of this group thread");

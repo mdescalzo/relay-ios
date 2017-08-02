@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return A sizes that specifies the required dimensions to display the entire message contents.
  *  Note, this is *not* the entire cell, but only its message bubble.
  */
-- (CGSize)messageBubbleSizeForMessageData:(id<JSQMessageData>)messageData
+- (CGSize)messageBubbleSizeForMessageData:(id<JSQMessageAttributedData>)messageData
                               atIndexPath:(NSIndexPath *)indexPath
                                withLayout:(JSQMessagesCollectionViewFlowLayout *)layout
 {
@@ -62,7 +62,56 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
         // END HACK iOS10EmojiBug see: https://github.com/WhisperSystems/Signal-iOS/issues/1368
 
-        return [super messageBubbleSizeForMessageData:messageData atIndexPath:indexPath withLayout:layout];
+        NSValue *cachedSize = [self.cache objectForKey:@([messageData messageHash])];
+        if (cachedSize != nil) {
+            return [cachedSize CGSizeValue];
+        }
+        
+        CGSize finalSize = CGSizeZero;
+        
+        if ([messageData isMediaMessage]) {
+            finalSize = [[messageData media] mediaViewDisplaySize];
+        }
+        else {
+            CGSize avatarSize = [self jsq_avatarSizeForMessageData:messageData withLayout:layout];
+            
+            //  from the cell xibs, there is a 2 point space between avatar and bubble
+            CGFloat spacingBetweenAvatarAndBubble = 2.0f;
+            CGFloat horizontalContainerInsets = layout.messageBubbleTextViewTextContainerInsets.left + layout.messageBubbleTextViewTextContainerInsets.right;
+            CGFloat horizontalFrameInsets = layout.messageBubbleTextViewFrameInsets.left + layout.messageBubbleTextViewFrameInsets.right;
+            
+            CGFloat horizontalInsetsTotal = horizontalContainerInsets + horizontalFrameInsets + spacingBetweenAvatarAndBubble;
+            CGFloat maximumTextWidth = [self textBubbleWidthForLayout:layout] - avatarSize.width - layout.messageBubbleLeftRightMargin - horizontalInsetsTotal;
+            
+            CGRect stringRect;
+            if ([messageData attributedText]) {
+                stringRect = [[messageData attributedText] boundingRectWithSize:CGSizeMake(maximumTextWidth, CGFLOAT_MAX)
+                                                                        options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                                                        context:nil];
+            } else {
+                stringRect = [[messageData text] boundingRectWithSize:CGSizeMake(maximumTextWidth, CGFLOAT_MAX)
+                                                              options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                                           attributes:@{ NSFontAttributeName : layout.messageBubbleFont }
+                                                              context:nil];
+            }
+            CGSize stringSize = CGRectIntegral(stringRect).size;
+            
+            CGFloat verticalContainerInsets = layout.messageBubbleTextViewTextContainerInsets.top + layout.messageBubbleTextViewTextContainerInsets.bottom;
+            CGFloat verticalFrameInsets = layout.messageBubbleTextViewFrameInsets.top + layout.messageBubbleTextViewFrameInsets.bottom;
+            
+            //  add extra 2 points of space (`self.additionalInset`), because `boundingRectWithSize:` is slightly off
+            //  not sure why. magix. (shrug) if you know, submit a PR
+            CGFloat verticalInsets = verticalContainerInsets + verticalFrameInsets + self.additionalInset;
+            
+            //  same as above, an extra 2 points of magix
+            CGFloat finalWidth = MAX(stringSize.width + horizontalInsetsTotal, self.minimumBubbleWidth) + self.additionalInset;
+            
+            finalSize = CGSizeMake(finalWidth, stringSize.height + verticalInsets);
+        }
+        
+        [self.cache setObject:[NSValue valueWithCGSize:finalSize] forKey:@([messageData messageHash])];
+        
+        return finalSize;
     }
 }
 
