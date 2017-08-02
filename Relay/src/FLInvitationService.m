@@ -8,13 +8,14 @@
 
 #import "FLInvitationService.h"
 #import "UIUtil.h"
+#import "FLContact.h"
 
-@interface FLInvitationService()
+@interface FLInvitationService() <FLContactSelectionTableViewControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) UIViewController *sourceController;
 @property (nonatomic, assign) BOOL sendingMail;
 @property (nonatomic, assign) BOOL sendingSMS;
-@property (nonatomic, strong) FLContactSelectionTableViewController *pickerController;
+//@property (nonatomic, strong) FLContactSelectionTableViewController *pickerController;
 
 @end
 
@@ -67,18 +68,32 @@
 #pragma mark - action button methods
 -(void)mailTapped
 {
-    self.sendingMail = YES;
-    self.sendingSMS = NO;
-    
-    [self.sourceController presentViewController:self.pickerController animated:YES completion:nil];
+#warning uncomment after contacts database issue is resolved
+    [self inviteViaMailFrom:self.sourceController to:nil];
+//    self.sendingMail = YES;
+//    self.sendingSMS = NO;
+//
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+//    UINavigationController *navController = (UINavigationController *)[storyboard instantiateViewControllerWithIdentifier:@"ContactsPicker"];
+//    FLContactSelectionTableViewController *pickerController = (FLContactSelectionTableViewController *)[navController topViewController];
+//    pickerController.contactDelegate = self;
+//
+//    [self.sourceController presentViewController:pickerController.parentViewController animated:YES completion:nil];
 }
 
 -(void)smsTapped
 {
-    self.sendingSMS = YES;
-    self.sendingMail = NO;
-    
-    [self.sourceController presentViewController:self.pickerController animated:YES completion:nil];
+#warning uncomment after contacts database issue is resolved
+    [self inviteViaSMSFrom:self.sourceController to:nil];
+//    self.sendingSMS = YES;
+//    self.sendingMail = NO;
+//    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+//    UINavigationController *navController = (UINavigationController *)[storyboard instantiateViewControllerWithIdentifier:@"ContactsPicker"];
+//    FLContactSelectionTableViewController *pickerController = (FLContactSelectionTableViewController *)[navController topViewController];
+//    pickerController.contactDelegate = self;
+//    
+//    [self.sourceController presentViewController:pickerController.parentViewController animated:YES completion:nil];
 }
 
 -(void)twitterTapped
@@ -92,7 +107,9 @@
 {
     if ([MFMessageComposeViewController canSendText]) {
         MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
-        picker.recipients = recipients;
+        if (recipients.count > 0) {
+            picker.recipients = recipients;
+        }
         picker.messageComposeDelegate = self;
         picker.body = [NSLocalizedString(@"SMS_INVITE_BODY", @"")
                        stringByAppendingString:[NSString stringWithFormat:@"\n%@", FLSMSInvitationURL]];
@@ -117,7 +134,9 @@
 {
     MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
     mailController.mailComposeDelegate = self;
-//    [mailController setToRecipients:<#(nullable NSArray<NSString *> *)#>];
+    if (recipients.count > 0) {
+        [mailController setToRecipients:recipients];
+    }
     [mailController setSubject:NSLocalizedString(@"SHARE_INVITE_SUBJECT", @"")];
     NSString *body = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"SMS_INVITE_BODY", @""), FLSMSInvitationURL];
     [mailController setMessageBody:body isHTML:NO];
@@ -140,26 +159,26 @@
 #pragma mark - contact picker delegate methods
 -(void)contactPickerDidCancelSelection:(id)sender
 {
-    self.sendingMail = NO;
-    self.sendingSMS = NO;
-    
-    UIViewController *source = (UIViewController *)sender;
-    [source dismissViewControllerAnimated:YES completion:[UIUtil modalCompletionBlock]];
+    UIViewController *vc = (UIViewController *)sender;
+    [vc dismissViewControllerAnimated:YES completion:^{
+        self.sendingMail = NO;
+        self.sendingSMS = NO;
+    }];
 }
 
 -(void)contactPicker:(id)sender didCompleteSelectionWithContacts:(NSArray *)selectedContacts
 {
-    UIViewController *source = (UIViewController *)sender;
-    [source dismissViewControllerAnimated:YES completion:[UIUtil modalCompletionBlock]];
-    
-    if (self.sendingSMS) {
-        [self inviteViaSMSFrom:self.sourceController to:selectedContacts];
-    } else if (self.sendingMail) {
-        [self inviteViaMailFrom:self.sourceController to:selectedContacts];
-    }
-    
-    self.sendingMail = NO;
-    self.sendingSMS = NO;
+    UIViewController *vc = (UIViewController *)sender;
+    [vc dismissViewControllerAnimated:YES completion:^{
+        if (self.sendingSMS) {
+            [self inviteViaSMSFrom:self.sourceController to:[self smsNumbersFromContacts:selectedContacts]];
+        } else if (self.sendingMail) {
+            [self inviteViaMailFrom:self.sourceController to:[self addressesFromContacts:selectedContacts]];
+        }
+        
+        self.sendingMail = NO;
+        self.sendingSMS = NO;
+    }];
 }
 
 #pragma mark - message controller delegate method
@@ -220,14 +239,41 @@
     }
 }
 
--(FLContactSelectionTableViewController *)pickerController
+#pragma mark - convenience methods
+-(NSArray *)smsNumbersFromContacts:(NSArray <FLContact *> *)contacts
 {
-    if (_pickerController == nil) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
-        _pickerController = (FLContactSelectionTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ContactsPicker"];
-        _pickerController.delegate = self;
+    NSMutableArray *holdingPen = [NSMutableArray new];
+    
+    for (FLContact *contact in contacts) {
+        if ([contact.userTextPhoneNumbers firstObject]) {
+            [holdingPen addObject:[contact.userTextPhoneNumbers firstObject]];
+        }
     }
-    return _pickerController;
+    return [NSArray arrayWithArray:holdingPen];
 }
+
+-(NSArray *)addressesFromContacts:(NSArray <FLContact *> *)contacts
+{
+    NSMutableArray *holdingPen = [NSMutableArray new];
+    
+    for (FLContact *contact in contacts) {
+        if ([contact.emails firstObject]) {
+            [holdingPen addObject:[contact.emails firstObject]];
+        }
+    }
+    return [NSArray arrayWithArray:holdingPen];
+}
+
+#pragma mark - lazy instantiation
+//-(FLContactSelectionTableViewController *)pickerController
+//{
+//    if (_pickerController == nil) {
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+//        UINavigationController *navController = (UINavigationController *)[storyboard instantiateViewControllerWithIdentifier:@"ContactsPicker"];
+//        _pickerController = (FLContactSelectionTableViewController *)[navController topViewController];
+//        _pickerController.contactDelegate = self;
+//    }
+//    return _pickerController;
+//}
 
 @end

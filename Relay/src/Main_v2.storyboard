@@ -1271,12 +1271,12 @@
                     <navigationItem key="navigationItem" id="msK-NX-QEj">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="GQa-2H-QOK">
                             <connections>
-                                <action selector="cancelTapped:" destination="hTG-tR-HKu" id="Q29-sR-t3C"/>
+                                <action selector="cancelTapped:" destination="hTG-tR-HKu" id="RWC-tQ-eaN"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="GKU-o1-CWJ">
                             <connections>
-                                <action selector="doneTapped:" destination="hTG-tR-HKu" id="itR-Fw-EQu"/>
+                                <action selector="doneTapped:" destination="hTG-tR-HKu" id="92g-PF-Yra"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

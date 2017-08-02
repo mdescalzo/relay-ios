@@ -12,7 +12,7 @@
 @import MessageUI;
 @import Social;
 
-@interface FLInvitationService : NSObject <FLContactSelectionTableViewControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
+@interface FLInvitationService : NSObject 
 
 -(void)inviteUsersFrom:(nonnull UIViewController *)viewController;
 

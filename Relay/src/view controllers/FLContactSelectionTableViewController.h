@@ -12,7 +12,10 @@
 
 @interface FLContactSelectionTableViewController : UITableViewController
 
-@property (nullable, nonatomic, weak) id <FLContactSelectionTableViewControllerDelegate> delegate;
+@property (nullable, nonatomic, weak) id <FLContactSelectionTableViewControllerDelegate> contactDelegate;
+
+-(IBAction)doneTapped:(id _Nullable )sender;
+-(IBAction)cancelTapped:(id _Nullable )sender;
 
 @end
 

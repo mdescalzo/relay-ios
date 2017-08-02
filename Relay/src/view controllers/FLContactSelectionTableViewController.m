@@ -25,6 +25,8 @@
 
 @implementation FLContactSelectionTableViewController
 
+@synthesize contactDelegate;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -148,28 +150,27 @@
 #pragma mark - button methods
 -(IBAction)doneTapped:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.delegate contactPicker:self didCompleteSelectionWithContacts:[self.selectedContacts copy]];
+//    [self dismissViewControllerAnimated:YES completion:^{
+        [self.contactDelegate contactPicker:self didCompleteSelectionWithContacts:[self.selectedContacts copy]];
         
-        // deselect things
-        for (NSIndexPath *indexPath in [self.tableView indexPathsForSelectedRows]) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
-        [self.selectedContacts removeAllObjects];
-    }];
+//        // deselect things
+//        for (NSIndexPath *indexPath in [self.tableView indexPathsForSelectedRows]) {
+//            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//        }
+//        [self.selectedContacts removeAllObjects];
+//    }];
 }
 
 -(IBAction)cancelTapped:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.delegate contactPickerDidCancelSelection:self];
-        
+//    [self dismissViewControllerAnimated:YES completion:^{
+        [self.contactDelegate contactPickerDidCancelSelection:self];
         // deselect things
-        for (NSIndexPath *indexPath in [self.tableView indexPathsForSelectedRows]) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
-        [self.selectedContacts removeAllObjects];
-    }];
+//        for (NSIndexPath *indexPath in [self.tableView indexPathsForSelectedRows]) {
+//            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//        }
+//        [self.selectedContacts removeAllObjects];
+//    }];
 }
 
 #pragma mark - search bar delegate methods
