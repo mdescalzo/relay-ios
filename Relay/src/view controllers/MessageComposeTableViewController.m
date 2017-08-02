@@ -305,27 +305,31 @@
     UIAlertAction *okAction = [UIAlertAction
         actionWithTitle:NSLocalizedString(@"OK", @"")
                   style:UIAlertActionStyleDefault
-                handler:^(UIAlertAction *action) {
-                  [self.searchController setActive:NO];
-
-                  if ([MFMessageComposeViewController canSendText]) {
-                      MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
-                      picker.messageComposeDelegate          = self;
-
-                      picker.recipients =
-                          [self.currentSearchTerm length] > 0 ? [NSArray arrayWithObject:self.currentSearchTerm] : nil;
-                      picker.body = [NSLocalizedString(@"SMS_INVITE_BODY", @"")
-                          stringByAppendingString:[NSString stringWithFormat:@"\n%@", FLSMSInvitationURL]];                    
-                      [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
-                  } else {
-                      UIAlertView *notPermitted =
-                          [[UIAlertView alloc] initWithTitle:@""
-                                                     message:NSLocalizedString(@"UNSUPPORTED_FEATURE_ERROR", @"")
-                                                    delegate:nil
-                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                           otherButtonTitles:nil];
-                      [notPermitted show];
-                  }
+                               handler:^(UIAlertAction *action) {
+                                   [self.searchController setActive:NO];
+                                   
+                                   NSArray *recipients = [self.currentSearchTerm length] > 0 ? [NSArray arrayWithObject:self.currentSearchTerm] : nil;
+                                   
+                                   [[[Environment getCurrent] invitationService] inviteViaSMSFrom:self to:recipients];
+                    
+//                  if ([MFMessageComposeViewController canSendText]) {
+//                      MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+//                      picker.messageComposeDelegate          = self;
+//
+//                      picker.recipients =
+//                          [self.currentSearchTerm length] > 0 ? [NSArray arrayWithObject:self.currentSearchTerm] : nil;
+//                      picker.body = [NSLocalizedString(@"SMS_INVITE_BODY", @"")
+//                          stringByAppendingString:[NSString stringWithFormat:@"\n%@", FLSMSInvitationURL]];                    
+//                      [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
+//                  } else {
+//                      UIAlertView *notPermitted =
+//                          [[UIAlertView alloc] initWithTitle:@""
+//                                                     message:NSLocalizedString(@"UNSUPPORTED_FEATURE_ERROR", @"")
+//                                                    delegate:nil
+//                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
+//                                           otherButtonTitles:nil];
+//                      [notPermitted show];
+//                  }
                 }];
 
     [alertController addAction:cancelAction];

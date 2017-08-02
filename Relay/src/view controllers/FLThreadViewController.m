@@ -1598,19 +1598,6 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     return _ccsmStorage;
 }
 
-
-#pragma mark - Logging
-
-+ (NSString *)tag
-{
-    return [NSString stringWithFormat:@"[%@]", self.class];
-}
-
-- (NSString *)tag
-{
-    return self.class.tag;
-}
-
 -(UIBarButtonItem *)attachmentButton
 {
     if (_attachmentButton == nil) {
@@ -1627,9 +1614,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 {
     if (_sendButton == nil) {
         _sendButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Send_solid"]
-                                                      style:UIBarButtonItemStylePlain
-                                                     target:self
-                                                     action:@selector(didPressRightButton:)];
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(didPressRightButton:)];
         _sendButton.tintColor = [UIColor blueColor];
     }
     return _sendButton;
@@ -1639,9 +1626,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 {
     if (_tagButton == nil) {
         _tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Tag_1"]
-                                                     style:UIBarButtonItemStylePlain
-                                                    target:self
-                                                    action:@selector(didPressLeftButton:)];
+                                                      style:UIBarButtonItemStylePlain
+                                                     target:self
+                                                     action:@selector(didPressLeftButton:)];
         _tagButton.tintColor = [UIColor blackColor];
     }
     return _tagButton;
@@ -1658,5 +1645,20 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     }
     return _recipientCountButton;
 }
+
+
+
+#pragma mark - Logging
+
++ (NSString *)tag
+{
+    return [NSString stringWithFormat:@"[%@]", self.class];
+}
+
+- (NSString *)tag
+{
+    return self.class.tag;
+}
+
 
 @end

@@ -8,18 +8,21 @@
 
 #import "SettingsPopupMenuViewController.h"
 #import "DirectoryTableViewController.h"
+#import "FLInvitationService.h"
+#import "Environment.h"
 
 #ifdef DEVELOPMENT
-#define kNumberOfSettings 5
+#define kNumberOfSettings 6
 #else
-#define kNumberOfSettings 4
+#define kNumberOfSettings 5
 #endif
 
-#define kLinkedDevicesIndex 0
-#define kSettingsIndex 1
-#define kMarkAllReadIndex 2
-#define kHelpIndex 3
-#define kDeveloperConsoleIndex 4
+#define kInvitationIndex 0
+#define kLinkedDevicesIndex 1
+#define kSettingsIndex 2
+#define kMarkAllReadIndex 3
+#define kHelpIndex 4
+#define kDeveloperConsoleIndex 5
 #define kImportExportIndex 998
 #define kDirectoryIndex 999
 
@@ -64,6 +67,11 @@ CGFloat const kRowHeight = 40;
     
     // Configure the cell...
     switch (indexPath.row) {
+        case kInvitationIndex:
+        {
+            cell.textLabel.text = NSLocalizedString(@"SHARE_INVITE_USERS", @"");
+        }
+            break;
         case kDirectoryIndex:
         {
             cell.textLabel.text = NSLocalizedString(@"Directory", @"");
@@ -151,6 +159,19 @@ CGFloat const kRowHeight = 40;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
+        case kInvitationIndex :  //  Invite people
+        {
+            // dismiss self
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+            // get top controller
+            UINavigationController *navController = (UINavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+            UIViewController *vc = [navController topViewController];
+
+            // Call service to make the invitation
+            [[[Environment getCurrent] invitationService] inviteUsersFrom:vc];
+        }
+            break;
         case kDirectoryIndex:  //         Directory selected
         {
             [self performSegueWithIdentifier:@"directorySegue" sender:[tableView cellForRowAtIndexPath:indexPath] ];
