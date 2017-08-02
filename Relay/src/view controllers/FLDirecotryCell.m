@@ -28,7 +28,7 @@
 -(void)configureCellWithContact:(FLContact *)contact
 {
     self.nameLabel.attributedText = [self attributedStringForContact:contact];
-
+    
     if (contact.image) {
         self.avatarImageView.image = contact.image;
     } else {
