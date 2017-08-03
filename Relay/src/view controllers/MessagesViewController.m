@@ -667,7 +667,7 @@ typedef enum : NSUInteger {
         if (configuration.isEnabled) {
             message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                           inThread:self.thread
-                                                       messageBody:text
+                                                       messageBody:@""
                                                      attachmentIds:[NSMutableArray new]
                                                   expiresInSeconds:configuration.durationSeconds];
         } else {
@@ -675,7 +675,7 @@ typedef enum : NSUInteger {
                                                           inThread:self.thread
                                                        messageBody:text];
         }
-
+        message.plainTextBody = text;
         [self.messageSender sendMessage:message
             success:^{
                 DDLogInfo(@"%@ Successfully sent message.", self.tag);

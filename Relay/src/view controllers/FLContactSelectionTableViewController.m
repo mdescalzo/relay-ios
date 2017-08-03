@@ -7,15 +7,15 @@
 //
 
 #import "FLContactSelectionTableViewController.h"
-#import "FLContact.h"
+#import "Contact.h"
 #import "FLDirectoryCell.h"
 #import "Environment.h"
 
 @interface FLContactSelectionTableViewController () <UISearchBarDelegate>
 
-@property (nonatomic, strong) NSArray<FLContact *> *content;
-@property (nonatomic, strong) NSArray<FLContact *> *searchResults;
-@property (nonatomic, strong) NSMutableArray<FLContact *> *selectedContacts;
+@property (nonatomic, strong) NSArray<Contact *> *content;
+@property (nonatomic, strong) NSArray<Contact *> *searchResults;
+@property (nonatomic, strong) NSMutableArray<Contact *> *selectedContacts;
 @property (nonatomic, strong) UISearchBar *searchBar;
 
 -(IBAction)doneTapped:(id)sender;
@@ -65,7 +65,7 @@
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
     
     // Configure the cell...
-    FLContact *contact;
+    Contact *contact;
     
     if (self.searchBar.text.length > 0) {
         contact = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
@@ -82,7 +82,7 @@
     
     FLDirectoryCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     
-    FLContact *selectedContact;
+    Contact *selectedContact;
     if (self.searchBar.text.length > 0) {
         selectedContact = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
     } else {
@@ -186,7 +186,7 @@
 
 
 #pragma mark - lazy instantiation
--(NSArray<FLContact *> *)content
+-(NSArray<Contact *> *)content
 {
     if (_content == nil) {
         NSArray *allContacts = [[[Environment getCurrent] contactsManager] allContacts];
@@ -197,7 +197,7 @@
     return _content;
 }
 
--(NSMutableArray<FLContact *> *)selectedContacts
+-(NSMutableArray<Contact *> *)selectedContacts
 {
     if (_selectedContacts == nil) {
         _selectedContacts = [NSMutableArray new];

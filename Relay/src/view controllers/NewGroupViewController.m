@@ -347,7 +347,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
     NSUInteger row   = (NSUInteger)indexPath.row;
-    FLContact *contact = contacts[row];
+    Contact *contact = contacts[row];
 
     [cell configureCellWithContact:contact];
 //    cell.nameLabel.attributedText = [self attributedStringForContact:contact inCell:cell];

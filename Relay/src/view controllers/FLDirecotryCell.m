@@ -25,7 +25,7 @@
     // Configure the view for the selected state
 }
 
--(void)configureCellWithContact:(FLContact *)contact
+-(void)configureCellWithContact:(Contact *)contact
 {
     self.nameLabel.attributedText = [self attributedStringForContact:contact];
     
@@ -51,7 +51,7 @@
     }
 }
 
-- (NSAttributedString *)attributedStringForContact:(FLContact *)contact {
+- (NSAttributedString *)attributedStringForContact:(Contact *)contact {
     NSMutableAttributedString *fullNameAttributedString =
     [[NSMutableAttributedString alloc] initWithString:contact.fullName];
     

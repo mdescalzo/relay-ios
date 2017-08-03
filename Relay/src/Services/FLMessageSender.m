@@ -27,10 +27,14 @@
      */
 
     // Make sure we have a UUID for the message
-    if (!message.uniqueId) {
-        message.uniqueId = [[NSUUID UUID] UUIDString];
+    if (!message.forstaMessageID) {
+        message.forstaMessageID = [[NSUUID UUID] UUIDString];
+        message.uniqueId = message.forstaMessageID;
     }
-
+    if (!message.thread.forstaThreadID) {
+        message.thread.forstaThreadID = [[NSUUID UUID] UUIDString];
+    }
+    
     // Check to see if blob is already JSON
     // Convert message body to JSON blob if necessary
     NSString *messageBlob = nil;

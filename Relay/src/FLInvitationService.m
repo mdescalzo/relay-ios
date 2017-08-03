@@ -8,7 +8,7 @@
 
 #import "FLInvitationService.h"
 #import "UIUtil.h"
-#import "FLContact.h"
+#import "Contact.h"
 
 @interface FLInvitationService() <FLContactSelectionTableViewControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
@@ -240,11 +240,11 @@
 }
 
 #pragma mark - convenience methods
--(NSArray *)smsNumbersFromContacts:(NSArray <FLContact *> *)contacts
+-(NSArray *)smsNumbersFromContacts:(NSArray <Contact *> *)contacts
 {
     NSMutableArray *holdingPen = [NSMutableArray new];
     
-    for (FLContact *contact in contacts) {
+    for (Contact *contact in contacts) {
         if ([contact.userTextPhoneNumbers firstObject]) {
             [holdingPen addObject:[contact.userTextPhoneNumbers firstObject]];
         }
@@ -252,11 +252,11 @@
     return [NSArray arrayWithArray:holdingPen];
 }
 
--(NSArray *)addressesFromContacts:(NSArray <FLContact *> *)contacts
+-(NSArray *)addressesFromContacts:(NSArray <Contact *> *)contacts
 {
     NSMutableArray *holdingPen = [NSMutableArray new];
     
-    for (FLContact *contact in contacts) {
+    for (Contact *contact in contacts) {
         if ([contact.emails firstObject]) {
             [holdingPen addObject:[contact.emails firstObject]];
         }

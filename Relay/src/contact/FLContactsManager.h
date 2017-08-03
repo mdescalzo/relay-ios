@@ -7,12 +7,12 @@
 //
 
 #import "OWSContactsManager.h"
-#import "FLContact.h"
+#import "Contact.h"
 
 @interface FLContactsManager : OWSContactsManager
 
 // Override to include CCSM sourced contacts.
-- (NSArray<FLContact *> *)ccsmContacts;
+- (NSArray<Contact *> *)ccsmContacts;
 - (NSArray<Contact *> *)allContacts;
 - (NSArray<Contact *> *)allValidContacts;
 

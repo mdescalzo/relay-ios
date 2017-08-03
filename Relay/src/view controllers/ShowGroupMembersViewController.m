@@ -86,7 +86,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         
         NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
         if ([self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
-            FLContact *contact = (FLContact *)[self contactForIndexPath:relativeIndexPath];
+            Contact *contact = [self contactForIndexPath:relativeIndexPath];
             [tmpCell configureCellWithContact:contact];
 //            cell.textLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
             

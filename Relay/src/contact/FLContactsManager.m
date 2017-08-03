@@ -48,7 +48,7 @@
 
 
 #pragma mark - Lazy Instantiation
-- (NSArray<FLContact *> *)ccsmContacts;
+- (NSArray<Contact *> *)ccsmContacts;
 {
     if (_ccsmContacts == nil) {
         NSMutableArray *tmpArray = [NSMutableArray new];
@@ -66,7 +66,7 @@
                 [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanStageID] ||
                 [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanProdID])) {
                 
-                FLContact *contact = [[FLContact alloc] initWithContactWithFirstName:[userDict objectForKey:@"first_name"]
+                Contact *contact = [[Contact alloc] initWithContactWithFirstName:[userDict objectForKey:@"first_name"]
                                                                          andLastName:[userDict objectForKey:@"last_name"]
                                                              andUserTextPhoneNumbers:@[ [userDict objectForKey:@"phone"] ]
                                                                             andImage:nil

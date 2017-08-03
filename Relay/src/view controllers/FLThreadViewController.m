@@ -519,15 +519,16 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         if (configuration.isEnabled) {
             message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                           inThread:thread
-                                                       messageBody:text
+                                                       messageBody:@""
                                                      attachmentIds:_attachmentIDs
                                                   expiresInSeconds:configuration.durationSeconds];
         } else {
             message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                           inThread:thread
-                                                       messageBody:text
+                                                       messageBody:@""
                                                      attachmentIds:_attachmentIDs];
         }
+        message.plainTextBody = text;
         
         [self.taggedRecipients removeAllObjects];
         [self updateRecipientsLabel];

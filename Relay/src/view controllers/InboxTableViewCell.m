@@ -63,13 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 //    UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager];
     self.threadId = thread.uniqueId;
     
-    NSString *snippetText;
-    NSArray *bodyArray = [self arrayFromMessageBody:thread.lastMessageLabel];
-    if (bodyArray == nil) {
-        snippetText = thread.lastMessageLabel;
-    } else {
-        snippetText = [self plainBodyStringFromBlob:bodyArray];
-    }
+    NSString *snippetText = thread.lastMessageLabel;
 //    NSString *snippetLabel             = thread.lastMessageLabel;
     NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
     NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];

@@ -58,8 +58,8 @@
 {
     NSNumber *version = [NSNumber numberWithInt:1];
     NSString *userAgent = [DeviceTypes deviceModelName];
-    NSString *messageId = (message.uniqueId ? message.uniqueId : @""); // unused?
-    NSString *threadId = @""; // (message.thread.uniqueId ? message.thread.uniqueId : @"");
+    NSString *messageId = message.forstaMessageID;
+    NSString *threadId = message.thread.forstaThreadID;
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *type = @"ordinary";
@@ -75,7 +75,7 @@
         }
     }
     NSDictionary *orgDict = [[Environment getCurrent].ccsmStorage getOrgInfo];
-    NSString *orgId = [orgDict objectForKey:@"id"];
+//    NSString *orgId = [orgDict objectForKey:@"id"];
 
     
     NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
@@ -104,8 +104,8 @@
         NSString *recipientTag = nil;
         NSString *recipientID = nil;
         if (memberID) {
-            FLContact *contact = (FLContact *)[Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
-            if ([contact respondsToSelector:@selector(tagPresentation)]) {
+            Contact *contact = [Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
+            if (contact.tagPresentation) {
                 recipientTag = contact.tagPresentation;
                 recipientID = contact.userID;
             } else {
@@ -145,9 +145,9 @@
                                }];
     // Handler for nil message.body
     NSDictionary *data;
-    if (message.body) {
+    if (message.plainTextBody) {
         data = @{ @"body": @[ @{ @"type": @"text/plain",
-                                 @"value": message.body }
+                                 @"value": message.plainTextBody }
 //                              @{ @"type": @"text/html",
 //                                 @"value": message.body }
                               ]
