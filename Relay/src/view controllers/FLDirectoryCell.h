@@ -6,7 +6,7 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "FLContact.h"
+#import "Contact.h"
 
 @import UIKit;
 
@@ -15,6 +15,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *avatarImageView;
 
--(void)configureCellWithContact:(FLContact *)contact;
+-(void)configureCellWithContact:(Contact *)contact;
 
 @end

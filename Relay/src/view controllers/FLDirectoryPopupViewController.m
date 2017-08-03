@@ -61,8 +61,8 @@
 //    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [tmpDict objectForKey:@"first_name" ], [tmpDict objectForKey:@"last_name"]];
 //    cell.textLabel.text = fullName;
     
-    FLContact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
-    cell.textLabel.text = [contact fullName];
+    Contact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+    cell.textLabel.text = contact.fullName;
     cell.detailTextLabel.text = contact.tagPresentation;
     
     return cell;
@@ -89,7 +89,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Tell Everyone a user was selected
-    FLContact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+    Contact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{ @"tag":contact.tagPresentation }];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -160,7 +160,7 @@
     if (_content == nil) {
         
         // Sort the content by last name
-        _content = [[self.contactsManager allValidContacts] sortedArrayUsingComparator: ^(FLContact *a1, FLContact *a2) {
+        _content = [[self.contactsManager allValidContacts] sortedArrayUsingComparator: ^(Contact *a1, Contact *a2) {
             return [a1.lastName compare:a2.lastName];
         }];
     }

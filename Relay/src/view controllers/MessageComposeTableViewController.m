@@ -405,7 +405,7 @@
 {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"DirectoryCell" forIndexPath:indexPath];
     
-    FLContact *contact = (FLContact *)[self contactForIndexPath:indexPath];
+    Contact *contact = [self contactForIndexPath:indexPath];
     
     [cell configureCellWithContact:contact];
     
@@ -435,7 +435,7 @@
     //    }
 }
 
-- (NSAttributedString *)attributedStringForContact:(FLContact *)contact {
+- (NSAttributedString *)attributedStringForContact:(Contact *)contact {
     NSMutableAttributedString *fullNameAttributedString =
     [[NSMutableAttributedString alloc] initWithString:contact.fullName];
     

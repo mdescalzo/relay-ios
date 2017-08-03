@@ -130,47 +130,6 @@
         if (message.attributedTextBody.string.length > 0) {
             adapter.attributedMessageBody = message.attributedTextBody;
         }
-        
-#warning Add catch for attributedtext below
-//        NSArray *bodyArray = [self arrayFromMessageBody:message.body];
-//        NSString *plainString = [self plainBodyStringFromBlob:bodyArray];
-//        NSString *htmlString = [self htmlBodyStringFromBlob:bodyArray];
-//        
-//        
-//        if (bodyArray == nil) {
-//            if (message.body) {
-//                adapter.messageBody = message.body;
-//                adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:message.body
-//                                                                                attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
-//            }
-//        } else if (htmlString.length > 0) {
-//            adapter.messageBody = plainString;
-//            NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
-//
-//            NSError *error = nil;
-////            NSDictionary *attributes;
-//            
-//            NSAttributedString *atrString = [[NSAttributedString alloc] initWithData:data
-//                                                                          options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-//                                                                                      NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
-//                                                               documentAttributes:nil
-//                                                                            error:&error];
-//            if (error) {
-//                DDLogError(@"%@", error.description);
-//            }
-//
-//            // hack to deal with appended newline on attributedStrings
-//            NSString *lastChar = [atrString.string substringWithRange:NSMakeRange(atrString.string.length-1, 1)];
-//            if ([lastChar isEqualToString:[NSString stringWithFormat:@"\n"]]) {
-//                atrString = [atrString attributedSubstringFromRange:NSMakeRange(0, atrString.string.length-1)];
-//            }
-//            adapter.attributedMessageBody = atrString;
-//        } else {
-//            adapter.messageBody = plainString;
-//            adapter.attributedMessageBody = [[NSAttributedString alloc] initWithString:plainString
-//                                                                            attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
-//        }
-       
 
         if ([message hasAttachments]) {
             for (NSString *attachmentID in message.attachmentIds) {
@@ -377,55 +336,55 @@
     return NO;
 }
 
-+(nullable NSArray *)arrayFromMessageBody:(NSString *)body
-{
-    // Checks passed message body to see if it is JSON,
-    //    If it is, return the array of contents
-    //    else, return nil.
-    NSError *error =  nil;
-    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
-    
-    if (data == nil) { // Not parseable.  Bounce out.
-        return nil;
-    }
-    
-    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    
-    if (error) {
-        return nil;
-    } else {
-        return output;
-    }
-}
-
-+(NSString *)plainBodyStringFromBlob:(NSArray *)blob
-{
-    if ([blob count] > 0) {
-        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
-        NSDictionary *data = [tmpDict objectForKey:@"data"];
-        NSArray *body = [data objectForKey:@"body"];
-        for (NSDictionary *dict in body) {
-            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
-                return (NSString *)[dict objectForKey:@"value"];
-            }
-        }
-    }
-    return @"";
-}
-
-+(NSString *)htmlBodyStringFromBlob:(NSArray *)blob
-{
-    if ([blob count] > 0) {
-        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
-        NSDictionary *data = [tmpDict objectForKey:@"data"];
-        NSArray *body = [data objectForKey:@"body"];
-        for (NSDictionary *dict in body) {
-            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/html"]) {
-                return (NSString *)[dict objectForKey:@"value"];
-            }
-        }
-    }
-    return @"";
-}
+//+(nullable NSArray *)arrayFromMessageBody:(NSString *)body
+//{
+//    // Checks passed message body to see if it is JSON,
+//    //    If it is, return the array of contents
+//    //    else, return nil.
+//    NSError *error =  nil;
+//    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+//    
+//    if (data == nil) { // Not parseable.  Bounce out.
+//        return nil;
+//    }
+//    
+//    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+//    
+//    if (error) {
+//        return nil;
+//    } else {
+//        return output;
+//    }
+//}
+//
+//+(NSString *)plainBodyStringFromBlob:(NSArray *)blob
+//{
+//    if ([blob count] > 0) {
+//        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
+//        NSDictionary *data = [tmpDict objectForKey:@"data"];
+//        NSArray *body = [data objectForKey:@"body"];
+//        for (NSDictionary *dict in body) {
+//            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
+//                return (NSString *)[dict objectForKey:@"value"];
+//            }
+//        }
+//    }
+//    return @"";
+//}
+//
+//+(NSString *)htmlBodyStringFromBlob:(NSArray *)blob
+//{
+//    if ([blob count] > 0) {
+//        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
+//        NSDictionary *data = [tmpDict objectForKey:@"data"];
+//        NSArray *body = [data objectForKey:@"body"];
+//        for (NSDictionary *dict in body) {
+//            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/html"]) {
+//                return (NSString *)[dict objectForKey:@"value"];
+//            }
+//        }
+//    }
+//    return @"";
+//}
 
 @end
