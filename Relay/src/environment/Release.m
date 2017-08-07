@@ -57,7 +57,7 @@ static unsigned char DH3K_PRIME[] = {
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
                                      serverPort:80
-                           masterServerHostName:@"textsecure.forsta.services"
+                           masterServerHostName:textSecureHostAddress
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
@@ -88,7 +88,7 @@ static unsigned char DH3K_PRIME[] = {
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
                                      serverPort:80
-                           masterServerHostName:@"textsecure.forsta.services"
+                           masterServerHostName:textSecureHostAddress
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
@@ -122,7 +122,7 @@ static unsigned char DH3K_PRIME[] = {
                                      errorNoter:^(id error, id relatedInfo, bool causedTermination) {
                                      }
                                      serverPort:80
-                           masterServerHostName:@"textsecure.forsta.services"
+                           masterServerHostName:textSecureHostAddress
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
