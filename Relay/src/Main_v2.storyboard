@@ -193,7 +193,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSf-Qr-IRY" userLabel="Group Details">
-                                <rect key="frame" x="0.0" y="64" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ih-fP-yXb">
                                         <rect key="frame" x="8" y="20" width="60" height="60"/>
@@ -228,7 +228,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="o27-I4-NuM">
-                                <rect key="frame" x="0.0" y="172" width="375" height="495"/>
+                                <rect key="frame" x="0.0" y="128" width="375" height="539"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="Fb7-QM-QUM" userLabel="Header View">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
@@ -870,7 +870,7 @@
                     <navigationItem key="navigationItem" id="tsE-8I-iC0">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="lrF-HT-8cp">
                             <connections>
-                                <segue destination="Nj7-a0-Eh5" kind="unwind" unwindAction="unwindToSettings:" id="pSE-KH-icF"/>
+                                <segue destination="Nj7-a0-Eh5" kind="unwind" unwindAction="unwindToMessagesView:" id="Igb-S2-7cL"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -889,7 +889,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eZV-VK-PFp" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Nj7-a0-Eh5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="10023.200000000001" y="-804.64767616191909"/>
+            <point key="canvasLocation" x="10050" y="-759"/>
         </scene>
         <!--Linked Devices-->
         <scene sceneID="iW9-gn-dGk">
@@ -977,7 +977,7 @@
                     <navigationItem key="navigationItem" title="Linked Devices" id="okS-cj-QL6">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="6NQ-1r-n2y">
                             <connections>
-                                <segue destination="zI9-ci-qNQ" kind="unwind" unwindAction="unwindToSettings:" id="kvF-Hs-n7n"/>
+                                <segue destination="zI9-ci-qNQ" kind="unwind" unwindAction="unwindToMessagesView:" id="Up8-EV-6F9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1013,7 +1013,7 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_devices_ios" translatesAutoresizingMaskIntoConstraints="NO" id="gZa-RH-2nr">
-                                        <rect key="frame" x="86" y="75" width="172" height="114.5"/>
+                                        <rect key="frame" x="86.5" y="75" width="172" height="114.5"/>
                                         <color key="tintColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="gZa-RH-2nr" secondAttribute="height" multiplier="3:2" id="g5S-A6-tmp"/>
@@ -1444,10 +1444,10 @@
                                 <blurEffect style="dark"/>
                             </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVh-Q0-OLZ" userLabel="Scanner Container">
-                                <rect key="frame" x="0.0" y="-334" width="375" height="334"/>
+                                <rect key="frame" x="0.0" y="-333.5" width="375" height="333.5"/>
                                 <subviews>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HoL-y4-fNB" userLabel="Scanner">
-                                        <rect key="frame" x="0.0" y="64" width="375" height="270"/>
+                                        <rect key="frame" x="0.0" y="64" width="375" height="269.5"/>
                                         <connections>
                                             <segue destination="NDn-Y2-UVg" kind="embed" identifier="embedIdentityQRScanner" id="pX0-Xh-GbJ"/>
                                         </connections>
@@ -1461,7 +1461,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3E-gn-ARi" userLabel="QR Container">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="334"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="333.5"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan the QR Code on your contact's device." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="UlP-mk-1Fv">
                                         <rect key="frame" x="16" y="16" width="343" height="21"/>
@@ -1470,10 +1470,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Ja-jq-VER" userLabel="QR Frame">
-                                        <rect key="frame" x="61" y="72" width="254" height="254"/>
+                                        <rect key="frame" x="61.5" y="72" width="253.5" height="253.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnQRShow--white" highlightedImage="btnQRShow--white-1" translatesAutoresizingMaskIntoConstraints="NO" id="QS7-82-XS4" userLabel="Privacy Verification QR">
-                                                <rect key="frame" x="42" y="43" width="169" height="169"/>
+                                                <rect key="frame" x="42" y="43" width="168" height="168.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="QS7-82-XS4" secondAttribute="height" multiplier="1:1" id="0Yr-Zg-AeW"/>
                                                 </constraints>
@@ -1499,7 +1499,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0If-50-zKT" userLabel="Instructions Container">
-                                <rect key="frame" x="0.0" y="334" width="375" height="289"/>
+                                <rect key="frame" x="0.0" y="333.5" width="375" height="289.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12345 54432 83456 89456 24327 87547 90123 31523 91052 84930 89304 00234" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aZk-BC-zSe" userLabel="Privacy Verification Key Text" customClass="OWSHighlightableLabel">
                                         <rect key="frame" x="36" y="0.0" width="303" height="70"/>
@@ -1517,7 +1517,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan the code on your contact's device, or ask them to scan your code to verify that your messages are end-to-end encrypted." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2PR-fE-Pz5" userLabel="Instructions ">
-                                        <rect key="frame" x="16" y="78" width="343" height="109"/>
+                                        <rect key="frame" x="16" y="78" width="343" height="109.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="JLz-CZ-93p"/>
                                         </constraints>
@@ -1526,7 +1526,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Mw-ZdQ">
-                                        <rect key="frame" x="117" y="207" width="141" height="70"/>
+                                        <rect key="frame" x="117" y="207.5" width="141" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="qmu-qx-kT7"/>
                                         </constraints>
@@ -1702,7 +1702,7 @@
                         <viewControllerLayoutGuide type="bottom" id="F3i-6f-KPJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Fl4-dV-Nfh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="269.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
