@@ -39,6 +39,19 @@
 - (void)getThing:(NSString *)urlString
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
+
+-(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
+                          signalingKey:(NSString *)signalingKey
+                               authKey:(NSString *)authToken
+                               success:(void (^)())successBlock
+                               failure:(void (^)(NSError *error))failureBlock;
+
+-(void)registerWithTSSViaCCSMForPhone:(NSString *)phone
+                          signalingKey:(NSString *)signalingKey
+                               authKey:(NSString *)authToken
+                              Success:(void (^)())successBlock
+                              failure:(void (^)(NSError *error))failureBlock;
+
 @end
 
 #endif /* CCSMCommunication_h */

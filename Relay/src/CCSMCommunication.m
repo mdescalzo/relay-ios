@@ -402,4 +402,65 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMTagsUpdated object:nil];
 }
 
+-(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
+                          signalingKey:(NSString *)signalingKey
+                               authKey:(NSString *)authToken
+                               success:(void (^)())successBlock
+                               failure:(void (^)(NSError *error))failureBlock
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/provision-proxy/", FLHomeURL];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"PUT"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+#warning Pick one of these:
+    [request setValue:[[Environment getCurrent].ccsmStorage getSessionToken] forHTTPHeaderField:@"Authorization"];
+    [request setValue:authToken forHTTPHeaderField:@"Authorization"];
+    
+    NSDictionary *bodyDict = @{ @"signalingKey": signalingKey,
+                                @"supportSms" : @YES,
+                                @"fetchMessages" : @YES,
+                                @"registrationId" : @"",
+                                @"deviceName" : @"",
+                                @"password" : @""
+                               };
+
+    NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDict options:0 error:nil];
+    [request setHTTPBody:bodyData];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response,
+                                               NSData *data, NSError *connectionError)
+     {
+         
+         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+         DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+         if (connectionError != nil)  // Failed connection
+         {
+             failureBlock(connectionError);
+         }
+         else if (HTTPresponse.statusCode == 200) // SUCCESS!
+         {
+             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                    options:0
+                                                                      error:NULL];
+             [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
+             [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+             successBlock();
+         }
+         else  // Connection good, error from server
+         {
+             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                  code:HTTPresponse.statusCode
+                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+             failureBlock(error);
+         }
+     }];
+    
+}
+
+
 @end

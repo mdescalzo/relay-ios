@@ -115,7 +115,7 @@ NSUInteger maximumValidationAttempts = 9999;
     return YES;
 }
 
--(void)validationSucceeded
+-(void)ccsmValidationSucceeded
 {
     // refresh other stuff now that we have the user info...
     NSMutableDictionary * users= [[self.ccsmStorage getUsers] mutableCopy];
@@ -148,23 +148,24 @@ NSUInteger maximumValidationAttempts = 9999;
                                          NSLog(@"Failed to retrieve all users after login validation");
                                      }];
     
+    // TSS Registration handling
     // Check if registered and proceed to next storyboard accordingly
-    NSString *targetSegue = nil;
-    if ([TSAccountManager isRegistered])
-        targetSegue = @"mainSegue";
-    else
-        targetSegue = @"registrationSegue";
-    
-    // Move on to the Registration storyboard
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner stopAnimating];
-        self.validationButton.enabled = YES;
-        self.validationButton.alpha = 1.0;
-        [self performSegueWithIdentifier:targetSegue sender:self];
-    });
+    if ([TSAccountManager isRegistered]) {
+        // We are, move on to main
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.spinner stopAnimating];
+            self.validationButton.enabled = YES;
+            self.validationButton.alpha = 1.0;
+            [self performSegueWithIdentifier:@"mainSegue" sender:self];
+        });
+    } else {
+        // Not registered with TSS, ask CCSM to do it for us.
+        
+    }
+
 }
 
--(void)validationFailed
+-(void)ccsmValidationFailed
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner stopAnimating];
@@ -193,10 +194,10 @@ NSUInteger maximumValidationAttempts = 9999;
     NSString *code = self.validationCodeTextField.text;
     [self.ccsmCommManager verifyLogin:code
                               success:^{
-                                  [self validationSucceeded];
+                                  [self ccsmValidationSucceeded];
                               }
                               failure:^(NSError *err){
-                                  [self validationFailed];
+                                  [self ccsmValidationFailed];
                               }];
 }
 
