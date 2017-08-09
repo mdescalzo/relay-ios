@@ -6,9 +6,18 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Environment.h"
 #import "CCSMCommunication.h"
+#import "DeviceTypes.h"
+#import "TSAccountManager.h"
+#import "SignalKeyingStorage.h"
+#import "SecurityUtils.h"
+#import "NSData+Base64.h"
+#import "TSStorageManager.h"
+#import "TSSocketManager.h"
+#import "TSPreKeyManager.h"
+
+@import Foundation;
 
 @interface CCSMCommManager ()
 
@@ -403,31 +412,38 @@
 }
 
 -(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
-                          signalingKey:(NSString *)signalingKey
-                               authKey:(NSString *)authToken
                                success:(void (^)())successBlock
                                failure:(void (^)(NSError *error))failureBlock
 {
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/provision-proxy/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+    NSString *authToken = [[Environment getCurrent].ccsmStorage getSessionToken];
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"PUT"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
-#warning Pick one of these:
-    [request setValue:[[Environment getCurrent].ccsmStorage getSessionToken] forHTTPHeaderField:@"Authorization"];
-    [request setValue:authToken forHTTPHeaderField:@"Authorization"];
+    [request setValue:[NSString stringWithFormat:@"JWT %@", authToken] forHTTPHeaderField:@"Authorization"];
+    
+    NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:52];
+    NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
+
+    NSString *deviceName = [DeviceTypes deviceModelName];
+    [SignalKeyingStorage generateServerAuthPassword];
+    NSString *password = [SignalKeyingStorage serverAuthPassword];
     
     NSDictionary *bodyDict = @{ @"signalingKey": signalingKey,
-                                @"supportSms" : @YES,
+                                @"supportSms" : @NO,
                                 @"fetchMessages" : @YES,
-                                @"registrationId" : @"",
-                                @"deviceName" : @"",
-                                @"password" : @""
+                                @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
+                                @"deviceName" : deviceName,
+                                @"password" : password
                                };
 
     NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDict options:0 error:nil];
     [request setHTTPBody:bodyData];
+
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response,
@@ -443,12 +459,19 @@
          }
          else if (HTTPresponse.statusCode == 200) // SUCCESS!
          {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
-             [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-             [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
-             // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+             if (data.length > 0 && connectionError == nil)
+             {
+                 NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:0
+                                                                          error:NULL];
+                 successBlock(result);
+                 DDLogDebug(@"Results: %@", result);
+                 
+                 [TSStorageManager storeServerToken:authToken signalingKey:signalingKey];
+                 [[TSStorageManager sharedManager] storePhoneNumber:userID];
+                 [TSSocketManager becomeActiveFromForeground];
+                 [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
+            }
              successBlock();
          }
          else  // Connection good, error from server

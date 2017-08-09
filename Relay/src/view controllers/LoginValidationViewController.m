@@ -10,6 +10,7 @@
 #import "TSAccountManager.h"
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
+#import "Environment.h"
 
 NSUInteger maximumValidationAttempts = 9999;
 
@@ -160,25 +161,43 @@ NSUInteger maximumValidationAttempts = 9999;
         });
     } else {
         // Not registered with TSS, ask CCSM to do it for us.
-        
+        [self.ccsmCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
+                                                      success:^{
+                                                          [self.spinner stopAnimating];
+                                                          self.validationButton.enabled = YES;
+                                                          self.validationButton.alpha = 1.0;
+                                                          [self performSegueWithIdentifier:@"mainSegue" sender:self];
+                                                      }
+                                                      failure:^(NSError *error) {
+                                                          DDLogError(@"TSS Validation error: %@", error.description);
+                                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                          message:error.description
+                                                                                                         delegate:nil
+                                                                                                cancelButtonTitle:@"OK"
+                                                                                                otherButtonTitles:nil];
+                                                          [alert show];
+                                                      }];
     }
-
+    
 }
 
 -(void)ccsmValidationFailed
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner stopAnimating];
-        self.validationButton.enabled = YES;
-        self.validationButton.alpha = 1.0;
-    });
-
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
-                               delegate:nil
-                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                      otherButtonTitles:nil]
-     show];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
+                                                                   message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action) {
+                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                             [self.spinner stopAnimating];
+                                                             self.validationButton.enabled = YES;
+                                                             self.validationButton.alpha = 1.0;
+                                                         });
+                                                     }];
+    [alert addAction:okButton];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Button actions
