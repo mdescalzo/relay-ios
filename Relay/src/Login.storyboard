@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ir9-Se-0YC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ir9-Se-0YC">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -190,8 +190,8 @@
                                     <constraint firstAttribute="height" constant="56" id="Iwa-d6-V2g"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="     Change Credentials">
-                                    <color key="titleColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="        Change Credentials">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -246,6 +246,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="changeCredButton" destination="SQE-qx-WiV" id="Flt-5f-nba"/>
                         <outlet property="resendCodeButton" destination="ic9-2W-eAg" id="f7a-ty-GZa"/>
                         <outlet property="spinner" destination="eSA-GE-T4t" id="phb-Tq-ZM0"/>
                         <outlet property="validationButton" destination="pzC-eI-juG" id="df0-Vn-b6A"/>
@@ -265,7 +266,7 @@
                 <viewControllerPlaceholder storyboardName="Registration" id="IvH-DS-Gho" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9FC-42-eZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="534" y="177"/>
+            <point key="canvasLocation" x="518" y="107"/>
         </scene>
         <!--Main_v2-->
         <scene sceneID="30S-pw-aQx">
@@ -273,7 +274,7 @@
                 <viewControllerPlaceholder storyboardName="Main_v2" id="lHa-vW-cYk" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lxn-3l-bHY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="499" y="239"/>
+            <point key="canvasLocation" x="538" y="286"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Rua-rS-UBS">
