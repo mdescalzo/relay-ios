@@ -411,6 +411,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMTagsUpdated object:nil];
 }
 
+
+#pragma mark - CCSM proxied TextSecure registration
 -(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
                                success:(void (^)())successBlock
                                failure:(void (^)(NSError *error))failureBlock
@@ -467,7 +469,9 @@
                  successBlock(result);
                  DDLogDebug(@"Results: %@", result);
                  
-                 [TSStorageManager storeServerToken:authToken signalingKey:signalingKey];
+                 [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
+                 
+                 [TSStorageManager storeServerToken:password signalingKey:signalingKey];
                  [[TSStorageManager sharedManager] storePhoneNumber:userID];
                  [TSSocketManager becomeActiveFromForeground];
                  [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];

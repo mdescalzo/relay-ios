@@ -38,6 +38,7 @@ NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
 @implementation CCSMStorage
 
 @synthesize supermanId = _supermanId;
+@synthesize textSecureURL = _textSecureURL;
 
 NSString *const CCSMStorageDatabaseCollection = @"CCSMInformation";
 
@@ -49,6 +50,7 @@ NSString *const CCSMStorageKeyOrgInfo = @"Org Info";
 NSString *const CCSMStorageKeyUsers = @"Users";
 NSString *const CCSMStorageKeyTags = @"Tags";
 NSString *const CCSMStorageKeySupermanId = @"SupermanID";
+NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 
 - (nullable id)tryGetValueForKey:(NSString *)key
 {
@@ -158,6 +160,22 @@ NSString *const CCSMStorageKeySupermanId = @"SupermanID";
     if (![_supermanId isEqualToString:value]) {
         _supermanId = [value copy];
         [self setValueForKey:CCSMStorageKeySupermanId toValue:value];
+    }
+}
+
+-(NSString *)textSecureURL
+{
+    if (_textSecureURL == nil) {
+        _textSecureURL = [self tryGetValueForKey:CCSMStorageKeyTSServerURL];
+    }
+    return _textSecureURL;
+}
+
+-(void)setTextSecureURL:(NSString *)value
+{
+    if (![_textSecureURL isEqualToString:value]) {
+        _textSecureURL = [value copy];
+        [self setValueForKey:CCSMStorageKeyTSServerURL toValue:value];
     }
 }
 

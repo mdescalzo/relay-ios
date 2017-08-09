@@ -176,6 +176,9 @@ NSUInteger maximumValidationAttempts = 9999;
                                                                                                 cancelButtonTitle:@"OK"
                                                                                                 otherButtonTitles:nil];
                                                           [alert show];
+                                                          [self.spinner stopAnimating];
+                                                          self.validationButton.enabled = YES;
+                                                          self.validationButton.alpha = 1.0;
                                                       }];
     }
     
