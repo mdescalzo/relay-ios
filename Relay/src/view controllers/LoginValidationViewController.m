@@ -11,6 +11,8 @@
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
 #import "Environment.h"
+#import "SignalsNavigationController.h"
+#import "AppDelegate.h"
 
 NSUInteger maximumValidationAttempts = 9999;
 
@@ -37,6 +39,7 @@ NSUInteger maximumValidationAttempts = 9999;
     self.validationCodeTextField.placeholder = NSLocalizedString(@"Enter Validation Code", @"");
     self.validationButton.titleLabel.text = NSLocalizedString(@"Validate", @"");
     self.resendCodeButton.titleLabel.text = NSLocalizedString(@"Send New Code", @"");
+    self.changeCredButton.titleLabel.text = NSLocalizedString(@"        Change Credentials", @"");
     
     // Setup tap recognizer for keyboard dismissal
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewTapped:)];
@@ -55,15 +58,27 @@ NSUInteger maximumValidationAttempts = 9999;
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString: @"mainSegue"]) {
+        SignalsNavigationController *snc = (SignalsNavigationController *)segue.destinationViewController;
+        
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        appDelegate.window.rootViewController = snc;
+        if (![snc.topViewController isKindOfClass:[FLThreadViewController class]]) {
+            DDLogError(@"%@ Unexpected top view controller: %@", self.tag, snc.topViewController);
+            return;
+        }
+        DDLogDebug(@"%@ notifying signals view controller of new user.", self.tag);
+        FLThreadViewController *forstaVC = (FLThreadViewController *)snc.topViewController;
+        forstaVC.newlyRegisteredUser = YES;
+    }
 }
-*/
+
 #pragma mark - move controls up to accomodate keyboard.
 -(void)keyboardWillShow:(NSNotification *)notification
 {
@@ -152,7 +167,7 @@ NSUInteger maximumValidationAttempts = 9999;
     // TSS Registration handling
     // Check if registered and proceed to next storyboard accordingly
     if ([TSAccountManager isRegistered]) {
-        // We are, move on to main
+        // We are, move onto main
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.spinner stopAnimating];
             self.validationButton.enabled = YES;
@@ -176,9 +191,11 @@ NSUInteger maximumValidationAttempts = 9999;
                                                                                                 cancelButtonTitle:@"OK"
                                                                                                 otherButtonTitles:nil];
                                                           [alert show];
-                                                          [self.spinner stopAnimating];
-                                                          self.validationButton.enabled = YES;
-                                                          self.validationButton.alpha = 1.0;
+                                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                                              [self.spinner stopAnimating];
+                                                              self.validationButton.enabled = YES;
+                                                              self.validationButton.alpha = 1.0;
+                                                          });
                                                       }];
     }
     
@@ -259,6 +276,16 @@ NSUInteger maximumValidationAttempts = 9999;
     return YES;
 }
 
+#pragma mark - Logging
 
++ (NSString *)tag
+{
+    return [NSString stringWithFormat:@"[%@]", self.class];
+}
+
+- (NSString *)tag
+{
+    return self.class.tag;
+}
 
 @end

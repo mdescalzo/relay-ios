@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *validationButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (weak, nonatomic) IBOutlet UIButton *resendCodeButton;
+@property (weak, nonatomic) IBOutlet UIButton *changeCredButton;
 
 -(IBAction)onValidationButtonTap:(id)sender;
 
