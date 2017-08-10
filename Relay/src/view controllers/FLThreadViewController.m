@@ -66,7 +66,7 @@
 #define kLogoButtonTag 1001
 
 NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
-NSString *kUserIDKey = @"phone";
+NSString *kUserIDKey = @"id";
 NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 
@@ -509,7 +509,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         NSDictionary *recipientBlob = [tmpDict objectForKey:[tmpDict allKeys].lastObject];
         NSString *recipientID = [recipientBlob objectForKey:kUserIDKey];
         
+#warning Thread use departure
         TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
+//        TSThread *thread = [TSThread getOrCreateThreadWithID:<#(nonnull NSString *)#>];
         
         TSOutgoingMessage *message;
         
