@@ -1025,7 +1025,7 @@ typedef enum : NSUInteger {
         }
     } else if (message.messageType == TSIncomingMessageAdapter && [self.thread isKindOfClass:[TSGroupThread class]]) {
         TSIncomingMessage *incomingMessage = (TSIncomingMessage *)message.interaction;
-        NSString *_Nonnull name = [self.contactsManager nameStringForPhoneIdentifier:incomingMessage.authorId];
+        NSString *_Nonnull name = [self.contactsManager nameStringForContactID:incomingMessage.authorId];
         NSAttributedString *senderNameString = [[NSAttributedString alloc] initWithString:name];
 
         return senderNameString;
@@ -1485,7 +1485,7 @@ typedef enum : NSUInteger {
 - (void)tappedInvalidIdentityKeyErrorMessage:(TSInvalidIdentityKeyErrorMessage *)errorMessage
 {
     [self acceptNewIDKeyWithMessage:errorMessage];
-//    NSString *keyOwner = [self.contactsManager nameStringForPhoneIdentifier:errorMessage.theirSignalId];
+//    NSString *keyOwner = [self.contactsManager nameStringForContactID:errorMessage.theirSignalId];
 //    NSString *titleFormat = NSLocalizedString(@"SAFETY_NUMBERS_ACTIONSHEET_TITLE", @"Action sheet heading");
 //    NSString *titleText = [NSString stringWithFormat:titleFormat, keyOwner];
 //    NSArray *actions = @[
@@ -1558,7 +1558,7 @@ typedef enum : NSUInteger {
         }
         OWSFingerprint *fingerprint = (OWSFingerprint *)sender;
 
-        NSString *contactName = [self.contactsManager nameStringForPhoneIdentifier:fingerprint.theirStableId];
+        NSString *contactName = [self.contactsManager nameStringForContactID:fingerprint.theirStableId];
         [vc configureWithThread:self.thread fingerprint:fingerprint contactName:contactName];
     } else if ([segue.destinationViewController isKindOfClass:[OWSConversationSettingsTableViewController class]]) {
         OWSConversationSettingsTableViewController *controller

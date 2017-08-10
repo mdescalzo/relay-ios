@@ -473,7 +473,7 @@
                  NSString *deviceID = [result objectForKey:@"deviceId"];
                  
                  [TSStorageManager storeServerToken:password signalingKey:signalingKey];
-                 [[TSStorageManager sharedManager] storePhoneNumber:[NSString stringWithFormat:@"%@", userID]];
+                 [[TSStorageManager sharedManager] storePhoneNumber:userID];
                  [TSSocketManager becomeActiveFromForeground];
                  [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
             }

@@ -39,7 +39,7 @@
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-//    self.contacts = [[[Environment getCurrent] contactsManager] allValidContacts];
+    self.contacts = [[[Environment getCurrent] contactsManager] ccsmContacts];
     
     self.searchResults = self.contacts;
     [self initializeSearch];

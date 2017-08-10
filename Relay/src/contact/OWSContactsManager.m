@@ -478,12 +478,12 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
 }
 
 
-- (NSString *)nameStringContactID:(NSString *)identifier {
+- (NSString *)nameStringForContactID:(NSString *)identifier {
     if (!identifier) {
         return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
                                  @"Displayed if for some reason we can't determine a contacts ID *or* name");
     }
-    for (Contact *contact in self.allContacts) {
+    for (Contact *contact in [self ccsmContacts]) {
         if ([contact.userID isEqualToString:identifier]) {
             return contact.fullName;
         }
