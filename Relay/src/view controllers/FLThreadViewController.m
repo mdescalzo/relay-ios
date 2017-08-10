@@ -74,7 +74,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 
-@property (strong, nonatomic, readonly) FLContactsManager *contactsManager;
+@property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
 //@property (nonatomic, readonly) OWSMessageSender *messageSender;
 @property (nonatomic, readonly) FLMessageSender *messageSender;

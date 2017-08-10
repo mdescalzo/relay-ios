@@ -166,7 +166,6 @@
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB065618170B34006006FC /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
-		7D123CA21F016C5F003B55EB /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
 		7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
@@ -350,7 +349,6 @@
 		7D4A3A721F1693930023C29B /* JitterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FC18BBEC1A00F073E5 /* JitterQueue.m */; };
 		7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
-		7D4A3A751F1693930023C29B /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
 		7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
 		7D4A3A771F1693930023C29B /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
 		7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
@@ -663,7 +661,6 @@
 		7DCFFE191F0EE4490003CD95 /* JitterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FC18BBEC1A00F073E5 /* JitterQueue.m */; };
 		7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
-		7DCFFE1C1F0EE4490003CD95 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
 		7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
 		7DCFFE1E1F0EE4490003CD95 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
 		7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
@@ -1465,8 +1462,6 @@
 		76EB050C18170B33006006FC /* InCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCallViewController.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
-		7D123CA01F016C5F003B55EB /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
-		7D123CA11F016C5F003B55EB /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
 		7D2472691EF0C80B0048126F /* FLConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLConversationViewController.h; sourceTree = "<group>"; };
 		7D24726A1EF0C80B0048126F /* FLConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLConversationViewController.m; sourceTree = "<group>"; };
 		7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSlackTextViewController.a; path = "../Library/Developer/Xcode/DerivedData/Relay-gkridggddzianpfuvzrdybphatso/Build/Products/Debug-iphonesimulator/SlackTextViewController/libSlackTextViewController.a"; sourceTree = "<group>"; };
@@ -2141,8 +2136,6 @@
 				76EB040918170B33006006FC /* OWSContactsManager.m */,
 				45843D1D1D2236B30013E85A /* OWSContactsSearcher.h */,
 				45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */,
-				7D123CA01F016C5F003B55EB /* FLContactsManager.h */,
-				7D123CA11F016C5F003B55EB /* FLContactsManager.m */,
 			);
 			path = contact;
 			sourceTree = "<group>";
@@ -4199,7 +4192,6 @@
 				7D4A3A721F1693930023C29B /* JitterQueue.m in Sources */,
 				7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */,
 				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
-				7D4A3A751F1693930023C29B /* FLContactsManager.m in Sources */,
 				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
 				7D4A3A771F1693930023C29B /* iRate.m in Sources */,
 				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
@@ -4426,7 +4418,6 @@
 				7DCFFE191F0EE4490003CD95 /* JitterQueue.m in Sources */,
 				7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */,
 				7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */,
-				7DCFFE1C1F0EE4490003CD95 /* FLContactsManager.m in Sources */,
 				7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */,
 				7DCFFE1E1F0EE4490003CD95 /* iRate.m in Sources */,
 				7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */,
@@ -4653,7 +4644,6 @@
 				E197B61518BBEC1A00F073E5 /* JitterQueue.m in Sources */,
 				BFB074C919A5611000F2947C /* ObservableValue.m in Sources */,
 				B68EF9BA1C0B1EBD009C3DCD /* FLAnimatedImage.m in Sources */,
-				7D123CA21F016C5F003B55EB /* FLContactsManager.m in Sources */,
 				B68112EA1A4D9EC400BA82FF /* UIImage+normalizeImage.m in Sources */,
 				B609597C1C2C0FC6004E8797 /* iRate.m in Sources */,
 				76EB05C818170B33006006FC /* HelloPacket.m in Sources */,

@@ -426,6 +426,80 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     return nil;
 }
 
+#pragma mark - Lazy Instantiation
+- (NSArray<Contact *> *)ccsmContacts;
+{
+    if (_ccsmContacts == nil) {
+        NSMutableArray *tmpArray = [NSMutableArray new];
+        
+        //        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
+        NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
+        //        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
+        
+        for (NSString *key in usersBlob.allKeys) {
+            //            NSDictionary *tmpDict = [usersBlob objectForKey:key];
+            NSDictionary *userDict = [usersBlob objectForKey:key]; //[tmpDict objectForKey:tmpDict.allKeys.lastObject];
+            
+            // Filter out superman, no one sees superman
+            if (!([[userDict objectForKey:@"phone"] isEqualToString:FLSupermanDevID] ||
+                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanStageID] ||
+                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanProdID])) {
+                
+                Contact *contact = [[Contact alloc] initWithContactWithFirstName:[userDict objectForKey:@"first_name"]
+                                                                     andLastName:[userDict objectForKey:@"last_name"]
+                                                         andUserTextPhoneNumbers:@[ [userDict objectForKey:@"phone"] ]
+                                                                        andImage:nil
+                                                                    andContactID:0];
+                contact.userID = [userDict objectForKey:@"id"];
+                
+                NSArray *tagsArray = [userDict objectForKey:@"tags"];
+                for (NSDictionary *tag in tagsArray) {
+                    if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
+                        contact.tagID = [tag objectForKey:@"id"];
+                        
+                        NSDictionary *subTag = [tag objectForKey:@"tag"];
+                        contact.tagPresentation = [subTag objectForKey:@"slug"];
+                        break;
+                    }
+                }
+                
+                [tmpArray addObject:contact];
+            }
+        }
+        _ccsmContacts = [NSArray arrayWithArray:tmpArray];
+    }
+    return _ccsmContacts;
+}
+
+-(void)refreshCCSMContacts
+{
+    _ccsmContacts = nil;
+    [self ccsmContacts];
+}
+
+
+- (NSString *)nameStringContactID:(NSString *)identifier {
+    if (!identifier) {
+        return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
+                                 @"Displayed if for some reason we can't determine a contacts ID *or* name");
+    }
+    for (Contact *contact in self.allContacts) {
+        if ([contact.userID isEqualToString:identifier]) {
+            return contact.fullName;
+        }
+    }
+    return identifier;
+}
+
+- (UIImage *)imageForContactID:(NSString *)identifier {
+    for (Contact *contact in self.allContacts) {
+        if ([contact.userID isEqualToString:identifier]) {
+            return contact.image;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - Logging
 
 + (NSString *)tag

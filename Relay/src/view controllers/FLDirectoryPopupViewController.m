@@ -8,7 +8,7 @@
 
 #import "CCSMStorage.h"
 #import "FLDirectoryPopupViewController.h"
-#import "FLContactsManager.h"
+#import "OWSContactsManager.h"
 
 #import "Environment.h"
 
@@ -18,7 +18,7 @@
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, strong) NSDictionary *contentDictionary;
 @property (nonatomic, strong) NSArray *content;
-@property (nonatomic, strong) FLContactsManager *contactsManager;
+@property (nonatomic, strong) OWSContactsManager *contactsManager;
 
 @end
 
@@ -147,7 +147,7 @@
     return _ccsmStorage;
 }
 
--(FLContactsManager *)contactsManager
+-(OWSContactsManager *)contactsManager
 {
     if (_contactsManager == nil) {
         _contactsManager = [Environment getCurrent].contactsManager;
@@ -160,7 +160,9 @@
     if (_content == nil) {
         
         // Sort the content by last name
-        _content = [[self.contactsManager allValidContacts] sortedArrayUsingComparator: ^(Contact *a1, Contact *a2) {
+//        _content = [[self.contactsManager allValidContacts] sortedArrayUsingComparator: ^(Contact *a1, Contact *a2) {
+        _content = [[self.contactsManager ccsmContacts] sortedArrayUsingComparator: ^(Contact *a1, Contact *a2) {
+
             return [a1.lastName compare:a2.lastName];
         }];
     }

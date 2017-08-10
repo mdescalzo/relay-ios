@@ -66,7 +66,7 @@ static Environment *environment = nil;
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
-                contactsManager:(FLContactsManager *)contactsManager
+                contactsManager:(OWSContactsManager *)contactsManager
                 contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender

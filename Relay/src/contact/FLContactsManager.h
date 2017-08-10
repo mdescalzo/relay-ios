@@ -18,4 +18,7 @@
 
 -(void)refreshCCSMContacts;
 
+- (NSString *)nameStringForPhoneIdentifier:(NSString *)identifier;
+- (UIImage *)imageForPhoneIdentifier:(NSString *)identifier;
+
 @end

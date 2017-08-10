@@ -19,6 +19,8 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 
 @property CNContactStore *contactStore;
 
+@property (nonatomic, strong) NSArray *ccsmContacts;
+
 - (ObservableValue *)getObservableContacts;
 
 - (NSArray *)getContactsFromAddressBook:(ABAddressBookRef)addressBook;
@@ -29,12 +31,18 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 - (NSArray<Contact *> *)allContacts;
 - (NSArray<Contact *> *)signalContacts;
 - (NSArray *)textSecureContacts;
+- (NSArray<Contact *> *)ccsmContacts;
 
 - (void)doAfterEnvironmentInitSetup;
 
 - (NSString *)nameStringForPhoneIdentifier:(NSString *)identifier;
 - (UIImage *)imageForPhoneIdentifier:(NSString *)identifier;
 
+- (NSString *)nameStringContactID:(NSString *)identifier;
+- (UIImage *)imageForContactID:(NSString *)identifier;
+
 + (NSComparator)contactComparator;
+
+-(void)refreshCCSMContacts;
 
 @end
