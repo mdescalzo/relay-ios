@@ -437,7 +437,7 @@
     
     NSDictionary *bodyDict = @{ @"signalingKey": signalingKey,
                                 @"supportSms" : @NO,
-                                @"fetchMessages" : @YES,
+                                @"fetchesMessages" : @YES,
                                 @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
                                 @"deviceName" : deviceName,
                                 @"password" : password
@@ -470,9 +470,10 @@
                  DDLogDebug(@"Results: %@", result);
                  
                  [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
+                 NSString *deviceID = [result objectForKey:@"deviceId"];
                  
                  [TSStorageManager storeServerToken:password signalingKey:signalingKey];
-                 [[TSStorageManager sharedManager] storePhoneNumber:userID];
+                 [[TSStorageManager sharedManager] storePhoneNumber:[NSString stringWithFormat:@"%@", userID]];
                  [TSSocketManager becomeActiveFromForeground];
                  [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
             }
