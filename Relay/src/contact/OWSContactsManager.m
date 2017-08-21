@@ -444,26 +444,8 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
             if (!([[userDict objectForKey:@"phone"] isEqualToString:FLSupermanDevID] ||
                   [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanStageID] ||
                   [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanProdID])) {
-                
-                Contact *contact = [[Contact alloc] initWithContactWithFirstName:[userDict objectForKey:@"first_name"]
-                                                                     andLastName:[userDict objectForKey:@"last_name"]
-                                                         andUserTextPhoneNumbers:@[ [userDict objectForKey:@"phone"] ]
-                                                                        andImage:nil
-                                                                    andContactID:0];
-                contact.userID = [userDict objectForKey:@"id"];
-                
-                NSArray *tagsArray = [userDict objectForKey:@"tags"];
-                for (NSDictionary *tag in tagsArray) {
-                    if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
-                        contact.tagID = [tag objectForKey:@"id"];
-                        
-                        NSDictionary *subTag = [tag objectForKey:@"tag"];
-                        contact.tagPresentation = [subTag objectForKey:@"slug"];
-                        break;
-                    }
-                }
-                
-                [tmpArray addObject:contact];
+            
+                [tmpArray addObject:[self contactForUserDict:userDict]];
             }
         }
         _ccsmContacts = [NSArray arrayWithArray:tmpArray];
@@ -477,6 +459,22 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     [self ccsmContacts];
 }
 
+-(Contact *)contactForUserDict:(NSDictionary *)userDict
+{
+    Contact *contact = [Contact getContactWithUserID:[userDict objectForKey:@"id"]];
+    
+    contact.firstName = [userDict objectForKey:@"first_name"];
+    contact.lastName = [userDict objectForKey:@"last_name"];
+    contact.userID = [userDict objectForKey:@"id"];
+    
+    NSDictionary *tagDict = [userDict objectForKey:@"tag"];
+    contact.tagID = [tagDict objectForKey:@"id"];
+    contact.tagPresentation = [tagDict objectForKey:@"slug"];
+    
+    [contact save];
+    
+    return contact;
+}
 
 - (NSString *)nameStringForContactID:(NSString *)identifier {
     if (!identifier) {
