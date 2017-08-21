@@ -484,7 +484,7 @@
 #pragma mark - Table View delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = [[[self contactForIndexPath:indexPath] textSecureIdentifiers] firstObject];
+    NSString *identifier = [self contactForIndexPath:indexPath].uniqueId;
 
     [self dismissViewControllerAnimated:YES
                              completion:^() {

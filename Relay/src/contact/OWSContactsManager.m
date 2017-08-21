@@ -471,7 +471,7 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     contact.tagID = [tagDict objectForKey:@"id"];
     contact.tagPresentation = [tagDict objectForKey:@"slug"];
     
-    [contact save];
+//    [contact save];
     
     return contact;
 }

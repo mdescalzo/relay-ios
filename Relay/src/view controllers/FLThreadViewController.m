@@ -505,9 +505,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         // Build the message parts
         NSString *recipientTag = [self.taggedRecipients firstObject];
-        NSDictionary *tmpDict = [[self.ccsmStorage getTags] objectForKey:recipientTag];
-        NSDictionary *recipientBlob = [tmpDict objectForKey:[tmpDict allKeys].lastObject];
-        NSString *recipientID = [recipientBlob objectForKey:kUserIDKey];
+        NSString *recipientID = [[self.ccsmStorage getTags] objectForKey:recipientTag];
         
 #warning Thread use departure
         TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
