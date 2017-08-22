@@ -93,7 +93,6 @@
                                 </state>
                                 <connections>
                                     <action selector="onCreateDomainTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="5b9-Kf-EEw"/>
-                                    <action selector="onLoginButtonTap:" destination="ggk-mM-IRI" eventType="touchUpInside" id="bWP-W5-ZnP"/>
                                 </connections>
                             </button>
                         </subviews>
