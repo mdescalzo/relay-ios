@@ -194,14 +194,14 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         [AppStoreRating setupRatingLibrary];
     }];
     
-    [[TSAccountManager sharedInstance] ifRegistered:NO runAsync:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:[Pastelog class]
-                                                                                      action:@selector(submitLogs)];
-            gesture.numberOfTapsRequired = 8;
-            [self.window addGestureRecognizer:gesture];
-        });
-    }];
+//    [[TSAccountManager sharedInstance] ifRegistered:NO runAsync:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:[Pastelog class]
+//                                                                                      action:@selector(submitLogs)];
+//            gesture.numberOfTapsRequired = 8;
+//            [self.window addGestureRecognizer:gesture];
+//        });
+//    }];
     
     return YES;
 }
