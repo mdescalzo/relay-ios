@@ -677,7 +677,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSRange range = NSMakeRange(0, textView.text.length);
     
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-]+" options:0 error:nil];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-.]+" options:0 error:nil];
     NSArray *matches = [regex matchesInString:textView.text options:0 range:range];
     
     [self.taggedRecipients removeAllObjects];
