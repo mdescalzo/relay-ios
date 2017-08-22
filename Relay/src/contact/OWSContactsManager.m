@@ -2,6 +2,7 @@
 #import "ContactsUpdater.h"
 #import "Environment.h"
 #import "Util.h"
+#import "SignalRecipient.h"
 
 #define ADDRESSBOOK_QUEUE dispatch_get_main_queue()
 
@@ -339,16 +340,17 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
 }
 
 - (NSArray<Contact *> *)allContacts {
-    NSMutableArray *allContacts = [NSMutableArray array];
-
-    for (NSString *key in self.latestContactsById.allKeys) {
-        Contact *contact = [self.latestContactsById objectForKey:key];
-
-        if ([contact isKindOfClass:[Contact class]]) {
-            [allContacts addObject:contact];
-        }
-    }
-    return allContacts;
+//    NSMutableArray *allContacts = [NSMutableArray array];
+//
+//    for (NSString *key in self.latestContactsById.allKeys) {
+//        Contact *contact = [self.latestContactsById objectForKey:key];
+//
+//        if ([contact isKindOfClass:[Contact class]]) {
+//            [allContacts addObject:contact];
+//        }
+//    }
+//    return allContacts;
+    return self.ccsmContacts;
 }
 
 
@@ -426,39 +428,6 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     return nil;
 }
 
-#pragma mark - Lazy Instantiation
-- (NSArray<Contact *> *)ccsmContacts;
-{
-    if (_ccsmContacts == nil) {
-        NSMutableArray *tmpArray = [NSMutableArray new];
-        
-        //        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
-        NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
-        //        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
-        
-        for (NSString *key in usersBlob.allKeys) {
-            //            NSDictionary *tmpDict = [usersBlob objectForKey:key];
-            NSDictionary *userDict = [usersBlob objectForKey:key]; //[tmpDict objectForKey:tmpDict.allKeys.lastObject];
-            
-            // Filter out superman, no one sees superman
-            if (!([[userDict objectForKey:@"phone"] isEqualToString:FLSupermanDevID] ||
-                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanStageID] ||
-                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanProdID])) {
-            
-                [tmpArray addObject:[self contactForUserDict:userDict]];
-            }
-        }
-        _ccsmContacts = [NSArray arrayWithArray:tmpArray];
-    }
-    return _ccsmContacts;
-}
-
--(void)refreshCCSMContacts
-{
-    _ccsmContacts = nil;
-    [self ccsmContacts];
-}
-
 -(Contact *)contactForUserDict:(NSDictionary *)userDict
 {
     Contact *contact = [Contact getContactWithUserID:[userDict objectForKey:@"id"]];
@@ -471,7 +440,15 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     contact.tagID = [tagDict objectForKey:@"id"];
     contact.tagPresentation = [tagDict objectForKey:@"slug"];
     
-//    [contact save];
+    [[contact dbConnection] asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//        [contact saveWithTransaction:transaction];
+        if (contact.userID) {
+            SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:contact.userID relay:nil supportsVoice:NO];
+            if (recipient) {
+                [recipient saveWithTransaction:transaction];
+            }
+        }
+    }];
     
     return contact;
 }
@@ -496,6 +473,40 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
         }
     }
     return nil;
+}
+
+#pragma mark - Lazy Instantiation
+- (NSArray<Contact *> *)ccsmContacts;
+{
+    if (_ccsmContacts == nil) {
+        NSMutableArray *tmpArray = [NSMutableArray new];
+        
+        //        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
+        NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
+        //        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
+        
+        for (NSString *key in usersBlob.allKeys) {
+            //            NSDictionary *tmpDict = [usersBlob objectForKey:key];
+            NSDictionary *userDict = [usersBlob objectForKey:key]; //[tmpDict objectForKey:tmpDict.allKeys.lastObject];
+            
+            // Filter out superman, no one sees superman
+            if (!([[userDict objectForKey:@"phone"] isEqualToString:FLSupermanDevID] ||
+                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanStageID] ||
+                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanProdID])) {
+                
+                [tmpArray addObject:[self contactForUserDict:userDict]];
+            }
+        }
+        _ccsmContacts = [NSArray arrayWithArray:tmpArray];
+    }
+    return _ccsmContacts;
+}
+
+-(void)refreshCCSMContacts
+{
+    _ccsmContacts = nil;
+    
+    [self ccsmContacts];
 }
 
 #pragma mark - Logging
