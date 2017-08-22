@@ -149,6 +149,7 @@ NSUInteger maximumValidationAttempts = 9999;
     
     NSString *orgUrl = [[self.ccsmStorage getUserInfo] objectForKey:@"org"];
     [self.ccsmCommManager getThing:orgUrl
+                       synchronous:NO
                            success:^(NSDictionary *org){
                                NSLog(@"Retrieved org info after login validation");
                                [self.ccsmStorage setOrgInfo:org];

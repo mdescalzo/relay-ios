@@ -37,6 +37,7 @@
                    failure:(void (^)(NSError *error))failureBlock;
 
 - (void)getThing:(NSString *)urlString
+     synchronous:(BOOL)synchronous
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
 

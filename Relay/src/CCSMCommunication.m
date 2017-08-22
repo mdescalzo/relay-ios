@@ -330,6 +330,7 @@
 
 
 - (void)getThing:(NSString *)urlString
+     synchronous:(BOOL)synchronous
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
 {
@@ -339,6 +340,36 @@
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    
+    if (synchronous) {
+        
+        NSHTTPURLResponse *HTTPresponse;
+        NSError *connectionError;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                             returningResponse:&HTTPresponse
+                                                         error:&connectionError];
+                
+        if (connectionError != nil)  // Failed connection
+        {
+            failureBlock(connectionError);
+        }
+        else if (HTTPresponse.statusCode == 200) // SUCCESS!
+        {
+            NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                   options:0
+                                                                     error:NULL];
+            successBlock(result);
+        }
+        else  // Connection good, error from server
+        {
+            NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                 code:HTTPresponse.statusCode
+                                             userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+            failureBlock(error);
+        }
+        
+    } else {
+    
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response,
@@ -355,6 +386,7 @@
              failureBlock(connectionError);
          }
      }];
+    }
 }
 
 -(void)refreshCCSMData

@@ -427,6 +427,7 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
     
     NSString *orgUrl = [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"];
     [self.ccsmCommManager getThing:orgUrl
+                       synchronous:YES
                            success:^(NSDictionary *org){
                                DDLogInfo(@"Retrieved org info after session token refresh");
                                [[Environment getCurrent].ccsmStorage setOrgInfo:org];

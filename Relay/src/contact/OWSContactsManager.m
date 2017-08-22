@@ -448,7 +448,7 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     NSDictionary *tagDict = [userDict objectForKey:@"tag"];
     contact.tagID = [tagDict objectForKey:@"id"];
     contact.tagPresentation = [tagDict objectForKey:@"slug"];
-    
+  
     [[contact dbConnection] asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
 //        [contact saveWithTransaction:transaction];
         if (contact.userID) {
