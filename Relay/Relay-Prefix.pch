@@ -66,4 +66,7 @@
     #define FLDomainCreateURL FLDomainCreateProdURL
 #endif
 
+// Key for BOOL for awaiting login verification
+#define FLAwaitingVerification @"FLAwaitingVerification"
+
 #endif

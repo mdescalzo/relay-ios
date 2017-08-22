@@ -282,6 +282,15 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
                                             andContactID:recordID];
 }
 
+-(Contact *)contactForUserID:(NSString *)userID
+{
+    if (userID.length == 0) {
+        return nil;
+    } else {
+        return [TSStorageManager.sharedManager objectForKey:userID inCollection:[Contact collection]];
+    }
+}
+
 - (Contact *)latestContactForPhoneNumber:(PhoneNumber *)phoneNumber {
     NSArray *allContacts = [self allContacts];
 
@@ -481,12 +490,12 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     if (_ccsmContacts == nil) {
         NSMutableArray *tmpArray = [NSMutableArray new];
         
-        //        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
+//        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
         NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
-        //        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
+//        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
         
         for (NSString *key in usersBlob.allKeys) {
-            //            NSDictionary *tmpDict = [usersBlob objectForKey:key];
+//            NSDictionary *tmpDict = [usersBlob objectForKey:key];
             NSDictionary *userDict = [usersBlob objectForKey:key]; //[tmpDict objectForKey:tmpDict.allKeys.lastObject];
             
             // Filter out superman, no one sees superman

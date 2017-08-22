@@ -25,6 +25,7 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 
 - (NSArray *)getContactsFromAddressBook:(ABAddressBookRef)addressBook;
 - (Contact *)latestContactForPhoneNumber:(PhoneNumber *)phoneNumber;
+-(Contact *)contactForUserID:(NSString *)userID;
 
 - (void)verifyABPermission;
 

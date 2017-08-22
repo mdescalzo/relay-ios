@@ -65,6 +65,9 @@ NSUInteger maximumValidationAttempts = 9999;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString: @"mainSegue"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
         SignalsNavigationController *snc = (SignalsNavigationController *)segue.destinationViewController;
         
         AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;

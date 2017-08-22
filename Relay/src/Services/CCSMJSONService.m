@@ -104,7 +104,8 @@
         NSString *recipientTag = nil;
         NSString *recipientID = nil;
         if (memberID) {
-            Contact *contact = [Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
+//            Contact *contact = [Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
+            Contact *contact = [Environment.getCurrent.contactsManager contactForUserID:memberID];
             if (contact.tagPresentation) {
                 recipientTag = contact.tagPresentation;
                 recipientID = contact.userID;

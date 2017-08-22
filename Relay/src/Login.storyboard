@@ -14,7 +14,7 @@
         <!--Login View Controller-->
         <scene sceneID="NH1-UO-ya1">
             <objects>
-                <viewController id="ggk-mM-IRI" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ggk-mM-IRI" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HA5-qg-Q6q"/>
                         <viewControllerLayoutGuide type="bottom" id="F2E-da-Xei"/>
@@ -143,7 +143,7 @@
         <!--Login Validation View Controller-->
         <scene sceneID="VUB-MF-PD5">
             <objects>
-                <viewController id="7Uu-IH-pbe" customClass="LoginValidationViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ValidationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7Uu-IH-pbe" customClass="LoginValidationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Hwj-sR-MGZ"/>
                         <viewControllerLayoutGuide type="bottom" id="nDv-ns-g4h"/>
