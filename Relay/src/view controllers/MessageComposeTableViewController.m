@@ -530,8 +530,7 @@
     [[ContactsUpdater sharedUpdater]
         updateSignalContactIntersectionWithABContacts:[Environment getCurrent].contactsManager.allContacts
         success:^{
-//          self.contacts = [[[Environment getCurrent] contactsManager] allValidContacts];
-            self.contacts = [[[Environment getCurrent] contactsManager] ccsmContacts];
+            self.contacts = [[[Environment getCurrent] contactsManager] allContacts];
 
           dispatch_async(dispatch_get_main_queue(), ^{
             [self updateSearchResultsForSearchController:self.searchController];
