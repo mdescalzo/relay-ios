@@ -166,7 +166,6 @@
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB065618170B34006006FC /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
-		7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
@@ -290,7 +289,6 @@
 		7D4A3A361F1693930023C29B /* SoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62318BBF5BB00F073E5 /* SoundPlayer.m */; };
 		7D4A3A371F1693930023C29B /* EncodedAudioPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F118BBEC1A00F073E5 /* EncodedAudioPacket.m */; };
 		7D4A3A381F1693930023C29B /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
-		7D4A3A391F1693930023C29B /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7D4A3A3A1F1693930023C29B /* DataUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E718170B33006006FC /* DataUtil.m */; };
 		7D4A3A3B1F1693930023C29B /* AudioPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5E918BBEC1A00F073E5 /* AudioPacker.m */; };
 		7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F618BBEC1A00F073E5 /* AudioStretcher.m */; };
@@ -602,7 +600,6 @@
 		7DCFFDDD1F0EE4490003CD95 /* SoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62318BBF5BB00F073E5 /* SoundPlayer.m */; };
 		7DCFFDDE1F0EE4490003CD95 /* EncodedAudioPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F118BBEC1A00F073E5 /* EncodedAudioPacket.m */; };
 		7DCFFDDF1F0EE4490003CD95 /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
-		7DCFFDE01F0EE4490003CD95 /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7DCFFDE11F0EE4490003CD95 /* DataUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E718170B33006006FC /* DataUtil.m */; };
 		7DCFFDE21F0EE4490003CD95 /* AudioPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5E918BBEC1A00F073E5 /* AudioPacker.m */; };
 		7DCFFDE31F0EE4490003CD95 /* AudioStretcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F618BBEC1A00F073E5 /* AudioStretcher.m */; };
@@ -771,6 +768,10 @@
 		7DCFFE8B1F0EE4490003CD95 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DCFFE8C1F0EE4490003CD95 /* audio_pause_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3E1A73426500B5C81A /* audio_pause_button@2x.png */; };
 		7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
+		7DE5C0AF1F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DE5C0B21F4CF9D900DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A123C14916F902EE000AE905 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
@@ -1462,8 +1463,6 @@
 		76EB050C18170B33006006FC /* InCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCallViewController.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
-		7D2472691EF0C80B0048126F /* FLConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLConversationViewController.h; sourceTree = "<group>"; };
-		7D24726A1EF0C80B0048126F /* FLConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLConversationViewController.m; sourceTree = "<group>"; };
 		7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSlackTextViewController.a; path = "../Library/Developer/Xcode/DerivedData/Relay-gkridggddzianpfuvzrdybphatso/Build/Products/Debug-iphonesimulator/SlackTextViewController/libSlackTextViewController.a"; sourceTree = "<group>"; };
 		7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDirectoryPopupViewController.h; sourceTree = "<group>"; };
 		7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDirectoryPopupViewController.m; sourceTree = "<group>"; };
@@ -1510,6 +1509,8 @@
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
 		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
+		7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
+		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89AD8E9D7C03FA606826376F /* libPods-Common-RelayDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-RelayDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2136,6 +2137,8 @@
 				76EB040918170B33006006FC /* OWSContactsManager.m */,
 				45843D1D1D2236B30013E85A /* OWSContactsSearcher.h */,
 				45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */,
+				7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */,
+				7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */,
 			);
 			path = contact;
 			sourceTree = "<group>";
@@ -2638,8 +2641,6 @@
 			children = (
 				7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */,
 				7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */,
-				7D2472691EF0C80B0048126F /* FLConversationViewController.h */,
-				7D24726A1EF0C80B0048126F /* FLConversationViewController.m */,
 				7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */,
 				7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */,
 				7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */,
@@ -4113,6 +4114,7 @@
 				7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */,
 				7D4A3A271F1693930023C29B /* ContactTableViewCell.m in Sources */,
 				7D4A3A281F1693930023C29B /* HttpRequestOrResponse.m in Sources */,
+				7DE5C0AF1F4CF9D500DA4230 /* FLContactsManager.m in Sources */,
 				7D4A3A291F1693930023C29B /* IpAddress.m in Sources */,
 				7D4A3A2A1F1693930023C29B /* MessagesViewController.m in Sources */,
 				7D4A3A2B1F1693930023C29B /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -4129,7 +4131,6 @@
 				7D4A3A361F1693930023C29B /* SoundPlayer.m in Sources */,
 				7D4A3A371F1693930023C29B /* EncodedAudioPacket.m in Sources */,
 				7D4A3A381F1693930023C29B /* OWSLinkDeviceViewController.m in Sources */,
-				7D4A3A391F1693930023C29B /* FLConversationViewController.m in Sources */,
 				7D4A3A3A1F1693930023C29B /* DataUtil.m in Sources */,
 				7D4A3A3B1F1693930023C29B /* AudioPacker.m in Sources */,
 				7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */,
@@ -4339,6 +4340,7 @@
 				7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */,
 				7DCFFDCE1F0EE4490003CD95 /* ContactTableViewCell.m in Sources */,
 				7DCFFDCF1F0EE4490003CD95 /* HttpRequestOrResponse.m in Sources */,
+				7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */,
 				7DCFFDD01F0EE4490003CD95 /* IpAddress.m in Sources */,
 				7DCFFDD11F0EE4490003CD95 /* MessagesViewController.m in Sources */,
 				7DCFFDD21F0EE4490003CD95 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -4355,7 +4357,6 @@
 				7DCFFDDD1F0EE4490003CD95 /* SoundPlayer.m in Sources */,
 				7DCFFDDE1F0EE4490003CD95 /* EncodedAudioPacket.m in Sources */,
 				7DCFFDDF1F0EE4490003CD95 /* OWSLinkDeviceViewController.m in Sources */,
-				7DCFFDE01F0EE4490003CD95 /* FLConversationViewController.m in Sources */,
 				7DCFFDE11F0EE4490003CD95 /* DataUtil.m in Sources */,
 				7DCFFDE21F0EE4490003CD95 /* AudioPacker.m in Sources */,
 				7DCFFDE31F0EE4490003CD95 /* AudioStretcher.m in Sources */,
@@ -4565,6 +4566,7 @@
 				DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */,
 				76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */,
 				B63761ED19E1FBE8005735D1 /* HttpRequestOrResponse.m in Sources */,
+				7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */,
 				76EB05A018170B33006006FC /* IpAddress.m in Sources */,
 				FCAC965119FF0A6E0046DFC5 /* MessagesViewController.m in Sources */,
 				453D28BA1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -4581,7 +4583,6 @@
 				E197B62418BBF5BB00F073E5 /* SoundPlayer.m in Sources */,
 				E197B61018BBEC1A00F073E5 /* EncodedAudioPacket.m in Sources */,
 				458E38341D66873D0094BD24 /* OWSLinkDeviceViewController.m in Sources */,
-				7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */,
 				76EB063618170B33006006FC /* DataUtil.m in Sources */,
 				E197B60C18BBEC1A00F073E5 /* AudioPacker.m in Sources */,
 				E197B61218BBEC1A00F073E5 /* AudioStretcher.m in Sources */,
@@ -4811,6 +4812,7 @@
 				B660F7691C29988E00687D6E /* DecayingSampleEstimator.m in Sources */,
 				B660F76A1C29988E00687D6E /* EventWindow.m in Sources */,
 				B660F76B1C29988E00687D6E /* LoggingUtil.m in Sources */,
+				7DE5C0B21F4CF9D900DA4230 /* FLContactsManager.m in Sources */,
 				B660F76C1C29988E00687D6E /* AnonymousConditionLogger.m in Sources */,
 				B660F76D1C29988E00687D6E /* AnonymousOccurrenceLogger.m in Sources */,
 				B660F76E1C29988E00687D6E /* AnonymousValueLogger.m in Sources */,

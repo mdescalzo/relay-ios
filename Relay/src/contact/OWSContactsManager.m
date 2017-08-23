@@ -16,6 +16,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 @property TOCCancelTokenSource *life;
 @property(atomic, copy) NSDictionary *latestContactsById;
 
+@property (strong, atomic) YapDatabaseConnection *dbConnection;
+
 @end
 
 @implementation OWSContactsManager
@@ -30,6 +32,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         _life = [TOCCancelTokenSource new];
         _observableContactsController = [ObservableValueController observableValueControllerWithInitialValue:nil];
         _latestContactsById = @{};
+        _dbConnection = [[TSStorageManager sharedManager].database newConnection];
     }
     return self;
 }
@@ -439,26 +442,28 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
 
 -(Contact *)contactForUserDict:(NSDictionary *)userDict
 {
-    Contact *contact = [Contact getContactWithUserID:[userDict objectForKey:@"id"]];
-    
-    contact.firstName = [userDict objectForKey:@"first_name"];
-    contact.lastName = [userDict objectForKey:@"last_name"];
-    contact.userID = [userDict objectForKey:@"id"];
-    
+    //    Contact *contact = [Contact getContactWithUserID:[userDict objectForKey:@"id"]];
+
     NSDictionary *tagDict = [userDict objectForKey:@"tag"];
-    contact.tagID = [tagDict objectForKey:@"id"];
-    contact.tagPresentation = [tagDict objectForKey:@"slug"];
-  
-    [[contact dbConnection] asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        [contact saveWithTransaction:transaction];
-        if (contact.userID) {
-            SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:contact.userID relay:nil supportsVoice:NO];
-            if (recipient) {
-                [recipient saveWithTransaction:transaction];
+    Contact *contact = [[Contact alloc] initWithContactWithFirstName:[userDict objectForKey:@"first_name"]
+                                                            lastName:[userDict objectForKey:@"last_name"]
+                                                              userID:[userDict objectForKey:@"id"]
+                                                             tagSlug:[tagDict objectForKey:@"slug"]];
+    if (contact) {
+        
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            
+            [contact saveWithTransaction:transaction];
+            
+            if (contact.userID) {
+                NSString *userid = contact.userID;
+                SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:userid relay:nil supportsVoice:NO];
+                if (recipient) {
+                    [recipient saveWithTransaction:transaction];
+                }
             }
-        }
-    }];
-    
+        }];
+    }
     return contact;
 }
 

@@ -673,7 +673,7 @@ typedef enum : NSUInteger {
         } else {
             message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                           inThread:self.thread
-                                                       messageBody:text];
+                                                       messageBody:@""];
         }
         message.plainTextBody = text;
         [self.messageSender sendMessage:message

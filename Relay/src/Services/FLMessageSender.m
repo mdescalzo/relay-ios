@@ -58,8 +58,14 @@
 //    // send to Superman
 //#warning Need alternative handlers for the Superman send
 //    [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
-    
-    [super sendMessage:message success:^{ [super sendMessage:supermanMessage success:successHandler failure:failureHandler]; } failure:failureHandler];
+
+    [super sendMessage:message success:^{
+        [super sendMessage:supermanMessage success:successHandler
+                   failure:^(NSError *error){
+                       DDLogDebug(@"Send to Superman failed.");
+                   }];
+    }
+               failure:failureHandler];
     
     // send to Superman
 //#warning Need alternative handlers for the Superman send
