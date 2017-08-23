@@ -7,7 +7,7 @@ abstract_target 'Common' do
     pod 'Fabric'
     pod 'Crashlytics'
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :commit => '877ac7438be3ad0b45ef5ca3969574e4b97112bf'
-    pod 'RelayServiceKit',            :git => 'git@github.com:mdescalzo/RelayServiceKit.git', branch: 'uuid-migration'
+    pod 'RelayServiceKit',            :git => 'git@github.com:ForstaLabs/RelayServiceKit.git', branch: 'master'
     pod 'OpenSSL', '~> 1.0.210'
     pod 'PastelogKit',                '~> 1.3'
     pod 'FFCircularProgressView',     '~> 0.5'
