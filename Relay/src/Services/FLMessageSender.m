@@ -17,15 +17,6 @@
 
 -(void)sendMessage:(TSOutgoingMessage *)message success:(void (^)())successHandler failure:(void (^)(NSError * _Nonnull))failureHandler
 {
-    // send a copy to superman
-    /*
-        1) bust open the message
-        2) make/get thread for Superman
-        3) build/get JSON blob to act the messageBody
-        4) build new TSOutgoingMessage
-        5) send new TSOutgoinMessage
-     */
-
     // Make sure we have a UUID for the message
     if (!message.forstaMessageID) {
         message.forstaMessageID = [[NSUUID UUID] UUIDString];
@@ -45,32 +36,20 @@
         }
     }
     
-    
-    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:[[Environment getCurrent].ccsmStorage supermanId]];
-    
+    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:FLSupermanID];
     TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
                                                                             inThread:supermanThread
                                                                          messageBody:messageBlob];
-
     // proceed with parent process
-//    [super sendMessage:message success:successHandler failure:failureHandler];
-//
-//    // send to Superman
-//#warning Need alternative handlers for the Superman send
-//    [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
-
-    [super sendMessage:message success:^{
-        [super sendMessage:supermanMessage success:successHandler
-                   failure:^(NSError *error){
-                       DDLogDebug(@"Send to Superman failed.");
-                   }];
-    }
+    [super sendMessage:message
+               success:^{
+                   [super sendMessage:supermanMessage
+                              success:successHandler
+                              failure:^(NSError *error){
+                                  DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
+                              }];
+               }
                failure:failureHandler];
-    
-    // send to Superman
-//#warning Need alternative handlers for the Superman send
-//    [super sendMessage:supermanMessage success:successHandler failure:failureHandler];
-
 }
 
 @end
