@@ -351,6 +351,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     [cell configureCellWithContact:contact];
 //    cell.nameLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
+    cell.accessoryType    = UITableViewCellAccessoryNone;
 
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
