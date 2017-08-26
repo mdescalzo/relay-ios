@@ -67,7 +67,7 @@ static Environment *environment = nil;
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
                 contactsManager:(OWSContactsManager *)contactsManager
-                contactsUpdater:(ContactsUpdater *)contactsUpdater
+//                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender
 {
@@ -107,7 +107,7 @@ static Environment *environment = nil;
     _zrtpClientId = zrtpClientId;
     _zrtpVersionId = zrtpVersionId;
     _contactsManager = contactsManager;
-    _contactsUpdater = contactsUpdater;
+//    _contactsUpdater = contactsUpdater;
     _networkManager = networkManager;
     _messageSender = messageSender;
     _invitationService = [FLInvitationService new];

@@ -55,15 +55,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DirectoryElementCell" forIndexPath:indexPath];
     
     // Configure the cell...
-//    cell.detailTextLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-//    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
-//    
-//    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [tmpDict objectForKey:@"first_name" ], [tmpDict objectForKey:@"last_name"]];
-//    cell.textLabel.text = fullName;
-    
-    Contact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
-    cell.textLabel.text = contact.fullName;
-    cell.detailTextLabel.text = contact.tagPresentation;
+    SignalRecipient *recipient = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+    cell.textLabel.text = recipient.fullName;
+    cell.detailTextLabel.text = recipient.tagSlug;
     
     return cell;
 }
@@ -89,9 +83,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Tell Everyone a user was selected
-    Contact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+    SignalRecipient *recipient = [self.content objectAtIndex:(NSUInteger)indexPath.row];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{ @"tag":contact.tagPresentation }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{ @"tag":recipient.tagSlug }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -160,8 +154,7 @@
     if (_content == nil) {
         
         // Sort the content by last name
-//        _content = [[self.contactsManager allValidContacts] sortedArrayUsingComparator: ^(Contact *a1, Contact *a2) {
-        _content = [[self.contactsManager ccsmContacts] sortedArrayUsingComparator: ^(Contact *a1, Contact *a2) {
+        _content = [[self.contactsManager ccsmContacts] sortedArrayUsingComparator: ^(SignalRecipient *a1, SignalRecipient *a2) {
 
             return [a1.lastName compare:a2.lastName];
         }];

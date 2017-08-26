@@ -12,6 +12,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property BOOL shouldShowContactButtons;
 
-- (void)configureWithContact:(Contact *)contact;
+- (void)configureWithContact:(SignalRecipient *)recipient;
 
 @end

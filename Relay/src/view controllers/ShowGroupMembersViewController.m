@@ -86,7 +86,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         
         NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
         if ([self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
-            Contact *contact = [self contactForIndexPath:relativeIndexPath];
+            SignalRecipient *contact = [self contactForIndexPath:relativeIndexPath];
             [tmpCell configureCellWithContact:contact];
 //            cell.textLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
             
@@ -114,7 +114,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     if (indexPath.row > 0 && [self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
         ABPersonViewController *view = [[ABPersonViewController alloc] init];
 
-        Contact *contact                = [self.groupContacts contactForIndexPath:relativeIndexPath];
+        SignalRecipient *contact                = [self.groupContacts contactForIndexPath:relativeIndexPath];
         ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, nil);
         view.displayedPerson =
             ABAddressBookGetPersonWithRecordID(addressBookRef, contact.recordID); // Assume person is already defined.
@@ -148,8 +148,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (Contact *)contactForIndexPath:(NSIndexPath *)indexPath {
-    Contact *contact = [self.groupContacts contactForIndexPath:indexPath];
+- (SignalRecipient *)contactForIndexPath:(NSIndexPath *)indexPath {
+    SignalRecipient *contact = [self.groupContacts contactForIndexPath:indexPath];
     return contact;
 }
 

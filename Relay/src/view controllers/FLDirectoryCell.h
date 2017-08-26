@@ -6,7 +6,7 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "Contact.h"
+#import "SignalRecipient.h"
 
 @import UIKit;
 
@@ -15,6 +15,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *avatarImageView;
 
--(void)configureCellWithContact:(Contact *)contact;
+-(void)configureCellWithContact:(SignalRecipient *)recipient;
 
 @end

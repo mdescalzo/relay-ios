@@ -297,27 +297,32 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     }
 }
 
-//- (Contact *)latestContactForPhoneNumber:(PhoneNumber *)phoneNumber {
-//    NSArray *allContacts = [self allContacts];
-//
-//    ContactSearchBlock searchBlock = ^BOOL(Contact *contact, NSUInteger idx, BOOL *stop) {
-//      for (PhoneNumber *number in contact.parsedPhoneNumbers) {
+- (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber
+{
+    NSArray *allContacts = [self allContacts];
+
+    ContactSearchBlock searchBlock = ^BOOL(SignalRecipient *contact, NSUInteger idx, BOOL *stop) {
+        if ([contact.phoneNumber isEqual:phoneNumber.toE164]) {
+            *stop = YES;
+            return YES;
+        }
+//      for (PhoneNumber *number in contact.phoneNumber) {
 //          if ([self phoneNumber:number matchesNumber:phoneNumber]) {
 //              *stop = YES;
 //              return YES;
 //          }
 //      }
-//      return NO;
-//    };
-//
-//    NSUInteger contactIndex = [allContacts indexOfObjectPassingTest:searchBlock];
-//
-//    if (contactIndex != NSNotFound) {
-//        return allContacts[contactIndex];
-//    } else {
-//        return nil;
-//    }
-//}
+      return NO;
+    };
+
+    NSUInteger contactIndex = [allContacts indexOfObjectPassingTest:searchBlock];
+
+    if (contactIndex != NSNotFound) {
+        return allContacts[contactIndex];
+    } else {
+        return nil;
+    }
+}
 
 - (BOOL)phoneNumber:(PhoneNumber *)phoneNumber1 matchesNumber:(PhoneNumber *)phoneNumber2 {
     return [phoneNumber1.toE164 isEqualToString:phoneNumber2.toE164];
@@ -355,7 +360,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     }];
 }
 
-- (NSArray<Contact *> *)allContacts {
+- (NSArray<SignalRecipient *> *)allContacts {
 //    NSMutableArray *allContacts = [NSMutableArray array];
 //
 //    for (NSString *key in self.latestContactsById.allKeys) {

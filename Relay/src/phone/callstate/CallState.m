@@ -16,7 +16,7 @@
                                   andFutureSas:(TOCFuture *)futureSas
                                andRemoteNumber:(PhoneNumber *)remoteNumber
                            andInitiatedLocally:(bool)initiatedLocally
-                andPotentiallySpecifiedContact:(Contact *)contact
+                andPotentiallySpecifiedContact:(SignalRecipient *)recipient
                              andFutureAccepted:(TOCFuture *)futureCallLocallyAcceptedOrRejected {
     ows_require(observableProgress != nil);
     ows_require(futureTermination != nil);
@@ -30,7 +30,7 @@
     call->futureShortAuthenticationString     = futureSas;
     call->remoteNumber                        = remoteNumber;
     call->initiatedLocally                    = initiatedLocally;
-    call->potentiallySpecifiedContact         = contact;
+    call->potentiallySpecifiedContact         = recipient;
     call->futureCallLocallyAcceptedOrRejected = futureCallLocallyAcceptedOrRejected;
     return call;
 }

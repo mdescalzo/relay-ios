@@ -34,14 +34,14 @@
    @private
     CallState *exposedCallState;
    @private
-    Contact *potentiallySpecifiedContact;
+    SignalRecipient *potentiallySpecifiedContact;
    @private
     CallAudioManager *callAudioManager;
 }
 
 + (CallController *)callControllerForCallInitiatedLocally:(bool)initiatedLocally
                                          withRemoteNumber:(PhoneNumber *)remoteNumber
-                            andOptionallySpecifiedContact:(Contact *)contact;
+                            andOptionallySpecifiedContact:(SignalRecipient *)contact;
 
 - (void)setCallAudioManager:(CallAudioManager *)callAudioManager;
 - (void)advanceCallProgressTo:(enum CallProgressType)type;

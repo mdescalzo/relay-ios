@@ -29,7 +29,7 @@
 @property (readonly, nonatomic, copy) ErrorHandlerBlock errorHandler;
 
 - (void)initiateOutgoingCallToRemoteNumber:(PhoneNumber *)remoteNumber;
-- (void)initiateOutgoingCallToContact:(Contact *)contact atRemoteNumber:(PhoneNumber *)remoteNumber;
+- (void)initiateOutgoingCallToContact:(SignalRecipient *)contact atRemoteNumber:(PhoneNumber *)remoteNumber;
 - (void)incomingCallWithSession:(ResponderSessionDescriptor *)session;
 - (void)hangupOrDenyCall;
 - (void)answerCall;

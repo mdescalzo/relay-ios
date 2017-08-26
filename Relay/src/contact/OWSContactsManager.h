@@ -25,14 +25,14 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 - (ObservableValue *)getObservableContacts;
 
 //- (NSArray *)getContactsFromAddressBook:(ABAddressBookRef)addressBook;
-//- (Contact *)latestContactForPhoneNumber:(PhoneNumber *)phoneNumber;
+- (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber;
 
 -(SignalRecipient *)recipientForUserID:(NSString *)userID;
 -(SignalRecipient *)getOrCreateRecipientWithUserID:(NSString *)userID;
 
 //- (void)verifyABPermission;
 
-- (NSArray<Contact *> *)allContacts;
+- (NSArray<SignalRecipient *> *)allContacts;
 //- (NSArray<Contact *> *)signalContacts;
 //- (NSArray *)textSecureContacts;
 - (NSArray<SignalRecipient *> *)ccsmContacts;

@@ -26,20 +26,20 @@
 
 - (CallController *)cancelExistingCallAndInitNewCallWork:(bool)initiatedLocally
                                                   remote:(PhoneNumber *)remoteNumber
-                                         optionalContact:(Contact *)contact {
+                                         optionalContact:(SignalRecipient *)recipient {
     CallController *old = [self curCallController];
     CallController *new = [
         CallController callControllerForCallInitiatedLocally : initiatedLocally withRemoteNumber : remoteNumber
-            andOptionallySpecifiedContact : contact
+            andOptionallySpecifiedContact : recipient
     ];
     [old terminateWithReason:CallTerminationType_ReplacedByNext withFailureInfo:nil andRelatedInfo:nil];
     [currentCallControllerObservable updateValue:new];
     return new;
 }
 
-- (void)initiateOutgoingCallToContact:(Contact *)contact atRemoteNumber:(PhoneNumber *)remoteNumber {
+- (void)initiateOutgoingCallToContact:(SignalRecipient *)recipient atRemoteNumber:(PhoneNumber *)remoteNumber {
     ows_require(remoteNumber != nil);
-    [self initiateOutgoingCallToRemoteNumber:remoteNumber withOptionallyKnownContact:contact];
+    [self initiateOutgoingCallToRemoteNumber:remoteNumber withOptionallyKnownContact:recipient];
 }
 
 - (void)initiateOutgoingCallToRemoteNumber:(PhoneNumber *)remoteNumber {
@@ -47,20 +47,20 @@
     [self initiateOutgoingCallToRemoteNumber:remoteNumber withOptionallyKnownContact:nil];
 }
 
-- (void)initiateOutgoingCallToRemoteNumber:(PhoneNumber *)remoteNumber withOptionallyKnownContact:(Contact *)contact {
+- (void)initiateOutgoingCallToRemoteNumber:(PhoneNumber *)remoteNumber withOptionallyKnownContact:(SignalRecipient *)recipient {
     ows_require(remoteNumber != nil);
 
     [[AppAudioManager sharedInstance] requestRequiredPermissionsIfNeededWithCompletion:^(BOOL granted) {
       if (granted) {
-          [self callToRemoteNumber:remoteNumber withOptionallyKnownContact:contact];
+          [self callToRemoteNumber:remoteNumber withOptionallyKnownContact:recipient];
       }
     }
                                                                               incoming:NO];
 }
 
-- (void)callToRemoteNumber:(PhoneNumber *)remoteNumber withOptionallyKnownContact:(Contact *)contact {
+- (void)callToRemoteNumber:(PhoneNumber *)remoteNumber withOptionallyKnownContact:(SignalRecipient *)recipient {
     CallController *callController =
-        [self cancelExistingCallAndInitNewCallWork:true remote:remoteNumber optionalContact:contact];
+        [self cancelExistingCallAndInitNewCallWork:true remote:remoteNumber optionalContact:recipient];
     [callController acceptCall]; // initiator implicitly accepts call
     TOCCancelToken *lifetime = [callController untilCancelledToken];
 
@@ -104,8 +104,8 @@
 
     [[AppAudioManager sharedInstance] requestRequiredPermissionsIfNeededWithCompletion:^(BOOL granted) {
       if (granted) {
-          Contact *callingContact =
-              [Environment.getCurrent.contactsManager latestContactForPhoneNumber:session.initiatorNumber];
+          SignalRecipient *callingContact =
+              [Environment.getCurrent.contactsManager latestRecipientForPhoneNumber:session.initiatorNumber];
           CallController *callController = [self cancelExistingCallAndInitNewCallWork:false
                                                                                remote:session.initiatorNumber
                                                                       optionalContact:callingContact];

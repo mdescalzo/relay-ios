@@ -25,33 +25,22 @@
     // Configure the view for the selected state
 }
 
--(void)configureCellWithContact:(Contact *)contact
+-(void)configureCellWithContact:(SignalRecipient *)recipient
 {
-    self.nameLabel.attributedText = [self attributedStringForContact:contact];
+    self.nameLabel.attributedText = [self attributedStringForContact:recipient];
     
-    if (contact.image) {
-        self.avatarImageView.image = contact.image;
+    if (recipient.avatar) {
+        self.avatarImageView.image = recipient.avatar;
     } else {
-        // Workaround for non-CCSM contacts
-        NSString *contactID;
-        NSString *fullName;
-        if ([contact respondsToSelector:@selector(userID)]) {
-            contactID = contact.userID;
-            fullName = contact.fullName;
-        } else {
-            contactID = [contact.textSecureIdentifiers firstObject];
-            fullName = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
-        }
-        ///////
-        OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:contactID
-                                                                                               name:fullName
+        OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
+                                                                                               name:recipient.fullName
                                                                                     contactsManager:[Environment getCurrent].contactsManager
                                                                                            diameter:self.contentView.frame.size.height];
         self.avatarImageView.image = [avatarBuilder buildDefaultImage];
     }
 }
 
-- (NSAttributedString *)attributedStringForContact:(Contact *)contact {
+- (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact {
     NSMutableAttributedString *fullNameAttributedString =
     [[NSMutableAttributedString alloc] initWithString:contact.fullName];
     
@@ -60,13 +49,13 @@
     
     CGFloat fontSize = 17.0;
     
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        firstNameFont = [UIFont ows_mediumFontWithSize:fontSize];
-        lastNameFont  = [UIFont ows_regularFontWithSize:fontSize];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        firstNameFont = [UIFont ows_mediumFontWithSize:fontSize];
+//        lastNameFont  = [UIFont ows_regularFontWithSize:fontSize];
+//    } else {
         firstNameFont = [UIFont ows_regularFontWithSize:fontSize];
         lastNameFont  = [UIFont ows_mediumFontWithSize:fontSize];
-    }
+//    }
     [fullNameAttributedString addAttribute:NSFontAttributeName
                                      value:firstNameFont
                                      range:NSMakeRange(0, contact.firstName.length)];
@@ -77,16 +66,15 @@
                                      value:[UIColor blackColor]
                                      range:NSMakeRange(0, contact.fullName.length)];
     
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor ows_darkGrayColor]
-                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+//                                         value:[UIColor ows_darkGrayColor]
+//                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
+//    } else {
         [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
                                          value:[UIColor ows_darkGrayColor]
                                          range:NSMakeRange(0, contact.firstName.length)];
-    }
-    
+//    }
     
     return fullNameAttributedString;
 }

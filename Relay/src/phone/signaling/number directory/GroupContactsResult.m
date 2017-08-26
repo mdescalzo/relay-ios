@@ -9,7 +9,7 @@
 #import "GroupContactsResult.h"
 
 #import <RelayServiceKit/TSAccountManager.h>
-#import "Contact.h"
+#import "SignalRecipient.h"
 #import "OWSContactsManager.h"
 #import "Environment.h"
 #import "SignalKeyingStorage.h"
@@ -55,7 +55,7 @@
             continue;
         }
 
-        Contact *contact = [manager latestContactForPhoneNumber:number];
+        SignalRecipient *contact = [manager latestRecipientForPhoneNumber:number];
 
         if (!contact) {
             continue;
@@ -77,7 +77,7 @@
     _associatedContactDict = [NSMutableDictionary dictionary];
     for (NSUInteger i = 0; i < [knownNumbers count]; i++) {
         NSString *identifier = [knownNumbers objectAtIndex:i];
-        Contact *contact     = [associatedContacts objectAtIndex:i];
+        SignalRecipient *contact     = [associatedContacts objectAtIndex:i];
 
         [_associatedContactDict setObject:contact forKey:identifier];
     }
@@ -85,10 +85,10 @@
     // Known Numbers
     _knownNumbers = [NSMutableArray arrayWithArray:knownNumbers];
     [_knownNumbers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-      Contact *contact1 = [_associatedContactDict objectForKey:obj1];
-      Contact *contact2 = [_associatedContactDict objectForKey:obj2];
+      SignalRecipient *contact1 = [_associatedContactDict objectForKey:obj1];
+      SignalRecipient *contact2 = [_associatedContactDict objectForKey:obj2];
 
-      return [[manager class] contactComparator](contact1, contact2);
+      return [[manager class] recipientComparator](contact1, contact2);
     }];
 
     return self;
@@ -106,7 +106,7 @@
     }
 }
 
-- (Contact *)contactForIndexPath:(NSIndexPath *)indexPath {
+- (SignalRecipient *)contactForIndexPath:(NSIndexPath *)indexPath {
     if ([self isContactAtIndexPath:indexPath]) {
         NSString *identifier = [_knownNumbers objectAtIndex:[self knownNumbersIndexForIndexPath:indexPath]];
         return [_associatedContactDict objectForKey:identifier];

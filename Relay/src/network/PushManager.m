@@ -69,8 +69,8 @@
     _notificationTracker = notificationTracker;
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
                                                        storageManager:storageManager
-                                                      contactsManager:contactsManager
-                                                      contactsUpdater:contactsUpdater];
+                                                      contactsManager:contactsManager];
+//                                                      contactsUpdater:contactsUpdater];
 
     _missingPermissionsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ACTION_REQUIRED_TITLE", @"")
                                                               message:NSLocalizedString(@"PUSH_SETTINGS_MESSAGE", @"")
@@ -237,7 +237,7 @@
     } else if ([identifier isEqualToString:Signal_CallBack_Identifier]) {
         NSString *contactId = notification.userInfo[Signal_Call_UserInfo_Key];
         PhoneNumber *number = [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
-        Contact *contact = [self.contactsManager latestContactForPhoneNumber:number];
+        SignalRecipient *contact = [self.contactsManager recipientForUserID:contactId];
         [Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
     } else if ([identifier isEqualToString:Signal_Message_MarkAsRead_Identifier]) {
         [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];

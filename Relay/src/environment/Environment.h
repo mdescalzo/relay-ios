@@ -36,7 +36,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @class PhoneManager;
 @class SignalsViewController;
 @class TSGroupThread;
-@class ContactsUpdater;
+//@class ContactsUpdater;
 @class TSNetworkManager;
 @class FLMessageSender;
 
@@ -58,7 +58,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
                 contactsManager:(OWSContactsManager *)contactsManager
-                contactsUpdater:(ContactsUpdater *)contactsUpdater
+//                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender;
 
@@ -76,7 +76,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) NSData *zrtpClientId;
 @property (nonatomic, readonly) NSData *zrtpVersionId;
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
-@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
+//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;

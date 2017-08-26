@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-#import "Contact.h"
+#import "SignalRecipient.h"
 #import "PhoneManager.h"
 #import "PhoneNumber.h"
 
@@ -36,7 +36,7 @@
 @property IBOutlet UIView *containerView;
 
 @property (nonatomic, readonly) CallState *callState;
-@property (nonatomic, readonly) Contact *potentiallyKnownContact;
+@property (nonatomic, readonly) SignalRecipient *potentiallyKnownContact;
 
 typedef NS_ENUM(NSInteger, PushAcceptState) { PushDidAcceptState, PushDidDeclineState, PushNotSetState };
 

@@ -47,8 +47,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:[Environment getCurrent].contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:[Environment getCurrent].contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     return self;
 }
 
@@ -61,8 +61,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:[Environment getCurrent].contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:[Environment getCurrent].contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     return self;
 }
 
@@ -74,22 +74,22 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-    contacts = [Environment getCurrent].contactsManager.textSecureContacts;
+    contacts = [[Environment getCurrent].contactsManager ccsmRecipients];
 
 
     self.tableView.tableHeaderView.frame = CGRectMake(0, 0, 400, 44);
     self.tableView.tableHeaderView       = self.tableView.tableHeaderView;
 
 
-    contacts = [contacts filter:^int(Contact *contact) {
-      for (PhoneNumber *number in [contact parsedPhoneNumbers]) {
-          if ([[number toE164] isEqualToString:[TSAccountManager localNumber]]) {
-              // remove local number
+    contacts = [contacts filter:^int(SignalRecipient *contact) {
+//      for (PhoneNumber *number in [contact parsedPhoneNumbers]) {
+          if ([contact.uniqueId isEqualToString:[TSAccountManager localNumber]]) {
+              // remove local user
               return NO;
           } else if (_thread != nil && _thread.groupModel.groupMemberIds) {
-              return ![_thread.groupModel.groupMemberIds containsObject:[number toE164]];
+              return ![_thread.groupModel.groupMemberIds containsObject:contact.uniqueId];
           }
-      }
+//      }
       return YES;
     }];
 
@@ -210,7 +210,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 {
     NSMutableArray *mut = [[NSMutableArray alloc] init];
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
-        [mut addObjectsFromArray:[[contacts objectAtIndex:(NSUInteger)idx.row] textSecureIdentifiers]];
+        [mut addObject:[[contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
     }
     [mut addObjectsFromArray:_thread.groupModel.groupMemberIds];
 
@@ -231,7 +231,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     NSMutableArray *mut = [[NSMutableArray alloc] init];
 
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
-        [mut addObjectsFromArray:[[contacts objectAtIndex:(NSUInteger)idx.row] textSecureIdentifiers]];
+        [mut addObject:[[contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
     }
     [mut addObject:[TSAccountManager localNumber]];
     NSData *groupId = [SecurityUtils generateRandomBytes:16];
@@ -337,17 +337,12 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     return (NSInteger)[contacts count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
-//
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GroupSearchCell"];
-//    }
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
     NSUInteger row   = (NSUInteger)indexPath.row;
-    Contact *contact = contacts[row];
+    SignalRecipient *contact = contacts[row];
 
     [cell configureCellWithContact:contact];
 //    cell.nameLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
@@ -386,20 +381,20 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 #pragma mark - Cell Utility
 
-- (NSAttributedString *)attributedStringForContact:(Contact *)contact inCell:(UITableViewCell *)cell {
+- (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact inCell:(UITableViewCell *)cell {
     NSMutableAttributedString *fullNameAttributedString =
         [[NSMutableAttributedString alloc] initWithString:contact.fullName];
 
     UIFont *firstNameFont;
     UIFont *lastNameFont;
 
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        firstNameFont = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
-        lastNameFont  = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        firstNameFont = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
+//        lastNameFont  = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
+//    } else {
         firstNameFont = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
         lastNameFont  = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
-    }
+//    }
     [fullNameAttributedString addAttribute:NSFontAttributeName
                                      value:firstNameFont
                                      range:NSMakeRange(0, contact.firstName.length)];
@@ -411,15 +406,15 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                      value:[UIColor blackColor]
                                      range:NSMakeRange(0, contact.fullName.length)];
 
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor ows_darkGrayColor]
-                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+//                                         value:[UIColor ows_darkGrayColor]
+//                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
+//    } else {
         [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
                                          value:[UIColor ows_darkGrayColor]
                                          range:NSMakeRange(0, contact.firstName.length)];
-    }
+//    }
 
     return fullNameAttributedString;
 }
