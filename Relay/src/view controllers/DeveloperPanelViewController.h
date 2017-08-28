@@ -6,8 +6,10 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "FLTagMathService.h"
 
-@interface DeveloperPanelViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
+@class UIKit;
+
+@interface DeveloperPanelViewController : UIViewController <FLTagMathServiceDelegate, UITextFieldDelegate>
 
 @end

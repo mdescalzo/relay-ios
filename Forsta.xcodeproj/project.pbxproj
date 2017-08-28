@@ -459,6 +459,10 @@
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
+		7D50F20C1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
+		7D50F20D1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
+		7D50F20E1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
+		7D50F20F1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
 		7D7DA5871F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirecotryCell.m */; };
@@ -1482,6 +1486,8 @@
 		7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryTableViewController.m; sourceTree = "<group>"; };
 		7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryDetailTableViewController.h; sourceTree = "<group>"; };
 		7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryDetailTableViewController.m; sourceTree = "<group>"; };
+		7D50F20A1F54740400A905FB /* FLTagMathService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLTagMathService.h; sourceTree = "<group>"; };
+		7D50F20B1F54740400A905FB /* FLTagMathService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLTagMathService.m; sourceTree = "<group>"; };
 		7D516F1B1EF3195100E7E15F /* FLMessageSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLMessageSender.h; path = Services/FLMessageSender.h; sourceTree = "<group>"; };
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
@@ -2665,6 +2671,8 @@
 		7D516F1A1EF318F000E7E15F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				7D50F20A1F54740400A905FB /* FLTagMathService.h */,
+				7D50F20B1F54740400A905FB /* FLTagMathService.m */,
 				7DCFFEC41F0FE2330003CD95 /* DeviceTypes */,
 				7D516F211EF32B6000E7E15F /* CCSMJSONService.h */,
 				7D516F221EF32B6000E7E15F /* CCSMJSONService.m */,
@@ -4094,6 +4102,7 @@
 				7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */,
 				7D4A3A111F1693930023C29B /* CallTermination.m in Sources */,
 				7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */,
+				7D50F20C1F54740400A905FB /* FLTagMathService.m in Sources */,
 				7D4A3A131F1693930023C29B /* SoundInstance.m in Sources */,
 				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
@@ -4320,6 +4329,7 @@
 				7DCFFDB71F0EE4490003CD95 /* LowLatencyConnector.m in Sources */,
 				7DCFFDB81F0EE4490003CD95 /* CallTermination.m in Sources */,
 				7DCFFDB91F0EE4490003CD95 /* NotificationSettingsOptionsViewController.m in Sources */,
+				7D50F20D1F54740400A905FB /* FLTagMathService.m in Sources */,
 				7DCFFDBA1F0EE4490003CD95 /* SoundInstance.m in Sources */,
 				7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */,
 				7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */,
@@ -4546,6 +4556,7 @@
 				76EB05EE18170B33006006FC /* CallTermination.m in Sources */,
 				B66B9F7D1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m in Sources */,
 				E1CD329618BCFF9900B1A496 /* SoundInstance.m in Sources */,
+				7D50F20E1F54740400A905FB /* FLTagMathService.m in Sources */,
 				76EB05B418170B33006006FC /* HashChain.m in Sources */,
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
 				76EB058218170B33006006FC /* Environment.m in Sources */,
@@ -4750,6 +4761,7 @@
 				45BFFFA91D898AF0004A12A7 /* OWSStaleNotificationObserver.m in Sources */,
 				B660F7341C29988E00687D6E /* RtpSocket.m in Sources */,
 				B660F7351C29988E00687D6E /* SequenceCounter.m in Sources */,
+				7D50F20F1F54740400A905FB /* FLTagMathService.m in Sources */,
 				B660F7361C29988E00687D6E /* SrtpSocket.m in Sources */,
 				45C681C71D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				B660F7371C29988E00687D6E /* SrtpStream.m in Sources */,
