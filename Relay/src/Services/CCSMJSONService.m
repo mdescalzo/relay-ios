@@ -62,7 +62,10 @@
     NSString *threadId = message.thread.forstaThreadID;
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
-    NSString *type = @"ordinary";
+    NSString *messageType = @"content";
+#warning Pull threadType from thread property
+    NSString *threadType = @"conversation";
+//    NSString *type = @"ordinary";
     
     
     NSDictionary *senderDict = [[Environment getCurrent].ccsmStorage getUserInfo];
@@ -121,16 +124,14 @@
         }
         
         if (presentation.length == 0) {
-            [presentation appendString:[NSString stringWithFormat:@"%@", recipientTag]];
+            [presentation appendString:[NSString stringWithFormat:@"@%@", recipientTag]];
         } else {
-            [presentation appendString:[NSString stringWithFormat:@" %@", recipientTag]];
+            [presentation appendString:[NSString stringWithFormat:@" @%@", recipientTag]];
         }
     }
     
-    NSDictionary *recipients = @{ @"expression" : @{ @"presentation" : presentation },
-                                  @"resolvedNumbers" : recipientUsers,
-                                  @"userIds" : userIds
-                                  };
+    NSDictionary *recipients = @{ @"expression" : presentation,
+                                  @"userIds" : userIds };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
                             @{ @"version" : version,
@@ -139,10 +140,12 @@
                                @"threadId" : threadId,
                                @"threadTitle" : threadTitle,
                                @"sendTime" : sendTime,
-                               @"type" : type,
+                               @"messageType" : messageType,
+                               @"threadType" : threadType,
+//                               @"type" : type,
 //                               @"data" : data,
                                @"sender" : sender,
-                               @"recipients" : recipients
+                               @"distribution" : recipients
                                }];
     // Handler for nil message.body
     NSDictionary *data;
