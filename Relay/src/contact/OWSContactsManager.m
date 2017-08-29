@@ -414,7 +414,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 //    }] sortedArrayUsingComparator:[[self class] contactComparator]];
 //}
 
-+ (NSComparator)contactComparator {
++ (NSComparator)recipientComparator {
     return ^NSComparisonResult(id obj1, id obj2) {
         SignalRecipient *contact1 = (SignalRecipient *)obj1;
         SignalRecipient *contact2 = (SignalRecipient *)obj2;
