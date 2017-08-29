@@ -56,8 +56,8 @@ CGFloat const kHeaderHeight = 33.0;
     _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:_contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:_contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     return self;
 }
@@ -73,8 +73,8 @@ CGFloat const kHeaderHeight = 33.0;
     _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:_contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:_contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     return self;
 }

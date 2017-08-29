@@ -94,7 +94,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     if ([TSAccountManager isRegistered]) {
         [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
     }
-    [Environment.getCurrent initCallListener];
+//    [Environment.getCurrent initCallListener];
     
     BOOL loggingIsEnabled;
     
@@ -224,8 +224,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
             DDLogWarn(@"The app was launched in an unknown way");
         }
         
-        OWSAccountManager *accountManager =
-        [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
+        OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
         
         [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
                                   accountManager:accountManager
@@ -262,8 +261,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     OWSMessageSender *messageSender =
     [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                       storageManager:[TSStorageManager sharedManager]
-                                     contactsManager:[Environment getCurrent].contactsManager
-                                     contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                     contactsManager:[Environment getCurrent].contactsManager];
+//                                     contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     self.incomingMessageReadObserver =
     [[OWSIncomingMessageReadObserver alloc] initWithStorageManager:[TSStorageManager sharedManager]
@@ -336,7 +335,8 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                // can't verify in production env due to code
                                                // signing.
                                                [TSSocketManager becomeActiveFromForeground];
-                                               [[Environment getCurrent].contactsManager verifyABPermission];
+                                               [[Environment getCurrent].contactsManager setupCCSMRecipients];
+//                                               [[Environment getCurrent].contactsManager verifyABPermission];
                                            }];
     
     [self removeScreenProtection];
@@ -426,7 +426,7 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
     
     NSString *orgUrl = [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"];
     [self.ccsmCommManager getThing:orgUrl
-                       synchronous:YES
+                       synchronous:NO
                            success:^(NSDictionary *org){
                                DDLogInfo(@"Retrieved org info after session token refresh");
                                [[Environment getCurrent].ccsmStorage setOrgInfo:org];

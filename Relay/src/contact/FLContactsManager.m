@@ -14,7 +14,6 @@
 static const NSString *const databaseName = @"ForstaContacts.sqlite";
 static NSString *keychainService          = @"TSKeyChainService";
 static NSString *keychainDBPassAccount    = @"TSDatabasePass";
-static NSString *FLContactsCollection = @"FLContactsCollection";
 
 @interface FLContactsManager()
 
@@ -65,36 +64,36 @@ static NSString *FLContactsCollection = @"FLContactsCollection";
 }
 
 #pragma mark - Contact management
--(Contact *_Nullable)contactWithUserID:(NSString *_Nonnull)userID
+-(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID
 {
-    __block Contact *contact = nil;
+    __block SignalRecipient *contact = nil;
     [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction){
-        contact = [transaction objectForKey:userID inCollection:FLContactsCollection];
+        contact = [transaction objectForKey:userID inCollection:[SignalRecipient collection]];
     }];
     return contact;
 }
 
--(Contact *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID
+-(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID
 {
-    __block Contact *contact = nil;
+    __block SignalRecipient *contact = nil;
     [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        contact = [transaction objectForKey:userID inCollection:FLContactsCollection];
+        contact = [transaction objectForKey:userID inCollection:[SignalRecipient collection]];
         if (!contact) {
-            contact = [[Contact alloc] initWithUniqueId:userID];
+            contact = [[SignalRecipient alloc] initWithUniqueId:userID];
             [contact saveWithTransaction:transaction];
         }
     }];
     return contact;
 }
 
--(NSSet<Contact *> *)allContacts
+-(NSSet<SignalRecipient *> *)allContacts
 {
     __block NSMutableSet *holdingSet = [NSMutableSet new];
     [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        [transaction enumerateKeysAndObjectsInCollection:FLContactsCollection
+        [transaction enumerateKeysAndObjectsInCollection:[SignalRecipient collection]
                                               usingBlock:^(NSString *key, id object, BOOL *stop){
-                                                  if ([object isKindOfClass:[Contact class]]) {
-                                                      Contact *contact = (Contact *)object;
+                                                  if ([object isKindOfClass:[SignalRecipient class]]) {
+                                                      SignalRecipient *contact = (SignalRecipient *)object;
                                                       [holdingSet addObject:contact];
                                                   }
                                               }];
@@ -102,10 +101,10 @@ static NSString *FLContactsCollection = @"FLContactsCollection";
     return [NSSet setWithSet:holdingSet];
 }
 
--(void)saveContact:(Contact *_Nonnull)contact
+-(void)saveContact:(SignalRecipient *_Nonnull)contact
 {
     [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [transaction setObject:contact forKey:contact.userID inCollection:FLContactsCollection];
+        [transaction setObject:contact forKey:contact.uniqueId inCollection:[SignalRecipient collection]];
     }];
 }
 

@@ -6,7 +6,7 @@
 
 + (CallController *)callControllerForCallInitiatedLocally:(bool)initiatedLocally
                                          withRemoteNumber:(PhoneNumber *)remoteNumber
-                            andOptionallySpecifiedContact:(Contact *)contact {
+                            andOptionallySpecifiedContact:(SignalRecipient *)recipient {
     ows_require(remoteNumber != nil);
 
     CallController *instance      = [CallController new];
@@ -18,7 +18,7 @@
     instance->interactiveCallAcceptedOrDenied = [TOCFutureSource new];
     instance->initiatedLocally                = initiatedLocally;
     instance->remoteNumber                    = remoteNumber;
-    instance->potentiallySpecifiedContact     = contact;
+    instance->potentiallySpecifiedContact     = recipient;
     instance->exposedCallState =
         [CallState callStateWithObservableProgress:instance->progress
                               andFutureTermination:instance->termination.future

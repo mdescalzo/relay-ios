@@ -138,8 +138,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:_contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                     contactsManager:_contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     return self;
 }
@@ -155,8 +155,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:_contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                     contactsManager:_contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     return self;
 }
@@ -273,38 +273,38 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)didAppearForNewlyRegisteredUser
-{
-    ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
-    switch (status) {
-        case kABAuthorizationStatusNotDetermined:
-        case kABAuthorizationStatusRestricted: {
-            UIAlertController *controller =
-            [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
-                                                message:NSLocalizedString(@"REGISTER_CONTACTS_BODY", nil)
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            [controller
-             addAction:[UIAlertAction
-                        actionWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_CONTINUE", nil)
-                        style:UIAlertActionStyleCancel
-                        handler:^(UIAlertAction *action) {
-                            [self ensureNotificationsUpToDate];
-                            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
-                        }]];
-            
-            [self presentViewController:controller animated:YES completion:nil];
-            break;
-        }
-        default: {
-            DDLogError(@"%@ Unexpected for new user to have kABAuthorizationStatus:%ld", self.tag, status);
-            [self ensureNotificationsUpToDate];
-            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
-            
-            break;
-        }
-    }
-}
+//- (void)didAppearForNewlyRegisteredUser
+//{
+//    ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
+//    switch (status) {
+//        case kABAuthorizationStatusNotDetermined:
+//        case kABAuthorizationStatusRestricted: {
+//            UIAlertController *controller =
+//            [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
+//                                                message:NSLocalizedString(@"REGISTER_CONTACTS_BODY", nil)
+//                                         preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            [controller
+//             addAction:[UIAlertAction
+//                        actionWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_CONTINUE", nil)
+//                        style:UIAlertActionStyleCancel
+//                        handler:^(UIAlertAction *action) {
+//                            [self ensureNotificationsUpToDate];
+//                            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+//                        }]];
+//            
+//            [self presentViewController:controller animated:YES completion:nil];
+//            break;
+//        }
+//        default: {
+//            DDLogError(@"%@ Unexpected for new user to have kABAuthorizationStatus:%ld", self.tag, status);
+//            [self ensureNotificationsUpToDate];
+//            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+//            
+//            break;
+//        }
+//    }
+//}
 
 - (void)ensureNotificationsUpToDate
 {
