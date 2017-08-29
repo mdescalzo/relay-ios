@@ -110,42 +110,51 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+#warning Replace with method in the ContactsManager
+    ABUnknownPersonViewController *view = [[ABUnknownPersonViewController alloc] init];
 
-//    if (indexPath.row > 0 && [self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
-//        ABPersonViewController *view = [[ABPersonViewController alloc] init];
-//
-//        SignalRecipient *contact                = [self.groupContacts contactForIndexPath:relativeIndexPath];
-//        ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, nil);
-//        view.displayedPerson =
-//            ABAddressBookGetPersonWithRecordID(addressBookRef, contact.recordID); // Assume person is already defined.
-//        view.allowsActions = NO;
-//        view.allowsEditing = YES;
-//
-//        [self.navigationController pushViewController:view animated:YES];
-//    } else {
-        ABUnknownPersonViewController *view = [[ABUnknownPersonViewController alloc] init];
-
-        ABRecordRef aContact = ABPersonCreate();
-        CFErrorRef anError   = NULL;
-
+    NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+    SignalRecipient *recipient = [self contactForIndexPath:relativeIndexPath];
+    
+    ABRecordRef aContact = ABPersonCreate();
+    
+    CFErrorRef anError   = NULL;
+    
+    if (recipient.lastName) {
+        ABRecordSetValue(aContact, kABPersonLastNameProperty, (__bridge CFTypeRef)(recipient.lastName), &anError);
+    }
+    if (recipient.firstName) {
+        ABRecordSetValue(aContact, kABPersonFirstNameProperty, (__bridge CFTypeRef)(recipient.firstName), &anError);
+    }
+    if (recipient.email) {
+        ABMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)recipient.email, kABOtherLabel, NULL);
+        ABRecordSetValue(aContact, kABPersonEmailProperty, email, nil);
+        CFRelease(email);
+    }
+    
+    if (recipient.phoneNumber) {
         ABMultiValueRef phone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
         ABMultiValueAddValueAndLabel(
-            phone,
-            (__bridge CFTypeRef)[self.tableView cellForRowAtIndexPath:indexPath].textLabel.text,
-            kABPersonPhoneMainLabel,
-            NULL);
-
+                                     phone,
+                                     (__bridge CFTypeRef)recipient.phoneNumber,
+                                     kABPersonPhoneMainLabel,
+                                     NULL);
+        
         ABRecordSetValue(aContact, kABPersonPhoneProperty, phone, &anError);
         CFRelease(phone);
-
-        if (!anError && aContact) {
-            view.displayedPerson           = aContact; // Assume person is already defined.
-            view.allowsAddingToAddressBook = YES;
-            [self.navigationController pushViewController:view animated:YES];
-        }
-//    }
-
+    }
+    
+    if (recipient.avatar) {
+        NSData *imageData = UIImagePNGRepresentation(recipient.avatar);
+        ABPersonSetImageData (aContact, (__bridge CFDataRef)imageData, &anError);
+    }
+    
+    if (!anError /* && aContact */) {
+        view.displayedPerson           = aContact; // Assume person is already defined.
+        view.allowsAddingToAddressBook = YES;
+        [self.navigationController pushViewController:view animated:YES];
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
