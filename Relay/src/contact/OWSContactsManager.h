@@ -51,4 +51,6 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 
 -(void)refreshCCSMRecipients;
 
+-(NSSet *)identifiersForTagSlug:(NSString *)tagSlug;
+
 @end

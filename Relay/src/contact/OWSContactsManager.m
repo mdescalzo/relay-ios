@@ -538,6 +538,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     [self ccsmRecipients];
 }
 
+-(NSSet *)identifiersForTagSlug:(NSString *)tagSlug
+{
+    
+}
+
 #pragma mark - Logging
 
 + (NSString *)tag

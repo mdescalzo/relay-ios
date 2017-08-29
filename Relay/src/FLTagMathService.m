@@ -8,7 +8,7 @@
 #import "FLTagMathService.h"
 #import "Environment.h"
 
-#define FLTagMathPath @"/v1/tag/resolve/"
+#define FLTagMathPath @"/v1/directory/user/"
 
 @interface FLTagMathService()
 
@@ -20,18 +20,15 @@
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
 
-    NSString *urlString = [NSString stringWithFormat:@"%@%@", FLHomeURL, FLTagMathPath];
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?expression=%@", FLHomeURL, FLTagMathPath, lookupString];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
+    [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
-    NSDictionary *bodyDict = @{ @"expression" : lookupString };
-    NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDict options:7 error:nil];
-    request.HTTPBody = bodyData;
-//    NSString *bodyString = [NSString stringWithFormat:@"expression=%@", lookupString];
-//    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-
+    
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[[NSOperationQueue alloc] init]
                            completionHandler:^(NSURLResponse *response,
