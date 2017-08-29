@@ -30,7 +30,7 @@
 
     OWSContactsManager *manager = [Environment.getCurrent contactsManager];
 
-    NSMutableSet *remainingNumbers = [NSMutableSet setWithArray:memberIdentifiers];
+    NSMutableSet *remainingIdentifiers = [NSMutableSet setWithArray:memberIdentifiers];
 
     NSMutableArray *knownNumbers       = [NSMutableArray array];
     NSMutableArray *associatedContacts = [NSMutableArray array];
@@ -39,35 +39,35 @@
         if ([identifier isEqualToString:[TSAccountManager localNumber]]) {
             // remove local number
 
-            [remainingNumbers removeObject:identifier];
+            [remainingIdentifiers removeObject:identifier];
             continue;
         }
 
         if (removeIds && [removeIds containsObject:identifier]) {
             // Remove ids
-            [remainingNumbers removeObject:identifier];
+            [remainingIdentifiers removeObject:identifier];
             continue;
         }
 
-        PhoneNumber *number = [PhoneNumber phoneNumberFromE164:identifier];
+        SignalRecipient *contact = [manager recipientForUserID:identifier];
+        
+        if (!contact) {
+            continue;
+        }
+
+        PhoneNumber *number = [PhoneNumber phoneNumberFromE164:contact.phoneNumber];
 
         if (!number) {
-            continue;
-        }
-
-        SignalRecipient *contact = [manager latestRecipientForPhoneNumber:number];
-
-        if (!contact) {
             continue;
         }
 
         [knownNumbers addObject:identifier];
         [associatedContacts addObject:contact];
 
-        [remainingNumbers removeObject:identifier];
+        [remainingIdentifiers removeObject:identifier];
     }
 
-    _unknownNumbers = [NSMutableArray arrayWithArray:[remainingNumbers allObjects]];
+    _unknownNumbers = [NSMutableArray arrayWithArray:[remainingIdentifiers allObjects]];
     [_unknownNumbers sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
       return [obj1 compare:obj2 options:0];
     }];
