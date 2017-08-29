@@ -6,11 +6,11 @@
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 //
 
-#import "Contact.h"
+#import "SignalRecipient.h"
 
 @interface OWSContactsSearcher : NSObject
 
-- (instancetype)initWithContacts:(NSArray<Contact *> *)contacts;
-- (NSArray<Contact *> *)filterWithString:(NSString *)string;
+- (instancetype)initWithContacts:(NSArray<SignalRecipient *> *)contacts;
+- (NSArray<SignalRecipient *> *)filterWithString:(NSString *)string;
 
 @end

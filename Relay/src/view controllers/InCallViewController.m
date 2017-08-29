@@ -40,7 +40,7 @@
     [self linkActions];
     [[[[Environment getCurrent] contactsManager] getObservableContacts] watchLatestValue:^(NSArray *latestContacts) {
       [self setPotentiallyKnownContact:[[[Environment getCurrent] contactsManager]
-                                           latestContactForPhoneNumber:_callState.remoteNumber]];
+                                           latestRecipientForPhoneNumber:_callState.remoteNumber]];
     }
                                                                                 onThread:[NSThread mainThread]
                                                                           untilCancelled:nil];
@@ -115,11 +115,11 @@
     [_rejectButton setTitle:NSLocalizedString(@"REJECT_CALL_BUTTON_TITLE", @"") forState:UIControlStateNormal];
 }
 
-- (void)setPotentiallyKnownContact:(Contact *)potentiallyKnownContact {
+- (void)setPotentiallyKnownContact:(SignalRecipient *)potentiallyKnownContact {
     _potentiallyKnownContact = potentiallyKnownContact;
 
     if (_potentiallyKnownContact) {
-        if (_potentiallyKnownContact.image) {
+        if (_potentiallyKnownContact.avatar) {
             [UIUtil applyRoundedBorderToImageView:&_contactImageView];
         }
 
@@ -144,8 +144,8 @@
 - (void)populateImmediateDetails {
     if (_potentiallyKnownContact) {
         _nameLabel.text = _potentiallyKnownContact.fullName;
-        if (_potentiallyKnownContact.image) {
-            _contactImageView.image = _potentiallyKnownContact.image;
+        if (_potentiallyKnownContact.avatar) {
+            _contactImageView.image = _potentiallyKnownContact.avatar;
         }
     }
 }

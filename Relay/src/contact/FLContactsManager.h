@@ -6,7 +6,7 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "Contact.h"
+#import "SignalRecipient.h"
 #import <YapDatabase/YapDatabase.h>
 
 @import Foundation;
@@ -18,9 +18,9 @@
 
 //-(void)setupDatabase;
 
--(Contact *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID;
--(Contact *_Nullable)contactWithUserID:(NSString *_Nonnull)userID;
--(NSSet<Contact *> *_Nonnull)allContacts;
--(void)saveContact:(Contact *_Nonnull)contact;
+-(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID;
+-(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
+-(NSSet<SignalRecipient *> *_Nonnull)allContacts;
+-(void)saveContact:(SignalRecipient *_Nonnull)recipient;
 
 @end

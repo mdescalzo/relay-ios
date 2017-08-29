@@ -105,10 +105,10 @@
         NSString *recipientID = nil;
         if (memberID) {
 //            Contact *contact = [Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
-            Contact *contact = [Environment.getCurrent.contactsManager contactForUserID:memberID];
-            if (contact.tagPresentation) {
-                recipientTag = contact.tagPresentation;
-                recipientID = contact.userID;
+            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientForUserID:memberID];
+            if (recipient.tagSlug) {
+                recipientTag = recipient.tagSlug;
+                recipientID = recipient.uniqueId;
             } else {
                 recipientTag = @"non_CCSM_user";
             }

@@ -95,8 +95,8 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     _contactsManager = [Environment getCurrent].contactsManager;
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:_storageManager
-                                                      contactsManager:_contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:_contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
 
     return self;
 }
@@ -112,8 +112,8 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     _contactsManager = [Environment getCurrent].contactsManager;
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:_storageManager
-                                                      contactsManager:_contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:_contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
 
     return self;
 }

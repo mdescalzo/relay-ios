@@ -9,6 +9,7 @@
 #import "FLInvitationService.h"
 #import "UIUtil.h"
 #import "Contact.h"
+#import "OWSContactsManager.h"
 
 @interface FLInvitationService() <FLContactSelectionTableViewControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
@@ -239,16 +240,17 @@
     }
 }
 
+#warning Build out to interace with Address Book for invitations.
 #pragma mark - convenience methods
 -(NSArray *)smsNumbersFromContacts:(NSArray <Contact *> *)contacts
 {
     NSMutableArray *holdingPen = [NSMutableArray new];
     
-    for (Contact *contact in contacts) {
-        if ([contact.userTextPhoneNumbers firstObject]) {
-            [holdingPen addObject:[contact.userTextPhoneNumbers firstObject]];
-        }
-    }
+//    for (Contact *contact in contacts) {
+//        if ([contact.userTextPhoneNumbers firstObject]) {
+//            [holdingPen addObject:[contact.userTextPhoneNumbers firstObject]];
+//        }
+//    }
     return [NSArray arrayWithArray:holdingPen];
 }
 
@@ -256,11 +258,11 @@
 {
     NSMutableArray *holdingPen = [NSMutableArray new];
     
-    for (Contact *contact in contacts) {
-        if ([contact.emails firstObject]) {
-            [holdingPen addObject:[contact.emails firstObject]];
-        }
-    }
+//    for (Contact *contact in contacts) {
+//        if ([contact.emails firstObject]) {
+//            [holdingPen addObject:[contact.emails firstObject]];
+//        }
+//    }
     return [NSArray arrayWithArray:holdingPen];
 }
 
