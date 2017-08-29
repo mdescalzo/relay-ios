@@ -35,7 +35,9 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 - (NSArray<SignalRecipient *> *)allContacts;
 //- (NSArray<Contact *> *)signalContacts;
 //- (NSArray *)textSecureContacts;
-- (NSArray<SignalRecipient *> *)ccsmContacts;
+- (NSArray<SignalRecipient *> *)ccsmRecipients;
+-(void)setupCCSMRecipients;
+
 
 - (void)doAfterEnvironmentInitSetup;
 

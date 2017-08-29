@@ -76,6 +76,22 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 //}
 
 #pragma mark - Setup
+-(void)setupCCSMRecipients
+{
+    NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
+    
+    if (usersBlob.count > 0) {
+        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
+         {
+             for (NSDictionary *userDict in usersBlob.allValues) {
+                 SignalRecipient *newRecipient = [SignalRecipient recipientForUserDict:userDict];
+                 [newRecipient saveWithTransaction:transaction];
+             }
+         }];
+    } else {
+#warning Make call to CCSM to attempt to get users and repeat.
+    }
+}
 
 //- (void)setupAddressBook {
 //    dispatch_async(ADDRESSBOOK_QUEUE, ^{
@@ -465,7 +481,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
                                  @"Displayed if for some reason we can't determine a contacts ID *or* name");
     }
-    for (SignalRecipient *contact in [self ccsmContacts]) {
+    for (SignalRecipient *contact in [self ccsmRecipients]) {
         if ([contact.uniqueId isEqualToString:identifier]) {
             return contact.fullName;
         }

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class Contact;
+@class SignalRecipient;
 
 @interface GroupContactsResult : NSObject
 

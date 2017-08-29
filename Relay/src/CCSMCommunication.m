@@ -85,7 +85,7 @@
                            completionHandler:^(NSURLResponse *response,
                                                NSData *data, NSError *connectionError)
      {
-
+         
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
          DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
@@ -115,7 +115,7 @@
 
 
 - (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
-                           failure:(void (^)(NSError *error))failureBlock
+                                      failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
@@ -159,7 +159,7 @@
 }
 
 - (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
-                           failure:(void (^)(NSError *error))failureBlock
+                                       failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
@@ -211,10 +211,33 @@
                    failure:(void (^)(NSError *error))failureBlock
 {
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-
+    
     if (sync)
     {
         [self getPageSynchronous:url
+                         success:^(NSDictionary *result){
+                             NSArray *results = [result objectForKey:@"results"];
+                             for (id thing in results) {
+                                 [collection setValue:thing forKey:[thing valueForKey:@"id"]];
+                             }
+                             NSString *next = [result valueForKey:@"next"];
+                             if (next && (NSNull *)next != [NSNull null]) {
+                                 [self updateAllTheThings:next
+                                               collection:collection
+                                              synchronous:sync
+                                                  success:successBlock
+                                                  failure:failureBlock];
+                             } else {
+                                 successBlock();
+                             }
+                         }
+                         failure:^(NSError *err){
+                             failureBlock(err);
+                         }];
+    }
+    else
+    {
+        [self getPage:url
               success:^(NSDictionary *result){
                   NSArray *results = [result objectForKey:@"results"];
                   for (id thing in results) {
@@ -235,34 +258,11 @@
                   failureBlock(err);
               }];
     }
-    else
-    {
-    [self getPage:url
-          success:^(NSDictionary *result){
-              NSArray *results = [result objectForKey:@"results"];
-              for (id thing in results) {
-                  [collection setValue:thing forKey:[thing valueForKey:@"id"]];
-              }
-              NSString *next = [result valueForKey:@"next"];
-              if (next && (NSNull *)next != [NSNull null]) {
-                  [self updateAllTheThings:next
-                                collection:collection
-                               synchronous:sync
-                                   success:successBlock
-                                   failure:failureBlock];
-              } else {
-                  successBlock();
-              }
-          }
-          failure:^(NSError *err){
-              failureBlock(err);
-          }];
-    }
 }
 
 - (void)getPageSynchronous:(NSURL *)url
-        success:(void (^)(NSDictionary *result))successBlock
-        failure:(void (^)(NSError *error))failureBlock
+                   success:(void (^)(NSDictionary *result))successBlock
+                   failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -348,7 +348,7 @@
         NSData *data = [NSURLConnection sendSynchronousRequest:request
                                              returningResponse:&HTTPresponse
                                                          error:&connectionError];
-                
+        
         if (connectionError != nil)  // Failed connection
         {
             failureBlock(connectionError);
@@ -369,30 +369,30 @@
         }
         
     } else {
-    
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                               NSData *data, NSError *connectionError)
-     {
-         if (data.length > 0 && connectionError == nil)
+        
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response,
+                                                   NSData *data, NSError *connectionError)
          {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
-             successBlock(result);
-         }
-         else if (connectionError != nil) {
-             failureBlock(connectionError);
-         }
-     }];
+             if (data.length > 0 && connectionError == nil)
+             {
+                 NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                        options:0
+                                                                          error:NULL];
+                 successBlock(result);
+             }
+             else if (connectionError != nil) {
+                 failureBlock(connectionError);
+             }
+         }];
     }
 }
 
 -(void)refreshCCSMData
 {
     [self refreshCCSMUsers];
-//    [self refreshCCSMtags];
+    //    [self refreshCCSMtags];
 }
 
 -(void)refreshCCSMUsers
@@ -451,7 +451,7 @@
 {
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/provision-proxy/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-
+    
     NSString *authToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -462,7 +462,7 @@
     
     NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:52];
     NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
-
+    
     NSString *deviceName = [DeviceTypes deviceModelName];
     [SignalKeyingStorage generateServerAuthPassword];
     NSString *password = [SignalKeyingStorage serverAuthPassword];
@@ -473,11 +473,11 @@
                                 @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
                                 @"deviceName" : deviceName,
                                 @"password" : password
-                               };
-
+                                };
+    
     NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDict options:0 error:nil];
     [request setHTTPBody:bodyData];
-
+    
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response,
@@ -508,7 +508,7 @@
                  [[TSStorageManager sharedManager] storePhoneNumber:userID];
                  [TSSocketManager becomeActiveFromForeground];
                  [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
-            }
+             }
              successBlock();
          }
          else  // Connection good, error from server

@@ -40,7 +40,7 @@
     [self linkActions];
     [[[[Environment getCurrent] contactsManager] getObservableContacts] watchLatestValue:^(NSArray *latestContacts) {
       [self setPotentiallyKnownContact:[[[Environment getCurrent] contactsManager]
-                                           latestContactForPhoneNumber:_callState.remoteNumber]];
+                                           latestRecipientForPhoneNumber:_callState.remoteNumber]];
     }
                                                                                 onThread:[NSThread mainThread]
                                                                           untilCancelled:nil];

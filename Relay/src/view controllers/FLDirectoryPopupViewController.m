@@ -154,7 +154,7 @@
     if (_content == nil) {
         
         // Sort the content by last name
-        _content = [[self.contactsManager ccsmContacts] sortedArrayUsingComparator: ^(SignalRecipient *a1, SignalRecipient *a2) {
+        _content = [[self.contactsManager ccsmRecipients] sortedArrayUsingComparator: ^(SignalRecipient *a1, SignalRecipient *a2) {
 
             return [a1.lastName compare:a2.lastName];
         }];

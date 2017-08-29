@@ -61,8 +61,8 @@ static Environment *environment = nil;
       relayServerHostNameSuffix:(NSString *)relayServerHostNameSuffix
                     certificate:(Certificate *)certificate
  supportedKeyAgreementProtocols:(NSArray *)keyAgreementProtocolsInDescendingPriority
-                   phoneManager:(PhoneManager *)phoneManager
-              recentCallManager:(RecentCallManager *)recentCallManager
+//                   phoneManager:(PhoneManager *)phoneManager
+//              recentCallManager:(RecentCallManager *)recentCallManager
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
@@ -102,8 +102,8 @@ static Environment *environment = nil;
     _certificate = certificate;
     _relayServerHostNameSuffix = relayServerHostNameSuffix;
     _keyAgreementProtocolsInDescendingPriority = keyAgreementProtocolsInDescendingPriority;
-    _phoneManager = phoneManager;
-    _recentCallManager = recentCallManager;
+//    _phoneManager = phoneManager;
+//    _recentCallManager = recentCallManager;
     _zrtpClientId = zrtpClientId;
     _zrtpVersionId = zrtpVersionId;
     _contactsManager = contactsManager;
@@ -112,19 +112,19 @@ static Environment *environment = nil;
     _messageSender = messageSender;
     _invitationService = [FLInvitationService new];
 
-    if (recentCallManager != nil) {
-        // recentCallManagers are nil in unit tests because they would require unnecessary allocations. Detailed
-        // explanation: https://github.com/WhisperSystems/Signal-iOS/issues/62#issuecomment-51482195
-
-        [recentCallManager watchForCallsThrough:phoneManager untilCancelled:nil];
-    }
+//    if (recentCallManager != nil) {
+//        // recentCallManagers are nil in unit tests because they would require unnecessary allocations. Detailed
+//        // explanation: https://github.com/WhisperSystems/Signal-iOS/issues/62#issuecomment-51482195
+//
+//        [recentCallManager watchForCallsThrough:phoneManager untilCancelled:nil];
+//    }
 
     return self;
 }
 
-+ (PhoneManager *)phoneManager {
-    return Environment.getCurrent.phoneManager;
-}
+//+ (PhoneManager *)phoneManager {
+//    return Environment.getCurrent.phoneManager;
+//}
 
 + (id<Logging>)logging {
     // Many tests create objects that rely on Environment only for logging.
@@ -145,20 +145,20 @@ static Environment *environment = nil;
     return signalingKey && macKey && extra && serverAuth;
 }
 
-- (void)initCallListener {
-    [self.phoneManager.currentCallObservable watchLatestValue:^(CallState *latestCall) {
-        if (latestCall == nil) {
-            return;
-        }
-        FLThreadViewController *vc = [[Environment getCurrent] forstaViewController];
-//        SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
-        [vc dismissViewControllerAnimated:NO completion:nil];
-        vc.latestCall = latestCall;
-        [vc performSegueWithIdentifier:kCallSegue sender:self];
-    }
-                                                     onThread:NSThread.mainThread
-                                               untilCancelled:nil];
-}
+//- (void)initCallListener {
+//    [self.phoneManager.currentCallObservable watchLatestValue:^(CallState *latestCall) {
+//        if (latestCall == nil) {
+//            return;
+//        }
+//        FLThreadViewController *vc = [[Environment getCurrent] forstaViewController];
+////        SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
+//        [vc dismissViewControllerAnimated:NO completion:nil];
+//        vc.latestCall = latestCall;
+//        [vc performSegueWithIdentifier:kCallSegue sender:self];
+//    }
+//                                                     onThread:NSThread.mainThread
+//                                               untilCancelled:nil];
+//}
 
 + (PropertyListPreferences *)preferences {
     return [PropertyListPreferences new];

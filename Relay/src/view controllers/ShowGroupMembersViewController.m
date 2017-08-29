@@ -108,21 +108,22 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
 
-    if (indexPath.row > 0 && [self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
-        ABPersonViewController *view = [[ABPersonViewController alloc] init];
-
-        SignalRecipient *contact                = [self.groupContacts contactForIndexPath:relativeIndexPath];
-        ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, nil);
-        view.displayedPerson =
-            ABAddressBookGetPersonWithRecordID(addressBookRef, contact.recordID); // Assume person is already defined.
-        view.allowsActions = NO;
-        view.allowsEditing = YES;
-
-        [self.navigationController pushViewController:view animated:YES];
-    } else {
+//    if (indexPath.row > 0 && [self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
+//        ABPersonViewController *view = [[ABPersonViewController alloc] init];
+//
+//        SignalRecipient *contact                = [self.groupContacts contactForIndexPath:relativeIndexPath];
+//        ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, nil);
+//        view.displayedPerson =
+//            ABAddressBookGetPersonWithRecordID(addressBookRef, contact.recordID); // Assume person is already defined.
+//        view.allowsActions = NO;
+//        view.allowsEditing = YES;
+//
+//        [self.navigationController pushViewController:view animated:YES];
+//    } else {
         ABUnknownPersonViewController *view = [[ABUnknownPersonViewController alloc] init];
 
         ABRecordRef aContact = ABPersonCreate();
@@ -143,7 +144,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             view.allowsAddingToAddressBook = YES;
             [self.navigationController pushViewController:view animated:YES];
         }
-    }
+//    }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -155,7 +156,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 #pragma mark - Cell Utility
 
-- (NSAttributedString *)attributedStringForContact:(Contact *)contact inCell:(UITableViewCell *)cell {
+- (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact inCell:(UITableViewCell *)cell {
     NSMutableAttributedString *fullNameAttributedString =
         [[NSMutableAttributedString alloc] initWithString:contact.fullName];
 
