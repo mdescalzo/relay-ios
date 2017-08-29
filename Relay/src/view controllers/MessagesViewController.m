@@ -626,7 +626,8 @@ typedef enum : NSUInteger {
 
 - (PhoneNumber *)phoneNumberForThread {
     NSString *contactId = [(TSContactThread *)self.thread contactIdentifier];
-    return [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
+    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:contactId];
+    return [PhoneNumber phoneNumberFromUserSpecifiedText:recipient.phoneNumber];
 }
 
 - (void)callAction {
@@ -644,8 +645,18 @@ typedef enum : NSUInteger {
     }
 }
 
-- (BOOL)canCall {
-    return !(isGroupConversation || [((TSContactThread *)self.thread).contactIdentifier isEqualToString:[TSAccountManager localNumber]]);
+- (BOOL)canCall
+{
+    if (isGroupConversation || [((TSContactThread *)self.thread).contactIdentifier isEqualToString:[TSAccountManager localNumber]]) {
+        return NO;
+    } else {
+        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:((TSContactThread *)self.thread).contactIdentifier];
+        if (recipient.phoneNumber) {
+            return YES;
+        } else {
+            return NO;
+        }
+    }
 }
 
 #pragma mark - JSQMessagesViewController method overrides

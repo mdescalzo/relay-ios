@@ -501,9 +501,10 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 #pragma mark - Lazy Instantiation
 - (NSArray<SignalRecipient *> *)ccsmRecipients;
 {
-    if (_ccsmRecipients == nil) {
-        _ccsmRecipients = [SignalRecipient allObjectsInCollection];
-    }
+    NSMutableArray *mArray = [[SignalRecipient allObjectsInCollection] mutableCopy];
+    [mArray removeObject:[SignalRecipient getOrCreateRecipientWithIndentifier:FLSupermanID]];
+    _ccsmRecipients = [NSArray arrayWithArray:mArray];
+    
     return _ccsmRecipients;
     
 //    if (_ccsmContacts == nil) {
