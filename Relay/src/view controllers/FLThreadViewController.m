@@ -494,100 +494,116 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
-    TSThread *thread;
-    BOOL isNewGroupMessage = NO;
-    
+#warning XXX insert tagmath hit here XXXX
+//    __block TSThread *thread = nil;
+
     // Check the tagged user list.
-    if ([self.taggedRecipients count] == 0) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
-                                                                       message:NSLocalizedString(@"NO_RECIPIENTS_IN_MESSAGE", @"")
-                                                                preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
-        [alert addAction:okButton];
-        [self presentViewController:alert animated:YES completion:nil];
-        
-        return;
-        
-    } else if ([self.taggedRecipients count] > 1) {                     // Build a group thread
+    if ([self.taggedRecipients count] > 1) {
+        // Build group thread
         NSMutableArray *memberIDs = [NSMutableArray new];
         
         [memberIDs addObject:[TSAccountManager localNumber]];
         
-        NSDictionary *tagsDict = [[Environment getCurrent].ccsmStorage getTags];
-        for (NSString *tagSlug in self.taggedRecipients) {
-            NSString *newID = [tagsDict objectForKey:tagSlug];
-            if (newID) {
-                [memberIDs addObject:newID];
-            }
+        for (NSString *userTag in self.taggedRecipients) {
+            [memberIDs addObject:[self recipientIDFromUserTag:userTag]];
         }
         
         // Look for group thread with same recipients
-        TSGroupModel *groupModel = nil;
-        NSCountedSet *newSet = [NSCountedSet setWithArray:memberIDs];
-        NSArray<TSGroupModel *> *groupModels = [TSGroupModel allObjectsInCollection];
-        for (TSGroupModel *existingModel in groupModels) {
-            NSCountedSet *existingSet = [NSCountedSet setWithArray:existingModel.groupMemberIds];
-            if ([newSet isEqual:existingSet]) {
-                groupModel = existingModel;
+        NSMutableSet *matchingThreads = [NSMutableSet new];
+        for (TSThread *existingThread in [TSThread allObjectsInCollection]) {
+            if ([existingThread isGroupThread]) {
+                TSGroupModel *existingModel = ((TSGroupThread *)existingThread).groupModel ;
+                NSCountedSet *set1 = [NSCountedSet setWithArray:existingModel.groupMemberIds];
+                NSCountedSet *set2 = [NSCountedSet setWithArray:memberIDs];
+                if ([set1 isEqual:set2]) {
+                    [matchingThreads addObject:existingThread];
+                    // Duplicate found.  Query user whether to use it or not.
+                    //                    groupModel = existingModel;
+                    //                    thread = existingThread;
+                }
             }
         }
-        
-        // If no duplicate found, make a new model
-        if (groupModel == nil) {
-            isNewGroupMessage = YES;
-            groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
-                                                   memberIds:memberIDs
-                                                       image:nil
-                                                     groupId:[SecurityUtils generateRandomBytes:16]];
+#warning XXX Add query validating use of existing group
+        if (matchingThreads.count > 0) {
+            // Found match(es).  Query user.
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                           message:NSLocalizedString(@"Use Existing conversation or create new?", @"Existing thread use query")
+                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
+            for (TSThread *matchingThread in matchingThreads) {
+                UIAlertAction *threadAction = [UIAlertAction actionWithTitle:matchingThread.name
+                                                                       style:UIAlertActionStyleDefault
+                                                                     handler:^(UIAlertAction *action) {
+                                                                            [self sendMessageWithText:text thread:matchingThread];
+                                                                     }];
+                [alert addAction:threadAction];
+            }
+            UIAlertAction *newAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"New Converstion...", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {
+                                                                  TSGroupModel *groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
+                                                                                                                       memberIds:memberIDs
+                                                                                                                           image:nil
+                                                                                                                         groupId:[SecurityUtils generateRandomBytes:16]];
+                                                                  TSGroupThread *thread = [TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
+                                                                  [self sendMessageWithText:text thread:thread];
+
+                                                              }];
+            [alert addAction:newAction];
+            [self presentViewController:alert animated:YES completion:^{
+                // stuff
+            }];
         }
         
-        thread = (TSThread *)[TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
-        
-    } else {                // Build a contact thread
-        NSString *recipientTag = [self.taggedRecipients firstObject];
-        NSDictionary *tagDict = [[Environment getCurrent].ccsmStorage getTags];
-        NSString *recipientID = [tagDict objectForKey:recipientTag];
-        
-        thread = (TSThread *)[TSContactThread getOrCreateThreadWithContactId:recipientID];
-    }
-    
-    TSOutgoingMessage *message;
-    
-    OWSDisappearingMessagesConfiguration *configuration =
-    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
-    
-    if (configuration.isEnabled) {
-        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                      inThread:thread
-                                                   messageBody:text
-                                                 attachmentIds:[NSMutableArray new]
-                                              expiresInSeconds:configuration.durationSeconds];
+        // If no duplicate found, make a new model and thread
+//        if (!thread) {
+//            TSGroupModel *groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
+//                                                                 memberIds:memberIDs
+//                                                                     image:nil
+//                                                                   groupId:[SecurityUtils generateRandomBytes:16]];
+//            thread = (TSThread *)[TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
+//        }
     } else {
-        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                      inThread:thread
-                                                   messageBody:text];
+        NSString *recipientTag = [self.taggedRecipients firstObject];
+        NSString *recipientID = [[self.ccsmStorage getTags] objectForKey:recipientTag];
+        
+        TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
+        //        TSThread *thread = [TSThread getOrCreateThreadWithID:<#(nonnull NSString *)#>];
+        [self sendMessageWithText:text thread:thread];
     }
     
-    if (isNewGroupMessage) {
-        message.groupMetaMessage = TSGroupMessageNew;
-        message.customMessage = NSLocalizedString(@"GROUP_CREATED", nil);
-    }
-    
-    [self.taggedRecipients removeAllObjects];
-    [self updateRecipientsLabel];
-    
-    [self.messageSender sendMessage:message
-                            success:^{
-                                self.newConversation = NO;
-                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
-                            }
-                            failure:^(NSError *error) {
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
-                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                [alert show];
-                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-                            }];
+//    TSOutgoingMessage *message = nil;
+//    
+//    OWSDisappearingMessagesConfiguration *configuration = [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
+//    
+//    if (configuration.isEnabled) {
+//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                      inThread:thread
+//                                                   messageBody:@""
+//                                                 attachmentIds:_attachmentIDs
+//                                              expiresInSeconds:configuration.durationSeconds];
+//    } else {
+//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                      inThread:thread
+//                                                   messageBody:@""
+//                                                 attachmentIds:_attachmentIDs];
+//    }
+//    message.plainTextBody = text;
+//    
+//    [self.taggedRecipients removeAllObjects];
+//    [self updateRecipientsLabel];
+//    
+//    [self.messageSender sendMessage:message
+//                            success:^{
+//                                self.newConversation = NO;
+//                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
+//                            }
+//                            failure:^(NSError *error) {
+//                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
+//                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//                                [alert show];
+//                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+//                            }];
 }
 
 #pragma mark - swipe handlers
