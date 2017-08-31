@@ -335,7 +335,11 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                // can't verify in production env due to code
                                                // signing.
                                                [TSSocketManager becomeActiveFromForeground];
-                                               [[Environment getCurrent].contactsManager setupCCSMRecipients];
+                                               
+                                               // Refresh the contact/recipient database in background
+                                               dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+                                                   [[Environment getCurrent].contactsManager setupCCSMRecipients];
+                                               });
 //                                               [[Environment getCurrent].contactsManager verifyABPermission];
                                            }];
     
