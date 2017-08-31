@@ -32,9 +32,10 @@
         return self.contacts;
     }
 
-    NSString *formattedNumber = [PhoneNumber removeFormattingCharacters:searchTerm];
+//    NSString *formattedNumber = [PhoneNumber removeFormattingCharacters:searchTerm];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (ANY parsedPhoneNumbers.toE164 contains[c] %@)", searchTerm, formattedNumber];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (ANY parsedPhoneNumbers.toE164 contains[c] %@)", searchTerm, formattedNumber];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (phoneNumber contains[c] %@) OR (email contains[c] %@)", searchTerm, searchTerm, searchTerm];
 
     return [self.contacts filteredArrayUsingPredicate:predicate];
 }
