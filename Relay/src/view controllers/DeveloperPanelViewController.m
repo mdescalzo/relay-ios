@@ -70,31 +70,41 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.text.length >= 3) {
-        [self.tagService tagLookupWithString:textField.text];
+        [self.tagService tagLookupWithString:textField.text
+                                     success:^(NSDictionary *results) {
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];
+                                         });
+                                     }
+                                     failure:^(NSError *error) {
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", error.code, error.localizedDescription];
+                                         });
+                                     }];
     }
     
     return YES;
 }
 
--(void)successfulLookupWithResults:(NSDictionary *)results
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];
-    });
-}
-
--(void)failedLookupWithError:(NSError *)error
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", error.code, error.localizedDescription];
-    });
-}
+//-(void)successfulLookupWithResults:(NSDictionary *)results
+//{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];
+//    });
+//}
+//
+//-(void)failedLookupWithError:(NSError *)error
+//{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", error.code, error.localizedDescription];
+//    });
+//}
 
 -(FLTagMathService *)tagService
 {
     if (_tagService == nil) {
         _tagService = [FLTagMathService new];
-        _tagService.delegate = self;
+//        _tagService.delegate = self;
     }
     return _tagService;
 }

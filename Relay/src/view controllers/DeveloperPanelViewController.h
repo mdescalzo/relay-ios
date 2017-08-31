@@ -10,6 +10,6 @@
 
 @class UIKit;
 
-@interface DeveloperPanelViewController : UIViewController <FLTagMathServiceDelegate, UITextFieldDelegate>
+@interface DeveloperPanelViewController : UIViewController <UITextFieldDelegate>
 
 @end
