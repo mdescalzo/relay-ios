@@ -12,11 +12,12 @@
 
 @interface FLTagMathService()
 
+@property (nonatomic, strong) NSCache *cache;
+
 @end
 
 @implementation FLTagMathService
 
-//-(void)tagLookupWithString:(NSString *)lookupString
 -(void)tagLookupWithString:(NSString *_Nonnull)lookupString
                    success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock
                    failure:(void (^_Nonnull)(NSError *_Nonnull))failureBlock;
@@ -44,7 +45,6 @@
          if (connectionError != nil)  // Failed connection
          {
              DDLogDebug(@"Tag Math.  Error: %@", connectionError);
-//             [self.delegate failedLookupWithError:connectionError];
              failureBlock(connectionError);
          }
          else if (HTTPresponse.statusCode == 200) // SUCCESS!
@@ -52,7 +52,6 @@
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-//             [self.delegate successfulLookupWithResults:result];
              successBlock(result);
          }
          else  // Connection good, error from server
@@ -60,7 +59,6 @@
              NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                                   code:HTTPresponse.statusCode
                                               userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-//             [self.delegate failedLookupWithError:error];
              failureBlock(error);
          }
      }];

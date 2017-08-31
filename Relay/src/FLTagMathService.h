@@ -7,24 +7,11 @@
 
 @import Foundation;
 
-//@protocol FLTagMathServiceDelegate;
-
 @interface FLTagMathService : NSObject
 
-//@property (nonatomic, weak, nullable) id <FLTagMathServiceDelegate> delegate;
-
-//-(void)tagLookupWithString:(NSString *_Nonnull)lookupString;
 
 -(void)tagLookupWithString:(NSString *_Nonnull)lookupString
                    success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock
                    failure:(void (^_Nonnull)(NSError *_Nonnull))failureBlock;
 
 @end
-
-//@protocol FLTagMathServiceDelegate <NSObject>
-//
-//-(void)successfulLookupWithResults:(NSDictionary *_Nullable)results;
-//
-//-(void)failedLookupWithError:(NSError *_Nullable)error;
-//
-//@end
