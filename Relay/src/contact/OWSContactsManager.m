@@ -78,6 +78,9 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 #pragma mark - Setup
 -(void)setupCCSMRecipients
 {
+#warning XXX Needs catch for failure to communicate with CCSM
+    [[Environment getCurrent].ccsmCommManager refreshCCSMUsers];
+    
     NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     
     if (usersBlob.count > 0) {
