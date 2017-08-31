@@ -104,7 +104,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) NSMutableArray *attachmentIDs;
 @property (nonatomic, strong) NSMutableArray *messages;
 
-@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) IBOutlet UISearchController *searchController;
 @property (nonatomic, weak) IBOutlet UILabel *bannerLabel;
 
 @property (nonatomic, strong) FLDomainViewController *domainTableViewController;
@@ -230,7 +230,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [self registerPrefixesForAutoCompletion:@[@"@", @"#", @":", @"+:", @"/"]];
     
     // Temporarily disable the searchbar since it isn't funcational yet
-    self.searchBar.userInteractionEnabled = NO;
+    self.searchController.searchBar.userInteractionEnabled = NO;
     
     self.textView.keyboardType = UIKeyboardTypeDefault;
     
@@ -1391,7 +1391,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     //                                                               target:self
     //                                                               action:@selector(onSettingsTap:)];
     self.navigationItem.leftBarButtonItem = logoItem;
-    self.navigationItem.titleView = self.searchBar;
+    self.navigationItem.titleView = self.searchController.searchBar;
     //    self.navigationItem.rightBarButtonItem = settingsItem;
     //    self.navigationItem.rightBarButtonItem = composeItem;
 }
@@ -1569,6 +1569,28 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     return UIModalPresentationNone;
 }
 
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+//    NSString *searchString = [self.searchController.searchBar text];
+//    
+//    [self filterContentForSearchText:searchString scope:nil];
+//    
+//    [self.tableView reloadData];
+}
+
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+//    [self updateSearchResultsForSearchController:self.searchController];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+//    self.sendTextButton.hidden = YES;
+}
+
+
 
 #pragma mark - Lazy instantiation
 -(FLTagMathService *)tagMathService
@@ -1616,12 +1638,17 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     return _settingsViewController;
 }
 
--(UISearchBar *)searchBar
+-(UISearchController *)searchController
 {
-    if (_searchBar == nil) {
-        _searchBar = [UISearchBar new];
+    if (_searchController == nil) {
+        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+        self.searchController.searchResultsUpdater = self;
+        self.searchController.dimsBackgroundDuringPresentation = NO;
+        self.searchController.hidesNavigationBarDuringPresentation = NO;
+
+        _searchController.delegate = self;
     }
-    return _searchBar;
+    return _searchController;
 }
 
 //-(UISwipeGestureRecognizer *)rightSwipeRecognizer

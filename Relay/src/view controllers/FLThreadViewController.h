@@ -15,7 +15,12 @@
 #import "Contact.h"
 #import "TSGroupModel.h"
 
-@interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate, UIImagePickerControllerDelegate>
+@interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,
+                                                            UIViewControllerPreviewingDelegate,
+                                                            UIPopoverPresentationControllerDelegate,
+                                                            UISearchControllerDelegate,
+                                                            UISearchResultsUpdating,
+                                                            UIImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL newlyRegisteredUser;
 @property (nonatomic, strong) CallState * _Nullable latestCall;
