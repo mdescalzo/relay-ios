@@ -59,6 +59,7 @@
 #import <YapDatabase/YapDatabaseViewConnection.h>
 #import <JSQSystemSoundPlayer.h>
 #import "MessagesViewController.h"
+#import "SecurityUtils.h"
 
 @import Photos;
 
@@ -493,59 +494,86 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
+    TSThread *thread = nil;
     // Check the tagged user list.
     if ([self.taggedRecipients count] > 1) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
-                                                                       message:@"Multiple recipient support is current under development.  Using only the first @tagged recipient."
-                                                                preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
-        [alert addAction:okButton];
-        [self presentViewController:alert animated:YES completion:nil];
-    } else {
+        // Build group thread
         
-        // Build the message parts
+        NSMutableArray *memberIDs = [NSMutableArray new];
+        
+        [memberIDs addObject:[TSAccountManager localNumber]];
+        
+        for (NSString *userTag in self.taggedRecipients) {
+            [memberIDs addObject:[self recipientIDFromUserTag:userTag]];
+        }
+        
+        // Look for group thread with same recipients
+        TSGroupModel *groupModel = nil;
+   
+#warning XXX Add query validating use of existing group
+        for (TSThread *existingThread in [TSThread allObjectsInCollection]) {
+            if ([existingThread isGroupThread]) {
+                TSGroupModel *existingModel = ((TSGroupThread *)existingThread).groupModel ;
+                NSCountedSet *set1 = [NSCountedSet setWithArray:existingModel.groupMemberIds];
+                NSCountedSet *set2 = [NSCountedSet setWithArray:memberIDs];
+                if ([set1 isEqual:set2]) {
+//                    groupModel = existingModel;
+                    thread = existingThread;
+                }
+            }
+        }
+        
+        // If no duplicate found, make a new model and thread
+        if (!thread) {
+            groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
+                                                   memberIds:memberIDs
+                                                       image:nil
+                                                     groupId:[SecurityUtils generateRandomBytes:16]];
+            thread = (TSThread *)[TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
+        }
+    } else {
+        // Build conversation thread
         NSString *recipientTag = [self.taggedRecipients firstObject];
         NSString *recipientID = [[self.ccsmStorage getTags] objectForKey:recipientTag];
         
 #warning Thread use departure
-        TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
-//        TSThread *thread = [TSThread getOrCreateThreadWithID:<#(nonnull NSString *)#>];
+        thread = [TSContactThread getOrCreateThreadWithContactId:recipientID];
+        //        TSThread *thread = [TSThread getOrCreateThreadWithID:<#(nonnull NSString *)#>];
         
-        TSOutgoingMessage *message;
-        
-        OWSDisappearingMessagesConfiguration *configuration =
-        [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
-        
-        if (configuration.isEnabled) {
-            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                          inThread:thread
-                                                       messageBody:@""
-                                                     attachmentIds:_attachmentIDs
-                                                  expiresInSeconds:configuration.durationSeconds];
-        } else {
-            message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                          inThread:thread
-                                                       messageBody:@""
-                                                     attachmentIds:_attachmentIDs];
-        }
-        message.plainTextBody = text;
-        
-        [self.taggedRecipients removeAllObjects];
-        [self updateRecipientsLabel];
-        
-        [self.messageSender sendMessage:message
-                                success:^{
-                                    self.newConversation = NO;
-                                    DDLogInfo(@"%@ Successfully sent message.", self.tag);
-                                }
-                                failure:^(NSError *error) {
-                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                    message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
-                                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                    [alert show];
-                                    DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-                                }];
     }
+    TSOutgoingMessage *message = nil;
+    
+    OWSDisappearingMessagesConfiguration *configuration = [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
+    
+    if (configuration.isEnabled) {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:@""
+                                                 attachmentIds:_attachmentIDs
+                                              expiresInSeconds:configuration.durationSeconds];
+    } else {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:@""
+                                                 attachmentIds:_attachmentIDs];
+    }
+    message.plainTextBody = text;
+    
+    [self.taggedRecipients removeAllObjects];
+    [self updateRecipientsLabel];
+    
+    [self.messageSender sendMessage:message
+                            success:^{
+                                self.newConversation = NO;
+                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                            }
+                            failure:^(NSError *error) {
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
+                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                [alert show];
+                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+                            }];
 }
 
 #pragma mark - swipe handlers
@@ -565,6 +593,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //        [self hideDomainTableView];
 //    }
 //}
+
+#pragma mark - helper
+-(NSString *)recipientIDFromUserTag:(nonnull NSString *)usertag
+{
+    return [[[Environment getCurrent].ccsmStorage getTags] objectForKey:usertag];
+}
+
 
 #pragma mark - Domain View handling
 -(void)showDomainTableView
