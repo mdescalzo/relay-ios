@@ -17,8 +17,6 @@
 #import "TSSocketManager.h"
 #import "TSPreKeyManager.h"
 
-@import Foundation;
-
 @interface CCSMCommManager ()
 
 @property (nullable, nonatomic, retain) NSString *userAwaitingVerification;
@@ -520,6 +518,25 @@
          }
      }];
     
+}
+
+-(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous
+{
+    __block SignalRecipient *recipient = nil;
+    
+    if (userId) {
+        NSString *url = [NSString stringWithFormat:@"%@/v1/user/%@/", FLHomeURL, userId];
+        [self getThing:url
+           synchronous:synchronous
+               success:^(NSDictionary *result) {
+                   recipient = [SignalRecipient recipientForUserDict:result];
+               }
+               failure:^(NSError *error) {
+                   DDLogDebug(@"CCSM User lookup failed or returned no results.");
+               }];
+    }
+    
+    return recipient;
 }
 
 
