@@ -302,15 +302,24 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(SignalRecipient *)recipientForUserID:(NSString *)userID
 {
-    if (userID.length == 0) {
-        return nil;
-    } else {
-        __block SignalRecipient *recipient = nil;
+    __block SignalRecipient *recipient = nil;
+
+    if (userID.length > 0) {
         [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
             recipient = [transaction objectForKey:userID inCollection:[SignalRecipient collection]];
         }];
-        return recipient;
     }
+    
+    if (!recipient) {
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            recipient = [[Environment getCurrent].ccsmCommManager recipientFromCCSMWithID:userID synchronoous:YES];
+            if (recipient) {
+                [recipient saveWithTransaction:transaction];
+            }
+        }];
+    }
+    
+    return recipient;
 }
 
 - (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber
@@ -439,18 +448,18 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 //    }] sortedArrayUsingComparator:[[self class] contactComparator]];
 //}
 
-- (NSString *)nameStringForIdentifier:(NSString *)identifier {
-    if (!identifier) {
-        return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
-            @"Displayed if for some reason we can't determine a contacts phone number *or* name");
-    }
-    for (SignalRecipient *contact in self.allContacts) {
-            if ([contact.uniqueId isEqualToString:identifier]) {
-                return contact.fullName;
-        }
-    }
-    return @"Unknow User";
-}
+//- (NSString *)nameStringForIdentifier:(NSString *)identifier
+//{
+//    SignalRecipient *recipient = [[Environment getCurrent].contactsManager recipientForUserID:identifier];
+//    if (recipient.fullName) {
+//        return recipient.fullName;
+//    } else if (recipient.tagSlug){
+//        return recipient.tagSlug;
+//    } else {
+//        return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
+//                                 @"Displayed if for some reason we can't determine a contacts ID *or* name");
+//    }
+//}
 
 - (UIImage *)imageForPhoneIdentifier:(NSString *)identifier {
     for (SignalRecipient *contact in self.allContacts) {
@@ -477,16 +486,27 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 - (NSString *)nameStringForContactID:(NSString *)identifier {
-    if (!identifier) {
+//    if (!identifier) {
+//        return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
+//                                 @"Displayed if for some reason we can't determine a contacts ID *or* name");
+//    }
+    SignalRecipient *recipient = [[Environment getCurrent].contactsManager recipientForUserID:identifier];
+    if (recipient.fullName) {
+        return recipient.fullName;
+    } else if (recipient.tagSlug){
+        return recipient.tagSlug;
+    } else {
         return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
                                  @"Displayed if for some reason we can't determine a contacts ID *or* name");
     }
-    for (SignalRecipient *contact in [self ccsmRecipients]) {
-        if ([contact.uniqueId isEqualToString:identifier]) {
-            return contact.fullName;
-        }
-    }
-    return identifier;
+    
+    
+//    for (SignalRecipient *contact in [self ccsmRecipients]) {
+//        if ([contact.uniqueId isEqualToString:identifier]) {
+//            return contact.fullName;
+//        }
+//    }
+//    return identifier;
 }
 
 - (UIImage *)imageForContactID:(NSString *)identifier {

@@ -138,9 +138,9 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
-                                                       storageManager:[TSStorageManager sharedManager]
+                                                      storageManager:[TSStorageManager sharedManager]
                                                      contactsManager:_contactsManager];
-//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+    //                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     return self;
 }
@@ -155,9 +155,9 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     _contactsManager = [Environment getCurrent].contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
-                                                       storageManager:[TSStorageManager sharedManager]
+                                                      storageManager:[TSStorageManager sharedManager]
                                                      contactsManager:_contactsManager];
-//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+    //                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     return self;
 }
@@ -175,7 +175,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     
     self.editingDbConnection = TSStorageManager.sharedManager.newDatabaseConnection;
@@ -193,33 +193,33 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
                                                object:nil];
     
     [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
-         [self.tableView reloadData];
-     }
-     onThread:[NSThread mainThread]
-     untilCancelled:nil];
+        [self.tableView reloadData];
+    }
+                                                                            onThread:[NSThread mainThread]
+                                                                      untilCancelled:nil];
     
     if ([self.traitCollection respondsToSelector:@selector(forceTouchCapability)] &&
         (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)) {
         [self registerForPreviewingWithDelegate:self sourceView:self.tableView];
     }
-
+    
     // Build the domain view/thread list
     [self.view addSubview:self.domainTableViewController.view];
     [self hideDomainTableView];
     
-//    self.isDomainViewVisible = NO;
+    //    self.isDomainViewVisible = NO;
     
     self.inverted = NO;
     [self configureNavigationBar];
     [self configureBottomButtons];
-//    [self rightSwipeRecognizer];
-//    [self leftSwipeRecognizer];
+    //    [self rightSwipeRecognizer];
+    //    [self leftSwipeRecognizer];
     [self longPressOnDirButton];
-
+    
     // Popover handling
     self.modalPresentationStyle = UIModalPresentationPopover;
     self.popoverPresentationController.delegate = self;
-
+    
     self.textView.delegate = self;
     
     [self registerPrefixesForAutoCompletion:@[@"@", @"#", @":", @"+:", @"/"]];
@@ -233,7 +233,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [self.view bringSubviewToFront:self.bannerLabel];
     self.bannerLabel.backgroundColor = [UIColor lightGrayColor];
     self.bannerLabel.hidden = YES;
-
+    
     // setup methodology lifted from Signals
     [self ensureNotificationsUpToDate];
     [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
@@ -242,7 +242,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(selectedUserNotification:)
                                                  name:FLUserSelectedFromPopoverDirectoryNotification
@@ -284,7 +284,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 //            [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
 //                                                message:NSLocalizedString(@"REGISTER_CONTACTS_BODY", nil)
 //                                         preferredStyle:UIAlertControllerStyleAlert];
-//            
+//
 //            [controller
 //             addAction:[UIAlertAction
 //                        actionWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_CONTINUE", nil)
@@ -293,7 +293,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 //                            [self ensureNotificationsUpToDate];
 //                            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
 //                        }]];
-//            
+//
 //            [self presentViewController:controller animated:YES completion:nil];
 //            break;
 //        }
@@ -301,7 +301,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 //            DDLogError(@"%@ Unexpected for new user to have kABAuthorizationStatus:%ld", self.tag, status);
 //            [self ensureNotificationsUpToDate];
 //            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
-//            
+//
 //            break;
 //        }
 //    }
@@ -389,7 +389,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }];
     
     _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
-//    [self checkIfEmptyView];
+    //    [self checkIfEmptyView];
 }
 
 
@@ -404,11 +404,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [segue destinationViewController].popoverPresentationController.delegate = self;
         [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width*2/3, [self.settingsViewController heightForTableView]);
         
-//        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
-//                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
-//                                   self.navigationController.navigationBar.frame.size.height,
-//                                   self.navigationController.navigationBar.frame.size.height + 20);
-
+        //        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
+        //                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
+        //                                   self.navigationController.navigationBar.frame.size.height,
+        //                                   self.navigationController.navigationBar.frame.size.height + 20);
+        
         [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForLogoBarButton];
     }
     else if ([[segue identifier] isEqualToString:@"directoryPopoverSegue"]) {
@@ -420,10 +420,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                    self.leftButton.frame.size.height);
         [segue destinationViewController].popoverPresentationController.sourceRect = aFrame;
     }
-
+    
     else if ([[segue identifier] isEqualToString:@"threadSelectedSegue"]) {
         self.navigationItem.backBarButtonItem.title = @"";
-
+        
         MessagesViewController *destination = (MessagesViewController *)segue.destinationViewController;
         [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
     }
@@ -443,7 +443,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                     buttonFrame.origin.y,
                                     buttonFrame.size.width + 72,
                                     buttonFrame.size.height + 60);
-
+    
     return returnFrame;
 }
 
@@ -472,7 +472,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 //- (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing
 //{
-//    
+//
 //}
 
 
@@ -608,14 +608,59 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    }
 //}
 
+#pragma mark - helpers
+-(void)sendMessageWithText:(NSString *)text
+                    thread:(TSThread *)thread
+{
+    TSOutgoingMessage *message = nil;
+    
+    OWSDisappearingMessagesConfiguration *configuration = [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
+    
+    if (configuration.isEnabled) {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:@""
+                                                 attachmentIds:_attachmentIDs
+                                              expiresInSeconds:configuration.durationSeconds];
+    } else {
+        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                      inThread:thread
+                                                   messageBody:@""
+                                                 attachmentIds:_attachmentIDs];
+    }
+    message.plainTextBody = text;
+    
+    [self.taggedRecipients removeAllObjects];
+    [self updateRecipientsLabel];
+    
+    [self.messageSender sendMessage:message
+                            success:^{
+                                self.newConversation = NO;
+                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                            }
+                            failure:^(NSError *error) {
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
+                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                [alert show];
+                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+                            }];    
+}
+
+-(NSString *)recipientIDFromUserTag:(nonnull NSString *)usertag
+{
+    return [[[Environment getCurrent].ccsmStorage getTags] objectForKey:usertag];
+}
+
+
 #pragma mark - Domain View handling
 -(void)showDomainTableView
 {
     CGFloat navBarHeight = self.navigationController.navigationBar.bounds.size.height;
     CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
     
-//    self.domainTableViewController.view.hidden = NO;
-//    self.isDomainViewVisible = YES;
+    //    self.domainTableViewController.view.hidden = NO;
+    //    self.isDomainViewVisible = YES;
     self.domainTableViewController.view.hidden = NO;
     [UIView animateWithDuration:0.25 animations:^{
         self.domainTableViewController.view.frame = CGRectMake(0, (navBarHeight + statusBarHeight),
@@ -666,14 +711,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //- (id<OWSMessageData>)messageAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    TSInteraction *interaction = [self interactionAtIndexPath:indexPath];
-//    
+//
 //    id<OWSMessageData> messageAdapter = [self.messageAdapterCache objectForKey:interaction.uniqueId];
-//    
+//
 //    if (!messageAdapter) {
 //        messageAdapter = [TSMessageAdapter messageViewDataWithInteraction:interaction inThread:self.selectedThread contactsManager:self.contactsManager];
 //        [self.messageAdapterCache setObject:messageAdapter forKey: interaction.uniqueId];
 //    }
-//    
+//
 //    return messageAdapter;
 //}
 
@@ -741,7 +786,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         [attributedText addAttribute:NSForegroundColorAttributeName value:highlightColor range:match.range];
     }
-        
+    
     [self updateRecipientsLabel];
     
     // Check to see if new input ends the match and switch color back to black.
@@ -834,7 +879,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                 [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
-//                [self.tableView endUpdates];
+                //                [self.tableView endUpdates];
                 break;
             }
             case YapDatabaseViewChangeInsert: {
@@ -884,12 +929,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0]-1 inSection:0];
         [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     });
-
-//    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
-//    {
-//        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
-//        [self.tableView setContentOffset:offset animated:YES];
-//    }
+    
+    //    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+    //    {
+    //        CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+    //        [self.tableView setContentOffset:offset animated:YES];
+    //    }
 }
 
 #pragma mark - TableView delegate and data source methods
@@ -907,14 +952,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
     if ([tableView isEqual:self.tableView]) {
         return CELL_HEIGHT;
     }
     else {
         return CELL_HEIGHT - 8.0;
     }
-
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -966,7 +1011,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.textLabel.text = text;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
-
+    
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -989,7 +1034,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     else
     {
-         [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+        [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
         
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -1016,8 +1061,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
     if(authStatus == AVAuthorizationStatusAuthorized) {
         [self showCamera];
-//    } else if(authStatus == AVAuthorizationStatusDenied){
-//    } else if(authStatus == AVAuthorizationStatusRestricted){
+        //    } else if(authStatus == AVAuthorizationStatusDenied){
+        //    } else if(authStatus == AVAuthorizationStatusRestricted){
     } else if(authStatus == AVAuthorizationStatusNotDetermined){
         // not determined?!
         [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
@@ -1170,38 +1215,38 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 
 - (void)sendMessageAttachment:(NSData *)attachmentData ofType:(NSString *)attachmentType
 {
-//    TSOutgoingMessage *message;
-//    OWSDisappearingMessagesConfiguration *configuration =
-//    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
-//    if (configuration.isEnabled) {
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:self.thread
-//                                                   messageBody:nil
-//                                                 attachmentIds:[NSMutableArray new]
-//                                              expiresInSeconds:configuration.durationSeconds];
-//    } else {
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:self.thread
-//                                                   messageBody:nil
-//                                                 attachmentIds:[NSMutableArray new]];
-//    }
-//    
-//    [self dismissViewControllerAnimated:YES
-//                             completion:^{
-//                                 DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",
-//                                              (unsigned long)attachmentData.length,
-//                                              attachmentType);
-//                                 [self.messageSender sendAttachmentData:attachmentData
-//                                                            contentType:attachmentType
-//                                                              inMessage:message
-//                                                                success:^{
-//                                                                    DDLogDebug(@"%@ Successfully sent message attachment.", self.tag);
-//                                                                }
-//                                                                failure:^(NSError *error) {
-//                                                                    DDLogError(
-//                                                                               @"%@ Failed to send message attachment with error: %@", self.tag, error);
-//                                                                }];
-//                             }];
+    //    TSOutgoingMessage *message;
+    //    OWSDisappearingMessagesConfiguration *configuration =
+    //    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
+    //    if (configuration.isEnabled) {
+    //        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+    //                                                      inThread:self.thread
+    //                                                   messageBody:nil
+    //                                                 attachmentIds:[NSMutableArray new]
+    //                                              expiresInSeconds:configuration.durationSeconds];
+    //    } else {
+    //        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+    //                                                      inThread:self.thread
+    //                                                   messageBody:nil
+    //                                                 attachmentIds:[NSMutableArray new]];
+    //    }
+    //
+    //    [self dismissViewControllerAnimated:YES
+    //                             completion:^{
+    //                                 DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",
+    //                                              (unsigned long)attachmentData.length,
+    //                                              attachmentType);
+    //                                 [self.messageSender sendAttachmentData:attachmentData
+    //                                                            contentType:attachmentType
+    //                                                              inMessage:message
+    //                                                                success:^{
+    //                                                                    DDLogDebug(@"%@ Successfully sent message attachment.", self.tag);
+    //                                                                }
+    //                                                                failure:^(NSError *error) {
+    //                                                                    DDLogError(
+    //                                                                               @"%@ Failed to send message attachment with error: %@", self.tag, error);
+    //                                                                }];
+    //                             }];
 }
 
 - (NSURL *)videoTempFolder {
@@ -1343,7 +1388,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 {
     // Look at using segmentedcontrol to simulate multiple buttons on one side
     [self.leftButton setImage:[UIImage imageNamed:@"Tag_1"] forState:UIControlStateNormal];
-
+    
     [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
     [self.rightButton setImage:[UIImage imageNamed:@"Send_solid"] forState:UIControlStateNormal];
     [self.rightButton setTintColor:[UIColor colorWithRed:0.0/255.0 green:144.0/255.0 blue:226.0/255.0 alpha:1.0]];
@@ -1362,27 +1407,27 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     [self.textInputbar.contentView addSubview:bottomBannerView];
     [self.textInputbar.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomBannerView]|" options:0 metrics:nil views:views]];
     [self.textInputbar.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[bottomBannerView(40)]|" options:0 metrics:nil views:views]];
-
+    
 }
 
 -(void)configureNavigationBar
 {
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_text_logo"]
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
-                                                               action:@selector(onSettingsTap:)];
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(onSettingsTap:)];
     logoItem.tag = kLogoButtonTag;
-
-//    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeNew:)];
-
-//    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
-//                                                                style:UIBarButtonItemStylePlain
-//                                                               target:self
-//                                                               action:@selector(onSettingsTap:)];
+    
+    //    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeNew:)];
+    
+    //    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
+    //                                                                style:UIBarButtonItemStylePlain
+    //                                                               target:self
+    //                                                               action:@selector(onSettingsTap:)];
     self.navigationItem.leftBarButtonItem = logoItem;
     self.navigationItem.titleView = self.searchBar;
-//    self.navigationItem.rightBarButtonItem = settingsItem;
-//    self.navigationItem.rightBarButtonItem = composeItem;
+    //    self.navigationItem.rightBarButtonItem = settingsItem;
+    //    self.navigationItem.rightBarButtonItem = composeItem;
 }
 
 -(void)reloadTableView
@@ -1514,11 +1559,11 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 {
     if (_settingsViewController == nil) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
-
+        
         _settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"settingsViewController"];
         _settingsViewController.popoverPresentationController.delegate = self;
-//        _settingsViewController.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width/2,
-//                                                             [_settingsViewController tableView:_settingsViewController.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]);
+        //        _settingsViewController.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width/2,
+        //                                                             [_settingsViewController tableView:_settingsViewController.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]);
         
         [self addChildViewController:_settingsViewController];
     }
@@ -1576,9 +1621,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                 //            [self checkIfEmptyView];
             });
         }];
-
+        
     }
-        return _threadMappings;
+    return _threadMappings;
 }
 
 -(NSArray *)userTags
