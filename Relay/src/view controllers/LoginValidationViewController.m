@@ -163,7 +163,7 @@ NSUInteger maximumValidationAttempts = 9999;
                                      success:^{
                                          NSLog(@"Retrieved all users after login validation");
                                          [self.ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
-                                         [[Environment getCurrent].contactsManager setupCCSMRecipients];
+                                         [[Environment getCurrent].contactsManager refreshCCSMRecipients];
                                      }
                                      failure:^(NSError *err){
                                          NSLog(@"Failed to retrieve all users after login validation");

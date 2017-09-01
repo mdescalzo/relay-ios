@@ -457,8 +457,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 #pragma mark - Lifted from SignalsViewController
-
-// One of the following should be implemented at some later date
 - (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -528,30 +526,39 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         // Pre-existing thread check
         if (matchingThreads.count > 0) {
             // Found match(es).  Query user.
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                           message:NSLocalizedString(@"Use Existing conversation or create new?", @"Existing thread use query")
-                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
-            for (TSThread *matchingThread in matchingThreads) {
-                UIAlertAction *threadAction = [UIAlertAction actionWithTitle:matchingThread.name
-                                                                       style:UIAlertActionStyleDefault
-                                                                     handler:^(UIAlertAction *action) {
-                                                                            [self sendMessageWithText:text thread:matchingThread];
-                                                                     }];
-                [alert addAction:threadAction];
-            }
-            UIAlertAction *newAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"New Converstion...", @"")
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                                                                  TSGroupModel *groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
-                                                                                                                       memberIds:memberIDs
-                                                                                                                           image:nil
-                                                                                                                         groupId:[SecurityUtils generateRandomBytes:16]];
-                                                                  TSGroupThread *thread = [TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
-                                                                  [self sendMessageWithText:text thread:thread];
-
-                                                              }];
-            [alert addAction:newAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                               message:NSLocalizedString(@"Use Existing conversation or create new?", @"Existing thread use query")
+                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
+                for (TSThread *matchingThread in matchingThreads) {
+                    UIAlertAction *threadAction = [UIAlertAction actionWithTitle:matchingThread.name
+                                                                           style:UIAlertActionStyleDefault
+                                                                         handler:^(UIAlertAction *action) {
+                                                                             [self sendMessageWithText:text thread:matchingThread];
+                                                                         }];
+                    [alert addAction:threadAction];
+                }
+                UIAlertAction *newAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"New Converstion...", @"")
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction *action) {
+                                                                      TSGroupModel *groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
+                                                                                                                           memberIds:memberIDs
+                                                                                                                               image:nil
+                                                                                                                             groupId:[SecurityUtils generateRandomBytes:16]];
+                                                                      TSGroupThread *thread = [TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
+                                                                      [self sendMessageWithText:text thread:thread];
+                                                                      
+                                                                  }];
+                [alert addAction:newAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            });
+        } else {
+            TSGroupModel *groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
+                                                                 memberIds:memberIDs
+                                                                     image:nil
+                                                                   groupId:[SecurityUtils generateRandomBytes:16]];
+            TSGroupThread *thread = [TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
+            [self sendMessageWithText:text thread:thread];
         }
         
     } else {
@@ -585,6 +592,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 -(void)sendMessageWithText:(NSString *)text
                     thread:(TSThread *)thread
 {
+    thread.universalExpression = self.universalTagExpression;
+    
     TSOutgoingMessage *message = nil;
     
     OWSDisappearingMessagesConfiguration *configuration = [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
@@ -1442,7 +1451,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     // Call tagMath service
     [self.tagMathService tagLookupWithString:self.textView.text
                                      success:^(NSDictionary *results) {
-                                         DDLogDebug(@"TagMath restuls: %@", results);
+                                         DDLogDebug(@"TagMath restults: %@", results);
                                          self.taggedRecipientIDs = [NSSet setWithArray:[results objectForKey:@"userids"]];
                                          self.universalTagExpression = [results objectForKey:@"universal"];
                                          self.prettyTagString = [results objectForKey:@"pretty"];

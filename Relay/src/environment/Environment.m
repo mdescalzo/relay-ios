@@ -11,7 +11,8 @@
 #import "TSContactThread.h"
 #import "TSGroupThread.h"
 #import <RelayServiceKit/ContactsUpdater.h>
-
+#import "FLTagMathService.h"
+#import "TSAccountManager.h"
 #import "FLThreadViewController.h"
 
 #define isRegisteredUserDefaultString @"isRegistered"
@@ -212,14 +213,32 @@ static Environment *environment = nil;
 + (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose {
     Environment *env          = [self getCurrent];
     FLThreadViewController *vc = env.forstaViewController;
-//    SignalsViewController *vc = env.signalsViewController;
-
-    [[TSStorageManager sharedManager]
-            .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
-      TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier transaction:transaction];
-      [vc presentThread:thread keyboardOnViewAppearing:YES];
-
-    }];
+    //    SignalsViewController *vc = env.signalsViewController;
+    
+    // Collect parts
+    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier];
+    
+        [[FLTagMathService new] tagLookupWithString:recipient.tagSlug
+                                            success:^(NSDictionary *results) {
+                                                TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier];
+                                                thread.universalExpression = [results objectForKey:@"universal"];
+                                                thread.participants = [results objectForKey:@"userids"];
+                                                [thread save];
+                                                
+                                                [vc presentThread:thread keyboardOnViewAppearing:YES];
+                                            }
+                                            failure:^(NSError *error) {
+                                                DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
+#warning XXX insert alert here
+                                            }];
+    
+//    [[TSStorageManager sharedManager]
+//     .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
+//         TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier transaction:transaction];
+//         [vc presentThread:thread keyboardOnViewAppearing:YES];
+//     }];
+    
+     
 }
 
 + (void)messageGroup:(TSGroupThread *)groupThread {

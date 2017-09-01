@@ -338,7 +338,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                
                                                // Refresh the contact/recipient database in background
                                                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
-                                                   [[Environment getCurrent].contactsManager setupCCSMRecipients];
+                                                   [[Environment getCurrent].contactsManager refreshCCSMRecipients];
                                                });
 //                                               [[Environment getCurrent].contactsManager verifyABPermission];
                                            }];

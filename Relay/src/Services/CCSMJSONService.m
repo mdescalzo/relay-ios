@@ -59,7 +59,7 @@
     NSNumber *version = [NSNumber numberWithInt:1];
     NSString *userAgent = [DeviceTypes deviceModelName];
     NSString *messageId = message.forstaMessageID;
-    NSString *threadId = message.thread.forstaThreadID;
+    NSString *threadId = message.thread.uniqueId;
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *messageType = @"content";
@@ -69,67 +69,43 @@
     
     
     NSDictionary *senderDict = [[Environment getCurrent].ccsmStorage getUserInfo];
-    NSArray *tagsArray = [senderDict objectForKey:@"tags"];
-    NSString *tagId;
-    for (NSDictionary *tag in tagsArray) {
-        if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
-            tagId = [tag objectForKey:@"id"];
-            break;
-        }
-    }
-    NSDictionary *orgDict = [[Environment getCurrent].ccsmStorage getOrgInfo];
+    NSDictionary *tagDict = [senderDict objectForKey:@"tag"];
+    NSString *tagId = [tagDict objectForKey:@"id"];
+
+//    NSDictionary *orgDict = [[Environment getCurrent].ccsmStorage getOrgInfo];
 //    NSString *orgId = [orgDict objectForKey:@"id"];
 
     
     NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
-                              @"tagPresentation" : [NSString stringWithFormat:@"%@", [[Environment getCurrent].ccsmStorage getUserName]],
                               @"userId" :  [senderDict objectForKey:@"id"],
-//                              @"resolvedUser" : @{
-//                                      @"orgId" : (orgId ? orgId : @""),
-//                                      @"userId" :  [senderDict objectForKey:@"id"]
-//                                      },
-                              @"resolvedNumber" : [senderDict objectForKey:@"phone"]
                               };
     
     // Build recipient blob
-#warning make a private method
-    NSArray *recipientUsers;
-    if (message.thread.isGroupThread) {
-        recipientUsers = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
-    } else {
-        recipientUsers = @[ ((TSContactThread *)message.thread).contactIdentifier ];
+
+    NSArray *userIds = message.thread.participants;
+    // Missing participants, make it
+    if (userIds.count == 0) {
+        if (message.thread.isGroupThread) {
+            userIds = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
+        } else {
+            userIds = @[ ((TSContactThread *)message.thread).contactIdentifier, [TSStorageManager localNumber] ];
+        }
     }
     
-    NSMutableString *presentation = [NSMutableString new];
-    NSMutableArray *userIds = [NSMutableArray new];
-
-    for (NSString *memberID in recipientUsers) {
-        NSString *recipientTag = nil;
-        NSString *recipientID = nil;
-        if (memberID) {
-//            Contact *contact = [Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
-            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientForUserID:memberID];
-            if (recipient.tagSlug) {
-                recipientTag = recipient.tagSlug;
-                recipientID = recipient.uniqueId;
+    NSString *presentation = message.thread.universalExpression;
+    
+    //  Missing expresssion for some reason, make one
+    if (presentation.length == 0) {
+        for (NSString *userId in userIds) {
+            if (presentation.length == 0) {
+                presentation = [NSString stringWithFormat:@"(<%@>", userId];
             } else {
-                recipientTag = @"non_CCSM_user";
+                presentation = [presentation stringByAppendingString:[NSString stringWithFormat:@"+<%@>", userId]];
             }
-        } else {
-            recipientTag = @"unknown_user";
         }
-
-        if (recipientID) {
-            [userIds addObject:recipientID];
-        }
-        
-        if (presentation.length == 0) {
-            [presentation appendString:[NSString stringWithFormat:@"@%@", recipientTag]];
-        } else {
-            [presentation appendString:[NSString stringWithFormat:@" @%@", recipientTag]];
-        }
+        presentation = [presentation stringByAppendingString:@")"];
     }
-    
+        
     NSDictionary *recipients = @{ @"expression" : presentation,
                                   @"userIds" : userIds };
     

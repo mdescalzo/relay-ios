@@ -22,8 +22,8 @@
         message.forstaMessageID = [[NSUUID UUID] UUIDString];
         message.uniqueId = message.forstaMessageID;
     }
-    if (!message.thread.forstaThreadID) {
-        message.thread.forstaThreadID = [[NSUUID UUID] UUIDString];
+    if (!message.thread.uniqueId) {
+        message.thread.uniqueId = [[NSUUID UUID] UUIDString];
     }
     
     // Check to see if blob is already JSON

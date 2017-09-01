@@ -22,6 +22,7 @@
 #import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSAccountManager.h>
 #import "FLDirectoryCell.h"
+#import "FLTagMathService.h"
 
 @import MobileCoreServices;
 
@@ -149,12 +150,51 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 #pragma mark - Actions
 - (void)createGroup
 {
-    TSGroupModel *model = [self makeGroup];
+    __block TSGroupModel *model = [self makeGroup];
 
-    [[TSStorageManager sharedManager]
-            .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
-      self.thread = [TSGroupThread getOrCreateThreadWithGroupModel:model transaction:transaction];
-    }];
+    // Get parts
+    NSString *searchString = nil;
+    for (NSString *userid in model.groupMemberIds) {
+        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
+        if (searchString.length == 0) {
+            searchString =  recipient.tagSlug;
+        } else {
+            searchString = [searchString stringByAppendingString:[NSString stringWithFormat:@" %@", recipient.tagSlug]];
+        }
+    }
+    
+    [[FLTagMathService new] tagLookupWithString:searchString
+                                        success:^(NSDictionary *results) {
+                                            self.thread = [TSGroupThread getOrCreateThreadWithGroupModel:model];
+                                            self.thread.universalExpression = [results objectForKey:@"universal"];
+                                            self.thread.participants = [results objectForKey:@"userids"];
+                                            [self.thread save];
+                                                                                    }
+                                        failure:^(NSError *error) {
+                                            DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
+#warning XXX instert warning here
+                                        }];
+   
+//    [[TSStorageManager sharedManager]
+//            .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
+//      self.thread = [TSGroupThread getOrCreateThreadWithGroupModel:model transaction:transaction];
+//                // Assign missing properties
+//                self.thread.participants = [model.groupMemberIds copy];
+//                NSMutableString *searchString = [NSMutableString new];
+//                for (NSString *userid in self.thread.participants) {
+//                    SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithIndentifier:userid withTransaction:transaction];
+//                    [searchString appendString:[NSString stringWithFormat:@" %@", recipient.tagSlug]];
+//                }
+//                [[FLTagMathService new] tagLookupWithString:searchString
+//                                                    success:^(NSDictionary *results) {
+//                                                        self.thread.universalExpression = [results objectForKey:@"universal"];
+//                                                        [self.thread saveWithTransaction:transaction];
+//                                                    }
+//                                                    failure:^(NSError *error) {
+//                                                        DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
+//                                                        [self.thread saveWithTransaction:transaction];
+//                                                    }];
+//    }];
 
     void (^popToThread)() = ^{
         dispatch_async(dispatch_get_main_queue(), ^{
