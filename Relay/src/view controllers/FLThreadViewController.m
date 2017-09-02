@@ -1326,7 +1326,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 -(void)updateRecipientsLabel
 {
 #warning XXX tagMath hit here XXX
-    self.recipientCountButton.title = [NSString stringWithFormat:@"%@: %lu", NSLocalizedString(@"Recipients", @""), (unsigned long)[self.taggedRecipientIDs count]];
+    self.recipientCountButton.title = [NSString stringWithFormat:@"%@: %lu", NSLocalizedString(@"Recipients", @""), (unsigned long)[self.recipientTags count]];
 }
 
 -(void)selectedUserNotification:(NSNotification *)notification
