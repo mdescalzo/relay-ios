@@ -61,7 +61,7 @@
 #import <RelayServiceKit/SignalRecipient.h>
 #import <RelayServiceKit/TSAccountManager.h>
 #import <RelayServiceKit/TSInvalidIdentityKeySendingErrorMessage.h>
-#import <RelayServiceKit/TSMessagesManager.h>
+#import "FLMessagesManager.h"
 #import <RelayServiceKit/TSNetworkManager.h>
 #import <YapDatabase/YapDatabaseView.h>
 
@@ -125,7 +125,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
-@property (nonatomic, readonly) TSMessagesManager *messagesManager;
+@property (nonatomic, readonly) FLMessagesManager *messagesManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 
 @property NSCache *messageAdapterCache;
@@ -170,7 +170,7 @@ typedef enum : NSUInteger {
     _messageSender = [Environment getCurrent].messageSender;
     _storageManager = [TSStorageManager sharedManager];
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:_storageManager];
-    _messagesManager = [TSMessagesManager sharedManager];
+    _messagesManager = [FLMessagesManager sharedManager];
     _networkManager = [TSNetworkManager sharedManager];
 }
 

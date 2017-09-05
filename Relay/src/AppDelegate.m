@@ -11,7 +11,7 @@
 #import "PushManager.h"
 #import "Release.h"
 #import "Relay-Swift.h"
-#import "TSMessagesManager.h"
+#import "FLMessagesManager.h"
 #import "TSPreKeyManager.h"
 #import "TSSocketManager.h"
 #import "TextSecureKitEnv.h"

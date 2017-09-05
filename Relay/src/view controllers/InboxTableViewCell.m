@@ -7,7 +7,7 @@
 #import "PropertyListPreferences.h"
 #import "TSContactThread.h"
 #import "TSGroupThread.h"
-#import "TSMessagesManager.h"
+#import "FLMessagesManager.h"
 #import "Util.h"
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
 #import <JSQMessagesViewController/UIImage+JSQMessages.h>
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *snippetText = thread.lastMessageLabel;
 //    NSString *snippetLabel             = thread.lastMessageLabel;
     NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
-    NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
+    NSUInteger unreadCount             = [[FLMessagesManager sharedManager] unreadMessagesInThread:thread];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         self.nameLabel.text = name;

@@ -13,7 +13,7 @@
 #import "OWSContactsManager.h"
 
 #import <RelayServiceKit/OWSMessageSender.h>
-#import <RelayServiceKit/TSMessagesManager.h>
+#import "FLMessagesManager.h"
 #import <RelayServiceKit/TSOutgoingMessage.h>
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
@@ -35,7 +35,7 @@ CGFloat const kHeaderHeight = 33.0;
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
 @property (nonatomic) CellState viewingThreadsIn;
 
-@property (nonatomic, readonly) TSMessagesManager *messagesManager;
+@property (nonatomic, readonly) FLMessagesManager *messagesManager;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
 @property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
 @property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
@@ -53,7 +53,7 @@ CGFloat const kHeaderHeight = 33.0;
     }
     
     _contactsManager = [Environment getCurrent].contactsManager;
-    _messagesManager = [TSMessagesManager sharedManager];
+    _messagesManager = [FLMessagesManager sharedManager];
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:_contactsManager];
@@ -70,7 +70,7 @@ CGFloat const kHeaderHeight = 33.0;
     }
     
     _contactsManager = [Environment getCurrent].contactsManager;
-    _messagesManager = [TSMessagesManager sharedManager];
+    _messagesManager = [FLMessagesManager sharedManager];
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:_contactsManager];

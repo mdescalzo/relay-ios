@@ -366,7 +366,6 @@
 		7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
 		7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E519E1FBE8005735D1 /* HttpRequest.m */; };
 		7D4A3A8A1F1693930023C29B /* OWSDatabaseMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7A1D9C0533008FE134 /* OWSDatabaseMigration.m */; };
-		7D4A3A8B1F1693930023C29B /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */; };
 		7D4A3A8C1F1693930023C29B /* ResponderSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04AE18170B33006006FC /* ResponderSessionDescriptor.m */; };
 		7D4A3A8D1F1693930023C29B /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
 		7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
@@ -457,10 +456,6 @@
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
-		7D50F20C1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
-		7D50F20D1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
-		7D50F20E1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
-		7D50F20F1F54740400A905FB /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D50F20B1F54740400A905FB /* FLTagMathService.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
 		7D7DA5871F2F8797007FE6E4 /* FLDirecotryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirecotryCell.m */; };
@@ -680,7 +675,6 @@
 		7DCFFE2F1F0EE4490003CD95 /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
 		7DCFFE301F0EE4490003CD95 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E519E1FBE8005735D1 /* HttpRequest.m */; };
 		7DCFFE311F0EE4490003CD95 /* OWSDatabaseMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7A1D9C0533008FE134 /* OWSDatabaseMigration.m */; };
-		7DCFFE321F0EE4490003CD95 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */; };
 		7DCFFE331F0EE4490003CD95 /* ResponderSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04AE18170B33006006FC /* ResponderSessionDescriptor.m */; };
 		7DCFFE341F0EE4490003CD95 /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
 		7DCFFE351F0EE4490003CD95 /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
@@ -1048,7 +1042,6 @@
 		D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A0E7169DFFC500537ABF /* AVFoundation.framework */; };
 		D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B5BD4169F568C00681372 /* AudioToolbox.framework */; };
 		D2AEACDC16C426DA00C364C0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AEACDB16C426DA00C364C0 /* CFNetwork.framework */; };
-		DBE1798F1ED9FFEC00327B2B /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */; };
 		DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE179921EDF37E900327B2B /* CCSMCommunication.m */; };
 		E1368CBE18A1C36B00109378 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EB5ABC1884C002007CBB57 /* MessageUI.framework */; };
 		E1370BE018A0686600826894 /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40718A05754001A532A /* busy.mp3 */; };
@@ -1481,8 +1474,6 @@
 		7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryTableViewController.m; sourceTree = "<group>"; };
 		7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryDetailTableViewController.h; sourceTree = "<group>"; };
 		7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryDetailTableViewController.m; sourceTree = "<group>"; };
-		7D50F20A1F54740400A905FB /* FLTagMathService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLTagMathService.h; sourceTree = "<group>"; };
-		7D50F20B1F54740400A905FB /* FLTagMathService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLTagMathService.m; sourceTree = "<group>"; };
 		7D516F1B1EF3195100E7E15F /* FLMessageSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLMessageSender.h; path = Services/FLMessageSender.h; sourceTree = "<group>"; };
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
@@ -1723,8 +1714,6 @@
 		D221A0E7169DFFC500537ABF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = ../../../../../../System/Library/Frameworks/AVFoundation.framework; sourceTree = "<group>"; };
 		D24B5BD4169F568C00681372 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = ../../../../../../System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<group>"; };
 		D2AEACDB16C426DA00C364C0 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		DBE1798D1ED9FFD600327B2B /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMStorage.h; sourceTree = "<group>"; };
-		DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
 		DBE179921EDF37E900327B2B /* CCSMCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMCommunication.m; sourceTree = "<group>"; };
 		DBE179941EDF381400327B2B /* CCSMCommunication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMCommunication.h; sourceTree = "<group>"; };
 		DDF434CA3373A266854BEDC2 /* Pods-Relay.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Relay.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Relay/Pods-Relay.app store release.xcconfig"; sourceTree = "<group>"; };
@@ -2664,8 +2653,6 @@
 		7D516F1A1EF318F000E7E15F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				7D50F20A1F54740400A905FB /* FLTagMathService.h */,
-				7D50F20B1F54740400A905FB /* FLTagMathService.m */,
 				7DCFFEC41F0FE2330003CD95 /* DeviceTypes */,
 				7D516F211EF32B6000E7E15F /* CCSMJSONService.h */,
 				7D516F221EF32B6000E7E15F /* CCSMJSONService.m */,
@@ -3147,8 +3134,6 @@
 		DBE1798C1ED9FF8500327B2B /* ccsm */ = {
 			isa = PBXGroup;
 			children = (
-				DBE1798D1ED9FFD600327B2B /* CCSMStorage.h */,
-				DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
 				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 			);
@@ -4094,7 +4079,6 @@
 				7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */,
 				7D4A3A111F1693930023C29B /* CallTermination.m in Sources */,
 				7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */,
-				7D50F20C1F54740400A905FB /* FLTagMathService.m in Sources */,
 				7D4A3A131F1693930023C29B /* SoundInstance.m in Sources */,
 				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
@@ -4216,7 +4200,6 @@
 				7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */,
 				7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */,
 				7D4A3A8A1F1693930023C29B /* OWSDatabaseMigration.m in Sources */,
-				7D4A3A8B1F1693930023C29B /* CCSMStorage.m in Sources */,
 				7D4A3A8C1F1693930023C29B /* ResponderSessionDescriptor.m in Sources */,
 				7D4A3A8D1F1693930023C29B /* DateUtil.m in Sources */,
 				7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */,
@@ -4320,7 +4303,6 @@
 				7DCFFDB71F0EE4490003CD95 /* LowLatencyConnector.m in Sources */,
 				7DCFFDB81F0EE4490003CD95 /* CallTermination.m in Sources */,
 				7DCFFDB91F0EE4490003CD95 /* NotificationSettingsOptionsViewController.m in Sources */,
-				7D50F20D1F54740400A905FB /* FLTagMathService.m in Sources */,
 				7DCFFDBA1F0EE4490003CD95 /* SoundInstance.m in Sources */,
 				7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */,
 				7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */,
@@ -4442,7 +4424,6 @@
 				7DCFFE2F1F0EE4490003CD95 /* DH3KKeyAgreementProtocol.m in Sources */,
 				7DCFFE301F0EE4490003CD95 /* HttpRequest.m in Sources */,
 				7DCFFE311F0EE4490003CD95 /* OWSDatabaseMigration.m in Sources */,
-				7DCFFE321F0EE4490003CD95 /* CCSMStorage.m in Sources */,
 				7DCFFE331F0EE4490003CD95 /* ResponderSessionDescriptor.m in Sources */,
 				7DCFFE341F0EE4490003CD95 /* DateUtil.m in Sources */,
 				7DCFFE351F0EE4490003CD95 /* HelloAckPacket.m in Sources */,
@@ -4546,7 +4527,6 @@
 				76EB05EE18170B33006006FC /* CallTermination.m in Sources */,
 				B66B9F7D1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m in Sources */,
 				E1CD329618BCFF9900B1A496 /* SoundInstance.m in Sources */,
-				7D50F20E1F54740400A905FB /* FLTagMathService.m in Sources */,
 				76EB05B418170B33006006FC /* HashChain.m in Sources */,
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
 				76EB058218170B33006006FC /* Environment.m in Sources */,
@@ -4668,7 +4648,6 @@
 				76EB05B218170B33006006FC /* DH3KKeyAgreementProtocol.m in Sources */,
 				B63761EC19E1FBE8005735D1 /* HttpRequest.m in Sources */,
 				45666F7B1D9C0533008FE134 /* OWSDatabaseMigration.m in Sources */,
-				DBE1798F1ED9FFEC00327B2B /* CCSMStorage.m in Sources */,
 				76EB060818170B33006006FC /* ResponderSessionDescriptor.m in Sources */,
 				B90418E6183E9DD40038554A /* DateUtil.m in Sources */,
 				76EB05C618170B33006006FC /* HelloAckPacket.m in Sources */,
@@ -4751,7 +4730,6 @@
 				45BFFFA91D898AF0004A12A7 /* OWSStaleNotificationObserver.m in Sources */,
 				B660F7341C29988E00687D6E /* RtpSocket.m in Sources */,
 				B660F7351C29988E00687D6E /* SequenceCounter.m in Sources */,
-				7D50F20F1F54740400A905FB /* FLTagMathService.m in Sources */,
 				B660F7361C29988E00687D6E /* SrtpSocket.m in Sources */,
 				45C681C71D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				B660F7371C29988E00687D6E /* SrtpStream.m in Sources */,
