@@ -1864,7 +1864,8 @@ typedef enum : NSUInteger {
           TSGroupThread *gThread = (TSGroupThread *)self.thread;
 
           if (gThread.groupModel) {
-              self.thread = [TSGroupThread threadWithGroupModel:gThread.groupModel transaction:transaction];
+//              self.thread = [TSGroupThread threadWithGroupModel:gThread.groupModel transaction:transaction];
+              self.thread = [TSGroupThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
           }
         }];
     }
