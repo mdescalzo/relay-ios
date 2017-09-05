@@ -313,14 +313,15 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         }];
     }
     
-    if (!recipient) {
-        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-            recipient = [[Environment getCurrent].ccsmCommManager recipientFromCCSMWithID:userID synchronoous:YES];
-            if (recipient) {
-                [recipient saveWithTransaction:transaction];
-            }
-        }];
-    }
+#warning XXX Lookup is broken. Causes main thread to block, freezing app.  Get more reliable method.
+//    if (!recipient) {
+//        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//            recipient = [[Environment getCurrent].ccsmCommManager recipientFromCCSMWithID:userID synchronoous:YES];
+//            if (recipient) {
+//                [recipient saveWithTransaction:transaction];
+//            }
+//        }];
+//    }
     
     return recipient;
 }
