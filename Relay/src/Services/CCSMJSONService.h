@@ -12,6 +12,7 @@
 
 @interface CCSMJSONService : NSObject
 
-+(NSString *)blobFromMessage:(TSOutgoingMessage *)message;
++(NSString *_Nullable)blobFromMessage:(TSOutgoingMessage *_Nonnull)message;
++(nullable NSArray *)arrayFromMessageBody:(NSString *_Nonnull)body;
 
 @end
