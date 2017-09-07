@@ -9,8 +9,7 @@
 #import "Environment.h"
 #import "CCSMJSONService.h"
 #import "TSOutgoingMessage.h"
-#import "TSGroupThread.h"
-#import "TSContactThread.h"
+#import "TSThread.h"
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
 #import "TSAttachment.h"
@@ -84,13 +83,14 @@
 
     NSArray *userIds = message.thread.participants;
     // Missing participants, make it
-    if (userIds.count == 0) {
-        if (message.thread.isGroupThread) {
-            userIds = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
-        } else {
-            userIds = @[ ((TSContactThread *)message.thread).contactIdentifier, [TSStorageManager localNumber] ];
-        }
-    }
+#warning XXX CCSM lookup here?
+//    if (userIds.count == 0) {
+//        if (message.thread.isGroupThread) {
+//            userIds = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
+//        } else {
+//            userIds = @[ ((TSContactThread *)message.thread).contactIdentifier, [TSStorageManager localNumber] ];
+//        }
+//    }
     
     NSString *presentation = message.thread.universalExpression;
     

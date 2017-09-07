@@ -42,11 +42,19 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (instancetype)initWithThread:(TSContactThread *)thread
+- (instancetype)initWithThread:(TSThread *)thread
                contactsManager:(OWSContactsManager *)contactsManager
                       diameter:(CGFloat)diameter
 {
-    return [self initWithContactId:thread.contactIdentifier name:thread.name contactsManager:contactsManager diameter:diameter];
+    NSString *contactId = nil;
+    for (NSString *uid in thread.participants) {
+        if (![uid isEqualToString:TSAccountManager.localNumber]) {
+            contactId = uid;
+            break;
+        }
+    }
+    
+    return [self initWithContactId:contactId name:thread.name contactsManager:contactsManager diameter:diameter];
 }
 
 - (nullable UIImage *)buildSavedImage

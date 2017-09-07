@@ -5,8 +5,7 @@
 #import "OWSAvatarBuilder.h"
 #import "OWSContactAvatarBuilder.h"
 #import "OWSGroupAvatarBuilder.h"
-#import "TSContactThread.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,12 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
                         diameter:(CGFloat)diameter
 {
     OWSAvatarBuilder *avatarBuilder;
-    if ([thread isKindOfClass:[TSContactThread class]]) {
-        avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithThread:(TSContactThread *)thread contactsManager:contactsManager diameter:diameter];
-    } else if ([thread isKindOfClass:[TSGroupThread class]]) {
-        avatarBuilder = [[OWSGroupAvatarBuilder alloc] initWithThread:(TSGroupThread *)thread];
+    if (thread.participants.count == 2) {
+        avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithThread:thread contactsManager:contactsManager diameter:diameter];
     } else {
-        DDLogError(@"%@ called with unsupported thread: %@", self.tag, thread);
+        avatarBuilder = [[OWSGroupAvatarBuilder alloc] initWithThread:thread];
+//    } else {
+//        DDLogError(@"%@ called with unsupported thread: %@", self.tag, thread);
     }
     return [avatarBuilder build];
 }

@@ -124,14 +124,14 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     self.signalId = thread.contactIdentifier;
     self.contactName = thread.name;
 
-    if ([thread isKindOfClass:[TSGroupThread class]]) {
+//    if ([thread isKindOfClass:[TSGroupThread class]]) {
         self.isGroupThread = YES;
         if (self.contactName.length == 0) {
             self.contactName = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
         }
-    } else {
-        self.isGroupThread = NO;
-    }
+//    } else {
+//        self.isGroupThread = NO;
+//    }
 }
 
 #pragma mark - View Lifecycle
@@ -363,23 +363,23 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 - (void)leaveGroup
 {
-    TSGroupThread *gThread = (TSGroupThread *)self.thread;
-    TSOutgoingMessage *message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                     inThread:gThread
-                                                                  messageBody:@""];
-    message.groupMetaMessage = TSGroupMessageQuit;
-    [self.messageSender sendMessage:message
-        success:^{
-            DDLogInfo(@"%@ Successfully left group.", self.tag);
-        }
-        failure:^(NSError *error) {
-            DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
-        }];
+#warning XXX Requires control message implementation
+//    TSOutgoingMessage *message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                                     inThread:self.thread
+//                                                                  messageBody:@""];
+//    message.groupMetaMessage = TSGroupMessageQuit;
+//    [self.messageSender sendMessage:message
+//        success:^{
+//            DDLogInfo(@"%@ Successfully left group.", self.tag);
+//        }
+//        failure:^(NSError *error) {
+//            DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
+//        }];
 
-    NSMutableArray *newGroupMemberIds = [NSMutableArray arrayWithArray:gThread.groupModel.groupMemberIds];
+    NSMutableArray *newGroupMemberIds = [NSMutableArray arrayWithArray:self.thread.participants];
     [newGroupMemberIds removeObject:[self.storageManager localNumber]];
-    gThread.groupModel.groupMemberIds = newGroupMemberIds;
-    [gThread save];
+    self.thread.participants = [NSArray arrayWithArray:newGroupMemberIds];
+    [self.thread save];
 
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -468,10 +468,10 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
         controller.dismissDelegate = self;
     } else if ([segue.identifier isEqualToString:OWSConversationSettingsTableViewControllerSegueUpdateGroup]) {
         NewGroupViewController *vc = [segue destinationViewController];
-        [vc configWithThread:(TSGroupThread *)self.thread];
+        [vc configWithThread:(TSThread *)self.thread];
     } else if ([segue.identifier isEqualToString:OWSConversationSettingsTableViewControllerSegueShowGroupMembers]) {
         ShowGroupMembersViewController *vc = [segue destinationViewController];
-        [vc configWithThread:(TSGroupThread *)self.thread];
+        [vc configWithThread:(TSThread *)self.thread];
     }
 }
 

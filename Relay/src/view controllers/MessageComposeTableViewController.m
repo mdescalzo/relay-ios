@@ -488,7 +488,7 @@
 
     [self dismissViewControllerAnimated:YES
                              completion:^() {
-                               [Environment messageIdentifier:identifier withCompose:YES];
+                                 [Environment messageIdentifier:identifier withCompose:YES];
                              }];
 }
 

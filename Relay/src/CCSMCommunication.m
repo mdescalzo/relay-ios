@@ -525,7 +525,7 @@
     __block SignalRecipient *recipient = nil;
     
     if (userId) {
-        NSString *url = [NSString stringWithFormat:@"%@/v1/user/%@/", FLHomeURL, userId];
+        NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/id_in=%@", FLHomeURL, userId];
         [self getThing:url
            synchronous:synchronous
                success:^(NSDictionary *result) {
@@ -537,6 +537,24 @@
     }
     
     return recipient;
+}
+
+-(void)recipientFromCCSMWithID:(NSString *)userId
+                                    success:(void (^)(NSDictionary *results))successBlock
+                                    failure:(void (^)(NSError *error))failureBlock
+{
+    if (userId) {
+        NSString *url = [NSString stringWithFormat:@"%@/v1/user/%@/", FLHomeURL, userId];
+        [self getThing:url
+           synchronous:NO
+               success:^(NSDictionary *result) {
+                   successBlock(result);
+               }
+               failure:^(NSError *error) {
+                   DDLogDebug(@"CCSM User lookup failed or returned no results.");
+                   failureBlock(error);
+               }];
+    }
 }
 
 

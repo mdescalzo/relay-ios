@@ -7,7 +7,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class OWSContactsManager;
-@class TSContactThread;
+@class TSThread;
 
 @interface OWSContactAvatarBuilder : OWSAvatarBuilder
 
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
                   contactsManager:(OWSContactsManager *)contactsManager
                          diameter:(CGFloat)diameter;
 
-- (instancetype)initWithThread:(TSContactThread *)thread
+- (instancetype)initWithThread:(TSThread *)thread
                contactsManager:(OWSContactsManager *)contactsManager
                       diameter:(CGFloat)diameter;
 

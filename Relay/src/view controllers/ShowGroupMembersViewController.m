@@ -24,13 +24,13 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 @interface ShowGroupMembersViewController ()
 
 @property GroupContactsResult *groupContacts;
-@property TSGroupThread *thread;
+@property TSThread *thread;
 
 @end
 
 @implementation ShowGroupMembersViewController
 
-- (void)configWithThread:(TSGroupThread *)gThread {
+- (void)configWithThread:(TSThread *)gThread {
     _thread = gThread;
 }
 
@@ -38,17 +38,17 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-    self.title = _thread.groupModel.groupName;
+    self.title = _thread.name;
 
     [self initializeTableView];
 
     self.groupContacts =
-        [[GroupContactsResult alloc] initWithMembersId:self.thread.groupModel.groupMemberIds without:nil];
+        [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
 
     [[Environment.getCurrent contactsManager]
             .getObservableContacts watchLatestValue:^(id latestValue) {
       self.groupContacts =
-          [[GroupContactsResult alloc] initWithMembersId:self.thread.groupModel.groupMemberIds without:nil];
+          [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
       [self.tableView reloadData];
     }
                                            onThread:[NSThread mainThread]

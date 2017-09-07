@@ -3,10 +3,11 @@
 
 #import "OWSCall.h"
 #import "TSCall.h"
-#import "TSContactThread.h"
+#import "TSThread.h"
 #import <JSQMessagesViewController/JSQMessagesTimestampFormatter.h>
 #import <JSQMessagesViewController/UIImage+JSQMessages.h>
 #import <RelayServiceKit/TSCall.h>
+#import "TSAccountManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,12 +30,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCallRecord:(TSCall *)callRecord
 {
     TSThread *thread = callRecord.thread;
-    TSContactThread *contactThread;
-    if ([thread isKindOfClass:[TSContactThread class]]) {
-        contactThread = (TSContactThread *)thread;
-    } else {
-        DDLogError(@"%@ Unexpected thread type: %@", self.tag, thread);
-    }
+//    TSContactThread *contactThread;
+//    if ([thread isKindOfClass:[TSContactThread class]]) {
+//        contactThread = (TSContactThread *)thread;
+//    } else {
+//        DDLogError(@"%@ Unexpected thread type: %@", self.tag, thread);
+//    }
 
     CallStatus status = 0;
     switch (callRecord.callType) {
@@ -52,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
             break;
     }
 
-    NSString *name = contactThread.name;
+    NSString *name = thread.name;
     NSString *detailString;
     switch (status) {
         case kCallMissed:
@@ -68,9 +69,16 @@ NS_ASSUME_NONNULL_BEGIN
             detailString = @"";
             break;
     }
+    
+    NSString *callerID = nil;
+    for (NSString *uid in thread.participants) {
+        if (![uid isEqualToString:[TSAccountManager localNumber]]) {
+            callerID = uid;
+        }
+    }
 
     return [self initWithInteraction:callRecord
-                            callerId:contactThread.contactIdentifier
+                            callerId:callerID
                    callerDisplayName:name
                                 date:callRecord.date
                               status:status
@@ -191,6 +199,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)text
 {
     return _detailString;
+}
+
+-(NSAttributedString *)attributedText
+{
+    return [[NSAttributedString alloc] initWithString:self.text];
 }
 
 #pragma mark - Logging

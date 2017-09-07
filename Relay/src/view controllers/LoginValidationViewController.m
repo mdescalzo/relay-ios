@@ -146,8 +146,7 @@ NSUInteger maximumValidationAttempts = 9999;
         tags = [NSMutableDictionary new];
     }
 
-    
-    NSString *orgUrl = [[self.ccsmStorage getUserInfo] objectForKey:@"org"];
+    NSString *orgUrl = [(NSDictionary *)[[self.ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
     [self.ccsmCommManager getThing:orgUrl
                        synchronous:NO
                            success:^(NSDictionary *org){

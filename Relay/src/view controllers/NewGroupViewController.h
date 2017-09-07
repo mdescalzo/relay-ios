@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TSGroupModel.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
 
 @interface NewGroupViewController : UIViewController <UITableViewDelegate,
                                                       UITabBarDelegate,
@@ -16,7 +16,7 @@
                                                       UINavigationControllerDelegate,
                                                       UITextFieldDelegate>
 
-- (void)configWithThread:(TSGroupThread *)thread;
+- (void)configWithThread:(TSThread *)thread;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet UITextField *nameGroupTextField;
 @property (nonatomic, strong) IBOutlet UIButton *groupImageButton;

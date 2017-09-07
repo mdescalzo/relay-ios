@@ -428,7 +428,7 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
         users = [NSMutableDictionary new];
     }
     
-    NSString *orgUrl = [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"];
+    NSString *orgUrl = [(NSDictionary *)[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
     [self.ccsmCommManager getThing:orgUrl
                        synchronous:NO
                            success:^(NSDictionary *org){

@@ -8,8 +8,7 @@
 #import "RecentCallManager.h"
 #import "SignalKeyingStorage.h"
 //#import "SignalsViewController.h"
-#import "TSContactThread.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
 #import <RelayServiceKit/ContactsUpdater.h>
 #import "FLTagMathService.h"
 #import "TSAccountManager.h"
@@ -188,25 +187,21 @@ static Environment *environment = nil;
         return;
     }
 
-    if ([thread isGroupThread]) {
-        [self messageGroup:(TSGroupThread *)thread];
-    } else {
-        Environment *env          = [self getCurrent];
-        FLThreadViewController *vc = env.forstaViewController;
-//        SignalsViewController *vc = env.signalsViewController;
-        UIViewController *topvc   = vc.navigationController.topViewController;
-
-        // Dismisses keyboard if current thread updated.
-        // May not be necessary in Forsta implementation
-        if ([topvc isKindOfClass:[MessagesViewController class]]) {
-            MessagesViewController *mvc = (MessagesViewController *)topvc;
-            if ([mvc.thread.uniqueId isEqualToString:threadId]) {
-                [mvc popKeyBoard];
-                return;
-            }
+    Environment *env          = [self getCurrent];
+    FLThreadViewController *vc = env.forstaViewController;
+    UIViewController *topvc   = vc.navigationController.topViewController;
+    
+    // Dismisses keyboard if current thread updated.
+    // May not be necessary in Forsta implementation
+    if ([topvc isKindOfClass:[MessagesViewController class]]) {
+        MessagesViewController *mvc = (MessagesViewController *)topvc;
+        if ([mvc.thread.uniqueId isEqualToString:threadId]) {
+            [mvc popKeyBoard];
+            return;
         }
-        [self messageIdentifier:((TSContactThread *)thread).contactIdentifier withCompose:YES];
+//        [self messageIdentifier:((TSContactThread *)thread).contactIdentifier withCompose:YES];
     }
+    [vc presentThread:thread keyboardOnViewAppearing:YES];
 }
 
 // Get or create a thread for identifier(ContactID)
@@ -217,21 +212,30 @@ static Environment *environment = nil;
     
     // Collect parts
     SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier];
+    SignalRecipient *selfRec = [SignalRecipient recipientWithTextSecureIdentifier:[TSAccountManager localNumber]];
     
-        [[FLTagMathService new] tagLookupWithString:recipient.tagSlug
+    __block TSThread *thread = [TSThread getOrCreateThreadWithParticipants:@[ recipient.uniqueId, selfRec.uniqueId ]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [vc presentThread:thread keyboardOnViewAppearing:YES];
+    });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[FLTagMathService new] tagLookupWithString:[NSString stringWithFormat:@"%@+%@", recipient.tagSlug, selfRec.tagSlug]
                                             success:^(NSDictionary *results) {
-                                                TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier];
+#warning XXX Needs catch for return with no results.
                                                 thread.universalExpression = [results objectForKey:@"universal"];
                                                 thread.participants = [results objectForKey:@"userids"];
+                                                thread.prettyExpression = [results objectForKey:@"pretty"];
                                                 [thread save];
                                                 
-                                                [vc presentThread:thread keyboardOnViewAppearing:YES];
+                                                //                                                [vc presentThread:thread keyboardOnViewAppearing:YES];
                                             }
                                             failure:^(NSError *error) {
                                                 DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
-#warning XXX insert alert here
+#warning XXX insert alert here on main thread
                                             }];
-    
+    });
 //    [[TSStorageManager sharedManager]
 //     .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
 //         TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier transaction:transaction];
@@ -241,7 +245,7 @@ static Environment *environment = nil;
      
 }
 
-+ (void)messageGroup:(TSGroupThread *)groupThread {
++ (void)messageGroup:(TSThread *)groupThread {
     Environment *env          = [self getCurrent];
     FLThreadViewController *vc = env.forstaViewController;
 //    SignalsViewController *vc = env.signalsViewController;

@@ -111,6 +111,6 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
 + (void)messageThreadId:(NSString *)threadId;
 + (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose;
-+ (void)messageGroup:(TSGroupThread *)groupThread;
++ (void)messageGroup:(TSThread *)groupThread;
 
 @end

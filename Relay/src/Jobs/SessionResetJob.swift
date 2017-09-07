@@ -40,8 +40,8 @@ class SessionResetJob: NSObject {
         });
     }
 
-    class func run(corruptedMessage: TSErrorMessage, contactThread: TSContactThread, messageSender: MessageSender, storageManager: TSStorageManager) {
-        let job = self.init(recipientId: contactThread.contactIdentifier(),
+    class func run(corruptedMessage: TSErrorMessage, contactThread: TSThread, messageSender: MessageSender, storageManager: TSStorageManager) {
+        let job = self.init(recipientId: contactThread.uniqueId,
                             thread: contactThread,
                             messageSender: messageSender,
                             storageManager: storageManager)

@@ -5,8 +5,7 @@
 #import "Environment.h"
 #import "OWSAvatarBuilder.h"
 #import "PropertyListPreferences.h"
-#import "TSContactThread.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
 #import "FLMessagesManager.h"
 #import "Util.h"
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
@@ -55,8 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
         });
     }
 
-    NSString *name = thread.name;
-    if (name.length == 0 && [thread isKindOfClass:[TSGroupThread class]]) {
+#warning XXX DEBUG ONLY XXX
+    NSString *name = thread.uniqueId;
+//    NSString *name = thread.name;
+    if (name.length == 0) {
+        DDLogDebug(@"Thread return with no name.");
         name = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
     }
     UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];

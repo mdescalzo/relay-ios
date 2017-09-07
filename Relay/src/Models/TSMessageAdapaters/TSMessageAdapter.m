@@ -95,30 +95,30 @@
 {
     TSMessageAdapter *adapter = [[TSMessageAdapter alloc] initWithInteraction:interaction];
 
-    if ([thread isKindOfClass:[TSContactThread class]]) {
-        adapter.thread = (TSContactThread *)thread;
-        if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
-            NSString *contactId       = ((TSContactThread *)thread).contactIdentifier;
-            adapter.senderId          = contactId;
-            adapter.senderDisplayName = [contactsManager nameStringForContactID:contactId];
-            adapter.messageType       = TSIncomingMessageAdapter;
-        } else {
-            adapter.senderId          = ME_MESSAGE_IDENTIFIER;
-            adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
-            adapter.messageType       = TSOutgoingMessageAdapter;
-        }
-    } else if ([thread isKindOfClass:[TSGroupThread class]]) {
-        if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
-            TSIncomingMessage *message = (TSIncomingMessage *)interaction;
-            adapter.senderId           = message.authorId;
-            adapter.senderDisplayName = [contactsManager nameStringForContactID:message.authorId];
-            adapter.messageType        = TSIncomingMessageAdapter;
-        } else {
-            adapter.senderId          = ME_MESSAGE_IDENTIFIER;
-            adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
-            adapter.messageType       = TSOutgoingMessageAdapter;
-        }
+//    if ([thread isKindOfClass:[TSContactThread class]]) {
+//        adapter.thread = (TSContactThread *)thread;
+//        if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
+//            NSString *contactId       = ((TSContactThread *)thread).contactIdentifier;
+//            adapter.senderId          = contactId;
+//            adapter.senderDisplayName = [contactsManager nameStringForContactID:contactId];
+//            adapter.messageType       = TSIncomingMessageAdapter;
+//        } else {
+//            adapter.senderId          = ME_MESSAGE_IDENTIFIER;
+//            adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
+//            adapter.messageType       = TSOutgoingMessageAdapter;
+//        }
+//    } else if ([thread isKindOfClass:[TSGroupThread class]]) {
+    if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
+        TSIncomingMessage *message = (TSIncomingMessage *)interaction;
+        adapter.senderId           = message.authorId;
+        adapter.senderDisplayName = [contactsManager nameStringForContactID:message.authorId];
+        adapter.messageType        = TSIncomingMessageAdapter;
+    } else {
+        adapter.senderId          = ME_MESSAGE_IDENTIFIER;
+        adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
+        adapter.messageType       = TSOutgoingMessageAdapter;
     }
+//    }
 
     if ([interaction isKindOfClass:[TSIncomingMessage class]] ||
         [interaction isKindOfClass:[TSOutgoingMessage class]]) {

@@ -10,10 +10,24 @@
 #import "CCSMJSONService.h"
 #import "CCSMStorage.h"
 #import "TSOutgoingMessage.h"
-#import "TSContactThread.h"
+#import "TSThread.h"
 #import "Environment.h"
 
+@interface FLMessageSender()
+
+@property (strong, readonly) YapDatabaseConnection *dbConnection;
+
+@end
+
 @implementation FLMessageSender
+
+-(instancetype)init
+{
+    if (self = [super init]) {
+        _dbConnection = [TSStorageManager.sharedManager newDatabaseConnection];
+    }
+    return self;
+}
 
 -(void)sendMessage:(TSOutgoingMessage *)message success:(void (^)())successHandler failure:(void (^)(NSError * _Nonnull))failureHandler
 {
@@ -36,9 +50,14 @@
 //        }
     }
     
-    TSThread *supermanThread = [TSContactThread getOrCreateThreadWithContactId:FLSupermanID];
+    
+    __block TSThread *supermanThread = nil;
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        supermanThread = [TSThread getOrCreateThreadWithID:FLSupermanID transaction:transaction];
+    }];
+    
     TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
-                                                                            inThread:supermanThread
+                                                                             inThread:supermanThread
                                                                          messageBody:messageBlob];
     // proceed with parent process
     [super sendMessage:message

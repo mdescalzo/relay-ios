@@ -31,16 +31,14 @@
 #import "Relay-Swift.h"
 #import "TSAccountManager.h"
 #import "TSDatabaseView.h"
-#import "TSGroupThread.h"
 #import "TSStorageManager.h"
 #import "UIUtil.h"
 #import "VersionMigrations.h"
 #import "TSAttachmentPointer.h"
 #import "TSCall.h"
-#import "TSContactThread.h"
 #import "TSContentAdapters.h"
-#import "TSErrorMessage.h"
-#import "TSGroupThread.h"
+//#import "TSErrorMessage.h"
+#import "TSThread.h"
 #import "TSIncomingMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
@@ -351,42 +349,43 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
     TSThread *thread = [self threadForIndexPath:indexPath];
-    if ([thread isKindOfClass:[TSGroupThread class]]) {
-        
-        TSGroupThread *gThread = (TSGroupThread *)thread;
-        if ([gThread.groupModel.groupMemberIds containsObject:[TSAccountManager localNumber]]) {
-            UIAlertController *removingFromGroup = [UIAlertController
-                                                    alertControllerWithTitle:[NSString
-                                                                              stringWithFormat:NSLocalizedString(@"GROUP_REMOVING", nil), [thread name]]
-                                                    message:nil
-                                                    preferredStyle:UIAlertControllerStyleAlert];
-            [self presentViewController:removingFromGroup animated:YES completion:nil];
-            
-            TSOutgoingMessage *message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                             inThread:thread
-                                                                          messageBody:@""
-                                                                        attachmentIds:[NSMutableArray new]];
-            message.groupMetaMessage = TSGroupMessageQuit;
-            [self.messageSender sendMessage:message
-                                    success:^{
-                                        [self dismissViewControllerAnimated:YES
-                                                                 completion:^{
-                                                                     [self deleteThread:thread];
-                                                                 }];
-                                    }
-                                    failure:^(NSError *error) {
-                                        [self dismissViewControllerAnimated:YES
-                                                                 completion:^{
-                                                                     SignalAlertView(NSLocalizedString(@"GROUP_REMOVING_FAILED", nil),
-                                                                                     error.localizedRecoverySuggestion);
-                                                                 }];
-                                    }];
-        } else {
-            [self deleteThread:thread];
-        }
-    } else {
+#warning XXX put remove from group control message send here
+//    if ([thread isKindOfClass:[TSGroupThread class]]) {
+//        
+//        TSGroupThread *gThread = (TSGroupThread *)thread;
+//        if ([gThread.groupModel.groupMemberIds containsObject:[TSAccountManager localNumber]]) {
+//            UIAlertController *removingFromGroup = [UIAlertController
+//                                                    alertControllerWithTitle:[NSString
+//                                                                              stringWithFormat:NSLocalizedString(@"GROUP_REMOVING", nil), [thread name]]
+//                                                    message:nil
+//                                                    preferredStyle:UIAlertControllerStyleAlert];
+//            [self presentViewController:removingFromGroup animated:YES completion:nil];
+//            
+//            TSOutgoingMessage *message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                                             inThread:thread
+//                                                                          messageBody:@""
+//                                                                        attachmentIds:[NSMutableArray new]];
+//            message.groupMetaMessage = TSGroupMessageQuit;
+//            [self.messageSender sendMessage:message
+//                                    success:^{
+//                                        [self dismissViewControllerAnimated:YES
+//                                                                 completion:^{
+//                                                                     [self deleteThread:thread];
+//                                                                 }];
+//                                    }
+//                                    failure:^(NSError *error) {
+//                                        [self dismissViewControllerAnimated:YES
+//                                                                 completion:^{
+//                                                                     SignalAlertView(NSLocalizedString(@"GROUP_REMOVING_FAILED", nil),
+//                                                                                     error.localizedRecoverySuggestion);
+//                                                                 }];
+//                                    }];
+//        } else {
+//            [self deleteThread:thread];
+//        }
+//    } else {
         [self deleteThread:thread];
-    }
+//    }
 }
 - (void)deleteThread:(TSThread *)thread {
     [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
@@ -500,74 +499,67 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 #warning XXX insert tagmath hit here XXXX
 
     // Check the tagged user list.
-    NSMutableSet *otherRecipients = [self.taggedRecipientIDs mutableCopy];
-    [otherRecipients removeObject:[TSAccountManager localNumber]];
-    if (otherRecipients.count > 1) {
-        // Build group thread
-        NSMutableArray *memberIDs = [NSMutableArray arrayWithObject:[TSAccountManager localNumber]];
-        
-        for (NSString *userID in self.taggedRecipientIDs) {
-            [memberIDs addObject:userID];
-        }
-        
-        // Look for group thread with same recipients
-        NSMutableSet *matchingThreads = [NSMutableSet new];
-        for (TSThread *existingThread in [TSThread allObjectsInCollection]) {
-            if ([existingThread isGroupThread]) {
-                TSGroupModel *existingModel = ((TSGroupThread *)existingThread).groupModel ;
-                NSCountedSet *set1 = [NSCountedSet setWithArray:existingModel.groupMemberIds];
-                NSCountedSet *set2 = [NSCountedSet setWithArray:memberIDs];
-                if ([set1 isEqual:set2]) {
-                    [matchingThreads addObject:existingThread];
-                 }
-            }
-        }
-
-        // Pre-existing thread check
-        if (matchingThreads.count > 0) {
-            // Found match(es).  Query user.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                               message:NSLocalizedString(@"Use Existing conversation or create new?", @"Existing thread use query")
-                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
-                for (TSThread *matchingThread in matchingThreads) {
-                    UIAlertAction *threadAction = [UIAlertAction actionWithTitle:matchingThread.name
-                                                                           style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction *action) {
-                                                                             [self sendMessageWithText:text thread:matchingThread];
-                                                                         }];
-                    [alert addAction:threadAction];
-                }
-                UIAlertAction *newAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"New Converstion...", @"")
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction *action) {
-                                                                      TSGroupModel *groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
-                                                                                                                           memberIds:memberIDs
-                                                                                                                               image:nil
-                                                                                                                             groupId:[SecurityUtils generateRandomBytes:16]];
-                                                                      TSGroupThread *thread = [TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
-                                                                      [self sendMessageWithText:text thread:thread];
-                                                                      
-                                                                  }];
-                [alert addAction:newAction];
-                [self presentViewController:alert animated:YES completion:nil];
-            });
-        } else {
-            TSGroupModel *groupModel = [[TSGroupModel alloc] initWithTitle:NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"")
-                                                                 memberIds:memberIDs
-                                                                     image:nil
-                                                                   groupId:[SecurityUtils generateRandomBytes:16]];
-            TSGroupThread *thread = [TSGroupThread getOrCreateThreadWithGroupModel:groupModel];
-            [self sendMessageWithText:text thread:thread];
-        }
-        
-    } else {
-//        NSString *recipientTag = [self.taggedRecipientIDs firstObject];
-//        NSString *recipientID = [[self.ccsmStorage getTags] objectForKey:recipientTag];
-        
-        TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:[self.taggedRecipientIDs anyObject]];
-        [self sendMessageWithText:text thread:thread];
+    NSMutableArray *memberIDs = [NSMutableArray arrayWithObject:[TSAccountManager localNumber]];
+    
+    for (NSString *userID in self.taggedRecipientIDs) {
+        [memberIDs addObject:userID];
     }
+    
+    // Look for group thread with same recipients
+    NSCountedSet *testSet = [NSCountedSet setWithSet:self.taggedRecipientIDs];
+    NSMutableSet *matchingThreads = [NSMutableSet new];
+    for (TSThread *existingThread in [TSThread allObjectsInCollection]) {
+        NSCountedSet *set1 = [NSCountedSet setWithArray:existingThread.participants];
+//        NSCountedSet *set2 = [NSCountedSet setWithArray:memberIDs];
+        if ([set1 isEqual:testSet]) {
+            [matchingThreads addObject:existingThread];
+        }
+    }
+
+    // Pre-existing thread check
+    if (matchingThreads.count > 0) {
+        // Found match(es).  Query user.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                           message:NSLocalizedString(@"Use Existing conversation or create new?", @"Existing thread use query")
+                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
+            for (TSThread *matchingThread in matchingThreads) {
+                UIAlertAction *threadAction = [UIAlertAction actionWithTitle:matchingThread.name
+                                                                       style:UIAlertActionStyleDefault
+                                                                     handler:^(UIAlertAction *action) {
+                                                                         [self sendMessageWithText:text thread:matchingThread];
+                                                                     }];
+                [alert addAction:threadAction];
+            }
+            UIAlertAction *newAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"New Converstion...", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {
+                                                                  // Make a new thread
+                                                                  TSThread *thread = [TSThread getOrCreateThreadWithID:[[NSUUID UUID] UUIDString]];
+                                                                  thread.participants = [memberIDs copy];
+                                                                  [self sendMessageWithText:text thread:thread];
+                                                                  
+                                                              }];
+            [alert addAction:newAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        });
+    } else {
+        TSThread *thread = [TSThread getOrCreateThreadWithID:[[NSUUID UUID] UUIDString]];
+        thread.participants = [memberIDs copy];
+        thread.type = @"conversation";
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self sendMessageWithText:text thread:thread];
+        });
+        
+    }
+    
+//    } else {
+////        NSString *recipientTag = [self.taggedRecipientIDs firstObject];
+////        NSString *recipientID = [[self.ccsmStorage getTags] objectForKey:recipientTag];
+//        
+//        TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:[self.taggedRecipientIDs anyObject]];
+//        [self sendMessageWithText:text thread:thread];
+//    }
 }
 
 #pragma mark - swipe handlers
@@ -592,7 +584,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 -(void)sendMessageWithText:(NSString *)text
                     thread:(TSThread *)thread
 {
-    thread.universalExpression = self.universalTagExpression;
+    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        thread.universalExpression = self.universalTagExpression;
+//    thread.participants = [NSArray arrayWithArray:[self.taggedRecipientIDs allObjects]];
+        thread.prettyExpression = self.prettyTagString;
+        thread.type = @"conversation";
+        [thread saveWithTransaction:transaction];
+    }];
     
     TSOutgoingMessage *message = nil;
     
@@ -611,6 +609,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                                  attachmentIds:_attachmentIDs];
     }
     message.plainTextBody = text;
+    
+    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [message saveWithTransaction:transaction];
+    }];
     
     [self.recipientTags removeAllObjects];
     self.taggedRecipientIDs = nil;
@@ -1449,7 +1451,8 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     NSString *inputText = [self.textView.text copy];
 #warning XXX tagMath hit here
     // Call tagMath service
-    [self.tagMathService tagLookupWithString:self.textView.text
+    SignalRecipient *selfRec = [SignalRecipient recipientWithTextSecureIdentifier:[TSAccountManager localNumber]];
+    [self.tagMathService tagLookupWithString:[NSString stringWithFormat:@"%@ + @%@", self.textView.text, selfRec.tagSlug]
                                      success:^(NSDictionary *results) {
                                          DDLogDebug(@"TagMath restults: %@", results);
                                          self.taggedRecipientIDs = [NSSet setWithArray:[results objectForKey:@"userids"]];

@@ -31,11 +31,10 @@
 #import "SignalKeyingStorage.h"
 #import "TSAttachmentPointer.h"
 #import "TSCall.h"
-#import "TSContactThread.h"
 #import "TSContentAdapters.h"
 #import "TSDatabaseView.h"
 #import "TSErrorMessage.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
 #import "TSIncomingMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
@@ -186,7 +185,8 @@ typedef enum : NSUInteger {
 
 - (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing {
     _thread                        = thread;
-    isGroupConversation            = [self.thread isKindOfClass:[TSGroupThread class]];
+//    isGroupConversation            = [self.thread isKindOfClass:[TSGroupThread class]];
+    isGroupConversation = YES;
     _composeOnOpen                 = keyboardAppearing;
 
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
@@ -204,12 +204,8 @@ typedef enum : NSUInteger {
 
 - (BOOL)userLeftGroup
 {
-    if (![_thread isKindOfClass:[TSGroupThread class]]) {
-        return NO;
-    }
-
-    TSGroupThread *groupThread = (TSGroupThread *)self.thread;
-    return ![groupThread.groupModel.groupMemberIds containsObject:[TSAccountManager localNumber]];
+    NSString *selfID = [TSAccountManager localNumber];
+    return ![self.thread.participants containsObject:[TSAccountManager localNumber]];
 }
 
 - (void)hideInputIfNeeded {
@@ -384,6 +380,7 @@ typedef enum : NSUInteger {
     }
 }
 
+#warning XXX WHY??? XXX
 - (void)startReadTimer {
     self.readTimer = [NSTimer scheduledTimerWithTimeInterval:1
                                                       target:self
@@ -471,9 +468,9 @@ typedef enum : NSUInteger {
 - (void)setNavigationTitle
 {
     NSString *navTitle = self.thread.name;
-    if (isGroupConversation && [navTitle length] == 0) {
-        navTitle = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
-    }
+//    if (isGroupConversation && [navTitle length] == 0) {
+//        navTitle = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
+//    }
     self.title = navTitle;
 }
 
@@ -625,8 +622,13 @@ typedef enum : NSUInteger {
 }
 
 - (PhoneNumber *)phoneNumberForThread {
-    NSString *contactId = [(TSContactThread *)self.thread contactIdentifier];
-    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:contactId];
+    NSString *userid = nil;
+    for (NSString *uid in self.thread.participants) {
+        if (![uid isEqualToString:[TSAccountManager localNumber]]) {
+            userid = uid;
+        }
+    }
+    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
     return [PhoneNumber phoneNumberFromUserSpecifiedText:recipient.phoneNumber];
 }
 
@@ -647,10 +649,16 @@ typedef enum : NSUInteger {
 
 - (BOOL)canCall
 {
-    if (isGroupConversation || [((TSContactThread *)self.thread).contactIdentifier isEqualToString:[TSAccountManager localNumber]]) {
+    if (self.thread.participants.count > 2) {
         return NO;
     } else {
-        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:((TSContactThread *)self.thread).contactIdentifier];
+        NSString *userid = nil;
+        for (NSString *uid in self.thread.participants) {
+            if (![uid isEqualToString:[TSAccountManager localNumber]]) {
+                userid = uid;
+            }
+        }
+        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
         if (recipient.phoneNumber) {
             return YES;
         } else {
@@ -687,9 +695,17 @@ typedef enum : NSUInteger {
                                                        messageBody:@""];
         }
         message.plainTextBody = text;
+
+        [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [message saveWithTransaction:transaction];
+        }];
+        
         [self.messageSender sendMessage:message
             success:^{
                 DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    [message saveWithTransaction:transaction];
+                }];
             }
             failure:^(NSError *error) {
                 DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
@@ -1034,7 +1050,7 @@ typedef enum : NSUInteger {
             return [[NSAttributedString alloc] initWithString:NSLocalizedString(@"UPLOADING_MESSAGE_TEXT",
                                                                   @"message footer while attachment is uploading")];
         }
-    } else if (message.messageType == TSIncomingMessageAdapter && [self.thread isKindOfClass:[TSGroupThread class]]) {
+    } else if (message.messageType == TSIncomingMessageAdapter) {
         TSIncomingMessage *incomingMessage = (TSIncomingMessage *)message.interaction;
         NSString *_Nonnull name = [self.contactsManager nameStringForContactID:incomingMessage.authorId];
         NSAttributedString *senderNameString = [[NSAttributedString alloc] initWithString:name];
@@ -1472,18 +1488,19 @@ typedef enum : NSUInteger {
                           } else {
                               switch (tappedButtonIndex) {
                                   case 0: {
-                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
-                                          // Corrupt Message errors only appear in contact threads.
+#warning XXX Corrupted message handling here
+//                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
+//                                          // Corrupt Message errors only appear in contact threads.
                                           DDLogError(
                                               @"%@ Unexpected request to reset session in group thread. Refusing",
                                               self.tag);
                                           return;
-                                      }
-                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
-                                      [OWSSessionResetJob runWithCorruptedMessage:message
-                                                                    contactThread:contactThread
-                                                                    messageSender:self.messageSender
-                                                                   storageManager:self.storageManager];
+//                                      }
+//                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
+//                                      [OWSSessionResetJob runWithCorruptedMessage:message
+//                                                                    contactThread:contactThread
+//                                                                    messageSender:self.messageSender
+//                                                                   storageManager:self.storageManager];
                                       break;
                                   }
                                   default:
@@ -1859,16 +1876,9 @@ typedef enum : NSUInteger {
 - (void)yapDatabaseModified:(NSNotification *)notification {
     [self updateBackButtonAsync];
 
-    if (isGroupConversation) {
-        [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-          TSGroupThread *gThread = (TSGroupThread *)self.thread;
-
-          if (gThread.groupModel) {
-//              self.thread = [TSGroupThread threadWithGroupModel:gThread.groupModel transaction:transaction];
-              self.thread = [TSGroupThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
-          }
-        }];
-    }
+    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
+    }];
 
     NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
 
@@ -2129,45 +2139,52 @@ typedef enum : NSUInteger {
 
 - (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
 {
-    __block TSGroupThread *groupThread;
+    __block TSThread *thread;
     __block TSOutgoingMessage *message;
+    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
+                                                                    memberIds:[self.thread.participants mutableCopy]
+                                                                        image:self.thread.image
+                                                                      groupId:nil];
 
     [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        groupThread            = [TSGroupThread getOrCreateThreadWithGroupModel:newGroupModel transaction:transaction];
+        thread = [TSThread getOrCreateThreadWithID:self.thread.uniqueId transaction:transaction];
         
-        NSString *updateGroupInfo = [groupThread.groupModel getInfoStringAboutUpdateTo:newGroupModel contactsManager:self.contactsManager];
+        NSString *updateGroupInfo = [oldGroupModel getInfoStringAboutUpdateTo:newGroupModel contactsManager:self.contactsManager];
 
-        groupThread.groupModel = newGroupModel;
-        [groupThread saveWithTransaction:transaction];
-        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                      inThread:groupThread
-                                                   messageBody:@""
-                                                 attachmentIds:[NSMutableArray new]];
-        message.groupMetaMessage = TSGroupMessageUpdate;
-        message.customMessage = updateGroupInfo;
+        self.thread.name = newGroupModel.groupName;
+        self.thread.participants = [NSArray arrayWithArray:newGroupModel.groupMemberIds];
+        self.thread.image = newGroupModel.groupImage;
+        
+        [self.thread saveWithTransaction:transaction];
+        
+#warning XXX Control message send for group update here.
+//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                      inThread:thread
+//                                                   messageBody:@""
+//                                                 attachmentIds:[NSMutableArray new]];
+//        message.groupMetaMessage = TSGroupMessageUpdate;
+//        message.customMessage = updateGroupInfo;
     }];
 
-    if (newGroupModel.groupImage) {
-        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
-            contentType:OWSMimeTypeImagePng
-            inMessage:message
-            success:^{
-                DDLogDebug(@"%@ Successfully sent group update with avatar", self.tag);
-            }
-            failure:^(NSError *_Nonnull error) {
-                DDLogError(@"%@ Failed to send group avatar update with error: %@", self.tag, error);
-            }];
-    } else {
-        [self.messageSender sendMessage:message
-            success:^{
-                DDLogDebug(@"%@ Successfully sent group update", self.tag);
-            }
-            failure:^(NSError *_Nonnull error) {
-                DDLogError(@"%@ Failed to send group update with error: %@", self.tag, error);
-            }];
-    }
-
-    self.thread = groupThread;
+//    if (newGroupModel.groupImage) {
+//        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
+//            contentType:OWSMimeTypeImagePng
+//            inMessage:message
+//            success:^{
+//                DDLogDebug(@"%@ Successfully sent group update with avatar", self.tag);
+//            }
+//            failure:^(NSError *_Nonnull error) {
+//                DDLogError(@"%@ Failed to send group avatar update with error: %@", self.tag, error);
+//            }];
+//    } else {
+//        [self.messageSender sendMessage:message
+//            success:^{
+//                DDLogDebug(@"%@ Successfully sent group update", self.tag);
+//            }
+//            failure:^(NSError *_Nonnull error) {
+//                DDLogError(@"%@ Failed to send group update with error: %@", self.tag, error);
+//            }];
+//    }
 }
 
 - (IBAction)unwindGroupUpdated:(UIStoryboardSegue *)segue {
