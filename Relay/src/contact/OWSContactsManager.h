@@ -23,32 +23,23 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 @property (nonatomic, strong) NSArray *ccsmRecipients;
 
 - (ObservableValue *)getObservableContacts;
-
-//- (NSArray *)getContactsFromAddressBook:(ABAddressBookRef)addressBook;
 - (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber;
-
 -(SignalRecipient *)recipientForUserID:(NSString *)userID;
 -(SignalRecipient *)getOrCreateRecipientWithUserID:(NSString *)userID;
 
-//- (void)verifyABPermission;
-
 - (NSArray<SignalRecipient *> *)allContacts;
-//- (NSArray<Contact *> *)signalContacts;
-//- (NSArray *)textSecureContacts;
 - (NSArray<SignalRecipient *> *)ccsmRecipients;
-
-
 - (void)doAfterEnvironmentInitSetup;
-
-//- (NSString *)nameStringForPhoneIdentifier:(NSString *)identifier;
-//- (UIImage *)imageForPhoneIdentifier:(NSString *)identifier;
-
 - (NSString *)nameStringForRecipientID:(NSString *)identifier;
 - (UIImage *)avatarForRecipientID:(NSString *)identifier;
 
 + (NSComparator)recipientComparator;
 
 -(void)refreshCCSMRecipients;
+
+// Save recipients on background thread
+-(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
+
 
 -(NSSet *)identifiersForTagSlug:(NSString *)tagSlug;
 

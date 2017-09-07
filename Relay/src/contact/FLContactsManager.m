@@ -88,13 +88,16 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 
 -(NSSet<SignalRecipient *> *)allContacts
 {
+#warning XXX implement NSCache here?
     __block NSMutableSet *holdingSet = [NSMutableSet new];
     [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         [transaction enumerateKeysAndObjectsInCollection:[SignalRecipient collection]
                                               usingBlock:^(NSString *key, id object, BOOL *stop){
                                                   if ([object isKindOfClass:[SignalRecipient class]]) {
                                                       SignalRecipient *contact = (SignalRecipient *)object;
-                                                      [holdingSet addObject:contact];
+                                                      if (![contact.uniqueId isEqualToString:FLSupermanID]) {
+                                                          [holdingSet addObject:contact];
+                                                      }
                                                   }
                                               }];
     }];

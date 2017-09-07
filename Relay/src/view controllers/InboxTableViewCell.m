@@ -54,9 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
         });
     }
 
-#warning XXX DEBUG ONLY XXX
-    NSString *name = thread.uniqueId;
-//    NSString *name = thread.name;
+//#warning XXX DEBUG ONLY XXX
+//    NSString *name = thread.uniqueId;
+    NSString *name = thread.name;
     if (name.length == 0) {
         DDLogDebug(@"Thread return with no name.");
         name = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");

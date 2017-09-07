@@ -380,7 +380,6 @@ typedef enum : NSUInteger {
     }
 }
 
-#warning XXX WHY??? XXX
 - (void)startReadTimer {
     self.readTimer = [NSTimer scheduledTimerWithTimeInterval:1
                                                       target:self

@@ -29,7 +29,7 @@
 
 @implementation CCSMJSONService
 
-#warning Need a mechanism for recognizing message type
+#warning XXX Need a mechanism for recognizing message type
 +(NSString *_Nullable)blobFromMessage:(TSOutgoingMessage *_Nonnull)message
 {
     
@@ -62,7 +62,7 @@
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *messageType = @"content";
-#warning Pull threadType from thread property
+#warning XXX Pull threadType from thread property
     NSString *threadType = @"conversation";
 //    NSString *type = @"ordinary";
     

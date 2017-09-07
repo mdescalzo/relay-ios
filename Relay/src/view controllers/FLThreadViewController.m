@@ -499,11 +499,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 #warning XXX insert tagmath hit here XXXX
 
     // Check the tagged user list.
-    NSMutableArray *memberIDs = [NSMutableArray arrayWithObject:[TSAccountManager localNumber]];
-    
-    for (NSString *userID in self.taggedRecipientIDs) {
-        [memberIDs addObject:userID];
-    }
+//    NSMutableArray *memberIDs = [NSMutableArray arrayWithObject:[TSAccountManager localNumber]];
+//    
+//    for (NSString *userID in self.taggedRecipientIDs) {
+//        [memberIDs addObject:userID];
+//    }
     
     // Look for group thread with same recipients
     NSCountedSet *testSet = [NSCountedSet setWithSet:self.taggedRecipientIDs];
@@ -536,7 +536,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                                               handler:^(UIAlertAction *action) {
                                                                   // Make a new thread
                                                                   TSThread *thread = [TSThread getOrCreateThreadWithID:[[NSUUID UUID] UUIDString]];
-                                                                  thread.participants = [memberIDs copy];
+                                                                  thread.participants = [NSArray arrayWithArray:[self.taggedRecipientIDs allObjects]];
+                                                                  thread.type = @"conversation";
                                                                   [self sendMessageWithText:text thread:thread];
                                                                   
                                                               }];
@@ -545,7 +546,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         });
     } else {
         TSThread *thread = [TSThread getOrCreateThreadWithID:[[NSUUID UUID] UUIDString]];
-        thread.participants = [memberIDs copy];
+        thread.participants = [NSArray arrayWithArray:[self.taggedRecipientIDs allObjects]];
         thread.type = @"conversation";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self sendMessageWithText:text thread:thread];
@@ -1451,7 +1452,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     NSString *inputText = [self.textView.text copy];
 #warning XXX tagMath hit here
     // Call tagMath service
-    SignalRecipient *selfRec = [SignalRecipient recipientWithTextSecureIdentifier:[TSAccountManager localNumber]];
+    SignalRecipient *selfRec = [TSAccountManager sharedInstance].myself;
     [self.tagMathService tagLookupWithString:[NSString stringWithFormat:@"%@ + @%@", self.textView.text, selfRec.tagSlug]
                                      success:^(NSDictionary *results) {
                                          DDLogDebug(@"TagMath restults: %@", results);

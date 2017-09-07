@@ -54,7 +54,7 @@
 //                              failure:(void (^)(NSError *error))failureBlock;
 
 -(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous;
--(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId
+-(void)recipientFromCCSMWithID:(NSString *)userId
                                     success:(void (^)(NSDictionary *results))successBlock
                                     failure:(void (^)(NSError *error))failureBlock;
 

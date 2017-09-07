@@ -14,7 +14,7 @@
 @interface FLContactsManager : NSObject
 
 @property (nonatomic, strong) YapDatabaseConnection * _Nonnull mainConnection;
-@property (nonatomic, strong) YapDatabaseConnection * _Nonnull backgroundConnection;
+@property (strong) YapDatabaseConnection * _Nonnull backgroundConnection;
 
 //-(void)setupDatabase;
 
