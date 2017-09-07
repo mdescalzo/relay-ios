@@ -36,7 +36,7 @@
     NSMutableArray *associatedContacts = [NSMutableArray array];
 
     for (NSString *identifier in memberIdentifiers) {
-        if ([identifier isEqualToString:[TSAccountManager localNumber]]) {
+        if ([identifier isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
             // remove local number
 
             [remainingIdentifiers removeObject:identifier];
@@ -52,12 +52,6 @@
         SignalRecipient *contact = [manager recipientForUserID:identifier];
         
         if (!contact) {
-            continue;
-        }
-
-        PhoneNumber *number = [PhoneNumber phoneNumberFromE164:contact.phoneNumber];
-
-        if (!number) {
             continue;
         }
 
