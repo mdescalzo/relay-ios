@@ -28,6 +28,7 @@
 -(void)configureCellWithContact:(SignalRecipient *)recipient
 {
     self.nameLabel.attributedText = [self attributedStringForContact:recipient];
+    self.detailLabel.text = recipient.orgSlug;
     
     if (recipient.avatar) {
         self.avatarImageView.image = recipient.avatar;

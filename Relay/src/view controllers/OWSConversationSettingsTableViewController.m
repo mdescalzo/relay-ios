@@ -121,7 +121,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)configureWithThread:(TSThread *)thread
 {
     self.thread = thread;
-    self.signalId = thread.contactIdentifier;
+    self.signalId = @""; // thread.contactIdentifier;
     self.contactName = thread.name;
 
 //    if ([thread isKindOfClass:[TSGroupThread class]]) {

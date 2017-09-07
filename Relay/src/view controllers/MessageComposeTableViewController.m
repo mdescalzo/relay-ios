@@ -14,6 +14,8 @@
 #import "UIColor+OWS.h"
 #import "UIUtil.h"
 #import "FLDirectoryCell.h"
+#import "TSAccountManager.h"
+#import "TSThread.h"
 
 @import MessageUI;
 
@@ -410,30 +412,9 @@
     
     [cell configureCellWithContact:contact];
     
-//    cell.nameLabel.attributedText = [self attributedStringForContact:contact];
-//    
-//    cell.avatarImageView.image = contact.image;
-    
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     return cell;
-
-//    ContactTableViewCell *cell =
-//        (ContactTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"RightDetailCell"];
-//
-//    if (cell == nil) {
-//        cell = [[ContactTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-//                                           reuseIdentifier:@"ContactTableViewCell"];
-//    }
-    
-//    cell.shouldShowContactButtons = NO;
-
-//    [cell configureWithContact:[self contactForIndexPath:indexPath]];
-    //    if ([contact respondsToSelector:@selector(tagPresentation)]) {
-    //        cell.detailTextLabel.text = contact.tagPresentation;
-    //    } else {
-    //        cell.detailTextLabel.text = @"";
-    //    }
 }
 
 - (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact {
@@ -488,7 +469,16 @@
 
     [self dismissViewControllerAnimated:YES
                              completion:^() {
-                                 [Environment messageIdentifier:identifier withCompose:YES];
+                                 
+                                 __block TSThread *thread = nil;
+                                 [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                     SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier withTransaction:transaction];
+                                     SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
+
+                                     thread = [TSThread getOrCreateThreadWithParticipants:@[ recipient.uniqueId, selfRec.uniqueId ] transaction:transaction];
+                                 }];
+
+                                 [Environment messageGroup:thread];
                              }];
 }
 

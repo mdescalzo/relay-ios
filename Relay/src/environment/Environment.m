@@ -212,7 +212,7 @@ static Environment *environment = nil;
     
     // Collect parts
     SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier];
-    SignalRecipient *selfRec = [SignalRecipient recipientWithTextSecureIdentifier:[TSAccountManager localNumber]];
+    SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
     
     __block TSThread *thread = [TSThread getOrCreateThreadWithParticipants:@[ recipient.uniqueId, selfRec.uniqueId ]];
     

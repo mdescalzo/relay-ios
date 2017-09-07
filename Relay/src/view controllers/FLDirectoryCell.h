@@ -13,6 +13,7 @@
 @interface FLDirectoryCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *detailLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *avatarImageView;
 
 -(void)configureCellWithContact:(SignalRecipient *)recipient;
