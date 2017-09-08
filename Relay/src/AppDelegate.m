@@ -56,6 +56,21 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+//    [[TSAccountManager sharedInstance] ifRegistered:YES
+//                                           runAsync:^{
+//                                               // We're double checking that the app is active, to be sure since we
+//                                               // can't verify in production env due to code
+//                                               // signing.
+//                                               [TSSocketManager becomeActiveFromForeground];
+//                                               
+//                                               // Refresh the contact/recipient database in background
+//                                               dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+//                                                   [[Environment getCurrent].contactsManager refreshCCSMRecipients];
+//                                               });
+//                                               //                                               [[Environment getCurrent].contactsManager verifyABPermission];
+//                                           }];
+
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -329,8 +344,13 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     if (getenv("runningTests_dontStartApp")) {
         return;
     }
-    [[TSAccountManager sharedInstance] ifRegistered:YES
-                                           runAsync:^{
+#warning XXX Signals ifRegistered method returning false negatives
+//    [[TSAccountManager sharedInstance] ifRegistered:YES
+//                                           runAsync:^{
+    CCSMStorage *ccsmStore = [CCSMStorage new];
+    NSString *sessionToken = [ccsmStore getSessionToken];
+    if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) { // Check for local sessionKey
+    
                                                // We're double checking that the app is active, to be sure since we
                                                // can't verify in production env due to code
                                                // signing.
@@ -341,8 +361,8 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                    [[Environment getCurrent].contactsManager refreshCCSMRecipients];
                                                });
 //                                               [[Environment getCurrent].contactsManager verifyABPermission];
-                                           }];
-    
+//                                           }];
+    }
     [self removeScreenProtection];
 }
 

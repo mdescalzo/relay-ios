@@ -72,6 +72,9 @@ NSUInteger maximumValidationAttempts = 9999;
         
         AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         appDelegate.window.rootViewController = snc;
+        
+        [appDelegate applicationDidBecomeActive:[UIApplication sharedApplication]];
+        
         if (![snc.topViewController isKindOfClass:[FLThreadViewController class]]) {
             DDLogError(@"%@ Unexpected top view controller: %@", self.tag, snc.topViewController);
             return;

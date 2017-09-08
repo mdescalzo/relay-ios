@@ -75,7 +75,7 @@
 //    NSString *orgId = [orgDict objectForKey:@"id"];
 
     
-    NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
+    NSDictionary *sender = @{ /* @"tagId": (tagId ? tagId : @""), */
                               @"userId" :  [senderDict objectForKey:@"id"],
                               };
     
@@ -106,8 +106,9 @@
         presentation = [presentation stringByAppendingString:@")"];
     }
         
-    NSDictionary *recipients = @{ @"expression" : presentation,
-                                  @"userIds" : userIds };
+    NSDictionary *recipients = @{ @"expression" : presentation
+//                                  @"userIds" : userIds
+                                  };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
                             @{ @"version" : version,

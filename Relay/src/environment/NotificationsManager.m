@@ -113,27 +113,27 @@
                 notification.userInfo =
                     @{Signal_Thread_UserInfo_Key : thread.uniqueId, Signal_Message_UserInfo_Key : message.uniqueId};
 
-                if ([thread isGroupThread]) {
-                    NSString *sender = [self.contactsManager nameStringForContactID:message.authorId];
-                    NSString *threadName = [NSString stringWithFormat:@"\"%@\"", name];
-                    notification.alertBody =
-                        [NSString stringWithFormat:NSLocalizedString(@"APN_MESSAGE_IN_GROUP_DETAILED", nil),
-                                                   sender,
-                                                   threadName,
-                                                   messageDescription];
-                } else {
+//                if ([thread isGroupThread]) {
+//                    NSString *sender = [self.contactsManager nameStringForContactID:message.authorId];
+//                    NSString *threadName = [NSString stringWithFormat:@"\"%@\"", name];
+//                    notification.alertBody =
+//                        [NSString stringWithFormat:NSLocalizedString(@"APN_MESSAGE_IN_GROUP_DETAILED", nil),
+//                                                   sender,
+//                                                   threadName,
+//                                                   messageDescription];
+//                } else {
                     notification.alertBody = [NSString stringWithFormat:@"%@: %@", name, messageDescription];
-                }
+//                }
                 break;
             case NotificationNameNoPreview: {
                 notification.userInfo = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
-                if ([thread isGroupThread]) {
-                    notification.alertBody =
-                        [NSString stringWithFormat:@"%@ \"%@\"", NSLocalizedString(@"APN_MESSAGE_IN_GROUP", nil), name];
-                } else {
+//                if ([thread isGroupThread]) {
+//                    notification.alertBody =
+//                        [NSString stringWithFormat:@"%@ \"%@\"", NSLocalizedString(@"APN_MESSAGE_IN_GROUP", nil), name];
+//                } else {
                     notification.alertBody =
                         [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"APN_MESSAGE_FROM", nil), name];
-                }
+//                }
                 break;
             }
             case NotificationNoNameNoPreview:

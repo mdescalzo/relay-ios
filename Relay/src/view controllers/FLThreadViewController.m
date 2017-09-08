@@ -1452,7 +1452,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     NSString *inputText = [self.textView.text copy];
 #warning XXX tagMath hit here
     // Call tagMath service
-    SignalRecipient *selfRec = [TSAccountManager sharedInstance].myself;
+    SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
     [self.tagMathService tagLookupWithString:[NSString stringWithFormat:@"%@ + @%@", self.textView.text, selfRec.tagSlug]
                                      success:^(NSDictionary *results) {
                                          DDLogDebug(@"TagMath restults: %@", results);

@@ -461,8 +461,14 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
         OWSFingerprintBuilder *fingerprintBuilder =
             [[OWSFingerprintBuilder alloc] initWithStorageManager:self.storageManager
                                                   contactsManager:self.contactsManager];
-
-        OWSFingerprint *fingerprint = [fingerprintBuilder fingerprintWithTheirSignalId:self.thread.contactIdentifier];
+        NSString *otherId = nil;
+        for (NSString *uid in self.thread.participants) {
+            if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
+                otherId = uid;
+                break;
+            }
+        }
+        OWSFingerprint *fingerprint = [fingerprintBuilder fingerprintWithTheirSignalId:otherId];
 
         [controller configureWithThread:self.thread fingerprint:fingerprint contactName:self.contactName];
         controller.dismissDelegate = self;

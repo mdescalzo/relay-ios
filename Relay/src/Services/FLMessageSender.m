@@ -52,8 +52,11 @@
     
     
     __block TSThread *supermanThread = nil;
+    
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         supermanThread = [TSThread getOrCreateThreadWithID:FLSupermanID transaction:transaction];
+        supermanThread.participants = @[ FLSupermanID ];
+        [supermanThread saveWithTransaction:transaction];
     }];
     
     TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]

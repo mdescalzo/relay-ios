@@ -490,7 +490,7 @@ typedef enum : NSUInteger {
                                                                       action:@selector(callAction)];
         callButton.imageInsets = UIEdgeInsetsMake(0, -10, 0, 10);
         [barButtons addObject:callButton];
-    } else if ([self.thread isGroupThread]) {
+    } else if (self.thread.participants.count > 2) {
         UIBarButtonItem *manageGroupButton =
             [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"contact-options-action"]
                                              style:UIBarButtonItemStylePlain
@@ -599,8 +599,15 @@ typedef enum : NSUInteger {
 {
     OWSFingerprintBuilder *builder =
         [[OWSFingerprintBuilder alloc] initWithStorageManager:self.storageManager contactsManager:self.contactsManager];
+    NSString *otherId = nil;
+    for (NSString *uid in self.thread.participants) {
+        if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
+            otherId = uid;
+            break;
+        }
+    }
     OWSFingerprint *fingerprint =
-        [builder fingerprintWithTheirSignalId:self.thread.contactIdentifier theirIdentityKey:theirIdentityKey];
+        [builder fingerprintWithTheirSignalId:otherId theirIdentityKey:theirIdentityKey];
     [self markAllMessagesAsRead];
     [self performSegueWithIdentifier:OWSMessagesViewControllerSegueShowFingerprint sender:fingerprint];
 }
@@ -679,7 +686,7 @@ typedef enum : NSUInteger {
             [JSQSystemSoundPlayer jsq_playMessageSentSound];
         }
 
-        TSOutgoingMessage *message;
+        TSOutgoingMessage *message = nil;
         OWSDisappearingMessagesConfiguration *configuration =
             [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
         if (configuration.isEnabled) {
