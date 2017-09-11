@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CCSM_Home_URL</key>
+	<string>https://ccsm-stage-api.forsta.io</string>
+	<key>TSS_Serveraddress</key>
+	<string>forsta-signalserver-stage.herokuapp.com</string>
+	<key>TSS_Server_URL</key>
+	<string>http://forsta-signalserver-stage.herokuapp.com/</string>
+	<key>TSS_Server_Port</key>
+	<integer>80</integer>
+	<key>TSS_Server_API</key>
+	<string>ws://forsta-signalserver-stage.herokuapp.com/v1/websocket/</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

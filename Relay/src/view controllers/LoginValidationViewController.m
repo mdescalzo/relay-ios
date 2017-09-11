@@ -185,6 +185,7 @@ NSUInteger maximumValidationAttempts = 9999;
         // Not registered with TSS, ask CCSM to do it for us.
         [self.ccsmCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
                                                       success:^{
+                                                          [TSSocketManager becomeActiveFromForeground];
                                                           [self.spinner stopAnimating];
                                                           self.validationButton.enabled = YES;
                                                           self.validationButton.alpha = 1.0;

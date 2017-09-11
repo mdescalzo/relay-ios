@@ -21,8 +21,9 @@
     #define SignalReportError [Pastelog reportErrorAndSubmitLogsWithAlertTitle:NSLocalizedString(@"ERROR_WAS_DETECTED_TITLE", @"") alertBody:NSLocalizedString(@"ERROR_WAS_DETECTED_SUBMIT", @"")];
 
 // TSS Host
+// Moved to plist file
 //#define textSecureHostAddress @"textsecure.forsta.services"
-#define textSecureHostAddress @"forsta-signalserver-dev.herokuapp.com"
+//#define textSecureHostAddress @"forsta-signalserver-dev.herokuapp.com"
 
 // Notification strings
 #define FLUserSelectedFromPopoverDirectoryNotification @"FLUserSelectedFromPopoverDirectoryNotification"

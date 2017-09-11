@@ -46,6 +46,8 @@ static unsigned char DH3K_PRIME[] = {
     ErrorHandlerBlock errorNoter = ^(id error, id relatedInfo, bool causedTermination) {
       DDLogError(@"%@: %@, %d", error, relatedInfo, causedTermination);
     };
+    
+    NSNumber *port = (NSNumber *)[[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Server_Port"];
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     OWSContactsManager *contactsManager = [OWSContactsManager new];
@@ -56,8 +58,8 @@ static unsigned char DH3K_PRIME[] = {
 //                                                                       contactsUpdater:contactsUpdater];
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
-                                     serverPort:80
-                           masterServerHostName:textSecureHostAddress
+                                     serverPort:[port unsignedShortValue]
+                           masterServerHostName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Serveraddress"]
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
@@ -77,6 +79,7 @@ static unsigned char DH3K_PRIME[] = {
     ErrorHandlerBlock errorNoter = ^(id error, id relatedInfo, bool causedTermination) {
       DDLogError(@"%@: %@, %d", error, relatedInfo, causedTermination);
     };
+    NSNumber *port = (NSNumber *)[[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Server_Port"];
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     OWSContactsManager *contactsManager = [OWSContactsManager new];
@@ -87,8 +90,8 @@ static unsigned char DH3K_PRIME[] = {
 //                                                                       contactsUpdater:contactsUpdater];
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
-                                     serverPort:80
-                           masterServerHostName:textSecureHostAddress
+                                     serverPort:[port unsignedShortValue]
+                           masterServerHostName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Serveraddress"]
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
@@ -109,6 +112,7 @@ static unsigned char DH3K_PRIME[] = {
     if ([testingAndLegacyOptions containsObject:TESTING_OPTION_USE_DH_FOR_HANDSHAKE]) {
         keyAgreementProtocols = @[ [Release supportedDH3KKeyAgreementProtocol] ];
     }
+    NSNumber *port = (NSNumber *)[[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Server_Port"];
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     OWSContactsManager *contactsManager = [OWSContactsManager new];
@@ -121,8 +125,8 @@ static unsigned char DH3K_PRIME[] = {
     return [[Environment alloc] initWithLogging:[DiscardingLog discardingLog]
                                      errorNoter:^(id error, id relatedInfo, bool causedTermination) {
                                      }
-                                     serverPort:80
-                           masterServerHostName:textSecureHostAddress
+                                     serverPort:[port unsignedShortValue]
+                           masterServerHostName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Serveraddress"]
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
