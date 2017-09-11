@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "Contact.h"
+#import "SignalRecipient.h"
 #import "ObservableValue.h"
 #import "PhoneNumber.h"
 
@@ -26,7 +26,7 @@
 @property (nonatomic, readonly) TOCFuture *futureShortAuthenticationString;
 @property (nonatomic, readonly) PhoneNumber *remoteNumber;
 @property (nonatomic, readonly) bool initiatedLocally;
-@property (nonatomic, readonly) Contact *potentiallySpecifiedContact;
+@property (nonatomic, readonly) SignalRecipient *potentiallySpecifiedContact;
 @property (nonatomic, readonly) TOCFuture *futureCallLocallyAcceptedOrRejected;
 
 + (CallState *)callStateWithObservableProgress:(ObservableValue *)observableProgress
@@ -34,7 +34,7 @@
                                   andFutureSas:(TOCFuture *)futureSas
                                andRemoteNumber:(PhoneNumber *)remoteNumber
                            andInitiatedLocally:(bool)initiatedLocally
-                andPotentiallySpecifiedContact:(Contact *)contact
+                andPotentiallySpecifiedContact:(SignalRecipient *)recipient
                              andFutureAccepted:(TOCFuture *)futureCallLocallyAcceptedOrRejected;
 
 @end

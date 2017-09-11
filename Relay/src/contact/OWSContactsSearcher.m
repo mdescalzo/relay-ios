@@ -11,13 +11,13 @@
 
 @interface OWSContactsSearcher ()
 
-@property (copy) NSArray<Contact *> *contacts;
+@property (copy) NSArray<SignalRecipient *> *contacts;
 
 @end
 
 @implementation OWSContactsSearcher
 
-- (instancetype)initWithContacts:(NSArray<Contact *> *)contacts {
+- (instancetype)initWithContacts:(NSArray<SignalRecipient *> *)contacts {
     self = [super init];
     if (!self) return self;
 
@@ -25,16 +25,17 @@
     return self;
 }
 
-- (NSArray<Contact *> *)filterWithString:(NSString *)string {
+- (NSArray<SignalRecipient *> *)filterWithString:(NSString *)string {
     NSString *searchTerm = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
     if ([searchTerm isEqualToString:@""]) {
         return self.contacts;
     }
 
-    NSString *formattedNumber = [PhoneNumber removeFormattingCharacters:searchTerm];
+//    NSString *formattedNumber = [PhoneNumber removeFormattingCharacters:searchTerm];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (ANY parsedPhoneNumbers.toE164 contains[c] %@)", searchTerm, formattedNumber];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (ANY parsedPhoneNumbers.toE164 contains[c] %@)", searchTerm, formattedNumber];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (phoneNumber contains[c] %@) OR (email contains[c] %@)", searchTerm, searchTerm, searchTerm];
 
     return [self.contacts filteredArrayUsingPredicate:predicate];
 }

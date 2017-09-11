@@ -14,6 +14,8 @@
 #import "UIColor+OWS.h"
 #import "UIUtil.h"
 #import "FLDirectoryCell.h"
+#import "TSAccountManager.h"
+#import "TSThread.h"
 
 @import MessageUI;
 
@@ -28,8 +30,8 @@
 @property (nonatomic, strong) UIView *loadingBackgroundView;
 @property (nonatomic, strong) UIView *emptyBackgroundView;
 @property (nonatomic) NSString *currentSearchTerm;
-@property (copy) NSArray<Contact *> *contacts;
-@property (copy) NSArray<Contact *> *searchResults;
+@property (copy) NSArray<SignalRecipient *> *contacts;
+@property (copy) NSArray<SignalRecipient *> *searchResults;
 
 @end
 
@@ -39,7 +41,8 @@
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-    self.contacts = [[[Environment getCurrent] contactsManager] allValidContacts];
+    self.contacts = [[[Environment getCurrent] contactsManager] ccsmRecipients];
+    
     self.searchResults = self.contacts;
     [self initializeSearch];
 
@@ -405,37 +408,16 @@
 {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"DirectoryCell" forIndexPath:indexPath];
     
-    Contact *contact = [self contactForIndexPath:indexPath];
+    SignalRecipient *contact = [self contactForIndexPath:indexPath];
     
     [cell configureCellWithContact:contact];
-    
-//    cell.nameLabel.attributedText = [self attributedStringForContact:contact];
-//    
-//    cell.avatarImageView.image = contact.image;
     
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     return cell;
-
-//    ContactTableViewCell *cell =
-//        (ContactTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"RightDetailCell"];
-//
-//    if (cell == nil) {
-//        cell = [[ContactTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-//                                           reuseIdentifier:@"ContactTableViewCell"];
-//    }
-    
-//    cell.shouldShowContactButtons = NO;
-
-//    [cell configureWithContact:[self contactForIndexPath:indexPath]];
-    //    if ([contact respondsToSelector:@selector(tagPresentation)]) {
-    //        cell.detailTextLabel.text = contact.tagPresentation;
-    //    } else {
-    //        cell.detailTextLabel.text = @"";
-    //    }
 }
 
-- (NSAttributedString *)attributedStringForContact:(Contact *)contact {
+- (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact {
     NSMutableAttributedString *fullNameAttributedString =
     [[NSMutableAttributedString alloc] initWithString:contact.fullName];
     
@@ -444,13 +426,13 @@
     
     CGFloat fontSize = 17.0;
     
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        firstNameFont = [UIFont ows_mediumFontWithSize:fontSize];
-        lastNameFont  = [UIFont ows_regularFontWithSize:fontSize];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        firstNameFont = [UIFont ows_mediumFontWithSize:fontSize];
+//        lastNameFont  = [UIFont ows_regularFontWithSize:fontSize];
+//    } else {
         firstNameFont = [UIFont ows_regularFontWithSize:fontSize];
         lastNameFont  = [UIFont ows_mediumFontWithSize:fontSize];
-    }
+//    }
     [fullNameAttributedString addAttribute:NSFontAttributeName
                                      value:firstNameFont
                                      range:NSMakeRange(0, contact.firstName.length)];
@@ -461,15 +443,15 @@
                                      value:[UIColor blackColor]
                                      range:NSMakeRange(0, contact.fullName.length)];
     
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor ows_darkGrayColor]
-                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+//                                         value:[UIColor ows_darkGrayColor]
+//                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
+//    } else {
         [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
                                          value:[UIColor ows_darkGrayColor]
                                          range:NSMakeRange(0, contact.firstName.length)];
-    }
+//    }
     
     
     return fullNameAttributedString;
@@ -483,11 +465,20 @@
 #pragma mark - Table View delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = [[[self contactForIndexPath:indexPath] textSecureIdentifiers] firstObject];
+    NSString *identifier = [self contactForIndexPath:indexPath].uniqueId;
 
     [self dismissViewControllerAnimated:YES
                              completion:^() {
-                               [Environment messageIdentifier:identifier withCompose:YES];
+                                 
+                                 __block TSThread *thread = nil;
+                                 [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                     SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier withTransaction:transaction];
+                                     SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
+
+                                     thread = [TSThread getOrCreateThreadWithParticipants:@[ recipient.uniqueId, selfRec.uniqueId ] transaction:transaction];
+                                 }];
+
+                                 [Environment messageGroup:thread];
                              }];
 }
 
@@ -496,8 +487,8 @@
     cell.accessoryType         = UITableViewCellAccessoryNone;
 }
 
-- (Contact *)contactForIndexPath:(NSIndexPath *)indexPath {
-    Contact *contact = nil;
+- (SignalRecipient *)contactForIndexPath:(NSIndexPath *)indexPath {
+    SignalRecipient *contact = nil;
 
     if (self.searchController.active) {
         contact = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
@@ -523,31 +514,31 @@
 
 - (void)refreshContacts {
     // Refresh from CCSM
-    [[Environment getCurrent].ccsmCommManager refreshCCSMData];
-    [[Environment getCurrent].contactsManager refreshCCSMContacts];
+    [[Environment getCurrent].contactsManager refreshCCSMRecipients];
     
-    [[ContactsUpdater sharedUpdater]
-        updateSignalContactIntersectionWithABContacts:[Environment getCurrent].contactsManager.allContacts
-        success:^{
-          self.contacts = [[[Environment getCurrent] contactsManager] allValidContacts];
+//    [[ContactsUpdater sharedUpdater]
+//        updateSignalContactIntersectionWithABContacts:[Environment getCurrent].contactsManager.allContacts
+//        success:^{
+    self.contacts = [[[Environment getCurrent] contactsManager] ccsmRecipients];
+
           dispatch_async(dispatch_get_main_queue(), ^{
             [self updateSearchResultsForSearchController:self.searchController];
             [self.tableView reloadData];
             [self updateAfterRefreshTry];
           });
-        }
-        failure:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertView *alert =
-                    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ERROR_WAS_DETECTED_TITLE", @"")
-                                               message:NSLocalizedString(@"TIMEOUT_CONTACTS_DETAIL", @"")
-                                              delegate:nil
-                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                     otherButtonTitles:nil];
-                [alert show];
-                [self updateAfterRefreshTry];
-            });
-        }];
+//        }
+//        failure:^(NSError *error) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                UIAlertView *alert =
+//                    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ERROR_WAS_DETECTED_TITLE", @"")
+//                                               message:NSLocalizedString(@"TIMEOUT_CONTACTS_DETAIL", @"")
+//                                              delegate:nil
+//                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
+//                                     otherButtonTitles:nil];
+//                [alert show];
+//                [self updateAfterRefreshTry];
+//            });
+//        }];
 
     if ([self.contacts count] == 0) {
         [self showLoadingBackgroundView:YES];

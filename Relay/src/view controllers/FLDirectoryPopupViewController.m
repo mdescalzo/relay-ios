@@ -8,7 +8,7 @@
 
 #import "CCSMStorage.h"
 #import "FLDirectoryPopupViewController.h"
-#import "FLContactsManager.h"
+#import "OWSContactsManager.h"
 
 #import "Environment.h"
 
@@ -18,7 +18,7 @@
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, strong) NSDictionary *contentDictionary;
 @property (nonatomic, strong) NSArray *content;
-@property (nonatomic, strong) FLContactsManager *contactsManager;
+@property (nonatomic, strong) OWSContactsManager *contactsManager;
 
 @end
 
@@ -55,15 +55,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DirectoryElementCell" forIndexPath:indexPath];
     
     // Configure the cell...
-//    cell.detailTextLabel.text = [[self.contentDictionary allKeys] objectAtIndex:(NSUInteger)[indexPath row]];
-//    NSDictionary *tmpDict = [self detailObjectForIndexPath:indexPath];
-//    
-//    NSString *fullName = [NSString stringWithFormat:@"%@ %@", [tmpDict objectForKey:@"first_name" ], [tmpDict objectForKey:@"last_name"]];
-//    cell.textLabel.text = fullName;
-    
-    Contact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
-    cell.textLabel.text = contact.fullName;
-    cell.detailTextLabel.text = contact.tagPresentation;
+    SignalRecipient *recipient = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+    cell.textLabel.text = recipient.fullName;
+    cell.detailTextLabel.text = recipient.tagSlug;
     
     return cell;
 }
@@ -89,9 +83,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Tell Everyone a user was selected
-    Contact *contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+    SignalRecipient *recipient = [self.content objectAtIndex:(NSUInteger)indexPath.row];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{ @"tag":contact.tagPresentation }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLUserSelectedFromPopoverDirectoryNotification object:nil userInfo:@{ @"tag":recipient.tagSlug }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -147,7 +141,7 @@
     return _ccsmStorage;
 }
 
--(FLContactsManager *)contactsManager
+-(OWSContactsManager *)contactsManager
 {
     if (_contactsManager == nil) {
         _contactsManager = [Environment getCurrent].contactsManager;
@@ -160,7 +154,8 @@
     if (_content == nil) {
         
         // Sort the content by last name
-        _content = [[self.contactsManager allValidContacts] sortedArrayUsingComparator: ^(Contact *a1, Contact *a2) {
+        _content = [[self.contactsManager ccsmRecipients] sortedArrayUsingComparator: ^(SignalRecipient *a1, SignalRecipient *a2) {
+
             return [a1.lastName compare:a2.lastName];
         }];
     }

@@ -195,6 +195,7 @@ CGFloat const kRowHeight = 40;
         case kHelpIndex:
         {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLForstaSupportURL]];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
             break;
         case kMarkAllReadIndex:

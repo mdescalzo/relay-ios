@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class Contact;
+@class SignalRecipient;
 
 @interface GroupContactsResult : NSObject
 
@@ -18,7 +18,7 @@
 
 - (BOOL)isContactAtIndexPath:(NSIndexPath *)indexPath;
 
-- (Contact *)contactForIndexPath:(NSIndexPath *)indexPath;
+- (SignalRecipient *)contactForIndexPath:(NSIndexPath *)indexPath;
 - (NSString *)identifierForIndexPath:(NSIndexPath *)indexPath;
 
 @end

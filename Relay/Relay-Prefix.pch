@@ -20,6 +20,10 @@
     #define SignalAlertView(title,msg) [[[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil, nil] show]
     #define SignalReportError [Pastelog reportErrorAndSubmitLogsWithAlertTitle:NSLocalizedString(@"ERROR_WAS_DETECTED_TITLE", @"") alertBody:NSLocalizedString(@"ERROR_WAS_DETECTED_SUBMIT", @"")];
 
+// TSS Host
+//#define textSecureHostAddress @"textsecure.forsta.services"
+#define textSecureHostAddress @"forsta-signalserver-dev.herokuapp.com"
+
 // Notification strings
 #define FLUserSelectedFromPopoverDirectoryNotification @"FLUserSelectedFromPopoverDirectoryNotification"
 #define FLMarkAllReadNotification @"FLMarkAllReadNotification"
@@ -27,8 +31,10 @@
 #define FLCCSMTagsUpdated @"FLCCSMTagsUpdated"
 
 // Superman IDs....
-#define FLSupermanDevID @"+17017328731"
-#define FLSupermanStageID @"+17017328732"
+#define FLSupermanDevID @"1e1116aa-31b3-4fb2-a4db-21e8136d4f3a"
+//#define FLSupermanDevID @"+17017328731"
+//#define FLSupermanStageID @"+17017328732"
+#define FLSupermanStageID @"88e7165e-d2da-4c3f-a14a-bb802bb0cefb"
 #define FLSupermanProdID @"+17017328733"
 
 // Forsta home URLs
@@ -61,5 +67,8 @@
     #define FLSupermanID FLSupermanProdID
     #define FLDomainCreateURL FLDomainCreateProdURL
 #endif
+
+// Key for BOOL for awaiting login verification
+#define FLAwaitingVerification @"FLAwaitingVerification"
 
 #endif

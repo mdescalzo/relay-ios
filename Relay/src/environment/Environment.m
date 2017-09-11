@@ -8,10 +8,10 @@
 #import "RecentCallManager.h"
 #import "SignalKeyingStorage.h"
 //#import "SignalsViewController.h"
-#import "TSContactThread.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
 #import <RelayServiceKit/ContactsUpdater.h>
-
+#import "FLTagMathService.h"
+#import "TSAccountManager.h"
 #import "FLThreadViewController.h"
 
 #define isRegisteredUserDefaultString @"isRegistered"
@@ -61,13 +61,13 @@ static Environment *environment = nil;
       relayServerHostNameSuffix:(NSString *)relayServerHostNameSuffix
                     certificate:(Certificate *)certificate
  supportedKeyAgreementProtocols:(NSArray *)keyAgreementProtocolsInDescendingPriority
-                   phoneManager:(PhoneManager *)phoneManager
-              recentCallManager:(RecentCallManager *)recentCallManager
+//                   phoneManager:(PhoneManager *)phoneManager
+//              recentCallManager:(RecentCallManager *)recentCallManager
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
-                contactsManager:(FLContactsManager *)contactsManager
-                contactsUpdater:(ContactsUpdater *)contactsUpdater
+                contactsManager:(OWSContactsManager *)contactsManager
+//                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender
 {
@@ -102,29 +102,29 @@ static Environment *environment = nil;
     _certificate = certificate;
     _relayServerHostNameSuffix = relayServerHostNameSuffix;
     _keyAgreementProtocolsInDescendingPriority = keyAgreementProtocolsInDescendingPriority;
-    _phoneManager = phoneManager;
-    _recentCallManager = recentCallManager;
+//    _phoneManager = phoneManager;
+//    _recentCallManager = recentCallManager;
     _zrtpClientId = zrtpClientId;
     _zrtpVersionId = zrtpVersionId;
     _contactsManager = contactsManager;
-    _contactsUpdater = contactsUpdater;
+//    _contactsUpdater = contactsUpdater;
     _networkManager = networkManager;
     _messageSender = messageSender;
     _invitationService = [FLInvitationService new];
 
-    if (recentCallManager != nil) {
-        // recentCallManagers are nil in unit tests because they would require unnecessary allocations. Detailed
-        // explanation: https://github.com/WhisperSystems/Signal-iOS/issues/62#issuecomment-51482195
-
-        [recentCallManager watchForCallsThrough:phoneManager untilCancelled:nil];
-    }
+//    if (recentCallManager != nil) {
+//        // recentCallManagers are nil in unit tests because they would require unnecessary allocations. Detailed
+//        // explanation: https://github.com/WhisperSystems/Signal-iOS/issues/62#issuecomment-51482195
+//
+//        [recentCallManager watchForCallsThrough:phoneManager untilCancelled:nil];
+//    }
 
     return self;
 }
 
-+ (PhoneManager *)phoneManager {
-    return Environment.getCurrent.phoneManager;
-}
+//+ (PhoneManager *)phoneManager {
+//    return Environment.getCurrent.phoneManager;
+//}
 
 + (id<Logging>)logging {
     // Many tests create objects that rely on Environment only for logging.
@@ -145,20 +145,20 @@ static Environment *environment = nil;
     return signalingKey && macKey && extra && serverAuth;
 }
 
-- (void)initCallListener {
-    [self.phoneManager.currentCallObservable watchLatestValue:^(CallState *latestCall) {
-        if (latestCall == nil) {
-            return;
-        }
-        FLThreadViewController *vc = [[Environment getCurrent] forstaViewController];
-//        SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
-        [vc dismissViewControllerAnimated:NO completion:nil];
-        vc.latestCall = latestCall;
-        [vc performSegueWithIdentifier:kCallSegue sender:self];
-    }
-                                                     onThread:NSThread.mainThread
-                                               untilCancelled:nil];
-}
+//- (void)initCallListener {
+//    [self.phoneManager.currentCallObservable watchLatestValue:^(CallState *latestCall) {
+//        if (latestCall == nil) {
+//            return;
+//        }
+//        FLThreadViewController *vc = [[Environment getCurrent] forstaViewController];
+////        SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
+//        [vc dismissViewControllerAnimated:NO completion:nil];
+//        vc.latestCall = latestCall;
+//        [vc performSegueWithIdentifier:kCallSegue sender:self];
+//    }
+//                                                     onThread:NSThread.mainThread
+//                                               untilCancelled:nil];
+//}
 
 + (PropertyListPreferences *)preferences {
     return [PropertyListPreferences new];
@@ -187,42 +187,65 @@ static Environment *environment = nil;
         return;
     }
 
-    if ([thread isGroupThread]) {
-        [self messageGroup:(TSGroupThread *)thread];
-    } else {
-        Environment *env          = [self getCurrent];
-        FLThreadViewController *vc = env.forstaViewController;
-//        SignalsViewController *vc = env.signalsViewController;
-        UIViewController *topvc   = vc.navigationController.topViewController;
-
-        // Dismisses keyboard if current thread updated.
-        // May not be necessary in Forsta implementation
-        if ([topvc isKindOfClass:[MessagesViewController class]]) {
-            MessagesViewController *mvc = (MessagesViewController *)topvc;
-            if ([mvc.thread.uniqueId isEqualToString:threadId]) {
-                [mvc popKeyBoard];
-                return;
-            }
+    Environment *env          = [self getCurrent];
+    FLThreadViewController *vc = env.forstaViewController;
+    UIViewController *topvc   = vc.navigationController.topViewController;
+    
+    // Dismisses keyboard if current thread updated.
+    // May not be necessary in Forsta implementation
+    if ([topvc isKindOfClass:[MessagesViewController class]]) {
+        MessagesViewController *mvc = (MessagesViewController *)topvc;
+        if ([mvc.thread.uniqueId isEqualToString:threadId]) {
+            [mvc popKeyBoard];
+            return;
         }
-        [self messageIdentifier:((TSContactThread *)thread).contactIdentifier withCompose:YES];
+//        [self messageIdentifier:((TSContactThread *)thread).contactIdentifier withCompose:YES];
     }
+    [vc presentThread:thread keyboardOnViewAppearing:YES];
 }
 
 // Get or create a thread for identifier(ContactID)
 + (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose {
     Environment *env          = [self getCurrent];
     FLThreadViewController *vc = env.forstaViewController;
-//    SignalsViewController *vc = env.signalsViewController;
-
-    [[TSStorageManager sharedManager]
-            .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
-      TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier transaction:transaction];
-      [vc presentThread:thread keyboardOnViewAppearing:YES];
-
-    }];
+    //    SignalsViewController *vc = env.signalsViewController;
+    
+    // Collect parts
+    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier];
+    SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
+    
+    __block TSThread *thread = [TSThread getOrCreateThreadWithParticipants:@[ recipient.uniqueId, selfRec.uniqueId ]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [vc presentThread:thread keyboardOnViewAppearing:YES];
+    });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[FLTagMathService new] tagLookupWithString:[NSString stringWithFormat:@"%@+%@", recipient.tagSlug, selfRec.tagSlug]
+                                            success:^(NSDictionary *results) {
+#warning XXX Needs catch for return with no results.
+                                                thread.universalExpression = [results objectForKey:@"universal"];
+                                                thread.participants = [results objectForKey:@"userids"];
+                                                thread.prettyExpression = [results objectForKey:@"pretty"];
+                                                [thread save];
+                                                
+                                                //                                                [vc presentThread:thread keyboardOnViewAppearing:YES];
+                                            }
+                                            failure:^(NSError *error) {
+                                                DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
+#warning XXX insert alert here on main thread
+                                            }];
+    });
+//    [[TSStorageManager sharedManager]
+//     .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
+//         TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier transaction:transaction];
+//         [vc presentThread:thread keyboardOnViewAppearing:YES];
+//     }];
+    
+     
 }
 
-+ (void)messageGroup:(TSGroupThread *)groupThread {
++ (void)messageGroup:(TSThread *)groupThread {
     Environment *env          = [self getCurrent];
     FLThreadViewController *vc = env.forstaViewController;
 //    SignalsViewController *vc = env.signalsViewController;

@@ -7,7 +7,7 @@
 //#import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSNetworkManager.h>
 #import "FLMessageSender.h"
-#import "FLContactsManager.h"
+#import "OWSContactsManager.h"
 
 #define RELEASE_ZRTP_CLIENT_ID @"Whisper 000     ".encodedAsAscii
 #define RELEASE_ZRTP_VERSION_ID @"1.10".encodedAsAscii
@@ -48,27 +48,27 @@ static unsigned char DH3K_PRIME[] = {
     };
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
-    FLContactsManager *contactsManager = [FLContactsManager new];
-    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
+    OWSContactsManager *contactsManager = [OWSContactsManager new];
+//    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
-                                                                       contactsManager:contactsManager
-                                                                       contactsUpdater:contactsUpdater];
+                                                                     contactsManager:contactsManager];
+//                                                                       contactsUpdater:contactsUpdater];
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
                                      serverPort:80
-                           masterServerHostName:@"textsecure.forsta.services"
+                           masterServerHostName:textSecureHostAddress
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
-                                   phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
-                              recentCallManager:[RecentCallManager new]
+//                                   phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
+//                              recentCallManager:[RecentCallManager new]
                         testingAndLegacyOptions:@[ ENVIRONMENT_LEGACY_OPTION_RTP_PADDING_BIT_IMPLIES_EXTENSION_BIT_AND_TWELVE_EXTRA_ZERO_BYTES_IN_HEADER ]
                                    zrtpClientId:RELEASE_ZRTP_CLIENT_ID
                                   zrtpVersionId:RELEASE_ZRTP_VERSION_ID
                                 contactsManager:contactsManager
-                                contactsUpdater:contactsUpdater
+//                                contactsUpdater:contactsUpdater
                                  networkManager:networkManager
                                   messageSender:messageSender];
 }
@@ -79,27 +79,27 @@ static unsigned char DH3K_PRIME[] = {
     };
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
-    FLContactsManager *contactsManager = [FLContactsManager new];
-    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
+    OWSContactsManager *contactsManager = [OWSContactsManager new];
+//    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
-                                                                       contactsManager:contactsManager
-                                                                       contactsUpdater:contactsUpdater];
+                                                                     contactsManager:contactsManager];
+//                                                                       contactsUpdater:contactsUpdater];
     return [[Environment alloc] initWithLogging:logging
                                      errorNoter:errorNoter
                                      serverPort:80
-                           masterServerHostName:@"textsecure.forsta.services"
+                           masterServerHostName:textSecureHostAddress
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
-                                   phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
-                              recentCallManager:[RecentCallManager new]
+//                                   phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
+//                              recentCallManager:[RecentCallManager new]
                         testingAndLegacyOptions:@[ ENVIRONMENT_LEGACY_OPTION_RTP_PADDING_BIT_IMPLIES_EXTENSION_BIT_AND_TWELVE_EXTRA_ZERO_BYTES_IN_HEADER ]
                                    zrtpClientId:RELEASE_ZRTP_CLIENT_ID
                                   zrtpVersionId:RELEASE_ZRTP_VERSION_ID
                                 contactsManager:contactsManager
-                                contactsUpdater:contactsUpdater
+//                                contactsUpdater:contactsUpdater
                                  networkManager:networkManager
                                   messageSender:messageSender];
 }
@@ -111,29 +111,29 @@ static unsigned char DH3K_PRIME[] = {
     }
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
-    FLContactsManager *contactsManager = [FLContactsManager new];
-    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
+    OWSContactsManager *contactsManager = [OWSContactsManager new];
+//    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:[TSStorageManager sharedManager]
-                                                                       contactsManager:contactsManager
-                                                                       contactsUpdater:contactsUpdater];
+                                                                     contactsManager:contactsManager];
+//                                                                       contactsUpdater:contactsUpdater];
 
     return [[Environment alloc] initWithLogging:[DiscardingLog discardingLog]
                                      errorNoter:^(id error, id relatedInfo, bool causedTermination) {
                                      }
                                      serverPort:80
-                           masterServerHostName:@"textsecure.forsta.services"
+                           masterServerHostName:textSecureHostAddress
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
                  supportedKeyAgreementProtocols:keyAgreementProtocols
-                                   phoneManager:nil
-                              recentCallManager:nil
+//                                   phoneManager:nil
+//                              recentCallManager:nil
                         testingAndLegacyOptions:testingAndLegacyOptions
                                    zrtpClientId:TESTING_ZRTP_CLIENT_ID
                                   zrtpVersionId:TESTING_ZRTP_VERSION_ID
                                 contactsManager:nil
-                                contactsUpdater:contactsUpdater
+//                                contactsUpdater:contactsUpdater
                                  networkManager:networkManager
                                   messageSender:messageSender];
 }

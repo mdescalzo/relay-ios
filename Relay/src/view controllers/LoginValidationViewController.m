@@ -10,6 +10,9 @@
 #import "TSAccountManager.h"
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
+#import "Environment.h"
+#import "SignalsNavigationController.h"
+#import "AppDelegate.h"
 
 NSUInteger maximumValidationAttempts = 9999;
 
@@ -36,6 +39,7 @@ NSUInteger maximumValidationAttempts = 9999;
     self.validationCodeTextField.placeholder = NSLocalizedString(@"Enter Validation Code", @"");
     self.validationButton.titleLabel.text = NSLocalizedString(@"Validate", @"");
     self.resendCodeButton.titleLabel.text = NSLocalizedString(@"Send New Code", @"");
+    self.changeCredButton.titleLabel.text = NSLocalizedString(@"        Change Credentials", @"");
     
     // Setup tap recognizer for keyboard dismissal
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewTapped:)];
@@ -54,15 +58,33 @@ NSUInteger maximumValidationAttempts = 9999;
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString: @"mainSegue"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        SignalsNavigationController *snc = (SignalsNavigationController *)segue.destinationViewController;
+        
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        appDelegate.window.rootViewController = snc;
+        
+        [appDelegate applicationDidBecomeActive:[UIApplication sharedApplication]];
+        
+        if (![snc.topViewController isKindOfClass:[FLThreadViewController class]]) {
+            DDLogError(@"%@ Unexpected top view controller: %@", self.tag, snc.topViewController);
+            return;
+        }
+        DDLogDebug(@"%@ notifying signals view controller of new user.", self.tag);
+        FLThreadViewController *forstaVC = (FLThreadViewController *)snc.topViewController;
+        forstaVC.newlyRegisteredUser = YES;
+    }
 }
-*/
+
 #pragma mark - move controls up to accomodate keyboard.
 -(void)keyboardWillShow:(NSNotification *)notification
 {
@@ -115,7 +137,7 @@ NSUInteger maximumValidationAttempts = 9999;
     return YES;
 }
 
--(void)validationSucceeded
+-(void)ccsmValidationSucceeded
 {
     // refresh other stuff now that we have the user info...
     NSMutableDictionary * users= [[self.ccsmStorage getUsers] mutableCopy];
@@ -127,9 +149,9 @@ NSUInteger maximumValidationAttempts = 9999;
         tags = [NSMutableDictionary new];
     }
 
-    
-    NSString *orgUrl = [[self.ccsmStorage getUserInfo] objectForKey:@"org"];
+    NSString *orgUrl = [(NSDictionary *)[[self.ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
     [self.ccsmCommManager getThing:orgUrl
+                       synchronous:NO
                            success:^(NSDictionary *org){
                                NSLog(@"Retrieved org info after login validation");
                                [self.ccsmStorage setOrgInfo:org];
@@ -143,41 +165,66 @@ NSUInteger maximumValidationAttempts = 9999;
                                      success:^{
                                          NSLog(@"Retrieved all users after login validation");
                                          [self.ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
+                                         [[Environment getCurrent].contactsManager refreshCCSMRecipients];
                                      }
                                      failure:^(NSError *err){
                                          NSLog(@"Failed to retrieve all users after login validation");
                                      }];
     
+    // TSS Registration handling
     // Check if registered and proceed to next storyboard accordingly
-    NSString *targetSegue = nil;
-    if ([TSAccountManager isRegistered])
-        targetSegue = @"mainSegue";
-    else
-        targetSegue = @"registrationSegue";
+    if ([TSAccountManager isRegistered]) {
+        // We are, move onto main
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.spinner stopAnimating];
+            self.validationButton.enabled = YES;
+            self.validationButton.alpha = 1.0;
+            [self performSegueWithIdentifier:@"mainSegue" sender:self];
+        });
+    } else {
+        // Not registered with TSS, ask CCSM to do it for us.
+        [self.ccsmCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
+                                                      success:^{
+                                                          [self.spinner stopAnimating];
+                                                          self.validationButton.enabled = YES;
+                                                          self.validationButton.alpha = 1.0;
+                                                          [self performSegueWithIdentifier:@"mainSegue" sender:self];
+                                                      }
+                                                      failure:^(NSError *error) {
+                                                          DDLogError(@"TSS Validation error: %@", error.description);
+                                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                          message:error.description
+                                                                                                         delegate:nil
+                                                                                                cancelButtonTitle:@"OK"
+                                                                                                otherButtonTitles:nil];
+                                                          [alert show];
+                                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                                              [self.spinner stopAnimating];
+                                                              self.validationButton.enabled = YES;
+                                                              self.validationButton.alpha = 1.0;
+                                                          });
+                                                      }];
+    }
     
-    // Move on to the Registration storyboard
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner stopAnimating];
-        self.validationButton.enabled = YES;
-        self.validationButton.alpha = 1.0;
-        [self performSegueWithIdentifier:targetSegue sender:self];
-    });
 }
 
--(void)validationFailed
+-(void)ccsmValidationFailed
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinner stopAnimating];
-        self.validationButton.enabled = YES;
-        self.validationButton.alpha = 1.0;
-    });
-
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
-                               delegate:nil
-                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                      otherButtonTitles:nil]
-     show];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
+                                                                   message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action) {
+                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                             [self.spinner stopAnimating];
+                                                             self.validationButton.enabled = YES;
+                                                             self.validationButton.alpha = 1.0;
+                                                         });
+                                                     }];
+    [alert addAction:okButton];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Button actions
@@ -193,10 +240,10 @@ NSUInteger maximumValidationAttempts = 9999;
     NSString *code = self.validationCodeTextField.text;
     [self.ccsmCommManager verifyLogin:code
                               success:^{
-                                  [self validationSucceeded];
+                                  [self ccsmValidationSucceeded];
                               }
                               failure:^(NSError *err){
-                                  [self validationFailed];
+                                  [self ccsmValidationFailed];
                               }];
 }
 
@@ -236,6 +283,16 @@ NSUInteger maximumValidationAttempts = 9999;
     return YES;
 }
 
+#pragma mark - Logging
 
++ (NSString *)tag
+{
+    return [NSString stringWithFormat:@"[%@]", self.class];
+}
+
+- (NSString *)tag
+{
+    return self.class.tag;
+}
 
 @end

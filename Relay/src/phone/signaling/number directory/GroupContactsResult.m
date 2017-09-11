@@ -9,7 +9,7 @@
 #import "GroupContactsResult.h"
 
 #import <RelayServiceKit/TSAccountManager.h>
-#import "Contact.h"
+#import "SignalRecipient.h"
 #import "OWSContactsManager.h"
 #import "Environment.h"
 #import "SignalKeyingStorage.h"
@@ -30,33 +30,27 @@
 
     OWSContactsManager *manager = [Environment.getCurrent contactsManager];
 
-    NSMutableSet *remainingNumbers = [NSMutableSet setWithArray:memberIdentifiers];
+    NSMutableSet *remainingIdentifiers = [NSMutableSet setWithArray:memberIdentifiers];
 
     NSMutableArray *knownNumbers       = [NSMutableArray array];
     NSMutableArray *associatedContacts = [NSMutableArray array];
 
     for (NSString *identifier in memberIdentifiers) {
-        if ([identifier isEqualToString:[TSAccountManager localNumber]]) {
+        if ([identifier isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
             // remove local number
 
-            [remainingNumbers removeObject:identifier];
+            [remainingIdentifiers removeObject:identifier];
             continue;
         }
 
         if (removeIds && [removeIds containsObject:identifier]) {
             // Remove ids
-            [remainingNumbers removeObject:identifier];
+            [remainingIdentifiers removeObject:identifier];
             continue;
         }
 
-        PhoneNumber *number = [PhoneNumber phoneNumberFromE164:identifier];
-
-        if (!number) {
-            continue;
-        }
-
-        Contact *contact = [manager latestContactForPhoneNumber:number];
-
+        SignalRecipient *contact = [manager recipientForUserID:identifier];
+        
         if (!contact) {
             continue;
         }
@@ -64,10 +58,10 @@
         [knownNumbers addObject:identifier];
         [associatedContacts addObject:contact];
 
-        [remainingNumbers removeObject:identifier];
+        [remainingIdentifiers removeObject:identifier];
     }
 
-    _unknownNumbers = [NSMutableArray arrayWithArray:[remainingNumbers allObjects]];
+    _unknownNumbers = [NSMutableArray arrayWithArray:[remainingIdentifiers allObjects]];
     [_unknownNumbers sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
       return [obj1 compare:obj2 options:0];
     }];
@@ -77,7 +71,7 @@
     _associatedContactDict = [NSMutableDictionary dictionary];
     for (NSUInteger i = 0; i < [knownNumbers count]; i++) {
         NSString *identifier = [knownNumbers objectAtIndex:i];
-        Contact *contact     = [associatedContacts objectAtIndex:i];
+        SignalRecipient *contact     = [associatedContacts objectAtIndex:i];
 
         [_associatedContactDict setObject:contact forKey:identifier];
     }
@@ -85,10 +79,10 @@
     // Known Numbers
     _knownNumbers = [NSMutableArray arrayWithArray:knownNumbers];
     [_knownNumbers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-      Contact *contact1 = [_associatedContactDict objectForKey:obj1];
-      Contact *contact2 = [_associatedContactDict objectForKey:obj2];
+      SignalRecipient *contact1 = [_associatedContactDict objectForKey:obj1];
+      SignalRecipient *contact2 = [_associatedContactDict objectForKey:obj2];
 
-      return [[manager class] contactComparator](contact1, contact2);
+      return [[manager class] recipientComparator](contact1, contact2);
     }];
 
     return self;
@@ -106,7 +100,7 @@
     }
 }
 
-- (Contact *)contactForIndexPath:(NSIndexPath *)indexPath {
+- (SignalRecipient *)contactForIndexPath:(NSIndexPath *)indexPath {
     if ([self isContactAtIndexPath:indexPath]) {
         NSString *identifier = [_knownNumbers objectAtIndex:[self knownNumbersIndexForIndexPath:indexPath]];
         return [_associatedContactDict objectForKey:identifier];

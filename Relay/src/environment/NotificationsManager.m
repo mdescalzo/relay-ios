@@ -12,7 +12,7 @@
 #import "PushManager.h"
 #import <AudioToolbox/AudioServices.h>
 #import <RelayServiceKit/TSCall.h>
-#import <RelayServiceKit/TSContactThread.h>
+#import <RelayServiceKit/TSThread.h>
 #import <RelayServiceKit/TSErrorMessage.h>
 #import <RelayServiceKit/TSIncomingMessage.h>
 #import <RelayServiceKit/TextSecureKitEnv.h>
@@ -43,30 +43,31 @@
 }
 
 - (void)notifyUserForCall:(TSCall *)call inThread:(TSThread *)thread {
-    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
-        // Remove previous notification of call and show missed notification.
-        UILocalNotification *notif = [[PushManager sharedManager] closeVOIPBackgroundTask];
-        TSContactThread *cThread   = (TSContactThread *)thread;
-
-        if (call.callType == RPRecentCallTypeMissed) {
-            if (notif) {
-                [[UIApplication sharedApplication] cancelLocalNotification:notif];
-            }
-
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            notification.soundName            = @"NewMessage.aifc";
-            if ([[Environment preferences] notificationPreviewType] == NotificationNoNameNoPreview) {
-                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"MISSED_CALL", nil)];
-            } else {
-                notification.userInfo = @{Signal_Call_UserInfo_Key : cThread.contactIdentifier};
-                notification.category = Signal_CallBack_Category;
-                notification.alertBody =
-                    [NSString stringWithFormat:NSLocalizedString(@"MSGVIEW_MISSED_CALL", nil), [thread name]];
-            }
-
-            [[PushManager sharedManager] presentNotification:notification];
-        }
-    }
+    DDLogDebug(@"Call notification called! VOIP NOT IMPLEMENTED!");
+//    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
+//        // Remove previous notification of call and show missed notification.
+//        UILocalNotification *notif = [[PushManager sharedManager] closeVOIPBackgroundTask];
+//        TSContactThread *cThread   = (TSContactThread *)thread;
+//
+//        if (call.callType == RPRecentCallTypeMissed) {
+//            if (notif) {
+//                [[UIApplication sharedApplication] cancelLocalNotification:notif];
+//            }
+//
+//            UILocalNotification *notification = [[UILocalNotification alloc] init];
+//            notification.soundName            = @"NewMessage.aifc";
+//            if ([[Environment preferences] notificationPreviewType] == NotificationNoNameNoPreview) {
+//                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"MISSED_CALL", nil)];
+//            } else {
+//                notification.userInfo = @{Signal_Call_UserInfo_Key : cThread.contactIdentifier};
+//                notification.category = Signal_CallBack_Category;
+//                notification.alertBody =
+//                    [NSString stringWithFormat:NSLocalizedString(@"MSGVIEW_MISSED_CALL", nil), [thread name]];
+//            }
+//
+//            [[PushManager sharedManager] presentNotification:notification];
+//        }
+//    }
 }
 
 - (void)notifyUserForErrorMessage:(TSErrorMessage *)message inThread:(TSThread *)thread {
@@ -112,27 +113,27 @@
                 notification.userInfo =
                     @{Signal_Thread_UserInfo_Key : thread.uniqueId, Signal_Message_UserInfo_Key : message.uniqueId};
 
-                if ([thread isGroupThread]) {
-                    NSString *sender = [self.contactsManager nameStringForPhoneIdentifier:message.authorId];
-                    NSString *threadName = [NSString stringWithFormat:@"\"%@\"", name];
-                    notification.alertBody =
-                        [NSString stringWithFormat:NSLocalizedString(@"APN_MESSAGE_IN_GROUP_DETAILED", nil),
-                                                   sender,
-                                                   threadName,
-                                                   messageDescription];
-                } else {
+//                if ([thread isGroupThread]) {
+//                    NSString *sender = [self.contactsManager nameStringForContactID:message.authorId];
+//                    NSString *threadName = [NSString stringWithFormat:@"\"%@\"", name];
+//                    notification.alertBody =
+//                        [NSString stringWithFormat:NSLocalizedString(@"APN_MESSAGE_IN_GROUP_DETAILED", nil),
+//                                                   sender,
+//                                                   threadName,
+//                                                   messageDescription];
+//                } else {
                     notification.alertBody = [NSString stringWithFormat:@"%@: %@", name, messageDescription];
-                }
+//                }
                 break;
             case NotificationNameNoPreview: {
                 notification.userInfo = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
-                if ([thread isGroupThread]) {
-                    notification.alertBody =
-                        [NSString stringWithFormat:@"%@ \"%@\"", NSLocalizedString(@"APN_MESSAGE_IN_GROUP", nil), name];
-                } else {
+//                if ([thread isGroupThread]) {
+//                    notification.alertBody =
+//                        [NSString stringWithFormat:@"%@ \"%@\"", NSLocalizedString(@"APN_MESSAGE_IN_GROUP", nil), name];
+//                } else {
                     notification.alertBody =
                         [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"APN_MESSAGE_FROM", nil), name];
-                }
+//                }
                 break;
             }
             case NotificationNoNameNoPreview:

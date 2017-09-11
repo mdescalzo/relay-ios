@@ -11,7 +11,7 @@
 #import <JSQMessagesViewController/JSQMessagesInputToolbar.h>
 #import <JSQMessagesViewController/JSQMessagesToolbarContentView.h>
 #import <JSQMessagesViewController/JSQMessagesKeyboardController.h>
-#import "Contact.h"
+#import "SignalRecipient.h"
 #import "LocalizableText.h"
 
 @interface MessageComposeTableViewController : UITableViewController

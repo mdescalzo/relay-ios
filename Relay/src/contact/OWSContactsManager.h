@@ -3,8 +3,9 @@
 #import <RelayServiceKit/ContactsManagerProtocol.h>
 #import <RelayServiceKit/PhoneNumber.h>
 #import "CollapsingFutures.h"
-#import "Contact.h"
+//#import "Contact.h"
 #import "ObservableValue.h"
+#import "SignalRecipient.h"
 
 /**
  Get latest Signal contacts, and be notified when they change.
@@ -19,22 +20,27 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 
 @property CNContactStore *contactStore;
 
+@property (nonatomic, strong) NSArray *ccsmRecipients;
+
 - (ObservableValue *)getObservableContacts;
+- (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber;
+-(SignalRecipient *)recipientForUserID:(NSString *)userID;
+-(SignalRecipient *)getOrCreateRecipientWithUserID:(NSString *)userID;
 
-- (NSArray *)getContactsFromAddressBook:(ABAddressBookRef)addressBook;
-- (Contact *)latestContactForPhoneNumber:(PhoneNumber *)phoneNumber;
-
-- (void)verifyABPermission;
-
-- (NSArray<Contact *> *)allContacts;
-- (NSArray<Contact *> *)signalContacts;
-- (NSArray *)textSecureContacts;
-
+- (NSArray<SignalRecipient *> *)allContacts;
+- (NSArray<SignalRecipient *> *)ccsmRecipients;
 - (void)doAfterEnvironmentInitSetup;
+- (NSString *)nameStringForRecipientID:(NSString *)identifier;
+- (UIImage *)avatarForRecipientID:(NSString *)identifier;
 
-- (NSString *)nameStringForPhoneIdentifier:(NSString *)identifier;
-- (UIImage *)imageForPhoneIdentifier:(NSString *)identifier;
++ (NSComparator)recipientComparator;
 
-+ (NSComparator)contactComparator;
+-(void)refreshCCSMRecipients;
+
+// Save recipients on background thread
+-(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
+
+
+-(NSSet *)identifiersForTagSlug:(NSString *)tagSlug;
 
 @end

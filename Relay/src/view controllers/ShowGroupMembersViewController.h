@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "TSGroupModel.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
+
+@import UIKit;
 
 @interface ShowGroupMembersViewController : UITableViewController <UITableViewDelegate,
                                                                    UITabBarDelegate,
@@ -16,6 +18,6 @@
                                                                    UINavigationControllerDelegate,
                                                                    UITextFieldDelegate>
 
-- (void)configWithThread:(TSGroupThread *)thread;
+- (void)configWithThread:(TSThread *)thread;
 
 @end

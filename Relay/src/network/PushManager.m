@@ -8,7 +8,8 @@
 
 #import "PushManager.h"
 #import "AppDelegate.h"
-#import "InCallViewController.h"
+#import "Environment.h"
+//#import "InCallViewController.h"
 #import "NSData+ows_StripToken.h"
 #import "NSDate+millisecondTimeStamp.h"
 #import "NotificationTracker.h"
@@ -50,15 +51,15 @@
     return [self initWithContactsManager:[Environment getCurrent].contactsManager
                      notificationTracker:[NotificationTracker notificationTracker]
                           networkManager:[Environment getCurrent].networkManager
-                          storageManager:[TSStorageManager sharedManager]
-                         contactsUpdater:[Environment getCurrent].contactsUpdater];
+                          storageManager:[TSStorageManager sharedManager]];
+//                         contactsUpdater:[Environment getCurrent].contactsUpdater];
 }
 
 - (instancetype)initWithContactsManager:(OWSContactsManager *)contactsManager
                     notificationTracker:(NotificationTracker *)notificationTracker
                          networkManager:(TSNetworkManager *)networkManager
                          storageManager:(TSStorageManager *)storageManager
-                        contactsUpdater:(ContactsUpdater *)contactsUpdater
+//                        contactsUpdater:(ContactsUpdater *)contactsUpdater
 {
     self = [super init];
     if (!self) {
@@ -69,8 +70,8 @@
     _notificationTracker = notificationTracker;
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
                                                        storageManager:storageManager
-                                                      contactsManager:contactsManager
-                                                      contactsUpdater:contactsUpdater];
+                                                      contactsManager:contactsManager];
+//                                                      contactsUpdater:contactsUpdater];
 
     _missingPermissionsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ACTION_REQUIRED_TITLE", @"")
                                                               message:NSLocalizedString(@"PUSH_SETTINGS_MESSAGE", @"")
@@ -86,63 +87,64 @@
 #pragma mark Manage Incoming Push
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if ([self isRedPhonePush:userInfo]) {
-        ResponderSessionDescriptor *call;
-        if (![self.notificationTracker shouldProcessNotification:userInfo]) {
-            return;
-        }
-
-        @try {
-            call = [ResponderSessionDescriptor responderSessionDescriptorFromEncryptedRemoteNotification:userInfo];
-            DDLogDebug(@"Received remote notification. Parsed session descriptor: %@.", call);
-        } @catch (OperationFailed *ex) {
-            DDLogError(@"Error parsing remote notification. Error: %@.", ex);
-            return;
-        }
-
-        if (!call) {
-            DDLogError(@"Decryption of session descriptor failed");
-            return;
-        }
-
-        [Environment.phoneManager incomingCallWithSession:call];
-
-        if (![self applicationIsActive]) {
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-
-            NSString *callerId   = call.initiatorNumber.toE164;
-            NSString *displayName = [self.contactsManager nameStringForPhoneIdentifier:callerId];
-            PropertyListPreferences *prefs = [Environment preferences];
-
-            notification.alertBody = @"☎️ ";
-
-            if ([prefs notificationPreviewType] == NotificationNoNameNoPreview) {
-                notification.alertBody =
-                    [notification.alertBody stringByAppendingString:NSLocalizedString(@"INCOMING_CALL", nil)];
-            } else {
-                notification.alertBody = [notification.alertBody
-                    stringByAppendingString:[NSString stringWithFormat:NSLocalizedString(@"INCOMING_CALL_FROM", nil),
-                                                                       displayName]];
-            }
-
-            notification.category  = Signal_Call_Category;
-            notification.soundName = @"r.caf";
-
-            [self presentNotification:notification];
-            _lastCallNotification = notification;
-
-            if (_callBackgroundTask == UIBackgroundTaskInvalid) {
-                _callBackgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-                  [Environment.phoneManager backgroundTimeExpired];
-                  [self closeVOIPBackgroundTask];
-                }];
-            }
-        }
-    } else {
+    //  NO RED PHONE
+//    if ([self isRedPhonePush:userInfo]) {
+//        ResponderSessionDescriptor *call;
+//        if (![self.notificationTracker shouldProcessNotification:userInfo]) {
+//            return;
+//        }
+//
+//        @try {
+//            call = [ResponderSessionDescriptor responderSessionDescriptorFromEncryptedRemoteNotification:userInfo];
+//            DDLogDebug(@"Received remote notification. Parsed session descriptor: %@.", call);
+//        } @catch (OperationFailed *ex) {
+//            DDLogError(@"Error parsing remote notification. Error: %@.", ex);
+//            return;
+//        }
+//
+//        if (!call) {
+//            DDLogError(@"Decryption of session descriptor failed");
+//            return;
+//        }
+//
+//        [Environment.phoneManager incomingCallWithSession:call];
+//
+//        if (![self applicationIsActive]) {
+//            UILocalNotification *notification = [[UILocalNotification alloc] init];
+//
+//            NSString *callerId   = call.initiatorNumber.toE164;
+//            NSString *displayName = [self.contactsManager nameStringForContactID:callerId];
+//            PropertyListPreferences *prefs = [Environment preferences];
+//
+//            notification.alertBody = @"☎️ ";
+//
+//            if ([prefs notificationPreviewType] == NotificationNoNameNoPreview) {
+//                notification.alertBody =
+//                    [notification.alertBody stringByAppendingString:NSLocalizedString(@"INCOMING_CALL", nil)];
+//            } else {
+//                notification.alertBody = [notification.alertBody
+//                    stringByAppendingString:[NSString stringWithFormat:NSLocalizedString(@"INCOMING_CALL_FROM", nil),
+//                                                                       displayName]];
+//            }
+//
+//            notification.category  = Signal_Call_Category;
+//            notification.soundName = @"r.caf";
+//
+//            [self presentNotification:notification];
+//            _lastCallNotification = notification;
+//
+//            if (_callBackgroundTask == UIBackgroundTaskInvalid) {
+//                _callBackgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+//                  [Environment.phoneManager backgroundTimeExpired];
+//                  [self closeVOIPBackgroundTask];
+//                }];
+//            }
+//        }
+//    } else {
         if (![self applicationIsActive]) {
             [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
         }
-    }
+//    }
 }
 
 - (UILocalNotification *)closeVOIPBackgroundTask {
@@ -224,21 +226,21 @@
                     completionHandler();
                 }];
         }
-    } else if ([identifier isEqualToString:Signal_Call_Accept_Identifier]) {
-        [Environment.phoneManager answerCall];
-
-        completionHandler();
-    } else if ([identifier isEqualToString:Signal_Call_Decline_Identifier]) {
-        [Environment.phoneManager hangupOrDenyCall];
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-          completionHandler();
-        });
-    } else if ([identifier isEqualToString:Signal_CallBack_Identifier]) {
-        NSString *contactId = notification.userInfo[Signal_Call_UserInfo_Key];
-        PhoneNumber *number = [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
-        Contact *contact = [self.contactsManager latestContactForPhoneNumber:number];
-        [Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
+//    } else if ([identifier isEqualToString:Signal_Call_Accept_Identifier]) {
+//        [Environment.phoneManager answerCall];
+//
+//        completionHandler();
+//    } else if ([identifier isEqualToString:Signal_Call_Decline_Identifier]) {
+//        [Environment.phoneManager hangupOrDenyCall];
+//
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//          completionHandler();
+//        });
+//    } else if ([identifier isEqualToString:Signal_CallBack_Identifier]) {
+//        NSString *contactId = notification.userInfo[Signal_Call_UserInfo_Key];
+//        PhoneNumber *number = [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
+//        SignalRecipient *contact = [self.contactsManager recipientForUserID:contactId];
+//        [Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
     } else if ([identifier isEqualToString:Signal_Message_MarkAsRead_Identifier]) {
         [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];
     } else {

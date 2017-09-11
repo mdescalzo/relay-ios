@@ -7,15 +7,15 @@
 //
 
 #import "FLContactSelectionTableViewController.h"
-#import "Contact.h"
+#import "SignalRecipient.h"
 #import "FLDirectoryCell.h"
 #import "Environment.h"
 
 @interface FLContactSelectionTableViewController () <UISearchBarDelegate>
 
-@property (nonatomic, strong) NSArray<Contact *> *content;
-@property (nonatomic, strong) NSArray<Contact *> *searchResults;
-@property (nonatomic, strong) NSMutableArray<Contact *> *selectedContacts;
+@property (nonatomic, strong) NSArray<SignalRecipient *> *content;
+@property (nonatomic, strong) NSArray<SignalRecipient *> *searchResults;
+@property (nonatomic, strong) NSMutableArray<SignalRecipient *> *selectedContacts;
 @property (nonatomic, strong) UISearchBar *searchBar;
 
 -(IBAction)doneTapped:(id)sender;
@@ -65,14 +65,14 @@
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
     
     // Configure the cell...
-    Contact *contact;
+    SignalRecipient *recipient = nil;
     
     if (self.searchBar.text.length > 0) {
-        contact = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
+        recipient = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
     } else {
-        contact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+        recipient = [self.content objectAtIndex:(NSUInteger)indexPath.row];
     }
-    [cell configureCellWithContact:contact];
+    [cell configureCellWithContact:recipient];
     
     return cell;
 }
@@ -82,23 +82,23 @@
     
     FLDirectoryCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     
-    Contact *selectedContact;
+    SignalRecipient *selectedRecipient = nil;
     if (self.searchBar.text.length > 0) {
-        selectedContact = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
+        selectedRecipient = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
     } else {
-        selectedContact = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+        selectedRecipient = [self.content objectAtIndex:(NSUInteger)indexPath.row];
     }
     
     // toggle selection and add/remove from selectedContacts
     if ([selectedCell isSelected]) {
 //        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        if ([self.selectedContacts containsObject:selectedContact]) {
-            [self.selectedContacts removeObject:selectedContact];
+        if ([self.selectedContacts containsObject:selectedRecipient]) {
+            [self.selectedContacts removeObject:selectedRecipient];
         }
     } else {
 //        [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        if (![self.selectedContacts containsObject:selectedContact]) {
-            [self.selectedContacts addObject:selectedContact];
+        if (![self.selectedContacts containsObject:selectedRecipient]) {
+            [self.selectedContacts addObject:selectedRecipient];
         }
     }
 }
@@ -186,7 +186,7 @@
 
 
 #pragma mark - lazy instantiation
--(NSArray<Contact *> *)content
+-(NSArray<SignalRecipient *> *)content
 {
     if (_content == nil) {
         NSArray *allContacts = [[[Environment getCurrent] contactsManager] allContacts];
@@ -197,7 +197,7 @@
     return _content;
 }
 
--(NSMutableArray<Contact *> *)selectedContacts
+-(NSMutableArray<SignalRecipient *> *)selectedContacts
 {
     if (_selectedContacts == nil) {
         _selectedContacts = [NSMutableArray new];

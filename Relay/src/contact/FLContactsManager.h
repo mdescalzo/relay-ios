@@ -2,20 +2,25 @@
 //  FLContactsManager.h
 //  Forsta
 //
-//  Created by Mark on 6/26/17.
+//  Created by Mark on 8/22/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "OWSContactsManager.h"
-#import "Contact.h"
+#import "SignalRecipient.h"
+#import <YapDatabase/YapDatabase.h>
 
-@interface FLContactsManager : OWSContactsManager
+@import Foundation;
 
-// Override to include CCSM sourced contacts.
-- (NSArray<Contact *> *)ccsmContacts;
-- (NSArray<Contact *> *)allContacts;
-- (NSArray<Contact *> *)allValidContacts;
+@interface FLContactsManager : NSObject
 
--(void)refreshCCSMContacts;
+@property (nonatomic, strong) YapDatabaseConnection * _Nonnull mainConnection;
+@property (strong) YapDatabaseConnection * _Nonnull backgroundConnection;
+
+//-(void)setupDatabase;
+
+-(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID;
+-(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
+-(NSSet<SignalRecipient *> *_Nonnull)allContacts;
+-(void)saveContact:(SignalRecipient *_Nonnull)recipient;
 
 @end

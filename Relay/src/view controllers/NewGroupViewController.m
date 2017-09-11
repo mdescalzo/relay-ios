@@ -22,6 +22,7 @@
 #import <RelayServiceKit/OWSMessageSender.h>
 #import <RelayServiceKit/TSAccountManager.h>
 #import "FLDirectoryCell.h"
+#import "FLTagMathService.h"
 
 @import MobileCoreServices;
 
@@ -31,7 +32,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     NSArray *contacts;
 }
 
-@property TSGroupThread *thread;
+@property TSThread *thread;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
 
 @end
@@ -47,8 +48,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:[Environment getCurrent].contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:[Environment getCurrent].contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     return self;
 }
 
@@ -61,12 +62,12 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:[Environment getCurrent].contactsManager
-                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
+                                                      contactsManager:[Environment getCurrent].contactsManager];
+//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     return self;
 }
 
-- (void)configWithThread:(TSGroupThread *)gThread {
+- (void)configWithThread:(TSThread *)gThread {
     _thread = gThread;
 }
 
@@ -74,22 +75,20 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-    contacts = [Environment getCurrent].contactsManager.textSecureContacts;
+    contacts = [[Environment getCurrent].contactsManager ccsmRecipients];
 
 
     self.tableView.tableHeaderView.frame = CGRectMake(0, 0, 400, 44);
     self.tableView.tableHeaderView       = self.tableView.tableHeaderView;
 
 
-    contacts = [contacts filter:^int(Contact *contact) {
-      for (PhoneNumber *number in [contact parsedPhoneNumbers]) {
-          if ([[number toE164] isEqualToString:[TSAccountManager localNumber]]) {
-              // remove local number
+    contacts = [contacts filter:^int(SignalRecipient *contact) {
+          if ([contact.uniqueId isEqualToString:[TSAccountManager localNumber]]) {
+              // remove local user
               return NO;
-          } else if (_thread != nil && _thread.groupModel.groupMemberIds) {
-              return ![_thread.groupModel.groupMemberIds containsObject:[number toE164]];
+          } else if (_thread != nil && _thread.participants) {
+              return ![_thread.participants containsObject:contact.uniqueId];
           }
-      }
       return YES;
     }];
 
@@ -112,11 +111,11 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                              style:UIBarButtonItemStylePlain
                                             target:self
                                             action:@selector(updateGroup)];
-        self.navigationItem.title    = _thread.groupModel.groupName;
-        self.nameGroupTextField.text = _thread.groupModel.groupName;
-        if (_thread.groupModel.groupImage != nil) {
-            _groupImage = _thread.groupModel.groupImage;
-            [self setupGroupImageButton:_thread.groupModel.groupImage];
+        self.navigationItem.title    = _thread.name;
+        self.nameGroupTextField.text = _thread.name;
+        if (_thread.image != nil) {
+            _groupImage = _thread.image;
+            [self setupGroupImageButton:_thread.image];
         }
     }
     _nameGroupTextField.placeholder = NSLocalizedString(@"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT", @"");
@@ -149,60 +148,152 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 #pragma mark - Actions
 - (void)createGroup
 {
-    TSGroupModel *model = [self makeGroup];
+    __block TSGroupModel *model = [self makeGroup];
 
-    [[TSStorageManager sharedManager]
-            .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
-      self.thread = [TSGroupThread getOrCreateThreadWithGroupModel:model transaction:transaction];
-    }];
+    // Get parts
+    NSString *searchString = nil;
+    for (NSString *userid in model.groupMemberIds) {
+        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
+        if (searchString.length == 0) {
+            searchString =  [NSString stringWithFormat:@"@%@", recipient.tagSlug];
+        } else {
+            searchString = [searchString stringByAppendingString:[NSString stringWithFormat:@" @%@", recipient.tagSlug]];
+        }
+    }
+    
+    [[FLTagMathService new] tagLookupWithString:searchString
+                                        success:^(NSDictionary *results) {
+                                            self.thread = [TSThread getOrCreateThreadWithID:[[NSUUID UUID] UUIDString]];
+                                            self.thread.name = model.groupName;
+                                            self.thread.image = model.groupImage;
+                                            self.thread.universalExpression = [results objectForKey:@"universal"];
+                                            self.thread.participants = [results objectForKey:@"userids"];
+                                            self.thread.prettyExpression = [results objectForKey:@"pretty"];
+                                            [self.thread save];
+                                            
+                                            void (^popToThread)() = ^{
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    [self dismissViewControllerAnimated:YES
+                                                                             completion:^{
+                                                                                 [Environment messageGroup:self.thread];
+                                                                             }];
+                                                    
+                                                });
+                                            };
+                                            
+                                            void (^removeThreadWithError)(NSError *error) = ^(NSError *error) {
+                                                [self.thread remove];
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    [self dismissViewControllerAnimated:YES
+                                                                             completion:^{
+                                                                                 SignalAlertView(NSLocalizedString(@"GROUP_CREATING_FAILED", nil),
+                                                                                                 error.localizedDescription);
+                                                                             }];
+                                                });
+                                            };
+                                            dispatch_async(dispatch_get_main_queue(), ^{
 
-    void (^popToThread)() = ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self dismissViewControllerAnimated:YES
-                                     completion:^{
-                                         [Environment messageGroup:self.thread];
-                                     }];
+                                            UIAlertController *alertController =
+                                            [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GROUP_CREATING", nil)
+                                                                                message:nil
+                                                                         preferredStyle:UIAlertControllerStyleAlert];
+                                            
+                                            [self presentViewController:alertController
+                                                               animated:YES
+                                                             completion:^{
+                                                                 TSOutgoingMessage *message =
+                                                                 [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                                     inThread:self.thread
+                                                                                                  messageBody:@""
+                                                                                                attachmentIds:[NSMutableArray new]];
+                                                                 
+                                                                 message.groupMetaMessage = TSGroupMessageNew;
+                                                                 message.customMessage = NSLocalizedString(@"GROUP_CREATED", nil);
+                                                                 if (model.groupImage) {
+                                                                     [self.messageSender sendAttachmentData:UIImagePNGRepresentation(model.groupImage)
+                                                                                                contentType:OWSMimeTypeImagePng
+                                                                                                  inMessage:message
+                                                                                                    success:popToThread
+                                                                                                    failure:removeThreadWithError];
+                                                                 } else {
+                                                                     [self.messageSender sendMessage:message success:popToThread failure:removeThreadWithError];
+                                                                 }
+                                                             }];
+                                            }); 
+                                        }
+                                        failure:^(NSError *error) {
+                                            DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
+#warning XXX insert warning here
+                                        }];
+   
+//    [[TSStorageManager sharedManager]
+//            .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
+//      self.thread = [TSGroupThread getOrCreateThreadWithGroupModel:model transaction:transaction];
+//                // Assign missing properties
+//                self.thread.participants = [model.groupMemberIds copy];
+//                NSMutableString *searchString = [NSMutableString new];
+//                for (NSString *userid in self.thread.participants) {
+//                    SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithIndentifier:userid withTransaction:transaction];
+//                    [searchString appendString:[NSString stringWithFormat:@" %@", recipient.tagSlug]];
+//                }
+//                [[FLTagMathService new] tagLookupWithString:searchString
+//                                                    success:^(NSDictionary *results) {
+//                                                        self.thread.universalExpression = [results objectForKey:@"universal"];
+//                                                        [self.thread saveWithTransaction:transaction];
+//                                                    }
+//                                                    failure:^(NSError *error) {
+//                                                        DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
+//                                                        [self.thread saveWithTransaction:transaction];
+//                                                    }];
+//    }];
 
-        });
-    };
-
-    void (^removeThreadWithError)(NSError *error) = ^(NSError *error) {
-        [self.thread remove];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self dismissViewControllerAnimated:YES
-                                     completion:^{
-                                         SignalAlertView(NSLocalizedString(@"GROUP_CREATING_FAILED", nil),
-                                             error.localizedDescription);
-                                     }];
-        });
-    };
-
-    UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GROUP_CREATING", nil)
-                                            message:nil
-                                     preferredStyle:UIAlertControllerStyleAlert];
-
-    [self presentViewController:alertController
-                       animated:YES
-                     completion:^{
-                         TSOutgoingMessage *message =
-                             [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                 inThread:self.thread
-                                                              messageBody:@""
-                                                            attachmentIds:[NSMutableArray new]];
-
-                         message.groupMetaMessage = TSGroupMessageNew;
-                         message.customMessage = NSLocalizedString(@"GROUP_CREATED", nil);
-                         if (model.groupImage) {
-                             [self.messageSender sendAttachmentData:UIImagePNGRepresentation(model.groupImage)
-                                                        contentType:OWSMimeTypeImagePng
-                                                          inMessage:message
-                                                            success:popToThread
-                                                            failure:removeThreadWithError];
-                         } else {
-                             [self.messageSender sendMessage:message success:popToThread failure:removeThreadWithError];
-                         }
-                     }];
+//    void (^popToThread)() = ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self dismissViewControllerAnimated:YES
+//                                     completion:^{
+//                                         [Environment messageGroup:self.thread];
+//                                     }];
+//
+//        });
+//    };
+//
+//    void (^removeThreadWithError)(NSError *error) = ^(NSError *error) {
+//        [self.thread remove];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self dismissViewControllerAnimated:YES
+//                                     completion:^{
+//                                         SignalAlertView(NSLocalizedString(@"GROUP_CREATING_FAILED", nil),
+//                                             error.localizedDescription);
+//                                     }];
+//        });
+//    };
+//
+//    UIAlertController *alertController =
+//        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GROUP_CREATING", nil)
+//                                            message:nil
+//                                     preferredStyle:UIAlertControllerStyleAlert];
+//
+//    [self presentViewController:alertController
+//                       animated:YES
+//                     completion:^{
+//                         TSOutgoingMessage *message =
+//                             [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                                 inThread:self.thread
+//                                                              messageBody:@""
+//                                                            attachmentIds:[NSMutableArray new]];
+//
+//                         message.groupMetaMessage = TSGroupMessageNew;
+//                         message.customMessage = NSLocalizedString(@"GROUP_CREATED", nil);
+//                         if (model.groupImage) {
+//                             [self.messageSender sendAttachmentData:UIImagePNGRepresentation(model.groupImage)
+//                                                        contentType:OWSMimeTypeImagePng
+//                                                          inMessage:message
+//                                                            success:popToThread
+//                                                            failure:removeThreadWithError];
+//                         } else {
+//                             [self.messageSender sendMessage:message success:popToThread failure:removeThreadWithError];
+//                         }
+//                     }];
 }
 
 
@@ -210,14 +301,14 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 {
     NSMutableArray *mut = [[NSMutableArray alloc] init];
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
-        [mut addObjectsFromArray:[[contacts objectAtIndex:(NSUInteger)idx.row] textSecureIdentifiers]];
+        [mut addObject:[[contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
     }
-    [mut addObjectsFromArray:_thread.groupModel.groupMemberIds];
+    [mut addObjectsFromArray:_thread.participants];
 
     _groupModel = [[TSGroupModel alloc] initWithTitle:_nameGroupTextField.text
                                             memberIds:[[[NSSet setWithArray:mut] allObjects] mutableCopy]
-                                                image:_thread.groupModel.groupImage
-                                              groupId:_thread.groupModel.groupId];
+                                                image:_thread.image
+                                              groupId:nil];
 
     [self.nameGroupTextField resignFirstResponder];
 
@@ -231,7 +322,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     NSMutableArray *mut = [[NSMutableArray alloc] init];
 
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
-        [mut addObjectsFromArray:[[contacts objectAtIndex:(NSUInteger)idx.row] textSecureIdentifiers]];
+        [mut addObject:[[contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
     }
     [mut addObject:[TSAccountManager localNumber]];
     NSData *groupId = [SecurityUtils generateRandomBytes:16];
@@ -311,7 +402,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     if (picture_camera) {
         UIImage *small = [picture_camera resizedImageToFitInSize:CGSizeMake(100.00, 100.00) scaleIfSmaller:NO];
-        _thread.groupModel.groupImage = small;
+        _thread.image                 = small;
         _groupImage                   = small;
         [self setupGroupImageButton:small];
     }
@@ -337,20 +428,16 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     return (NSInteger)[contacts count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
-//
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GroupSearchCell"];
-//    }
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
     NSUInteger row   = (NSUInteger)indexPath.row;
-    Contact *contact = contacts[row];
+    SignalRecipient *contact = contacts[row];
 
     [cell configureCellWithContact:contact];
 //    cell.nameLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
+    cell.accessoryType    = UITableViewCellAccessoryNone;
 
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
@@ -385,20 +472,20 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 #pragma mark - Cell Utility
 
-- (NSAttributedString *)attributedStringForContact:(Contact *)contact inCell:(UITableViewCell *)cell {
+- (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact inCell:(UITableViewCell *)cell {
     NSMutableAttributedString *fullNameAttributedString =
         [[NSMutableAttributedString alloc] initWithString:contact.fullName];
 
     UIFont *firstNameFont;
     UIFont *lastNameFont;
 
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        firstNameFont = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
-        lastNameFont  = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        firstNameFont = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
+//        lastNameFont  = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
+//    } else {
         firstNameFont = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
         lastNameFont  = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
-    }
+//    }
     [fullNameAttributedString addAttribute:NSFontAttributeName
                                      value:firstNameFont
                                      range:NSMakeRange(0, contact.firstName.length)];
@@ -410,15 +497,15 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                      value:[UIColor blackColor]
                                      range:NSMakeRange(0, contact.fullName.length)];
 
-    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor ows_darkGrayColor]
-                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-    } else {
+//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
+//        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+//                                         value:[UIColor ows_darkGrayColor]
+//                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
+//    } else {
         [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
                                          value:[UIColor ows_darkGrayColor]
                                          range:NSMakeRange(0, contact.firstName.length)];
-    }
+//    }
 
     return fullNameAttributedString;
 }

@@ -9,6 +9,10 @@
 #ifndef CCSMCommunication_h
 #define CCSMCommunication_h
 
+@import Foundation;
+
+@class SignalRecipient;
+
 @interface CCSMCommManager : NSObject
 
 -(void)refreshCCSMData;
@@ -37,8 +41,23 @@
                    failure:(void (^)(NSError *error))failureBlock;
 
 - (void)getThing:(NSString *)urlString
+     synchronous:(BOOL)synchronous
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
+
+-(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
+                               success:(void (^)())successBlock
+                               failure:(void (^)(NSError *error))failureBlock;
+
+//-(void)registerWithTSSViaCCSMForPhone:(NSString *)phone
+//                              Success:(void (^)())successBlock
+//                              failure:(void (^)(NSError *error))failureBlock;
+
+-(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous;
+-(void)recipientFromCCSMWithID:(NSString *)userId
+                                    success:(void (^)(NSDictionary *results))successBlock
+                                    failure:(void (^)(NSError *error))failureBlock;
+
 @end
 
 #endif /* CCSMCommunication_h */

@@ -31,11 +31,10 @@
 #import "SignalKeyingStorage.h"
 #import "TSAttachmentPointer.h"
 #import "TSCall.h"
-#import "TSContactThread.h"
 #import "TSContentAdapters.h"
 #import "TSDatabaseView.h"
 #import "TSErrorMessage.h"
-#import "TSGroupThread.h"
+#import "TSThread.h"
 #import "TSIncomingMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
@@ -61,7 +60,7 @@
 #import <RelayServiceKit/SignalRecipient.h>
 #import <RelayServiceKit/TSAccountManager.h>
 #import <RelayServiceKit/TSInvalidIdentityKeySendingErrorMessage.h>
-#import <RelayServiceKit/TSMessagesManager.h>
+#import "FLMessagesManager.h"
 #import <RelayServiceKit/TSNetworkManager.h>
 #import <YapDatabase/YapDatabaseView.h>
 
@@ -121,11 +120,11 @@ typedef enum : NSUInteger {
 @property (nonatomic) BOOL peek;
 
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
-@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
+//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
-@property (nonatomic, readonly) TSMessagesManager *messagesManager;
+@property (nonatomic, readonly) FLMessagesManager *messagesManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 
 @property NSCache *messageAdapterCache;
@@ -166,11 +165,11 @@ typedef enum : NSUInteger {
 - (void)commonInit
 {
     _contactsManager = [Environment getCurrent].contactsManager;
-    _contactsUpdater = [Environment getCurrent].contactsUpdater;
+//    _contactsUpdater = [Environment getCurrent].contactsUpdater;
     _messageSender = [Environment getCurrent].messageSender;
     _storageManager = [TSStorageManager sharedManager];
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:_storageManager];
-    _messagesManager = [TSMessagesManager sharedManager];
+    _messagesManager = [FLMessagesManager sharedManager];
     _networkManager = [TSNetworkManager sharedManager];
 }
 
@@ -186,7 +185,8 @@ typedef enum : NSUInteger {
 
 - (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing {
     _thread                        = thread;
-    isGroupConversation            = [self.thread isKindOfClass:[TSGroupThread class]];
+//    isGroupConversation            = [self.thread isKindOfClass:[TSGroupThread class]];
+    isGroupConversation = YES;
     _composeOnOpen                 = keyboardAppearing;
 
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
@@ -204,12 +204,8 @@ typedef enum : NSUInteger {
 
 - (BOOL)userLeftGroup
 {
-    if (![_thread isKindOfClass:[TSGroupThread class]]) {
-        return NO;
-    }
-
-    TSGroupThread *groupThread = (TSGroupThread *)self.thread;
-    return ![groupThread.groupModel.groupMemberIds containsObject:[TSAccountManager localNumber]];
+    NSString *selfID = [TSAccountManager localNumber];
+    return ![self.thread.participants containsObject:[TSAccountManager localNumber]];
 }
 
 - (void)hideInputIfNeeded {
@@ -471,9 +467,9 @@ typedef enum : NSUInteger {
 - (void)setNavigationTitle
 {
     NSString *navTitle = self.thread.name;
-    if (isGroupConversation && [navTitle length] == 0) {
-        navTitle = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
-    }
+//    if (isGroupConversation && [navTitle length] == 0) {
+//        navTitle = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
+//    }
     self.title = navTitle;
 }
 
@@ -494,7 +490,7 @@ typedef enum : NSUInteger {
                                                                       action:@selector(callAction)];
         callButton.imageInsets = UIEdgeInsetsMake(0, -10, 0, 10);
         [barButtons addObject:callButton];
-    } else if ([self.thread isGroupThread]) {
+    } else if (self.thread.participants.count > 2) {
         UIBarButtonItem *manageGroupButton =
             [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"contact-options-action"]
                                              style:UIBarButtonItemStylePlain
@@ -603,8 +599,15 @@ typedef enum : NSUInteger {
 {
     OWSFingerprintBuilder *builder =
         [[OWSFingerprintBuilder alloc] initWithStorageManager:self.storageManager contactsManager:self.contactsManager];
+    NSString *otherId = nil;
+    for (NSString *uid in self.thread.participants) {
+        if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
+            otherId = uid;
+            break;
+        }
+    }
     OWSFingerprint *fingerprint =
-        [builder fingerprintWithTheirSignalId:self.thread.contactIdentifier theirIdentityKey:theirIdentityKey];
+        [builder fingerprintWithTheirSignalId:otherId theirIdentityKey:theirIdentityKey];
     [self markAllMessagesAsRead];
     [self performSegueWithIdentifier:OWSMessagesViewControllerSegueShowFingerprint sender:fingerprint];
 }
@@ -625,8 +628,14 @@ typedef enum : NSUInteger {
 }
 
 - (PhoneNumber *)phoneNumberForThread {
-    NSString *contactId = [(TSContactThread *)self.thread contactIdentifier];
-    return [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
+    NSString *userid = nil;
+    for (NSString *uid in self.thread.participants) {
+        if (![uid isEqualToString:[TSAccountManager localNumber]]) {
+            userid = uid;
+        }
+    }
+    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
+    return [PhoneNumber phoneNumberFromUserSpecifiedText:recipient.phoneNumber];
 }
 
 - (void)callAction {
@@ -644,8 +653,24 @@ typedef enum : NSUInteger {
     }
 }
 
-- (BOOL)canCall {
-    return !(isGroupConversation || [((TSContactThread *)self.thread).contactIdentifier isEqualToString:[TSAccountManager localNumber]]);
+- (BOOL)canCall
+{
+    if (self.thread.participants.count > 2) {
+        return NO;
+    } else {
+        NSString *userid = nil;
+        for (NSString *uid in self.thread.participants) {
+            if (![uid isEqualToString:[TSAccountManager localNumber]]) {
+                userid = uid;
+            }
+        }
+        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
+        if (recipient.phoneNumber) {
+            return YES;
+        } else {
+            return NO;
+        }
+    }
 }
 
 #pragma mark - JSQMessagesViewController method overrides
@@ -661,7 +686,7 @@ typedef enum : NSUInteger {
             [JSQSystemSoundPlayer jsq_playMessageSentSound];
         }
 
-        TSOutgoingMessage *message;
+        TSOutgoingMessage *message = nil;
         OWSDisappearingMessagesConfiguration *configuration =
             [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
         if (configuration.isEnabled) {
@@ -673,12 +698,20 @@ typedef enum : NSUInteger {
         } else {
             message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                           inThread:self.thread
-                                                       messageBody:text];
+                                                       messageBody:@""];
         }
         message.plainTextBody = text;
+
+        [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [message saveWithTransaction:transaction];
+        }];
+        
         [self.messageSender sendMessage:message
             success:^{
                 DDLogInfo(@"%@ Successfully sent message.", self.tag);
+                [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    [message saveWithTransaction:transaction];
+                }];
             }
             failure:^(NSError *error) {
                 DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
@@ -1023,9 +1056,9 @@ typedef enum : NSUInteger {
             return [[NSAttributedString alloc] initWithString:NSLocalizedString(@"UPLOADING_MESSAGE_TEXT",
                                                                   @"message footer while attachment is uploading")];
         }
-    } else if (message.messageType == TSIncomingMessageAdapter && [self.thread isKindOfClass:[TSGroupThread class]]) {
+    } else if (message.messageType == TSIncomingMessageAdapter) {
         TSIncomingMessage *incomingMessage = (TSIncomingMessage *)message.interaction;
-        NSString *_Nonnull name = [self.contactsManager nameStringForPhoneIdentifier:incomingMessage.authorId];
+        NSString *_Nonnull name = [self.contactsManager nameStringForContactID:incomingMessage.authorId];
         NSAttributedString *senderNameString = [[NSAttributedString alloc] initWithString:name];
 
         return senderNameString;
@@ -1461,18 +1494,19 @@ typedef enum : NSUInteger {
                           } else {
                               switch (tappedButtonIndex) {
                                   case 0: {
-                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
-                                          // Corrupt Message errors only appear in contact threads.
+#warning XXX Corrupted message handling here
+//                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
+//                                          // Corrupt Message errors only appear in contact threads.
                                           DDLogError(
                                               @"%@ Unexpected request to reset session in group thread. Refusing",
                                               self.tag);
                                           return;
-                                      }
-                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
-                                      [OWSSessionResetJob runWithCorruptedMessage:message
-                                                                    contactThread:contactThread
-                                                                    messageSender:self.messageSender
-                                                                   storageManager:self.storageManager];
+//                                      }
+//                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
+//                                      [OWSSessionResetJob runWithCorruptedMessage:message
+//                                                                    contactThread:contactThread
+//                                                                    messageSender:self.messageSender
+//                                                                   storageManager:self.storageManager];
                                       break;
                                   }
                                   default:
@@ -1485,7 +1519,7 @@ typedef enum : NSUInteger {
 - (void)tappedInvalidIdentityKeyErrorMessage:(TSInvalidIdentityKeyErrorMessage *)errorMessage
 {
     [self acceptNewIDKeyWithMessage:errorMessage];
-//    NSString *keyOwner = [self.contactsManager nameStringForPhoneIdentifier:errorMessage.theirSignalId];
+//    NSString *keyOwner = [self.contactsManager nameStringForContactID:errorMessage.theirSignalId];
 //    NSString *titleFormat = NSLocalizedString(@"SAFETY_NUMBERS_ACTIONSHEET_TITLE", @"Action sheet heading");
 //    NSString *titleText = [NSString stringWithFormat:titleFormat, keyOwner];
 //    NSArray *actions = @[
@@ -1558,7 +1592,7 @@ typedef enum : NSUInteger {
         }
         OWSFingerprint *fingerprint = (OWSFingerprint *)sender;
 
-        NSString *contactName = [self.contactsManager nameStringForPhoneIdentifier:fingerprint.theirStableId];
+        NSString *contactName = [self.contactsManager nameStringForContactID:fingerprint.theirStableId];
         [vc configureWithThread:self.thread fingerprint:fingerprint contactName:contactName];
     } else if ([segue.destinationViewController isKindOfClass:[OWSConversationSettingsTableViewController class]]) {
         OWSConversationSettingsTableViewController *controller
@@ -1848,15 +1882,9 @@ typedef enum : NSUInteger {
 - (void)yapDatabaseModified:(NSNotification *)notification {
     [self updateBackButtonAsync];
 
-    if (isGroupConversation) {
-        [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-          TSGroupThread *gThread = (TSGroupThread *)self.thread;
-
-          if (gThread.groupModel) {
-              self.thread = [TSGroupThread threadWithGroupModel:gThread.groupModel transaction:transaction];
-          }
-        }];
-    }
+    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
+    }];
 
     NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
 
@@ -2117,45 +2145,52 @@ typedef enum : NSUInteger {
 
 - (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
 {
-    __block TSGroupThread *groupThread;
+    __block TSThread *thread;
     __block TSOutgoingMessage *message;
+    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
+                                                                    memberIds:[self.thread.participants mutableCopy]
+                                                                        image:self.thread.image
+                                                                      groupId:nil];
 
     [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        groupThread            = [TSGroupThread getOrCreateThreadWithGroupModel:newGroupModel transaction:transaction];
+        thread = [TSThread getOrCreateThreadWithID:self.thread.uniqueId transaction:transaction];
         
-        NSString *updateGroupInfo = [groupThread.groupModel getInfoStringAboutUpdateTo:newGroupModel contactsManager:self.contactsManager];
+        NSString *updateGroupInfo = [oldGroupModel getInfoStringAboutUpdateTo:newGroupModel contactsManager:self.contactsManager];
 
-        groupThread.groupModel = newGroupModel;
-        [groupThread saveWithTransaction:transaction];
-        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                      inThread:groupThread
-                                                   messageBody:@""
-                                                 attachmentIds:[NSMutableArray new]];
-        message.groupMetaMessage = TSGroupMessageUpdate;
-        message.customMessage = updateGroupInfo;
+        self.thread.name = newGroupModel.groupName;
+        self.thread.participants = [NSArray arrayWithArray:newGroupModel.groupMemberIds];
+        self.thread.image = newGroupModel.groupImage;
+        
+        [self.thread saveWithTransaction:transaction];
+        
+#warning XXX Control message send for group update here.
+//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                      inThread:thread
+//                                                   messageBody:@""
+//                                                 attachmentIds:[NSMutableArray new]];
+//        message.groupMetaMessage = TSGroupMessageUpdate;
+//        message.customMessage = updateGroupInfo;
     }];
 
-    if (newGroupModel.groupImage) {
-        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
-            contentType:OWSMimeTypeImagePng
-            inMessage:message
-            success:^{
-                DDLogDebug(@"%@ Successfully sent group update with avatar", self.tag);
-            }
-            failure:^(NSError *_Nonnull error) {
-                DDLogError(@"%@ Failed to send group avatar update with error: %@", self.tag, error);
-            }];
-    } else {
-        [self.messageSender sendMessage:message
-            success:^{
-                DDLogDebug(@"%@ Successfully sent group update", self.tag);
-            }
-            failure:^(NSError *_Nonnull error) {
-                DDLogError(@"%@ Failed to send group update with error: %@", self.tag, error);
-            }];
-    }
-
-    self.thread = groupThread;
+//    if (newGroupModel.groupImage) {
+//        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
+//            contentType:OWSMimeTypeImagePng
+//            inMessage:message
+//            success:^{
+//                DDLogDebug(@"%@ Successfully sent group update with avatar", self.tag);
+//            }
+//            failure:^(NSError *_Nonnull error) {
+//                DDLogError(@"%@ Failed to send group avatar update with error: %@", self.tag, error);
+//            }];
+//    } else {
+//        [self.messageSender sendMessage:message
+//            success:^{
+//                DDLogDebug(@"%@ Successfully sent group update", self.tag);
+//            }
+//            failure:^(NSError *_Nonnull error) {
+//                DDLogError(@"%@ Failed to send group update with error: %@", self.tag, error);
+//            }];
+//    }
 }
 
 - (IBAction)unwindGroupUpdated:(UIStoryboardSegue *)segue {

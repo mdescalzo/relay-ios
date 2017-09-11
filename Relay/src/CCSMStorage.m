@@ -11,25 +11,25 @@
 #import "Constraints.h"
 #import "TSStorageHeaders.h"
 
-NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
-    NSMutableDictionary *tags = [NSMutableDictionary new];
-    for (id userId in users) {
-        NSMutableDictionary *user = [users objectForKey:userId];
-        for (id usertag in [user objectForKey:@"tags"]) {
-            NSString *associationType = [usertag objectForKey:@"association_type"];
-            if (![associationType isEqualToString:@"REPORTSTO"]) {
-                NSMutableDictionary *tag = [usertag objectForKey:@"tag"];
-                NSString *slug = [tag objectForKey:@"slug"];
-                if ([tags objectForKey:slug] == nil) {
-                    [tags setValue:[NSMutableDictionary new] forKey:slug];
-                }
-                [[tags objectForKey:slug] setValue:user forKey:userId];
-            }
-        }
-    }
-    
-    return [NSDictionary dictionaryWithDictionary:tags];
-}
+//NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
+//    NSMutableDictionary *tags = [NSMutableDictionary new];
+//    for (id userId in users) {
+//        NSMutableDictionary *user = [users objectForKey:userId];
+//        for (id usertag in [user objectForKey:@"tags"]) {
+//            NSString *associationType = [usertag objectForKey:@"association_type"];
+//            if (![associationType isEqualToString:@"REPORTSTO"]) {
+//                NSMutableDictionary *tag = [usertag objectForKey:@"tag"];
+//                NSString *slug = [tag objectForKey:@"slug"];
+//                if ([tags objectForKey:slug] == nil) {
+//                    [tags setValue:[NSMutableDictionary new] forKey:slug];
+//                }
+//                [[tags objectForKey:slug] setValue:user forKey:userId];
+//            }
+//        }
+//    }
+//    
+//    return [NSDictionary dictionaryWithDictionary:tags];
+//}
 
 @interface CCSMStorage()
 
@@ -38,6 +38,7 @@ NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
 @implementation CCSMStorage
 
 @synthesize supermanId = _supermanId;
+@synthesize textSecureURL = _textSecureURL;
 
 NSString *const CCSMStorageDatabaseCollection = @"CCSMInformation";
 
@@ -49,6 +50,7 @@ NSString *const CCSMStorageKeyOrgInfo = @"Org Info";
 NSString *const CCSMStorageKeyUsers = @"Users";
 NSString *const CCSMStorageKeyTags = @"Tags";
 NSString *const CCSMStorageKeySupermanId = @"SupermanID";
+NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 
 - (nullable id)tryGetValueForKey:(NSString *)key
 {
@@ -125,7 +127,7 @@ NSString *const CCSMStorageKeySupermanId = @"SupermanID";
 - (void)setUsers:(NSMutableDictionary *)value
 {
     [self setValueForKey:CCSMStorageKeyUsers toValue:value];
-    NSDictionary * tags = extractTagsForUsers(value);
+    NSDictionary * tags = [self extractTagsForUsers:value];
     [self setTags:tags];
 }
 
@@ -159,6 +161,38 @@ NSString *const CCSMStorageKeySupermanId = @"SupermanID";
         _supermanId = [value copy];
         [self setValueForKey:CCSMStorageKeySupermanId toValue:value];
     }
+}
+
+-(NSString *)textSecureURL
+{
+    if (_textSecureURL == nil) {
+        _textSecureURL = [self tryGetValueForKey:CCSMStorageKeyTSServerURL];
+    }
+    return _textSecureURL;
+}
+
+-(void)setTextSecureURL:(NSString *)value
+{
+    if (![_textSecureURL isEqualToString:value]) {
+        _textSecureURL = [value copy];
+        [self setValueForKey:CCSMStorageKeyTSServerURL toValue:value];
+    }
+}
+
+-(NSDictionary *)extractTagsForUsers:(NSDictionary *) users
+{
+    NSMutableDictionary *tags = [NSMutableDictionary new];
+    
+    for (NSString *key in users.allKeys) {
+        NSDictionary *userDict = [users objectForKey:key];
+        NSDictionary *tagDict = [userDict objectForKey:@"tag"];
+        NSString *slug = [tagDict objectForKey:@"slug"];
+        if (slug) {
+            [tags setObject:key forKey:slug];
+        }
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:tags];
 }
 
 @end

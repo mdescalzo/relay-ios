@@ -8,7 +8,8 @@
 #import "CCSMStorage.h"
 #import "CCSMCommunication.h"
 #import "FLMessageSender.h"
-#import "FLContactsManager.h"
+//#import "FLContactsManager.h"
+#import "OWSContactsManager.h"
 #import "FLInvitationService.h"
 
 static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
@@ -29,13 +30,13 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
     @"LegacyAndroidInterop_1"
 #define TESTING_OPTION_USE_DH_FOR_HANDSHAKE @"DhKeyAgreementOnly"
 
-@class RecentCallManager;
-//@class OWSContactsManager;
-@class FLContactsManager;
-@class PhoneManager;
+//@class RecentCallManager;
+@class OWSContactsManager;
+//@class FLContactsManager;
+//@class PhoneManager;
 @class SignalsViewController;
 @class TSGroupThread;
-@class ContactsUpdater;
+//@class ContactsUpdater;
 @class TSNetworkManager;
 @class FLMessageSender;
 
@@ -51,13 +52,13 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
       relayServerHostNameSuffix:(NSString *)relayServerHostNameSuffix
                     certificate:(Certificate *)certificate
  supportedKeyAgreementProtocols:(NSArray *)keyAgreementProtocolsInDescendingPriority
-                   phoneManager:(PhoneManager *)phoneManager
-              recentCallManager:(RecentCallManager *)recentCallManager
+//                   phoneManager:(PhoneManager *)phoneManager
+//              recentCallManager:(RecentCallManager *)recentCallManager
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
-                contactsManager:(FLContactsManager *)contactsManager
-                contactsUpdater:(ContactsUpdater *)contactsUpdater
+                contactsManager:(OWSContactsManager *)contactsManager
+//                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender;
 
@@ -69,13 +70,13 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) NSString *relayServerHostNameSuffix;
 @property (nonatomic, readonly) NSArray *keyAgreementProtocolsInDescendingPriority;
 @property (nonatomic, readonly) ErrorHandlerBlock errorNoter;
-@property (nonatomic, readonly) PhoneManager *phoneManager;
-@property (nonatomic, readonly) RecentCallManager *recentCallManager;
+//@property (nonatomic, readonly) PhoneManager *phoneManager;
+//@property (nonatomic, readonly) RecentCallManager *recentCallManager;
 @property (nonatomic, readonly) NSArray *testingAndLegacyOptions;
 @property (nonatomic, readonly) NSData *zrtpClientId;
 @property (nonatomic, readonly) NSData *zrtpVersionId;
-@property (nonatomic, readonly) FLContactsManager *contactsManager;
-@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
+@property (nonatomic, readonly) OWSContactsManager *contactsManager;
+//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
@@ -96,20 +97,20 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (NSString *)relayServerNameToHostName:(NSString *)name;
 + (ErrorHandlerBlock)errorNoter;
 + (bool)hasEnabledTestingOrLegacyOption:(NSString *)flag;
-+ (PhoneManager *)phoneManager;
+//+ (PhoneManager *)phoneManager;
 
 + (PropertyListPreferences *)preferences;
 
 + (BOOL)isRedPhoneRegistered;
 + (void)resetAppData;
 
-- (void)initCallListener;
+//- (void)initCallListener;
 -(void)setForstaViewController:(FLThreadViewController *)forstaViewController;
 //- (void)setSignalsViewController:(SignalsViewController *)signalsViewController;
 - (void)setSignUpFlowNavigationController:(UINavigationController *)signUpFlowNavigationController;
 
 + (void)messageThreadId:(NSString *)threadId;
 + (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose;
-+ (void)messageGroup:(TSGroupThread *)groupThread;
++ (void)messageGroup:(TSThread *)groupThread;
 
 @end

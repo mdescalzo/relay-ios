@@ -2,100 +2,143 @@
 //  FLContactsManager.m
 //  Forsta
 //
-//  Created by Mark on 6/26/17.
+//  Created by Mark on 8/22/17.
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
 #import "FLContactsManager.h"
-#import "Environment.h"
+#import <SAMKeychain/SAMKeychain.h>
+#import <25519/Randomness.h>
+#import "NSData+Base64.h"
+
+static const NSString *const databaseName = @"ForstaContacts.sqlite";
+static NSString *keychainService          = @"TSKeyChainService";
+static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 
 @interface FLContactsManager()
 
-@property (nonatomic, strong) NSArray *ccsmContacts;
+@property (strong) YapDatabase *database;
+@property (nonatomic, strong) NSString *dbPath;
 
 @end
 
+
 @implementation FLContactsManager
 
-- (NSArray<Contact *> *)allContacts {
- 
-    NSMutableArray *abContacts = [[super allContacts] mutableCopy];
-
-//    // Look for duplicates between the two and merge
-    NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"NONE %@.firstName == firstName", self.ccsmContacts];
-    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"NONE %@.lastName == lastName", self.ccsmContacts];
-    NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[aPredicate, bPredicate]];
-    NSMutableArray *resultsArray = [[abContacts filteredArrayUsingPredicate:predicate] mutableCopy];
-    [resultsArray addObjectsFromArray:self.ccsmContacts];
+-(instancetype)init {
+    if ([super init]) {
+        YapDatabaseOptions *options = [YapDatabaseOptions new];
+        options.corruptAction = YapDatabaseCorruptAction_Fail;
+        options.cipherKeyBlock      = ^{
+            return [self databasePassword];
+        };
     
-    return resultsArray;
-//    return self.ccsmContacts ;
-}
-
-- (NSArray<Contact *> *)allValidContacts
-{
-    NSMutableArray *abContacts = [[super signalContacts] mutableCopy];
-    
-    //    // Look for duplicates between the two and merge
-    NSPredicate *aPredicate = [NSPredicate predicateWithFormat:@"NONE %@.firstName == firstName", self.ccsmContacts];
-    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"NONE %@.lastName == lastName", self.ccsmContacts];
-    NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[aPredicate, bPredicate]];
-    NSMutableArray *resultsArray = [[abContacts filteredArrayUsingPredicate:predicate] mutableCopy];
-    [resultsArray addObjectsFromArray:self.ccsmContacts];
-    
-    return resultsArray;
-}
-
-
-#pragma mark - Lazy Instantiation
-- (NSArray<Contact *> *)ccsmContacts;
-{
-    if (_ccsmContacts == nil) {
-        NSMutableArray *tmpArray = [NSMutableArray new];
+        _database = [[YapDatabase alloc] initWithPath:self.dbPath
+                                              options:options];
         
-//        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
-        NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
-//        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
-        
-        for (NSString *key in usersBlob.allKeys) {
-//            NSDictionary *tmpDict = [usersBlob objectForKey:key];
-            NSDictionary *userDict = [usersBlob objectForKey:key]; //[tmpDict objectForKey:tmpDict.allKeys.lastObject];
-            
-            // Filter out superman, no one sees superman
-            if (!([[userDict objectForKey:@"phone"] isEqualToString:FLSupermanDevID] ||
-                [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanStageID] ||
-                [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanProdID])) {
-                
-                Contact *contact = [[Contact alloc] initWithContactWithFirstName:[userDict objectForKey:@"first_name"]
-                                                                         andLastName:[userDict objectForKey:@"last_name"]
-                                                             andUserTextPhoneNumbers:@[ [userDict objectForKey:@"phone"] ]
-                                                                            andImage:nil
-                                                                        andContactID:0];
-                 contact.userID = [userDict objectForKey:@"id"];
-                
-                NSArray *tagsArray = [userDict objectForKey:@"tags"];
-                for (NSDictionary *tag in tagsArray) {
-                    if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
-                        contact.tagID = [tag objectForKey:@"id"];
-                        
-                        NSDictionary *subTag = [tag objectForKey:@"tag"];
-                        contact.tagPresentation = [subTag objectForKey:@"slug"];
-                        break;
-                    }
-                }
-                
-                [tmpArray addObject:contact];
-            }
-        }
-        _ccsmContacts = [NSArray arrayWithArray:tmpArray];
+        [self mainConnection];
+        [self backgroundConnection];
     }
-    return _ccsmContacts;
+    return self;
 }
 
--(void)refreshCCSMContacts
+- (NSData *)databasePassword
 {
-    _ccsmContacts = nil;
-    [self ccsmContacts];
+    [SAMKeychain setAccessibilityType:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly];
+    NSString *dbPassword = [SAMKeychain passwordForService:keychainService account:keychainDBPassAccount];
+    
+    if (!dbPassword) {
+        dbPassword = [[Randomness generateRandomBytes:30] base64EncodedString];
+        NSError *error;
+        [SAMKeychain setPassword:dbPassword forService:keychainService account:keychainDBPassAccount error:&error];
+        if (error) {
+            // Sync log to ensure it logs before exiting
+            NSLog(@"Exiting because we failed to set new DB password. error: %@", error);
+            exit(1);
+        } else {
+            DDLogError(@"Succesfully set new DB password. First launch?");
+        }
+    }
+    
+    return [dbPassword dataUsingEncoding:NSUTF8StringEncoding];
 }
+
+#pragma mark - Contact management
+-(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID
+{
+    __block SignalRecipient *contact = nil;
+    [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction){
+        contact = [transaction objectForKey:userID inCollection:[SignalRecipient collection]];
+    }];
+    return contact;
+}
+
+-(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID
+{
+    __block SignalRecipient *contact = nil;
+    [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        contact = [transaction objectForKey:userID inCollection:[SignalRecipient collection]];
+        if (!contact) {
+            contact = [[SignalRecipient alloc] initWithUniqueId:userID];
+            [contact saveWithTransaction:transaction];
+        }
+    }];
+    return contact;
+}
+
+-(NSSet<SignalRecipient *> *)allContacts
+{
+#warning XXX implement NSCache here?
+    __block NSMutableSet *holdingSet = [NSMutableSet new];
+    [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        [transaction enumerateKeysAndObjectsInCollection:[SignalRecipient collection]
+                                              usingBlock:^(NSString *key, id object, BOOL *stop){
+                                                  if ([object isKindOfClass:[SignalRecipient class]]) {
+                                                      SignalRecipient *contact = (SignalRecipient *)object;
+                                                      if (![contact.uniqueId isEqualToString:FLSupermanID]) {
+                                                          [holdingSet addObject:contact];
+                                                      }
+                                                  }
+                                              }];
+    }];
+    return [NSSet setWithSet:holdingSet];
+}
+
+-(void)saveContact:(SignalRecipient *_Nonnull)contact
+{
+    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [transaction setObject:contact forKey:contact.uniqueId inCollection:[SignalRecipient collection]];
+    }];
+}
+
+
+#pragma mark - lazy instantiation
+-(NSString *)dbPath
+{
+    if (_dbPath.length == 0) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSURL *fileURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        NSString *path = [fileURL path];
+        _dbPath = [path stringByAppendingFormat:@"/%@", databaseName];
+    }
+    return _dbPath;
+}
+
+-(YapDatabaseConnection *)mainConnection
+{
+    if (_mainConnection == nil) {
+        _mainConnection = [self.database newConnection];
+    }
+    return _mainConnection;
+}
+
+-(YapDatabaseConnection *)backgroundConnection
+{
+    if (_backgroundConnection == nil) {
+        _backgroundConnection = [self.database newConnection];
+    }
+    return _backgroundConnection;
+}
+
 
 @end

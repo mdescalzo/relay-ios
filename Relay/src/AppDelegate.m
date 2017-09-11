@@ -11,7 +11,7 @@
 #import "PushManager.h"
 #import "Release.h"
 #import "Relay-Swift.h"
-#import "TSMessagesManager.h"
+#import "FLMessagesManager.h"
 #import "TSPreKeyManager.h"
 #import "TSSocketManager.h"
 #import "TextSecureKitEnv.h"
@@ -46,6 +46,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 @property (nonatomic) OWSStaleNotificationObserver *staleNotificationObserver;
 
 @property (nonatomic, strong) CCSMCommManager *ccsmCommManager;
+@property (nonatomic, assign) BOOL awaitingVerification;
 
 @end
 
@@ -55,6 +56,21 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+//    [[TSAccountManager sharedInstance] ifRegistered:YES
+//                                           runAsync:^{
+//                                               // We're double checking that the app is active, to be sure since we
+//                                               // can't verify in production env due to code
+//                                               // signing.
+//                                               [TSSocketManager becomeActiveFromForeground];
+//                                               
+//                                               // Refresh the contact/recipient database in background
+//                                               dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+//                                                   [[Environment getCurrent].contactsManager refreshCCSMRecipients];
+//                                               });
+//                                               //                                               [[Environment getCurrent].contactsManager verifyABPermission];
+//                                           }];
+
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -63,35 +79,42 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [logger addLoggingCallback:^(NSString *category, id details, NSUInteger index){
     }];
     
-    // Setting up environment
-    [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
     
     // Initialize crash reporting
     [Fabric with:@[ [Crashlytics class] ]];
-    if ([[Environment getCurrent].ccsmStorage getUserName] != nil) {
-        [CrashlyticsKit setUserName:[[Environment getCurrent].ccsmStorage getUserName]];
+    CCSMStorage *ccsmStore = [CCSMStorage new];
+    if ([ccsmStore getUserName] != nil) {
+        [CrashlyticsKit setUserName:[ccsmStore getUserName]];
     }
     
     // Navbar background color iOS10 bug workaround
     [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
     [UINavigationBar appearance].barTintColor = [UIColor blackColor];
     
-    [UIUtil applySignalAppearence];
-    [[PushManager sharedManager] registerPushKitNotificationFuture];
+    // Setting up environment
+    [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
+    
+#warning Override/replace the following?
+    [UIUtil applySignalAppearence];
+    
+    [[PushManager sharedManager] registerPushKitNotificationFuture];
+    
     if (getenv("runningTests_dontStartApp")) {
         return YES;
     }
-
+    
     if ([TSAccountManager isRegistered]) {
         [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
     }
-    [Environment.getCurrent initCallListener];
-
+//    [Environment.getCurrent initCallListener];
+    
     BOOL loggingIsEnabled;
-
+    
     // Set SupermanID
-    [[Environment getCurrent].ccsmStorage setSupermanId:FLSupermanID];
+    [ccsmStore setSupermanId:FLSupermanID];
     
 #ifdef DEBUG
     // Specified at Product -> Scheme -> Edit Scheme -> Test -> Arguments -> Environment to avoid things like
@@ -101,55 +124,98 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 #elif RELEASE
     loggingIsEnabled = Environment.preferences.loggingIsEnabled;
 #endif
-
+    
     [self verifyBackgroundBeforeKeysAvailableLaunch];
-
+    
     if (loggingIsEnabled) {
         [DebugLogger.sharedLogger enableFileLogging];
     }
-
+    
     [self setupTSKitEnv];
-
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    __block UIStoryboard *storyboard;
     
-    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
-    {
-        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
-            [self refreshUsersStore];
-            
-            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
-            {
-                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+//    __block UIStoryboard *storyboard;
+//
+//    NSString *sessionToken = [ccsmStore getSessionToken];
+//    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
+//    {
+//        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
+//            [self refreshUsersStore];
+//            
+//            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
+//            {
+//                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+//            }
+//            else {  // Good token, but not registered, tell CCSM to register
+//                [self.ccsmCommManager registerWithTSSViaCCSMForUserID:[[ccsmStore getUserInfo] objectForKey:@"id"]
+//                                                              success:^{
+//                                                                  storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+//                                                              }
+//                                                              failure:^(NSError *error){  // Unable to register, login
+//                                                                  storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+//                                                              }];
+//            }
+//        }
+//                                                            failure:^(NSError *error){  // Unable to refresh, login
+//                                                                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+//                                                            }];
+//    }
+//    else  // No local token, login
+//    {
+//        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+//    }
+//
+    
+//    if (!self.awaitingVerification) {
+        __block UIStoryboard *storyboard;
+        
+        NSString *sessionToken = [ccsmStore getSessionToken];
+        if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) // Check for local sessionKey, if there refresh
+        {
+            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+            [self.ccsmCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
+                [self refreshUsersStore];
+                
+                //            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
+                //            {
+                //            }
+                //            else {  // Good token, but not registered, tell CCSM to register
+                //                [self.ccsmCommManager registerWithTSSViaCCSMForUserID:[[ccsmStore getUserInfo] objectForKey:@"id"]
+                //                                                              success:^{
+                //                                                                  storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+                //                                                              }
+                //                                                              failure:^(NSError *error){  // Unable to register, login
+                //                                                                  storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                //                                                              }];
+                //            }
             }
-            else {  // Good token, but not registered, go register
-                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
-            }
+                                                                 failure:^(NSError *error){  // Unable to refresh, login force login
+#warning Probably needs some sort of dialog to tell the user why they got bounced out.
+                                                                     storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                                     UIViewController *rootViewController = [storyboard instantiateInitialViewController];
+                                                                     [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+                                                                     
+                                                                 }];
+        } else { // No local token, login
+            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
         }
-                                                            failure:^(NSError *error){  // Unable to refresh, login
-                                                                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-                                                            }];
-    }
-    else  // No local token, login
-    {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-    }
-    
-//    UIViewController *rootViewController = [storyboard instantiateInitialViewController];
-//    
-//    [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+        
+//        UIViewController *rootViewController = nil;
+//        rootViewController = [storyboard instantiateInitialViewController];
+//        
+//        [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+        
+//    }
 
-    
-//    __block UIStoryboard *storyboard =[UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
-
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Launch Screen" bundle:nil];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
+    
     [self.window makeKeyAndVisible];
-
+    
     [VersionMigrations performUpdateCheck]; // this call must be made after environment has been initialized because in
-                                            // general upgrade may depend on environment
-
+    // general upgrade may depend on environment
+    
     // Accept push notification when app is not open
     NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
@@ -158,7 +224,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     }
 
     [self prepareScreenProtection];
-
+    
     // At this point, potentially lengthy DB locking migrations could be running.
     // Avoid blocking app launch by putting all further possible DB access in async thread.
     UIApplicationState launchState = application.applicationState;
@@ -172,10 +238,9 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         } else {
             DDLogWarn(@"The app was launched in an unknown way");
         }
-
-        OWSAccountManager *accountManager =
-            [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
-
+        
+        OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
+        
         [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
                                   accountManager:accountManager
                                      preferences:[Environment preferences]].then(^{
@@ -183,23 +248,23 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         }).catch(^(NSError *_Nonnull error) {
             DDLogDebug(@"%@ Failed to run syncPushTokensJob with error: %@", self.tag, error);
         });
-
+        
         [TSPreKeyManager refreshPreKeys];
-
+        
         // Clean up any messages that expired since last launch.
         [[[OWSDisappearingMessagesJob alloc] initWithStorageManager:[TSStorageManager sharedManager]] run];
         [AppStoreRating setupRatingLibrary];
     }];
-
-    [[TSAccountManager sharedInstance] ifRegistered:NO runAsync:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:[Pastelog class]
-                                                                                      action:@selector(submitLogs)];
-            gesture.numberOfTapsRequired = 8;
-            [self.window addGestureRecognizer:gesture];
-        });
-    }];
-
+    
+//    [[TSAccountManager sharedInstance] ifRegistered:NO runAsync:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:[Pastelog class]
+//                                                                                      action:@selector(submitLogs)];
+//            gesture.numberOfTapsRequired = 8;
+//            [self.window addGestureRecognizer:gesture];
+//        });
+//    }];
+    
     return YES;
 }
 
@@ -207,18 +272,18 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [TextSecureKitEnv sharedEnv].contactsManager = [Environment getCurrent].contactsManager;
     [[TSStorageManager sharedManager] setupDatabase];
     [TextSecureKitEnv sharedEnv].notificationsManager = [[NotificationsManager alloc] init];
-
+    
     OWSMessageSender *messageSender =
-        [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
-                                          storageManager:[TSStorageManager sharedManager]
-                                         contactsManager:[Environment getCurrent].contactsManager
-                                         contactsUpdater:[Environment getCurrent].contactsUpdater];
-
+    [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+                                      storageManager:[TSStorageManager sharedManager]
+                                     contactsManager:[Environment getCurrent].contactsManager];
+//                                     contactsUpdater:[Environment getCurrent].contactsUpdater];
+    
     self.incomingMessageReadObserver =
-        [[OWSIncomingMessageReadObserver alloc] initWithStorageManager:[TSStorageManager sharedManager]
-                                                         messageSender:messageSender];
+    [[OWSIncomingMessageReadObserver alloc] initWithStorageManager:[TSStorageManager sharedManager]
+                                                     messageSender:messageSender];
     [self.incomingMessageReadObserver startObserving];
-
+    
     self.staleNotificationObserver = [OWSStaleNotificationObserver new];
     [self.staleNotificationObserver startObserving];
 }
@@ -241,7 +306,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 }
 
 - (void)application:(UIApplication *)application
-    didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
     [PushManager.sharedManager.userNotificationFutureSource trySetResult:notificationSettings];
 }
 
@@ -258,7 +323,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
                 if ([controller isKindOfClass:[CodeVerificationViewController class]]) {
                     CodeVerificationViewController *cvvc = (CodeVerificationViewController *)controller;
                     NSString *verificationCode           = [url.path substringFromIndex:1];
-
+                    
                     cvvc.challengeTextField.text = verificationCode;
                     [cvvc verifyChallengeAction:nil];
                 } else {
@@ -279,84 +344,64 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     if (getenv("runningTests_dontStartApp")) {
         return;
     }
-
-    [[TSAccountManager sharedInstance] ifRegistered:YES
-                                           runAsync:^{
+#warning XXX Signals ifRegistered method returning false negatives
+//    [[TSAccountManager sharedInstance] ifRegistered:YES
+//                                           runAsync:^{
+    CCSMStorage *ccsmStore = [CCSMStorage new];
+    NSString *sessionToken = [ccsmStore getSessionToken];
+    if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) { // Check for local sessionKey
+    
                                                // We're double checking that the app is active, to be sure since we
                                                // can't verify in production env due to code
                                                // signing.
                                                [TSSocketManager becomeActiveFromForeground];
-                                               [[Environment getCurrent].contactsManager verifyABPermission];
-                                           }];
-    
-//    __block UIStoryboard *storyboard;
-//    
-//    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-//    if (!([sessionToken isEqualToString:@""] || sessionToken == nil)) // Check for local sessionKey, if there refresh
-//    {
-//        [self.ccsmCommManager refreshSessionTokenSynchronousSuccess:^{  // Refresh success
-//            [self refreshUsersStore];
-//            
-//            if ([TSAccountManager isRegistered])  // Registration check, if good go straight in
-//            {
-//                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-//            }
-//            else {  // Good token, but not registered, go register
-//                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardRegistration bundle:[NSBundle mainBundle]];
-//            }
-//        }
-//                                                            failure:^(NSError *error){  // Unable to refresh, login
-//                                                                storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-//                                                            }];
-//    }
-//    else  // No local token, login
-//    {
-//        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-//    }
-//    
-//    UIViewController *rootViewController = [storyboard instantiateInitialViewController];
-//
-//    [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
-
+                                               
+                                               // Refresh the contact/recipient database in background
+                                               dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+                                                   [[Environment getCurrent].contactsManager refreshCCSMRecipients];
+                                               });
+//                                               [[Environment getCurrent].contactsManager verifyABPermission];
+//                                           }];
+    }
     [self removeScreenProtection];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     UIBackgroundTaskIdentifier __block bgTask = UIBackgroundTaskInvalid;
     bgTask                                    = [application beginBackgroundTaskWithExpirationHandler:^{
-
+        
     }];
-
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-      if ([TSAccountManager isRegistered]) {
-          dispatch_sync(dispatch_get_main_queue(), ^{
-            [self protectScreen];
-              [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
-          });
-          [TSSocketManager resignActivity];
-      }
-
-      [application endBackgroundTask:bgTask];
-      bgTask = UIBackgroundTaskInvalid;
+        if ([TSAccountManager isRegistered]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self protectScreen];
+                [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
+            });
+            [TSSocketManager resignActivity];
+        }
+        
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
     });
 }
 
 - (void)application:(UIApplication *)application
-    performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
-               completionHandler:(void (^)(BOOL succeeded))completionHandler {
+performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
+  completionHandler:(void (^)(BOOL succeeded))completionHandler {
     if ([TSAccountManager isRegistered]) {
         [[Environment getCurrent].forstaViewController composeNew:nil];
         completionHandler(YES);
     } else {
         UIAlertController *controller =
-            [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
-                                                message:NSLocalizedString(@"REGISTRATION_RESTRICTED_MESSAGE", nil)
-                                         preferredStyle:UIAlertControllerStyleAlert];
-
+        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
+                                            message:NSLocalizedString(@"REGISTRATION_RESTRICTED_MESSAGE", nil)
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
         [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction *_Nonnull action){
-
+                                                         
                                                      }]];
         [[Environment getCurrent]
          .forstaViewController.presentedViewController presentViewController:controller
@@ -379,8 +424,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     window.windowLevel = CGFLOAT_MAX;
     window.backgroundColor = UIColor.ows_materialBlueColor;
     window.rootViewController =
-        [[UIStoryboard storyboardWithName:@"Launch Screen" bundle:nil] instantiateInitialViewController];
-
+    [[UIStoryboard storyboardWithName:@"Launch Screen" bundle:nil] instantiateInitialViewController];
+    
     self.screenProtectionWindow = window;
 }
 
@@ -403,8 +448,9 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         users = [NSMutableDictionary new];
     }
     
-    NSString *orgUrl = [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"];
+    NSString *orgUrl = [(NSDictionary *)[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
     [self.ccsmCommManager getThing:orgUrl
+                       synchronous:NO
                            success:^(NSDictionary *org){
                                DDLogInfo(@"Retrieved org info after session token refresh");
                                [[Environment getCurrent].ccsmStorage setOrgInfo:org];
@@ -430,8 +476,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [[PushManager sharedManager] application:application didReceiveRemoteNotification:userInfo];
 }
 - (void)application:(UIApplication *)application
-    didReceiveRemoteNotification:(NSDictionary *)userInfo
-          fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     [[PushManager sharedManager] application:application
                 didReceiveRemoteNotification:userInfo
                       fetchCompletionHandler:completionHandler];
@@ -442,9 +488,9 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 }
 
 - (void)application:(UIApplication *)application
-    handleActionWithIdentifier:(NSString *)identifier
-          forLocalNotification:(UILocalNotification *)notification
-             completionHandler:(void (^)())completionHandler {
+handleActionWithIdentifier:(NSString *)identifier
+forLocalNotification:(UILocalNotification *)notification
+  completionHandler:(void (^)())completionHandler {
     [[PushManager sharedManager] application:application
                   handleActionWithIdentifier:identifier
                         forLocalNotification:notification
@@ -452,10 +498,10 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 }
 
 - (void)application:(UIApplication *)application
-    handleActionWithIdentifier:(NSString *)identifier
-          forLocalNotification:(UILocalNotification *)notification
-              withResponseInfo:(NSDictionary *)responseInfo
-             completionHandler:(void (^)())completionHandler {
+handleActionWithIdentifier:(NSString *)identifier
+forLocalNotification:(UILocalNotification *)notification
+   withResponseInfo:(NSDictionary *)responseInfo
+  completionHandler:(void (^)())completionHandler {
     [[PushManager sharedManager] application:application
                   handleActionWithIdentifier:identifier
                         forLocalNotification:notification
@@ -470,7 +516,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     if ([self applicationIsActive]) {
         return;
     }
-
+    
     if (![[TSStorageManager sharedManager] databasePasswordAccessible]) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.alertBody            = NSLocalizedString(@"PHONE_NEEDS_UNLOCK", nil);
@@ -481,11 +527,11 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 - (BOOL)applicationIsActive {
     UIApplication *app = [UIApplication sharedApplication];
-
+    
     if (app.applicationState == UIApplicationStateActive) {
         return YES;
     }
-
+    
     return NO;
 }
 
@@ -508,6 +554,11 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         _ccsmCommManager = [CCSMCommManager new];
     }
     return _ccsmCommManager;
+}
+
+-(BOOL)awaitingVerification
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:FLAwaitingVerification];
 }
 
 @end

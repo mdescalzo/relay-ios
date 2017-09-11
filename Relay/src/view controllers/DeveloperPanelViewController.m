@@ -11,15 +11,14 @@
 
 @interface DeveloperPanelViewController ()
 
-@property (nonatomic, weak) IBOutlet UIPickerView *supermanIDPicker;
 @property (nonatomic, weak) IBOutlet UILabel *supermanIDLabel;
 @property (nonatomic, weak) IBOutlet UILabel *forstaURLLabel;
+@property (nonatomic, weak) IBOutlet UITextField *inputField;
+@property (nonatomic, weak) IBOutlet UILabel *outputLabel;
+
+@property (nonatomic, strong) FLTagMathService *tagService;
 
 @property (nonatomic, strong) NSArray *validSupermanIDs;
-
-
--(IBAction)didPressSave:(id)sender;
--(IBAction)didPressReset:(id)sender;
 
 @end
 
@@ -33,6 +32,8 @@
     
     self.supermanIDLabel.text = FLSupermanID;
     self.forstaURLLabel.text = FLHomeURL;
+    
+    [self tagService];
     
     [self updateView];
 }
@@ -52,7 +53,8 @@
     } else {
         supermanIndex = [self.validSupermanIDs indexOfObject:supermanID];
     }
-    [self.supermanIDPicker selectRow:(NSInteger)supermanIndex inComponent:0 animated:YES];
+    
+//    self.outputLabel.text = @"No output";
 }
 
 /*
@@ -65,37 +67,46 @@
 }
 */
 
--(IBAction)didPressSave:(id)sender
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSInteger supermanIndex = [self.supermanIDPicker selectedRowInComponent:0];
-    [[CCSMStorage new] setSupermanId:[self.validSupermanIDs objectAtIndex:(NSUInteger)supermanIndex]];
+    if (textField.text.length >= 3) {
+        [self.tagService tagLookupWithString:textField.text
+                                     success:^(NSDictionary *results) {
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];
+                                         });
+                                     }
+                                     failure:^(NSError *error) {
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", error.code, error.localizedDescription];
+                                         });
+                                     }];
+    }
     
-    [self updateView];
+    return YES;
 }
 
--(IBAction)didPressReset:(id)sender
-{
-    [self updateView];
-}
+//-(void)successfulLookupWithResults:(NSDictionary *)results
+//{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];
+//    });
+//}
+//
+//-(void)failedLookupWithError:(NSError *)error
+//{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", error.code, error.localizedDescription];
+//    });
+//}
 
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+-(FLTagMathService *)tagService
 {
-    
-}
-
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return (NSInteger)[self.validSupermanIDs count];
-}
-
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return (NSString *)[self.validSupermanIDs objectAtIndex:(NSUInteger)row];
+    if (_tagService == nil) {
+        _tagService = [FLTagMathService new];
+//        _tagService.delegate = self;
+    }
+    return _tagService;
 }
 
 @end

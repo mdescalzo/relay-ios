@@ -9,8 +9,7 @@
 #import "Environment.h"
 #import "CCSMJSONService.h"
 #import "TSOutgoingMessage.h"
-#import "TSGroupThread.h"
-#import "TSContactThread.h"
+#import "TSThread.h"
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
 #import "TSAttachment.h"
@@ -30,8 +29,8 @@
 
 @implementation CCSMJSONService
 
-#warning Need a mechanism for recognizing message type
-+(NSString *)blobFromMessage:(TSOutgoingMessage *)message
+#warning XXX Need a mechanism for recognizing message type
++(NSString *_Nullable)blobFromMessage:(TSOutgoingMessage *_Nonnull)message
 {
     
     NSArray *holdingArray = [self arrayForTypeOrdinaryFromMessage:message];
@@ -59,76 +58,56 @@
     NSNumber *version = [NSNumber numberWithInt:1];
     NSString *userAgent = [DeviceTypes deviceModelName];
     NSString *messageId = message.forstaMessageID;
-    NSString *threadId = message.thread.forstaThreadID;
+    NSString *threadId = message.thread.uniqueId;
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
-    NSString *type = @"ordinary";
+    NSString *messageType = @"content";
+#warning XXX Pull threadType from thread property
+    NSString *threadType = @"conversation";
+//    NSString *type = @"ordinary";
     
     
     NSDictionary *senderDict = [[Environment getCurrent].ccsmStorage getUserInfo];
-    NSArray *tagsArray = [senderDict objectForKey:@"tags"];
-    NSString *tagId;
-    for (NSDictionary *tag in tagsArray) {
-        if ([[tag objectForKey:@"association_type"] isEqualToString:@"USERNAME"]) {
-            tagId = [tag objectForKey:@"id"];
-            break;
-        }
-    }
-    NSDictionary *orgDict = [[Environment getCurrent].ccsmStorage getOrgInfo];
+    NSDictionary *tagDict = [senderDict objectForKey:@"tag"];
+    NSString *tagId = [tagDict objectForKey:@"id"];
+
+//    NSDictionary *orgDict = [[Environment getCurrent].ccsmStorage getOrgInfo];
 //    NSString *orgId = [orgDict objectForKey:@"id"];
 
     
-    NSDictionary *sender = @{ @"tagId": (tagId ? tagId : @""),
-                              @"tagPresentation" : [NSString stringWithFormat:@"%@", [[Environment getCurrent].ccsmStorage getUserName]],
+    NSDictionary *sender = @{ /* @"tagId": (tagId ? tagId : @""), */
                               @"userId" :  [senderDict objectForKey:@"id"],
-//                              @"resolvedUser" : @{
-//                                      @"orgId" : (orgId ? orgId : @""),
-//                                      @"userId" :  [senderDict objectForKey:@"id"]
-//                                      },
-                              @"resolvedNumber" : [senderDict objectForKey:@"phone"]
                               };
     
     // Build recipient blob
-#warning make a private method
-    NSArray *recipientUsers;
-    if (message.thread.isGroupThread) {
-        recipientUsers = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
-    } else {
-        recipientUsers = @[ ((TSContactThread *)message.thread).contactIdentifier ];
-    }
-    
-    NSMutableString *presentation = [NSMutableString new];
-    NSMutableArray *userIds = [NSMutableArray new];
 
-    for (NSString *memberID in recipientUsers) {
-        NSString *recipientTag = nil;
-        NSString *recipientID = nil;
-        if (memberID) {
-            Contact *contact = [Environment.getCurrent.contactsManager latestContactForPhoneNumber:[PhoneNumber phoneNumberFromUserSpecifiedText:memberID]];
-            if (contact.tagPresentation) {
-                recipientTag = contact.tagPresentation;
-                recipientID = contact.userID;
+    NSArray *userIds = message.thread.participants;
+    // Missing participants, make it
+#warning XXX CCSM lookup here?
+//    if (userIds.count == 0) {
+//        if (message.thread.isGroupThread) {
+//            userIds = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
+//        } else {
+//            userIds = @[ ((TSContactThread *)message.thread).contactIdentifier, [TSStorageManager localNumber] ];
+//        }
+//    }
+    
+    NSString *presentation = message.thread.universalExpression;
+    
+    //  Missing expresssion for some reason, make one
+    if (presentation.length == 0) {
+        for (NSString *userId in userIds) {
+            if (presentation.length == 0) {
+                presentation = [NSString stringWithFormat:@"(<%@>", userId];
             } else {
-                recipientTag = @"non_CCSM_user";
+                presentation = [presentation stringByAppendingString:[NSString stringWithFormat:@"+<%@>", userId]];
             }
-        } else {
-            recipientTag = @"unknown_user";
         }
-
-        if (recipientID) {
-            [userIds addObject:recipientID];
-        }
-        
-        if (presentation.length == 0) {
-            [presentation appendString:[NSString stringWithFormat:@"%@", recipientTag]];
-        } else {
-            [presentation appendString:[NSString stringWithFormat:@" %@", recipientTag]];
-        }
+        presentation = [presentation stringByAppendingString:@")"];
     }
-    
-    NSDictionary *recipients = @{ @"expression" : @{ @"presentation" : presentation },
-                                  @"resolvedNumbers" : recipientUsers,
-                                  @"userIds" : userIds
+        
+    NSDictionary *recipients = @{ @"expression" : presentation
+//                                  @"userIds" : userIds
                                   };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
@@ -138,10 +117,12 @@
                                @"threadId" : threadId,
                                @"threadTitle" : threadTitle,
                                @"sendTime" : sendTime,
-                               @"type" : type,
+                               @"messageType" : messageType,
+                               @"threadType" : threadType,
+//                               @"type" : type,
 //                               @"data" : data,
                                @"sender" : sender,
-                               @"recipients" : recipients
+                               @"distribution" : recipients
                                }];
     // Handler for nil message.body
     NSDictionary *data;
@@ -218,64 +199,48 @@
 
 +(NSString *)formattedStringFromDate:(NSDate *)date
 {
-    NSISO8601DateFormatter *df = [[NSISO8601DateFormatter alloc] init];
-    df.formatOptions = NSISO8601DateFormatWithInternetDateTime;
+    NSString *returnString = nil;
     
-    return [df stringFromDate:date];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.0) {
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        [df setLocale:enUSPOSIXLocale];
+        [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+        returnString = [df stringFromDate:date];
+    } else {
+        NSISO8601DateFormatter *df = [[NSISO8601DateFormatter alloc] init];
+        df.formatOptions = NSISO8601DateFormatWithInternetDateTime;
+        returnString = [df stringFromDate:date];
+    }
+    
+    return returnString;
+}
+
+#pragma mark - JSON body parsing methods
++(nullable NSArray *)arrayFromMessageBody:(NSString *_Nonnull)body
+{
+    // Checks passed message body to see if it is JSON,
+    //    If it is, return the array of contents
+    //    else, return nil.
+    if (body.length == 0) {
+        return nil;
+    }
+    
+    NSError *error =  nil;
+    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+    
+    if (data == nil) { // Not parseable.  Bounce out.
+        return nil;
+    }
+    
+    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+    if (error) {
+        DDLogError(@"JSON Parsing error: %@", error.description);
+        return nil;
+    } else {
+        return output;
+    }
 }
 
 @end
-
-//                                      @{ @"version": @"",
-//                                         @"messageId": message.uniqueId,            // globally unique message id
-//                                         @"threadId": message.uniqueThreadId,       // globally unique thread id
-//                                         @"threadTitle": @"",                 // non-unique original name for the thread from its creator
-//                                         @"sendTime": [NSNumber numberWithUnsignedInteger:message.timestamp],
-//                                         @"type": @"",                              //  'ordinary'|'broadcast'|'survey'|
-//                                                                                    //  'survey-response'|'control'|'receipt'
-//                                         @"data": @{
-//                                                 @"receipt": @{   // If 'receipt'
-//                                                         @"messageId": @"",
-//                                                         @"userTagId": @"",
-//                                                         @"receiveTime": @"",
-//                                                         @"readTime": @"",
-//                                                         @"removalTime": @"",
-//                                                         @"feedback": @""
-//                                                         },
-//
-//                                                 @"body": @[ // if 'ordinary' or 'broadcast'
-//                                                         @{ @"type": @"",  // 'text/html'|'text/plain'|...
-//                                                            @"value": @"" },
-//
-//                                                         @{ @"type": @"",  // 'text/html'|'text/plain'|...
-//                                                            @"value": @"" }
-//                                                         ],
-//
-//                                                 @"surveyMaxSelections": @"",  // int - if survey
-//                                                 @"surveyChoices": @[/* 'label string1', 'label string2', etc */ ],  //  if 'survey'
-//                                                 @"surveySelections": @[/* 'label string', 'label string', etc */],  //  if 'survey'
-//
-//                                                 @"expiration": @[
-//                                                         @{ @"base": @"", /* 'read'|'received'|'sent' */
-//                                                            @"offset": @"" /* int seconds */},
-//                                                         @{ @"base": @"", /* 'read'|'received'|'sent' */
-//                                                            @"offset": @"" /* int seconds */}
-//                                                         ]
-//                                                 },
-//
-//                                         @"sender": @{
-//                                                 @"tagId": @"",  // sender's usertag id
-//                                                 @"tagPresentation": @"",  // string representation of sender's tag AT SEND TIME
-//                                                 @"userIds": @"", // id of sending user
-//                                                 @"number": @""
-//                                                 },
-//
-//                                         @"recipients": @{
-//                                                 @"distributionExpression": @{},
-//                                                 @"distributionPresentation": @"",
-//                                                 @"distributionTagsIncluded": @[],
-//                                                 @"distributionTagExcluded": @[],
-//                                                 @"userIds": @[],
-//                                                 @"numbers": @[]
-//                                                 }
-//                                         };

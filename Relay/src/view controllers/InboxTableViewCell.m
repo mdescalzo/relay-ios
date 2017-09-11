@@ -5,9 +5,8 @@
 #import "Environment.h"
 #import "OWSAvatarBuilder.h"
 #import "PropertyListPreferences.h"
-#import "TSContactThread.h"
-#import "TSGroupThread.h"
-#import "TSMessagesManager.h"
+#import "TSThread.h"
+#import "FLMessagesManager.h"
 #import "Util.h"
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
 #import <JSQMessagesViewController/UIImage+JSQMessages.h>
@@ -55,8 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
         });
     }
 
+//#warning XXX DEBUG ONLY XXX
+//    NSString *name = thread.uniqueId;
     NSString *name = thread.name;
-    if (name.length == 0 && [thread isKindOfClass:[TSGroupThread class]]) {
+    if (name.length == 0) {
+        DDLogDebug(@"Thread return with no name.");
         name = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
     }
     UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
@@ -66,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *snippetText = thread.lastMessageLabel;
 //    NSString *snippetLabel             = thread.lastMessageLabel;
     NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
-    NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
+    NSUInteger unreadCount             = [[FLMessagesManager sharedManager] unreadMessagesInThread:thread];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         self.nameLabel.text = name;

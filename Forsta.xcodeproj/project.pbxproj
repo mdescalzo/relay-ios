@@ -164,10 +164,7 @@
 		76EB064418170B33006006FC /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F818170B33006006FC /* ThreadManager.m */; };
 		76EB064618170B33006006FC /* TimeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FA18170B33006006FC /* TimeUtil.m */; };
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
-		76EB065618170B34006006FC /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
-		7D123CA21F016C5F003B55EB /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
-		7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
@@ -248,7 +245,6 @@
 		7D4A3A081F1693930023C29B /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
 		7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E118170B33006006FC /* Conversions.m */; };
-		7D4A3A0C1F1693930023C29B /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A418170B33006006FC /* InitiateSignal.pb.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		7D4A3A0E1F1693930023C29B /* RecipientUnavailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046A18170B33006006FC /* RecipientUnavailable.m */; };
 		7D4A3A0F1F1693930023C29B /* DropoutTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FA18BBEC1A00F073E5 /* DropoutTracker.m */; };
@@ -291,7 +287,6 @@
 		7D4A3A361F1693930023C29B /* SoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62318BBF5BB00F073E5 /* SoundPlayer.m */; };
 		7D4A3A371F1693930023C29B /* EncodedAudioPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F118BBEC1A00F073E5 /* EncodedAudioPacket.m */; };
 		7D4A3A381F1693930023C29B /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
-		7D4A3A391F1693930023C29B /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7D4A3A3A1F1693930023C29B /* DataUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E718170B33006006FC /* DataUtil.m */; };
 		7D4A3A3B1F1693930023C29B /* AudioPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5E918BBEC1A00F073E5 /* AudioPacker.m */; };
 		7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F618BBEC1A00F073E5 /* AudioStretcher.m */; };
@@ -350,7 +345,6 @@
 		7D4A3A721F1693930023C29B /* JitterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FC18BBEC1A00F073E5 /* JitterQueue.m */; };
 		7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
-		7D4A3A751F1693930023C29B /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
 		7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
 		7D4A3A771F1693930023C29B /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
 		7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
@@ -372,7 +366,6 @@
 		7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
 		7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E519E1FBE8005735D1 /* HttpRequest.m */; };
 		7D4A3A8A1F1693930023C29B /* OWSDatabaseMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7A1D9C0533008FE134 /* OWSDatabaseMigration.m */; };
-		7D4A3A8B1F1693930023C29B /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */; };
 		7D4A3A8C1F1693930023C29B /* ResponderSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04AE18170B33006006FC /* ResponderSessionDescriptor.m */; };
 		7D4A3A8D1F1693930023C29B /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
 		7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
@@ -561,7 +554,6 @@
 		7DCFFDAF1F0EE4490003CD95 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		7DCFFDB01F0EE4490003CD95 /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
 		7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E118170B33006006FC /* Conversions.m */; };
-		7DCFFDB31F0EE4490003CD95 /* InCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB050C18170B33006006FC /* InCallViewController.m */; };
 		7DCFFDB41F0EE4490003CD95 /* InitiateSignal.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A418170B33006006FC /* InitiateSignal.pb.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		7DCFFDB51F0EE4490003CD95 /* RecipientUnavailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046A18170B33006006FC /* RecipientUnavailable.m */; };
 		7DCFFDB61F0EE4490003CD95 /* DropoutTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FA18BBEC1A00F073E5 /* DropoutTracker.m */; };
@@ -604,7 +596,6 @@
 		7DCFFDDD1F0EE4490003CD95 /* SoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62318BBF5BB00F073E5 /* SoundPlayer.m */; };
 		7DCFFDDE1F0EE4490003CD95 /* EncodedAudioPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F118BBEC1A00F073E5 /* EncodedAudioPacket.m */; };
 		7DCFFDDF1F0EE4490003CD95 /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
-		7DCFFDE01F0EE4490003CD95 /* FLConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D24726A1EF0C80B0048126F /* FLConversationViewController.m */; };
 		7DCFFDE11F0EE4490003CD95 /* DataUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E718170B33006006FC /* DataUtil.m */; };
 		7DCFFDE21F0EE4490003CD95 /* AudioPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5E918BBEC1A00F073E5 /* AudioPacker.m */; };
 		7DCFFDE31F0EE4490003CD95 /* AudioStretcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F618BBEC1A00F073E5 /* AudioStretcher.m */; };
@@ -663,7 +654,6 @@
 		7DCFFE191F0EE4490003CD95 /* JitterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FC18BBEC1A00F073E5 /* JitterQueue.m */; };
 		7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
-		7DCFFE1C1F0EE4490003CD95 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D123CA11F016C5F003B55EB /* FLContactsManager.m */; };
 		7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
 		7DCFFE1E1F0EE4490003CD95 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
 		7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
@@ -685,7 +675,6 @@
 		7DCFFE2F1F0EE4490003CD95 /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
 		7DCFFE301F0EE4490003CD95 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E519E1FBE8005735D1 /* HttpRequest.m */; };
 		7DCFFE311F0EE4490003CD95 /* OWSDatabaseMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7A1D9C0533008FE134 /* OWSDatabaseMigration.m */; };
-		7DCFFE321F0EE4490003CD95 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */; };
 		7DCFFE331F0EE4490003CD95 /* ResponderSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04AE18170B33006006FC /* ResponderSessionDescriptor.m */; };
 		7DCFFE341F0EE4490003CD95 /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
 		7DCFFE351F0EE4490003CD95 /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
@@ -774,6 +763,10 @@
 		7DCFFE8B1F0EE4490003CD95 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DCFFE8C1F0EE4490003CD95 /* audio_pause_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3E1A73426500B5C81A /* audio_pause_button@2x.png */; };
 		7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
+		7DE5C0AF1F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DE5C0B21F4CF9D900DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A123C14916F902EE000AE905 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
@@ -1049,7 +1042,6 @@
 		D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D221A0E7169DFFC500537ABF /* AVFoundation.framework */; };
 		D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24B5BD4169F568C00681372 /* AudioToolbox.framework */; };
 		D2AEACDC16C426DA00C364C0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AEACDB16C426DA00C364C0 /* CFNetwork.framework */; };
-		DBE1798F1ED9FFEC00327B2B /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */; };
 		DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE179921EDF37E900327B2B /* CCSMCommunication.m */; };
 		E1368CBE18A1C36B00109378 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EB5ABC1884C002007CBB57 /* MessageUI.framework */; };
 		E1370BE018A0686600826894 /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40718A05754001A532A /* busy.mp3 */; };
@@ -1461,14 +1453,8 @@
 		76EB04FB18170B33006006FC /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		76EB04FC18170B33006006FC /* Zid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zid.h; sourceTree = "<group>"; };
 		76EB04FD18170B33006006FC /* Zid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Zid.m; sourceTree = "<group>"; };
-		76EB050B18170B33006006FC /* InCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InCallViewController.h; sourceTree = "<group>"; };
-		76EB050C18170B33006006FC /* InCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCallViewController.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
-		7D123CA01F016C5F003B55EB /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
-		7D123CA11F016C5F003B55EB /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
-		7D2472691EF0C80B0048126F /* FLConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLConversationViewController.h; sourceTree = "<group>"; };
-		7D24726A1EF0C80B0048126F /* FLConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLConversationViewController.m; sourceTree = "<group>"; };
 		7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSlackTextViewController.a; path = "../Library/Developer/Xcode/DerivedData/Relay-gkridggddzianpfuvzrdybphatso/Build/Products/Debug-iphonesimulator/SlackTextViewController/libSlackTextViewController.a"; sourceTree = "<group>"; };
 		7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDirectoryPopupViewController.h; sourceTree = "<group>"; };
 		7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDirectoryPopupViewController.m; sourceTree = "<group>"; };
@@ -1515,6 +1501,8 @@
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
 		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
+		7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
+		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89AD8E9D7C03FA606826376F /* libPods-Common-RelayDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-RelayDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1726,8 +1714,6 @@
 		D221A0E7169DFFC500537ABF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = ../../../../../../System/Library/Frameworks/AVFoundation.framework; sourceTree = "<group>"; };
 		D24B5BD4169F568C00681372 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = ../../../../../../System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<group>"; };
 		D2AEACDB16C426DA00C364C0 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		DBE1798D1ED9FFD600327B2B /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMStorage.h; sourceTree = "<group>"; };
-		DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
 		DBE179921EDF37E900327B2B /* CCSMCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMCommunication.m; sourceTree = "<group>"; };
 		DBE179941EDF381400327B2B /* CCSMCommunication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMCommunication.h; sourceTree = "<group>"; };
 		DDF434CA3373A266854BEDC2 /* Pods-Relay.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Relay.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Relay/Pods-Relay.app store release.xcconfig"; sourceTree = "<group>"; };
@@ -2141,8 +2127,8 @@
 				76EB040918170B33006006FC /* OWSContactsManager.m */,
 				45843D1D1D2236B30013E85A /* OWSContactsSearcher.h */,
 				45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */,
-				7D123CA01F016C5F003B55EB /* FLContactsManager.h */,
-				7D123CA11F016C5F003B55EB /* FLContactsManager.m */,
+				7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */,
+				7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */,
 			);
 			path = contact;
 			sourceTree = "<group>";
@@ -2586,8 +2572,6 @@
 				FCFD25791A1543D500F4C644 /* Signup */,
 				B6BADBE51B88D1AC0086A80D /* LockInteractionController.h */,
 				B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */,
-				76EB050B18170B33006006FC /* InCallViewController.h */,
-				76EB050C18170B33006006FC /* InCallViewController.m */,
 				458E382F1D6682450094BD24 /* OWSQRCodeScanningViewController.h */,
 				458E38301D6682450094BD24 /* OWSQRCodeScanningViewController.m */,
 			);
@@ -2645,8 +2629,6 @@
 			children = (
 				7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */,
 				7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */,
-				7D2472691EF0C80B0048126F /* FLConversationViewController.h */,
-				7D24726A1EF0C80B0048126F /* FLConversationViewController.m */,
 				7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */,
 				7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */,
 				7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */,
@@ -3152,8 +3134,6 @@
 		DBE1798C1ED9FF8500327B2B /* ccsm */ = {
 			isa = PBXGroup;
 			children = (
-				DBE1798D1ED9FFD600327B2B /* CCSMStorage.h */,
-				DBE1798E1ED9FFEC00327B2B /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
 				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 			);
@@ -4093,7 +4073,6 @@
 				7D4A3A081F1693930023C29B /* OWSExpirationTimerView.m in Sources */,
 				7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */,
 				7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */,
-				7D4A3A0C1F1693930023C29B /* InCallViewController.m in Sources */,
 				7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */,
 				7D4A3A0E1F1693930023C29B /* RecipientUnavailable.m in Sources */,
 				7D4A3A0F1F1693930023C29B /* DropoutTracker.m in Sources */,
@@ -4120,6 +4099,7 @@
 				7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */,
 				7D4A3A271F1693930023C29B /* ContactTableViewCell.m in Sources */,
 				7D4A3A281F1693930023C29B /* HttpRequestOrResponse.m in Sources */,
+				7DE5C0AF1F4CF9D500DA4230 /* FLContactsManager.m in Sources */,
 				7D4A3A291F1693930023C29B /* IpAddress.m in Sources */,
 				7D4A3A2A1F1693930023C29B /* MessagesViewController.m in Sources */,
 				7D4A3A2B1F1693930023C29B /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -4136,7 +4116,6 @@
 				7D4A3A361F1693930023C29B /* SoundPlayer.m in Sources */,
 				7D4A3A371F1693930023C29B /* EncodedAudioPacket.m in Sources */,
 				7D4A3A381F1693930023C29B /* OWSLinkDeviceViewController.m in Sources */,
-				7D4A3A391F1693930023C29B /* FLConversationViewController.m in Sources */,
 				7D4A3A3A1F1693930023C29B /* DataUtil.m in Sources */,
 				7D4A3A3B1F1693930023C29B /* AudioPacker.m in Sources */,
 				7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */,
@@ -4199,7 +4178,6 @@
 				7D4A3A721F1693930023C29B /* JitterQueue.m in Sources */,
 				7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */,
 				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
-				7D4A3A751F1693930023C29B /* FLContactsManager.m in Sources */,
 				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
 				7D4A3A771F1693930023C29B /* iRate.m in Sources */,
 				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
@@ -4222,7 +4200,6 @@
 				7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */,
 				7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */,
 				7D4A3A8A1F1693930023C29B /* OWSDatabaseMigration.m in Sources */,
-				7D4A3A8B1F1693930023C29B /* CCSMStorage.m in Sources */,
 				7D4A3A8C1F1693930023C29B /* ResponderSessionDescriptor.m in Sources */,
 				7D4A3A8D1F1693930023C29B /* DateUtil.m in Sources */,
 				7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */,
@@ -4320,7 +4297,6 @@
 				7DCFFDAF1F0EE4490003CD95 /* OWSExpirationTimerView.m in Sources */,
 				7DCFFDB01F0EE4490003CD95 /* NotificationsManager.m in Sources */,
 				7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */,
-				7DCFFDB31F0EE4490003CD95 /* InCallViewController.m in Sources */,
 				7DCFFDB41F0EE4490003CD95 /* InitiateSignal.pb.m in Sources */,
 				7DCFFDB51F0EE4490003CD95 /* RecipientUnavailable.m in Sources */,
 				7DCFFDB61F0EE4490003CD95 /* DropoutTracker.m in Sources */,
@@ -4347,6 +4323,7 @@
 				7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */,
 				7DCFFDCE1F0EE4490003CD95 /* ContactTableViewCell.m in Sources */,
 				7DCFFDCF1F0EE4490003CD95 /* HttpRequestOrResponse.m in Sources */,
+				7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */,
 				7DCFFDD01F0EE4490003CD95 /* IpAddress.m in Sources */,
 				7DCFFDD11F0EE4490003CD95 /* MessagesViewController.m in Sources */,
 				7DCFFDD21F0EE4490003CD95 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -4363,7 +4340,6 @@
 				7DCFFDDD1F0EE4490003CD95 /* SoundPlayer.m in Sources */,
 				7DCFFDDE1F0EE4490003CD95 /* EncodedAudioPacket.m in Sources */,
 				7DCFFDDF1F0EE4490003CD95 /* OWSLinkDeviceViewController.m in Sources */,
-				7DCFFDE01F0EE4490003CD95 /* FLConversationViewController.m in Sources */,
 				7DCFFDE11F0EE4490003CD95 /* DataUtil.m in Sources */,
 				7DCFFDE21F0EE4490003CD95 /* AudioPacker.m in Sources */,
 				7DCFFDE31F0EE4490003CD95 /* AudioStretcher.m in Sources */,
@@ -4426,7 +4402,6 @@
 				7DCFFE191F0EE4490003CD95 /* JitterQueue.m in Sources */,
 				7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */,
 				7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */,
-				7DCFFE1C1F0EE4490003CD95 /* FLContactsManager.m in Sources */,
 				7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */,
 				7DCFFE1E1F0EE4490003CD95 /* iRate.m in Sources */,
 				7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */,
@@ -4449,7 +4424,6 @@
 				7DCFFE2F1F0EE4490003CD95 /* DH3KKeyAgreementProtocol.m in Sources */,
 				7DCFFE301F0EE4490003CD95 /* HttpRequest.m in Sources */,
 				7DCFFE311F0EE4490003CD95 /* OWSDatabaseMigration.m in Sources */,
-				7DCFFE321F0EE4490003CD95 /* CCSMStorage.m in Sources */,
 				7DCFFE331F0EE4490003CD95 /* ResponderSessionDescriptor.m in Sources */,
 				7DCFFE341F0EE4490003CD95 /* DateUtil.m in Sources */,
 				7DCFFE351F0EE4490003CD95 /* HelloAckPacket.m in Sources */,
@@ -4546,7 +4520,6 @@
 				450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B6258B331C29E2E60014138E /* NotificationsManager.m in Sources */,
 				76EB063018170B33006006FC /* Conversions.m in Sources */,
-				76EB065618170B34006006FC /* InCallViewController.m in Sources */,
 				76EB05FE18170B33006006FC /* InitiateSignal.pb.m in Sources */,
 				76EB05CA18170B33006006FC /* RecipientUnavailable.m in Sources */,
 				E197B61418BBEC1A00F073E5 /* DropoutTracker.m in Sources */,
@@ -4574,6 +4547,7 @@
 				DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */,
 				76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */,
 				B63761ED19E1FBE8005735D1 /* HttpRequestOrResponse.m in Sources */,
+				7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */,
 				76EB05A018170B33006006FC /* IpAddress.m in Sources */,
 				FCAC965119FF0A6E0046DFC5 /* MessagesViewController.m in Sources */,
 				453D28BA1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -4590,7 +4564,6 @@
 				E197B62418BBF5BB00F073E5 /* SoundPlayer.m in Sources */,
 				E197B61018BBEC1A00F073E5 /* EncodedAudioPacket.m in Sources */,
 				458E38341D66873D0094BD24 /* OWSLinkDeviceViewController.m in Sources */,
-				7D24726B1EF0C80B0048126F /* FLConversationViewController.m in Sources */,
 				76EB063618170B33006006FC /* DataUtil.m in Sources */,
 				E197B60C18BBEC1A00F073E5 /* AudioPacker.m in Sources */,
 				E197B61218BBEC1A00F073E5 /* AudioStretcher.m in Sources */,
@@ -4653,7 +4626,6 @@
 				E197B61518BBEC1A00F073E5 /* JitterQueue.m in Sources */,
 				BFB074C919A5611000F2947C /* ObservableValue.m in Sources */,
 				B68EF9BA1C0B1EBD009C3DCD /* FLAnimatedImage.m in Sources */,
-				7D123CA21F016C5F003B55EB /* FLContactsManager.m in Sources */,
 				B68112EA1A4D9EC400BA82FF /* UIImage+normalizeImage.m in Sources */,
 				B609597C1C2C0FC6004E8797 /* iRate.m in Sources */,
 				76EB05C818170B33006006FC /* HelloPacket.m in Sources */,
@@ -4676,7 +4648,6 @@
 				76EB05B218170B33006006FC /* DH3KKeyAgreementProtocol.m in Sources */,
 				B63761EC19E1FBE8005735D1 /* HttpRequest.m in Sources */,
 				45666F7B1D9C0533008FE134 /* OWSDatabaseMigration.m in Sources */,
-				DBE1798F1ED9FFEC00327B2B /* CCSMStorage.m in Sources */,
 				76EB060818170B33006006FC /* ResponderSessionDescriptor.m in Sources */,
 				B90418E6183E9DD40038554A /* DateUtil.m in Sources */,
 				76EB05C618170B33006006FC /* HelloAckPacket.m in Sources */,
@@ -4821,6 +4792,7 @@
 				B660F7691C29988E00687D6E /* DecayingSampleEstimator.m in Sources */,
 				B660F76A1C29988E00687D6E /* EventWindow.m in Sources */,
 				B660F76B1C29988E00687D6E /* LoggingUtil.m in Sources */,
+				7DE5C0B21F4CF9D900DA4230 /* FLContactsManager.m in Sources */,
 				B660F76C1C29988E00687D6E /* AnonymousConditionLogger.m in Sources */,
 				B660F76D1C29988E00687D6E /* AnonymousOccurrenceLogger.m in Sources */,
 				B660F76E1C29988E00687D6E /* AnonymousValueLogger.m in Sources */,
@@ -4992,12 +4964,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 698DA70C81F48D4FBF8BE17D /* Pods-Common-RelayDev.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5038,7 +5010,7 @@
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.forsta.forsta;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.forsta.forsta-Dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -5058,12 +5030,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B462E78DB73BA9EF43380A26 /* Pods-Common-RelayDev.app store release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5104,7 +5076,7 @@
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.forsta.forsta;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.forsta.forsta-Dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5124,12 +5096,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AC91192815E6509A42F26823 /* Pods-Common-RelayStage.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Stage";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5170,7 +5142,7 @@
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.forsta.forsta;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.forsta.forsta-Stage";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -5190,12 +5162,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B20485A9B4860E2BCDF77692 /* Pods-Common-RelayStage.app store release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Stage";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5236,7 +5208,7 @@
 				);
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.forsta.forsta;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.forsta.forsta-Stage";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5392,7 +5364,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5456,7 +5428,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
