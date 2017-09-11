@@ -1459,8 +1459,8 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                          self.taggedRecipientIDs = [NSSet setWithArray:[results objectForKey:@"userids"]];
                                          self.universalTagExpression = [results objectForKey:@"universal"];
                                          self.prettyTagString = [results objectForKey:@"pretty"];
-                                         
-                                         if (self.taggedRecipientIDs.count < 1) {  // No recipients, bail
+
+                                         if (self.taggedRecipientIDs.count < 2 && ![inputText containsString:TSAccountManager.sharedInstance.myself.tagSlug]) {  // No recipients, bail
                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                  UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ALERT", @"")
                                                                                                                 message:NSLocalizedString(@"NO_RECIPIENTS_IN_MESSAGE", @"")
