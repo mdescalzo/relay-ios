@@ -54,19 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
         });
     }
 
-//#warning XXX DEBUG ONLY XXX
-//    NSString *name = thread.uniqueId;
-    NSString *name = thread.name;
-    if (name.length == 0) {
-        DDLogDebug(@"Thread return with no name.");
-        name = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
-    }
+    NSString *name = thread.displayName;
     UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
-//    UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager];
     self.threadId = thread.uniqueId;
     
     NSString *snippetText = thread.lastMessageLabel;
-//    NSString *snippetLabel             = thread.lastMessageLabel;
     NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
     NSUInteger unreadCount             = [[FLMessagesManager sharedManager] unreadMessagesInThread:thread];
 

@@ -466,7 +466,7 @@ typedef enum : NSUInteger {
 
 - (void)setNavigationTitle
 {
-    NSString *navTitle = self.thread.name;
+    NSString *navTitle = self.thread.displayName;
 //    if (isGroupConversation && [navTitle length] == 0) {
 //        navTitle = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
 //    }
@@ -1479,7 +1479,7 @@ typedef enum : NSUInteger {
 {
 
     NSString *actionSheetTitle = [NSString
-        stringWithFormat:NSLocalizedString(@"CORRUPTED_SESSION_DESCRIPTION", @"ActionSheet title"), self.thread.name];
+        stringWithFormat:NSLocalizedString(@"CORRUPTED_SESSION_DESCRIPTION", @"ActionSheet title"), self.thread.displayName];
 
     [DJWActionSheet showInView:self.view
                      withTitle:actionSheetTitle
@@ -1884,6 +1884,7 @@ typedef enum : NSUInteger {
 
     [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
+        [self setNavigationTitle];
     }];
 
     NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
@@ -2146,7 +2147,7 @@ typedef enum : NSUInteger {
 - (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
 {
     __block TSThread *thread;
-    __block TSOutgoingMessage *message;
+//    __block TSOutgoingMessage *message;
     __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
                                                                     memberIds:[self.thread.participants mutableCopy]
                                                                         image:self.thread.image
@@ -2155,14 +2156,14 @@ typedef enum : NSUInteger {
     [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [TSThread getOrCreateThreadWithID:self.thread.uniqueId transaction:transaction];
         
-        NSString *updateGroupInfo = [oldGroupModel getInfoStringAboutUpdateTo:newGroupModel contactsManager:self.contactsManager];
+//        NSString *updateGroupInfo = [oldGroupModel getInfoStringAboutUpdateTo:newGroupModel contactsManager:self.contactsManager];
 
         self.thread.name = newGroupModel.groupName;
         self.thread.participants = [NSArray arrayWithArray:newGroupModel.groupMemberIds];
         self.thread.image = newGroupModel.groupImage;
         
         [self.thread saveWithTransaction:transaction];
-        
+
 #warning XXX Control message send for group update here.
 //        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
 //                                                      inThread:thread
