@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FLSupermanID</key>
+	<string>88e7165e-d2da-4c3f-a14a-bb802bb0cefb</string>
 	<key>CCSM_Home_URL</key>
 	<string>https://ccsm-stage-api.forsta.io</string>
 	<key>TSS_Serveraddress</key>
