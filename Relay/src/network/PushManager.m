@@ -220,7 +220,7 @@
 
                     UILocalNotification *failedSendNotif = [[UILocalNotification alloc] init];
                     failedSendNotif.alertBody =
-                        [NSString stringWithFormat:NSLocalizedString(@"NOTIFICATION_SEND_FAILED", nil), [thread name]];
+                        [NSString stringWithFormat:NSLocalizedString(@"NOTIFICATION_SEND_FAILED", nil), thread.displayName];
                     failedSendNotif.userInfo = @{ Signal_Thread_UserInfo_Key : thread.uniqueId };
                     [self presentNotification:failedSendNotif];
                     completionHandler();
