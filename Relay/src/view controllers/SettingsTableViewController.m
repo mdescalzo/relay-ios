@@ -66,9 +66,11 @@ typedef enum {
     [self.navigationController.navigationBar setTranslucent:NO];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.registeredNumber.text =
-        [PhoneNumber bestEffortFormatPartialUserSpecifiedTextToLookLikeAPhoneNumber:[TSAccountManager localNumber]];
-    self.registeredName.text = NSLocalizedString(@"REGISTERED_NUMBER_TEXT", @"");
+    self.registeredNumber.text = TSAccountManager.sharedInstance.myself.orgSlug;
+    self.registeredName.text = TSAccountManager.sharedInstance.myself.fullName;
+//    self.registeredNumber.text =
+//        [PhoneNumber bestEffortFormatPartialUserSpecifiedTextToLookLikeAPhoneNumber:[TSAccountManager localNumber]];
+//    self.registeredName.text = NSLocalizedString(@"REGISTERED_NUMBER_TEXT", @"");
 
     [self initializeObserver];
     [TSSocketManager sendNotification];

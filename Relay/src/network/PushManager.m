@@ -166,9 +166,9 @@
 - (void)application:(UIApplication *)application
     didReceiveRemoteNotification:(NSDictionary *)userInfo
           fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    if ([self isRedPhonePush:userInfo]) {
+//    if ([self isRedPhonePush:userInfo]) {
         [self application:application didReceiveRemoteNotification:userInfo];
-    }
+//    }
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 20 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
       completionHandler(UIBackgroundFetchResultNewData);

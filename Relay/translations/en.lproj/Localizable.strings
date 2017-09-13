@@ -32,10 +32,10 @@
 "APN_MESSAGE_FROM" = "Message from";
 
 /* No comment provided by engineer. */
-"APN_MESSAGE_IN_GROUP" = "Message in group";
+"APN_MESSAGE_IN_GROUP" = "Message in conversation";
 
 /* No comment provided by engineer. */
-"APN_MESSAGE_IN_GROUP_DETAILED" = "%@ in group %@: %@";
+"APN_MESSAGE_IN_GROUP_DETAILED" = "%@ in conversation %@: %@";
 
 /* Pressing this button moves a thread from the inbox to the archive */
 "ARCHIVE_ACTION" = "Archive";
@@ -71,7 +71,7 @@
 "CONFIRM_ACCOUNT_DESTRUCTION_TITLE" = "Are you sure you want to delete your account?";
 
 /* Alert body */
-"CONFIRM_LEAVE_GROUP_DESCRIPTION" = "You will no longer be able to send or receive messages in this group.";
+"CONFIRM_LEAVE_GROUP_DESCRIPTION" = "You will no longer be able to send or receive messages in this conversation.";
 
 /* Alert title */
 "CONFIRM_LEAVE_GROUP_TITLE" = "Do you really want to leave?";
@@ -119,7 +119,7 @@
 "DISMISS_BUTTON_TEXT" = "Dismiss";
 
 /* table cell label in conversation settings */
-"EDIT_GROUP_ACTION" = "Edit Group";
+"EDIT_GROUP_ACTION" = "Edit Conversation";
 
 /* Short name for edit menu item to save contents of media message. */
 "EDIT_ITEM_SAVE_ACTION" = "Save";
@@ -260,40 +260,40 @@
 "GROUP_AVATAR_CHANGED" = "Avatar changed. ";
 
 /* No comment provided by engineer. */
-"GROUP_CREATED" = "Group created.";
+"GROUP_CREATED" = "Conversation created.";
 
 /* No comment provided by engineer. */
-"GROUP_CREATING" = "Creating new group";
+"GROUP_CREATING" = "Creating new conversation";
 
 /* No comment provided by engineer. */
-"GROUP_CREATING_FAILED" = "Group creation failed";
+"GROUP_CREATING_FAILED" = "Conversation creation failed";
 
 /* Conversation settings table section title */
-"GROUP_MANAGEMENT_SECTION" = "Group Management";
+"GROUP_MANAGEMENT_SECTION" = "Conversation Management";
 
 /* No comment provided by engineer. */
-"GROUP_MEMBER_JOINED" = " %@ joined the group. ";
+"GROUP_MEMBER_JOINED" = " %@ joined the conversation. ";
 
 /* No comment provided by engineer. */
-"GROUP_MEMBER_LEFT" = " %@ left the group. ";
+"GROUP_MEMBER_LEFT" = " %@ left the conversation. ";
 
 /* header for table which lists the members of this group thread */
-"GROUP_MEMBERS_HEADER" = "Group Members";
+"GROUP_MEMBERS_HEADER" = "Conversation Participants";
 
 /* No comment provided by engineer. */
-"GROUP_REMOVING" = "Leaving group %@";
+"GROUP_REMOVING" = "Leaving conversation %@";
 
 /* No comment provided by engineer. */
-"GROUP_REMOVING_FAILED" = "Failed to leave group";
+"GROUP_REMOVING_FAILED" = "Failed to leave conversation";
 
 /* No comment provided by engineer. */
 "GROUP_TITLE_CHANGED" = "Title is now '%@'. ";
 
 /* No comment provided by engineer. */
-"GROUP_UPDATED" = "Group updated.";
+"GROUP_UPDATED" = "Conversation updated.";
 
 /* No comment provided by engineer. */
-"GROUP_YOU_LEFT" = "You have left the group.";
+"GROUP_YOU_LEFT" = "You have left the conversation.";
 
 /* {{number of hours}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 hours}}'. See other *_TIME_AMOUNT strings */
 "HOURS_TIME_AMOUNT" = "%u hours";
@@ -329,7 +329,7 @@
 "LEAVE_BUTTON_TITLE" = "Leave";
 
 /* table cell label in conversation settings */
-"LEAVE_GROUP_ACTION" = "Leave Group";
+"LEAVE_GROUP_ACTION" = "Leave Conversation";
 
 /* report an invalid linking code */
 "LINK_DEVICE_INVALID_CODE_BODY" = "This QR code is not valid, make sure you are scanning the QR code displayed on the device you want to link.";
@@ -338,7 +338,7 @@
 "LINK_DEVICE_INVALID_CODE_TITLE" = "Linking Device Failed";
 
 /* confirm the users intent to link a new device */
-"LINK_DEVICE_PERMISSION_ALERT_BODY" = "This device will be able to see your groups and contacts, read all your messages, and send messages in your name.";
+"LINK_DEVICE_PERMISSION_ALERT_BODY" = "This device will be able to see your conversations and contacts, read all your messages, and send messages in your name.";
 
 /* confirm the users intent to link a new device */
 "LINK_DEVICE_PERMISSION_ALERT_TITLE" = "Link this device?";
@@ -362,7 +362,7 @@
 "LINKING_DEVICE_FAILED_TITLE" = "Linking Device Failed";
 
 /* table cell label in conversation settings */
-"LIST_GROUP_MEMBERS_ACTION" = "List Group Members";
+"LIST_GROUP_MEMBERS_ACTION" = "List Conversation Members";
 
 /* No comment provided by engineer. */
 "LOADING_CONTACTS_LABEL_LINE1" = "Loading your contacts.";
@@ -425,10 +425,10 @@
 "NETWORK_STATUS_TEXT" = "You can check your network status by looking at the colored bar above your inbox.";
 
 /* No comment provided by engineer. */
-"NEW_GROUP_DEFAULT_TITLE" = "New Group";
+"NEW_GROUP_DEFAULT_TITLE" = "New Conversation";
 
 /* No comment provided by engineer. */
-"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT" = "Name this group chat";
+"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT" = "Name this conversation";
 
 /* No comment provided by engineer. */
 "NEW_GROUP_REQUEST_ADDPEOPLE" = "Add people";
