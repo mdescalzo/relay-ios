@@ -120,7 +120,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 //@property (nonatomic, strong) UIWindow *pipWindow;
 
 @property (nonatomic, strong) NSString *userId;
-@property (nonatomic, strong) NSString *userDispalyName;
+@property (nonatomic, strong) NSString *userDisplayName;
 
 @property (nonatomic, strong) UIBarButtonItem *attachmentButton;
 @property (nonatomic, strong) UIBarButtonItem *sendButton;
@@ -524,7 +524,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                                                                            message:NSLocalizedString(@"Use Existing conversation or create new?", @"Existing thread use query")
                                                                     preferredStyle:UIAlertControllerStyleActionSheet];
             for (TSThread *matchingThread in matchingThreads) {
-                UIAlertAction *threadAction = [UIAlertAction actionWithTitle:matchingThread.name
+                UIAlertAction *threadAction = [UIAlertAction actionWithTitle:matchingThread.displayName
                                                                        style:UIAlertActionStyleDefault
                                                                      handler:^(UIAlertAction *action) {
                                                                          [self sendMessageWithText:text thread:matchingThread];
@@ -1493,7 +1493,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                                                                                       [self didPressSendButton:self.rightButton
                                                                                                                withMessageText:inputText
                                                                                                                       senderId:self.userId
-                                                                                                             senderDisplayName:self.userDispalyName
+                                                                                                             senderDisplayName:self.userDisplayName
                                                                                                                           date:[NSDate date]];
                                                                                                   }];
                                                      [alert addAction:send];
@@ -1510,7 +1510,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                              [self didPressSendButton:self.rightButton
                                                       withMessageText:inputText
                                                              senderId:self.userId
-                                                    senderDisplayName:self.userDispalyName
+                                                    senderDisplayName:self.userDisplayName
                                                                  date:[NSDate date]];
                                              }
                                          }
@@ -1727,9 +1727,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     return [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:kUserIDKey];
 }
 
--(NSString *)userDispalyName
+-(NSString *)userDisplayName
 {
-    return [NSString stringWithFormat:@"%@ %@", [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"first_name"],[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"last_name"]];
+    return TSAccountManager.sharedInstance.myself.fullName;
 }
 
 -(NSMutableArray *)recipientTags
