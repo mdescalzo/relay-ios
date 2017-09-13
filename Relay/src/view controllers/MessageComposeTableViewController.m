@@ -37,11 +37,13 @@
 
 @implementation MessageComposeTableViewController
 
+@synthesize contacts = _contacts;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-    self.contacts = [[[Environment getCurrent] contactsManager] ccsmRecipients];
+    [self contacts];
     
     self.searchResults = self.contacts;
     [self initializeSearch];
@@ -60,6 +62,12 @@
     if ([self.contacts count] == 0) {
         [self showEmptyBackgroundView:YES];
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.contacts = nil;
 }
 
 - (UILabel *)createLabelWithFirstLine:(NSString *)firstLine andSecondLine:(NSString *)secondLine {
@@ -516,33 +524,18 @@
     // Refresh from CCSM
     [[Environment getCurrent].contactsManager refreshCCSMRecipients];
     
-//    [[ContactsUpdater sharedUpdater]
-//        updateSignalContactIntersectionWithABContacts:[Environment getCurrent].contactsManager.allContacts
-//        success:^{
-    self.contacts = [[[Environment getCurrent] contactsManager] ccsmRecipients];
-
-          dispatch_async(dispatch_get_main_queue(), ^{
-            [self updateSearchResultsForSearchController:self.searchController];
-            [self.tableView reloadData];
-            [self updateAfterRefreshTry];
-          });
-//        }
-//        failure:^(NSError *error) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                UIAlertView *alert =
-//                    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ERROR_WAS_DETECTED_TITLE", @"")
-//                                               message:NSLocalizedString(@"TIMEOUT_CONTACTS_DETAIL", @"")
-//                                              delegate:nil
-//                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-//                                     otherButtonTitles:nil];
-//                [alert show];
-//                [self updateAfterRefreshTry];
-//            });
-//        }];
-
-    if ([self.contacts count] == 0) {
-        [self showLoadingBackgroundView:YES];
-    }
+    self.contacts = nil;
+    [self contacts];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateSearchResultsForSearchController:self.searchController];
+        [self.tableView reloadData];
+        [self updateAfterRefreshTry];
+        
+        if ([self.contacts count] == 0) {
+            [self showLoadingBackgroundView:YES];
+        }
+    });
 }
 
 #pragma mark - Navigation
@@ -562,6 +555,33 @@
 
 - (CGFloat)marginSize {
     return 20;
+}
+
+#pragma mark - accessors
+-(void)setContacts:(NSArray<SignalRecipient *> *)value
+{
+    if (![value isEqual:_contacts]) {
+        _contacts = value;
+    }
+}
+
+-(NSArray <SignalRecipient *> *)contacts
+{
+    if (_contacts == nil) {
+        NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
+                                                                   ascending:YES
+                                                                    selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor *firstNameSD = [[NSSortDescriptor alloc] initWithKey:@"firstName"
+                                                                    ascending:YES
+                                                                     selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor *orgSD = [[NSSortDescriptor alloc] initWithKey:@"orgSlug"
+                                                              ascending:YES
+                                                               selector:@selector(localizedCaseInsensitiveCompare:)];
+        
+        _contacts = [Environment.getCurrent.contactsManager.ccsmRecipients sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
+
+    }
+    return _contacts;
 }
 
 @end
