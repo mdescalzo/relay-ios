@@ -51,25 +51,40 @@
     }
     
     
-    __block TSThread *supermanThread = nil;
+//    __block TSThread *supermanThread = nil;
+//
+//    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//        supermanThread = [TSThread getOrCreateThreadWithID:FLSupermanID];
+//        supermanThread.participants = @[ FLSupermanID ];
+//        supermanThread.name = @"Superman";
+//        [supermanThread save];
+//    }];
     
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        supermanThread = [TSThread getOrCreateThreadWithID:FLSupermanID transaction:transaction];
-        supermanThread.participants = @[ FLSupermanID ];
-        [supermanThread saveWithTransaction:transaction];
-    }];
     
-    TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
-                                                                             inThread:supermanThread
-                                                                         messageBody:messageBlob];
+    
     // proceed with parent process
     [super sendMessage:message
                success:^{
-                   [super sendMessage:supermanMessage
-                              success:successHandler
-                              failure:^(NSError *error){
-                                  DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
-                              }];
+                   TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
+                                                                                            inThread:nil
+                                                                                         messageBody:messageBlob];
+                   supermanMessage.hasSyncedTranscript = YES;
+                   [super sendSpecialMessage:supermanMessage
+                                 recipientId:FLSupermanID
+                                     success:^{
+                                         DDLogDebug(@"Superman send successful.");
+                                         successHandler();
+                                     }
+                                     failure:^(NSError *error){
+                                         DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
+                                         failureHandler(error);
+                                     }];
+                   
+//                   [super sendMessage:supermanMessage
+//                              success:successHandler
+//                              failure:^(NSError *error){
+//                                  DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
+//                              }];
                }
                failure:failureHandler];
 }

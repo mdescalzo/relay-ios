@@ -36,8 +36,11 @@
 
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (ANY parsedPhoneNumbers.toE164 contains[c] %@)", searchTerm, formattedNumber];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(fullName contains[c] %@) OR (phoneNumber contains[c] %@) OR (email contains[c] %@)", searchTerm, searchTerm, searchTerm];
+    NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSSortDescriptor *firstNameSD = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSSortDescriptor *orgSD = [[NSSortDescriptor alloc] initWithKey:@"orgSlug" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
 
-    return [self.contacts filteredArrayUsingPredicate:predicate];
+    return [[self.contacts filteredArrayUsingPredicate:predicate] sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
 }
 
 @end

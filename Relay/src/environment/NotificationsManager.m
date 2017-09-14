@@ -80,7 +80,7 @@
 
         NSString *alertBodyString = @"";
 
-        NSString *authorName = [thread name];
+        NSString *authorName = thread.displayName;
         switch ([[Environment preferences] notificationPreviewType]) {
             case NotificationNamePreview:
             case NotificationNameNoPreview:

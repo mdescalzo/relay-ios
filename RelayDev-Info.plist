@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FLSupermanID</key>
+	<string>1e1116aa-31b3-4fb2-a4db-21e8136d4f3a</string>
 	<key>CCSM_Home_URL</key>
 	<string>https://ccsm-dev-api.forsta.io</string>
 	<key>TSS_Server_API</key>
@@ -48,7 +50,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>51</string>
+	<string>52</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

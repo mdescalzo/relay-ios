@@ -28,16 +28,17 @@
 
 static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue";
 
-@interface NewGroupViewController () {
-    NSArray *contacts;
-}
+@interface NewGroupViewController ()
 
 @property TSThread *thread;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (strong) NSArray <SignalRecipient *> *contacts;
 
 @end
 
 @implementation NewGroupViewController
+
+@synthesize contacts = _contacts;
 
 - (instancetype)init
 {
@@ -75,22 +76,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-    contacts = [[Environment getCurrent].contactsManager ccsmRecipients];
-
-
     self.tableView.tableHeaderView.frame = CGRectMake(0, 0, 400, 44);
     self.tableView.tableHeaderView       = self.tableView.tableHeaderView;
-
-
-    contacts = [contacts filter:^int(SignalRecipient *contact) {
-          if ([contact.uniqueId isEqualToString:[TSAccountManager localNumber]]) {
-              // remove local user
-              return NO;
-          } else if (_thread != nil && _thread.participants) {
-              return ![_thread.participants containsObject:contact.uniqueId];
-          }
-      return YES;
-    }];
 
     [self initializeDelegates];
     [self initializeTableView];
@@ -120,6 +107,12 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     }
     _nameGroupTextField.placeholder = NSLocalizedString(@"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT", @"");
     _addPeopleLabel.text            = NSLocalizedString(@"NEW_GROUP_REQUEST_ADDPEOPLE", @"");
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.contacts = nil;
 }
 
 #pragma mark - Initializers
@@ -301,7 +294,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 {
     NSMutableArray *mut = [[NSMutableArray alloc] init];
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
-        [mut addObject:[[contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
+        [mut addObject:[[self.contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
     }
     [mut addObjectsFromArray:_thread.participants];
 
@@ -322,7 +315,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     NSMutableArray *mut = [[NSMutableArray alloc] init];
 
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
-        [mut addObject:[[contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
+        [mut addObject:[[self.contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
     }
     [mut addObject:[TSAccountManager localNumber]];
     NSData *groupId = [SecurityUtils generateRandomBytes:16];
@@ -425,7 +418,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (NSInteger)[contacts count];
+    return (NSInteger)[self.contacts count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -437,7 +430,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
     NSUInteger row   = (NSUInteger)indexPath.row;
-    SignalRecipient *contact = contacts[row];
+    SignalRecipient *contact = self.contacts[row];
 
     [cell configureCellWithContact:contact];
 //    cell.nameLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
@@ -513,5 +506,39 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     return fullNameAttributedString;
 }
+
+#pragma mark - accessors
+-(void)setContacts:(NSArray<SignalRecipient *> *)value
+{
+    if (![value isEqual:_contacts]) {
+        _contacts = value;
+    }
+}
+
+-(NSArray <SignalRecipient *> *)contacts
+{
+    if (_contacts == nil) {
+        
+        NSMutableArray *mArray = [Environment.getCurrent.contactsManager.ccsmRecipients mutableCopy];
+        [mArray removeObject:TSAccountManager.sharedInstance.myself];
+        
+        NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
+                                                                   ascending:YES
+                                                                    selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor *firstNameSD = [[NSSortDescriptor alloc] initWithKey:@"firstName"
+                                                                    ascending:YES
+                                                                     selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor *orgSD = [[NSSortDescriptor alloc] initWithKey:@"orgSlug"
+                                                              ascending:YES
+                                                               selector:@selector(localizedCaseInsensitiveCompare:)];
+        
+        
+        
+        _contacts = [[NSArray arrayWithArray:mArray] sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
+        
+    }
+    return _contacts;
+}
+
 
 @end
