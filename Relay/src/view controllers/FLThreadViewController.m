@@ -228,7 +228,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [self registerPrefixesForAutoCompletion:@[@"@", @"#", @":", @"+:", @"/"]];
     
     // Temporarily disable the searchbar since it isn't funcational yet
-    self.searchController.searchBar.userInteractionEnabled = NO;
+//    self.searchController.searchBar.userInteractionEnabled = NO;
     
     self.textView.keyboardType = UIKeyboardTypeDefault;
     
@@ -496,15 +496,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
-#warning XXX insert tagmath hit here XXXX
-
-    // Check the tagged user list.
-//    NSMutableArray *memberIDs = [NSMutableArray arrayWithObject:[TSAccountManager localNumber]];
-//    
-//    for (NSString *userID in self.taggedRecipientIDs) {
-//        [memberIDs addObject:userID];
-//    }
-    
     // Look for group thread with same recipients
     NSCountedSet *testSet = [NSCountedSet setWithSet:self.taggedRecipientIDs];
     NSMutableSet *matchingThreads = [NSMutableSet new];
@@ -553,14 +544,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         });
         
     }
-    
-//    } else {
-////        NSString *recipientTag = [self.taggedRecipientIDs firstObject];
-////        NSString *recipientID = [[self.ccsmStorage getTags] objectForKey:recipientTag];
-//        
-//        TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:[self.taggedRecipientIDs anyObject]];
-//        [self sendMessageWithText:text thread:thread];
-//    }
 }
 
 #pragma mark - swipe handlers
@@ -1403,7 +1386,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     //                                                               target:self
     //                                                               action:@selector(onSettingsTap:)];
     self.navigationItem.leftBarButtonItem = logoItem;
-    self.navigationItem.titleView = self.searchController.searchBar;
+//    self.navigationItem.titleView = self.searchController.searchBar;
     //    self.navigationItem.rightBarButtonItem = settingsItem;
     //    self.navigationItem.rightBarButtonItem = composeItem;
 }
@@ -1449,12 +1432,14 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 
 -(void)didPressRightButton:(id)sender  // This is the send button
 {
+    self.rightButton.enabled = NO;
     NSString *inputText = [self.textView.text copy];
 #warning XXX tagMath hit here
     // Call tagMath service
     SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
     [self.tagMathService tagLookupWithString:[NSString stringWithFormat:@"%@ + @%@", self.textView.text, selfRec.tagSlug]
                                      success:^(NSDictionary *results) {
+//                                         self.rightButton.enabled = YES;
                                          DDLogDebug(@"TagMath restults: %@", results);
                                          self.taggedRecipientIDs = [NSSet setWithArray:[results objectForKey:@"userids"]];
                                          self.universalTagExpression = [results objectForKey:@"universal"];
@@ -1514,7 +1499,6 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                                                  date:[NSDate date]];
                                              }
                                          }
-                                         
                                      }
                                      failure:^(NSError *error) {
                                          DDLogDebug(@"TagMath lookup failed with error: %@", error.localizedDescription);
@@ -1527,6 +1511,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                              }];
                                              [alert addAction:okButton];
                                              [self presentViewController:alert animated:YES completion:nil];
+//                                             self.rightButton.enabled = YES;
                                          });
                                          
                                      }];
