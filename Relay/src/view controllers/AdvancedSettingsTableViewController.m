@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
     switch (section) {
         case 0:
             return 1;
-//            return self.enableLogSwitch.isOn ? 2 : 1;
+            return self.enableLogSwitch.isOn ? 2 : 1;
         case 1:
             return 1;
         default:

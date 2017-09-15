@@ -681,6 +681,7 @@ typedef enum : NSUInteger {
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
+    button.enabled = NO;
     if (text.length > 0) {
         if ([Environment.preferences soundInForeground]) {
             [JSQSystemSoundPlayer jsq_playMessageSentSound];
@@ -712,9 +713,13 @@ typedef enum : NSUInteger {
                 [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     [message saveWithTransaction:transaction];
                 }];
+//                button.enabled = YES;
+
             }
             failure:^(NSError *error) {
                 DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
+//                button.enabled = YES;
+
             }];
         [self finishSendingMessage];
     }

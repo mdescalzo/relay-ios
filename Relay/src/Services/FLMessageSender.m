@@ -12,6 +12,7 @@
 #import "TSOutgoingMessage.h"
 #import "TSThread.h"
 #import "Environment.h"
+#import "OWSDispatch.h"
 
 @interface FLMessageSender()
 
@@ -44,27 +45,15 @@
     // Convert message body to JSON blob if necessary
     NSString *messageBlob = nil;
     if (!(message.body && [NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil])) {
-//        if (![NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil]) {
             messageBlob = [CCSMJSONService blobFromMessage:message];
             message.body = messageBlob;
-//        }
     }
-    
-    
-//    __block TSThread *supermanThread = nil;
-//
-//    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        supermanThread = [TSThread getOrCreateThreadWithID:FLSupermanID];
-//        supermanThread.participants = @[ FLSupermanID ];
-//        supermanThread.name = @"Superman";
-//        [supermanThread save];
-//    }];
-    
-    
     
     // proceed with parent process
     [super sendMessage:message
                success:^{
+                   dispatch_async([OWSDispatch sendingQueue], ^{
+
                    TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
                                                                                             inThread:nil
                                                                                          messageBody:messageBlob];
@@ -85,6 +74,7 @@
 //                              failure:^(NSError *error){
 //                                  DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
 //                              }];
+                   });
                }
                failure:failureHandler];
 }
