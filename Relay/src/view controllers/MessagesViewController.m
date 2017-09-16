@@ -341,6 +341,8 @@ typedef enum : NSUInteger {
     [self.inputToolbar.contentView.textView setFont:[UIFont ows_dynamicTypeBodyFont]];
 
     self.inputToolbar.contentView.leftBarButtonItem = self.attachButton;
+    [self.inputToolbar setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    self.inputToolbar.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:225.0/255.0 blue:225.0/255.0 alpha:1.0];
 
     UILabel *sendLabel = self.inputToolbar.contentView.rightBarButtonItem.titleLabel;
     // override superclass translations since we support more translations than upstream.

@@ -177,7 +177,7 @@
     {
       "size" : "40x40",
       "idiom" : "watch",
-      "filename" : "Icon40.png",
+      "filename" : "Icon40@3x-1.png",
       "scale" : "2x",
       "role" : "appLauncher",
       "subtype" : "38mm"

@@ -8,12 +8,12 @@
 
 #import "SLKTextViewController.h"
 #include "InboxTableViewCell.h"
-#import <AVFoundation/AVFoundation.h>
-#import <MediaPlayer/MediaPlayer.h>
-
 #import "CallState.h"
 #import "Contact.h"
 #import "TSGroupModel.h"
+
+@import AVFoundation;
+@import MediaPlayer;
 
 @interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,
                                                             UIViewControllerPreviewingDelegate,
@@ -29,7 +29,7 @@
 @property (nonatomic, strong) NSDictionary * _Nullable targetUserInfo;
 
 - (void)presentThread:(TSThread *_Nonnull)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing;
-- (void)configureForThread:(TSThread *_Nonnull)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing;
+//- (void)configureForThread:(TSThread *_Nonnull)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing;
 
 - (NSNumber *_Nullable)updateInboxCountLabel;
 - (void)composeNew:(nullable id)sender;

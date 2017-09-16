@@ -207,8 +207,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     }
     
     // Build the domain view/thread list
-    [self.view addSubview:self.domainTableViewController.view];
-    [self hideDomainTableView];
+//    [self.view addSubview:self.domainTableViewController.view];
+//    [self hideDomainTableView];
     
     //    self.isDomainViewVisible = NO;
     
@@ -230,12 +230,11 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // Temporarily disable the searchbar since it isn't funcational yet
 //    self.searchController.searchBar.userInteractionEnabled = NO;
     
+    // Input view setup
     self.textView.keyboardType = UIKeyboardTypeDefault;
-    
-    // Banner label - for testing purposes
-    [self.view bringSubviewToFront:self.bannerLabel];
-    self.bannerLabel.backgroundColor = [UIColor lightGrayColor];
-    self.bannerLabel.hidden = YES;
+    self.textView.backgroundColor = [UIColor whiteColor];
+    self.textInputbar.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:225.0/255.0 blue:225.0/255.0 alpha:1.0];
+
     
     // setup methodology lifted from Signals
     [self ensureNotificationsUpToDate];
@@ -1357,7 +1356,10 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     
     UIToolbar *bottomBannerView = [UIToolbar new];
     bottomBannerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [bottomBannerView setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     bottomBannerView.backgroundColor = [UIColor clearColor];
+    bottomBannerView.translucent = YES;
+    
     
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                target:nil action:nil];
@@ -1780,7 +1782,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 -(UIBarButtonItem *)recipientCountButton
 {
     if (_recipientCountButton == nil) {
-        _recipientCountButton = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Recipients", @""), [self.taggedRecipientIDs count]]
+        _recipientCountButton = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%@: %lu", NSLocalizedString(@"Recipients", @""), (unsigned long)self.taggedRecipientIDs.count]
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:nil
                                                                 action:nil];
