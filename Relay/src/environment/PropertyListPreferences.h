@@ -45,6 +45,9 @@ typedef NS_ENUM(NSUInteger, TSImageQuality) {
 - (BOOL)soundInForeground;
 - (void)setSoundInForeground:(BOOL)enabled;
 
+- (BOOL)soundInBackground;
+- (void)setSoundInBackground:(BOOL)enabled;
+
 - (BOOL)hasRegisteredVOIPPush;
 - (void)setHasRegisteredVOIPPush:(BOOL)enabled;
 

@@ -49,8 +49,20 @@
     return (NSInteger)self.notificationsSections.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return 2;
+            break;
+        case 1:
+            return 1;
+            break;
+        default:
+            return 0;
+            break;
+    }
+//    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -63,21 +75,47 @@
 
     PropertyListPreferences *prefs = Environment.preferences;
     if (indexPath.section == 0) {
-        NotificationType notifType = [prefs notificationPreviewType];
-        NSString *detailString     = [prefs nameForNotificationPreviewType:notifType];
-
-        [[cell textLabel] setText:NSLocalizedString(@"NOTIFICATIONS_SHOW", nil)];
-        [[cell detailTextLabel] setText:detailString];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        switch (indexPath.row) {
+            case 0:
+            {
+                NotificationType notifType = [prefs notificationPreviewType];
+                NSString *detailString     = [prefs nameForNotificationPreviewType:notifType];
+                
+                [[cell textLabel] setText:NSLocalizedString(@"NOTIFICATIONS_SHOW", nil)];
+                [[cell detailTextLabel] setText:detailString];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+            }
+                break;
+            case 1:
+            {
+                BOOL soundEnabled = [prefs soundInBackground];
+                
+                [[cell textLabel] setText:NSLocalizedString(@"NOTIFICATIONS_SOUND", nil)];
+                [[cell detailTextLabel] setText:nil];
+                UISwitch *switchv = [[UISwitch alloc] initWithFrame:CGRectZero];
+                switchv.on        = soundEnabled;
+                [switchv addTarget:self
+                            action:@selector(didToggleSoundNotificationsSwitch:)
+                  forControlEvents:UIControlEventValueChanged];
+                
+                cell.accessoryView = switchv;
+            }
+                break;
+            default:
+            {
+                DDLogDebug(@"Undefined notification cell.");
+            }
+                break;
+        }
     } else {
         BOOL soundEnabled = [prefs soundInForeground];
 
-        [[cell textLabel] setText:NSLocalizedString(@"NOTIFICATIONS_SOUND", nil)];
+        [[cell textLabel] setText:NSLocalizedString(@"IN-APP_SOUND", nil)];
         [[cell detailTextLabel] setText:nil];
         UISwitch *switchv = [[UISwitch alloc] initWithFrame:CGRectZero];
         switchv.on        = soundEnabled;
         [switchv addTarget:self
-                      action:@selector(didToggleSoundNotificationsSwitch:)
+                      action:@selector(didToggleSoundInAppSoundSwitch:)
             forControlEvents:UIControlEventValueChanged];
 
         cell.accessoryView = switchv;
@@ -86,14 +124,54 @@
     return cell;
 }
 
-- (void)didToggleSoundNotificationsSwitch:(UISwitch *)sender {
+- (void)didToggleSoundInAppSoundSwitch:(UISwitch *)sender {
     [Environment.preferences setSoundInForeground:sender.on];
+}
+- (void)didToggleSoundNotificationsSwitch:(UISwitch *)sender {
+    [Environment.preferences setSoundInBackground:sender.on];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NotificationSettingsOptionsViewController *vc =
-        [[NotificationSettingsOptionsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    [self.navigationController pushViewController:vc animated:YES];
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    NotificationSettingsOptionsViewController *vc =
+                    [[NotificationSettingsOptionsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 1:
+                {
+                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    UISwitch *soundSwitch = (UISwitch *)cell.accessoryView;
+                    soundSwitch.on = !soundSwitch.on;
+                    [self didToggleSoundNotificationsSwitch:soundSwitch];
+                }
+                    break;
+                default:
+                {
+                    DDLogDebug(@"Undefined notification setting selected.");
+                }
+                    break;
+            }
+        }
+            break;
+        case 1:
+        {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            UISwitch *soundSwitch = (UISwitch *)cell.accessoryView;
+            soundSwitch.on = !soundSwitch.on;
+            [self didToggleSoundInAppSoundSwitch:soundSwitch];
+        }
+            break;
+        default:
+        {
+            DDLogDebug(@"Undefined notification setting selected.");
+        }
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {

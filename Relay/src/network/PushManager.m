@@ -434,14 +434,16 @@
 
 - (void)validateUserNotificationSettings
 {
-    UIUserNotificationSettings *settings =
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIUserNotificationSettings *settings =
         [UIUserNotificationSettings settingsForTypes:(UIUserNotificationType)[self allNotificationTypes]
                                           categories:[NSSet setWithObjects:[self userNotificationsCallCategory],
-                                                            [self fullNewMessageNotificationCategory],
-                                                            [self userNotificationsCallBackCategory],
-                                                            nil]];
-
-    [UIApplication.sharedApplication registerUserNotificationSettings:settings];
+                                                      [self fullNewMessageNotificationCategory],
+                                                      [self userNotificationsCallBackCategory],
+                                                      nil]];
+        
+        [UIApplication.sharedApplication registerUserNotificationSettings:settings];
+    });
 }
 
 - (BOOL)applicationIsActive {

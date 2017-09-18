@@ -461,6 +461,9 @@
 "NOTIFICATIONS_SOUND" = "Notification Sounds";
 
 /* No comment provided by engineer. */
+"IN-APP_SOUND" = "In-App Sounds";
+
+/* No comment provided by engineer. */
 "OK" = "Ok";
 
 /* Button text which opens the settings app */
