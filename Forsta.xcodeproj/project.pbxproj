@@ -165,6 +165,9 @@
 		76EB064618170B33006006FC /* TimeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FA18170B33006006FC /* TimeUtil.m */; };
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
+		7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
+		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
+		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
@@ -1455,6 +1458,8 @@
 		76EB04FD18170B33006006FC /* Zid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Zid.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
+		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
+		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSlackTextViewController.a; path = "../Library/Developer/Xcode/DerivedData/Relay-gkridggddzianpfuvzrdybphatso/Build/Products/Debug-iphonesimulator/SlackTextViewController/libSlackTextViewController.a"; sourceTree = "<group>"; };
 		7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDirectoryPopupViewController.h; sourceTree = "<group>"; };
 		7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDirectoryPopupViewController.m; sourceTree = "<group>"; };
@@ -2637,6 +2642,8 @@
 				7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */,
 				7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */,
 				7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */,
+				7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */,
+				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -4036,6 +4043,7 @@
 				7D4A39E21F1693930023C29B /* AccountManager.swift in Sources */,
 				7D4A39E31F1693930023C29B /* CallState.m in Sources */,
 				7D4A39E41F1693930023C29B /* ZrtpInitiator.m in Sources */,
+				7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */,
 				7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */,
 				7D4A39E71F1693930023C29B /* PushManager.m in Sources */,
@@ -4260,6 +4268,7 @@
 				7DCFFD891F0EE4490003CD95 /* AccountManager.swift in Sources */,
 				7DCFFD8A1F0EE4490003CD95 /* CallState.m in Sources */,
 				7DCFFD8B1F0EE4490003CD95 /* ZrtpInitiator.m in Sources */,
+				7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				7DCFFD8C1F0EE4490003CD95 /* NetworkStream.m in Sources */,
 				7DCFFD8D1F0EE4490003CD95 /* UIFont+OWS.m in Sources */,
 				7DCFFD8E1F0EE4490003CD95 /* PushManager.m in Sources */,
@@ -4484,6 +4493,7 @@
 				76EB05EC18170B33006006FC /* CallState.m in Sources */,
 				76EB05D218170B33006006FC /* ZrtpInitiator.m in Sources */,
 				76EB05E018170B33006006FC /* NetworkStream.m in Sources */,
+				7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				FCFA64B71A24F6730007FB87 /* UIFont+OWS.m in Sources */,
 				B6B9ECFC198B31BA00C620D3 /* PushManager.m in Sources */,
 				76EB05D618170B33006006FC /* ZrtpResponder.m in Sources */,

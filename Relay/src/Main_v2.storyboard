@@ -194,7 +194,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sz4-pL-xFS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5116" y="1868.8155922038982"/>
+            <point key="canvasLocation" x="5455.1999999999998" y="1868.8155922038982"/>
         </scene>
         <!--New Group View Controller-->
         <scene sceneID="3Ad-6E-GZI">
@@ -344,7 +344,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MNP-o6-EWX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ZKh-v7-gpN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5887.1999999999998" y="1868.8155922038982"/>
+            <point key="canvasLocation" x="6226.3999999999996" y="1868.8155922038982"/>
         </scene>
         <!--MessagesVC-->
         <scene sceneID="xnQ-J8-xch">
@@ -369,6 +369,7 @@
                     <connections>
                         <segue destination="z8Y-ZN-bWS" kind="presentation" identifier="fingerprintSegue" id="hdc-jU-KdZ"/>
                         <segue destination="HhI-2q-GmC" kind="show" identifier="OWSMessagesViewControllerSeguePushConversationSettings" id="nsV-7A-EyB"/>
+                        <segue destination="Oni-vz-lzR" kind="presentation" identifier="imagePreviewSegue" id="6GM-m0-QgV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zgw-HR-KqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1730,7 +1731,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XYp-hh-7r5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6816.8000000000002" y="1898.5007496251876"/>
+            <point key="canvasLocation" x="7156" y="1898.5007496251876"/>
         </scene>
         <!--Identity QR Scanner-->
         <scene sceneID="ttJ-3h-OE7">
@@ -1768,6 +1769,67 @@
             </objects>
             <point key="canvasLocation" x="9085.6000000000004" y="-804.64767616191909"/>
         </scene>
+        <!--Image Preview View Controller-->
+        <scene sceneID="PFL-tu-zHc">
+            <objects>
+                <viewController id="sSj-ts-Kco" customClass="ImagePreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Vm2-tP-78f"/>
+                        <viewControllerLayoutGuide type="bottom" id="XjD-YQ-l4s"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YHi-IW-cDo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NlU-hB-l7n">
+                                <rect key="frame" x="26" y="10" width="323" height="517"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jjs-qb-gWe">
+                                <rect key="frame" x="202.5" y="553" width="136.5" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Send">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressSendButton:" destination="sSj-ts-Kco" eventType="touchUpInside" id="5n6-LV-Kis"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NQw-c3-1qI">
+                                <rect key="frame" x="36" y="553" width="136.5" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressCancelButton:" destination="sSj-ts-Kco" eventType="touchUpInside" id="woo-on-KxZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="NlU-hB-l7n" secondAttribute="bottom" constant="76" id="4Hm-ZH-dxf"/>
+                            <constraint firstItem="XjD-YQ-l4s" firstAttribute="top" secondItem="NQw-c3-1qI" secondAttribute="bottom" constant="20" id="Atc-BM-sCv"/>
+                            <constraint firstItem="NlU-hB-l7n" firstAttribute="leading" secondItem="YHi-IW-cDo" secondAttribute="leadingMargin" constant="10" id="CPH-ge-LIh"/>
+                            <constraint firstItem="NlU-hB-l7n" firstAttribute="top" secondItem="Vm2-tP-78f" secondAttribute="bottom" constant="10" id="FE9-By-Knd"/>
+                            <constraint firstItem="Jjs-qb-gWe" firstAttribute="leading" secondItem="NQw-c3-1qI" secondAttribute="trailing" constant="30" id="HNi-Sl-t0D"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NlU-hB-l7n" secondAttribute="trailing" constant="10" id="Ry9-nr-7vo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Jjs-qb-gWe" secondAttribute="trailing" constant="20" id="aqM-kj-dtJ"/>
+                            <constraint firstItem="Jjs-qb-gWe" firstAttribute="width" secondItem="NQw-c3-1qI" secondAttribute="width" id="g1j-0s-hEI"/>
+                            <constraint firstItem="XjD-YQ-l4s" firstAttribute="top" secondItem="Jjs-qb-gWe" secondAttribute="bottom" constant="20" id="kcZ-nR-dOY"/>
+                            <constraint firstItem="NQw-c3-1qI" firstAttribute="leading" secondItem="YHi-IW-cDo" secondAttribute="leadingMargin" constant="20" id="rLX-6L-t7Z"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="qFG-AC-m0g"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="NQw-c3-1qI" id="SYz-1r-t9l"/>
+                        <outlet property="imageView" destination="NlU-hB-l7n" id="Lsy-h9-zX6"/>
+                        <outlet property="sendButton" destination="Jjs-qb-gWe" id="6pc-FM-2Xq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XE1-32-pJo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3764" y="1859.8200899550227"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="U84-c0-hm3">
             <objects>
@@ -1785,7 +1847,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hCy-CZ-auX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4176.8000000000002" y="1868.8155922038982"/>
+            <point key="canvasLocation" x="4516" y="1868.8155922038982"/>
         </scene>
         <!--Developer Panel View Controller-->
         <scene sceneID="09H-u6-8aT">
@@ -1913,6 +1975,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ReF-r6-kXJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3013.5999999999999" y="-697.60119940029995"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="tdf-Ah-wx9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Oni-vz-lzR" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="38k-1V-YLu">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="sSj-ts-Kco" kind="relationship" relationship="rootViewController" id="VNb-HQ-AV5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="awx-h1-E2D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3001" y="1860"/>
         </scene>
     </scenes>
     <resources>
