@@ -175,6 +175,7 @@ NSUInteger maximumValidationAttempts = 9999;
     // Check if registered and proceed to next storyboard accordingly
     if ([TSAccountManager isRegistered]) {
         // We are, move onto main
+        [TSSocketManager becomeActiveFromForeground];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.spinner stopAnimating];
             self.validationButton.enabled = YES;
@@ -186,20 +187,22 @@ NSUInteger maximumValidationAttempts = 9999;
         [self.ccsmCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
                                                       success:^{
                                                           [TSSocketManager becomeActiveFromForeground];
-                                                          [self.spinner stopAnimating];
-                                                          self.validationButton.enabled = YES;
-                                                          self.validationButton.alpha = 1.0;
-                                                          [self performSegueWithIdentifier:@"mainSegue" sender:self];
+                                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                                              [self.spinner stopAnimating];
+                                                              self.validationButton.enabled = YES;
+                                                              self.validationButton.alpha = 1.0;
+                                                              [self performSegueWithIdentifier:@"mainSegue" sender:self];
+                                                          });
                                                       }
                                                       failure:^(NSError *error) {
                                                           DDLogError(@"TSS Validation error: %@", error.description);
-                                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                                          message:error.description
-                                                                                                         delegate:nil
-                                                                                                cancelButtonTitle:@"OK"
-                                                                                                otherButtonTitles:nil];
-                                                          [alert show];
                                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                                              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                              message:error.description
+                                                                                                             delegate:nil
+                                                                                                    cancelButtonTitle:@"OK"
+                                                                                                    otherButtonTitles:nil];
+                                                              [alert show];
                                                               [self.spinner stopAnimating];
                                                               self.validationButton.enabled = YES;
                                                               self.validationButton.alpha = 1.0;
