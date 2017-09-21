@@ -68,7 +68,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(void)refreshCCSMRecipients
 {
 #warning XXX Needs catch for failure to communicate with CCSM
-    [[Environment getCurrent].ccsmCommManager refreshCCSMUsers];
+    [[Environment getCurrent].ccsmCommManager refreshCCSMData];
     
     NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     

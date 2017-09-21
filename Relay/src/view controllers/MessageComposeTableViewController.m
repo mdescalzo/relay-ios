@@ -522,6 +522,7 @@
 
 - (void)refreshContacts {
     // Refresh from CCSM
+    
     [[Environment getCurrent].contactsManager refreshCCSMRecipients];
     
     self.contacts = nil;

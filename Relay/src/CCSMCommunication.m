@@ -390,7 +390,7 @@
 -(void)refreshCCSMData
 {
     [self refreshCCSMUsers];
-    //    [self refreshCCSMtags];
+    [self refreshCCSMtags];
 }
 
 -(void)refreshCCSMUsers
@@ -405,8 +405,6 @@
                          DDLogDebug(@"Refreshed all users.");
                          [[Environment getCurrent].ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
                          [self notifyOfUsersRefresh];
-#warning Tags notification needs to leave here when group tags are implemented
-                         [self notifyOfTagsRefresh];
                      }
                      failure:^(NSError *err){
                          DDLogError(@"Failed to refresh all users. Error: %@", err.localizedDescription);
@@ -415,17 +413,20 @@
 
 -(void)refreshCCSMtags
 {
-    
     NSMutableDictionary *tags = [NSMutableDictionary new];
     
     [self updateAllTheThings:[NSString stringWithFormat:@"%@/v1/tag/", FLHomeURL]
                   collection:tags
                  synchronous:YES
                      success:^{
-                         DDLogDebug(@"Refreshed all tags.");
-                         [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
+                         NSMutableDictionary *holdingDict = [NSMutableDictionary new];
+                         for (NSDictionary *tagDict in [tags allValues]) {
+                             [holdingDict setObject:[tagDict objectForKey:@"id"] forKey:[tagDict objectForKey:@"slug"]];
+                         }
+                         [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:holdingDict]];
                          [self notifyOfTagsRefresh];
-                     }
+                         DDLogDebug(@"Refreshed all tags.");
+                    }
                      failure:^(NSError *err){
                          DDLogError(@"Failed to refresh all tags. Error: %@", err.localizedDescription);
                      }];

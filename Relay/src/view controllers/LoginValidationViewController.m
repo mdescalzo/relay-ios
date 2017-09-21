@@ -159,17 +159,8 @@ NSUInteger maximumValidationAttempts = 9999;
                            failure:^(NSError *err){
                                NSLog(@"Failed to retrieve org info after login validation");
                            }];
-    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
-                                  collection:users
-                                 synchronous:NO
-                                     success:^{
-                                         NSLog(@"Retrieved all users after login validation");
-                                         [self.ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
-                                         [[Environment getCurrent].contactsManager refreshCCSMRecipients];
-                                     }
-                                     failure:^(NSError *err){
-                                         NSLog(@"Failed to retrieve all users after login validation");
-                                     }];
+    
+    [self.ccsmCommManager refreshCCSMData];
     
     // TSS Registration handling
     // Check if registered and proceed to next storyboard accordingly
