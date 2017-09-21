@@ -77,8 +77,12 @@
     if (([UIApplication sharedApplication].applicationState != UIApplicationStateActive) && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.userInfo             = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
-        notification.soundName            = @"NewMessage.aifc";
-
+        if ([Environment.preferences soundInBackground]) {
+            notification.soundName = @"NewMessage.aifc";
+        } else {
+            notification.soundName = nil;
+        }
+        
         NSString *alertBodyString = @"";
 
         NSString *authorName = thread.displayName;
