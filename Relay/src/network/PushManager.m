@@ -266,16 +266,16 @@
         }];
 }
 
-- (BOOL)isRedPhonePush:(NSDictionary *)pushDict {
-    NSDictionary *aps  = pushDict[@"aps"];
-    NSString *category = aps[@"category"];
-
-    if ([category isEqualToString:Signal_Call_Category]) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
+//- (BOOL)isRedPhonePush:(NSDictionary *)pushDict {
+//    NSDictionary *aps  = pushDict[@"aps"];
+//    NSString *category = aps[@"category"];
+//
+//    if ([category isEqualToString:Signal_Call_Category]) {
+//        return YES;
+//    } else {
+//        return NO;
+//    }
+//}
 
 #pragma mark PushKit
 
@@ -307,11 +307,11 @@
 }
 
 - (BOOL)supportsVOIPPush {
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_8_2_0)) {
-        return YES;
-    } else {
+//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_8_2_0)) {
+//        return YES;
+//    } else {
         return NO;
-    }
+//    }
 }
 
 #pragma mark Register device for Push Notification locally

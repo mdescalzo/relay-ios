@@ -770,6 +770,9 @@
 		7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B21F4CF9D900DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DFE7C531F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
+		7DFE7C541F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
+		7DFE7C551F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A123C14916F902EE000AE905 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
@@ -1508,6 +1511,8 @@
 		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
 		7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
 		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
+		7DFE7C511F74398500905909 /* ForstaColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForstaColors.h; sourceTree = "<group>"; };
+		7DFE7C521F74398500905909 /* ForstaColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForstaColors.m; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89AD8E9D7C03FA606826376F /* libPods-Common-RelayDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-RelayDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1967,6 +1972,8 @@
 		457F3AC01D14A0F700C51351 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				7DFE7C511F74398500905909 /* ForstaColors.h */,
+				7DFE7C521F74398500905909 /* ForstaColors.m */,
 				B62D53F41A23CC8B009AAF82 /* TSMessageAdapters */,
 				7D7DA58A1F2FBA66007FE6E4 /* OWSAvatarBuilder.h */,
 				7D7DA58B1F2FBA66007FE6E4 /* OWSAvatarBuilder.m */,
@@ -4103,6 +4110,7 @@
 				7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */,
 				7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */,
 				7D4A3A221F1693930023C29B /* DhPacket.m in Sources */,
+				7DFE7C531F74398500905909 /* ForstaColors.m in Sources */,
 				7D4A3A231F1693930023C29B /* SettingsTableViewController.m in Sources */,
 				7D4A3A251F1693930023C29B /* EvpSymetricUtil.m in Sources */,
 				7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */,
@@ -4328,6 +4336,7 @@
 				7DCFFDC71F0EE4490003CD95 /* FingerprintViewController.m in Sources */,
 				7DCFFDC81F0EE4490003CD95 /* AnonymousConditionLogger.m in Sources */,
 				7DCFFDC91F0EE4490003CD95 /* DhPacket.m in Sources */,
+				7DFE7C541F74398500905909 /* ForstaColors.m in Sources */,
 				7DCFFDCA1F0EE4490003CD95 /* SettingsTableViewController.m in Sources */,
 				7DCFFDCC1F0EE4490003CD95 /* EvpSymetricUtil.m in Sources */,
 				7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */,
@@ -4553,6 +4562,7 @@
 				FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */,
 				76EB061418170B33006006FC /* AnonymousConditionLogger.m in Sources */,
 				76EB05C018170B33006006FC /* DhPacket.m in Sources */,
+				7DFE7C551F74398500905909 /* ForstaColors.m in Sources */,
 				FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */,
 				7038632818F70C0700D4A43F /* EvpSymetricUtil.m in Sources */,
 				DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */,
@@ -4981,7 +4991,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 60;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5050,7 +5060,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 60;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5117,7 +5127,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 60;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5184,7 +5194,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 60;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5389,7 +5399,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 60;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5454,7 +5464,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 60;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

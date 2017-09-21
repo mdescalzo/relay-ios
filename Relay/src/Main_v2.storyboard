@@ -1862,11 +1862,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This view is only in Dev builds and subject to change without notice." lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvP-PH-F77">
-                                <rect key="frame" x="26" y="10" width="323" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="1in-yd-a2Z"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This view is only in Dev builds and subject to change without notice." lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvP-PH-F77">
+                                <rect key="frame" x="26" y="10" width="323" height="503"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1897,6 +1894,7 @@
                             <constraint firstItem="9r7-0d-7sF" firstAttribute="top" secondItem="fr4-p6-F8n" secondAttribute="bottom" constant="8" id="4WB-gq-l33"/>
                             <constraint firstItem="JvP-PH-F77" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" constant="10" id="8ls-8e-Xqf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JvP-PH-F77" secondAttribute="trailing" constant="10" id="EiA-g1-o36"/>
+                            <constraint firstItem="fr4-p6-F8n" firstAttribute="top" secondItem="JvP-PH-F77" secondAttribute="bottom" constant="20" id="OF7-Z4-WZM"/>
                             <constraint firstItem="JaB-bo-Ge9" firstAttribute="top" secondItem="9r7-0d-7sF" secondAttribute="bottom" constant="20" id="OIF-Xd-fAg"/>
                             <constraint firstItem="fr4-p6-F8n" firstAttribute="leading" secondItem="ROq-Wp-Qhu" secondAttribute="leadingMargin" constant="20" id="SFe-Ar-7KW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9r7-0d-7sF" secondAttribute="trailing" constant="20" id="ZOx-IQ-lwv"/>
@@ -1913,6 +1911,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="forstaURLLabel" destination="9r7-0d-7sF" id="Jo5-Po-AcX"/>
+                        <outlet property="outputLabel" destination="JvP-PH-F77" id="Act-yq-v97"/>
                         <outlet property="supermanIDLabel" destination="fr4-p6-F8n" id="vgu-Ym-ZGU"/>
                     </connections>
                 </viewController>
