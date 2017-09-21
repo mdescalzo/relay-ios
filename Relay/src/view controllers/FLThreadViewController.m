@@ -266,13 +266,13 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [super viewDidDisappear:animated];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    CGRect rect = self.navigationController.navigationBar.frame;
-    double y = rect.size.height + rect.origin.y;
-    self.tableView.contentInset = UIEdgeInsetsMake(y, 0, 0, 0);
-}
+//- (void)viewDidLayoutSubviews
+//{
+//    [super viewDidLayoutSubviews];
+//    CGRect rect = self.navigationController.navigationBar.frame;
+//    double y = rect.size.height + rect.origin.y;
+//    self.tableView.contentInset = UIEdgeInsetsMake(y, 0, 0, 0);
+//}
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
