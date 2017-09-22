@@ -421,7 +421,9 @@
                      success:^{
                          NSMutableDictionary *holdingDict = [NSMutableDictionary new];
                          for (NSDictionary *tagDict in [tags allValues]) {
-                             [holdingDict setObject:[tagDict objectForKey:@"id"] forKey:[tagDict objectForKey:@"slug"]];
+                             if (![[tagDict objectForKey:@"slug"] isEqualToString:@"."]) {
+                                 [holdingDict setObject:[tagDict objectForKey:@"id"] forKey:[tagDict objectForKey:@"slug"]];
+                             }
                          }
                          [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:holdingDict]];
                          [self notifyOfTagsRefresh];

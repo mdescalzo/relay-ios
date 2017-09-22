@@ -48,9 +48,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Fmx-VY-5mC">
-                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="WXV-Dk-W00">
+                        <barButtonItem key="rightBarButtonItem" tag="1002" image="hamburger" id="WXV-Dk-W00">
                             <connections>
-                                <segue destination="WYY-yw-ixW" kind="presentation" identifier="composeNew" id="IoE-J9-McF"/>
+                                <action selector="onSettingsTap:" destination="fW1-2v-Rey" id="Jwo-7f-kkT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -64,6 +64,7 @@
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES"/>
                         </segue>
                         <segue destination="B0q-os-ZFy" kind="show" identifier="threadSelectedSegue" id="qBO-Wo-oJx"/>
+                        <segue destination="WYY-yw-ixW" kind="presentation" identifier="composeNew" id="jNi-9t-qc2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jnp-ug-P9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2005,6 +2006,7 @@
         <image name="contact-options-action" width="44" height="44"/>
         <image name="contact_default_feed.png" width="242" height="242"/>
         <image name="empty-group-avatar" width="53" height="53"/>
+        <image name="hamburger" width="25" height="25"/>
         <image name="ic_devices_ios" width="180" height="119"/>
         <image name="ic_lock_outline" width="32" height="32"/>
         <image name="table_ic_hourglass_empty" width="32" height="32"/>
@@ -2013,6 +2015,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="IPX-Kb-VMm"/>
         <segue reference="nsV-7A-EyB"/>
-        <segue reference="nuh-JN-5Kq"/>
+        <segue reference="HeD-G0-GXS"/>
     </inferredMetricsTieBreakers>
 </document>
