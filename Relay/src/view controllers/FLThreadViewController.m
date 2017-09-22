@@ -129,6 +129,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) UIBarButtonItem *tagButton;
 @property (nonatomic, strong) UIBarButtonItem *recipientCountButton;
 @property (nonatomic, strong) UIBarButtonItem *composeButton;
+@property (nonatomic, strong) UIBarButtonItem *settingsButton;
 
 @end
 
@@ -1378,7 +1379,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                target:nil action:nil];
-    bottomBannerView.items = @[ self.composeButton, flexSpace, self.recipientCountButton ];
+    bottomBannerView.items = @[ flexSpace, self.recipientCountButton ];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(bottomBannerView);
     
@@ -1390,6 +1391,8 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 
 -(void)configureNavigationBar
 {
+    self.title = TSAccountManager.sharedInstance.myself.orgSlug;
+    
 #ifdef DEVELOPMENT
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_logo_DEV"]
                                                                  style:UIBarButtonItemStylePlain
@@ -1410,17 +1413,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                                                 action:nil];
 #endif
     logoItem.tag = kLogoButtonTag;
-    
-    //    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeNew:)];
-    
-    //    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
-    //                                                                style:UIBarButtonItemStylePlain
-    //                                                               target:self
-    //                                                               action:@selector(onSettingsTap:)];
     self.navigationItem.leftBarButtonItem = logoItem;
-//    self.navigationItem.titleView = self.searchController.searchBar;
-    //    self.navigationItem.rightBarButtonItem = settingsItem;
-    //    self.navigationItem.rightBarButtonItem = composeItem;
+    
+    self.navigationItem.rightBarButtonItems = @[ self.settingsButton, self.composeButton ];
 }
 
 -(void)reloadTableView
@@ -1815,9 +1810,19 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
         _composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                        target:self
                                                                        action:@selector(composeNew:)];
-        _composeButton.tintColor = [ForstaColors darkBlue1];
     }
     return _composeButton;
+}
+
+-(UIBarButtonItem *)settingsButton
+{
+    if (_settingsButton == nil) {
+        _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger"]
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(onSettingsTap:)];
+    }
+    return _settingsButton;
 }
 
 -(UIBarButtonItem *)recipientCountButton
