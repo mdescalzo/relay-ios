@@ -7,6 +7,7 @@
 //
 
 #import "NotificationsManager.h"
+#import "TSMessagesManager.h"
 #import "Environment.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
@@ -76,8 +77,12 @@
     if (([UIApplication sharedApplication].applicationState != UIApplicationStateActive) && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.userInfo             = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
-        notification.soundName            = @"NewMessage.aifc";
-
+        if ([Environment.preferences soundInBackground]) {
+            notification.soundName = @"NewMessage.aifc";
+        } else {
+            notification.soundName = nil;
+        }
+        
         NSString *alertBodyString = @"";
 
         NSString *authorName = thread.displayName;
@@ -108,7 +113,11 @@
     
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
-        notification.soundName            = @"NewMessage.aifc";
+        if ([Environment.preferences soundInBackground]) {
+            notification.soundName = @"NewMessage.aifc";
+        } else {
+            notification.soundName = nil;
+        }
         
         switch ([[Environment preferences] notificationPreviewType]) {
             case NotificationNamePreview:
@@ -133,6 +142,10 @@
         }
 
         [[PushManager sharedManager] presentNotification:notification];
+        
+        NSInteger unread = (NSInteger) TSMessagesManager.sharedManager.unreadMessagesCount;
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unread];
+
     } else {
         if ([Environment.preferences soundInForeground]) {
             AudioServicesPlayAlertSound(_newMessageSound);

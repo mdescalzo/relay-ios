@@ -73,19 +73,19 @@
     {
       "size" : "20x20",
       "idiom" : "ipad",
-      "filename" : "Icon20@2x-1.png",
+      "filename" : "Icon20@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "Icon29-1.png",
+      "filename" : "Icon29.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "Icon29@2x-2.png",
+      "filename" : "Icon29@2x.png",
       "scale" : "2x"
     },
     {
@@ -97,7 +97,7 @@
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "Icon40@2x-1.png",
+      "filename" : "Icon40@2x.png",
       "scale" : "2x"
     },
     {
@@ -139,9 +139,10 @@
       "scale" : "2x"
     },
     {
+
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "forsta_icon@3x-1.png",
+      "filename" : "forsta_icon@3x.png",
       "scale" : "1x"
     },
     {
@@ -155,7 +156,7 @@
     {
       "size" : "27.5x27.5",
       "idiom" : "watch",
-      "filename" : "Icon24@2x-1.png",
+      "filename" : "Icon24@2x.png",
       "scale" : "2x",
       "role" : "notificationCenter",
       "subtype" : "42mm"
@@ -163,14 +164,14 @@
     {
       "size" : "29x29",
       "idiom" : "watch",
-      "filename" : "Icon29@2x-1.png",
+      "filename" : "Icon29@2x.png",
       "role" : "companionSettings",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "watch",
-      "filename" : "Icon29@3x-1.png",
+      "filename" : "Icon29@3x.png",
       "role" : "companionSettings",
       "scale" : "3x"
     },

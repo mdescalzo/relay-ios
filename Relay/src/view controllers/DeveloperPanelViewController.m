@@ -8,6 +8,7 @@
 
 #import "DeveloperPanelViewController.h"
 #import "CCSMStorage.h"
+#import "TSAccountManager.h"
 
 @interface DeveloperPanelViewController ()
 
@@ -27,6 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.outputLabel.text = [NSString stringWithFormat:@"UserID: %@", TSAccountManager.sharedInstance.myself.uniqueId];
     
     self.validSupermanIDs = @[ FLSupermanDevID, FLSupermanStageID, FLSupermanProdID ];
     

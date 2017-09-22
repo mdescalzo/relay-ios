@@ -16,6 +16,7 @@ NSString *const PropertyListPreferencesKeyHasSentAMessage = @"User has sent a me
 NSString *const PropertyListPreferencesKeyHasArchivedAMessage = @"User archived a message";
 NSString *const PropertyListPreferencesKeyLastRunSignalVersion = @"SignalUpdateVersionKey";
 NSString *const PropertyListPreferencesKeyPlaySoundInForeground = @"NotificationSoundInForeground";
+NSString *const PropertyListPreferencesKeyPlaySoundInBackground = @"NotificationSoundInBackground";
 NSString *const PropertyListPreferencesKeyHasRegisteredVoipPush = @"VOIPPushEnabled";
 NSString *const PropertyListPreferencesKeyLastRecordedPushToken = @"LastRecordedPushToken";
 NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecordedVoipToken";
@@ -161,7 +162,6 @@ NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecorded
 }
 
 #pragma mark Notification Preferences
-
 - (BOOL)soundInForeground
 {
     NSNumber *preference = [self tryGetValueForKey:PropertyListPreferencesKeyPlaySoundInForeground];
@@ -175,6 +175,21 @@ NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecorded
 - (void)setSoundInForeground:(BOOL)enabled
 {
     [self setValueForKey:PropertyListPreferencesKeyPlaySoundInForeground toValue:@(enabled)];
+}
+
+- (BOOL)soundInBackground
+{
+    NSNumber *preference = [self tryGetValueForKey:PropertyListPreferencesKeyPlaySoundInBackground];
+    if (preference) {
+        return [preference boolValue];
+    } else {
+        return YES;
+    }
+}
+
+- (void)setSoundInBackground:(BOOL)enabled
+{
+    [self setValueForKey:PropertyListPreferencesKeyPlaySoundInBackground toValue:@(enabled)];
 }
 
 - (void)setNotificationPreviewType:(NotificationType)type

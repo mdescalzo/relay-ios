@@ -41,7 +41,7 @@
 #import "UIFont+OWS.h"
 #import "UIUtil.h"
 #import "UIViewController+CameraPermissions.h"
-#import <AddressBookUI/AddressBookUI.h>
+//#import <AddressBookUI/AddressBookUI.h>
 #import <ContactsUI/CNContactViewController.h>
 #import <JSQMessagesViewController/JSQMessagesBubbleImage.h>
 #import <JSQMessagesViewController/JSQMessagesBubbleImageFactory.h>
@@ -63,6 +63,7 @@
 #import "FLMessagesManager.h"
 #import <RelayServiceKit/TSNetworkManager.h>
 #import <YapDatabase/YapDatabaseView.h>
+#import "ImagePreviewViewController.h"
 
 
 @import Photos;
@@ -85,7 +86,8 @@ typedef enum : NSUInteger {
     kMediaTypeVideo,
 } kMediaTypes;
 
-@interface MessagesViewController () {
+@interface MessagesViewController() <ImagePreviewViewControllerDelegate>
+{
     UIImage *tappedImage;
     BOOL isGroupConversation;
 
@@ -126,6 +128,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 @property (nonatomic, readonly) FLMessagesManager *messagesManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
+
+@property (nonatomic, strong) UIImage *imageToPreview;
 
 @property NSCache *messageAdapterCache;
 
@@ -341,6 +345,8 @@ typedef enum : NSUInteger {
     [self.inputToolbar.contentView.textView setFont:[UIFont ows_dynamicTypeBodyFont]];
 
     self.inputToolbar.contentView.leftBarButtonItem = self.attachButton;
+    [self.inputToolbar setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    self.inputToolbar.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:225.0/255.0 blue:225.0/255.0 alpha:1.0];
 
     UILabel *sendLabel = self.inputToolbar.contentView.rightBarButtonItem.titleLabel;
     // override superclass translations since we support more translations than upstream.
@@ -1603,10 +1609,27 @@ typedef enum : NSUInteger {
         OWSConversationSettingsTableViewController *controller
             = (OWSConversationSettingsTableViewController *)segue.destinationViewController;
         [controller configureWithThread:self.thread];
+    } else if ([segue.identifier isEqualToString:@"imagePreviewSegue"]) {
+        UINavigationController *nvc = (UINavigationController *)segue.destinationViewController;
+        ImagePreviewViewController *ipvc = (ImagePreviewViewController *)[[nvc viewControllers] lastObject];
+        ipvc.delegate = self;
+        UIImage *image = (UIImage *)sender;
+        ipvc.image = image;
     }
 
 }
 
+#pragma mark - ImagePreviewController Delegate methods
+-(void)didPressSend:(id)sender
+{
+    [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:self.imageToPreview]
+                         ofType:@"image/jpeg"];
+    [sender dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)didPressCancel:(id)sender
+{
+    [sender dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - UIImagePickerController
 
@@ -1688,7 +1711,7 @@ typedef enum : NSUInteger {
         if (!asset) {
             return failedToPickAttachment(nil);
         }
-
+        
         PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
         options.synchronous = YES; // We're only fetching one asset.
         options.networkAccessAllowed = YES; // iCloud OK
@@ -1725,8 +1748,14 @@ typedef enum : NSUInteger {
                            } else {
                                DDLogVerbose(@"Compressing attachment as image/jpeg");
                                UIImage *pickedImage = [[UIImage alloc] initWithData:imageData];
-                               [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:pickedImage]
-                                                    ofType:@"image/jpeg"];
+                               
+                               self.imageToPreview = pickedImage;
+                               [self dismissViewControllerAnimated:YES completion:^{
+                                   [self performSegueWithIdentifier:@"imagePreviewSegue" sender:pickedImage];
+                               }];
+
+//                               [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:pickedImage]
+//                                                    ofType:@"image/jpeg"];
                            }
                        }];
     }

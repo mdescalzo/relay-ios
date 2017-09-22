@@ -42,16 +42,17 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 - (void)doAfterEnvironmentInitSetup {
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
-        self.contactStore = [[CNContactStore alloc] init];
-        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
-                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
-                                      if (!granted) {
-                                          // We're still using the old addressbook API.
-                                          // User warned if permission not granted in that setup.
-                                      }
-                                    }];
-    }
+#warning XXX is this method still necessary?
+//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
+//        self.contactStore = [[CNContactStore alloc] init];
+//        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
+//                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
+//                                      if (!granted) {
+//                                          // We're still using the old addressbook API.
+//                                          // User warned if permission not granted in that setup.
+//                                      }
+//                                    }];
+//    }
 
 //    [self setupAddressBook];
 
@@ -67,7 +68,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(void)refreshCCSMRecipients
 {
 #warning XXX Needs catch for failure to communicate with CCSM
-    [[Environment getCurrent].ccsmCommManager refreshCCSMUsers];
+    [[Environment getCurrent].ccsmCommManager refreshCCSMData];
     
     NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     

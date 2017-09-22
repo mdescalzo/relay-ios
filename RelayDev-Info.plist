@@ -2,18 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FLSupermanID</key>
-	<string>1e1116aa-31b3-4fb2-a4db-21e8136d4f3a</string>
 	<key>CCSM_Home_URL</key>
 	<string>https://ccsm-dev-api.forsta.io</string>
-	<key>TSS_Server_API</key>
-	<string>ws://forsta-signalserver-dev.herokuapp.com/v1/websocket/</string>
-	<key>TSS_Server_Port</key>
-	<integer>80</integer>
-	<key>TSS_Server_URL</key>
-	<string>http://forsta-signalserver-dev.herokuapp.com/</string>
-	<key>TSS_Serveraddress</key>
-	<string>forsta-signalserver-dev.herokuapp.com</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -50,7 +40,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>54</string>
+	<string>61</string>
+	<key>FLSupermanID</key>
+	<string>1e1116aa-31b3-4fb2-a4db-21e8136d4f3a</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -109,6 +101,14 @@
 	<string>Forsta Relay needs access to your microphone to make and receive phone calls.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Forsta Relay will let you choose which photos from your library to send.</string>
+	<key>TSS_Server_API</key>
+	<string>ws://forsta-signalserver-dev.herokuapp.com/v1/websocket/</string>
+	<key>TSS_Server_Port</key>
+	<integer>80</integer>
+	<key>TSS_Server_URL</key>
+	<string>http://forsta-signalserver-dev.herokuapp.com/</string>
+	<key>TSS_Serveraddress</key>
+	<string>forsta-signalserver-dev.herokuapp.com</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
