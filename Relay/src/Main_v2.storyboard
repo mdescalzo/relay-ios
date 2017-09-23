@@ -356,7 +356,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="tXP-Y5-hMx">
                         <barButtonItem key="backBarButtonItem" title=" " id="v78-oV-25m"/>
-                        <barButtonItem key="rightBarButtonItem" image="contact-options-action" id="BKC-i1-Qfg">
+                        <barButtonItem key="rightBarButtonItem" image="hamburger" id="BKC-i1-Qfg">
                             <inset key="imageInsets" minX="17" minY="10" maxX="0.0" maxY="5"/>
                             <color key="tintColor" red="0.99987119440000005" green="0.99998223779999995" blue="0.99984109399999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </barButtonItem>
@@ -1997,16 +1997,16 @@
         <image name="btnGroup--white" width="44" height="44"/>
         <image name="btnQRShow--white" width="66" height="66"/>
         <image name="btnQRShow--white-1" width="66" height="66"/>
-        <image name="contact-options-action" width="44" height="44"/>
         <image name="contact_default_feed.png" width="242" height="242"/>
         <image name="empty-group-avatar" width="53" height="53"/>
+        <image name="hamburger" width="25" height="25"/>
         <image name="ic_devices_ios" width="180" height="119"/>
         <image name="ic_lock_outline" width="32" height="32"/>
         <image name="table_ic_hourglass_empty" width="32" height="32"/>
         <image name="table_ic_timer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IPX-Kb-VMm"/>
+        <segue reference="hdc-jU-KdZ"/>
         <segue reference="nsV-7A-EyB"/>
         <segue reference="HeD-G0-GXS"/>
     </inferredMetricsTieBreakers>
