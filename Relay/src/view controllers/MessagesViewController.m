@@ -492,16 +492,16 @@ typedef enum : NSUInteger {
                                                                        style:UIBarButtonItemStylePlain
                                                                       target:self
                                                                       action:@selector(callAction)];
-        callButton.imageInsets = UIEdgeInsetsMake(0, -10, 0, 10);
+//        callButton.imageInsets = UIEdgeInsetsMake(0, -10, 0, 10);
         [barButtons addObject:callButton];
     } else if (self.thread.participants.count > 2) {
         UIBarButtonItem *manageGroupButton =
-            [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"contact-options-action"]
+            [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger"]
                                              style:UIBarButtonItemStylePlain
                                             target:self
                                             action:@selector(didTapManageGroupButton:)];
         // Hack to shrink button image
-        manageGroupButton.imageInsets = UIEdgeInsetsMake(10, 20, 10, 0);
+//        manageGroupButton.imageInsets = UIEdgeInsetsMake(10, 20, 10, 0);
         [barButtons addObject:manageGroupButton];
     }
 

@@ -139,7 +139,6 @@
       "scale" : "2x"
     },
     {
-
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
       "filename" : "forsta_icon@3x.png",
@@ -156,7 +155,7 @@
     {
       "size" : "27.5x27.5",
       "idiom" : "watch",
-      "filename" : "Icon24@2x.png",
+      "filename" : "Icon27.5@2x.png",
       "scale" : "2x",
       "role" : "notificationCenter",
       "subtype" : "42mm"
@@ -178,7 +177,7 @@
     {
       "size" : "40x40",
       "idiom" : "watch",
-      "filename" : "Icon40-1.png",
+      "filename" : "Icon40@2x-1.png",
       "scale" : "2x",
       "role" : "appLauncher",
       "subtype" : "38mm"
