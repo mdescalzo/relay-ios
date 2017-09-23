@@ -417,11 +417,9 @@ typedef enum : NSUInteger {
 - (void)updateBackButtonAsync {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSUInteger count = [self.messagesManager unreadMessagesCountExcept:self.thread];
-        dispatch_async(dispatch_get_main_queue(), ^{
             if (self) {
                 [self setUnreadCount:count];
             }
-        });
     });
 }
 
@@ -2278,54 +2276,56 @@ typedef enum : NSUInteger {
 
 - (void)setUnreadCount:(NSUInteger)unreadCount {
     if (_unreadCount != unreadCount) {
-        _unreadCount = unreadCount;
-
-        if (_unreadCount > 0) {
-            if (_unreadContainer == nil) {
-                static UIImage *backgroundImage = nil;
-                static dispatch_once_t onceToken;
-                dispatch_once(&onceToken, ^{
-                  UIGraphicsBeginImageContextWithOptions(CGSizeMake(17.0f, 17.0f), false, 0.0f);
-                  CGContextRef context = UIGraphicsGetCurrentContext();
-                  CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
-                  CGContextFillEllipseInRect(context, CGRectMake(0.0f, 0.0f, 17.0f, 17.0f));
-                  backgroundImage =
-                      [UIGraphicsGetImageFromCurrentImageContext() stretchableImageWithLeftCapWidth:8 topCapHeight:8];
-                  UIGraphicsEndImageContext();
-                });
-
-                _unreadContainer = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 10.0f, 10.0f)];
-                _unreadContainer.userInteractionEnabled = NO;
-                _unreadContainer.layer.zPosition        = 2000;
-                [self.navigationController.navigationBar addSubview:_unreadContainer];
-
-                _unreadBackground = [[UIImageView alloc] initWithImage:backgroundImage];
-                [_unreadContainer addSubview:_unreadBackground];
-
-                _unreadLabel                 = [[UILabel alloc] init];
-                _unreadLabel.backgroundColor = [UIColor clearColor];
-                _unreadLabel.textColor       = [UIColor whiteColor];
-                _unreadLabel.font            = [UIFont systemFontOfSize:12];
-                [_unreadContainer addSubview:_unreadLabel];
-            }
-            _unreadContainer.hidden = false;
-
-            _unreadLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)unreadCount];
-            [_unreadLabel sizeToFit];
-
-            CGPoint offset = CGPointMake(17.0f, 2.0f);
-
-            _unreadBackground.frame =
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _unreadCount = unreadCount;
+        
+            if (_unreadCount > 0) {
+                if (_unreadContainer == nil) {
+                    static UIImage *backgroundImage = nil;
+                    static dispatch_once_t onceToken;
+                    dispatch_once(&onceToken, ^{
+                        UIGraphicsBeginImageContextWithOptions(CGSizeMake(17.0f, 17.0f), false, 0.0f);
+                        CGContextRef context = UIGraphicsGetCurrentContext();
+                        CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
+                        CGContextFillEllipseInRect(context, CGRectMake(0.0f, 0.0f, 17.0f, 17.0f));
+                        backgroundImage =
+                        [UIGraphicsGetImageFromCurrentImageContext() stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+                        UIGraphicsEndImageContext();
+                    });
+                    
+                    _unreadContainer = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 10.0f, 10.0f)];
+                    _unreadContainer.userInteractionEnabled = NO;
+                    _unreadContainer.layer.zPosition        = 2000;
+                    [self.navigationController.navigationBar addSubview:_unreadContainer];
+                    
+                    _unreadBackground = [[UIImageView alloc] initWithImage:backgroundImage];
+                    [_unreadContainer addSubview:_unreadBackground];
+                    
+                    _unreadLabel                 = [[UILabel alloc] init];
+                    _unreadLabel.backgroundColor = [UIColor clearColor];
+                    _unreadLabel.textColor       = [UIColor whiteColor];
+                    _unreadLabel.font            = [UIFont systemFontOfSize:12];
+                    [_unreadContainer addSubview:_unreadLabel];
+                }
+                _unreadContainer.hidden = false;
+                
+                _unreadLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)unreadCount];
+                [_unreadLabel sizeToFit];
+                
+                CGPoint offset = CGPointMake(17.0f, 2.0f);
+                
+                _unreadBackground.frame =
                 CGRectMake(offset.x, offset.y, MAX(_unreadLabel.frame.size.width + 8.0f, 17.0f), 17.0f);
-            _unreadLabel.frame = CGRectMake(offset.x
-                    + (CGFloat)floor(
-                          (2.0 * (_unreadBackground.frame.size.width - _unreadLabel.frame.size.width) / 2.0f) / 2.0f),
-                offset.y + 1.0f,
-                _unreadLabel.frame.size.width,
-                _unreadLabel.frame.size.height);
-        } else if (_unreadContainer != nil) {
-            _unreadContainer.hidden = true;
-        }
+                _unreadLabel.frame = CGRectMake(offset.x
+                                                + (CGFloat)floor(
+                                                                 (2.0 * (_unreadBackground.frame.size.width - _unreadLabel.frame.size.width) / 2.0f) / 2.0f),
+                                                offset.y + 1.0f,
+                                                _unreadLabel.frame.size.width,
+                                                _unreadLabel.frame.size.height);
+            } else if (_unreadContainer != nil) {
+                _unreadContainer.hidden = true;
+            }
+        });
     }
 }
 

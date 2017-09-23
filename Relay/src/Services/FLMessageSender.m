@@ -57,23 +57,17 @@
                    TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
                                                                                             inThread:nil
                                                                                          messageBody:messageBlob];
-                   supermanMessage.hasSyncedTranscript = YES;
+                   supermanMessage.hasSyncedTranscript = NO;
                    [super sendSpecialMessage:supermanMessage
                                  recipientId:FLSupermanID
                                      success:^{
                                          DDLogDebug(@"Superman send successful.");
-                                         successHandler();
+                                         [supermanMessage remove];
                                      }
                                      failure:^(NSError *error){
                                          DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
-                                         failureHandler(error);
+                                         [supermanMessage remove];
                                      }];
-                   
-//                   [super sendMessage:supermanMessage
-//                              success:successHandler
-//                              failure:^(NSError *error){
-//                                  DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
-//                              }];
                    });
                }
                failure:failureHandler];
