@@ -10,19 +10,22 @@
 #import "DirectoryTableViewController.h"
 #import "FLInvitationService.h"
 #import "Environment.h"
+#import "TSAccountManager.h"
 
 #ifdef DEVELOPMENT
-#define kNumberOfSettings 6
+#define kNumberOfSettings 7
 #else
-#define kNumberOfSettings 5
+#define kNumberOfSettings 6
 #endif
 
-#define kInvitationIndex 0
-#define kLinkedDevicesIndex 1
-#define kSettingsIndex 2
-#define kMarkAllReadIndex 3
-#define kHelpIndex 4
-#define kDeveloperConsoleIndex 5
+#define kLoginInfoIndex 0
+#define kInvitationIndex 1
+#define kLinkedDevicesIndex 2
+#define kSettingsIndex 3
+#define kMarkAllReadIndex 4
+#define kHelpIndex 5
+#define kDeveloperConsoleIndex 6
+
 #define kImportExportIndex 998
 #define kDirectoryIndex 999
 
@@ -107,7 +110,14 @@ CGFloat const kRowHeight = 40;
             cell.textLabel.text = NSLocalizedString(@"Debug Dashboard", @"");
         }
             break;
-            
+        case kLoginInfoIndex:
+        {
+            SignalRecipient *myself = TSAccountManager.sharedInstance.myself;
+            cell.textLabel.textColor = [ForstaColors mediumDarkBlue2];
+            cell.textLabel.adjustsFontSizeToFitWidth= YES;
+            cell.textLabel.text = [NSString stringWithFormat:@"%@@%@:%@", NSLocalizedString(@"Logged In As: ", @""), myself.tagSlug, myself.orgSlug];
+        }
+            break;
         default:
         {
             cell.textLabel.text = @"Undefine Row";

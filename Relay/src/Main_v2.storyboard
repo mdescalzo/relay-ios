@@ -47,13 +47,7 @@
                             <constraint firstItem="0Xy-V3-x1M" firstAttribute="leading" secondItem="itT-4e-qaU" secondAttribute="leadingMargin" id="qcc-jU-QdD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Fmx-VY-5mC">
-                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="WXV-Dk-W00">
-                            <connections>
-                                <segue destination="WYY-yw-ixW" kind="presentation" identifier="composeNew" id="IoE-J9-McF"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="Fmx-VY-5mC"/>
                     <connections>
                         <outlet property="bannerLabel" destination="0Xy-V3-x1M" id="bjW-2a-MM5"/>
                         <segue destination="7BF-eX-3b0" kind="popoverPresentation" identifier="SettingsPopoverSegue" popoverAnchorView="itT-4e-qaU" id="K2g-26-NFE">
@@ -64,6 +58,7 @@
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES"/>
                         </segue>
                         <segue destination="B0q-os-ZFy" kind="show" identifier="threadSelectedSegue" id="qBO-Wo-oJx"/>
+                        <segue destination="WYY-yw-ixW" kind="presentation" identifier="composeNew" id="jNi-9t-qc2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jnp-ug-P9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -176,7 +171,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="New Message" id="WtF-Jx-ukp">
                         <barButtonItem key="backBarButtonItem" title=" " id="E5a-ve-9b8"/>
-                        <barButtonItem key="leftBarButtonItem" image="btnCancel--white" id="3mW-Mp-wzj">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="3mW-Mp-wzj">
                             <inset key="imageInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
@@ -361,7 +356,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="tXP-Y5-hMx">
                         <barButtonItem key="backBarButtonItem" title=" " id="v78-oV-25m"/>
-                        <barButtonItem key="rightBarButtonItem" image="contact-options-action" id="BKC-i1-Qfg">
+                        <barButtonItem key="rightBarButtonItem" image="hamburger" id="BKC-i1-Qfg">
                             <inset key="imageInsets" minX="17" minY="10" maxX="0.0" maxY="5"/>
                             <color key="tintColor" red="0.99987119440000005" green="0.99998223779999995" blue="0.99984109399999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </barButtonItem>
@@ -897,7 +892,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="tsE-8I-iC0">
-                        <barButtonItem key="leftBarButtonItem" image="btnCancel--white" id="lrF-HT-8cp">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="lrF-HT-8cp">
                             <connections>
                                 <segue destination="Nj7-a0-Eh5" kind="unwind" unwindAction="unwindToMessagesView:" id="Igb-S2-7cL"/>
                             </connections>
@@ -1004,7 +999,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Linked Devices" id="okS-cj-QL6">
-                        <barButtonItem key="leftBarButtonItem" image="btnCancel--white" id="6NQ-1r-n2y">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="6NQ-1r-n2y">
                             <connections>
                                 <segue destination="zI9-ci-qNQ" kind="unwind" unwindAction="unwindToMessagesView:" id="Up8-EV-6F9"/>
                             </connections>
@@ -1170,7 +1165,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="78u-pY-ifd">
-                        <barButtonItem key="leftBarButtonItem" image="btnCancel--white" id="H8z-fn-A3O">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="H8z-fn-A3O">
                             <connections>
                                 <action selector="onDoneTap:" destination="Vtm-Nf-1MA" id="a5E-lx-82h"/>
                             </connections>
@@ -1998,20 +1993,19 @@
     </scenes>
     <resources>
         <image name="btnCamera--white" width="52" height="40"/>
-        <image name="btnCancel--white" width="44" height="44"/>
         <image name="btnGroup--white" width="44" height="44"/>
         <image name="btnQRShow--white" width="66" height="66"/>
         <image name="btnQRShow--white-1" width="66" height="66"/>
-        <image name="contact-options-action" width="44" height="44"/>
         <image name="contact_default_feed.png" width="242" height="242"/>
         <image name="empty-group-avatar" width="53" height="53"/>
+        <image name="hamburger" width="25" height="25"/>
         <image name="ic_devices_ios" width="180" height="119"/>
         <image name="ic_lock_outline" width="32" height="32"/>
         <image name="table_ic_hourglass_empty" width="32" height="32"/>
         <image name="table_ic_timer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IPX-Kb-VMm"/>
+        <segue reference="hdc-jU-KdZ"/>
         <segue reference="nsV-7A-EyB"/>
         <segue reference="nuh-JN-5Kq"/>
     </inferredMetricsTieBreakers>

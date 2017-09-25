@@ -81,7 +81,7 @@
                                      }
                                      failure:^(NSError *error) {
                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                             self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", error.code, error.localizedDescription];
+                                             self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", (long)error.code, error.localizedDescription];
                                          });
                                      }];
     }

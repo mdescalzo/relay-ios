@@ -59,11 +59,13 @@
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
 #import "FLTagMathService.h"
+#import "ForstaColors.h"
 
 @import Photos;
 
 #define CELL_HEIGHT 72.0f
 #define kLogoButtonTag 1001
+#define kSettingsButtonTag 1002
 
 NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 NSString *kUserIDKey = @"id";
@@ -126,6 +128,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) UIBarButtonItem *sendButton;
 @property (nonatomic, strong) UIBarButtonItem *tagButton;
 @property (nonatomic, strong) UIBarButtonItem *recipientCountButton;
+@property (nonatomic, strong) UIBarButtonItem *composeButton;
+@property (nonatomic, strong) UIBarButtonItem *settingsButton;
 
 @end
 
@@ -233,7 +237,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // Input view setup
     self.textView.keyboardType = UIKeyboardTypeDefault;
     self.textView.backgroundColor = [UIColor whiteColor];
-    self.textInputbar.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:225.0/255.0 blue:225.0/255.0 alpha:1.0];
+    self.textInputbar.backgroundColor = [ForstaColors lightGray];
 
     
     // setup methodology lifted from Signals
@@ -411,16 +415,20 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    if ([[segue identifier] isEqualToString:@"SettingsPopoverSegue"]) {
-        [segue destinationViewController].popoverPresentationController.delegate = self;
-        [segue destinationViewController].preferredContentSize = CGSizeMake(self.tableView.frame.size.width*2/3, [self.settingsViewController heightForTableView]);
-        
-        //        CGRect aFrame = CGRectMake(self.navigationController.navigationBar.frame.size.width - [self frameForSettingsBarButton].size.width,
-        //                                   self.navigationController.navigationBar.frame.size.height - [self frameForSettingsBarButton].size.height,
-        //                                   self.navigationController.navigationBar.frame.size.height,
-        //                                   self.navigationController.navigationBar.frame.size.height + 20);
-        
-        [segue destinationViewController].popoverPresentationController.sourceRect = [self frameForLogoBarButton];
+    if ([segue.identifier isEqualToString:@"SettingsPopoverSegue"]) {
+        segue.destinationViewController.popoverPresentationController.delegate = self;
+        segue.destinationViewController.preferredContentSize = CGSizeMake(self.tableView.frame.size.width*2/3, [self.settingsViewController heightForTableView]);
+
+        UIBarButtonItem *settingsButton = (UIBarButtonItem *)sender;
+        UIView *targetView = (UIView *)[settingsButton valueForKey:@"view"];
+//        CGRect rect = targetView.frame;
+        CGRect rect = CGRectMake(self.navigationController.navigationBar.frame.size.width - targetView.frame.size.width,
+                                 20,
+                                 targetView.frame.size.width,
+                                 targetView.frame.size.height);
+//        [segue destinationViewController].popoverPresentationController.sourceView = targetView;
+        segue.destinationViewController.popoverPresentationController.sourceRect = rect; //[self frameForSettingsButton];
+        segue.destinationViewController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
     }
     else if ([[segue identifier] isEqualToString:@"directoryPopoverSegue"]) {
         [segue destinationViewController].popoverPresentationController.delegate = self;
@@ -440,12 +448,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
--(CGRect)frameForLogoBarButton
+-(CGRect)frameForSettingsButton
 {
     // Workaround for UIBarButtomItem not inheriting from UIView
     NSMutableArray* buttons = [[NSMutableArray alloc] init];
     for (UIControl* btn in self.navigationController.navigationBar.subviews) {
-        if ([btn isKindOfClass:[UIControl class]] && btn.tag == kLogoButtonTag) {
+        if ([btn isKindOfClass:[UIControl class]] && btn.tag == kSettingsButtonTag) {
             [buttons addObject:btn];
         }
     }
@@ -743,7 +751,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         // Check to see if matched tag is a userid.  If it matches and not already in the selected dictionary, add it
         // Also, select highlight color based on validity
         if ([self isValidUserID:tag]) {
-            highlightColor = [UIColor blueColor];
+            highlightColor = [ForstaColors darkBlue1];
             if (![self.recipientTags containsObject:tag]) {
                 [self.recipientTags addObject:tag];
             }
@@ -1356,10 +1364,10 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 {
     // Look at using segmentedcontrol to simulate multiple buttons on one side
     [self.leftButton setImage:[UIImage imageNamed:@"Tag_1"] forState:UIControlStateNormal];
-    
+    self.leftButton.tintColor = [ForstaColors darkBlue1];
     [self.rightButton setTitle:NSLocalizedString(@" ", nil) forState:UIControlStateNormal];
     [self.rightButton setImage:[UIImage imageNamed:@"Send_solid"] forState:UIControlStateNormal];
-    [self.rightButton setTintColor:[UIColor colorWithRed:0.0/255.0 green:144.0/255.0 blue:226.0/255.0 alpha:1.0]];
+    self.rightButton.tintColor = [ForstaColors darkBlue1];
     self.textInputbar.autoHideRightButton = NO;
     
     UIToolbar *bottomBannerView = [UIToolbar new];
@@ -1371,7 +1379,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
     
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                target:nil action:nil];
-    bottomBannerView.items = @[ /* self.attachmentButton, */ flexSpace, self.recipientCountButton ];
+    bottomBannerView.items = @[ flexSpace, self.recipientCountButton ];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(bottomBannerView);
     
@@ -1383,22 +1391,31 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
 
 -(void)configureNavigationBar
 {
+    self.title = TSAccountManager.sharedInstance.myself.orgSlug;
+    
+#ifdef DEVELOPMENT
+    UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_logo_DEV"]
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                 //                                                                action:@selector(onSettingsTap:)];
+                                                                action:nil];
+#elif STAGE
+    UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_logo_PRE"]
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                 //                                                                action:@selector(onSettingsTap:)];
+                                                                action:nil];
+#else // Assume Production build
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_text_logo"]
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
-                                                                action:@selector(onSettingsTap:)];
+//                                                                action:@selector(onSettingsTap:)];
+                                                                action:nil];
+#endif
     logoItem.tag = kLogoButtonTag;
-    
-    //    UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeNew:)];
-    
-    //    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings"]
-    //                                                                style:UIBarButtonItemStylePlain
-    //                                                               target:self
-    //                                                               action:@selector(onSettingsTap:)];
     self.navigationItem.leftBarButtonItem = logoItem;
-//    self.navigationItem.titleView = self.searchController.searchBar;
-    //    self.navigationItem.rightBarButtonItem = settingsItem;
-    //    self.navigationItem.rightBarButtonItem = composeItem;
+    
+    self.navigationItem.rightBarButtonItems = @[ self.settingsButton, self.composeButton ];
 }
 
 -(void)reloadTableView
@@ -1758,7 +1775,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(onAttachmentButtonTap:)];
-        _attachmentButton.tintColor = [UIColor blackColor];
+        _attachmentButton.tintColor = [ForstaColors darkBlue1];
     }
     return _attachmentButton;
 }
@@ -1770,7 +1787,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(didPressRightButton:)];
-        _sendButton.tintColor = [UIColor blueColor];
+        _sendButton.tintColor = [ForstaColors darkBlue1];
     }
     return _sendButton;
 }
@@ -1782,9 +1799,30 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                                       style:UIBarButtonItemStylePlain
                                                      target:self
                                                      action:@selector(didPressLeftButton:)];
-        _tagButton.tintColor = [UIColor blackColor];
+        _tagButton.tintColor = [ForstaColors darkBlue1];
     }
     return _tagButton;
+}
+
+-(UIBarButtonItem *)composeButton
+{
+    if (_composeButton == nil) {
+        _composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                       target:self
+                                                                       action:@selector(composeNew:)];
+    }
+    return _composeButton;
+}
+
+-(UIBarButtonItem *)settingsButton
+{
+    if (_settingsButton == nil) {
+        _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger"]
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(onSettingsTap:)];
+    }
+    return _settingsButton;
 }
 
 -(UIBarButtonItem *)recipientCountButton
@@ -1794,7 +1832,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:nil
                                                                 action:nil];
-        _recipientCountButton.tintColor = [UIColor darkGrayColor];
+        _recipientCountButton.tintColor = [ForstaColors darkestGray];
     }
     return _recipientCountButton;
 }

@@ -85,6 +85,7 @@ typedef enum {
         = NSLocalizedString(@"LINKED_DEVICES_TITLE", @"Menu item and navbar title for the device manager");
     [self.destroyAccountButton setTitle:NSLocalizedString(@"SETTINGS_DELETE_ACCOUNT_BUTTON", @"")
                                forState:UIControlStateNormal];
+    self.destroyAccountButton.backgroundColor = [ForstaColors mediumDarkRed];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -249,17 +250,17 @@ typedef enum {
 
 - (void)socketDidOpen {
     self.networkStatusLabel.text      = NSLocalizedString(@"NETWORK_STATUS_CONNECTED", @"");
-    self.networkStatusLabel.textColor = [UIColor ows_redColor];
+    self.networkStatusLabel.textColor = [ForstaColors mediumDarkRed];
 }
 
 - (void)socketDidClose {
     self.networkStatusLabel.text      = NSLocalizedString(@"NETWORK_STATUS_OFFLINE", @"");
-    self.networkStatusLabel.textColor = [UIColor ows_redColor];
+    self.networkStatusLabel.textColor = [ForstaColors mediumDarkRed];
 }
 
 - (void)socketIsConnecting {
     self.networkStatusLabel.text      = NSLocalizedString(@"NETWORK_STATUS_CONNECTING", @"");
-    self.networkStatusLabel.textColor = [UIColor ows_redColor];
+    self.networkStatusLabel.textColor = [ForstaColors mediumDarkRed];
 }
 
 @end

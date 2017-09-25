@@ -28,6 +28,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.imageView.image = self.image;
+    
+    self.cancelButton.backgroundColor = [ForstaColors mediumLightBlue2];
+    self.sendButton.backgroundColor = [ForstaColors mediumRed];
 }
 
 -(void)viewWillAppear:(BOOL)animated
