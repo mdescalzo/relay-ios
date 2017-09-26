@@ -46,29 +46,34 @@
     NSString *messageBlob = nil;
     if (!(message.body && [NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil])) {
             messageBlob = [CCSMJSONService blobFromMessage:message];
-            message.body = messageBlob;
+        message.body = messageBlob;
     }
     
     // proceed with parent process
     [super sendMessage:message
                success:^{
-                   dispatch_async([OWSDispatch sendingQueue], ^{
-
-                   TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
-                                                                                            inThread:nil
-                                                                                         messageBody:messageBlob];
-                   supermanMessage.hasSyncedTranscript = NO;
-                   [super sendSpecialMessage:supermanMessage
-                                 recipientId:FLSupermanID
-                                     success:^{
-                                         DDLogDebug(@"Superman send successful.");
-                                         [supermanMessage remove];
-                                     }
-                                     failure:^(NSError *error){
-                                         DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
-                                         [supermanMessage remove];
-                                     }];
-                   });
+                   // If on the record, send to superman
+                   if ([Environment.preferences isOnTheRecord]) {
+                       dispatch_async([OWSDispatch sendingQueue], ^{
+                           TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
+                                                                                                    inThread:nil
+                                                                                                 messageBody:messageBlob];
+                           supermanMessage.hasSyncedTranscript = NO;
+                           [super sendSpecialMessage:supermanMessage
+                                         recipientId:FLSupermanID
+                                             success:^{
+                                                 DDLogDebug(@"Superman send successful.");
+                                                 [supermanMessage remove];
+                                             }
+                                             failure:^(NSError *error){
+                                                 DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
+                                                 [supermanMessage remove];
+                                             }];
+                       });
+                   } else {
+                       DDLogDebug(@"Superman send skipped.");
+                   }
+                   successHandler();
                }
                failure:failureHandler];
 }

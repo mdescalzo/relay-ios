@@ -19,15 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     PrivacySettingsTableViewControllerSectionIndexScreenSecurity,
     PrivacySettingsTableViewControllerSectionIndexHistoryLog,
-    PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange
+    PrivacySettingsTableViewControllerSectionIndexOnOffRecord
+//    PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange
 };
 
 @interface PrivacySettingsTableViewController ()
 
 @property (nonatomic, strong) UITableViewCell *enableScreenSecurityCell;
 @property (nonatomic, strong) UISwitch *enableScreenSecuritySwitch;
-@property (nonatomic, strong) UITableViewCell *blockOnIdentityChangeCell;
-@property (nonatomic, strong) UISwitch *blockOnIdentityChangeSwitch;
+//@property (nonatomic, strong) UITableViewCell *blockOnIdentityChangeCell;
+//@property (nonatomic, strong) UISwitch *blockOnIdentityChangeSwitch;
+@property (nonatomic, strong) UITableViewCell *onOffRecordChangeCell;
+@property (nonatomic, strong) UISwitch *onOffRecordChangeSwitch;
 @property (nonatomic, strong) UITableViewCell *clearHistoryLogCell;
 
 @end
@@ -66,15 +69,25 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     self.clearHistoryLogCell.textLabel.text = NSLocalizedString(@"SETTINGS_CLEAR_HISTORY", @"");
     self.clearHistoryLogCell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
 
-    // Block Identity on KeyChange
-    self.blockOnIdentityChangeCell = [UITableViewCell new];
-    self.blockOnIdentityChangeCell.textLabel.text
-        = NSLocalizedString(@"SETTINGS_BLOCK_ON_IDENTITY_CHANGE_TITLE", @"Table cell label");
-    self.blockOnIdentityChangeSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-    self.blockOnIdentityChangeCell.accessoryView = self.blockOnIdentityChangeSwitch;
-    [self.blockOnIdentityChangeSwitch setOn:[Environment.preferences shouldBlockOnIdentityChange]];
-    [self.blockOnIdentityChangeSwitch addTarget:self
-                                         action:@selector(didToggleBlockOnIdentityChangeSwitch:)
+//    // Block Identity on KeyChange
+//    self.blockOnIdentityChangeCell = [UITableViewCell new];
+//    self.blockOnIdentityChangeCell.textLabel.text
+//        = NSLocalizedString(@"SETTINGS_BLOCK_ON_IDENTITY_CHANGE_TITLE", @"Table cell label");
+//    self.blockOnIdentityChangeSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+//    self.blockOnIdentityChangeCell.accessoryView = self.blockOnIdentityChangeSwitch;
+//    [self.blockOnIdentityChangeSwitch setOn:[Environment.preferences shouldBlockOnIdentityChange]];
+//    [self.blockOnIdentityChangeSwitch addTarget:self
+//                                         action:@selector(didToggleBlockOnIdentityChangeSwitch:)
+//                               forControlEvents:UIControlEventTouchUpInside];
+    // On-Off Record
+    self.onOffRecordChangeCell = [UITableViewCell new];
+    self.onOffRecordChangeCell.textLabel.text
+    = NSLocalizedString(@"SETTINGS_ONTHERECORD_TITLE", @"Table cell label");
+    self.onOffRecordChangeSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+    self.onOffRecordChangeCell.accessoryView = self.onOffRecordChangeSwitch;
+    [self.onOffRecordChangeSwitch setOn:[Environment.preferences isOnTheRecord]];
+    [self.onOffRecordChangeSwitch addTarget:self
+                                         action:@selector(didToggleOnOffRecordSwitch:)
                                forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -90,7 +103,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
             return 1;
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return 1;
-        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
+//        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
+//            return 1;
+        case PrivacySettingsTableViewControllerSectionIndexOnOffRecord:
             return 1;
         default:
             return 0;
@@ -102,9 +117,11 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     switch (section) {
         case PrivacySettingsTableViewControllerSectionIndexScreenSecurity:
             return NSLocalizedString(@"SETTINGS_SCREEN_SECURITY_DETAIL", nil);
-        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
-            return NSLocalizedString(
-                @"SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL", @"User settings section footer, a detailed explanation");
+//        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
+//            return NSLocalizedString(
+//                @"SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL", @"User settings section footer, a detailed explanation");
+        case PrivacySettingsTableViewControllerSectionIndexOnOffRecord:
+            return NSLocalizedString(@"SETTINGS_SCREEN_ONOFF_RECORD_DETAIL", nil);
         default:
             return nil;
     }
@@ -116,8 +133,10 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
             return self.enableScreenSecurityCell;
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return self.clearHistoryLogCell;
-        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
-            return self.blockOnIdentityChangeCell;
+//        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
+//            return self.blockOnIdentityChangeCell;
+        case PrivacySettingsTableViewControllerSectionIndexOnOffRecord:
+            return self.onOffRecordChangeCell;
         default: {
             DDLogError(@"%@ Requested unknown table view cell for row at indexPath: %@", self.tag, indexPath);
             return [UITableViewCell new];
@@ -132,8 +151,10 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
             return NSLocalizedString(@"SETTINGS_SECURITY_TITLE", @"Section header");
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return NSLocalizedString(@"SETTINGS_HISTORYLOG_TITLE", @"Section header");
-        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
-            return NSLocalizedString(@"SETTINGS_PRIVACY_VERIFICATION_TITLE", @"Section header");
+//        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
+//            return NSLocalizedString(@"SETTINGS_PRIVACY_VERIFICATION_TITLE", @"Section header");
+        case PrivacySettingsTableViewControllerSectionIndexOnOffRecord:
+            return NSLocalizedString(@"SETTINGS_PRIVACY_ONTHERECORD_TITLE", @"Section hearer");
         default:
             return nil;
     }
@@ -176,11 +197,18 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     [Environment.preferences setScreenSecurity:enabled];
 }
 
-- (void)didToggleBlockOnIdentityChangeSwitch:(UISwitch *)sender
+//- (void)didToggleBlockOnIdentityChangeSwitch:(UISwitch *)sender
+//{
+//    BOOL enabled = self.blockOnIdentityChangeSwitch.isOn;
+//    DDLogInfo(@"%@ toggled blockOnIdentityChange: %@", self.tag, enabled ? @"ON" : @"OFF");
+//    [Environment.preferences setShouldBlockOnIdentityChange:enabled];
+//}
+
+- (void)didToggleOnOffRecordSwitch:(UISwitch *)sender
 {
-    BOOL enabled = self.blockOnIdentityChangeSwitch.isOn;
-    DDLogInfo(@"%@ toggled blockOnIdentityChange: %@", self.tag, enabled ? @"ON" : @"OFF");
-    [Environment.preferences setShouldBlockOnIdentityChange:enabled];
+    BOOL enabled = self.onOffRecordChangeSwitch.isOn;
+    DDLogInfo(@"%@ toggled onOffRecordChange: %@", self.tag, enabled ? @"ON" : @"OFF");
+    [Environment.preferences setIsOnTheRecord:enabled];
 }
 
 #pragma mark - Log util

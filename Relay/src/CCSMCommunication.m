@@ -97,7 +97,10 @@
                                                                     options:0
                                                                       error:NULL];
              [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-             [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             NSDictionary *userDict = [result objectForKey:@"user"];
+             [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
+             NSDictionary *orgDict = [userDict objectForKey:@"org"];
+             [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
@@ -143,8 +146,11 @@
                                                                options:0
                                                                  error:NULL];
         [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-        [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
-        // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+        NSDictionary *userDict = [result objectForKey:@"user"];
+        [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
+        NSDictionary *orgDict = [userDict objectForKey:@"org"];
+        [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
+    // TODO: fetch/sync other goodies, like all of the the user's potential :^)
         successBlock();
     }
     else  // Connection good, error from server
@@ -188,6 +194,10 @@
                                                                       error:NULL];
              [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
              [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
+             NSDictionary *userDict = [result objectForKey:@"user"];
+             [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
+             NSDictionary *orgDict = [userDict objectForKey:@"org"];
+             [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
