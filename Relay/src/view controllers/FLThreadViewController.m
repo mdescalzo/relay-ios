@@ -502,7 +502,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 // Compose new message
 - (void)composeNew:(id)sender
 {
-    [self performSegueWithIdentifier:@"composeNew" sender:nil];
+    [self performSegueWithIdentifier:@"composeThreadSegue" sender:nil];
+//    [self performSegueWithIdentifier:@"composeNew" sender:nil];
 }
 
 - (void)didPressSendButton:(UIButton *)button

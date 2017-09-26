@@ -173,6 +173,9 @@
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
+		7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
+		7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
+		7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C11F1693930023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C21F1693930023C29B /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
@@ -1471,6 +1474,8 @@
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDomainViewController.h; sourceTree = "<group>"; };
 		7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDomainViewController.m; sourceTree = "<group>"; };
+		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
+		7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadCreationViewController.m; sourceTree = "<group>"; };
 		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
 		7D4A39B61F1693140023C29B /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7D4A39B81F16931F0023C29B /* RelayStage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayStage-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -2651,6 +2656,8 @@
 				7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */,
 				7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */,
 				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
+				7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */,
+				7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -4098,6 +4105,7 @@
 				7D4A3A131F1693930023C29B /* SoundInstance.m in Sources */,
 				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
+				7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
 				7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */,
 				7D4A3A181F1693930023C29B /* DirectoryDetailTableViewController.m in Sources */,
@@ -4324,6 +4332,7 @@
 				7DCFFDBA1F0EE4490003CD95 /* SoundInstance.m in Sources */,
 				7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */,
 				7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */,
+				7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */,
 				7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */,
 				7DCFFDBF1F0EE4490003CD95 /* DirectoryDetailTableViewController.m in Sources */,
@@ -4550,6 +4559,7 @@
 				76EB05B418170B33006006FC /* HashChain.m in Sources */,
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
 				76EB058218170B33006006FC /* Environment.m in Sources */,
+				7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
 				7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */,
 				45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */,

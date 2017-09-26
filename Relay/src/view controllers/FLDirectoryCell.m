@@ -41,6 +41,23 @@
     }
 }
 
+-(void)configureCellWithTagDictionary:(NSDictionary *)tagDict
+{
+    NSString *description = [tagDict objectForKey:@"description"];
+    NSString *tagId = [tagDict objectForKey:@"id"];
+    NSDictionary *orgDict = [tagDict objectForKey:@"org"];
+    NSString *orgSlug = [orgDict objectForKey:@"slug"];
+    
+    self.nameLabel.text = description;
+    self.detailLabel.text = orgSlug;
+    
+    OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:tagId
+                                                                                           name:description
+                                                                                contactsManager:[Environment getCurrent].contactsManager
+                                                                                       diameter:self.contentView.frame.size.height];
+    self.avatarImageView.image = [avatarBuilder buildDefaultImage];
+}
+
 - (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact {
     NSMutableAttributedString *fullNameAttributedString =
     [[NSMutableAttributedString alloc] initWithString:contact.fullName];
