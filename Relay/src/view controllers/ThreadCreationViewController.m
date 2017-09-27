@@ -14,12 +14,13 @@
 #import "Environment.h"
 #import "FLTagMathService.h"
 #import "TSAccountManager.h"
+#import "SlugOverLayView.h"
 
-@interface ThreadCreationViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface ThreadCreationViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, SlugOverLayViewDelegate, NSLayoutManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UITextView *slugContainerView;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *exitButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *goButton;
 
@@ -28,6 +29,9 @@
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeRecognizer;
 
 @property (nonatomic, strong) NSMutableArray *validatedSlugs;
+@property (nonatomic, strong) NSMutableArray *slugViews;
+//@property (nonatomic, strong) NSMutableDictionary *slugs;
+
 @property (nonatomic, strong) NSArray *content;
 @property (nonatomic, strong) NSArray *searchResults;
 
@@ -41,8 +45,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self tagService];
-    [self downSwipeRecognizer];
-    self.slugViewHeight.constant = 0;
+//    [self downSwipeRecognizer];
+    self.slugViewHeight.constant = KMinInputHeight;
+//    self.slugContainerView.layoutManager.delegate = self;
+    self.slugContainerView.textContainerInset = UIEdgeInsetsMake(8, 0, 8, KMinInputHeight);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,16 +87,19 @@
     }
     NSString *selectedTag = [NSString stringWithFormat:@"@%@", [selectedTagDict objectForKey:@"slug"]];
     NSDictionary *orgDict = [selectedTagDict objectForKey:@"org"];
-    NSString *selectedOrg = [orgDict objectForKey:@"slug"];
+//    NSString *selectedOrg = [orgDict objectForKey:@"slug"];
     
     if ([self.validatedSlugs containsObject:selectedTag]) {
-        [self.validatedSlugs removeObject:selectedTag];
+        [self removeSlug:selectedTag];
+//        NSUInteger index = [self.validatedSlugs indexOfObject:selectedTag];
+//        [self.validatedSlugs removeObjectAtIndex:index];
+//        UIView *aView = [self.slugViews objectAtIndex:index];
+//        [aView removeFromSuperview];
+//        [self.slugViews removeObjectAtIndex:index];
     } else {
-        [self.validatedSlugs addObject:selectedTag];
+        [self addSlug:selectedTag];
     }
-    [self refreshSlugView];
-    [self.tableView reloadData];
-    // Build Tag button
+
     // Spin off lookup
 }
 
@@ -232,6 +241,31 @@
 }
 
 #pragma mark - worker methods
+-(void)addSlug:(NSString *)slug
+{
+    SlugOverLayView *aView = [[SlugOverLayView alloc] initWithSlug:slug frame:CGRectZero];
+    aView.delegate = self;
+    aView.backgroundColor = [ForstaColors mediumLightGreen];
+    [self.slugContainerView addSubview:aView];
+    [self.slugContainerView bringSubviewToFront:aView];
+    [self.slugViews addObject:aView];
+    [self.validatedSlugs addObject:slug];
+    [self.tableView reloadData];
+    [self refreshSlugView];
+    [self.slugContainerView scrollRangeToVisible:NSMakeRange(self.slugContainerView.text.length-1, 1)];
+}
+
+-(void)removeSlug:(NSString *)slug
+{
+    NSUInteger index = [self.validatedSlugs indexOfObject:slug];
+    [self.validatedSlugs removeObjectAtIndex:index];
+    UIView *aView = [self.slugViews objectAtIndex:index];
+    [aView removeFromSuperview];
+    [self.slugViews removeObjectAtIndex:index];
+    [self.tableView reloadData];
+    [self refreshSlugView];
+}
+
 -(void)refreshSlugView
 {
     NSMutableString *tmpString = [NSMutableString new];
@@ -239,10 +273,9 @@
         if (tmpString.length == 0) {
             [tmpString appendString:slug];
         } else {
-            [tmpString appendString:[NSString stringWithFormat:@"  %@", slug]];
+            [tmpString appendString:[NSString stringWithFormat:@"      %@", slug]];
         }
     }
-    
     
     //  Handle dynamic size
     CGRect boundingRect = [tmpString boundingRectWithSize:CGSizeMake(350, CGFLOAT_MAX)
@@ -261,10 +294,55 @@
     
     newHeight += 20.0;
     
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.25 animations:^{
         self.slugViewHeight.constant = newHeight;
         self.slugContainerView.text = [NSString stringWithString:tmpString];
+
+        for (UIView *aView in self.slugViews) {
+            aView.frame = [self frameForSlug:[self.validatedSlugs objectAtIndex:[self.slugViews indexOfObject:aView]]];
+        }
     }];
+}
+
+-(CGRect)frameForSlug:(NSString *)slug
+{
+    // Use regex to avoid UI problems from slugs which are substrings of other slugs
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%@(\\b|$)", slug]
+                                                                           options:(NSRegularExpressionCaseInsensitive | NSRegularExpressionAnchorsMatchLines)
+                                                                             error:nil];
+    NSArray *matches = [regex matchesInString:self.slugContainerView.text options:0 range:NSMakeRange(0, self.slugContainerView.text.length)];
+    NSRange range = ((NSTextCheckingResult *)[matches lastObject]).range;
+
+    CGRect aFrame = [self frameOfTextRange:range inTextView:self.slugContainerView];
+    CGFloat heightMod = 1.5;
+    return CGRectMake(aFrame.origin.x, aFrame.origin.y + heightMod, aFrame.size.width + aFrame.size.height - (2*heightMod), aFrame.size.height);
+    
+}
+
+// Source https://stackoverflow.com/questions/10313689/how-to-find-position-or-get-rect-of-any-word-in-textview-and-place-buttons-over
+- (CGRect)frameOfTextRange:(NSRange)range inTextView:(UITextView *)textView
+{
+    UITextPosition *beginning = textView.beginningOfDocument;
+    UITextPosition *start = [textView positionFromPosition:beginning offset:range.location];
+    UITextPosition *end = [textView positionFromPosition:start offset:range.length];
+    UITextRange *textRange = [textView textRangeFromPosition:start toPosition:end];
+    CGRect rect = [textView firstRectForRange:textRange];
+    return [textView convertRect:rect fromView:textView.textInputView];
+}
+
+#pragma mark - Layout manager delegate methods
+//- (CGFloat)layoutManager:(NSLayoutManager *)layoutManager lineSpacingAfterGlyphAtIndex:(NSUInteger)glyphIndex withProposedLineFragmentRect:(CGRect)rect
+//{
+//    return 15;
+//}
+
+#pragma mark - SlugOverlay delegate method
+-(void)deleteButtonTappedOnSlugButton:(id)sender
+{
+    if ([sender isKindOfClass:[SlugOverLayView class]]) {
+        SlugOverLayView *view = (SlugOverLayView *)sender;
+        [self removeSlug:view.slug];
+    }
 }
 
 #pragma mark - Accessors
@@ -274,6 +352,14 @@
         _validatedSlugs = [NSMutableArray new];
     }
     return _validatedSlugs;
+}
+
+-(NSMutableArray *)slugViews
+{
+    if (_slugViews == nil) {
+        _slugViews = [NSMutableArray new];
+    }
+    return _slugViews;
 }
 
 -(UISwipeGestureRecognizer *)downSwipeRecognizer
@@ -322,109 +408,6 @@
         _tagService = [FLTagMathService new];
     }
     return _tagService;
-}
-
-@end
-
-///////////////////////
-#pragma mark - SlugButton
-@class SlugButton;
-
-@protocol SlugButtonDelegate <NSObject>
--(void)deleteButtonTappedOnSlugButton:(SlugButton *)sender;
-@end
-
-@interface SlugButton : UIView
-
-@property (nonatomic, strong) NSString *slug;
-@property (nonatomic, strong) UIButton *deleteButton;
-@property (nonatomic, strong) UILabel *slugLabel;
-
-@property (nonatomic, weak) id<SlugButtonDelegate>delegate;
-
-@end
-
-@implementation SlugButton
-
--(id)initWithSlug:(NSString *)slug
-{
-    if (self = [super init]) {
-        _slug = [slug copy];
-        
-        _slugLabel = [UILabel new];
-        _slugLabel.text = _slug;
-        
-        _deleteButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        _deleteButton.titleLabel.text = @"X";
-        
-        [self addSubview:_slugLabel];
-        [self addSubview:_deleteButton];
-        
-        NSLayoutConstraint *topSlugConstraint = [NSLayoutConstraint constraintWithItem:_slugLabel
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1
-                                                                              constant:0];
-        NSLayoutConstraint *bottomSlugConstraint = [NSLayoutConstraint constraintWithItem:_slugLabel
-                                                                                attribute:NSLayoutAttributeBottom
-                                                                                relatedBy:NSLayoutRelationEqual
-                                                                                   toItem:self
-                                                                                attribute:NSLayoutAttributeBottom
-                                                                               multiplier:1
-                                                                                 constant:0];
-        NSLayoutConstraint *leadingSlugConstraint = [NSLayoutConstraint constraintWithItem:_slugLabel
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                multiplier:1
-                                                                                  constant:0];
-        NSLayoutConstraint *trailSlugConstraint = [NSLayoutConstraint constraintWithItem:_slugLabel
-                                                                               attribute:NSLayoutAttributeRight
-                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                  toItem:_deleteButton
-                                                                               attribute:NSLayoutAttributeRight
-                                                                              multiplier:1
-                                                                                constant:0];
-        NSLayoutConstraint *topDeleteConstraint = [NSLayoutConstraint constraintWithItem:_deleteButton
-                                                                               attribute:NSLayoutAttributeTop
-                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                  toItem:self
-                                                                               attribute:NSLayoutAttributeTop
-                                                                              multiplier:1
-                                                                                constant:0];
-        NSLayoutConstraint *bottomDeleteConstraint = [NSLayoutConstraint constraintWithItem:_deleteButton
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:self
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                 multiplier:1
-                                                                                   constant:0];
-        NSLayoutConstraint *trailDeleteConstraint = [NSLayoutConstraint constraintWithItem:_deleteButton
-                                                                                 attribute:NSLayoutAttributeRight
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self
-                                                                                 attribute:NSLayoutAttributeRight
-                                                                                multiplier:1
-                                                                                  constant:0];
-        NSLayoutConstraint *ratioDeleteConstraint = [NSLayoutConstraint constraintWithItem:_deleteButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:_deleteButton
-                                                                                 attribute:NSLayoutAttributeHeight
-                                                                                multiplier:1
-                                                                                  constant:0];
-        [self addConstraints:@[ topSlugConstraint, bottomSlugConstraint, leadingSlugConstraint, trailSlugConstraint, topDeleteConstraint, bottomDeleteConstraint, trailDeleteConstraint,ratioDeleteConstraint ]];
-        
-    }
-    return self;
-}
-
--(void)deleteButtonTapped
-{
-    [self.delegate deleteButtonTappedOnSlugButton:self];
 }
 
 @end
