@@ -227,12 +227,25 @@ NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecorded
 
 - (BOOL)shouldBlockOnIdentityChange
 {
-    return self.tsPrivacyPreferences.shouldBlockOnIdentityChange;
+    return NO;
+//    return self.tsPrivacyPreferences.shouldBlockOnIdentityChange;
 }
 
 - (void)setShouldBlockOnIdentityChange:(BOOL)value
 {
     self.tsPrivacyPreferences.shouldBlockOnIdentityChange = value;
+    [self.tsPrivacyPreferences save];
+}
+
+#pragma mark - On/off the record
+-(BOOL)isOnTheRecord
+{
+    return self.tsPrivacyPreferences.isOnTheRecord;
+}
+
+-(void)setIsOnTheRecord:(BOOL)value
+{
+    self.tsPrivacyPreferences.isOnTheRecord = value;
     [self.tsPrivacyPreferences save];
 }
 
