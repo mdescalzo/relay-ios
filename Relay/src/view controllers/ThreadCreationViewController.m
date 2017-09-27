@@ -91,16 +91,9 @@
     
     if ([self.validatedSlugs containsObject:selectedTag]) {
         [self removeSlug:selectedTag];
-//        NSUInteger index = [self.validatedSlugs indexOfObject:selectedTag];
-//        [self.validatedSlugs removeObjectAtIndex:index];
-//        UIView *aView = [self.slugViews objectAtIndex:index];
-//        [aView removeFromSuperview];
-//        [self.slugViews removeObjectAtIndex:index];
     } else {
         [self addSlug:selectedTag];
     }
-
-    // Spin off lookup
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -129,6 +122,19 @@
             return 0;
             break;
     }
+}
+
+-(void)refreshTableView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+//    if ([self.tableView numberOfRowsInSection:0] == 0) {
+//        self.tableView.alpha = 0.0;
+//    } else {
+//        self.tableView.alpha = 1.0;
+        [self.tableView reloadData];
+//    }
+    });
 }
 
 //- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
@@ -188,12 +194,68 @@
 #pragma mark - SearchBar delegate methods
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self.tableView reloadData];
+    [self refreshTableView];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    
+    if (searchBar.text.length > 0) {
+        __block NSString *searchText = [searchBar.text copy];
+        [self.tagService tagLookupWithString:searchText
+                                     success:^(NSDictionary *results) {
+                                         DDLogDebug(@"%@", results);
+                                         NSString *pretty = [results objectForKey:@"pretty"];
+                                         NSArray *warnings = [results objectForKey:@"warnings"];
+                                         
+                                         __block NSMutableArray *badStrings = [NSMutableArray new];
+                                         if (warnings.count > 0) {
+                                             for (NSDictionary *warning in warnings) {
+                                                 NSRange range = NSMakeRange([[warning objectForKey:@"position"] integerValue],
+                                                                              [[warning objectForKey:@"length"] integerValue]);
+                                                 NSString *badString = [searchText substringWithRange:range];
+                                                 [badStrings addObject:badString];
+                                             }
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 NSMutableString *badStuff = [NSMutableString new];
+                                                 for (NSString *string in badStrings) {
+                                                     [badStuff appendFormat:@"%@\n", string];
+                                                 }
+                                                 NSString *message = [NSString stringWithFormat:@"%@\n%@", NSLocalizedString(@"Tag not found for:", @"Alert message for no results from taglookup"), badStuff];
+                                                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                message:message
+                                                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
+                                                 UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",)
+                                                                                                    style:UIAlertActionStyleDefault
+                                                                                                  handler:^(UIAlertAction *action) { /* do nothing */}];
+                                                 [alert addAction:okButton];
+                                                 [self presentViewController:alert animated:YES completion:nil];
+                                             });
+                                         }
+                                         if (pretty.length > 0) {
+                                             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-.:]+(\\b|$)"
+                                                                                                                    options:(NSRegularExpressionCaseInsensitive | NSRegularExpressionAnchorsMatchLines)
+                                                                                                                      error:nil];
+                                             NSArray *matches = [regex matchesInString:pretty options:0 range:NSMakeRange(0, pretty.length)];
+                                             for (NSTextCheckingResult *result in matches) {
+                                                 NSString *newSlug = [pretty substringWithRange:result.range];
+                                                 [self addSlug:newSlug];
+                                             }
+                                         }
+                                         
+                                         // Update the searchbar with remainder text
+                                         NSMutableString *badStuff = [NSMutableString new];
+                                         for (NSString *string in badStrings) {
+                                             [badStuff appendFormat:@"%@ ", string];
+                                         }
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             self.searchBar.text = [NSString stringWithString:badStuff];
+                                         });
+
+                                     }
+                                     failure:^(NSError *error) {
+                                         DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                     }];
+    }
 }
 
 -(void)textViewDidChange:(UITextView *)textView
@@ -243,65 +305,77 @@
 #pragma mark - worker methods
 -(void)addSlug:(NSString *)slug
 {
-    SlugOverLayView *aView = [[SlugOverLayView alloc] initWithSlug:slug frame:CGRectZero];
-    aView.delegate = self;
-    aView.backgroundColor = [ForstaColors mediumLightGreen];
-    [self.slugContainerView addSubview:aView];
-    [self.slugContainerView bringSubviewToFront:aView];
-    [self.slugViews addObject:aView];
-    [self.validatedSlugs addObject:slug];
-    [self.tableView reloadData];
-    [self refreshSlugView];
-    [self.slugContainerView scrollRangeToVisible:NSMakeRange(self.slugContainerView.text.length-1, 1)];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        CGRect hiddenFrame = CGRectMake(self.slugContainerView.frame.size.width/2,
+                                        self.slugContainerView.frame.size.height*2,
+                                        0, 0);
+        SlugOverLayView *aView = [[SlugOverLayView alloc] initWithSlug:slug frame:hiddenFrame];
+        aView.delegate = self;
+        aView.backgroundColor = [ForstaColors lightGreen];
+        [self.slugContainerView addSubview:aView];
+        [self.slugContainerView bringSubviewToFront:aView];
+        [self.slugViews addObject:aView];
+        [self.validatedSlugs addObject:slug];
+        [self refreshTableView];
+        [self refreshSlugView];
+        [self.slugContainerView scrollRangeToVisible:NSMakeRange(self.slugContainerView.text.length-1, 1)];
+    });
 }
 
 -(void)removeSlug:(NSString *)slug
 {
-    NSUInteger index = [self.validatedSlugs indexOfObject:slug];
-    [self.validatedSlugs removeObjectAtIndex:index];
-    UIView *aView = [self.slugViews objectAtIndex:index];
-    [aView removeFromSuperview];
-    [self.slugViews removeObjectAtIndex:index];
-    [self.tableView reloadData];
-    [self refreshSlugView];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSUInteger index = [self.validatedSlugs indexOfObject:slug];
+        [self.validatedSlugs removeObjectAtIndex:index];
+        UIView *aView = [self.slugViews objectAtIndex:index];
+        [aView removeFromSuperview];
+        [self.slugViews removeObjectAtIndex:index];
+        [self refreshTableView];
+        [self refreshSlugView];
+    });
 }
 
 -(void)refreshSlugView
 {
-    NSMutableString *tmpString = [NSMutableString new];
-    for (NSString *slug in self.validatedSlugs) {
-        if (tmpString.length == 0) {
-            [tmpString appendString:slug];
-        } else {
-            [tmpString appendString:[NSString stringWithFormat:@"      %@", slug]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSMutableString *tmpString = [NSMutableString new];
+        for (NSString *slug in self.validatedSlugs) {
+            if (tmpString.length == 0) {
+                [tmpString appendString:slug];
+            } else {
+                [tmpString appendString:[NSString stringWithFormat:@"      %@", slug]];
+            }
         }
-    }
-    
-    //  Handle dynamic size
-    CGRect boundingRect = [tmpString boundingRectWithSize:CGSizeMake(350, CGFLOAT_MAX)
+        
+        //  Handle dynamic size
+        CGRect boundingRect = [tmpString boundingRectWithSize:CGSizeMake(350, CGFLOAT_MAX)
                                                       options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                                    attributes:@{ NSFontAttributeName: self.slugContainerView.font }
                                                       context:nil];
-    CGSize boundingSize = boundingRect.size;
-    CGFloat newHeight = KMinInputHeight;
-    if (boundingSize.height < KMinInputHeight) {
-        newHeight = KMinInputHeight;
-    } else if (boundingSize.height > kMaxInputHeight) {
-        newHeight = kMaxInputHeight;
-    } else {
-        newHeight = boundingSize.height;
-    }
-    
-    newHeight += 20.0;
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        self.slugViewHeight.constant = newHeight;
-        self.slugContainerView.text = [NSString stringWithString:tmpString];
-
-        for (UIView *aView in self.slugViews) {
-            aView.frame = [self frameForSlug:[self.validatedSlugs objectAtIndex:[self.slugViews indexOfObject:aView]]];
+        CGSize boundingSize = boundingRect.size;
+        CGFloat newHeight = KMinInputHeight;
+        if (boundingSize.height < KMinInputHeight) {
+            newHeight = KMinInputHeight;
+        } else if (boundingSize.height > kMaxInputHeight) {
+            newHeight = kMaxInputHeight;
+        } else {
+            newHeight = boundingSize.height;
         }
-    }];
+        
+        newHeight += 20.0;
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            self.slugViewHeight.constant = newHeight;
+            self.slugContainerView.text = [NSString stringWithString:tmpString];
+            
+            for (UIView *aView in self.slugViews) {
+                aView.frame = [self frameForSlug:[self.validatedSlugs objectAtIndex:[self.slugViews indexOfObject:aView]]];
+            }
+        }];
+    });
 }
 
 -(CGRect)frameForSlug:(NSString *)slug
@@ -312,7 +386,7 @@
                                                                              error:nil];
     NSArray *matches = [regex matchesInString:self.slugContainerView.text options:0 range:NSMakeRange(0, self.slugContainerView.text.length)];
     NSRange range = ((NSTextCheckingResult *)[matches lastObject]).range;
-
+    
     CGRect aFrame = [self frameOfTextRange:range inTextView:self.slugContainerView];
     CGFloat heightMod = 1.5;
     return CGRectMake(aFrame.origin.x, aFrame.origin.y + heightMod, aFrame.size.width + aFrame.size.height - (2*heightMod), aFrame.size.height);
@@ -329,12 +403,6 @@
     CGRect rect = [textView firstRectForRange:textRange];
     return [textView convertRect:rect fromView:textView.textInputView];
 }
-
-#pragma mark - Layout manager delegate methods
-//- (CGFloat)layoutManager:(NSLayoutManager *)layoutManager lineSpacingAfterGlyphAtIndex:(NSUInteger)glyphIndex withProposedLineFragmentRect:(CGRect)rect
-//{
-//    return 15;
-//}
 
 #pragma mark - SlugOverlay delegate method
 -(void)deleteButtonTappedOnSlugButton:(id)sender
@@ -389,11 +457,11 @@
 {
     if (self.searchBar.text.length > 0 && ![self.searchBar.text isEqualToString:@"@"]) {
         if ([[self.searchBar.text substringToIndex:1] isEqualToString:@"@"]) {
-            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS %@", @"slug", [self.searchBar.text substringFromIndex:1]];
+            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", [self.searchBar.text substringFromIndex:1]];
             return [self.content filteredArrayUsingPredicate:slugPred];
         } else {
-            NSPredicate *descriptionPred = [NSPredicate predicateWithFormat:@"%K CONTAINS %@", @"description", self.searchBar.text];
-            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS %@", @"slug", self.searchBar.text];
+            NSPredicate *descriptionPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"description", self.searchBar.text];
+            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", self.searchBar.text];
             NSCompoundPredicate *filterPred = [NSCompoundPredicate orPredicateWithSubpredicates:@[ descriptionPred, slugPred ]];
             return [self.content filteredArrayUsingPredicate:filterPred];
         }
