@@ -15,6 +15,8 @@
 #import "FLTagMathService.h"
 #import "TSAccountManager.h"
 #import "SlugOverLayView.h"
+#import "TSStorageManager.h"
+#import "TSThread.h"
 
 @interface ThreadCreationViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, SlugOverLayViewDelegate, NSLayoutManagerDelegate>
 
@@ -254,6 +256,17 @@
                                      }
                                      failure:^(NSError *error) {
                                          DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             
+                                             UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                            message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
+                                                                                                     preferredStyle:UIAlertControllerStyleActionSheet];
+                                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                style:UIAlertActionStyleDefault
+                                                                                              handler:^(UIAlertAction *action) {}];
+                                             [alert addAction:okAction];
+                                             [self presentViewController:alert animated:YES completion:nil];
+                                         });
                                      }];
     }
 }
@@ -284,7 +297,34 @@
 #pragma mark - UI actions
 -(IBAction)didPressGoButton:(id)sender
 {
-    
+    if (self.validatedSlugs.count > 0) {
+        NSMutableString *threadSlugs =[NSMutableString new];
+        for (NSString* slug in self.validatedSlugs) {
+            if (threadSlugs.length == 0) {
+                [threadSlugs appendString:slug];
+            } else {
+                [threadSlugs appendFormat:@" + %@", slug];
+            }
+        }
+        [self.tagService tagLookupWithString:threadSlugs
+                                     success:^(NSDictionary *results) {
+                                         [self buildThreadWithResults:results];
+                                     }
+                                     failure:^(NSError *error) {
+                                         DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             
+                                             UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                            message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
+                                                                                                     preferredStyle:UIAlertControllerStyleActionSheet];
+                                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                style:UIAlertActionStyleDefault
+                                                                                              handler:^(UIAlertAction *action) {}];
+                                             [alert addAction:okAction];
+                                             [self presentViewController:alert animated:YES completion:nil];
+                                         });
+                                     }];
+    }
 }
 
 -(IBAction)didPressExitButton:(id)sender
@@ -303,6 +343,48 @@
 }
 
 #pragma mark - worker methods
+-(void)buildThreadWithResults:(NSDictionary *)results
+{
+    // Check to see if myself is included
+    NSArray *userIds = [[results objectForKey:@"userids"] copy];
+    if (![userIds containsObject:TSAccountManager.sharedInstance.myself.uniqueId]) {
+        // add self run again
+        NSMutableString *pretty = [[results objectForKey:@"pretty"] mutableCopy];
+        [pretty appendFormat:@" + @%@", TSAccountManager.sharedInstance.myself.tagSlug];
+        [self.tagService tagLookupWithString:pretty
+                                     success:^(NSDictionary *newResults){
+                                         [self buildThreadWithResults:newResults];
+                                     }
+                                     failure:^(NSError *error) {
+                                         DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+
+                                         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                        message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
+                                                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
+                                         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                            style:UIAlertActionStyleDefault
+                                                                                          handler:^(UIAlertAction *action) {}];
+                                         [alert addAction:okAction];
+                                         [self presentViewController:alert animated:YES completion:nil];
+                                         });
+                                     }];
+    } else {
+        // build thread and go
+        [self dismissViewControllerAnimated:YES
+                                 completion:^() {
+                                     __block TSThread *thread = nil;
+                                     [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                         thread = [TSThread getOrCreateThreadWithParticipants:userIds transaction:transaction];
+                                         thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
+                                         thread.universalExpression = [[results objectForKey:@"universal"] copy];
+                                         [thread saveWithTransaction:transaction];
+                                     }];
+                                      [Environment messageGroup:thread];
+                                 }];
+    }
+}
+
 -(void)addSlug:(NSString *)slug
 {
     dispatch_async(dispatch_get_main_queue(), ^{
