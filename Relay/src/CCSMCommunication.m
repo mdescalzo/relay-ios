@@ -430,12 +430,14 @@
                  synchronous:YES
                      success:^{
                          NSMutableDictionary *holdingDict = [NSMutableDictionary new];
-                         for (NSDictionary *tagDict in [tags allValues]) {
-                             if (![[tagDict objectForKey:@"slug"] isEqualToString:@"."]) {
-                                 [holdingDict setObject:[tagDict objectForKey:@"id"] forKey:[tagDict objectForKey:@"slug"]];
+                         for (NSString *key in [tags allKeys]) {
+                             NSDictionary *dict = [tags objectForKey:key];
+                             if (![[dict objectForKey:@"slug"] isEqualToString:@"."]) {
+                                 [holdingDict setObject:dict forKey:key];
                              }
                          }
                          [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:holdingDict]];
+//                         [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
                          [self notifyOfTagsRefresh];
                          DDLogDebug(@"Refreshed all tags.");
                     }

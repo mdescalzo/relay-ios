@@ -168,11 +168,16 @@
 		7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
-		7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
+		7D3366251F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
+		7D3366261F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
+		7D3366271F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
+		7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
+		7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
+		7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C11F1693930023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C21F1693930023C29B /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
@@ -384,7 +389,6 @@
 		7D4A3A981F1693930023C29B /* Certificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048018170B33006006FC /* Certificate.m */; };
 		7D4A3A991F1693930023C29B /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
 		7D4A3A9A1F1693930023C29B /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
-		7D4A3A9C1F1693930023C29B /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4520D8D41D417D8E00123472 /* Photos.framework */; };
 		7D4A3A9F1F1693930023C29B /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -693,7 +697,6 @@
 		7DCFFE3F1F0EE4490003CD95 /* Certificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048018170B33006006FC /* Certificate.m */; };
 		7DCFFE401F0EE4490003CD95 /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
 		7DCFFE411F0EE4490003CD95 /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
-		7DCFFE431F0EE4490003CD95 /* libSlackTextViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */; };
 		7DCFFE441F0EE4490003CD95 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7DCFFE451F0EE4490003CD95 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4520D8D41D417D8E00123472 /* Photos.framework */; };
 		7DCFFE461F0EE4490003CD95 /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1463,14 +1466,17 @@
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
-		7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSlackTextViewController.a; path = "../Library/Developer/Xcode/DerivedData/Relay-gkridggddzianpfuvzrdybphatso/Build/Products/Debug-iphonesimulator/SlackTextViewController/libSlackTextViewController.a"; sourceTree = "<group>"; };
 		7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDirectoryPopupViewController.h; sourceTree = "<group>"; };
 		7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDirectoryPopupViewController.m; sourceTree = "<group>"; };
+		7D3366231F7B786E0094DAFA /* SlugOverLayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlugOverLayView.h; sourceTree = "<group>"; };
+		7D3366241F7B786E0094DAFA /* SlugOverLayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlugOverLayView.m; sourceTree = "<group>"; };
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDomainViewController.h; sourceTree = "<group>"; };
 		7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDomainViewController.m; sourceTree = "<group>"; };
+		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
+		7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadCreationViewController.m; sourceTree = "<group>"; };
 		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
 		7D4A39B61F1693140023C29B /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7D4A39B81F16931F0023C29B /* RelayStage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayStage-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1835,7 +1841,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D4A3A9C1F1693930023C29B /* libSlackTextViewController.a in Frameworks */,
 				7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */,
 				7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */,
 				7D4A3A9F1F1693930023C29B /* ContactsUI.framework in Frameworks */,
@@ -1867,7 +1872,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DCFFE431F0EE4490003CD95 /* libSlackTextViewController.a in Frameworks */,
 				7DCFFE441F0EE4490003CD95 /* PromiseKit.framework in Frameworks */,
 				7DCFFE451F0EE4490003CD95 /* Photos.framework in Frameworks */,
 				7DCFFE461F0EE4490003CD95 /* ContactsUI.framework in Frameworks */,
@@ -1899,7 +1903,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D24726D1EF0C83F0048126F /* libSlackTextViewController.a in Frameworks */,
 				456C38961DC7B882007536A7 /* PromiseKit.framework in Frameworks */,
 				4520D8D51D417D8E00123472 /* Photos.framework in Frameworks */,
 				B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */,
@@ -2580,7 +2583,7 @@
 				7D3B865B1EE2190700190FD5 /* ForstaMessages */,
 				7D7DA5B41F30CB3B007FE6E4 /* ContactsPicker */,
 				FC3196311A08141D0094C78E /* Settings */,
-				FC3196321A08142D0094C78E /* Signals */,
+				FC3196321A08142D0094C78E /* Legacy */,
 				FCFD25791A1543D500F4C644 /* Signup */,
 				B6BADBE51B88D1AC0086A80D /* LockInteractionController.h */,
 				B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */,
@@ -2623,6 +2626,8 @@
 				450873C91D9D86F4006B54F2 /* OWSExpirableMessageView.h */,
 				4531C9C21DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.h */,
 				4531C9C31DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m */,
+				7D3366231F7B786E0094DAFA /* SlugOverLayView.h */,
+				7D3366241F7B786E0094DAFA /* SlugOverLayView.m */,
 			);
 			name = Views;
 			path = views;
@@ -2651,6 +2656,8 @@
 				7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */,
 				7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */,
 				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
+				7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */,
+				7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -3076,7 +3083,6 @@
 			isa = PBXGroup;
 			children = (
 				7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */,
-				7D24726C1EF0C83F0048126F /* libSlackTextViewController.a */,
 				451DE9F11DC1585F00810E42 /* PromiseKit.framework */,
 				4520D8D41D417D8E00123472 /* Photos.framework */,
 				B6B226961BE4B7D200860F4D /* ContactsUI.framework */,
@@ -3259,7 +3265,7 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
-		FC3196321A08142D0094C78E /* Signals */ = {
+		FC3196321A08142D0094C78E /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
 				FC3196281A067D8F0094C78E /* MessageComposeTableViewController.h */,
@@ -3279,7 +3285,7 @@
 				452E3C8C1D935C77002A45B0 /* OWSConversationSettingsTableViewController.h */,
 				452E3C8D1D935C77002A45B0 /* OWSConversationSettingsTableViewController.m */,
 			);
-			name = Signals;
+			name = Legacy;
 			sourceTree = "<group>";
 		};
 		FCFA64B11A24F29E0007FB87 /* UI Categories */ = {
@@ -4098,6 +4104,7 @@
 				7D4A3A131F1693930023C29B /* SoundInstance.m in Sources */,
 				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
+				7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
 				7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */,
 				7D4A3A181F1693930023C29B /* DirectoryDetailTableViewController.m in Sources */,
@@ -4170,6 +4177,7 @@
 				7D4A3A5D1F1693930023C29B /* NotificationTracker.m in Sources */,
 				7D4A3A5E1F1693930023C29B /* PacketHandler.m in Sources */,
 				7D4A3A5F1F1693930023C29B /* AppAudioManager.m in Sources */,
+				7D3366251F7B786E0094DAFA /* SlugOverLayView.m in Sources */,
 				7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */,
 				7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */,
 				7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */,
@@ -4324,6 +4332,7 @@
 				7DCFFDBA1F0EE4490003CD95 /* SoundInstance.m in Sources */,
 				7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */,
 				7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */,
+				7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */,
 				7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */,
 				7DCFFDBF1F0EE4490003CD95 /* DirectoryDetailTableViewController.m in Sources */,
@@ -4396,6 +4405,7 @@
 				7DCFFE041F0EE4490003CD95 /* NotificationTracker.m in Sources */,
 				7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */,
 				7DCFFE061F0EE4490003CD95 /* AppAudioManager.m in Sources */,
+				7D3366261F7B786E0094DAFA /* SlugOverLayView.m in Sources */,
 				7DCFFE071F0EE4490003CD95 /* SignalsNavigationController.m in Sources */,
 				7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */,
 				7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */,
@@ -4550,6 +4560,7 @@
 				76EB05B418170B33006006FC /* HashChain.m in Sources */,
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
 				76EB058218170B33006006FC /* Environment.m in Sources */,
+				7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
 				7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */,
 				45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */,
@@ -4622,6 +4633,7 @@
 				70BAFD5D190584BE00FA5E0B /* NotificationTracker.m in Sources */,
 				76EB05A418170B33006006FC /* PacketHandler.m in Sources */,
 				E197B62118BBF12700F073E5 /* AppAudioManager.m in Sources */,
+				7D3366271F7B786E0094DAFA /* SlugOverLayView.m in Sources */,
 				FC4FA0261A1B9DC600DA100A /* SignalsNavigationController.m in Sources */,
 				76EB063818170B33006006FC /* DictionaryUtil.m in Sources */,
 				76EB05CE18170B33006006FC /* ZrtpHandshakeResult.m in Sources */,
@@ -4991,7 +5003,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5060,7 +5072,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5127,7 +5139,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5194,7 +5206,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5399,7 +5411,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5464,7 +5476,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

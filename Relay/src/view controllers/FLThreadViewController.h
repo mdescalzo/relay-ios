@@ -6,24 +6,22 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "SLKTextViewController.h"
+//#import "SLKTextViewController.h"
 #include "InboxTableViewCell.h"
-#import "CallState.h"
-#import "Contact.h"
-#import "TSGroupModel.h"
+//#import "CallState.h"
+//#import "Contact.h"
+//#import "TSGroupModel.h"
 
+@import UIKit;
 @import AVFoundation;
 @import MediaPlayer;
 
-@interface FLThreadViewController : SLKTextViewController <UIGestureRecognizerDelegate,
+@interface FLThreadViewController : UITableViewController <UIGestureRecognizerDelegate,
                                                             UIViewControllerPreviewingDelegate,
-                                                            UIPopoverPresentationControllerDelegate,
-                                                            UISearchControllerDelegate,
-                                                            UISearchResultsUpdating,
-                                                            UIImagePickerControllerDelegate>
+                                                            UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic) BOOL newlyRegisteredUser;
-@property (nonatomic, strong) CallState * _Nullable latestCall;
+//@property (nonatomic, strong) CallState * _Nullable latestCall;
 
 @property (nonatomic, assign) BOOL newConversation;
 @property (nonatomic, strong) NSDictionary * _Nullable targetUserInfo;

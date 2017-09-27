@@ -10,6 +10,10 @@
 
 @interface ForstaColors : NSObject
 
++(UIColor *)randomPopColor;
+
++(NSArray <UIColor *>*)popColors;
+
 +(UIColor *)lightGray;
 +(UIColor *)grayGray;
 +(UIColor *)darkGray;

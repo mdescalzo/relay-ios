@@ -12,6 +12,19 @@
 
 @implementation ForstaColors
 
++(UIColor *)randomPopColor
+{
+    return [[self popColors] objectAtIndex:arc4random_uniform([self popColors].count)];
+}
+
++(NSArray <UIColor *>*)popColors
+{
+    return @[ [self darkGreen], [self mediumDarkGreen], [self mediumGreen], [self mediumLightGreen], [self lightGreen],
+              [self darkRed], [self mediumDarkRed], [self mediumRed], [self mediumLightRed], [self lightRed],
+              [self darkBlue1], [self mediumDarkBlue1], [self mediumBlue1], [self mediumLightBlue1], [self lightBlue1],
+              [self darkBlue2], [self mediumDarkBlue2], [self mediumBlue2], [self mediumLightBlue2], [self lightBlue2] ];
+}
+
 +(UIColor *)lightGray
 {
     return [self colorFromHexString:@"#CACACA"];

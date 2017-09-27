@@ -10,11 +10,11 @@
 #import "AppDelegate.h"
 #import "Relay-Swift.h"
 #import "SignalsNavigationController.h"
-//#import "SignalsViewController.h"
 #import <PromiseKit/AnyPromise.h>
 #import <RelayServiceKit/OWSError.h>
 #import <RelayServiceKit/TSAccountManager.h>
 #import <RelayServiceKit/TSStorageManager+keyingMaterial.h>
+#import "PhoneNumber.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
