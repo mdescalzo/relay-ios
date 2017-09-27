@@ -61,6 +61,10 @@ typedef NS_ENUM(NSUInteger, TSImageQuality) {
 - (BOOL)shouldBlockOnIdentityChange;
 - (void)setShouldBlockOnIdentityChange:(BOOL)value;
 
+#pragma mark - On/Off the record
+-(BOOL)isOnTheRecord;
+-(void)setIsOnTheRecord:(BOOL)value;
+
 #pragma mark - Push Tokens
 
 - (void)setPushToken:(NSString *)value;
