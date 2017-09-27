@@ -6,7 +6,7 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#define KMinInputHeight 21.0
+#define KMinInputHeight 0.0
 #define kMaxInputHeight 84.0
 
 #import "ThreadCreationViewController.h"
