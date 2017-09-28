@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>FLSupermanID</key>
-	<string>+17017328733</string>
+	<string>cf40fca2-dfa8-4356-8ae7-45f56f7551ca</string>
 	<key>CCSM_Home_URL</key>
-	<string>https://ccsm-api.forsta.io</string>
+	<string>https://api.forsta.io</string>
 	<key>TSS_Server_API</key>
-	<string>ws://forsta-signalserver.herokuapp.com/v1/websocket/</string>
+	<string>ws://forsta-signalserver-prod.herokuapp.com/v1/websocket/</string>
 	<key>TSS_Server_Port</key>
 	<integer>80</integer>
 	<key>TSS_Server_URL</key>
-	<string>http://forsta-signalserver.herokuapp.com/</string>
+	<string>http://forsta-signalserver-prod.herokuapp.com/</string>
 	<key>TSS_Serveraddress</key>
-	<string>forsta-signalserver.herokuapp.com</string>
+	<string>forsta-signalserver-prod.herokuapp.com</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -50,7 +50,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>68</string>
+	<string>69</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
