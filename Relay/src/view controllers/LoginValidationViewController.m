@@ -140,23 +140,23 @@ NSUInteger maximumValidationAttempts = 9999;
 -(void)ccsmValidationSucceeded
 {
     // refresh other stuff now that we have the user info...
-    NSDictionary *userInfo = [self.ccsmStorage getUserInfo];
-    NSString *orgUrl = [(NSDictionary *)[[self.ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
-    [self.ccsmCommManager getThing:orgUrl
-                       synchronous:NO
-                           success:^(NSDictionary *org){
-                               NSLog(@"Retrieved org info after login validation");
-                               [self.ccsmStorage setOrgInfo:org];
-                               // Extract and save org prefs
-                               if ([[org allKeys] containsObject:@"ontherecord"]) {
-                                   [Environment.preferences setIsOnTheRecord:[org objectForKey:@"ontherecord"]];
-                               } else {
-                                   [Environment.preferences setIsOnTheRecord:YES];
-                               }
-                           }
-                           failure:^(NSError *err){
-                               NSLog(@"Failed to retrieve org info after login validation. Error: %@", err.description);
-                           }];
+//    NSDictionary *userInfo = [self.ccsmStorage getUserInfo];
+//    NSString *orgUrl = [(NSDictionary *)[[self.ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
+//    [self.ccsmCommManager getThing:orgUrl
+//                       synchronous:NO
+//                           success:^(NSDictionary *org){
+//                               NSLog(@"Retrieved org info after login validation");
+//                               [self.ccsmStorage setOrgInfo:org];
+//                               // Extract and save org prefs
+//                               if ([[org allKeys] containsObject:@"ontherecord"]) {
+//                                   [Environment.preferences setIsOnTheRecord:[org objectForKey:@"ontherecord"]];
+//                               } else {
+//                                   [Environment.preferences setIsOnTheRecord:YES];
+//                               }
+//                           }
+//                           failure:^(NSError *err){
+//                               NSLog(@"Failed to retrieve org info after login validation. Error: %@", err.description);
+//                           }];
     
     [self.ccsmCommManager refreshCCSMData];
     

@@ -443,31 +443,32 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 -(void)refreshUsersStore
 {
-    NSMutableDictionary * users = [[[Environment getCurrent].ccsmStorage getUsers] mutableCopy];
-    if (!users) {
-        users = [NSMutableDictionary new];
-    }
-    
-    NSString *orgUrl = [(NSDictionary *)[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
-    [self.ccsmCommManager getThing:orgUrl
-                       synchronous:NO
-                           success:^(NSDictionary *org){
-                               DDLogInfo(@"Retrieved org info after session token refresh");
-                               [[Environment getCurrent].ccsmStorage setOrgInfo:org];
-                           }
-                           failure:^(NSError *err){
-                               DDLogError(@"Failed to retrieve org info after session token refresh");
-                           }];
-    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
-                                  collection:users
-                                 synchronous:NO
-                                     success:^{
-                                         DDLogInfo(@"Retrieved all users after session token refresh");
-                                         [[Environment getCurrent].ccsmStorage setUsers:users];
-                                     }
-                                     failure:^(NSError *err){
-                                         DDLogError(@"Failed to retrieve all users after session token refresh");
-                                     }];
+    [self.ccsmCommManager refreshCCSMData];
+//    NSMutableDictionary * users = [[[Environment getCurrent].ccsmStorage getUsers] mutableCopy];
+//    if (!users) {
+//        users = [NSMutableDictionary new];
+//    }
+//
+//    NSString *orgUrl = [(NSDictionary *)[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
+//    [self.ccsmCommManager getThing:orgUrl
+//                       synchronous:NO
+//                           success:^(NSDictionary *org){
+//                               DDLogInfo(@"Retrieved org info after session token refresh");
+//                               [[Environment getCurrent].ccsmStorage setOrgInfo:org];
+//                           }
+//                           failure:^(NSError *err){
+//                               DDLogError(@"Failed to retrieve org info after session token refresh");
+//                           }];
+//    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
+//                                  collection:users
+//                                 synchronous:NO
+//                                     success:^{
+//                                         DDLogInfo(@"Retrieved all users after session token refresh");
+//                                         [[Environment getCurrent].ccsmStorage setUsers:users];
+//                                     }
+//                                     failure:^(NSError *err){
+//                                         DDLogError(@"Failed to retrieve all users after session token refresh");
+//                                     }];
 }
 
 #pragma mark - Push Notifications Delegate Methods

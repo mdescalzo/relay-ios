@@ -178,7 +178,7 @@
                                 <action selector="didPressExitButton:" destination="yHf-6V-fDx" id="tx6-Q9-fRZ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="4Op-Vs-twn">
+                        <barButtonItem key="rightBarButtonItem" image="cellBtnMoveToArchive--blue" id="4Op-Vs-twn">
                             <connections>
                                 <action selector="didPressGoButton:" destination="yHf-6V-fDx" id="NFY-md-USS"/>
                             </connections>
@@ -2000,6 +2000,7 @@
         <image name="btnCamera--white" width="52" height="40"/>
         <image name="btnQRShow--white" width="66" height="66"/>
         <image name="btnQRShow--white-1" width="66" height="66"/>
+        <image name="cellBtnMoveToArchive--blue" width="30" height="30"/>
         <image name="contact_default_feed.png" width="242" height="242"/>
         <image name="empty-group-avatar" width="53" height="53"/>
         <image name="hamburger" width="25" height="25"/>
