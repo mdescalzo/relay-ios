@@ -30,7 +30,7 @@
     return [self colorFromHexString:@"#CACACA"];
 }
 
-+(UIColor *)grayGray;
++(UIColor *)mediumGray;
 {
     return [self colorFromHexString:@"#9F9F9F"];
 }

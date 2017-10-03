@@ -15,7 +15,7 @@
 +(NSArray <UIColor *>*)popColors;
 
 +(UIColor *)lightGray;
-+(UIColor *)grayGray;
++(UIColor *)mediumGray;
 +(UIColor *)darkGray;
 +(UIColor *)darkestGray;
 
