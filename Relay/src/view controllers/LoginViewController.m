@@ -31,9 +31,10 @@
     self.ccsmCommManager = [CCSMCommManager new];
     
     // Allow for localized strings on controls
-    self.organizationTextField.placeholder = NSLocalizedString(@"Enter Org", @"");
-    self.usernameTextField.placeholder = NSLocalizedString(@"Enter Username", @"");
-    self.loginButton.titleLabel.text = NSLocalizedString(@"Login", @"");
+    self.organizationTextField.placeholder = NSLocalizedString(@"Enter Org", @"Enter Username");
+    self.usernameTextField.placeholder = NSLocalizedString(@"Enter Username", @"Enter Username");
+    [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+    [self.createDomainButton setTitle:NSLocalizedString(@"Create Account", @"Create Account") forState:UIControlStateNormal];
     
     // Setup tap recognizer for keyboard dismissal
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewTapped:)];
@@ -130,10 +131,10 @@
 }
 
 // Hop out to the domain creation page
--(IBAction)onCreateDomainTap:(id)sender
-{
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLDomainCreateURL]];
-}
+//-(IBAction)onCreateDomainTap:(id)sender
+//{
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FLDomainCreateURL]];
+//}
 
 
 #pragma mark - move controls up to accomodate keyboard.
@@ -141,7 +142,7 @@
 {
     if (!self.keyboardShowing) {
         self.keyboardShowing = YES;
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
         CGSize screenSize = UIScreen.mainScreen.bounds.size;
         
         CGFloat controlsY = self.loginButton.frame.origin.y + self.loginButton.frame.size.height + 8.0;

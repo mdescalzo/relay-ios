@@ -90,7 +90,7 @@ NSUInteger maximumValidationAttempts = 9999;
 {
     if (!self.keyboardShowing) {
         self.keyboardShowing = YES;
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
         CGSize screenSize = UIScreen.mainScreen.bounds.size;
         
         CGFloat controlsY = self.resendCodeButton.frame.origin.y + self.resendCodeButton.frame.size.height + 8.0;

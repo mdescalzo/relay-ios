@@ -179,7 +179,7 @@
 "END_CALL_MESSAGE_FROM_SERVER_PREFIX" = "Message from Server: ";
 
 /* No comment provided by engineer. */
-"END_CALL_NO_SUCH_USER" = "Number not registered with Forsta or RedPhone!";
+"END_CALL_NO_SUCH_USER" = "Number not registered with Forsta!";
 
 /* No comment provided by engineer. */
 "END_CALL_RECIPIENT_UNAVAILABLE" = "Recipient Unavailable.";

@@ -20,7 +20,7 @@
 #import "TSSocketManager.h"
 #import <RelayServiceKit/OWSMessageSender.h>
 
-#define pushManagerDomain @"org.whispersystems.pushmanager"
+#define pushManagerDomain @"org.forsta.pushmanager"
 
 @interface PushManager ()
 
