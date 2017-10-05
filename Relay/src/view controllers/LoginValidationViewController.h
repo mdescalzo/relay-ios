@@ -10,7 +10,6 @@
 
 @interface LoginValidationViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
 
-//@property (weak, nonatomic) IBOutlet UILabel *validationLabel;
 @property (weak, nonatomic) IBOutlet UITextField *validationCodeTextField;
 @property (weak, nonatomic) IBOutlet UIButton *validationButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;

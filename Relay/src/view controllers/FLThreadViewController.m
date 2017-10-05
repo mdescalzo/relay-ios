@@ -182,7 +182,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    [UIUtil applySignalAppearence];
+
     self.editingDbConnection = TSStorageManager.sharedManager.newDatabaseConnection;
     
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
@@ -191,11 +192,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
                                              selector:@selector(yapDatabaseModified:)
                                                  name:TSUIDatabaseConnectionDidUpdateNotification
                                                object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(tagsRefreshed)
-//                                                 name:FLCCSMTagsUpdated
-//                                               object:nil];
     
     [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
         [self.tableView reloadData];
@@ -208,33 +204,12 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
         [self registerForPreviewingWithDelegate:self sourceView:self.tableView];
     }
     
-    // Build the domain view/thread list
-//    [self.view addSubview:self.domainTableViewController.view];
-//    [self hideDomainTableView];
-    
-    //    self.isDomainViewVisible = NO;
-    
     [self configureNavigationBar];
-    //    [self rightSwipeRecognizer];
-    //    [self leftSwipeRecognizer];
     [self longPressOnDirButton];
     
     // Popover handling
     self.modalPresentationStyle = UIModalPresentationPopover;
     self.popoverPresentationController.delegate = self;
-    
-//    self.textView.delegate = self;
-    
-//    [self registerPrefixesForAutoCompletion:@[@"@", @"#", @":", @"+:", @"/"]];
-    
-    // Temporarily disable the searchbar since it isn't funcational yet
-//    self.searchController.searchBar.userInteractionEnabled = NO;
-    
-    // Input view setup
-//    self.textView.keyboardType = UIKeyboardTypeDefault;
-//    self.textView.backgroundColor = [UIColor whiteColor];
-//    self.textInputbar.backgroundColor = [ForstaColors lightGray];
-
     
     // setup methodology lifted from Signals
     [self ensureNotificationsUpToDate];
@@ -889,51 +864,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return cell;
 }
 
-//-(UITableViewCell *)autoCompletionCellForRowAtIndexPath:indexPath
-//{
-//    NSString *cellID = @"Cell";
-//    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-//
-//    NSString *text = [self.searchResult objectAtIndex:(NSUInteger)[indexPath row]];
-//
-//    if ([self.foundPrefix isEqualToString:@"#"]) {
-//        text = [NSString stringWithFormat:@"# %@", text];
-//    }
-//    else if (([self.foundPrefix isEqualToString:@":"] || [self.foundPrefix isEqualToString:@"+:"])) {
-//        text = [NSString stringWithFormat:@":%@:", text];
-//    }
-//
-//    cell.backgroundColor = [UIColor colorWithRed:215.0/255.0 green:230.0/255.0 blue:245.0/255.0 alpha:1.0];
-//    cell.textLabel.text = text;
-//    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-//    return cell;
-//
-//}
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if ([tableView isEqual:self.autoCompletionView]) {
-//
-//        NSMutableString *item = [[self.searchResult objectAtIndex:(NSUInteger)[indexPath row] ] mutableCopy];
-//
-//        if ([self.foundPrefix isEqualToString:@"@"] && self.foundPrefixRange.location == 0) {
-//            [item appendString:@""];
-//        }
-//        else if (([self.foundPrefix isEqualToString:@":"] || [self.foundPrefix isEqualToString:@"+:"])) {
-//            [item appendString:@":"];
-//        }
-//
-//        [item appendString:@" "];
-//
-//        [self acceptAutoCompletionWithString:item keepPrefix:YES];
-//        [self textViewDidChange:self.textView];
-//    }
-//    else
-//    {
         [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
         
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    }
 }
 
 - (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
@@ -965,6 +900,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.title = TSAccountManager.sharedInstance.myself.orgSlug;
     
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.translucent = NO;
+
 #ifdef DEVELOPMENT
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_logo_DEV"]
                                                                  style:UIBarButtonItemStylePlain
@@ -1188,77 +1126,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }
     return _ccsmStorage;
 }
-
-//-(UIBarButtonItem *)attachmentButton
-//{
-//    if (_attachmentButton == nil) {
-//        _attachmentButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Attachment_1"]
-//                                                             style:UIBarButtonItemStylePlain
-//                                                            target:self
-//                                                            action:@selector(onAttachmentButtonTap:)];
-//        _attachmentButton.tintColor = [ForstaColors darkBlue1];
-//    }
-//    return _attachmentButton;
-//}
-//
-//-(UIBarButtonItem *)sendButton
-//{
-//    if (_sendButton == nil) {
-//        _sendButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Send_solid"]
-//                                                       style:UIBarButtonItemStylePlain
-//                                                      target:self
-//                                                      action:@selector(didPressRightButton:)];
-//        _sendButton.tintColor = [ForstaColors darkBlue1];
-//    }
-//    return _sendButton;
-//}
-//
-//-(UIBarButtonItem *)tagButton
-//{
-//    if (_tagButton == nil) {
-//        _tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Tag_1"]
-//                                                      style:UIBarButtonItemStylePlain
-//                                                     target:self
-//                                                     action:@selector(didPressLeftButton:)];
-//        _tagButton.tintColor = [ForstaColors darkBlue1];
-//    }
-//    return _tagButton;
-//}
-
-//-(UIBarButtonItem *)composeButton
-//{
-//    if (_composeButton == nil) {
-//        _composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-//                                                                       target:self
-//                                                                       action:@selector(composeNew:)];
-//    }
-//    return _composeButton;
-//}
-
-//-(UIBarButtonItem *)settingsButton
-//{
-//    if (_settingsButton == nil) {
-//        _settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger"]
-//                                                           style:UIBarButtonItemStylePlain
-//                                                          target:self
-//                                                          action:@selector(onSettingsTap:)];
-//    }
-//    return _settingsButton;
-//}
-
-//-(UIBarButtonItem *)recipientCountButton
-//{
-//    if (_recipientCountButton == nil) {
-//        _recipientCountButton = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%@: %lu", NSLocalizedString(@"Recipients", @""), (unsigned long)self.taggedRecipientIDs.count]
-//                                                                 style:UIBarButtonItemStylePlain
-//                                                                target:nil
-//                                                                action:nil];
-//        _recipientCountButton.tintColor = [ForstaColors darkestGray];
-//    }
-//    return _recipientCountButton;
-//}
-
-
 
 #pragma mark - Logging
 
