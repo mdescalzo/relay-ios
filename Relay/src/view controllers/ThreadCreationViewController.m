@@ -51,6 +51,8 @@
     self.slugViewHeight.constant = KMinInputHeight;
 //    self.slugContainerView.layoutManager.delegate = self;
     self.slugContainerView.textContainerInset = UIEdgeInsetsMake(8, 0, 8, KMinInputHeight);
+    self.goButton.tintColor = [ForstaColors mediumLightGreen];
+    [self updateGoButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -343,6 +345,15 @@
 }
 
 #pragma mark - worker methods
+-(void)updateGoButton
+{
+    if (self.validatedSlugs.count == 0) {
+        self.goButton.enabled = NO;
+    } else {
+        self.goButton.enabled = YES;
+    }
+}
+
 -(void)buildThreadWithResults:(NSDictionary *)results
 {
     // Check to see if myself is included
@@ -401,6 +412,7 @@
         [self.validatedSlugs addObject:slug];
         [self refreshTableView];
         [self refreshSlugView];
+        [self updateGoButton];
         [self.slugContainerView scrollRangeToVisible:NSMakeRange(self.slugContainerView.text.length-1, 1)];
     });
 }
@@ -416,6 +428,7 @@
         [self.slugViews removeObjectAtIndex:index];
         [self refreshTableView];
         [self refreshSlugView];
+        [self updateGoButton];
     });
 }
 

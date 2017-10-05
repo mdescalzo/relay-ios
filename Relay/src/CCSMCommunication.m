@@ -101,6 +101,23 @@
              [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
              NSDictionary *orgDict = [userDict objectForKey:@"org"];
              [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
+             
+             NSString *orgUrl = [orgDict objectForKey:@"url"];
+             [self getThing:orgUrl
+                synchronous:NO
+                    success:^(NSDictionary *org){
+                        NSLog(@"Retrieved org info after login validation");
+                        [[Environment getCurrent].ccsmStorage setOrgInfo:org];
+                        // Extract and save org prefs
+                        if ([[org allKeys] containsObject:@"ontherecord"]) {
+                            [Environment.preferences setIsOnTheRecord:[org objectForKey:@"ontherecord"]];
+                        } else {
+                            [Environment.preferences setIsOnTheRecord:YES];
+                        }
+                    }
+                    failure:^(NSError *err){
+                        NSLog(@"Failed to retrieve org info after login validation. Error: %@", err.description);
+                    }];
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
