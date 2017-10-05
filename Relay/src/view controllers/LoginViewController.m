@@ -35,7 +35,7 @@
     self.ccsmCommManager = [CCSMCommManager new];
     
     // Allow for localized strings on controls
-    self.organizationTextField.placeholder = NSLocalizedString(@"Enter Org", @"Enter Username");
+    self.organizationTextField.placeholder = NSLocalizedString(@"Enter Organization", @"Enter Username");
     self.usernameTextField.placeholder = NSLocalizedString(@"Enter Username", @"Enter Username");
     [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
     [self.createDomainButton setTitle:NSLocalizedString(@"Create Account", @"Create Account") forState:UIControlStateNormal];

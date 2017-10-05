@@ -20,6 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *needDomainLabel;
 
 -(IBAction)onLoginButtonTap:(id)sender;
--(IBAction)onCreateDomainTap:(id)sender;
+//-(IBAction)onCreateDomainTap:(id)sender;
 
 @end
