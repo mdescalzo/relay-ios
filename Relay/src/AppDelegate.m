@@ -74,8 +74,12 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     }
     
     // Navbar background color iOS10 bug workaround
-    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
-    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
+//    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
+//    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+                                      forBarPosition:UIBarPositionAny
+                                          barMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     
     // Setting up environment
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
@@ -84,7 +88,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     
 #warning Override/replace the following?
-    [UIUtil applySignalAppearence];
+//    [UIUtil applySignalAppearence];
     
     [[PushManager sharedManager] registerPushKitNotificationFuture];
     

@@ -168,13 +168,11 @@
 		7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
-		7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
 		7D3366251F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3366261F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3366271F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
-		7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90181F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90191F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
@@ -191,7 +189,6 @@
 		7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B518170B33006006FC /* DecayingSampleEstimator.m */; };
 		7D4A39C81F1693930023C29B /* CommitPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045618170B33006006FC /* CommitPacket.m */; };
 		7D4A39C91F1693930023C29B /* InitiatorSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A718170B33006006FC /* InitiatorSessionDescriptor.m */; };
-		7D4A39CA1F1693930023C29B /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7D4A39CB1F1693930023C29B /* CallConnectUtil_Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A218170B33006006FC /* CallConnectUtil_Server.m */; };
 		7D4A39CC1F1693930023C29B /* AppStoreRating.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */; };
 		7D4A39CD1F1693930023C29B /* OWSQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38301D6682450094BD24 /* OWSQRCodeScanningViewController.m */; };
@@ -202,7 +199,6 @@
 		7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
 		7D4A39D31F1693930023C29B /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
 		7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
-		7D4A39D51F1693930023C29B /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
 		7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB11D921A12A4AA002F93FB /* FullImageViewController.m */; };
 		7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = B60C16641988999D00E97A6C /* VersionMigrations.m */; };
 		7D4A39D81F1693930023C29B /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B97940261832BD2400BD66CB /* UIUtil.m */; };
@@ -267,13 +263,11 @@
 		7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048718170B33006006FC /* UdpSocket.m */; };
 		7D4A3A161F1693930023C29B /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
 		7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F818170B33006006FC /* ThreadManager.m */; };
-		7D4A3A181F1693930023C29B /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
 		7D4A3A191F1693930023C29B /* OWSScrubbingLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F551D9B2827008FE134 /* OWSScrubbingLogFormatter.m */; };
 		7D4A3A1A1F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681C21D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m */; };
 		7D4A3A1B1F1693930023C29B /* AudioRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B61D18BBEC6D00F073E5 /* AudioRouter.m */; };
 		7D4A3A1C1F1693930023C29B /* AudioSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EB18BBEC1A00F073E5 /* AudioSocket.m */; };
 		7D4A3A1D1F1693930023C29B /* ShowGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */; };
-		7D4A3A1F1F1693930023C29B /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
 		7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C018170B33006006FC /* AnonymousConditionLogger.m */; };
 		7D4A3A221F1693930023C29B /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
@@ -464,8 +458,6 @@
 		7D4A3AE51F1693930023C29B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7D4A3AE61F1693930023C29B /* audio_pause_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3E1A73426500B5C81A /* audio_pause_button@2x.png */; };
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
-		7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
-		7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
 		7D7DA5871F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
@@ -500,7 +492,6 @@
 		7DCFFD6E1F0EE4490003CD95 /* DecayingSampleEstimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B518170B33006006FC /* DecayingSampleEstimator.m */; };
 		7DCFFD6F1F0EE4490003CD95 /* CommitPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045618170B33006006FC /* CommitPacket.m */; };
 		7DCFFD701F0EE4490003CD95 /* InitiatorSessionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A718170B33006006FC /* InitiatorSessionDescriptor.m */; };
-		7DCFFD711F0EE4490003CD95 /* DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */; };
 		7DCFFD721F0EE4490003CD95 /* CallConnectUtil_Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04A218170B33006006FC /* CallConnectUtil_Server.m */; };
 		7DCFFD731F0EE4490003CD95 /* AppStoreRating.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */; };
 		7DCFFD741F0EE4490003CD95 /* OWSQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38301D6682450094BD24 /* OWSQRCodeScanningViewController.m */; };
@@ -511,7 +502,6 @@
 		7DCFFD791F0EE4490003CD95 /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
 		7DCFFD7A1F0EE4490003CD95 /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
 		7DCFFD7B1F0EE4490003CD95 /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
-		7DCFFD7C1F0EE4490003CD95 /* FLDirectoryPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */; };
 		7DCFFD7D1F0EE4490003CD95 /* FullImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB11D921A12A4AA002F93FB /* FullImageViewController.m */; };
 		7DCFFD7E1F0EE4490003CD95 /* VersionMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = B60C16641988999D00E97A6C /* VersionMigrations.m */; };
 		7DCFFD7F1F0EE4490003CD95 /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B97940261832BD2400BD66CB /* UIUtil.m */; };
@@ -576,13 +566,11 @@
 		7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048718170B33006006FC /* UdpSocket.m */; };
 		7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
 		7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F818170B33006006FC /* ThreadManager.m */; };
-		7DCFFDBF1F0EE4490003CD95 /* DirectoryDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */; };
 		7DCFFDC01F0EE4490003CD95 /* OWSScrubbingLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F551D9B2827008FE134 /* OWSScrubbingLogFormatter.m */; };
 		7DCFFDC11F0EE4490003CD95 /* OWSDisplayedMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681C21D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m */; };
 		7DCFFDC21F0EE4490003CD95 /* AudioRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B61D18BBEC6D00F073E5 /* AudioRouter.m */; };
 		7DCFFDC31F0EE4490003CD95 /* AudioSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EB18BBEC1A00F073E5 /* AudioSocket.m */; };
 		7DCFFDC41F0EE4490003CD95 /* ShowGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */; };
-		7DCFFDC61F0EE4490003CD95 /* FLDomainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */; };
 		7DCFFDC71F0EE4490003CD95 /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		7DCFFDC81F0EE4490003CD95 /* AnonymousConditionLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C018170B33006006FC /* AnonymousConditionLogger.m */; };
 		7DCFFDC91F0EE4490003CD95 /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
@@ -1470,15 +1458,11 @@
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
-		7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDirectoryPopupViewController.h; sourceTree = "<group>"; };
-		7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDirectoryPopupViewController.m; sourceTree = "<group>"; };
 		7D3366231F7B786E0094DAFA /* SlugOverLayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlugOverLayView.h; sourceTree = "<group>"; };
 		7D3366241F7B786E0094DAFA /* SlugOverLayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlugOverLayView.m; sourceTree = "<group>"; };
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
-		7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDomainViewController.h; sourceTree = "<group>"; };
-		7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDomainViewController.m; sourceTree = "<group>"; };
 		7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
 		7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
 		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
@@ -1490,10 +1474,6 @@
 		7D4A3AF01F1693D00023C29B /* RelayDev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayDev-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7D4D89441EE63502003970A5 /* SettingsPopupMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPopupMenuViewController.h; sourceTree = "<group>"; };
 		7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPopupMenuViewController.m; sourceTree = "<group>"; };
-		7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryTableViewController.h; sourceTree = "<group>"; };
-		7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryTableViewController.m; sourceTree = "<group>"; };
-		7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryDetailTableViewController.h; sourceTree = "<group>"; };
-		7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryDetailTableViewController.m; sourceTree = "<group>"; };
 		7D516F1B1EF3195100E7E15F /* FLMessageSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLMessageSender.h; path = Services/FLMessageSender.h; sourceTree = "<group>"; };
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
@@ -2655,14 +2635,6 @@
 			children = (
 				7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */,
 				7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */,
-				7D3B866C1EE5B61700190FD5 /* FLDomainViewController.h */,
-				7D3B866D1EE5B61700190FD5 /* FLDomainViewController.m */,
-				7D4D89591EE8C4CA003970A5 /* DirectoryTableViewController.h */,
-				7D4D895A1EE8C4CA003970A5 /* DirectoryTableViewController.m */,
-				7D4D89651EE9B20B003970A5 /* DirectoryDetailTableViewController.h */,
-				7D4D89661EE9B20B003970A5 /* DirectoryDetailTableViewController.m */,
-				7D2D5B0D1EF1900A003B7C69 /* FLDirectoryPopupViewController.h */,
-				7D2D5B0E1EF1900A003B7C69 /* FLDirectoryPopupViewController.m */,
 				7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */,
 				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
 				7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */,
@@ -4054,7 +4026,6 @@
 				7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */,
 				7D4A39C81F1693930023C29B /* CommitPacket.m in Sources */,
 				7D4A39C91F1693930023C29B /* InitiatorSessionDescriptor.m in Sources */,
-				7D4A39CA1F1693930023C29B /* DirectoryTableViewController.m in Sources */,
 				7D4A39CB1F1693930023C29B /* CallConnectUtil_Server.m in Sources */,
 				7D4A39CC1F1693930023C29B /* AppStoreRating.m in Sources */,
 				7D4A39CD1F1693930023C29B /* OWSQRCodeScanningViewController.m in Sources */,
@@ -4065,7 +4036,6 @@
 				7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */,
 				7D4A39D31F1693930023C29B /* CCSMJSONService.m in Sources */,
 				7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */,
-				7D4A39D51F1693930023C29B /* FLDirectoryPopupViewController.m in Sources */,
 				7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */,
 				7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */,
 				7D4A39D81F1693930023C29B /* UIUtil.m in Sources */,
@@ -4133,13 +4103,11 @@
 				7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
 				7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */,
-				7D4A3A181F1693930023C29B /* DirectoryDetailTableViewController.m in Sources */,
 				7D4A3A191F1693930023C29B /* OWSScrubbingLogFormatter.m in Sources */,
 				7D4A3A1A1F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				7D4A3A1B1F1693930023C29B /* AudioRouter.m in Sources */,
 				7D4A3A1C1F1693930023C29B /* AudioSocket.m in Sources */,
 				7D4A3A1D1F1693930023C29B /* ShowGroupMembersViewController.m in Sources */,
-				7D4A3A1F1F1693930023C29B /* FLDomainViewController.m in Sources */,
 				7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */,
 				7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */,
 				7D4A3A221F1693930023C29B /* DhPacket.m in Sources */,
@@ -4283,7 +4251,6 @@
 				7DCFFD6E1F0EE4490003CD95 /* DecayingSampleEstimator.m in Sources */,
 				7DCFFD6F1F0EE4490003CD95 /* CommitPacket.m in Sources */,
 				7DCFFD701F0EE4490003CD95 /* InitiatorSessionDescriptor.m in Sources */,
-				7DCFFD711F0EE4490003CD95 /* DirectoryTableViewController.m in Sources */,
 				7DCFFD721F0EE4490003CD95 /* CallConnectUtil_Server.m in Sources */,
 				7DCFFD731F0EE4490003CD95 /* AppStoreRating.m in Sources */,
 				7DCFFD741F0EE4490003CD95 /* OWSQRCodeScanningViewController.m in Sources */,
@@ -4294,7 +4261,6 @@
 				7DCFFD791F0EE4490003CD95 /* OWSLogger.m in Sources */,
 				7DCFFD7A1F0EE4490003CD95 /* CCSMJSONService.m in Sources */,
 				7DCFFD7B1F0EE4490003CD95 /* SrtpSocket.m in Sources */,
-				7DCFFD7C1F0EE4490003CD95 /* FLDirectoryPopupViewController.m in Sources */,
 				7DCFFD7D1F0EE4490003CD95 /* FullImageViewController.m in Sources */,
 				7DCFFD7E1F0EE4490003CD95 /* VersionMigrations.m in Sources */,
 				7DCFFD7F1F0EE4490003CD95 /* UIUtil.m in Sources */,
@@ -4362,13 +4328,11 @@
 				7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */,
 				7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */,
-				7DCFFDBF1F0EE4490003CD95 /* DirectoryDetailTableViewController.m in Sources */,
 				7DCFFDC01F0EE4490003CD95 /* OWSScrubbingLogFormatter.m in Sources */,
 				7DCFFDC11F0EE4490003CD95 /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				7DCFFDC21F0EE4490003CD95 /* AudioRouter.m in Sources */,
 				7DCFFDC31F0EE4490003CD95 /* AudioSocket.m in Sources */,
 				7DCFFDC41F0EE4490003CD95 /* ShowGroupMembersViewController.m in Sources */,
-				7DCFFDC61F0EE4490003CD95 /* FLDomainViewController.m in Sources */,
 				7DCFFDC71F0EE4490003CD95 /* FingerprintViewController.m in Sources */,
 				7DCFFDC81F0EE4490003CD95 /* AnonymousConditionLogger.m in Sources */,
 				7DCFFDC91F0EE4490003CD95 /* DhPacket.m in Sources */,
@@ -4511,7 +4475,6 @@
 				76EB060E18170B33006006FC /* DecayingSampleEstimator.m in Sources */,
 				76EB05BA18170B33006006FC /* CommitPacket.m in Sources */,
 				76EB060218170B33006006FC /* InitiatorSessionDescriptor.m in Sources */,
-				7D4D895B1EE8C4CA003970A5 /* DirectoryTableViewController.m in Sources */,
 				76EB05FC18170B33006006FC /* CallConnectUtil_Server.m in Sources */,
 				B6DA6B071B8A2F9A00CA6F98 /* AppStoreRating.m in Sources */,
 				458E38311D6682450094BD24 /* OWSQRCodeScanningViewController.m in Sources */,
@@ -4522,7 +4485,6 @@
 				45CD81F21DC03A22004C9430 /* OWSLogger.m in Sources */,
 				7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */,
 				76EB05AC18170B33006006FC /* SrtpSocket.m in Sources */,
-				7D2D5B0F1EF1900A003B7C69 /* FLDirectoryPopupViewController.m in Sources */,
 				FCB11D931A12A4AA002F93FB /* FullImageViewController.m in Sources */,
 				B60C16651988999D00E97A6C /* VersionMigrations.m in Sources */,
 				B97940271832BD2400BD66CB /* UIUtil.m in Sources */,
@@ -4590,14 +4552,12 @@
 				76EB058218170B33006006FC /* Environment.m in Sources */,
 				7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
-				7D4D89671EE9B20B003970A5 /* DirectoryDetailTableViewController.m in Sources */,
 				45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */,
 				45C681C61D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				E197B61E18BBEC6D00F073E5 /* AudioRouter.m in Sources */,
 				E197B60D18BBEC1A00F073E5 /* AudioSocket.m in Sources */,
 				A5D0699B1A50E9CB004CB540 /* ShowGroupMembersViewController.m in Sources */,
 				7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */,
-				7D3B866E1EE5B61700190FD5 /* FLDomainViewController.m in Sources */,
 				FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */,
 				76EB061418170B33006006FC /* AnonymousConditionLogger.m in Sources */,
 				76EB05C018170B33006006FC /* DhPacket.m in Sources */,

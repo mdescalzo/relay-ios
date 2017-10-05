@@ -26,6 +26,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // Setup nav controller
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    
     // Do any additional setup after loading the view.
     self.ccsmStorage = [CCSMStorage new];
     self.ccsmCommManager = [CCSMCommManager new];
