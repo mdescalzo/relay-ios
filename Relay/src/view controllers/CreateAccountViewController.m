@@ -7,6 +7,7 @@
 //
 
 #import "CreateAccountViewController.h"
+#import "CCSMCommunication.h"
 
 @interface CreateAccountViewController () <UITextFieldDelegate>
 
@@ -17,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
+@property (nonatomic, strong) NSString *simplePhoneNumber;
 @property (nonatomic, strong) NSArray<UITextField *> *inputFields;
 
 @property (nonatomic, assign) BOOL keyboardShowing;
@@ -145,16 +147,33 @@
 }
 
 #pragma mark - Worker methods
--(void)presentErrorAlertWithMessage:(NSString *)message
+-(void)stopSpinner
 {
-    UIAlertController *alertView = [UIAlertController alertControllerWithTitle:nil
-                                                                       message:message
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action) { /* do nothing */} ];
-    [alertView addAction:okButton];
-    [self presentViewController:alertView animated:YES completion:nil];
+    [self.spinner stopAnimating];
+    self.submitButton.enabled = YES;
+    self.submitButton.alpha = 1.0;
+}
+
+-(void)startSpinner
+{
+    [self.spinner startAnimating];
+    self.submitButton.enabled = NO;
+    self.submitButton.alpha = 0.5;
+
+}
+
+-(void)presentAlertWithMessage:(NSString *)message
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertView = [UIAlertController alertControllerWithTitle:nil
+                                                                           message:message
+                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) { /* do nothing */} ];
+        [alertView addAction:okButton];
+        [self presentViewController:alertView animated:YES completion:nil];
+    });
 }
 
 // Swiped from: https://stackoverflow.com/questions/5428304/email-validation-on-textfield-in-iphone-sdk
@@ -185,6 +204,9 @@
         simpleNumber = [simpleNumber substringToIndex:[simpleNumber length] - 1];
     }
     
+    // Store the number for use elsewhere
+    self.simplePhoneNumber = [simpleNumber copy];
+    
     // 123 456 7890
     // format the number.. if it's less then 7 digits.. then use this regex.
     if(simpleNumber.length<7)
@@ -204,19 +226,38 @@
 #pragma mark - Actions
 - (IBAction)didPressSubmit:(id)sender
 {
-    if (self.firstNameTextField.text.length == 0) {
-        [self presentErrorAlertWithMessage:@"Please enter your first name."];
-    } else if (self.lastNameTextField.text.length == 0) {
-        [self presentErrorAlertWithMessage:@"Please enter your last name."];
-    } else if (self.phoneNumberTextField.text == 0) {
-#warning Requires validation method
-        [self presentErrorAlertWithMessage:@"Please enter your phone number."];
-    } else if (![self validateEmail:self.emailTextField.text]) {
-        [self presentErrorAlertWithMessage:@"Please enter a valid email address."];
-    } else {
-#warning Add call to CCSM here.
-        [self presentErrorAlertWithMessage:@"Time to make the account!"];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self startSpinner];
+        
+        if (self.firstNameTextField.text.length == 0) {
+            [self presentAlertWithMessage:@"Please enter your first name."];
+            [self stopSpinner];
+        } else if (self.lastNameTextField.text.length == 0) {
+            [self presentAlertWithMessage:@"Please enter your last name."];
+            [self stopSpinner];
+        } else if (self.phoneNumberTextField.text.length < 14) {
+            [self presentAlertWithMessage:@"Please enter your phone number."];
+            [self stopSpinner];
+        } else if (![self validateEmail:self.emailTextField.text]) {
+            [self presentAlertWithMessage:@"Please enter a valid email address."];
+            [self stopSpinner];
+        } else {
+            //  Good inputs, GO!
+            NSDictionary *payload = @{ @"first_name" : self.firstNameTextField.text,
+                                       @"last_name" : self.lastNameTextField.text,
+                                       @"phone" : [NSString stringWithFormat:@"+1%@",  self.simplePhoneNumber],
+                                       @"email" : self.emailTextField.text
+                                       };
+            [[CCSMCommManager new] requestAccountCreationWithUserDict:payload
+                                                              success:^{
+                                                                  [self stopSpinner];
+                                                                  [self performSegueWithIdentifier:@"validationViewSegue" sender:self];
+                                                              }
+                                                              failure:^(NSError *error) {
+                                                                  [self stopSpinner];
+                                                              }];
+        }
+    });
 }
 
 // Dismiss keyboard

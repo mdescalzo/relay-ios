@@ -308,7 +308,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SAu-Sp-QOB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1214" y="883"/>
+            <point key="canvasLocation" x="-1215" y="942"/>
         </scene>
         <!--Login Validation View Controller-->
         <scene sceneID="VUB-MF-PD5">
@@ -367,6 +367,7 @@
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
+                                    <action selector="onChangeCredsTapped:" destination="7Uu-IH-pbe" eventType="touchUpInside" id="9z1-kb-rZK"/>
                                     <segue destination="iBm-VN-IbW" kind="unwind" unwindAction="unwindToChangeCredientials:" id="WoW-EE-zs2"/>
                                 </connections>
                             </button>

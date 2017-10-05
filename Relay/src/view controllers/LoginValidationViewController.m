@@ -140,24 +140,6 @@ NSUInteger maximumValidationAttempts = 9999;
 -(void)ccsmValidationSucceeded
 {
     // refresh other stuff now that we have the user info...
-//    NSDictionary *userInfo = [self.ccsmStorage getUserInfo];
-//    NSString *orgUrl = [(NSDictionary *)[[self.ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
-//    [self.ccsmCommManager getThing:orgUrl
-//                       synchronous:NO
-//                           success:^(NSDictionary *org){
-//                               NSLog(@"Retrieved org info after login validation");
-//                               [self.ccsmStorage setOrgInfo:org];
-//                               // Extract and save org prefs
-//                               if ([[org allKeys] containsObject:@"ontherecord"]) {
-//                                   [Environment.preferences setIsOnTheRecord:[org objectForKey:@"ontherecord"]];
-//                               } else {
-//                                   [Environment.preferences setIsOnTheRecord:YES];
-//                               }
-//                           }
-//                           failure:^(NSError *err){
-//                               NSLog(@"Failed to retrieve org info after login validation. Error: %@", err.description);
-//                           }];
-    
     [self.ccsmCommManager refreshCCSMData];
     
     // TSS Registration handling
@@ -203,21 +185,22 @@ NSUInteger maximumValidationAttempts = 9999;
 
 -(void)ccsmValidationFailed
 {
-    
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                                                   message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action) {
-                                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                                             [self.spinner stopAnimating];
-                                                             self.validationButton.enabled = YES;
-                                                             self.validationButton.alpha = 1.0;
-                                                         });
-                                                     }];
-    [alert addAction:okButton];
-    [self presentViewController:alert animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
+                                                                       message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                 [self.spinner stopAnimating];
+                                                                 self.validationButton.enabled = YES;
+                                                                 self.validationButton.alpha = 1.0;
+                                                             });
+                                                         }];
+        [alert addAction:okButton];
+        [self presentViewController:alert animated:YES completion:nil];
+    });
 }
 
 #pragma mark - Button actions
@@ -242,16 +225,13 @@ NSUInteger maximumValidationAttempts = 9999;
 
 -(IBAction)onResendCodeButtonTap:(id)sender
 {
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Be Patient." message:@"Function not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [alert show];
-
     [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
                                orgName:[self.ccsmStorage getOrgName]
                                success:^{
-//                                   [self connectionSucceeded];
+                                   DDLogDebug(@"Request for code resend succeeded.");
                                }
                                failure:^(NSError *err){
-                                   
+                                   DDLogDebug(@"Request for code resend failed.  Error: %@", err.description);
                                }];
 }
 
@@ -260,6 +240,11 @@ NSUInteger maximumValidationAttempts = 9999;
     if ([self.validationCodeTextField isFirstResponder]) {
         [self.validationCodeTextField resignFirstResponder];
     }
+}
+
+- (IBAction)onChangeCredsTapped:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UIAlertView delegate methods
