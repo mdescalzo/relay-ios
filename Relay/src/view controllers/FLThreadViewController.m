@@ -1002,19 +1002,19 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return _taggedRecipientIDs;
 }
 
--(FLDomainViewController *)domainTableViewController
-{
-    if (_domainTableViewController == nil) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
-        _domainTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"domainViewController"];
-        _domainTableViewController.hostViewController = self;
-        _domainTableViewController.view.frame =  CGRectMake(-self.tableView.frame.size.width * 2/3,
-                                                            self.tableView.frame.origin.y,
-                                                            self.tableView.frame.size.width * 2/3,
-                                                            self.tableView.frame.size.height);
-    }
-    return _domainTableViewController;
-}
+//-(FLDomainViewController *)domainTableViewController
+//{
+//    if (_domainTableViewController == nil) {
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_v2" bundle:[NSBundle mainBundle]];
+//        _domainTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"domainViewController"];
+//        _domainTableViewController.hostViewController = self;
+//        _domainTableViewController.view.frame =  CGRectMake(-self.tableView.frame.size.width * 2/3,
+//                                                            self.tableView.frame.origin.y,
+//                                                            self.tableView.frame.size.width * 2/3,
+//                                                            self.tableView.frame.size.height);
+//    }
+//    return _domainTableViewController;
+//}
 
 -(SettingsPopupMenuViewController *)settingsViewController
 {
