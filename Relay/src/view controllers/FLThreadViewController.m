@@ -901,6 +901,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.title = [self.ccsmStorage getOrgName];
     
+    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
+    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+    
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = NO;
