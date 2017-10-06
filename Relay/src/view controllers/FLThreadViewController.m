@@ -722,7 +722,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         if (scrollToBottom) {
             [self scrollTableViewToBottom];
         }
-    }],
+    }];
     
     [self.tableView beginUpdates];
     
@@ -797,8 +797,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 -(void)scrollTableViewToBottom
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0]-1 inSection:0];
-        [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0]-1 inSection:0];
+        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     });
     
     //    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
@@ -898,9 +899,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)configureNavigationBar
 {
-    self.title = TSAccountManager.sharedInstance.myself.orgSlug;
+    self.title = [self.ccsmStorage getOrgName];
     
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = NO;
 
 #ifdef DEVELOPMENT
