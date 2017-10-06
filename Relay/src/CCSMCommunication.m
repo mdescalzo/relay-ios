@@ -591,5 +591,91 @@
     }
 }
 
+-(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
+                                  success:(void (^)())successBlock
+                                  failure:(void (^)(NSError *error))failureBlock
+{
+    if ([userDict allKeys].count != 4 &&
+        ![[userDict allKeys] containsObject:@"first_name"] &&
+        ![[userDict allKeys] containsObject:@"last_name"] &&
+        ![[userDict allKeys] containsObject:@"phone"] &&
+        ![[userDict allKeys] containsObject:@"email"])
+    {
+        // Bad payload, bounce
+        NSError *error = [NSError errorWithDomain:@"CCSM.Invalid.input" code:9001 userInfo:nil];
+        failureBlock(error);
+    } else {
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"Forsta-values" ofType:@"plist"];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        if (![fileManager fileExistsAtPath: path]) //4
+        {
+            DDLogDebug(@"Tokens Not Found.");
+        }
+        
+        NSDictionary *tokenDict = [[NSDictionary alloc] initWithContentsOfFile:path];
+        NSString *serviceToken = nil;
+        
+#ifdef PRODUCTION
+        serviceToken = [tokenDict objectForKey:@"SERVICE_PROD_TOKEN"];
+#elif STAGE
+        serviceToken = [tokenDict objectForKey:@"SERVICE_STAGE_TOKEN"];
+#else
+        serviceToken = [tokenDict objectForKey:@"SERVICE_DEV_TOKEN"];
+#endif
+        
+        NSString *urlString = [NSString stringWithFormat:@"%@/v1/user/?login=true", FLHomeURL];
+        NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+        
+        [request setValue:[NSString stringWithFormat:@"ServiceToken %@", serviceToken] forHTTPHeaderField:@"Authorization"];
+        
+        NSData *bodyData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:nil];
+        [request setHTTPBody:bodyData];
+        
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response,
+                                                   NSData *data, NSError *connectionError)
+         {
+             
+             NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+             DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+             DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+             if (connectionError != nil)  // Failed connection
+             {
+                 failureBlock(connectionError);
+             }
+             else if (HTTPresponse.statusCode >= 200 && HTTPresponse.statusCode <= 204) // SUCCESS!
+             {
+                 NSDictionary *result = nil;
+                 if (data.length > 0 && connectionError == nil)
+                 {
+                     result = [NSJSONSerialization JSONObjectWithData:data
+                                                                            options:0
+                                                                              error:NULL];
+                     CCSMStorage *ccsmStore = [CCSMStorage new];
+                     NSString *userSlug = [result objectForKey:@"username"];
+                     NSDictionary *orgDict = [result objectForKey:@"org"];
+                     NSString *orgSlug = [orgDict objectForKey:@"slug"];
+                     [ccsmStore setOrgName:orgSlug];
+                     [ccsmStore setUserName:userSlug];
+                 }
+                 successBlock();
+             }
+             else  // Connection good, error from server
+             {
+                 NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                      code:HTTPresponse.statusCode
+                                                  userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                 failureBlock(error);
+             }
+         }];
+    }
+}
 
 @end

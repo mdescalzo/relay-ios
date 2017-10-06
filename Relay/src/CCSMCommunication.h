@@ -58,6 +58,9 @@
                                     success:(void (^)(NSDictionary *results))successBlock
                                     failure:(void (^)(NSError *error))failureBlock;
 
+-(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
+                                  success:(void (^)())successBlock
+                                  failure:(void (^)(NSError *error))failureBlock;
 @end
 
 #endif /* CCSMCommunication_h */
