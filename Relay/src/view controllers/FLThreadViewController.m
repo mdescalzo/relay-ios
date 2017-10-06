@@ -904,8 +904,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     [UINavigationBar appearance].barTintColor = [UIColor blackColor];
     [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = NO;
 
 #ifdef DEVELOPMENT

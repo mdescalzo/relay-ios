@@ -65,7 +65,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zvz-W1-fyJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3001" y="29"/>
+            <point key="canvasLocation" x="2916" y="511"/>
         </scene>
         <!--Thread Creation View Controller-->
         <scene sceneID="mrK-6p-UqG">
@@ -1798,6 +1798,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1823,7 +1829,7 @@
         <image name="table_ic_timer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wDA-FM-qNj"/>
+        <segue reference="UXZ-JM-NxS"/>
         <segue reference="2qZ-xT-Qet"/>
     </inferredMetricsTieBreakers>
 </document>
