@@ -44,6 +44,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = NO;
+ 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -72,50 +74,104 @@
 }
 */
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    CGRect screenFrame = UIScreen.mainScreen.bounds;
+    CGRect fieldFrame = textField.frame;
+    
+    if ((fieldFrame.origin.y + fieldFrame.size.height + 10 + 60) > (screenFrame.size.height - 216)) {
+        
+        CGFloat destY = 100;
+        CGFloat offset = textField.frame.origin.y - destY;
+        
+        CGRect newFrame = CGRectMake(screenFrame.origin.x,
+                                     screenFrame.origin.y - offset,
+                                     screenFrame.size.width,
+                                     screenFrame.size.height);
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.25 animations:^{
+                self.view.frame = newFrame;
+            }];
+        });
+    } else {
+        CGFloat offset = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
+        CGRect newFrame = CGRectMake(screenFrame.origin.x,
+                                     screenFrame.origin.y + offset,
+                                     screenFrame.size.width,
+                                     screenFrame.size.height);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.25 animations:^{
+                self.view.frame = newFrame;
+                //                    self.view.frame = [UIScreen mainScreen].bounds ;
+                
+            }];
+        });
+    }
+}
 
 #pragma mark - move controls up to accomodate keyboard.
 -(void)keyboardWillShow:(NSNotification *)notification
 {
     if (!self.keyboardShowing) {
         self.keyboardShowing = YES;
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-        CGSize screenSize = UIScreen.mainScreen.bounds.size;
-        
-        CGFloat controlsY = self.submitButton.frame.origin.y + self.submitButton.frame.size.height + 8.0;
-        
-        if ((screenSize.height - controlsY) < keyboardSize.height) {  // Keyboard will overlap
-            
-            CGFloat offset =  keyboardSize.height - (screenSize.height - controlsY);
-            
-            CGRect newFrame = CGRectMake(self.view.frame.origin.x,
-                                         self.view.frame.origin.y - offset,
-                                         self.view.frame.size.width,
-                                         self.view.frame.size.height);
-            
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [UIView animateWithDuration:0.25 animations:^{
-                    self.view.frame = newFrame;
-                }];
-            });
-        }
+//        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+//        CGSize screenSize = UIScreen.mainScreen.bounds.size;
+//
+//        // Figure out which textfield to focus on
+//        UITextField *aTextField = nil;
+//        for (UITextField *textField in self.inputFields) {
+//            if ([textField isFirstResponder]) {
+//                aTextField = textField;
+//                break;
+//            }
+//        }
+//
+////        CGFloat controlsY = self.submitButton.frame.origin.y + self.submitButton.frame.size.height + 8.0;
+//        CGFloat controlsY = aTextField.frame.origin.y + self.submitButton.frame.size.height + 8.0;
+//
+//        if ((screenSize.height - controlsY) < keyboardSize.height) {  // Keyboard will overlap
+//
+//
+//
+//            CGFloat offset =  keyboardSize.height - (screenSize.height - controlsY);
+//
+//            CGRect newFrame = CGRectMake(self.view.frame.origin.x,
+//                                         self.view.frame.origin.y - offset,
+//                                         self.view.frame.size.width,
+//                                         self.view.frame.size.height);
+//
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [UIView animateWithDuration:0.25 animations:^{
+//                    self.view.frame = newFrame;
+//                }];
+//            });
+//        }
     }
 }
 
--(void)keyboardWillHide:(nullable NSNotification *)notification
+-(void)keyboardWillHide:(NSNotification *)notification
 {
     if (self.keyboardShowing) {
         self.keyboardShowing = NO;
-        if (([self.firstNameTextField isFirstResponder] ||
-             [self.lastNameTextField isFirstResponder] ||
-             [self.phoneNumberTextField isFirstResponder] ||
-             [self.emailTextField isFirstResponder])) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [UIView animateWithDuration:0.25 animations:^{
-                    self.view.frame = [UIScreen mainScreen].bounds ;
-                }];
-            });
-        }
+        
+        CGFloat offset = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
+        CGRect screenFrame = UIScreen.mainScreen.bounds;
+        CGRect newFrame = CGRectMake(screenFrame.origin.x,
+                                     screenFrame.origin.y + offset,
+                                     screenFrame.size.width,
+                                     screenFrame.size.height);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.25 animations:^{
+                self.view.frame = newFrame;
+                //                    self.view.frame = [UIScreen mainScreen].bounds ;
+                
+            }];
+        });
     }
 }
 
