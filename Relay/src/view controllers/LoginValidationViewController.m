@@ -48,6 +48,10 @@ NSUInteger maximumValidationAttempts = 9999;
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.hidden = NO;
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -85,6 +89,7 @@ NSUInteger maximumValidationAttempts = 9999;
     }
 }
 
+
 #pragma mark - move controls up to accomodate keyboard.
 -(void)keyboardWillShow:(NSNotification *)notification
 {
@@ -119,14 +124,21 @@ NSUInteger maximumValidationAttempts = 9999;
 {
     if (self.keyboardShowing) {
         self.keyboardShowing = NO;
-        if ([self.validationCodeTextField isFirstResponder]) {
+        
+        CGFloat offset = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
+        CGRect screenFrame = UIScreen.mainScreen.bounds;
+        CGRect newFrame = CGRectMake(screenFrame.origin.x,
+                                     screenFrame.origin.y + offset,
+                                     screenFrame.size.width,
+                                     screenFrame.size.height);
+        
             dispatch_async(dispatch_get_main_queue(), ^{
                 [UIView animateWithDuration:0.25 animations:^{
-                    self.view.frame = [UIScreen mainScreen].bounds ;
+                    self.view.frame = newFrame;
+//                    self.view.frame = [UIScreen mainScreen].bounds ;
                     
                 }];
             });
-        }
     }
 }
 

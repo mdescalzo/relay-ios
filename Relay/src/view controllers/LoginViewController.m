@@ -11,7 +11,7 @@
 #import "CCSMStorage.h"
 
 
-@interface LoginViewController ()
+@interface LoginViewController () <UINavigationControllerDelegate>
 
 @property (strong) CCSMStorage *ccsmStorage;
 @property (strong) CCSMCommManager *ccsmCommManager;
@@ -48,6 +48,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -174,13 +175,13 @@
 {
     if (self.keyboardShowing) {
         self.keyboardShowing = NO;
-        if (([self.organizationTextField isFirstResponder] || [self.usernameTextField isFirstResponder])) {
+//        if (([self.organizationTextField isFirstResponder] || [self.usernameTextField isFirstResponder])) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [UIView animateWithDuration:0.25 animations:^{
                     self.view.frame = [UIScreen mainScreen].bounds ;
                 }];
             });
-        }
+//        }
     }
 }
 
