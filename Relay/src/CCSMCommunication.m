@@ -17,6 +17,8 @@
 #import "TSSocketManager.h"
 #import "TSPreKeyManager.h"
 
+static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the_record";
+
 @interface CCSMCommManager ()
 
 @property (nullable, nonatomic, retain) NSString *userAwaitingVerification;
@@ -103,21 +105,8 @@
              [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
              
              NSString *orgUrl = [orgDict objectForKey:@"url"];
-             [self getThing:orgUrl
-                synchronous:NO
-                    success:^(NSDictionary *org){
-                        NSLog(@"Retrieved org info after login validation");
-                        [[Environment getCurrent].ccsmStorage setOrgInfo:org];
-                        // Extract and save org prefs
-                        if ([[org allKeys] containsObject:@"ontherecord"]) {
-                            [Environment.preferences setIsOnTheRecord:[org objectForKey:@"ontherecord"]];
-                        } else {
-                            [Environment.preferences setIsOnTheRecord:YES];
-                        }
-                    }
-                    failure:^(NSError *err){
-                        NSLog(@"Failed to retrieve org info after login validation. Error: %@", err.description);
-                    }];
+             [self processOrgInfoWithURL:orgUrl];
+             
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
          }
@@ -167,7 +156,9 @@
         [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
         NSDictionary *orgDict = [userDict objectForKey:@"org"];
         [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
-    // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+        NSString *orgUrl = [orgDict objectForKey:@"url"];
+        [self processOrgInfoWithURL:orgUrl];
+        
         successBlock();
     }
     else  // Connection good, error from server
@@ -215,7 +206,9 @@
              [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
              NSDictionary *orgDict = [userDict objectForKey:@"org"];
              [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
-             // TODO: fetch/sync other goodies, like all of the the user's potential :^)
+             NSString *orgUrl = [orgDict objectForKey:@"url"];
+             [self processOrgInfoWithURL:orgUrl];
+             
              successBlock();
          }
          else  // Connection good, error from server
@@ -414,6 +407,7 @@
     }
 }
 
+#pragma mark - Refresh methods
 -(void)refreshCCSMData
 {
     [self refreshCCSMUsers];
@@ -463,6 +457,38 @@
                      }];
 }
 
+-(void)processOrgInfoWithURL:(NSString *)urlString
+{
+    if (urlString.length > 0) {
+        [self getThing:urlString
+           synchronous:NO
+               success:^(NSDictionary *org){
+                   DDLogDebug(@"Retrieved org info after login validation");
+                   [[Environment getCurrent].ccsmStorage setOrgInfo:org];
+                   // Extract and save org prefs
+                   NSDictionary *prefsDict = [org objectForKey:@"preferences"];
+                   if (prefsDict) {
+                       if ([[prefsDict allKeys] containsObject:PreferencesMessagingOffTheRecordKey]) {
+                           BOOL value;
+                           NSNumber *number = [prefsDict objectForKey:PreferencesMessagingOffTheRecordKey];
+                           if ([number integerValue] == 1) {
+                               value = YES;
+                           } else {
+                               value = NO;
+                           }
+                           [Environment.preferences setIsOffTheRecord:value];
+                       }
+                   } else {
+                       [Environment.preferences setIsOffTheRecord:NO];
+                   }
+                   DDLogDebug(@"Successfully process Org preferences.");
+               }
+               failure:^(NSError *err){
+                   DDLogDebug(@"Failed to retrieve org info after login validation. Error: %@", err.description);
+               }];
+    }
+}
+
 -(void)notifyOfUsersRefresh
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMUsersUpdated object:nil];
@@ -472,7 +498,6 @@
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMTagsUpdated object:nil];
 }
-
 
 #pragma mark - CCSM proxied TextSecure registration
 -(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
@@ -552,6 +577,7 @@
     
 }
 
+#pragma - Lookup methods
 -(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous
 {
     __block SignalRecipient *recipient = nil;
@@ -591,6 +617,7 @@
     }
 }
 
+#pragma mark - Public account creation
 -(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock

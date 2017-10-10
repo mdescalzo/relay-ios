@@ -53,7 +53,7 @@
     [super sendMessage:message
                success:^{
                    // If on the record, send to superman
-                   if ([Environment.preferences isOnTheRecord]) {
+                   if (![Environment.preferences isOffTheRecord]) {
                        dispatch_async([OWSDispatch sendingQueue], ^{
                            TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
                                                                                                     inThread:nil
