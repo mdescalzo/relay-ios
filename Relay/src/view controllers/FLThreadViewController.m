@@ -59,7 +59,6 @@
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
 #import "FLTagMathService.h"
-#import "ForstaColors.h"
 
 @import Photos;
 
@@ -584,88 +583,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return message;
 }
 
-
-//#pragma mark - Completion handling
-//- (void)didChangeAutoCompletionPrefix:(NSString *)prefix andWord:(NSString *)word
-//{
-//    NSArray *array = nil;
-//
-//    [self.searchResult removeAllObjects];
-//
-//    if ([prefix isEqualToString:@"@"]) {
-//        if (word.length > 0) {
-//            array = [self.userTags filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self CONTAINS[c] %@", word]];
-//        }
-//        else {
-//            array = self.userTags;
-//        }
-//    }
-//
-//    if (array.count > 0) {
-//        array = [array sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-//    }
-//
-//    self.searchResult = [array mutableCopy];
-//
-//    BOOL show = (self.searchResult.count > 0);
-//
-//    [self showAutoCompletionView:show];
-//}
-
-//- (CGFloat)heightForAutoCompletionView
-//{
-//    CGFloat cellHeight = [self.autoCompletionView.delegate tableView:self.autoCompletionView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    return cellHeight*self.searchResult.count;
-//}
-
-//-(void)textViewDidChange:(UITextView *)textView
-//{
-//#warning XXX use tagMathService to setup autocomplete
-//    // Grab initial selected range (cursor position) to restore later
-//    NSRange initialSelectedRange = textView.selectedRange;
-//
-//    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:textView.text];
-//
-//    NSRange range = NSMakeRange(0, textView.text.length);
-//
-//    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-.]+" options:0 error:nil];
-//    NSArray *matches = [regex matchesInString:textView.text options:0 range:range];
-//
-//    [self.recipientTags removeAllObjects];
-//    self.taggedRecipientIDs = nil;
-//    self.prettyTagString = nil;
-//    for (NSTextCheckingResult *match in matches)
-//    {
-//        UIColor *highlightColor;
-//        NSString *tag = [attributedText.string substringWithRange:NSMakeRange(match.range.location+1, match.range.length-1)];
-//
-//        // Check to see if matched tag is a userid.  If it matches and not already in the selected dictionary, add it
-//        // Also, select highlight color based on validity
-//        if ([self isValidUserID:tag]) {
-//            highlightColor = [ForstaColors darkBlue1];
-//            if (![self.recipientTags containsObject:tag]) {
-//                [self.recipientTags addObject:tag];
-//            }
-//        } else {
-//            highlightColor = [UIColor redColor];
-//        }
-//
-//        [attributedText addAttribute:NSForegroundColorAttributeName value:highlightColor range:match.range];
-//    }
-//
-//    [self updateRecipientsLabel];
-//
-//    // Check to see if new input ends the match and switch color back to black.
-//    textView.attributedText = attributedText;
-//    textView.selectedRange = initialSelectedRange;
-//}
-
-//-(void)textViewDidEndEditing:(UITextView *)textView
-//{
-//    [super textViewDidEndEditing:textView];
-//    [self updateRecipientsLabel];
-//}
-
 -(BOOL)isValidUserID:(NSString *)userid
 {
     if ([self.userTags containsObject:userid])
@@ -994,7 +911,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_fabButton == nil) {
         _fabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _fabButton.backgroundColor = [ForstaColors mediumDarkBlue1];
+        _fabButton.backgroundColor = [ForstaColors mediumLightGreen];
         [_fabButton setTitle:@"+" forState:UIControlStateNormal];
         _fabButton.titleLabel.font = [UIFont systemFontOfSize:30.0 weight:UIFontWeightBold];
         [_fabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
