@@ -10,7 +10,6 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -43,24 +42,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="LLZ-L1-HeH">
-                        <rightBarButtonItems>
-                            <barButtonItem image="hamburger" id="W2E-kN-Fte">
-                                <connections>
-                                    <segue destination="7BF-eX-3b0" kind="popoverPresentation" identifier="SettingsPopoverSegue" popoverAnchorBarButtonItem="W2E-kN-Fte" id="mSh-2T-KJ9">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="compose" id="Qur-Ce-nol">
-                                <connections>
-                                    <segue destination="uj0-5r-eP9" kind="presentation" identifier="composeThreadSegue" id="ZGX-Sb-64z"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="hamburger" id="W2E-kN-Fte">
+                            <connections>
+                                <segue destination="7BF-eX-3b0" kind="popoverPresentation" identifier="SettingsPopoverSegue" popoverAnchorBarButtonItem="W2E-kN-Fte" id="mSh-2T-KJ9">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="B0q-os-ZFy" kind="show" identifier="threadSelectedSegue" id="WOg-l3-PS0"/>
                         <segue destination="z8Y-ZN-bWS" kind="presentation" identifier="fingerprintSegue" id="UXZ-JM-NxS"/>
+                        <segue destination="uj0-5r-eP9" kind="presentation" identifier="composeThreadSegue" id="o88-Zx-T7Y"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zvz-W1-fyJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
