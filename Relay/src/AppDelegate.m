@@ -74,12 +74,10 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     }
     
     // Navbar background color iOS10 bug workaround
-//    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
-//    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
-    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
-                                      forBarPosition:UIBarPositionAny
-                                          barMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
+    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
+    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+    [UINavigationBar appearance].translucent = YES;
     
     // Setting up environment
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
