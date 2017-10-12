@@ -1,6 +1,5 @@
 #import "SignalUtil.h"
-
-#import <RelayServiceKit/TSAccountManager.h>
+#import "TSAccountManager.h"
 #import "Constraints.h"
 #import "SignalKeyingStorage.h"
 #import "Util.h"

@@ -3,8 +3,8 @@
 
 #import "OWSStaleNotificationObserver.h"
 #import "PushManager.h"
-#import <RelayServiceKit/OWSReadReceiptsProcessor.h>
-#import <RelayServiceKit/TSIncomingMessage.h>
+#import "OWSReadReceiptsProcessor.h"
+#import "TSIncomingMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

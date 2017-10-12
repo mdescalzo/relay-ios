@@ -12,17 +12,17 @@
 #import "UIFont+OWS.h"
 #import "UIUtil.h"
 #import <25519/Curve25519.h>
-#import <RelayServiceKit/NSDate+millisecondTimeStamp.h>
-#import <RelayServiceKit/OWSDisappearingConfigurationUpdateInfoMessage.h>
-#import <RelayServiceKit/OWSDisappearingMessagesConfiguration.h>
-#import <RelayServiceKit/OWSFingerprint.h>
-#import <RelayServiceKit/OWSFingerprintBuilder.h>
-#import <RelayServiceKit/OWSMessageSender.h>
-#import <RelayServiceKit/OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.h>
-#import <RelayServiceKit/TSGroupThread.h>
-#import <RelayServiceKit/TSOutgoingMessage.h>
-#import <RelayServiceKit/TSStorageManager.h>
-#import <RelayServiceKit/TSThread.h>
+#import "NSDate+millisecondTimeStamp.h"
+#import "OWSDisappearingConfigurationUpdateInfoMessage.h"
+#import "OWSDisappearingMessagesConfiguration.h"
+#import "OWSFingerprint.h"
+#import "OWSFingerprintBuilder.h"
+#import "OWSMessageSender.h"
+#import "OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.h"
+#import "TSGroupThread.h"
+#import "TSOutgoingMessage.h"
+#import "TSStorageManager.h"
+#import "TSThread.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

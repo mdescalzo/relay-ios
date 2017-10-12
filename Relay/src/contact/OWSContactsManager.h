@@ -1,7 +1,7 @@
 #import <Contacts/Contacts.h>
 #import <Foundation/Foundation.h>
-#import <RelayServiceKit/ContactsManagerProtocol.h>
-#import <RelayServiceKit/PhoneNumber.h>
+#import "ContactsManagerProtocol.h"
+#import "PhoneNumber.h"
 #import "CollapsingFutures.h"
 //#import "Contact.h"
 #import "ObservableValue.h"

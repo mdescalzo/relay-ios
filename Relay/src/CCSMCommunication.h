@@ -9,7 +9,7 @@
 #ifndef CCSMCommunication_h
 #define CCSMCommunication_h
 
-@import Foundation;
+//#import <Foundation/Foundation.h>
 
 @class SignalRecipient;
 

@@ -1,4 +1,4 @@
-#import <RelayServiceKit/TSStorageManager+keyingMaterial.h>
+#import "TSStorageManager+keyingMaterial.h"
 #import <XCTest/XCTest.h>
 #import "HttpSocket.h"
 #import "SignalKeyingStorage.h"

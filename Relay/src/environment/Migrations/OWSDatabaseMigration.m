@@ -2,7 +2,7 @@
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
 #import "OWSDatabaseMigration.h"
-#import <RelayServiceKit/TSStorageManager.h>
+#import "TSStorageManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
