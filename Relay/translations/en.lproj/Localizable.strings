@@ -665,7 +665,7 @@
 "SETTINGS_BLOCK_ON_IDENTITY_CHANGE_TITLE" = "Require Approval on Change";
 
 /* Table cell label */
-"SETTINGS_ONTHERECORD_TITLE" = "Allow On-The-Record";
+"SETTINGS_OFFTHERECORD_TITLE" = "Off The Record";
 
 /* No comment provided by engineer. */
 "SETTINGS_CLEAR_HISTORY" = "Clear History Logs";
@@ -707,10 +707,10 @@
 "SETTINGS_PRIVACY_TITLE" = "Privacy";
 
 /* No comment provided by engineer. */
-"SETTINGS_PRIVACY_ONTHERECORD_TITLE" = "On the record";
+"SETTINGS_PRIVACY_ONTHERECORD_TITLE" = "OTR";
 
 /* No comment provided by engineer. */
-"SETTINGS_SCREEN_ONOFF_RECORD_DETAIL" = "Allows your messages to be retained by your organization.";
+"SETTINGS_SCREEN_ONOFF_RECORD_DETAIL" = "Messages may be retained by your organization.  Public users are always \"Off The Record.\"  This setting is determined by your organzation's administrator.";
 
 /* Section header */
 "SETTINGS_PRIVACY_VERIFICATION_TITLE" = "Safety Numbers Approval";

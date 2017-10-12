@@ -204,7 +204,19 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     if (searchBar.text.length > 0) {
-        __block NSString *searchText = [searchBar.text copy];
+        // process the string before sending to tagMath
+        NSString *originalString = [searchBar.text copy];
+        __block NSMutableString *searchText = [NSMutableString new];
+        
+        for (NSString *subString in [originalString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]) {
+            if ([[subString substringToIndex:1] isEqualToString:@"@"]) {
+                [searchText appendString:[NSString stringWithFormat:@"%@ ", subString]];
+            } else {
+                [searchText appendString:[NSString stringWithFormat:@"@%@ ", subString]];
+            }
+        }
+        
+        // Do the lookup
         [self.tagService tagLookupWithString:searchText
                                      success:^(NSDictionary *results) {
                                          DDLogDebug(@"%@", results);
@@ -214,8 +226,8 @@
                                          __block NSMutableArray *badStrings = [NSMutableArray new];
                                          if (warnings.count > 0) {
                                              for (NSDictionary *warning in warnings) {
-                                                 NSRange range = NSMakeRange([[warning objectForKey:@"position"] integerValue],
-                                                                              [[warning objectForKey:@"length"] integerValue]);
+                                                 NSRange range = NSMakeRange([[warning objectForKey:@"position"] integerValue]+1,
+                                                                              [[warning objectForKey:@"length"] integerValue]-1);
                                                  NSString *badString = [searchText substringWithRange:range];
                                                  [badStrings addObject:badString];
                                              }

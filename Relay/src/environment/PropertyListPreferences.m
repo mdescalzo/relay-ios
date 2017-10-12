@@ -238,14 +238,14 @@ NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecorded
 }
 
 #pragma mark - On/off the record
--(BOOL)isOnTheRecord
+-(BOOL)isOffTheRecord
 {
-    return self.tsPrivacyPreferences.isOnTheRecord;
+    return self.tsPrivacyPreferences.isOffTheRecord;
 }
 
--(void)setIsOnTheRecord:(BOOL)value
+-(void)setIsOffTheRecord:(BOOL)value
 {
-    self.tsPrivacyPreferences.isOnTheRecord = value;
+    self.tsPrivacyPreferences.isOffTheRecord = value;
     [self.tsPrivacyPreferences save];
 }
 
