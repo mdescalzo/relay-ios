@@ -82,13 +82,14 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     // On-Off Record
     self.onOffRecordChangeCell = [UITableViewCell new];
     self.onOffRecordChangeCell.textLabel.text
-    = NSLocalizedString(@"SETTINGS_ONTHERECORD_TITLE", @"Table cell label");
+    = NSLocalizedString(@"SETTINGS_OFFTHERECORD_TITLE", @"Table cell label");
     self.onOffRecordChangeSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
     self.onOffRecordChangeCell.accessoryView = self.onOffRecordChangeSwitch;
-    [self.onOffRecordChangeSwitch setOn:[Environment.preferences isOnTheRecord]];
-    [self.onOffRecordChangeSwitch addTarget:self
-                                         action:@selector(didToggleOnOffRecordSwitch:)
-                               forControlEvents:UIControlEventTouchUpInside];
+    [self.onOffRecordChangeSwitch setOn:[Environment.preferences isOffTheRecord]];
+    self.onOffRecordChangeSwitch.enabled = NO;
+//    [self.onOffRecordChangeSwitch addTarget:self
+//                                         action:@selector(didToggleOnOffRecordSwitch:)
+//                               forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - Table view data source
@@ -208,7 +209,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 {
     BOOL enabled = self.onOffRecordChangeSwitch.isOn;
     DDLogInfo(@"%@ toggled onOffRecordChange: %@", self.tag, enabled ? @"ON" : @"OFF");
-    [Environment.preferences setIsOnTheRecord:enabled];
+    [Environment.preferences setIsOffTheRecord:enabled];
 }
 
 #pragma mark - Log util
