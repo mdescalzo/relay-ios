@@ -577,7 +577,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     
 }
 
-#pragma - Lookup methods
+#pragma mark - Lookup methods
 -(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous
 {
     __block SignalRecipient *recipient = nil;

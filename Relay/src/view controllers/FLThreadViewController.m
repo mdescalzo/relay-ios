@@ -1074,10 +1074,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     if (_threadMappings == nil) {
         _threadMappings =
         [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
-        [self.threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+        [_threadMappings setIsReversed:YES forGroup:TSInboxGroup];
         
         [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-            [self.threadMappings updateWithTransaction:transaction];
+            [_threadMappings updateWithTransaction:transaction];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
                 //            [self checkIfEmptyView];

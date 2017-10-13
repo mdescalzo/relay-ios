@@ -207,7 +207,6 @@ typedef enum : NSUInteger {
 
 - (BOOL)userLeftGroup
 {
-    NSString *selfID = [TSAccountManager localNumber];
     return ![self.thread.participants containsObject:[TSAccountManager localNumber]];
 }
 
