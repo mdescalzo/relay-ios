@@ -21,7 +21,8 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 
 @interface CCSMCommManager ()
 
-@property (nullable, nonatomic, retain) NSString *userAwaitingVerification;
+@property (nullable, nonatomic, strong) NSString *userAwaitingVerification;
+@property (nonatomic, strong) NSArray *controlTags;
 
 @end
 
@@ -411,7 +412,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 -(void)refreshCCSMData
 {
     [self refreshCCSMUsers];
-    [self refreshCCSMtags];
+    [self refreshCCSMTags];
 }
 
 -(void)refreshCCSMUsers
@@ -432,7 +433,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                      }];
 }
 
--(void)refreshCCSMtags
+-(void)refreshCCSMTags
 {
     NSMutableDictionary *tags = [NSMutableDictionary new];
     
@@ -443,7 +444,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                          NSMutableDictionary *holdingDict = [NSMutableDictionary new];
                          for (NSString *key in [tags allKeys]) {
                              NSDictionary *dict = [tags objectForKey:key];
-                             if (![[dict objectForKey:@"slug"] isEqualToString:@"."]) {
+                             if (![self.controlTags containsObject:[dict objectForKey:@"slug"]]) {
                                  [holdingDict setObject:dict forKey:key];
                              }
                          }
@@ -703,6 +704,15 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
              }
          }];
     }
+}
+
+#pragma mark - Accessors
+-(NSArray *)controlTags
+{
+    if (_controlTags == nil) {
+        _controlTags = @[ @".", @"role", @"position" ];
+    }
+    return _controlTags;
 }
 
 @end
