@@ -59,7 +59,6 @@
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
 #import "FLTagMathService.h"
-#import "ForstaColors.h"
 
 @import Photos;
 
@@ -112,24 +111,15 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, assign) BOOL isDomainViewVisible;
 @property (nonatomic, strong) NSArray *userTags;
 
-//@property (nonatomic, strong) NSArray *users;
-//@property (nonatomic, strong) NSArray *channels;
-//@property (nonatomic, strong) NSArray *emojis;
-//@property (nonatomic, strong) NSArray *commands;
-
 @property (nonatomic, strong) NSMutableArray *searchResult;
-
-//@property (nonatomic, strong) UIWindow *pipWindow;
 
 @property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) NSString *userDisplayName;
 
-//@property (nonatomic, strong) UIBarButtonItem *attachmentButton;
-//@property (nonatomic, strong) UIBarButtonItem *sendButton;
-//@property (nonatomic, strong) UIBarButtonItem *tagButton;
-//@property (nonatomic, strong) UIBarButtonItem *recipientCountButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *composeButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *settingsButton;
+
+@property (nonatomic, strong) UIButton *fabButton;
 
 @end
 
@@ -214,6 +204,10 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // setup methodology lifted from Signals
     [self ensureNotificationsUpToDate];
     [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+    
+    // FAB
+    [self.view addSubview:self.fabButton];
+    [self.view bringSubviewToFront:self.fabButton];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -589,88 +583,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return message;
 }
 
-
-//#pragma mark - Completion handling
-//- (void)didChangeAutoCompletionPrefix:(NSString *)prefix andWord:(NSString *)word
-//{
-//    NSArray *array = nil;
-//
-//    [self.searchResult removeAllObjects];
-//
-//    if ([prefix isEqualToString:@"@"]) {
-//        if (word.length > 0) {
-//            array = [self.userTags filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self CONTAINS[c] %@", word]];
-//        }
-//        else {
-//            array = self.userTags;
-//        }
-//    }
-//
-//    if (array.count > 0) {
-//        array = [array sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-//    }
-//
-//    self.searchResult = [array mutableCopy];
-//
-//    BOOL show = (self.searchResult.count > 0);
-//
-//    [self showAutoCompletionView:show];
-//}
-
-//- (CGFloat)heightForAutoCompletionView
-//{
-//    CGFloat cellHeight = [self.autoCompletionView.delegate tableView:self.autoCompletionView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    return cellHeight*self.searchResult.count;
-//}
-
-//-(void)textViewDidChange:(UITextView *)textView
-//{
-//#warning XXX use tagMathService to setup autocomplete
-//    // Grab initial selected range (cursor position) to restore later
-//    NSRange initialSelectedRange = textView.selectedRange;
-//
-//    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:textView.text];
-//
-//    NSRange range = NSMakeRange(0, textView.text.length);
-//
-//    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-.]+" options:0 error:nil];
-//    NSArray *matches = [regex matchesInString:textView.text options:0 range:range];
-//
-//    [self.recipientTags removeAllObjects];
-//    self.taggedRecipientIDs = nil;
-//    self.prettyTagString = nil;
-//    for (NSTextCheckingResult *match in matches)
-//    {
-//        UIColor *highlightColor;
-//        NSString *tag = [attributedText.string substringWithRange:NSMakeRange(match.range.location+1, match.range.length-1)];
-//
-//        // Check to see if matched tag is a userid.  If it matches and not already in the selected dictionary, add it
-//        // Also, select highlight color based on validity
-//        if ([self isValidUserID:tag]) {
-//            highlightColor = [ForstaColors darkBlue1];
-//            if (![self.recipientTags containsObject:tag]) {
-//                [self.recipientTags addObject:tag];
-//            }
-//        } else {
-//            highlightColor = [UIColor redColor];
-//        }
-//
-//        [attributedText addAttribute:NSForegroundColorAttributeName value:highlightColor range:match.range];
-//    }
-//
-//    [self updateRecipientsLabel];
-//
-//    // Check to see if new input ends the match and switch color back to black.
-//    textView.attributedText = attributedText;
-//    textView.selectedRange = initialSelectedRange;
-//}
-
-//-(void)textViewDidEndEditing:(UITextView *)textView
-//{
-//    [super textViewDidEndEditing:textView];
-//    [self updateRecipientsLabel];
-//}
-
 -(BOOL)isValidUserID:(NSString *)userid
 {
     if ([self.userTags containsObject:userid])
@@ -945,6 +857,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 }
 
 #pragma mark - Button actions
+-(void)fabTapped:(id)sender
+{
+    [self performSegueWithIdentifier:@"composeThreadSegue" sender:self];
+}
 //-(IBAction)composeNew:(id)sender
 //{
 //    [self performSegueWithIdentifier:@"SettingsPopoverSegue" sender:sender];
@@ -990,7 +906,35 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 
 
-#pragma mark - Lazy instantiation
+#pragma mark - Accessors
+-(UIButton *)fabButton
+{
+    if (_fabButton == nil) {
+        _fabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        _fabButton.backgroundColor = [ForstaColors mediumLightGreen];
+        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
+        _fabButton.titleLabel.font = [UIFont systemFontOfSize:30.0 weight:UIFontWeightBold];
+        [_fabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        CGSize buttonSize = CGSizeMake(60.0, 60.0);
+        CGRect screenRect = UIScreen.mainScreen.bounds;
+        CGFloat navBarHeight = self.navigationController.navigationBar.bounds.size.height;
+        CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        
+        _fabButton.frame = CGRectMake(screenRect.size.width - (40.0 + buttonSize.width),
+                                      screenRect.size.height - (40.0 + buttonSize.height) - (navBarHeight + statusBarHeight),
+                                      buttonSize.width,
+                                      buttonSize.height);
+        
+        _fabButton.layer.cornerRadius = buttonSize.height/2.0f;
+        _fabButton.layer.shadowColor = [UIColor darkGrayColor].CGColor;
+        _fabButton.layer.shadowOffset = CGSizeMake(1.0f, 3.0f);
+        _fabButton.layer.shadowOpacity = 0.8f;
+        _fabButton.layer.shadowRadius = 5.0f;
+        [_fabButton addTarget:self action:@selector(fabTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _fabButton;
+}
+
 -(FLTagMathService *)tagMathService
 {
     if (_tagMathService == nil) {
