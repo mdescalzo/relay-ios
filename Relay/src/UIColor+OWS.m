@@ -72,33 +72,34 @@
 
 + (UIColor *)backgroundColorForContact:(NSString *)contactIdentifier
 {
-    #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0	\
-                green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
-                 blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
-                alpha:1.0]
-    NSArray *colors = @[
-			UIColorFromRGB(0x124b63),
-			UIColorFromRGB(0x0a76af),
-			UIColorFromRGB(0x9a4422),
-			UIColorFromRGB(0x719904),
-			UIColorFromRGB(0x0a76af),
-			UIColorFromRGB(0x6abde9),
-			UIColorFromRGB(0xbe5d28),
-			UIColorFromRGB(0x90b718),
-			UIColorFromRGB(0x2bace2),
-			UIColorFromRGB(0x80ceff),
-			UIColorFromRGB(0xf47d20),
-			UIColorFromRGB(0xafd23f),
-			UIColorFromRGB(0x6abde9),
-			UIColorFromRGB(0xc5e0ef),
-			UIColorFromRGB(0xf69348)
-			//UIColorFromRGB(0xbed868),
-			//UIColorFromRGB(0x9ccce0),
-			//UIColorFromRGB(0xd7e6f5),
-			//UIColorFromRGB(0xfdc79e),
-			//UIColorFromRGB(0xdeef95)
-				      
-    ];
+//    #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0    \
+//                green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
+//                 blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
+//                alpha:1.0]
+    NSArray *colors = [ForstaColors popColors];
+//    NSArray *colors = @[
+//            UIColorFromRGB(0x124b63),
+//            UIColorFromRGB(0x0a76af),
+//            UIColorFromRGB(0x9a4422),
+//            UIColorFromRGB(0x719904),
+//            UIColorFromRGB(0x0a76af),
+//            UIColorFromRGB(0x6abde9),
+//            UIColorFromRGB(0xbe5d28),
+//            UIColorFromRGB(0x90b718),
+//            UIColorFromRGB(0x2bace2),
+//            UIColorFromRGB(0x80ceff),
+//            UIColorFromRGB(0xf47d20),
+//            UIColorFromRGB(0xafd23f),
+//            UIColorFromRGB(0x6abde9),
+//            UIColorFromRGB(0xc5e0ef),
+//            UIColorFromRGB(0xf69348)
+//            //UIColorFromRGB(0xbed868),
+//            //UIColorFromRGB(0x9ccce0),
+//            //UIColorFromRGB(0xd7e6f5),
+//            //UIColorFromRGB(0xfdc79e),
+//            //UIColorFromRGB(0xdeef95)
+//
+//    ];
     NSData *contactData = [contactIdentifier dataUsingEncoding:NSUTF8StringEncoding];
 
     NSUInteger hashingLength = 4;

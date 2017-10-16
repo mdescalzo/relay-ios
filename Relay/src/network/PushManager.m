@@ -9,7 +9,6 @@
 #import "PushManager.h"
 #import "AppDelegate.h"
 #import "Environment.h"
-//#import "InCallViewController.h"
 #import "NSData+ows_StripToken.h"
 #import "NSDate+millisecondTimeStamp.h"
 #import "NotificationTracker.h"
@@ -18,7 +17,7 @@
 #import "RPServerRequestsManager.h"
 #import "TSOutgoingMessage.h"
 #import "TSSocketManager.h"
-#import <RelayServiceKit/OWSMessageSender.h>
+#import "FLMessageSender.h"
 
 #define pushManagerDomain @"org.forsta.pushmanager"
 

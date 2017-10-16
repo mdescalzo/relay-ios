@@ -9,7 +9,7 @@
 #import "SignalKeyingStorage.h"
 //#import "SignalsViewController.h"
 #import "TSThread.h"
-#import <RelayServiceKit/ContactsUpdater.h>
+#import "ContactsUpdater.h"
 #import "FLTagMathService.h"
 #import "TSAccountManager.h"
 #import "FLThreadViewController.h"

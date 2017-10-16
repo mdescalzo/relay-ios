@@ -42,17 +42,17 @@
 #import "TSIncomingMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
-#import <RelayServiceKit/MimeTypeUtil.h>
-#import <RelayServiceKit/OWSAttachmentsProcessor.h>
-#import <RelayServiceKit/OWSDisappearingMessagesConfiguration.h>
-#import <RelayServiceKit/OWSFingerprint.h>
-#import <RelayServiceKit/OWSFingerprintBuilder.h>
-#import <RelayServiceKit/OWSMessageSender.h>
-#import <RelayServiceKit/SignalRecipient.h>
-#import <RelayServiceKit/TSAccountManager.h>
-#import <RelayServiceKit/TSInvalidIdentityKeySendingErrorMessage.h>
+#import "MimeTypeUtil.h"
+#import "OWSAttachmentsProcessor.h"
+#import "OWSDisappearingMessagesConfiguration.h"
+#import "OWSFingerprint.h"
+#import "OWSFingerprintBuilder.h"
+#import "OWSMessageSender.h"
+#import "SignalRecipient.h"
+#import "TSAccountManager.h"
+#import "TSInvalidIdentityKeySendingErrorMessage.h"
 #import "FLMessagesManager.h"
-#import <RelayServiceKit/TSNetworkManager.h>
+#import "TSNetworkManager.h"
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
 #import <JSQSystemSoundPlayer.h>
@@ -748,12 +748,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if ([tableView isEqual:self.tableView]) {
         return [self messageCellForRowAtIndexPath:indexPath];
-//    }
-//    else {
-//        return [self autoCompletionCellForRowAtIndexPath:indexPath];
-//    }
 }
 
 -(UITableViewCell *)messageCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -911,8 +906,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_fabButton == nil) {
         _fabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _fabButton.backgroundColor = [ForstaColors mediumLightGreen];
-        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
+        _fabButton.backgroundColor = [ForstaColors mediumDarkBlue2];
+        [_fabButton setImage:[UIImage imageNamed:@"pencil-1"] forState:UIControlStateNormal];
+        _fabButton.tintColor = [UIColor whiteColor];
+//        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
         _fabButton.titleLabel.font = [UIFont systemFontOfSize:30.0 weight:UIFontWeightBold];
         [_fabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         CGSize buttonSize = CGSizeMake(60.0, 60.0);
