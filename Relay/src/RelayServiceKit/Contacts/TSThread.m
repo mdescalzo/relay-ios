@@ -218,7 +218,7 @@ static const NSString *FLExpressionKey = @"expression";
             }
             return [[TextSecureKitEnv sharedEnv].contactsManager imageForPhoneIdentifier:otherId];
         } else {
-            return [UIImage imageNamed:@"empty-group-avatar"];
+            return [UIImage imageNamed:@"empty-group-avatar-gray"];
         }
 //    }
 //    return _image;
