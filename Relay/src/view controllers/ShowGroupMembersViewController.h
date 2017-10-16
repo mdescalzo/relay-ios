@@ -10,7 +10,7 @@
 #import "TSGroupModel.h"
 #import "TSThread.h"
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @interface ShowGroupMembersViewController : UITableViewController <UITableViewDelegate,
                                                                    UITabBarDelegate,

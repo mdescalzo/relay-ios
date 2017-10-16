@@ -8,7 +8,7 @@
 
 #import "SignalRecipient.h"
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @interface FLDirectoryCell : UITableViewCell
 

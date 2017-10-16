@@ -9,7 +9,7 @@
 #import "RPServerRequestsManager.h"
 
 #import "AFHTTPSessionManager+SignalMethods.h"
-#import <RelayServiceKit/OWSHTTPSecurityPolicy.h>
+#import "OWSHTTPSecurityPolicy.h"
 
 @interface RPServerRequestsManager ()
 

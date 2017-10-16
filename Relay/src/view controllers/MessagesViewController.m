@@ -41,7 +41,6 @@
 #import "UIFont+OWS.h"
 #import "UIUtil.h"
 #import "UIViewController+CameraPermissions.h"
-//#import <AddressBookUI/AddressBookUI.h>
 #import <ContactsUI/CNContactViewController.h>
 #import <JSQMessagesViewController/JSQMessagesBubbleImage.h>
 #import <JSQMessagesViewController/JSQMessagesBubbleImageFactory.h>
@@ -51,17 +50,17 @@
 #import <JSQMessagesViewController/UIColor+JSQMessages.h>
 #import <JSQSystemSoundPlayer.h>
 #import <MobileCoreServices/UTCoreTypes.h>
-#import <RelayServiceKit/MimeTypeUtil.h>
-#import <RelayServiceKit/OWSAttachmentsProcessor.h>
-#import <RelayServiceKit/OWSDisappearingMessagesConfiguration.h>
-#import <RelayServiceKit/OWSFingerprint.h>
-#import <RelayServiceKit/OWSFingerprintBuilder.h>
-#import <RelayServiceKit/OWSMessageSender.h>
-#import <RelayServiceKit/SignalRecipient.h>
-#import <RelayServiceKit/TSAccountManager.h>
-#import <RelayServiceKit/TSInvalidIdentityKeySendingErrorMessage.h>
+#import "MimeTypeUtil.h"
+#import "OWSAttachmentsProcessor.h"
+#import "OWSDisappearingMessagesConfiguration.h"
+#import "OWSFingerprint.h"
+#import "OWSFingerprintBuilder.h"
+#import "OWSMessageSender.h"
+#import "SignalRecipient.h"
+#import "TSAccountManager.h"
+#import "TSInvalidIdentityKeySendingErrorMessage.h"
 #import "FLMessagesManager.h"
-#import <RelayServiceKit/TSNetworkManager.h>
+#import "TSNetworkManager.h"
 #import <YapDatabase/YapDatabaseView.h>
 #import "ImagePreviewViewController.h"
 
@@ -208,7 +207,6 @@ typedef enum : NSUInteger {
 
 - (BOOL)userLeftGroup
 {
-    NSString *selfID = [TSAccountManager localNumber];
     return ![self.thread.participants containsObject:[TSAccountManager localNumber]];
 }
 

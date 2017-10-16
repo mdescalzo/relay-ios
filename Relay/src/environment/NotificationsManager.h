@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RelayServiceKit/NotificationsProtocol.h>
+#import "NotificationsProtocol.h"
 
 @class TSCall;
 

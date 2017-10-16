@@ -17,10 +17,10 @@
 #import "TSOutgoingMessage.h"
 #import "UIImage+normalizeImage.h"
 #import "UIUtil.h"
-#import <RelayServiceKit/MimeTypeUtil.h>
-#import <RelayServiceKit/NSDate+millisecondTimeStamp.h>
-#import <RelayServiceKit/OWSMessageSender.h>
-#import <RelayServiceKit/TSAccountManager.h>
+#import "MimeTypeUtil.h"
+#import "NSDate+millisecondTimeStamp.h"
+#import "OWSMessageSender.h"
+#import "TSAccountManager.h"
 #import "FLDirectoryCell.h"
 #import "FLTagMathService.h"
 

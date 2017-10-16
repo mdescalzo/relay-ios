@@ -12,7 +12,7 @@
 //#import "Contact.h"
 //#import "TSGroupModel.h"
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 @import AVFoundation;
 @import MediaPlayer;
 
