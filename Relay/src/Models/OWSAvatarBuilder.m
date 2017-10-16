@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
     OWSAvatarBuilder *avatarBuilder;
     if (thread.participants.count == 2) {
         avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithThread:thread contactsManager:contactsManager diameter:diameter];
+//        avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:<#(nonnull NSString *)#> name:<#(nonnull NSString *)#> contactsManager:<#(nonnull OWSContactsManager *)#> diameter:<#(CGFloat)#>]
     } else {
         avatarBuilder = [[OWSGroupAvatarBuilder alloc] initWithThread:thread];
 //    } else {
