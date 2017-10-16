@@ -9,7 +9,7 @@
 #import "SignalRecipient.h"
 #import <YapDatabase/YapDatabase.h>
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 @interface FLContactsManager : NSObject
 

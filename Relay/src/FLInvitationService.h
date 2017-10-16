@@ -8,9 +8,9 @@
 
 #import "FLContactSelectionTableViewController.h"
 
-@import Foundation;
-@import MessageUI;
-@import Social;
+#import <Foundation/Foundation.h>
+#import <MessageUI/MessageUI.h>
+#import <Social/Social.h>
 
 @interface FLInvitationService : NSObject 
 

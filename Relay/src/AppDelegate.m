@@ -18,10 +18,10 @@
 #import "VersionMigrations.h"
 #import <PastelogKit/Pastelog.h>
 #import <PromiseKit/AnyPromise.h>
-#import <RelayServiceKit/OWSDisappearingMessagesJob.h>
-#import <RelayServiceKit/OWSIncomingMessageReadObserver.h>
-#import <RelayServiceKit/OWSMessageSender.h>
-#import <RelayServiceKit/TSAccountManager.h>
+#import "OWSDisappearingMessagesJob.h"
+#import "OWSIncomingMessageReadObserver.h"
+#import "OWSMessageSender.h"
+#import "TSAccountManager.h"
 
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"

@@ -11,9 +11,9 @@
 #import "Relay-Swift.h"
 #import "SignalsNavigationController.h"
 #import <PromiseKit/AnyPromise.h>
-#import <RelayServiceKit/OWSError.h>
-#import <RelayServiceKit/TSAccountManager.h>
-#import <RelayServiceKit/TSStorageManager+keyingMaterial.h>
+#import "OWSError.h"
+#import "TSAccountManager.h"
+#import "TSStorageManager+keyingMaterial.h"
 #import "PhoneNumber.h"
 
 NS_ASSUME_NONNULL_BEGIN

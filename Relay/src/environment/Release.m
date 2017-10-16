@@ -3,9 +3,8 @@
 #import "PhoneManager.h"
 #import "PhoneNumberUtil.h"
 #import "RecentCallManager.h"
-#import <RelayServiceKit/ContactsUpdater.h>
-//#import <RelayServiceKit/OWSMessageSender.h>
-#import <RelayServiceKit/TSNetworkManager.h>
+#import "ContactsUpdater.h"
+#import "TSNetworkManager.h"
 #import "FLMessageSender.h"
 #import "OWSContactsManager.h"
 
