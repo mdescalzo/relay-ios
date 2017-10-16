@@ -8,7 +8,7 @@
 
 #import "OWSMessageSender.h"
 
-@import Foundation;
+//#import <Foundation/Foundation.h>
 
 @interface FLMessageSender : OWSMessageSender
 

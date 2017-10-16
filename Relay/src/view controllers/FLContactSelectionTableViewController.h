@@ -6,7 +6,7 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @protocol FLContactSelectionTableViewControllerDelegate;
 

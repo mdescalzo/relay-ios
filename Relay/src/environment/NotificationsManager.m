@@ -12,11 +12,11 @@
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
 #import <AudioToolbox/AudioServices.h>
-#import <RelayServiceKit/TSCall.h>
-#import <RelayServiceKit/TSThread.h>
-#import <RelayServiceKit/TSErrorMessage.h>
-#import <RelayServiceKit/TSIncomingMessage.h>
-#import <RelayServiceKit/TextSecureKitEnv.h>
+#import "TSCall.h"
+#import "TSThread.h"
+#import "TSErrorMessage.h"
+#import "TSIncomingMessage.h"
+#import "TextSecureKitEnv.h"
 
 @interface NotificationsManager ()
 

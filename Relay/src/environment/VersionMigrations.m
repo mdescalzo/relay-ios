@@ -17,7 +17,7 @@
 #import "SignalKeyingStorage.h"
 #import "TSAccountManager.h"
 #import "TSNetworkManager.h"
-#import <RelayServiceKit/OWSOrphanedDataCleaner.h>
+#import "OWSOrphanedDataCleaner.h"
 
 #define NEEDS_TO_REGISTER_PUSH_KEY @"Register For Push"
 #define NEEDS_TO_REGISTER_ATTRIBUTES @"Register Attributes"
