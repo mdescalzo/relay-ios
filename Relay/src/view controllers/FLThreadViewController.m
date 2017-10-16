@@ -911,8 +911,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_fabButton == nil) {
         _fabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _fabButton.backgroundColor = [ForstaColors mediumLightGreen];
-        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
+        _fabButton.backgroundColor = [ForstaColors mediumDarkBlue2];
+        [_fabButton setImage:[UIImage imageNamed:@"pencil-1"] forState:UIControlStateNormal];
+        _fabButton.tintColor = [UIColor whiteColor];
+//        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
         _fabButton.titleLabel.font = [UIFont systemFontOfSize:30.0 weight:UIFontWeightBold];
         [_fabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         CGSize buttonSize = CGSizeMake(60.0, 60.0);
