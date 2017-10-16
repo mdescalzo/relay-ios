@@ -748,12 +748,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if ([tableView isEqual:self.tableView]) {
         return [self messageCellForRowAtIndexPath:indexPath];
-//    }
-//    else {
-//        return [self autoCompletionCellForRowAtIndexPath:indexPath];
-//    }
 }
 
 -(UITableViewCell *)messageCellForRowAtIndexPath:(NSIndexPath *)indexPath

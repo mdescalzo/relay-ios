@@ -54,7 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    return [self initWithContactId:contactId name:thread.name contactsManager:contactsManager diameter:diameter];
+    SignalRecipient *recipient = [contactsManager recipientForUserID:contactId];
+    
+    return [self initWithContactId:contactId name:recipient.fullName contactsManager:contactsManager diameter:diameter];
 }
 
 - (nullable UIImage *)buildSavedImage
