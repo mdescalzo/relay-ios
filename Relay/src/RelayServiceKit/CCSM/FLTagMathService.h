@@ -10,8 +10,10 @@
 @interface FLTagMathService : NSObject
 
 
--(void)tagLookupWithString:(NSString *_Nonnull)lookupString
-                   success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock
-                   failure:(void (^_Nonnull)(NSError *_Nonnull))failureBlock;
++(void)asyncTagLookupWithString:(NSString *_Nonnull)lookupString
+                        success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock
+                        failure:(void (^_Nonnull)(NSError *_Nonnull))failureBlock;
+
++(NSDictionary *_Nullable)syncTagLookupWithString:(NSString *_Nonnull)lookupString;
 
 @end

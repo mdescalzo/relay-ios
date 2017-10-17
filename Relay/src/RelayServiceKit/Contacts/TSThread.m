@@ -127,18 +127,22 @@ static const NSString *FLExpressionKey = @"expression";
     thread.type = ((threadType.length > 0) ? threadType : nil );
     thread.universalExpression = ((threadExpression.length > 0) ? threadExpression : nil );
 
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [[FLTagMathService new] tagLookupWithString:thread.universalExpression
-                                            success:^(NSDictionary *results) {
+    NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
+    if (lookupDict) {
+        thread.participants = [lookupDict objectForKey:@"userids"];
+        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+    }
+
+//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//        [[FLTagMathService new] tagLookupWithString:thread.universalExpression
+//                                            success:^(NSDictionary *results) {
                                                 // thread/message configuration from JSON payload
-                                                thread.participants = [results objectForKey:@"userids"];
-                                                thread.prettyExpression = [results objectForKey:@"pretty"];
-                                                [thread save];
-                                            }
-                                            failure:^(NSError *error) {
-                                                DDLogDebug(@"Tagmath lookup failed during thread generation! Error: %@", error.description);
-                                            }];
-    });
+//                                                [thread save];
+//                                            }
+//                                            failure:^(NSError *error) {
+//                                                DDLogDebug(@"Tagmath lookup failed during thread generation! Error: %@", error.description);
+//                                            }];
+//    });
     [thread saveWithTransaction:transaction];
 
     return thread;

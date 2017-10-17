@@ -73,7 +73,7 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.text.length >= 3) {
-        [self.tagService tagLookupWithString:textField.text
+        [FLTagMathService asyncTagLookupWithString:textField.text
                                      success:^(NSDictionary *results) {
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];

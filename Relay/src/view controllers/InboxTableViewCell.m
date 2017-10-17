@@ -53,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
             self.hidden = YES;
         });
     }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         
         NSString *name = thread.displayName;

@@ -37,8 +37,6 @@
 @property (nonatomic, strong) NSArray *content;
 @property (nonatomic, strong) NSArray *searchResults;
 
-@property (nonatomic, strong) FLTagMathService *tagService;
-
 @end
 
 @implementation ThreadCreationViewController
@@ -46,7 +44,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self tagService];
 //    [self downSwipeRecognizer];
     self.slugViewHeight.constant = KMinInputHeight;
 //    self.slugContainerView.layoutManager.delegate = self;
@@ -217,7 +214,7 @@
         }
         
         // Do the lookup
-        [self.tagService tagLookupWithString:searchText
+        [FLTagMathService asyncTagLookupWithString:searchText
                                      success:^(NSDictionary *results) {
                                          DDLogDebug(@"%@", results);
                                          NSString *pretty = [results objectForKey:@"pretty"];
@@ -320,7 +317,7 @@
                 [threadSlugs appendFormat:@" + %@", slug];
             }
         }
-        [self.tagService tagLookupWithString:threadSlugs
+        [FLTagMathService asyncTagLookupWithString:threadSlugs
                                      success:^(NSDictionary *results) {
                                          [self buildThreadWithResults:results];
                                      }
@@ -374,7 +371,7 @@
         // add self run again
         NSMutableString *pretty = [[results objectForKey:@"pretty"] mutableCopy];
         [pretty appendFormat:@" + @%@", TSAccountManager.sharedInstance.myself.tagSlug];
-        [self.tagService tagLookupWithString:pretty
+        [FLTagMathService asyncTagLookupWithString:pretty
                                      success:^(NSDictionary *newResults){
                                          [self buildThreadWithResults:newResults];
                                      }
@@ -575,14 +572,6 @@
     } else {
         return nil;
     }
-}
-
--(FLTagMathService *)tagService
-{
-    if (_tagService == nil) {
-        _tagService = [FLTagMathService new];
-    }
-    return _tagService;
 }
 
 @end

@@ -171,6 +171,10 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)getOrCreateThreadWithID:(NSString *)threadID;
 +(instancetype)getOrCreateThreadWithID:(NSString *_Nonnull)threadID
                            transaction:(YapDatabaseReadWriteTransaction *)transaction;
+
+/**
+ *  Get or create thread with thread forsta payload
+ */
 +(instancetype)threadWithPayload:(NSDictionary *)payload;
 +(instancetype)threadWithPayload:(NSDictionary *)payload
                      transaction:(YapDatabaseReadWriteTransaction *)transaction;
