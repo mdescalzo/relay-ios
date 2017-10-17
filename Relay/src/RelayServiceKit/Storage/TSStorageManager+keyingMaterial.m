@@ -20,6 +20,21 @@
     return [self stringForKey:TSStorageRegisteredNumberKey inCollection:TSStorageUserAccountCollection];
 }
 
++ (NSNumber *)deviceId
+{
+    return [[self sharedManager] deviceId];
+}
+
+- (NSNumber *)deviceId
+{
+    NSNumber *returnVal = [self objectForKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection];
+    if (!returnVal) {
+        return [NSNumber numberWithInt:1];
+    } else {
+        return returnVal;
+    }
+}
+
 + (void)removeLocalNumber;
 {
     [[self sharedManager] removeLocalNumber];
@@ -69,6 +84,15 @@
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction setObject:phoneNumber
                         forKey:TSStorageRegisteredNumberKey
+                  inCollection:TSStorageUserAccountCollection];
+    }];
+}
+
+- (void)storeDeviceId:(NSNumber *)deviceId
+{
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [transaction setObject:deviceId
+                        forKey:TSStorageRegisteredDeviceIDKey
                   inCollection:TSStorageUserAccountCollection];
     }];
 }

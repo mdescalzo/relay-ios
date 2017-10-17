@@ -236,9 +236,10 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
 
 - (NSString *)webSocketAuthenticationString {
     return [NSString
-        stringWithFormat:@"?login=%@&password=%@",
-                         [[TSStorageManager localNumber] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"],
-                         [TSStorageManager serverAuthToken]];
+        stringWithFormat:@"?login=%@.%d&password=%@",
+            [[TSStorageManager localNumber] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"],
+            [[TSStorageManager deviceId] integerValue],
+            [TSStorageManager serverAuthToken]];
 }
 
 - (void)scheduleRetry {

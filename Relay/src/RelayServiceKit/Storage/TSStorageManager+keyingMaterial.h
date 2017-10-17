@@ -38,11 +38,18 @@
 - (void)removeLocalNumber;
 + (void)removeLocalNumber;
 
+/**
+ * Registered device ID
+ */
++ (NSNumber *)deviceId;
+- (NSNumber *)deviceId;
+
 - (void)ifLocalNumberPresent:(BOOL)isPresent runAsync:(void (^)())block;
 
 + (void)storeServerToken:(NSString *)authToken signalingKey:(NSString *)signalingKey;
 +(void)removeServerTokenAndSignalingKey;
 
 - (void)storePhoneNumber:(NSString *)phoneNumber;
+- (void)storeDeviceId:(NSNumber *)deviceId;
 
 @end

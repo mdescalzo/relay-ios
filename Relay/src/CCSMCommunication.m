@@ -539,7 +539,6 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                            completionHandler:^(NSURLResponse *response,
                                                NSData *data, NSError *connectionError)
      {
-         
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
          DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
@@ -554,18 +553,16 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                  NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                         options:0
                                                                           error:NULL];
-                 successBlock(result);
                  DDLogDebug(@"Results: %@", result);
                  
                  [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
-                 NSString *deviceID = [result objectForKey:@"deviceId"];
-                 
+                 NSNumber *deviceID = [result objectForKey:@"deviceId"];
+                 [[TSStorageManager sharedManager] storeDeviceId:deviceID];
                  [TSStorageManager storeServerToken:password signalingKey:signalingKey];
                  [[TSStorageManager sharedManager] storePhoneNumber:userID];
                  [TSSocketManager becomeActiveFromForeground];
                  [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
              }
-             successBlock();
          }
          else  // Connection good, error from server
          {
