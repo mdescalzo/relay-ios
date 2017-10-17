@@ -103,8 +103,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) NSMutableArray *attachmentIDs;
 @property (nonatomic, strong) NSMutableArray *messages;
 
-@property (nonatomic, strong) IBOutlet UISearchController *searchController;
-@property (nonatomic, weak) IBOutlet UILabel *bannerLabel;
+//@property (nonatomic, strong) IBOutlet UISearchController *searchController;
+//@property (nonatomic, weak) IBOutlet UILabel *bannerLabel;
 
 @property (nonatomic, strong) FLDomainViewController *domainTableViewController;
 @property (nonatomic, strong) SettingsPopupMenuViewController *settingsViewController;
@@ -786,6 +786,21 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                                                                                  withMappings:self.threadMappings];
     }];
     
+    // "Heal" any unnamed conversations which may be in the database.
+    
+    if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
+        NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
+        if (lookupDict) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    thread.participants = [lookupDict objectForKey:@"userids"];
+                    thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                    [thread saveWithTransaction:transaction];
+                }];
+            });
+        }
+    }
+    
     return thread;
 }
 
@@ -977,18 +992,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return _settingsViewController;
 }
 
--(UISearchController *)searchController
-{
-    if (_searchController == nil) {
-        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-        self.searchController.searchResultsUpdater = self;
-        self.searchController.dimsBackgroundDuringPresentation = NO;
-        self.searchController.hidesNavigationBarDuringPresentation = NO;
-
-        _searchController.delegate = self;
-    }
-    return _searchController;
-}
+//-(UISearchController *)searchController
+//{
+//    if (_searchController == nil) {
+//        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+//        self.searchController.searchResultsUpdater = self;
+//        self.searchController.dimsBackgroundDuringPresentation = NO;
+//        self.searchController.hidesNavigationBarDuringPresentation = NO;
+//
+//        _searchController.delegate = self;
+//    }
+//    return _searchController;
+//}
 
 //-(UISwipeGestureRecognizer *)rightSwipeRecognizer
 //{

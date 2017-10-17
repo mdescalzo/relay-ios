@@ -86,9 +86,9 @@
                     [self.disappearingMessagesJob becomeConsistentWithConfigurationForMessage:incomingMessage
                                                                               contactsManager:self.contactsManager];
                     
-                    // Update thread preview in inbox
+                    // Update thread
                     [thread touch];
-                    
+
                     // TODO Delay notification by 100ms?
                     // It's pretty annoying when you're phone keeps buzzing while you're having a conversation on Desktop.
                     NSString *name = thread.displayName;

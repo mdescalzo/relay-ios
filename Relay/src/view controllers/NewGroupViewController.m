@@ -154,7 +154,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         }
     }
     
-    [[FLTagMathService new] tagLookupWithString:searchString
+    [FLTagMathService asyncTagLookupWithString:searchString
                                         success:^(NSDictionary *results) {
                                             self.thread = [TSThread getOrCreateThreadWithID:[[NSUUID UUID] UUIDString]];
                                             self.thread.name = model.groupName;
