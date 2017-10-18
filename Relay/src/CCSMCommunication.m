@@ -99,14 +99,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-             [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-             NSDictionary *userDict = [result objectForKey:@"user"];
-             [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
-             NSDictionary *orgDict = [userDict objectForKey:@"org"];
-             [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
-             
-             NSString *orgUrl = [orgDict objectForKey:@"url"];
-             [self processOrgInfoWithURL:orgUrl];
+             [self storeLocalUserDataWithPayload:result];
              
              // TODO: fetch/sync other goodies, like all of the the user's potential :^)
              successBlock();
@@ -152,13 +145,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
         NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                options:0
                                                                  error:NULL];
-        [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-        NSDictionary *userDict = [result objectForKey:@"user"];
-        [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
-        NSDictionary *orgDict = [userDict objectForKey:@"org"];
-        [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
-        NSString *orgUrl = [orgDict objectForKey:@"url"];
-        [self processOrgInfoWithURL:orgUrl];
+        [self storeLocalUserDataWithPayload:result];
         
         successBlock();
     }
@@ -201,14 +188,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
              NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
-             [[Environment getCurrent].ccsmStorage setSessionToken:[result objectForKey:@"token"]];
-             [[Environment getCurrent].ccsmStorage setUserInfo:[result objectForKey:@"user"]];
-             NSDictionary *userDict = [result objectForKey:@"user"];
-             [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
-             NSDictionary *orgDict = [userDict objectForKey:@"org"];
-             [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
-             NSString *orgUrl = [orgDict objectForKey:@"url"];
-             [self processOrgInfoWithURL:orgUrl];
+             [self storeLocalUserDataWithPayload:result];
              
              successBlock();
          }
@@ -409,6 +389,24 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Refresh methods
+-(void)storeLocalUserDataWithPayload:(NSDictionary *)payload
+{
+    if (payload) {
+        [[Environment getCurrent].ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
+        
+        NSDictionary *userDict = [payload objectForKey:@"user"];
+        [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
+        SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
+        [myself save];
+        
+        NSDictionary *orgDict = [userDict objectForKey:@"org"];
+        [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
+        
+        NSString *orgUrl = [orgDict objectForKey:@"url"];
+        [self processOrgInfoWithURL:orgUrl];
+    }
+}
+
 -(void)refreshCCSMData
 {
     [self refreshCCSMUsers];

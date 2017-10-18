@@ -1854,8 +1854,8 @@
 		7D61387C1F90161500E18D29 /* TSPreKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPreKeyManager.m; sourceTree = "<group>"; };
 		7D61387D1F90161500E18D29 /* TSPrivacyPreferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSPrivacyPreferences.h; sourceTree = "<group>"; };
 		7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPrivacyPreferences.m; sourceTree = "<group>"; };
-		7D6138801F90161500E18D29 /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMStorage.h; sourceTree = "<group>"; };
-		7D6138811F90161500E18D29 /* CCSMStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
+		7D6138801F90161500E18D29 /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCSMStorage.h; path = RelayServiceKit/CCSM/CCSMStorage.h; sourceTree = "<group>"; };
+		7D6138811F90161500E18D29 /* CCSMStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCSMStorage.m; path = RelayServiceKit/CCSM/CCSMStorage.m; sourceTree = "<group>"; };
 		7D6138821F90161500E18D29 /* FLMessagesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLMessagesManager.h; sourceTree = "<group>"; };
 		7D6138831F90161500E18D29 /* FLMessagesManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLMessagesManager.m; sourceTree = "<group>"; };
 		7D6138841F90161500E18D29 /* FLTagMathService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLTagMathService.h; sourceTree = "<group>"; };
@@ -3308,8 +3308,6 @@
 		7D61387F1F90161500E18D29 /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
-				7D6138801F90161500E18D29 /* CCSMStorage.h */,
-				7D6138811F90161500E18D29 /* CCSMStorage.m */,
 				7D6138821F90161500E18D29 /* FLMessagesManager.h */,
 				7D6138831F90161500E18D29 /* FLMessagesManager.m */,
 				7D6138841F90161500E18D29 /* FLTagMathService.h */,
@@ -4171,13 +4169,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		DBE1798C1ED9FF8500327B2B /* ccsm */ = {
+		DBE1798C1ED9FF8500327B2B /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
+				7D6138801F90161500E18D29 /* CCSMStorage.h */,
+				7D6138811F90161500E18D29 /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
 				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 			);
-			name = ccsm;
+			name = CCSM;
 			sourceTree = "<group>";
 		};
 		E18AB40618A05754001A532A /* AudioFiles */ = {
