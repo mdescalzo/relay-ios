@@ -1,9 +1,6 @@
 //
 // Prefix header for all source files of the 'RedPhone' target in the 'RedPhone' project
 //
-//#import <UIKit/UIKit.h>
-//#import <Foundation/Foundation.h>
-
 #import <UIKit/UIkit.h>
 #import <Foundation/Foundation.h>
 #import "ForstaColors.h"

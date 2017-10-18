@@ -13,6 +13,7 @@
 
 #define TSStorageUserAccountCollection @"TSStorageUserAccountCollection"
 
+#define TSStorageRegisteredDeviceIDKey @"TSStorageRegisteredDeviceIDKey"
 #define TSStorageRegisteredNumberKey @"TSStorageRegisteredNumberKey"
 #define TSStorageServerAuthToken @"TSStorageServerAuthToken"
 #define TSStorageServerSignalingKey @"TSStorageServerSignalingKey"

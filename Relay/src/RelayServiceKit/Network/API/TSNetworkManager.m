@@ -91,7 +91,7 @@ typedef void (^failureBlock)(NSURLSessionDataTask *task, NSError *error);
     } else {
         if (![request isKindOfClass:[TSRequestVerificationCodeRequest class]]) {
             [self.operationManager.requestSerializer
-                setAuthorizationHeaderFieldWithUsername:[TSAccountManager localNumber]
+                setAuthorizationHeaderFieldWithUsername:[NSString stringWithFormat:@"%@.%@", [TSAccountManager localNumber], [TSStorageManager deviceId]]
                                                password:[TSStorageManager serverAuthToken]];
         }
 
