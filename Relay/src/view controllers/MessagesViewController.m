@@ -707,7 +707,8 @@ typedef enum : NSUInteger {
                                                        messageBody:@""];
         }
         message.plainTextBody = text;
-
+        message.messageType = @"content";
+        
         [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [message saveWithTransaction:transaction];
         }];
@@ -718,13 +719,10 @@ typedef enum : NSUInteger {
                 [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     [message saveWithTransaction:transaction];
                 }];
-//                button.enabled = YES;
 
             }
             failure:^(NSError *error) {
                 DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-//                button.enabled = YES;
-
             }];
         [self finishSendingMessage];
     }
