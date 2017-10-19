@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)hasSecondaryDevicesWithTransaction:(YapDatabaseReadTransaction *)transaction;
 
 - (NSString *)displayName;
-- (BOOL)isPrimaryDevice;
+- (BOOL)isCurrentDevice;
 
 /**
  * Assign attributes to this device from another.

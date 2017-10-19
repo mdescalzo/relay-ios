@@ -24,8 +24,13 @@ typedef NS_ENUM(NSInteger, TSGroupMetaMessage) {
 // JSON body handlers
 @property (nullable, nonatomic, strong) NSString *plainTextBody;
 @property (nullable, nonatomic, strong) NSAttributedString *attributedTextBody;
+<<<<<<< Updated upstream
 @property (nonatomic, strong) NSString *messageType;
 @property (nonatomic, strong) NSString *forstaMessageID;
+=======
+@property (nonatomic, strong) NSString *forstaMessageType;
+//@property (nonatomic, strong) NSString *forstaMessageID;
+>>>>>>> Stashed changes
 @property (nonatomic, strong) NSMutableDictionary *forstaPayload;
 //
 @property (nonatomic, readonly) NSMutableArray<NSString *> *attachmentIds;

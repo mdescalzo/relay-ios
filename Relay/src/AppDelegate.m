@@ -15,7 +15,6 @@
 #import "TSPreKeyManager.h"
 #import "TSSocketManager.h"
 #import "TextSecureKitEnv.h"
-#import "VersionMigrations.h"
 #import <PastelogKit/Pastelog.h>
 #import <PromiseKit/AnyPromise.h>
 #import "OWSDisappearingMessagesJob.h"
@@ -51,8 +50,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 @end
 
 @implementation AppDelegate
-
-#pragma mark - Detect updates - perform migrations
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
@@ -148,9 +145,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     
     [self.window makeKeyAndVisible];
     
-    [VersionMigrations performUpdateCheck]; // this call must be made after environment has been initialized because in
-    // general upgrade may depend on environment
-    
     // Accept push notification when app is not open
     NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
@@ -160,7 +154,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
     [self prepareScreenProtection];
     
-    // At this point, potentially lengthy DB locking migrations could be running.
     // Avoid blocking app launch by putting all further possible DB access in async thread.
     UIApplicationState launchState = application.applicationState;
     [[TSAccountManager sharedInstance] ifRegistered:YES runAsync:^{

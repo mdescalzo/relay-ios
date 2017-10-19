@@ -69,6 +69,7 @@
     } else if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {
         // Process per Thread type
         if ([[jsonPayload objectForKey:@"threadType"] isEqualToString:@"conversation"]) {
+<<<<<<< Updated upstream
             // Check to see if there is actual content
             NSArray *bodyArray = [(NSDictionary *)[jsonPayload objectForKey:@"data"] objectForKey:@"body"];
             if (attachmentIds.count == 0 && bodyArray.count == 0) {
@@ -91,6 +92,48 @@
                 incomingMessage.forstaPayload = [jsonPayload mutableCopy];
                 incomingMessage.messageType = [jsonPayload objectForKey:@"messageType"];
                 [incomingMessage saveWithTransaction:transaction];
+=======
+            // Process per messageType
+            if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {
+                // Check to see if there is actual content
+                NSArray *bodyArray = [(NSDictionary *)[jsonPayload objectForKey:@"data"] objectForKey:@"body"];
+                if (attachmentIds.count == 0 && bodyArray.count == 0) {
+                    DDLogDebug(@"Content message with no content received.");
+                    return nil;
+                }
+                
+                __block TSIncomingMessage *incomingMessage = nil;
+                __block TSThread *thread = nil;
+
+                [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    thread = [TSThread threadWithPayload:jsonPayload transaction:transaction];
+                    
+                    incomingMessage = [[TSIncomingMessage alloc] initWithTimestamp:timestamp
+                                                                          inThread:thread
+                                                                          authorId:envelope.source
+                                                                       messageBody:body
+                                                                     attachmentIds:attachmentIds
+                                                                  expiresInSeconds:dataMessage.expireTimer];
+                    incomingMessage.uniqueId = [jsonPayload objectForKey:@"messageId"];
+                    incomingMessage.forstaPayload = [jsonPayload mutableCopy];
+                    incomingMessage.forstaMessageType = [jsonPayload objectForKey:@"messageType"];
+                    [incomingMessage saveWithTransaction:transaction];
+                    
+                    // Android allows attachments to be sent with body.
+                    if ([attachmentIds count] > 0 && incomingMessage.plainTextBody.length > 0) {
+                        // We want the text to be displayed under the attachment
+                        uint64_t textMessageTimestamp = timestamp + 1;
+                        TSIncomingMessage *textMessage = [[TSIncomingMessage alloc] initWithTimestamp:textMessageTimestamp
+                                                                                             inThread:thread
+                                                                                             authorId:envelope.source
+                                                                                          messageBody:@""];
+                        textMessage.forstaPayload = incomingMessage.forstaPayload;
+                        textMessage.plainTextBody = incomingMessage.plainTextBody;
+                        textMessage.expiresInSeconds = dataMessage.expireTimer;
+                        [textMessage saveWithTransaction:transaction];
+                    }
+                }];
+>>>>>>> Stashed changes
                 
                 // Android allows attachments to be sent with body.
                 if ([attachmentIds count] > 0 && incomingMessage.plainTextBody.length > 0) {

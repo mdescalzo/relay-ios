@@ -41,6 +41,6 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
 
 
--(NSSet *)identifiersForTagSlug:(NSString *)tagSlug;
+-(NSSet *)identifiersForTagSlug:(NSString *_Nonnull)tagSlug;
 
 @end

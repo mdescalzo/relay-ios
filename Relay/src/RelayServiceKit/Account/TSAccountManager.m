@@ -268,9 +268,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(SignalRecipient *_Nullable)myself
 {
-    if (_myself == nil) {
-        _myself = [SignalRecipient recipientWithTextSecureIdentifier:[self.class localNumber]];
-    }
+    _myself = [SignalRecipient recipientWithTextSecureIdentifier:[self.class localNumber]];
     return _myself;
 }
 

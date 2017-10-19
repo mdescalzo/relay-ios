@@ -31,14 +31,18 @@
     return self;
 }
 
--(void)sendMessage:(TSOutgoingMessage *)message success:(void (^)(void))successHandler failure:(void (^)(NSError * _Nonnull))failureHandler
+-(void)sendMessage:(TSOutgoingMessage *)message success:(void (^)())successHandler failure:(void (^)(NSError * _Nonnull))failureHandler
 {
+<<<<<<< Updated upstream
     // Make sure we have a UUID for the message
     if (message.forstaMessageID.length == 0) {
         message.forstaMessageID = [[NSUUID UUID] UUIDString];
         message.uniqueId = message.forstaMessageID;
     }
     if (message.thread.uniqueId.length == 0) {
+=======
+    if (!message.thread.uniqueId) {
+>>>>>>> Stashed changes
         message.thread.uniqueId = [[NSUUID UUID] UUIDString];
     }
     

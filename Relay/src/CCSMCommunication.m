@@ -517,7 +517,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:52];
     NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
     
-    NSString *deviceName = [DeviceTypes deviceModelName];
+    NSString *name = [NSString stringWithFormat:@"%@ (%@)", [DeviceTypes deviceModelName], [[UIDevice currentDevice] name]];
     [SignalKeyingStorage generateServerAuthPassword];
     NSString *password = [SignalKeyingStorage serverAuthPassword];
     
@@ -525,7 +525,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                                 @"supportSms" : @NO,
                                 @"fetchesMessages" : @YES,
                                 @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
-                                @"deviceName" : deviceName,
+                                @"name" : name,
                                 @"password" : password
                                 };
     
