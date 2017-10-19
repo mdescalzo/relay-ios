@@ -531,7 +531,7 @@ typedef enum : NSUInteger {
 
 - (void)setupTitleLabelGestureRecognizer
 {
-    // Called on load/unload, but we only want to init once.
+     // Called on load/unload, but we only want to init once.
     if (self.navbarTitleLabel) {
         return;
     }

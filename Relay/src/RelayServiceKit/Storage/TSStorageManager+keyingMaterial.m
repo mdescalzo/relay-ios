@@ -35,6 +35,22 @@
     }
 }
 
++(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction
+{
+    return [[self sharedManager] deviceIdWithTransaction:transaction];
+}
+
+-(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction
+{
+    NSNumber *returnVal = [transaction objectForKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection];
+    if (!returnVal) {
+        return [NSNumber numberWithInt:1];
+    } else {
+        return returnVal;
+    }
+}
+
+
 + (void)removeLocalNumber;
 {
     [[self sharedManager] removeLocalNumber];
