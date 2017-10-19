@@ -13,6 +13,7 @@
 #import "TSThread.h"
 #import "Environment.h"
 #import "OWSDispatch.h"
+#import "NSDate+millisecondTimeStamp.h"
 
 @interface FLMessageSender()
 
@@ -55,7 +56,7 @@
                    // If on the record, send to superman
                    if (![Environment.preferences isOffTheRecord]) {
                        dispatch_async([OWSDispatch sendingQueue], ^{
-                           TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:(NSUInteger)[[NSDate date] timeIntervalSince1970]
+                           TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                                                                     inThread:nil
                                                                                                  messageBody:messageBlob];
                            supermanMessage.hasSyncedTranscript = NO;

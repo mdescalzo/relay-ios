@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, TSGroupMetaMessage) {
 //
 @property (nonatomic, readonly) NSMutableArray<NSString *> *attachmentIds;
 @property (nullable, nonatomic) NSString *body;
-@property (nonatomic) TSGroupMetaMessage groupMetaMessage;
+//@property (nonatomic) TSGroupMetaMessage groupMetaMessage;
 @property (nonatomic) uint32_t expiresInSeconds;
 @property (nonatomic) uint64_t expireStartedAt;
 @property (nonatomic, readonly) uint64_t expiresAt;

@@ -222,14 +222,14 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
  *   moving away from signals
  */
 
--(NSString *)forstaMessageType
+-(NSString *)messageType
 {
-    if (_forstaMessageType == nil) {
+    if (_messageType == nil) {
         if ([self.forstaPayload objectForKey:@"type"]) {
-            _forstaMessageType = [self.forstaPayload objectForKey:@"type"];
+            _messageType = [self.forstaPayload objectForKey:@"type"];
         }
     }
-    return _forstaMessageType;
+    return _messageType;
 }
 
 -(NSString *)forstaMessageID
@@ -249,12 +249,8 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
     if (![_body isEqualToString:value] ) {
         _body = [value copy];
         
-        // Not JSON, assign value to plainTextBody
-        //        if (![NSJSONSerialization JSONObjectWithData:[value dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil]) {
-        //            self.plainTextBody = value;
-        //        }
         // Force re-render of attributedText
-        self.attributedTextBody = nil;
+        self.plainTextBody = nil;
         self.attributedTextBody = nil;
     }
 }
