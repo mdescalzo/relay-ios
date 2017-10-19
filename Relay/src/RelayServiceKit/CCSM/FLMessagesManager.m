@@ -39,7 +39,7 @@
             // Process per messageType
             if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {
                 // Check to see if there is actual content
-                NSArray *bodyArray = [[jsonPayload objectForKey:@"data"] objectForKey:@"body"];
+                NSArray *bodyArray = [(NSDictionary *)[jsonPayload objectForKey:@"data"] objectForKey:@"body"];
                 if (attachmentIds.count == 0 && bodyArray.count == 0) {
                     DDLogDebug(@"Content message with no content received.");
                     return nil;
@@ -57,6 +57,7 @@
                                                                        messageBody:body
                                                                      attachmentIds:attachmentIds
                                                                   expiresInSeconds:dataMessage.expireTimer];
+                    incomingMessage.uniqueId = [jsonPayload objectForKey:@"messageId"];
                     incomingMessage.forstaPayload = [jsonPayload mutableCopy];
                     incomingMessage.forstaMessageType = [jsonPayload objectForKey:@"messageType"];
                     [incomingMessage saveWithTransaction:transaction];

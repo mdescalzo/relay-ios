@@ -225,7 +225,7 @@ NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesData
                                                                   id _Nonnull object) {
         if ([object isKindOfClass:[OWSDevice class]]) {
             OWSDevice *device = (OWSDevice *)object;
-            if (![device isPrimaryDevice]) {
+            if (![device isCurrentDevice]) {
                 return TSSecondaryDevicesGroup;
             }
         }

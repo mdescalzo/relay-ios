@@ -707,6 +707,7 @@ typedef enum : NSUInteger {
                                                        messageBody:@""];
         }
         message.plainTextBody = text;
+        message.uniqueId = [[NSUUID UUID] UUIDString];
 
         [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [message saveWithTransaction:transaction];
@@ -1777,7 +1778,8 @@ typedef enum : NSUInteger {
                                                    messageBody:nil
                                                  attachmentIds:[NSMutableArray new]];
     }
-
+    message.uniqueId = [[NSUUID UUID] UUIDString];
+    
     [self dismissViewControllerAnimated:YES
                              completion:^{
                                  DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",

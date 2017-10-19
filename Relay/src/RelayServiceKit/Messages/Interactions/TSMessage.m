@@ -40,6 +40,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
 
 @synthesize body = _body;
 @synthesize plainTextBody = _plainTextBody;
+@synthesize uniqueId = _uniqueId;
 
 - (instancetype)initWithTimestamp:(uint64_t)timestamp
 {
@@ -232,16 +233,16 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
     return _forstaMessageType;
 }
 
--(NSString *)forstaMessageID
+-(NSString *)uniqueId
 {
-    if (_forstaMessageID == nil) {
+    if (_uniqueId == nil) {
         if ([self.forstaPayload objectForKey:@"messageId"]) {
-            _forstaMessageID = [self.forstaPayload objectForKey:@"messageId"];
+            _uniqueId = [self.forstaPayload objectForKey:@"messageId"];
         } else {
-            _forstaMessageID = [[NSUUID UUID] UUIDString];
+            _uniqueId = [[NSUUID UUID] UUIDString];
         }
     }
-    return _forstaMessageID;
+    return _uniqueId;
 }
 
 -(void)setBody:(nullable NSString *)value {
@@ -254,7 +255,6 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         //            self.plainTextBody = value;
         //        }
         // Force re-render of attributedText
-        self.attributedTextBody = nil;
         self.attributedTextBody = nil;
     }
 }
