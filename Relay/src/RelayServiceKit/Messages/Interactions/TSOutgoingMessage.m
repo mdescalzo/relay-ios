@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation TSOutgoingMessage
 
+@synthesize messageState = _messageState;
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     return [super initWithCoder:coder];
@@ -197,6 +199,18 @@ NS_ASSUME_NONNULL_BEGIN
     [builder setKey:attachmentStream.encryptionKey];
 
     return [builder build];
+}
+
+-(void)setMessageState:(TSOutgoingMessageState)value
+{
+    if (_messageState != value) {
+        _messageState = value;
+    }
+}
+
+-(TSOutgoingMessageState)messageState
+{
+    return _messageState;
 }
 
 #pragma mark - Logging

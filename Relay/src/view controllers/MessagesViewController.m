@@ -531,7 +531,7 @@ typedef enum : NSUInteger {
 
 - (void)setupTitleLabelGestureRecognizer
 {
-    // Called on load/unload, but we only want to init once.
+     // Called on load/unload, but we only want to init once.
     if (self.navbarTitleLabel) {
         return;
     }
@@ -707,6 +707,7 @@ typedef enum : NSUInteger {
                                                        messageBody:@""];
         }
         message.plainTextBody = text;
+        message.uniqueId = [[NSUUID UUID] UUIDString];
 
         [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [message saveWithTransaction:transaction];
@@ -1777,7 +1778,8 @@ typedef enum : NSUInteger {
                                                    messageBody:nil
                                                  attachmentIds:[NSMutableArray new]];
     }
-
+    message.uniqueId = [[NSUUID UUID] UUIDString];
+    
     [self dismissViewControllerAnimated:YES
                              completion:^{
                                  DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",

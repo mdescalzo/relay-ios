@@ -57,7 +57,7 @@
 {
     NSNumber *version = [NSNumber numberWithInt:1];
     NSString *userAgent = [DeviceTypes deviceModelName];
-    NSString *messageId = message.forstaMessageID;
+    NSString *messageId = message.uniqueId;
     NSString *threadId = message.thread.uniqueId;
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];

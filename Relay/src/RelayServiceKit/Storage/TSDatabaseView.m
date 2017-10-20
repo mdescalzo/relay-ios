@@ -223,9 +223,10 @@ NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesData
                                                                   NSString *_Nonnull collection,
                                                                   NSString *_Nonnull key,
                                                                   id _Nonnull object) {
+        NSInteger currentDeviceId = [[TSStorageManager deviceIdWithTransaction:transaction] integerValue];
         if ([object isKindOfClass:[OWSDevice class]]) {
             OWSDevice *device = (OWSDevice *)object;
-            if (![device isPrimaryDevice]) {
+            if (!(device.deviceId == currentDeviceId)) {
                 return TSSecondaryDevicesGroup;
             }
         }

@@ -10,7 +10,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static MTLValueTransformer *_millisecondTimestampToDateTransformer;
-static int const OWSDevicePrimaryDeviceId = 1;
 
 @interface OWSDevice ()
 
@@ -108,20 +107,21 @@ static int const OWSDevicePrimaryDeviceId = 1;
     return _millisecondTimestampToDateTransformer;
 }
 
-- (BOOL)isPrimaryDevice
+- (BOOL)isCurrentDevice
 {
-    return self.deviceId == OWSDevicePrimaryDeviceId;
+    return self.deviceId == [TSStorageManager.sharedManager.deviceId integerValue];
 }
 
 - (NSString *)displayName
 {
+    if (self.deviceId == [TSStorageManager.sharedManager.deviceId integerValue]) {
+        return @"This Device";
+    }
+    
     if (self.name) {
         return self.name;
     }
 
-    if (self.deviceId == OWSDevicePrimaryDeviceId) {
-        return @"This Device";
-    }
     return NSLocalizedString(@"UNNAMED_DEVICE", @"Label text in device manager for a device with no name");
 }
 

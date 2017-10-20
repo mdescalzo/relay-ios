@@ -15,7 +15,6 @@
 #import "TSPreKeyManager.h"
 #import "TSSocketManager.h"
 #import "TextSecureKitEnv.h"
-#import "VersionMigrations.h"
 #import <PastelogKit/Pastelog.h>
 #import <PromiseKit/AnyPromise.h>
 #import "OWSDisappearingMessagesJob.h"
@@ -52,8 +51,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 @implementation AppDelegate
 
-#pragma mark - Detect updates - perform migrations
-
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
@@ -83,10 +80,10 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
+    
     
 #warning Override/replace the following?
-//    [UIUtil applySignalAppearence];
+    //    [UIUtil applySignalAppearence];
     
     [[PushManager sharedManager] registerPushKitNotificationFuture];
     
@@ -97,7 +94,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     if ([TSAccountManager isRegistered]) {
         [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
     }
-//    [Environment.getCurrent initCallListener];
+    //    [Environment.getCurrent initCallListener];
     
     BOOL loggingIsEnabled;
     
@@ -123,33 +120,30 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-
-        __block UIStoryboard *storyboard;
-        
-        NSString *sessionToken = [ccsmStore getSessionToken];
-        if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) // Check for local sessionKey, if there refresh
-        {
-            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-            [self.ccsmCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
-                [self refreshUsersStore];
-            }
-                                                                 failure:^(NSError *error){  // Unable to refresh, login force login
-#warning Probably needs some sort of dialog to tell the user why they got bounced out.
-                                                                     storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-                                                                     UIViewController *rootViewController = [storyboard instantiateInitialViewController];
-                                                                     [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
-                                                                     
-                                                                 }];
-        } else { // No local token, login
-            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+    
+    __block UIStoryboard *storyboard;
+    
+    NSString *sessionToken = [ccsmStore getSessionToken];
+    if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) // Check for local sessionKey, if there refresh
+    {
+        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+        [self.ccsmCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
+            [self refreshUsersStore];
         }
-
+                                                             failure:^(NSError *error){  // Unable to refresh, login force login
+#warning Probably needs some sort of dialog to tell the user why they got bounced out.
+                                                                 storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                                 UIViewController *rootViewController = [storyboard instantiateInitialViewController];
+                                                                 [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+                                                                 
+                                                             }];
+    } else { // No local token, login
+        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+    }
+    
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     
     [self.window makeKeyAndVisible];
-    
-    [VersionMigrations performUpdateCheck]; // this call must be made after environment has been initialized because in
-    // general upgrade may depend on environment
     
     // Accept push notification when app is not open
     NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -157,10 +151,9 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         DDLogInfo(@"Application was launched by tapping a push notification.");
         [self application:application didReceiveRemoteNotification:remoteNotif];
     }
-
+    
     [self prepareScreenProtection];
     
-    // At this point, potentially lengthy DB locking migrations could be running.
     // Avoid blocking app launch by putting all further possible DB access in async thread.
     UIApplicationState launchState = application.applicationState;
     [[TSAccountManager sharedInstance] ifRegistered:YES runAsync:^{
@@ -203,7 +196,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                       storageManager:[TSStorageManager sharedManager]
                                      contactsManager:[Environment getCurrent].contactsManager];
-//                                     contactsUpdater:[Environment getCurrent].contactsUpdater];
+    //                                     contactsUpdater:[Environment getCurrent].contactsUpdater];
     
     self.incomingMessageReadObserver =
     [[OWSIncomingMessageReadObserver alloc] initWithStorageManager:[TSStorageManager sharedManager]
@@ -271,23 +264,23 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         return;
     }
 #warning XXX Signals ifRegistered method returning false negatives
-//    [[TSAccountManager sharedInstance] ifRegistered:YES
-//                                           runAsync:^{
+    //    [[TSAccountManager sharedInstance] ifRegistered:YES
+    //                                           runAsync:^{
     CCSMStorage *ccsmStore = [CCSMStorage new];
     NSString *sessionToken = [ccsmStore getSessionToken];
     if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) { // Check for local sessionKey
-    
-                                               // We're double checking that the app is active, to be sure since we
-                                               // can't verify in production env due to code
-                                               // signing.
-                                               [TSSocketManager becomeActiveFromForeground];
-                                               
-                                               // Refresh the contact/recipient database in background
-                                               dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
-                                                   [[Environment getCurrent].contactsManager refreshCCSMRecipients];
-                                               });
-//                                               [[Environment getCurrent].contactsManager verifyABPermission];
-//                                           }];
+        
+        // We're double checking that the app is active, to be sure since we
+        // can't verify in production env due to code
+        // signing.
+        [TSSocketManager becomeActiveFromForeground];
+        
+        // Refresh the contact/recipient database in background
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+            [[Environment getCurrent].contactsManager refreshCCSMRecipients];
+        });
+        //                                               [[Environment getCurrent].contactsManager verifyABPermission];
+        //                                           }];
     }
     [self removeScreenProtection];
 }
@@ -370,31 +363,31 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 -(void)refreshUsersStore
 {
     [self.ccsmCommManager refreshCCSMData];
-//    NSMutableDictionary * users = [[[Environment getCurrent].ccsmStorage getUsers] mutableCopy];
-//    if (!users) {
-//        users = [NSMutableDictionary new];
-//    }
-//
-//    NSString *orgUrl = [(NSDictionary *)[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
-//    [self.ccsmCommManager getThing:orgUrl
-//                       synchronous:NO
-//                           success:^(NSDictionary *org){
-//                               DDLogInfo(@"Retrieved org info after session token refresh");
-//                               [[Environment getCurrent].ccsmStorage setOrgInfo:org];
-//                           }
-//                           failure:^(NSError *err){
-//                               DDLogError(@"Failed to retrieve org info after session token refresh");
-//                           }];
-//    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
-//                                  collection:users
-//                                 synchronous:NO
-//                                     success:^{
-//                                         DDLogInfo(@"Retrieved all users after session token refresh");
-//                                         [[Environment getCurrent].ccsmStorage setUsers:users];
-//                                     }
-//                                     failure:^(NSError *err){
-//                                         DDLogError(@"Failed to retrieve all users after session token refresh");
-//                                     }];
+    //    NSMutableDictionary * users = [[[Environment getCurrent].ccsmStorage getUsers] mutableCopy];
+    //    if (!users) {
+    //        users = [NSMutableDictionary new];
+    //    }
+    //
+    //    NSString *orgUrl = [(NSDictionary *)[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
+    //    [self.ccsmCommManager getThing:orgUrl
+    //                       synchronous:NO
+    //                           success:^(NSDictionary *org){
+    //                               DDLogInfo(@"Retrieved org info after session token refresh");
+    //                               [[Environment getCurrent].ccsmStorage setOrgInfo:org];
+    //                           }
+    //                           failure:^(NSError *err){
+    //                               DDLogError(@"Failed to retrieve org info after session token refresh");
+    //                           }];
+    //    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
+    //                                  collection:users
+    //                                 synchronous:NO
+    //                                     success:^{
+    //                                         DDLogInfo(@"Retrieved all users after session token refresh");
+    //                                         [[Environment getCurrent].ccsmStorage setUsers:users];
+    //                                     }
+    //                                     failure:^(NSError *err){
+    //                                         DDLogError(@"Failed to retrieve all users after session token refresh");
+    //                                     }];
 }
 
 #pragma mark - Push Notifications Delegate Methods

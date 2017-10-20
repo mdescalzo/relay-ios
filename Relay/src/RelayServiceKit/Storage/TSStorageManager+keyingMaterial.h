@@ -43,6 +43,8 @@
  */
 + (NSNumber *)deviceId;
 - (NSNumber *)deviceId;
++(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction;
+-(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction;
 
 - (void)ifLocalNumberPresent:(BOOL)isPresent runAsync:(void (^)())block;
 
