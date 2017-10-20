@@ -21,10 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) uint64_t timestamp;
 @property (nonatomic, readonly) uint64_t expirationStartedAt;
 @property (nonatomic, readonly) uint32_t expirationDuration;
-@property (nonatomic, readonly) TSThread *thread;
+@property (nonatomic, strong) TSThread *thread;
 @property (nonatomic, readonly) BOOL isGroupUpdate;
 @property (nonatomic, readonly) BOOL isExpirationTimerUpdate;
-//@property (nullable, nonatomic, readonly) NSData *groupId;
 @property (nonatomic, readonly) NSString *body;
 @property (nonatomic, readonly) NSArray<OWSSignalServiceProtosAttachmentPointer *> *attachmentPointerProtos;
 

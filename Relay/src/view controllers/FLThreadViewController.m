@@ -789,15 +789,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     // "Heal" any unnamed conversations which may be in the database.
     
     if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
-        NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
-        if (lookupDict) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    thread.participants = [lookupDict objectForKey:@"userids"];
-                    thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-                    [thread saveWithTransaction:transaction];
-                }];
-            });
+        if (thread.universalExpression.length > 0) {
+            NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
+            if (lookupDict) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                        thread.participants = [lookupDict objectForKey:@"userids"];
+                        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                        
+                        [thread saveWithTransaction:transaction];
+                    }];
+                });
+            }
         }
     }
     

@@ -397,6 +397,8 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
         [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
         SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
         [myself save];
+        [TSAccountManager.sharedInstance myself];
+        [Environment.getCurrent.contactsManager allContacts];
         
         NSDictionary *orgDict = [userDict objectForKey:@"org"];
         [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
