@@ -30,12 +30,12 @@
 #import "Relay-Swift.h"
 #import "SignalKeyingStorage.h"
 #import "TSAttachmentPointer.h"
-#import "TSCall.h"
 #import "TSContentAdapters.h"
 #import "TSDatabaseView.h"
 #import "TSErrorMessage.h"
 #import "TSThread.h"
 #import "TSIncomingMessage.h"
+#import "FLControlMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
 #import "UIFont+OWS.h"
@@ -2179,12 +2179,12 @@ typedef enum : NSUInteger {
 
 - (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
 {
-    __block TSThread *thread;
-//    __block TSOutgoingMessage *message;
-    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
-                                                                    memberIds:[self.thread.participants mutableCopy]
-                                                                        image:self.thread.image
-                                                                      groupId:nil];
+    __block TSThread *thread = nil;
+
+//    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
+//                                                                    memberIds:[self.thread.participants mutableCopy]
+//                                                                        image:self.thread.image
+//                                                                      groupId:nil];
 
     [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [TSThread getOrCreateThreadWithID:self.thread.uniqueId transaction:transaction];
@@ -2198,14 +2198,11 @@ typedef enum : NSUInteger {
         [self.thread saveWithTransaction:transaction];
 
 #warning XXX Control message send for group update here.
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:thread
-//                                                   messageBody:@""
-//                                                 attachmentIds:[NSMutableArray new]];
-//        message.groupMetaMessage = TSGroupMessageUpdate;
-//        message.customMessage = updateGroupInfo;
+        
     }];
 
+        __block FLControlMessage *message = nil;
+    message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread];
 //    if (newGroupModel.groupImage) {
 //        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
 //            contentType:OWSMimeTypeImagePng

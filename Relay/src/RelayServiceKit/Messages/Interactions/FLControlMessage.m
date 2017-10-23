@@ -14,6 +14,7 @@
 {
     self = (FLControlMessage *)[super initWithTimestamp:[NSDate ows_millisecondTimeStamp] inThread:thread];
     self.messageType = @"control";
+    self.uniqueId = [[NSUUID UUID] UUIDString];
     
     return self;
 }
