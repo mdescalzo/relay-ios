@@ -8,9 +8,9 @@
 #import "TSThread.h"
 
 // Thread finding imports
-#import "TSContactThread.h"
-#import "TSGroupModel.h"
-#import "TSGroupThread.h"
+//#import "TSContactThread.h"
+//#import "TSGroupModel.h"
+//#import "TSGroupThread.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,12 +54,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (TSThread *)thread
 {
     NSAssert(self.dataMessage.body, @"SyncDataMessage has no body!");
-    if (self.jsonPayload) {
-        TSThread *thread = [TSThread threadWithPayload:self.jsonPayload];
-        return thread;
-    } else {
-        return nil;
+    if (_thread == nil) {
+        if (self.jsonPayload) {
+            _thread = [TSThread threadWithPayload:self.jsonPayload];
+        } else {
+            _thread = nil;
+        }
     }
+    return _thread;
 }
 
 -(nullable NSArray *)arrayFromMessageBody:(NSString *_Nonnull)body

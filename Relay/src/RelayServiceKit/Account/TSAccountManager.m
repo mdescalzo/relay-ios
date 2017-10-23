@@ -268,7 +268,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(SignalRecipient *_Nullable)myself
 {
-    _myself = [SignalRecipient recipientWithTextSecureIdentifier:[self.class localNumber]];
+    if (_myself == nil || _myself.fullName.length == 0) {
+    _myself = [SignalRecipient fetchObjectWithUniqueID:[self.class localNumber]];
+    }
+
     return _myself;
 }
 

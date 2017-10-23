@@ -531,7 +531,7 @@ typedef enum : NSUInteger {
 
 - (void)setupTitleLabelGestureRecognizer
 {
-    // Called on load/unload, but we only want to init once.
+     // Called on load/unload, but we only want to init once.
     if (self.navbarTitleLabel) {
         return;
     }
@@ -707,13 +707,9 @@ typedef enum : NSUInteger {
                                                        messageBody:@""];
         }
         message.plainTextBody = text;
-<<<<<<< Updated upstream
         message.messageType = @"content";
-        
-=======
         message.uniqueId = [[NSUUID UUID] UUIDString];
 
->>>>>>> Stashed changes
         [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [message saveWithTransaction:transaction];
         }];

@@ -251,10 +251,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         _body = [value copy];
         
         // Force re-render of attributedText
-<<<<<<< Updated upstream
         self.plainTextBody = nil;
-=======
->>>>>>> Stashed changes
         self.attributedTextBody = nil;
     }
 }

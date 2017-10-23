@@ -125,24 +125,15 @@ static const NSString *FLExpressionKey = @"expression";
     thread = [self getOrCreateThreadWithID:threadId transaction:transaction];
     thread.name = ((threadTitle.length > 0) ? threadTitle : nil );
     thread.type = ((threadType.length > 0) ? threadType : nil );
-    thread.universalExpression = ((threadExpression.length > 0) ? threadExpression : nil );
 
-    NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
-    if (lookupDict) {
-        thread.participants = [lookupDict objectForKey:@"userids"];
-        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+    if (threadExpression.length > 0) {
+        NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:threadExpression];
+        if (lookupDict) {
+            thread.participants = [lookupDict objectForKey:@"userids"];
+            thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+            thread.universalExpression = [lookupDict objectForKey:@"universal"];
+        }
     }
-
-//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-//        [[FLTagMathService new] tagLookupWithString:thread.universalExpression
-//                                            success:^(NSDictionary *results) {
-                                                // thread/message configuration from JSON payload
-//                                                [thread save];
-//                                            }
-//                                            failure:^(NSError *error) {
-//                                                DDLogDebug(@"Tagmath lookup failed during thread generation! Error: %@", error.description);
-//                                            }];
-//    });
     [thread saveWithTransaction:transaction];
 
     return thread;
@@ -191,7 +182,7 @@ static const NSString *FLExpressionKey = @"expression";
     } else if (self.participants.count == 2) {  // One-on-one conversation
         NSString *userID = nil;
         for (NSString *uid in self.participants) {
-            if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
+            if (![uid isEqualToString:[TSStorageManager localNumber] ]) {
                 userID = uid;
             }
         }
@@ -212,20 +203,37 @@ static const NSString *FLExpressionKey = @"expression";
 
 - (UIImage *_Nullable)image
 {
-//    if (_image == nil) {
-        if (self.participants.count == 2) {
-            NSString *otherId = nil;
-            for (NSString *uid in self.participants) {
-                if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
-                    otherId = uid;
-                }
+    if (_image == nil) {
+        switch (self.participants.count) {
+            case 0:
+            {
+                _image = nil;
             }
-            return [[TextSecureKitEnv sharedEnv].contactsManager imageForPhoneIdentifier:otherId];
-        } else {
-            return [UIImage imageNamed:@"empty-group-avatar-gray"];
+                break;
+            case 1:
+            {
+                [Environment.getCurrent.contactsManager imageForPhoneIdentifier:TSAccountManager.sharedInstance.myself.uniqueId];
+            }
+                break;
+            case 2:
+            {
+                NSString *otherId = nil;
+                for (NSString *uid in self.participants) {
+                    if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
+                        otherId = uid;
+                    }
+                }
+                return [Environment.getCurrent.contactsManager imageForPhoneIdentifier:otherId];
+            }
+                break;
+            default:
+            {
+                return [UIImage imageNamed:@"empty-group-avatar-gray"];
+            }
+                break;
         }
-//    }
-//    return _image;
+    }
+    return _image;
 }
 
 - (BOOL)hasSafetyNumbers
