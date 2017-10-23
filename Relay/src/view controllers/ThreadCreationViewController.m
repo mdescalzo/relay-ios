@@ -206,10 +206,12 @@
         __block NSMutableString *searchText = [NSMutableString new];
         
         for (NSString *subString in [originalString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]) {
-            if ([[subString substringToIndex:1] isEqualToString:@"@"]) {
-                [searchText appendString:[NSString stringWithFormat:@"%@ ", subString]];
-            } else {
-                [searchText appendString:[NSString stringWithFormat:@"@%@ ", subString]];
+            if (subString.length > 0 && ![subString isEqualToString:@"@"]) {
+                if ([[subString substringToIndex:1] isEqualToString:@"@"]) {
+                    [searchText appendString:[NSString stringWithFormat:@"%@ ", subString]];
+                } else {
+                    [searchText appendString:[NSString stringWithFormat:@"@%@ ", subString]];
+                }
             }
         }
         
