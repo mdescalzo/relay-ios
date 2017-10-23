@@ -10,11 +10,12 @@
 
 @implementation FLControlMessage
 
--(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread;
+-(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *)controlType;
 {
     self = (FLControlMessage *)[super initWithTimestamp:[NSDate ows_millisecondTimeStamp] inThread:thread];
     self.messageType = @"control";
     self.uniqueId = [[NSUUID UUID] UUIDString];
+    _controlMessageType = controlType;
     
     return self;
 }

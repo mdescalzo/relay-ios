@@ -975,7 +975,8 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         TSErrorMessage *errorMessage;
         
-        if (message.groupMetaMessage == TSGroupMessageNone) {
+//        if (message.groupMetaMessage == TSGroupMessageNone) {
+        if (message.thread.participants.count < 2) {
             // Only update this with exception if it is not a group message as group
             // messages may except for one group
             // send but not another and the UI doesn't know how to handle that

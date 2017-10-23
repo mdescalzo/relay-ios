@@ -15,6 +15,8 @@
 
 @interface FLControlMessage : TSOutgoingMessage
 
--(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread;
+@property (strong, readonly) NSString * _Nonnull controlMessageType;
+
+-(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *)controlType;
 
 @end

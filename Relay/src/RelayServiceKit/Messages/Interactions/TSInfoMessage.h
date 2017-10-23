@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, TSInfoMessageType) {
 + (instancetype)userNotRegisteredMessageInThread:(TSThread *)thread
                                      transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
-@property TSInfoMessageType messageType;
+@property TSInfoMessageType infoMessageType;
 @property NSString *customMessage;
 
 - (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;

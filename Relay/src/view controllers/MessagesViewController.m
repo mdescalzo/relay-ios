@@ -2196,13 +2196,18 @@ typedef enum : NSUInteger {
         self.thread.image = newGroupModel.groupImage;
         
         [self.thread saveWithTransaction:transaction];
-
-#warning XXX Control message send for group update here.
-        
     }];
 
-        __block FLControlMessage *message = nil;
-    message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread];
+    #warning XXX Control message send for group update here.
+    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
+    [self.messageSender sendMessage:message
+                            success:^{
+                                DDLogDebug(@"Successfully send control message.");
+                            }
+                            failure:^(NSError *error){
+                                DDLogDebug(@"Failed to send control message with error: %@", error.localizedDescription);
+                            }];
+    
 //    if (newGroupModel.groupImage) {
 //        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
 //            contentType:OWSMimeTypeImagePng

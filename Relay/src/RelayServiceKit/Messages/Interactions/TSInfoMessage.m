@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
         return self;
     }
 
-    _messageType = infoMessage;
+    _infoMessageType = infoMessage;
 
     return self;
 }
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-    switch (_messageType) {
+    switch (_infoMessageType) {
         case TSInfoMessageTypeSessionDidEnd:
             return NSLocalizedString(@"SECURE_SESSION_RESET", nil);
         case TSInfoMessageTypeUnsupportedMessage:

@@ -251,7 +251,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         _body = [value copy];
         
         // Force re-render of attributedText
-        self.plainTextBody = nil;
+//        self.plainTextBody = nil;
         self.attributedTextBody = nil;
     }
 }
@@ -263,36 +263,45 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
 -(void)setPlainTextBody:(nullable NSString *)value
 {
     if (![_plainTextBody isEqualToString:value]) {
-        _plainTextBody = [value copy];
+        _plainTextBody = value;
         
         // Add the new value to the forstaPayload
-        NSMutableDictionary *data = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
-        if (!data) {
-            data = [NSMutableDictionary new];
-        }
-        NSMutableArray *body = [[data objectForKey:@"body"] mutableCopy];
-        if (!body) {
-            body = [NSMutableArray new];
-        }
-        
-        NSDictionary *oldDict = nil;
-        if (body.count > 0) {
-            for (NSDictionary *dict in body) {
-                if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
-                    oldDict = dict;
+        if (_plainTextBody.length > 0) {
+            NSMutableDictionary *dataDict = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
+            if (!dataDict) {
+                dataDict = [NSMutableDictionary new];
+            }
+            NSMutableArray *body = [[dataDict objectForKey:@"body"] mutableCopy];
+            if (!body) {
+                body = [NSMutableArray new];
+            }
+            
+            NSDictionary *oldDict = nil;
+            if (body.count > 0) {
+                for (NSDictionary *dict in body) {
+                    if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
+                        oldDict = dict;
+                    }
                 }
             }
+            NSDictionary *newDict = @{ @"type" : @"text/plain",
+                                       @"value" : value };
+            [body addObject:newDict];
+            
+            if (oldDict) {
+                [body removeObject:oldDict];
+            }
+            
+            [dataDict setObject:body forKey:@"body"];
+            [self.forstaPayload setObject:dataDict forKey:@"data"];
+        } else {
+            // Empty value passed, remove the object from the payload
+            NSMutableDictionary *dataDict = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
+            if (dataDict) {
+                [dataDict removeObjectForKey:@"body"];
+                [self.forstaPayload setObject:dataDict forKey:@"data"];
+            }
         }
-        NSDictionary *newDict = @{ @"type" : @"text/plain",
-                                   @"value" : value };
-        [body addObject:newDict];
-        
-        if (oldDict) {
-            [body removeObject:oldDict];
-        }
-        
-        [data setObject:body forKey:@"body"];
-        [self.forstaPayload setObject:data forKey:@"data"];
     }
 }
 

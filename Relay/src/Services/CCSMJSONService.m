@@ -11,6 +11,7 @@
 #import "Environment.h"
 #import "CCSMJSONService.h"
 #import "TSOutgoingMessage.h"
+#import "FLControlMessage.h"
 #import "TSThread.h"
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
@@ -163,7 +164,7 @@
     return [NSArray new];
 }
 
-+(NSArray *)arrayForTypeControlFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeControlFromMessage:(FLControlMessage *)message
 {
     NSNumber *version = [NSNumber numberWithInt:FLBlobShapeRevision];
     NSString *userAgent = [DeviceTypes deviceModelName];
@@ -172,6 +173,8 @@
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *messageType = message.messageType;
+    NSString *controlMessageType = message.controlMessageType;
+
     
     // Sender blob
     NSDictionary *sender = @{ @"userId" :  TSAccountManager.sharedInstance.myself.uniqueId };
@@ -189,7 +192,8 @@
                                        @"sendTime" : sendTime,
                                        @"messageType" : messageType,
                                        @"sender" : sender,
-                                       @"distribution" : recipients
+                                       @"distribution" : recipients,
+                                       @"control" : controlMessageType
                                        }];
 
     // Attachment Handler
