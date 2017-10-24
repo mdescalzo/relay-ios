@@ -2196,6 +2196,15 @@ typedef enum : NSUInteger {
         self.thread.image = newGroupModel.groupImage;
         
         [self.thread saveWithTransaction:transaction];
+        
+        NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
+        NSString *customMessage = [NSString stringWithFormat:messageFormat, @"You"];
+        
+        TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                     inThread:thread
+                                                                  messageType:TSInfoMessageTypeConversationUpdate
+                                                                customMessage:customMessage];
+        [infoMessage saveWithTransaction:transaction];
     }];
 
     #warning XXX Control message send for group update here.
