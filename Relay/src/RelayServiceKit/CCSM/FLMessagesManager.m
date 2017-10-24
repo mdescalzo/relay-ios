@@ -38,27 +38,46 @@
     // Process per messageType
     if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
         NSString *controlMessageType = [jsonPayload objectForKey:@"control"];
+        
+        // Conversation update
         if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
-            __block TSThread *thread = nil;
             [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                 // TODO: Attachments become avatars
                 // TODO: Modfiy participants
-                thread = [TSThread getOrCreateThreadWithID:[jsonPayload objectForKey:@"threadId"] transaction:transaction];
+                TSThread *thread = [TSThread getOrCreateThreadWithID:[jsonPayload objectForKey:@"threadId"] transaction:transaction];
                 NSString *threadTitle = [jsonPayload objectForKey:@"threadTitle"];
-                //                NSString *expression = [(NSDictionary *)[jsonPayload objectForKey:@"distribution"] objectForKey:@"expression"];
                 if (threadTitle.length > 0) {
                     thread.name = threadTitle;
+                    SignalRecipient *sender = [SignalRecipient fetchObjectWithUniqueID:envelope.source transaction:transaction];
+                    NSString *customMessage = nil;
+                    TSInfoMessage *infoMessage = nil;
+                    if (sender) {
+                        NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
+                        customMessage = [NSString stringWithFormat:messageFormat, sender.fullName];
+                        
+                        infoMessage = [[TSInfoMessage alloc] initWithTimestamp:timestamp
+                                                                      inThread:thread
+                                                                   messageType:TSInfoMessageTypeConversationUpdate
+                                                                 customMessage:customMessage];
+                    } else {
+                        infoMessage = [[TSInfoMessage alloc] initWithTimestamp:timestamp
+                                                                      inThread:thread
+                                                                   messageType:TSInfoMessageTypeConversationUpdate];
+                    }
+                    [infoMessage saveWithTransaction:transaction];
                 }
-                //                if (expression.length > 0) {
-                //                    thread.universalExpression = expression;
-                //                    NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
-                //                    if (lookupDict) {
-                //                        thread.participants = [lookupDict objectForKey:@"userids"];
-                //                        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-                //                    }
-                //                }
+//                NSString *expression = [(NSDictionary *)[jsonPayload objectForKey:@"distribution"] objectForKey:@"expression"];
+//                if (expression.length > 0) {
+//                    thread.universalExpression = expression;
+//                    NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
+//                    if (lookupDict) {
+//                        thread.participants = [lookupDict objectForKey:@"userids"];
+//                        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+//                    }
+//                }
                 [thread saveWithTransaction:transaction];
             }];
+            
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
