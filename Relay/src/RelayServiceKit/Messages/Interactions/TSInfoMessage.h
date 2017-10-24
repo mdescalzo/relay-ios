@@ -11,8 +11,8 @@ typedef NS_ENUM(NSInteger, TSInfoMessageType) {
     TSInfoMessageTypeSessionDidEnd,
     TSInfoMessageUserNotRegistered,
     TSInfoMessageTypeUnsupportedMessage,
-    TSInfoMessageTypeGroupUpdate,
-    TSInfoMessageTypeGroupQuit,
+    TSInfoMessageTypeConversationUpdate,
+    TSInfoMessageTypeConversationQuit,
     TSInfoMessageTypeDisappearingMessagesUpdate
 };
 

@@ -59,9 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
             return NSLocalizedString(@"UNSUPPORTED_ATTACHMENT", nil);
         case TSInfoMessageUserNotRegistered:
             return NSLocalizedString(@"CONTACT_DETAIL_COMM_TYPE_INSECURE", nil);
-        case TSInfoMessageTypeGroupQuit:
+        case TSInfoMessageTypeConversationQuit:
             return NSLocalizedString(@"GROUP_YOU_LEFT", nil);
-        case TSInfoMessageTypeGroupUpdate:
+        case TSInfoMessageTypeConversationUpdate:
             return _customMessage != nil ? _customMessage : NSLocalizedString(@"GROUP_UPDATED", nil);
         default:
             break;
