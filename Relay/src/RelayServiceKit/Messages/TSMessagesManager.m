@@ -521,7 +521,7 @@ NS_ASSUME_NONNULL_BEGIN
 //                [gThread saveWithTransaction:transaction];
 //                [[[TSInfoMessage alloc] initWithTimestamp:timestamp
 //                                                 inThread:gThread
-//                                              messageType:TSInfoMessageTypeGroupUpdate
+//                                              messageType:TSInfoMessageTypeConversationUpdate
 //                                            customMessage:updateGroupInfo] saveWithTransaction:transaction];
 //            } else if (dataMessage.group.type == OWSSignalServiceProtosGroupContextTypeQuit) {
 //                NSString *nameString = [self.contactsManager nameStringForContactID:envelope.source];
@@ -535,7 +535,7 @@ NS_ASSUME_NONNULL_BEGIN
 //                [gThread saveWithTransaction:transaction];
 //                [[[TSInfoMessage alloc] initWithTimestamp:timestamp
 //                                                 inThread:gThread
-//                                              messageType:TSInfoMessageTypeGroupUpdate
+//                                              messageType:TSInfoMessageTypeConversationUpdate
 //                                            customMessage:updateGroupInfo] saveWithTransaction:transaction];
 //            } else {
 //                incomingMessage = [[TSIncomingMessage alloc] initWithTimestamp:timestamp
