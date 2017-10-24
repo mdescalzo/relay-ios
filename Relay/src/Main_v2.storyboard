@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -229,7 +229,7 @@
                                             <constraint firstAttribute="height" constant="60" id="3da-ag-XNL"/>
                                             <constraint firstAttribute="width" constant="60" id="f60-Rv-thi"/>
                                         </constraints>
-                                        <state key="normal" image="empty-group-avatar">
+                                        <state key="normal" image="empty-group-avatar-gray">
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -403,7 +403,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DYY-Ea-Gx6" userLabel="Contact Info">
                                     <rect key="frame" x="16" y="16" width="343" height="68"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-group-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="TY1-mh-3Sy">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-group-avatar-gray" translatesAutoresizingMaskIntoConstraints="NO" id="TY1-mh-3Sy">
                                             <rect key="frame" x="0.0" y="0.0" width="68" height="68"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="TY1-mh-3Sy" secondAttribute="height" multiplier="1:1" id="WZ3-XO-LOl"/>
@@ -1831,7 +1831,7 @@
         <image name="btnQRShow--white-1" width="66" height="66"/>
         <image name="cellBtnMoveToArchive--blue" width="30" height="30"/>
         <image name="contact_default_feed.png" width="242" height="242"/>
-        <image name="empty-group-avatar" width="53" height="53"/>
+        <image name="empty-group-avatar-gray" width="1023" height="1023"/>
         <image name="hamburger" width="25" height="25"/>
         <image name="ic_devices_ios" width="180" height="119"/>
         <image name="ic_lock_outline" width="32" height="32"/>
