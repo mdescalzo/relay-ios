@@ -44,8 +44,10 @@
             [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                 // TODO: Attachments become avatars
                 // TODO: Modfiy participants
-                TSThread *thread = [TSThread getOrCreateThreadWithID:[jsonPayload objectForKey:@"threadId"] transaction:transaction];
-                NSString *threadTitle = [jsonPayload objectForKey:@"threadTitle"];
+                NSDictionary *threadUpdates = [jsonPayload objectForKey:@"threadUpdates"];
+
+                TSThread *thread = [TSThread getOrCreateThreadWithID:[threadUpdates objectForKey:@"threadId"] transaction:transaction];
+                NSString *threadTitle = [threadUpdates objectForKey:@"threadTitle"];
                 if (threadTitle.length > 0) {
                     thread.name = threadTitle;
                     SignalRecipient *sender = [SignalRecipient fetchObjectWithUniqueID:envelope.source transaction:transaction];

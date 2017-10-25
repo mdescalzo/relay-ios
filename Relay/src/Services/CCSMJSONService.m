@@ -183,12 +183,15 @@
     NSString *presentation = message.thread.universalExpression;
     NSDictionary *recipients = @{ @"expression" : presentation };
     
+    NSDictionary *threadUpdates = @{  @"threadId" : threadId,
+                                      @"threadTitle" : threadTitle };
+    
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
                                     @{ @"version" : version,
                                        @"userAgent" : userAgent,
                                        @"messageId" : messageId,
                                        @"threadId" : threadId,
-                                       @"threadTitle" : threadTitle,
+                                       @"threadUpdates" : threadUpdates,
                                        @"sendTime" : sendTime,
                                        @"messageType" : messageType,
                                        @"sender" : sender,
