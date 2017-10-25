@@ -23,6 +23,7 @@
         self.backgroundColor = [UIColor clearColor];
         
         _fillView = [UIView new];
+        _fillView.layer.cornerRadius = 3.0;
         [self addSubview:_fillView];
         [self sendSubviewToBack:_fillView];
         _slugLabel = [UILabel new];
