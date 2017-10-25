@@ -95,6 +95,8 @@
     } else {
         [self addSlug:selectedTag];
     }
+    self.searchBar.text = @"";
+    [self refreshTableView];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -206,10 +208,12 @@
         __block NSMutableString *searchText = [NSMutableString new];
         
         for (NSString *subString in [originalString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]) {
-            if ([[subString substringToIndex:1] isEqualToString:@"@"]) {
-                [searchText appendString:[NSString stringWithFormat:@"%@ ", subString]];
-            } else {
-                [searchText appendString:[NSString stringWithFormat:@"@%@ ", subString]];
+            if (subString.length > 0 && ![subString isEqualToString:@"@"]) {
+                if ([[subString substringToIndex:1] isEqualToString:@"@"]) {
+                    [searchText appendString:[NSString stringWithFormat:@"%@ ", subString]];
+                } else {
+                    [searchText appendString:[NSString stringWithFormat:@"@%@ ", subString]];
+                }
             }
         }
         
@@ -469,7 +473,11 @@
             newHeight = boundingSize.height;
         }
         
-        newHeight += 20.0;
+        if (self.validatedSlugs.count > 0) {
+            newHeight += 20.0;
+        } else {
+            newHeight = 0.0;
+        }
         
         [UIView animateWithDuration:0.25 animations:^{
             self.slugViewHeight.constant = newHeight;
