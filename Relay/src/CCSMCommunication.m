@@ -28,7 +28,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 
 @implementation CCSMCommManager
 
-- (void)requestLogin:(NSString *)userName
++(void)requestLogin:(NSString *)userName
              orgName:(NSString *)orgName
              success:(void (^)())successBlock
              failure:(void (^)(NSError *error))failureBlock ;
@@ -68,7 +68,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
      }];
 }
 
-- (void)verifyLogin:(NSString *)verificationCode
++(void)verifyLogin:(NSString *)verificationCode
             success:(void (^)())successBlock
             failure:(void (^)(NSError *error))failureBlock
 {
@@ -114,7 +114,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 
-- (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
++(void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
                                       failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
@@ -157,7 +157,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
-- (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
++(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                                        failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
@@ -202,7 +202,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
      }];
 }
 
-- (void)updateAllTheThings:(NSString *)urlString
++(void)updateAllTheThings:(NSString *)urlString
                 collection:(NSMutableDictionary *)collection
                synchronous:(BOOL)sync
                    success:(void (^)())successBlock
@@ -258,7 +258,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
-- (void)getPageSynchronous:(NSURL *)url
++(void)getPageSynchronous:(NSURL *)url
                    success:(void (^)(NSDictionary *result))successBlock
                    failure:(void (^)(NSError *error))failureBlock
 {
@@ -299,7 +299,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 
-- (void)getPage:(NSURL *)url
++(void)getPage:(NSURL *)url
         success:(void (^)(NSDictionary *result))successBlock
         failure:(void (^)(NSError *error))failureBlock
 {
@@ -327,7 +327,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 
-- (void)getThing:(NSString *)urlString
++(void)getThing:(NSString *)urlString
      synchronous:(BOOL)synchronous
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
@@ -388,7 +388,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Refresh methods
--(void)storeLocalUserDataWithPayload:(NSDictionary *)payload
++(void)storeLocalUserDataWithPayload:(NSDictionary *)payload
 {
     if (payload) {
         [[Environment getCurrent].ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
@@ -408,13 +408,13 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
--(void)refreshCCSMData
++(void)refreshCCSMData
 {
     [self refreshCCSMUsers];
     [self refreshCCSMTags];
 }
 
--(void)refreshCCSMUsers
++(void)refreshCCSMUsers
 {
     
     NSMutableDictionary *users = [NSMutableDictionary new];
@@ -432,7 +432,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                      }];
 }
 
--(void)refreshCCSMTags
++(void)refreshCCSMTags
 {
     NSMutableDictionary *tags = [NSMutableDictionary new];
     
@@ -457,7 +457,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                      }];
 }
 
--(void)processOrgInfoWithURL:(NSString *)urlString
++(void)processOrgInfoWithURL:(NSString *)urlString
 {
     if (urlString.length > 0) {
         [self getThing:urlString
@@ -489,18 +489,18 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
--(void)notifyOfUsersRefresh
++(void)notifyOfUsersRefresh
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMUsersUpdated object:nil];
 }
 
--(void)notifyOfTagsRefresh
++(void)notifyOfTagsRefresh
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMTagsUpdated object:nil];
 }
 
 #pragma mark - CCSM proxied TextSecure registration
--(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
++(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
                                success:(void (^)())successBlock
                                failure:(void (^)(NSError *error))failureBlock
 {
@@ -575,7 +575,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Lookup methods
--(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous
++(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous
 {
     __block SignalRecipient *recipient = nil;
     
@@ -596,7 +596,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     return recipient;
 }
 
--(void)recipientFromCCSMWithID:(NSString *)userId
++(void)recipientFromCCSMWithID:(NSString *)userId
                                     success:(void (^)(NSDictionary *results))successBlock
                                     failure:(void (^)(NSError *error))failureBlock
 {
@@ -615,7 +615,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Public account creation
--(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
++(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock
 {
@@ -703,12 +703,9 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Accessors
--(NSArray *)controlTags
++(NSArray *)controlTags
 {
-    if (_controlTags == nil) {
-        _controlTags = @[ @".", @"role", @"position" ];
-    }
-    return _controlTags;
+    return @[ @".", @"role", @"position" ];
 }
 
 @end
