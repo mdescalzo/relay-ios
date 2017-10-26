@@ -14,7 +14,6 @@
 @interface LoginViewController () <UINavigationControllerDelegate>
 
 @property (strong) CCSMStorage *ccsmStorage;
-@property (strong) CCSMCommManager *ccsmCommManager;
 @property (nonatomic, assign) BOOL keyboardShowing;
 
 -(IBAction)mainViewTapped:(id)sender;
@@ -32,11 +31,7 @@
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [UIImage new];
     self.navigationController.navigationBar.translucent = NO;
-    
-    // Do any additional setup after loading the view.
-    self.ccsmStorage = [CCSMStorage new];
-    self.ccsmCommManager = [CCSMCommManager new];
-    
+
     // Allow for localized strings on controls
     self.organizationTextField.placeholder = NSLocalizedString(@"Enter Organization", @"Enter Username");
     self.usernameTextField.placeholder = NSLocalizedString(@"Enter Username", @"Enter Username");
@@ -94,24 +89,20 @@
     if ([self isValidUsername:self.usernameTextField.text] &&
         [self isValidOrganization:self.organizationTextField.text]) // check for valid entries
     {
-        
-        [self.ccsmStorage setOrgName:self.organizationTextField.text];
-        [self.ccsmStorage setUserName:self.usernameTextField.text];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.spinner startAnimating];
             self.loginButton.enabled = NO;
             self.loginButton.alpha = 0.5;
         });
         
-        [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
-                                   orgName:[self.ccsmStorage getOrgName]
-                                   success:^{
-                                       [self connectionSucceeded];
-                                   }
-                                   failure:^(NSError *err){
-                                       [self connectionFailed:err];
-                                   }];
+        [CCSMCommManager requestLogin:self.usernameTextField.text
+                              orgName:self.organizationTextField.text
+                              success:^{
+                                  [self connectionSucceeded];
+                              }
+                              failure:^(NSError *err) {
+                                  [self connectionFailed:err];
+                              }];
     }
     else  // Bad organization or username
     {

@@ -57,7 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (BOOL)isRegistered {
-    return [TSStorageManager localNumber] ? YES : NO;
+    CCSMStorage *ccsmStore = [CCSMStorage new];
+    NSString *sessionToken = [ccsmStore getSessionToken];
+    
+    return ([TSStorageManager localNumber] && sessionToken.length > 0) ? YES : NO;
 }
 
 - (void)ifRegistered:(BOOL)isRegistered runAsync:(void (^)())block

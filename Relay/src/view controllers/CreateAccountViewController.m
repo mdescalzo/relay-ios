@@ -304,7 +304,7 @@
                                        @"phone" : [NSString stringWithFormat:@"+1%@",  self.simplePhoneNumber],
                                        @"email" : self.emailTextField.text
                                        };
-            [[CCSMCommManager new] requestAccountCreationWithUserDict:payload
+            [CCSMCommManager requestAccountCreationWithUserDict:payload
                                                               success:^{
                                                                   [self stopSpinner];
                                                                   [self performSegueWithIdentifier:@"validationViewSegue" sender:self];

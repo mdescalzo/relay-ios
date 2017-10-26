@@ -152,7 +152,7 @@ NSUInteger maximumValidationAttempts = 9999;
 -(void)ccsmValidationSucceeded
 {
     // refresh other stuff now that we have the user info...
-    [self.ccsmCommManager refreshCCSMData];
+    [CCSMCommManager refreshCCSMData];
     
     // TSS Registration handling
     // Check if registered and proceed to next storyboard accordingly
@@ -167,7 +167,7 @@ NSUInteger maximumValidationAttempts = 9999;
         });
     } else {
         // Not registered with TSS, ask CCSM to do it for us.
-        [self.ccsmCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
+        [CCSMCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
                                                       success:^{
                                                           [TSSocketManager becomeActiveFromForeground];
                                                           dispatch_async(dispatch_get_main_queue(), ^{
@@ -226,7 +226,7 @@ NSUInteger maximumValidationAttempts = 9999;
 
     
     NSString *code = self.validationCodeTextField.text;
-    [self.ccsmCommManager verifyLogin:code
+    [CCSMCommManager verifyLogin:code
                               success:^{
                                   [self ccsmValidationSucceeded];
                               }
@@ -237,7 +237,7 @@ NSUInteger maximumValidationAttempts = 9999;
 
 -(IBAction)onResendCodeButtonTap:(id)sender
 {
-    [self.ccsmCommManager requestLogin:[self.ccsmStorage getUserName]
+    [CCSMCommManager requestLogin:[self.ccsmStorage getUserName]
                                orgName:[self.ccsmStorage getOrgName]
                                success:^{
                                    DDLogDebug(@"Request for code resend succeeded.");

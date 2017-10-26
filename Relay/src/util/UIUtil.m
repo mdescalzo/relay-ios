@@ -2,6 +2,7 @@
 
 #define CONTACT_PICTURE_VIEW_BORDER_WIDTH 0.5f
 
+// TODO: Customize more clearly/thoroughly for Forsta look and feel.
 @implementation UIUtil
 
 + (void)applyRoundedBorderToImageView:(UIImageView *__strong *)imageView {
