@@ -174,6 +174,7 @@
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *messageType = message.messageType;
     NSString *controlMessageType = message.controlMessageType;
+    NSMutableDictionary *data = [NSMutableDictionary new];
 
     
     // Sender blob
@@ -183,22 +184,27 @@
     NSString *presentation = message.thread.universalExpression;
     NSDictionary *recipients = @{ @"expression" : presentation };
     
-    NSDictionary *threadUpdates = @{  @"threadId" : threadId,
-                                      @"threadTitle" : threadTitle };
+    if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
+        [data setObject:controlMessageType forKey:@"control"];
+        [data setObject:@{  @"threadId" : threadId,
+                            @"threadTitle" : threadTitle }
+                 forKey:@"threadUpdates"];
+    }
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
                                     @{ @"version" : version,
                                        @"userAgent" : userAgent,
                                        @"messageId" : messageId,
                                        @"threadId" : threadId,
-                                       @"threadUpdates" : threadUpdates,
                                        @"sendTime" : sendTime,
                                        @"messageType" : messageType,
                                        @"sender" : sender,
                                        @"distribution" : recipients,
-                                       @"control" : controlMessageType
                                        }];
-
+    if ([data allKeys].count > 0) {
+        [tmpDict setObject:data forKey:@"data"];
+    }
+    
     // Attachment Handler
     NSMutableArray *attachments = [NSMutableArray new];
     if ([message hasAttachments]) {
