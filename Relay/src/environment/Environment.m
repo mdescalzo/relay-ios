@@ -276,12 +276,4 @@ static Environment *environment = nil;
     return _ccsmStorage;
 }
 
--(CCSMCommManager *)ccsmCommManager
-{
-    if (_ccsmCommManager == nil) {
-        _ccsmCommManager = [CCSMCommManager new];
-    }
-    return _ccsmCommManager;
-}
-
 @end
