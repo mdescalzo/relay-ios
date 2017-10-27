@@ -45,15 +45,17 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
          DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+         
+         NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                options:0
+                                                                  error:NULL];
+         
          if (connectionError != nil)  // Failed connection
          {
              failureBlock(connectionError);
          }
          else if (HTTPresponse.statusCode == 200) // SUCCESS!
          {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
              [[Environment getCurrent].ccsmStorage setOrgName:orgName];
              [[Environment getCurrent].ccsmStorage setUserName:userName];
              DDLogDebug(@"login result's msg is: %@", [result objectForKey:@"msg"]);
@@ -61,9 +63,21 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
          }
          else  // Connection good, error from server
          {
-             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+             NSError *error = nil;
+             if ([result objectForKey:@"non_field_errors"]) {
+                 NSMutableString *errorDescription = [NSMutableString new];
+                 for (NSString *message in [result objectForKey:@"non_field_errors"]) {
+                     [errorDescription appendString:[NSString stringWithFormat:@"\n%@", message]];
+                 }
+                 error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:HTTPresponse.statusCode
+                                         userInfo:@{ NSLocalizedDescriptionKey : errorDescription }];
+
+             } else {
+             error = [NSError errorWithDomain:NSURLErrorDomain
                                                   code:HTTPresponse.statusCode
                                               userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+             }
              failureBlock(error);
          }
      }];
