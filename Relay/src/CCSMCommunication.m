@@ -46,9 +46,10 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
          DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
          
-         NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                options:0
-                                                                  error:NULL];
+         NSDictionary *result = nil;
+         if (data) {
+             result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+         }
          
          if (connectionError != nil)  // Failed connection
          {
@@ -192,16 +193,18 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
          DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-         
+
+         NSDictionary *result = nil;
+         if (data) {
+             result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+         }
+
          if (connectionError != nil)  // Failed connection
          {
              failureBlock(connectionError);
          }
          else if (HTTPresponse.statusCode == 200) // SUCCESS!
          {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
              [self storeLocalUserDataWithPayload:result];
              
              successBlock();

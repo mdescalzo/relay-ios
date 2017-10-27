@@ -237,7 +237,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     }
     [self ensureRootViewController];
     [self removeScreenProtection];
-
+    
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
         [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
@@ -250,19 +250,28 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                                                     // TODO: Post alert explaining the refresh failed and why.
                                                             DDLogDebug(@"Token Refresh failed with error: %@", error.description);
                                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                                
-                                                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
+                                                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
+                                                                                                                               message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
                                                                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
-                                                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                                                                                    style:UIAlertActionStyleDefault
-                                                                                                                 handler:^(UIAlertAction *action) {
-                                                                                                                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-                                                                                                                     self.window.rootViewController = [storyboard instantiateInitialViewController];
-                                                                                                                     [self.window makeKeyAndVisible];
-                                                                                                                 }];
-                                                                [alert addAction:okAction];
+                                                                                                                 handler:^(UIAlertAction * action) {} ];
+                                                                [alert addAction:okButton];
                                                                 [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                                                                
+                                                                // TODO: discern whenever user no longer exists in CCSM or failure for other reason.
+                                                                // Logic to return to login screen on refresh failure follows:
+//                                                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
+//                                                                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
+//                                                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+//                                                                                                                   style:UIAlertActionStyleDefault
+//                                                                                                                 handler:^(UIAlertAction *action) {
+//                                                                                                                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+//                                                                                                                     self.window.rootViewController = [storyboard instantiateInitialViewController];
+//                                                                                                                     [self.window makeKeyAndVisible];
+//                                                                                                                 }];
+//                                                                [alert addAction:okAction];
+//                                                                [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
                                                             });
                                                         }];
     } else {
