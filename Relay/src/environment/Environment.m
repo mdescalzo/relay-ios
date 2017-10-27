@@ -260,6 +260,13 @@ static Environment *environment = nil;
     exit(0);
 }
 
++ (void)wipeCommDatabase {
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [transaction removeAllObjectsInCollection:[TSThread collection]];
+        [transaction removeAllObjectsInCollection:[SignalRecipient collection]];
+    }];
+}
+
 //-(FLInvitationService *)invitationService
 //{
 //    if (_invitationService == nil) {

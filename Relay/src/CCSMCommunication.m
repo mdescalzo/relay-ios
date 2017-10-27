@@ -16,6 +16,7 @@
 #import "TSStorageManager.h"
 #import "TSSocketManager.h"
 #import "TSPreKeyManager.h"
+#import "TSStorageManager.h"
 
 static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the_record";
 
@@ -391,15 +392,23 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 +(void)storeLocalUserDataWithPayload:(NSDictionary *)payload
 {
     if (payload) {
+        NSDictionary *userDict = [payload objectForKey:@"user"];
+        NSString *userID = [userDict objectForKey:@"id"];
+        // Check to see if user changed.  If so, wiped the database.
+        if (TSStorageManager.localNumber.length > 0 && ![TSStorageManager.localNumber isEqualToString:userID]) {
+            [Environment wipeCommDatabase];
+            [Environment.getCurrent.ccsmStorage setUsers:@{ }];
+            [Environment.getCurrent.ccsmStorage setOrgInfo:@{ }];
+            [Environment.getCurrent.ccsmStorage setTags:@{ }];
+        }
         [[Environment getCurrent].ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
-        NSDictionary *userDict = [payload objectForKey:@"user"];
         [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
         SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
         [myself save];
         [TSAccountManager.sharedInstance myself];
         [Environment.getCurrent.contactsManager allContacts];
-        
+
         NSDictionary *orgDict = [userDict objectForKey:@"org"];
         [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
         

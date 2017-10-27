@@ -134,7 +134,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
             [TSSocketManager becomeActiveFromForeground];
         } else if (launchState == UIApplicationStateBackground) {
             DDLogWarn(@"The app was launched from being backgrounded");
-            [TSSocketManager becomeActiveFromBackgroundExpectMessage:NO];
+            [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
         } else {
             DDLogWarn(@"The app was launched in an unknown way");
         }
@@ -240,6 +240,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
 
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
+        [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
         [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 [self refreshUsersStore];
@@ -255,13 +256,13 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
                                                                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
                                                                                                                    style:UIAlertActionStyleDefault
-                                                                                                                 handler:^(UIAlertAction *action) { /* do nothing */ }];
+                                                                                                                 handler:^(UIAlertAction *action) {
+                                                                                                                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                                                                                     self.window.rootViewController = [storyboard instantiateInitialViewController];
+                                                                                                                     [self.window makeKeyAndVisible];
+                                                                                                                 }];
                                                                 [alert addAction:okAction];
-                                                                [self.window.rootViewController presentViewController:alert animated:YES completion:^{
-                                                                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-                                                                    self.window.rootViewController = [storyboard instantiateInitialViewController];
-                                                                    [self.window makeKeyAndVisible];
-                                                                }];
+                                                                [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
                                                             });
                                                         }];
     } else {

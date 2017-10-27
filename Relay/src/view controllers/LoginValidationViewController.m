@@ -19,7 +19,7 @@ NSUInteger maximumValidationAttempts = 9999;
 @interface LoginValidationViewController ()
 
 @property (strong) CCSMStorage *ccsmStorage;
-@property (strong) CCSMCommManager *ccsmCommManager;
+//@property (strong) CCSMCommManager *ccsmCommManager;
 
 @property (nonatomic, assign) BOOL keyboardShowing;
 
@@ -33,7 +33,7 @@ NSUInteger maximumValidationAttempts = 9999;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.ccsmStorage = [CCSMStorage new];
-    self.ccsmCommManager = [CCSMCommManager new];
+//    self.ccsmCommManager = [CCSMCommManager new];
     
    // Allow for localized string on controls
     self.validationCodeTextField.placeholder = NSLocalizedString(@"Enter Validation Code", @"");

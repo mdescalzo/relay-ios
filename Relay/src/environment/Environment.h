@@ -102,6 +102,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
 + (BOOL)isRedPhoneRegistered;
 + (void)resetAppData;
++ (void)wipeCommDatabase;
 
 //- (void)initCallListener;
 -(void)setForstaViewController:(FLThreadViewController *)forstaViewController;
