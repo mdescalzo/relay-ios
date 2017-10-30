@@ -182,14 +182,14 @@
         adapter.infoMessageType    = infoMessage.messageType;
         adapter.messageBody        = infoMessage.description;
         adapter.messageType        = TSInfoMessageAdapter;
-        if (adapter.infoMessageType == TSInfoMessageTypeGroupQuit ||
-            adapter.infoMessageType == TSInfoMessageTypeGroupUpdate) {
+        if (adapter.infoMessageType == TSInfoMessageTypeConversationQuit ||
+            adapter.infoMessageType == TSInfoMessageTypeConversationUpdate) {
             // repurposing call display for info message stuff for group updates, ! adapter will know because the date
             // is nil
             CallStatus status = 0;
-            if (adapter.infoMessageType == TSInfoMessageTypeGroupQuit) {
+            if (adapter.infoMessageType == TSInfoMessageTypeConversationQuit) {
                 status = kGroupUpdateLeft;
-            } else if (adapter.infoMessageType == TSInfoMessageTypeGroupUpdate) {
+            } else if (adapter.infoMessageType == TSInfoMessageTypeConversationUpdate) {
                 status = kGroupUpdate;
             }
             OWSCall *call = [[OWSCall alloc] initWithInteraction:interaction

@@ -289,6 +289,9 @@
 /* No comment provided by engineer. */
 "GROUP_TITLE_CHANGED" = "Title is now '%@'. ";
 
+/* Conversation name/title change */
+"THREAD_TITLE_UPDATE_MESSAGE" = "%@ changed the title.";
+
 /* No comment provided by engineer. */
 "GROUP_UPDATED" = "Conversation updated.";
 

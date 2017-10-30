@@ -18,6 +18,9 @@
 #import "TSPreKeyManager.h"
 #import "TSStorageManager.h"
 
+@import Fabric;
+@import Crashlytics;
+
 static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the_record";
 
 @interface CCSMCommManager ()
@@ -43,7 +46,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                                                NSData *data, NSError *connectionError)
      {
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         DDLogDebug(@"Request Login - Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
          
          NSDictionary *result = nil;
@@ -104,7 +107,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
      {
          
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         DDLogDebug(@"Verify Login - Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
          if (connectionError != nil)  // Failed connection
          {
@@ -148,7 +151,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                                          returningResponse:&HTTPresponse
                                                      error:&connectionError];
     
-    DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+    DDLogDebug(@"Refresh Token - Server response code: %ld", (long)HTTPresponse.statusCode);
     DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
     
     if (connectionError != nil)  // Failed connection
@@ -191,7 +194,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
      {
          
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         DDLogDebug(@"Refresh Session Token - Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
 
          NSDictionary *result = nil;
@@ -293,7 +296,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                                          returningResponse:&HTTPresponse
                                                      error:&connectionError];
     
-    DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+    DDLogDebug(@"Get Page - Server response code: %ld", (long)HTTPresponse.statusCode);
     DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
     
     if (connectionError != nil)  // Failed connection
@@ -426,6 +429,8 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
         [TSAccountManager.sharedInstance myself];
         [Environment.getCurrent.contactsManager allContacts];
 
+        [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
+        
         NSDictionary *orgDict = [userDict objectForKey:@"org"];
         [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
         
@@ -565,7 +570,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                                                NSData *data, NSError *connectionError)
      {
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+         DDLogDebug(@"Register with TSS - Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
          if (connectionError != nil)  // Failed connection
          {
@@ -694,7 +699,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
          {
              
              NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-             DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+             DDLogDebug(@"Requst Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
              DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
              if (connectionError != nil)  // Failed connection
              {

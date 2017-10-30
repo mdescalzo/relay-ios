@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
         return self;
     }
 
-    _messageType = infoMessage;
+    _infoMessageType = infoMessage;
 
     return self;
 }
@@ -52,16 +52,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-    switch (_messageType) {
+    switch (_infoMessageType) {
         case TSInfoMessageTypeSessionDidEnd:
             return NSLocalizedString(@"SECURE_SESSION_RESET", nil);
         case TSInfoMessageTypeUnsupportedMessage:
             return NSLocalizedString(@"UNSUPPORTED_ATTACHMENT", nil);
         case TSInfoMessageUserNotRegistered:
             return NSLocalizedString(@"CONTACT_DETAIL_COMM_TYPE_INSECURE", nil);
-        case TSInfoMessageTypeGroupQuit:
+        case TSInfoMessageTypeConversationQuit:
             return NSLocalizedString(@"GROUP_YOU_LEFT", nil);
-        case TSInfoMessageTypeGroupUpdate:
+        case TSInfoMessageTypeConversationUpdate:
             return _customMessage != nil ? _customMessage : NSLocalizedString(@"GROUP_UPDATED", nil);
         default:
             break;

@@ -90,15 +90,15 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
-{
-    if (!(self.groupMetaMessage == TSGroupMessageDeliver || self.groupMetaMessage == TSGroupMessageNone)) {
-        DDLogDebug(@"%@ Skipping save for group meta message.", self.tag);
-        return;
-    }
-
-    [super saveWithTransaction:transaction];
-}
+//- (void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
+//{
+//    if (!(self.groupMetaMessage == TSGroupMessageDeliver || self.groupMetaMessage == TSGroupMessageNone)) {
+//        DDLogDebug(@"%@ Skipping save for group meta message.", self.tag);
+//        return;
+//    }
+//
+//    [super saveWithTransaction:transaction];
+//}
 
 - (nullable NSString *)recipientIdentifier
 {

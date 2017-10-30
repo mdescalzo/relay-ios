@@ -30,12 +30,12 @@
 #import "Relay-Swift.h"
 #import "SignalKeyingStorage.h"
 #import "TSAttachmentPointer.h"
-#import "TSCall.h"
 #import "TSContentAdapters.h"
 #import "TSDatabaseView.h"
 #import "TSErrorMessage.h"
 #import "TSThread.h"
 #import "TSIncomingMessage.h"
+#import "FLControlMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
 #import "UIFont+OWS.h"
@@ -707,6 +707,7 @@ typedef enum : NSUInteger {
                                                        messageBody:@""];
         }
         message.plainTextBody = text;
+        message.messageType = @"content";
         message.uniqueId = [[NSUUID UUID] UUIDString];
 
         [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
@@ -719,13 +720,10 @@ typedef enum : NSUInteger {
                 [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     [message saveWithTransaction:transaction];
                 }];
-//                button.enabled = YES;
 
             }
             failure:^(NSError *error) {
                 DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-//                button.enabled = YES;
-
             }];
         [self finishSendingMessage];
     }
@@ -2181,12 +2179,12 @@ typedef enum : NSUInteger {
 
 - (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
 {
-    __block TSThread *thread;
-//    __block TSOutgoingMessage *message;
-    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
-                                                                    memberIds:[self.thread.participants mutableCopy]
-                                                                        image:self.thread.image
-                                                                      groupId:nil];
+    __block TSThread *thread = nil;
+
+//    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
+//                                                                    memberIds:[self.thread.participants mutableCopy]
+//                                                                        image:self.thread.image
+//                                                                      groupId:nil];
 
     [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [TSThread getOrCreateThreadWithID:self.thread.uniqueId transaction:transaction];
@@ -2198,16 +2196,27 @@ typedef enum : NSUInteger {
         self.thread.image = newGroupModel.groupImage;
         
         [self.thread saveWithTransaction:transaction];
-
-#warning XXX Control message send for group update here.
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:thread
-//                                                   messageBody:@""
-//                                                 attachmentIds:[NSMutableArray new]];
-//        message.groupMetaMessage = TSGroupMessageUpdate;
-//        message.customMessage = updateGroupInfo;
+        
+        NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
+        NSString *customMessage = [NSString stringWithFormat:messageFormat, @"You"];
+        
+        TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                     inThread:thread
+                                                                  messageType:TSInfoMessageTypeConversationUpdate
+                                                                customMessage:customMessage];
+        [infoMessage saveWithTransaction:transaction];
     }];
 
+    #warning XXX Control message send for group update here.
+    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
+    [self.messageSender sendMessage:message
+                            success:^{
+                                DDLogDebug(@"Successfully send control message.");
+                            }
+                            failure:^(NSError *error){
+                                DDLogDebug(@"Failed to send control message with error: %@", error.localizedDescription);
+                            }];
+    
 //    if (newGroupModel.groupImage) {
 //        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
 //            contentType:OWSMimeTypeImagePng

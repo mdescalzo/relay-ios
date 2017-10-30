@@ -2,7 +2,7 @@
 #import "DiscardingLog.h"
 #import "PhoneManager.h"
 #import "PhoneNumberUtil.h"
-#import "RecentCallManager.h"
+//#import "RecentCallManager.h"
 #import "ContactsUpdater.h"
 #import "TSNetworkManager.h"
 #import "FLMessageSender.h"

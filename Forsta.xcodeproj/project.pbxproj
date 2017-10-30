@@ -847,6 +847,9 @@
 		7D7DA5B11F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */; };
 		7D7DA5B21F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */; };
 		7D7DA5B31F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */; };
+		7D7DBFCE1F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
+		7D7DBFCF1F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
+		7D7DBFD01F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
 		7DA801441F86CA850048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
 		7DA801511F8710C40048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
@@ -1854,8 +1857,8 @@
 		7D61387C1F90161500E18D29 /* TSPreKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPreKeyManager.m; sourceTree = "<group>"; };
 		7D61387D1F90161500E18D29 /* TSPrivacyPreferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSPrivacyPreferences.h; sourceTree = "<group>"; };
 		7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPrivacyPreferences.m; sourceTree = "<group>"; };
-		7D6138801F90161500E18D29 /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMStorage.h; sourceTree = "<group>"; };
-		7D6138811F90161500E18D29 /* CCSMStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
+		7D6138801F90161500E18D29 /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCSMStorage.h; path = RelayServiceKit/CCSM/CCSMStorage.h; sourceTree = "<group>"; };
+		7D6138811F90161500E18D29 /* CCSMStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCSMStorage.m; path = RelayServiceKit/CCSM/CCSMStorage.m; sourceTree = "<group>"; };
 		7D6138821F90161500E18D29 /* FLMessagesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLMessagesManager.h; sourceTree = "<group>"; };
 		7D6138831F90161500E18D29 /* FLMessagesManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLMessagesManager.m; sourceTree = "<group>"; };
 		7D6138841F90161500E18D29 /* FLTagMathService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLTagMathService.h; sourceTree = "<group>"; };
@@ -2115,6 +2118,8 @@
 		7D7DA58F1F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSGroupAvatarBuilder.m; sourceTree = "<group>"; };
 		7D7DA5AF1F30CB32007FE6E4 /* FLContactSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactSelectionTableViewController.h; sourceTree = "<group>"; };
 		7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactSelectionTableViewController.m; sourceTree = "<group>"; };
+		7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLControlMessage.m; sourceTree = "<group>"; };
+		7D7DBFCD1F97E24000860D35 /* FLControlMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLControlMessage.h; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
 		7DA801431F86C4040048950F /* Forsta-values.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Forsta-values.plist"; sourceTree = "<group>"; };
@@ -2671,7 +2676,7 @@
 				76EB03C318170B33006006FC /* AppDelegate.m */,
 				76EB03D918170B33006006FC /* audio */,
 				76EB03FE18170B33006006FC /* call */,
-				DBE1798C1ED9FF8500327B2B /* ccsm */,
+				DBE1798C1ED9FF8500327B2B /* CCSM */,
 				76EB040318170B33006006FC /* contact */,
 				70DBA29918CFE98500771DAD /* crypto */,
 				76EB041118170B33006006FC /* environment */,
@@ -3308,8 +3313,6 @@
 		7D61387F1F90161500E18D29 /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
-				7D6138801F90161500E18D29 /* CCSMStorage.h */,
-				7D6138811F90161500E18D29 /* CCSMStorage.m */,
 				7D6138821F90161500E18D29 /* FLMessagesManager.h */,
 				7D6138831F90161500E18D29 /* FLMessagesManager.m */,
 				7D6138841F90161500E18D29 /* FLTagMathService.h */,
@@ -3454,6 +3457,8 @@
 		7D6138CB1F90161500E18D29 /* Interactions */ = {
 			isa = PBXGroup;
 			children = (
+				7D7DBFCD1F97E24000860D35 /* FLControlMessage.h */,
+				7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */,
 				7D6138CC1F90161500E18D29 /* OWSDisappearingConfigurationUpdateInfoMessage.h */,
 				7D6138CD1F90161500E18D29 /* OWSDisappearingConfigurationUpdateInfoMessage.m */,
 				7D6138CE1F90161500E18D29 /* OWSDisappearingMessagesConfigurationMessage.h */,
@@ -4171,13 +4176,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		DBE1798C1ED9FF8500327B2B /* ccsm */ = {
+		DBE1798C1ED9FF8500327B2B /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
+				7D6138801F90161500E18D29 /* CCSMStorage.h */,
+				7D6138811F90161500E18D29 /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
 				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 			);
-			name = ccsm;
+			name = CCSM;
 			sourceTree = "<group>";
 		};
 		E18AB40618A05754001A532A /* AudioFiles */ = {
@@ -5340,6 +5347,7 @@
 				7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */,
 				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
 				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
+				7D7DBFCE1F97E24100860D35 /* FLControlMessage.m in Sources */,
 				7D4A3A771F1693930023C29B /* iRate.m in Sources */,
 				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
@@ -5687,6 +5695,7 @@
 				7D613AA41F90185000E18D29 /* TSSocketManager.m in Sources */,
 				7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */,
 				7DCFFE231F0EE4490003CD95 /* CountryCodeViewController.m in Sources */,
+				7D7DBFCF1F97E24100860D35 /* FLControlMessage.m in Sources */,
 				7DCFFE241F0EE4490003CD95 /* SignalKeyingStorage.m in Sources */,
 				7D613AB31F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
 				7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */,
@@ -6034,6 +6043,7 @@
 				7D613AA51F90185000E18D29 /* TSSocketManager.m in Sources */,
 				76EB057218170B33006006FC /* RecentCall.m in Sources */,
 				B97CBFA818860EA3008E0DE9 /* CountryCodeViewController.m in Sources */,
+				7D7DBFD01F97E24100860D35 /* FLControlMessage.m in Sources */,
 				B6B1013C196D213F007E3930 /* SignalKeyingStorage.m in Sources */,
 				7D613AB41F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
 				76EB059218170B33006006FC /* UnrecognizedRequestFailure.m in Sources */,
@@ -6362,7 +6372,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 86;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6431,7 +6441,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 86;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6498,7 +6508,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 86;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6566,7 +6576,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 86;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6772,7 +6782,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 86;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6838,7 +6848,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 86;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

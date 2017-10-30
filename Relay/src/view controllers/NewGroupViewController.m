@@ -292,15 +292,16 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 - (void)updateGroup
 {
+    // TODO: throw a threadUpdate control message here.
     NSMutableArray *mut = [[NSMutableArray alloc] init];
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
         [mut addObject:[[self.contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
     }
-    [mut addObjectsFromArray:_thread.participants];
+    [mut addObjectsFromArray:self.thread.participants];
 
-    _groupModel = [[TSGroupModel alloc] initWithTitle:_nameGroupTextField.text
+    _groupModel = [[TSGroupModel alloc] initWithTitle:self.nameGroupTextField.text
                                             memberIds:[[[NSSet setWithArray:mut] allObjects] mutableCopy]
-                                                image:_thread.image
+                                                image:self.thread.image
                                               groupId:nil];
 
     [self.nameGroupTextField resignFirstResponder];
