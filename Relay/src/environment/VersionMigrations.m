@@ -13,7 +13,7 @@
 #import "OWSDatabaseMigrationRunner.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
-#import "RecentCallManager.h"
+//#import "RecentCallManager.h"
 #import "SignalKeyingStorage.h"
 #import "TSAccountManager.h"
 #import "TSNetworkManager.h"

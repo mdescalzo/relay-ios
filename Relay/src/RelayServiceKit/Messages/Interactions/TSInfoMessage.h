@@ -11,15 +11,15 @@ typedef NS_ENUM(NSInteger, TSInfoMessageType) {
     TSInfoMessageTypeSessionDidEnd,
     TSInfoMessageUserNotRegistered,
     TSInfoMessageTypeUnsupportedMessage,
-    TSInfoMessageTypeGroupUpdate,
-    TSInfoMessageTypeGroupQuit,
+    TSInfoMessageTypeConversationUpdate,
+    TSInfoMessageTypeConversationQuit,
     TSInfoMessageTypeDisappearingMessagesUpdate
 };
 
 + (instancetype)userNotRegisteredMessageInThread:(TSThread *)thread
                                      transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
-@property TSInfoMessageType messageType;
+@property TSInfoMessageType infoMessageType;
 @property NSString *customMessage;
 
 - (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;

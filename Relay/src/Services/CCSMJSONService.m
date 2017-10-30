@@ -6,9 +6,12 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
+#define FLBlobShapeRevision 1
+
 #import "Environment.h"
 #import "CCSMJSONService.h"
 #import "TSOutgoingMessage.h"
+#import "FLControlMessage.h"
 #import "TSThread.h"
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
@@ -18,7 +21,7 @@
 
 @interface CCSMJSONService()
 
-+(NSArray *)arrayForTypeOrdinaryFromMessage:(TSOutgoingMessage *)message;
++(NSArray *)arrayForTypeContentFromMessage:(TSOutgoingMessage *)message;
 +(NSArray *)arrayForTypeBroadcastFromMessage:(TSOutgoingMessage *)message;
 +(NSArray *)arrayForTypeSurveyFromMessage:(TSOutgoingMessage *)message;
 +(NSArray *)arrayForTypeSurveyResponseFromMessage:(TSOutgoingMessage *)message;
@@ -29,12 +32,17 @@
 
 @implementation CCSMJSONService
 
-#warning XXX Need a mechanism for recognizing message type
 +(NSString *_Nullable)blobFromMessage:(TSOutgoingMessage *_Nonnull)message
 {
-    
-    NSArray *holdingArray = [self arrayForTypeOrdinaryFromMessage:message];
-    
+    NSArray *holdingArray = nil;
+    if ([message.messageType isEqualToString:@"control"]) {
+        holdingArray = [self arrayForTypeControlFromMessage:message];
+    } else {
+        if (message.messageType.length == 0) {
+            message.messageType = @"content";
+        }
+        holdingArray = [self arrayForTypeContentFromMessage:message];
+    }
     NSError *error;
     
     if ([NSJSONSerialization isValidJSONObject:holdingArray]) {
@@ -53,45 +61,25 @@
     }
 }
          
-+(NSArray *)arrayForTypeOrdinaryFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeContentFromMessage:(TSOutgoingMessage *)message
 {
-    NSNumber *version = [NSNumber numberWithInt:1];
+    NSNumber *version = [NSNumber numberWithInt:FLBlobShapeRevision];
     NSString *userAgent = [DeviceTypes deviceModelName];
     NSString *messageId = message.uniqueId;
     NSString *threadId = message.thread.uniqueId;
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
-    NSString *messageType = @"content";
-#warning XXX Pull threadType from thread property
-    NSString *threadType = @"conversation";
-//    NSString *type = @"ordinary";
+    NSString *messageType = message.messageType;
+    NSString *threadType = message.thread.type;
+    if (threadType.length == 0) {
+        threadType = @"conversation";
+    }
     
-    
-    NSDictionary *senderDict = [[Environment getCurrent].ccsmStorage getUserInfo];
-    NSDictionary *tagDict = [senderDict objectForKey:@"tag"];
-    NSString *tagId = [tagDict objectForKey:@"id"];
-
-//    NSDictionary *orgDict = [[Environment getCurrent].ccsmStorage getOrgInfo];
-//    NSString *orgId = [orgDict objectForKey:@"id"];
-
-    
-    NSDictionary *sender = @{ /* @"tagId": (tagId ? tagId : @""), */
-                              @"userId" :  [senderDict objectForKey:@"id"],
-                              };
+    // Sender blob
+    NSDictionary *sender = @{ @"userId" :  TSAccountManager.sharedInstance.myself.uniqueId };
     
     // Build recipient blob
-
     NSArray *userIds = message.thread.participants;
-    // Missing participants, make it
-#warning XXX CCSM lookup here?
-//    if (userIds.count == 0) {
-//        if (message.thread.isGroupThread) {
-//            userIds = [NSArray arrayWithArray:((TSGroupThread *)message.thread).groupModel.groupMemberIds];
-//        } else {
-//            userIds = @[ ((TSContactThread *)message.thread).contactIdentifier, [TSStorageManager localNumber] ];
-//        }
-//    }
-    
     NSString *presentation = message.thread.universalExpression;
     
     //  Missing expresssion for some reason, make one
@@ -105,22 +93,17 @@
         }
         presentation = [presentation stringByAppendingString:@")"];
     }
-        
-    NSDictionary *recipients = @{ @"expression" : presentation
-//                                  @"userIds" : userIds
-                                  };
+    NSDictionary *recipients = @{ @"expression" : presentation };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
                             @{ @"version" : version,
                                @"userAgent" : userAgent,
-                               @"messageId" : messageId,  //  Appears to be unused.
+                               @"messageId" : messageId,
                                @"threadId" : threadId,
                                @"threadTitle" : threadTitle,
                                @"sendTime" : sendTime,
                                @"messageType" : messageType,
                                @"threadType" : threadType,
-//                               @"type" : type,
-//                               @"data" : data,
                                @"sender" : sender,
                                @"distribution" : recipients
                                }];
@@ -129,8 +112,6 @@
     if (message.plainTextBody) {
         data = @{ @"body": @[ @{ @"type": @"text/plain",
                                  @"value": message.plainTextBody }
-//                              @{ @"type": @"text/html",
-//                                 @"value": message.body }
                               ]
                   };
         [tmpDict setObject:data forKey:@"data"];
@@ -161,15 +142,11 @@
                 
             }
         }
-        if ([attachments count] > 1) {
+        if ([attachments count] >= 1) {
             [tmpDict setObject:attachments forKey:@"attachments"];
         }
     }
-
-    
-    NSArray *returnArray = @[ tmpDict ];
-
-    return returnArray;
+    return @[ tmpDict ];
 }
 
 +(NSArray *)arrayForTypeBroadcastFromMessage:(TSOutgoingMessage *)message
@@ -187,10 +164,79 @@
     return [NSArray new];
 }
 
-+(NSArray *)arrayForTypeControlFromMessage:(TSOutgoingMessage *)message
++(NSArray *)arrayForTypeControlFromMessage:(FLControlMessage *)message
 {
-    return [NSArray new];
+    NSNumber *version = [NSNumber numberWithInt:FLBlobShapeRevision];
+    NSString *userAgent = [DeviceTypes deviceModelName];
+    NSString *messageId = message.uniqueId;
+    NSString *threadId = message.thread.uniqueId;
+    NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
+    NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
+    NSString *messageType = message.messageType;
+    NSString *controlMessageType = message.controlMessageType;
+    NSMutableDictionary *data = [NSMutableDictionary new];
+
+    
+    // Sender blob
+    NSDictionary *sender = @{ @"userId" :  TSAccountManager.sharedInstance.myself.uniqueId };
+    
+    // Build recipient blob
+    NSString *presentation = message.thread.universalExpression;
+    NSDictionary *recipients = @{ @"expression" : presentation };
+    
+    if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
+        [data setObject:controlMessageType forKey:@"control"];
+        [data setObject:@{  @"threadId" : threadId,
+                            @"threadTitle" : threadTitle }
+                 forKey:@"threadUpdates"];
+    }
+    
+    NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
+                                    @{ @"version" : version,
+                                       @"userAgent" : userAgent,
+                                       @"messageId" : messageId,
+                                       @"threadId" : threadId,
+                                       @"sendTime" : sendTime,
+                                       @"messageType" : messageType,
+                                       @"sender" : sender,
+                                       @"distribution" : recipients,
+                                       }];
+    if ([data allKeys].count > 0) {
+        [tmpDict setObject:data forKey:@"data"];
+    }
+    
+    // Attachment Handler
+    NSMutableArray *attachments = [NSMutableArray new];
+    if ([message hasAttachments]) {
+        for (NSString *attachmentID in message.attachmentIds) {
+            TSAttachment *attachment = [TSAttachment fetchObjectWithUniqueID:attachmentID];
+            if ([attachment isKindOfClass:[TSAttachmentStream class]]) {
+                TSAttachmentStream *stream = (TSAttachmentStream *)attachment;
+                NSFileManager *fm = [NSFileManager defaultManager];
+                if ([fm fileExistsAtPath:stream.filePath]) {
+                    NSString *filename = [stream.mediaURL.pathComponents lastObject];
+                    NSString *contentType = stream.contentType;
+                    NSDictionary *attribs = [fm attributesOfItemAtPath:stream.filePath error:nil];
+                    NSNumber *size = [attribs objectForKey:NSFileSize];
+                    NSDate *modDate = [attribs objectForKey:NSFileModificationDate];
+                    NSString *dateString = [self formattedStringFromDate:modDate];
+                    NSDictionary *attachmentDict = @{ @"name" : filename,
+                                                      @"size" : size,
+                                                      @"type" : contentType,
+                                                      @"mtime" : dateString
+                                                      };
+                    [attachments addObject:attachmentDict];
+                }
+                
+            }
+        }
+        if ([attachments count] >= 1) {
+            [tmpDict setObject:attachments forKey:@"attachments"];
+        }
+    }
+    return @[ tmpDict ];
 }
+
 
 +(NSArray *)arrayForTypeReceiptFromMessage:(TSOutgoingMessage *)message
 {
