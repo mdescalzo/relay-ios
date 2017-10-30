@@ -220,7 +220,7 @@
         [self.spinner stopAnimating];
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                                                       message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
+                                                                       message:[NSString stringWithFormat:@"%@", error.localizedDescription]
                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                            style:UIAlertActionStyleDefault

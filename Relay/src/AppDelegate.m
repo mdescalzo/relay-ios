@@ -246,34 +246,40 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                 [self refreshUsersStore];
             });
         }
-                                                        failure:^(NSError *error){  // Unable to refresh, login force login
-                                                                                    // TODO: Post alert explaining the refresh failed and why.
+                                                        failure:^(NSError *error){
+                                                            // Unable to refresh, login force login
                                                             DDLogDebug(@"Token Refresh failed with error: %@", error.description);
-                                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
-                                                                                                                               message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
-                                                                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
-                                                                UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                                                                   style:UIAlertActionStyleDefault
-                                                                                                                 handler:^(UIAlertAction * action) {} ];
-                                                                [alert addAction:okButton];
-                                                                [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-                                                                
-                                                                // TODO: discern whenever user no longer exists in CCSM or failure for other reason.
-                                                                // Logic to return to login screen on refresh failure follows:
-//                                                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
-//                                                                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
-//                                                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-//                                                                                                                   style:UIAlertActionStyleDefault
-//                                                                                                                 handler:^(UIAlertAction *action) {
-//                                                                                                                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-//                                                                                                                     self.window.rootViewController = [storyboard instantiateInitialViewController];
-//                                                                                                                     [self.window makeKeyAndVisible];
-//                                                                                                                 }];
-//                                                                [alert addAction:okAction];
-//                                                                [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-                                                            });
+                                                            
+                                                            // Determine if this eror should kick the user out:
+                                                            if (error.code >= 400 && error.code < 500) {
+                                                                //  Out they go...
+                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
+                                                                                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+                                                                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                                       style:UIAlertActionStyleDefault
+                                                                                                                     handler:^(UIAlertAction *action) {
+                                                                                                                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                                                                                         self.window.rootViewController = [storyboard instantiateInitialViewController];
+                                                                                                                         [self.window makeKeyAndVisible];
+                                                                                                                     }];
+                                                                    [alert addAction:okAction];
+                                                                    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                                                                });
+                                                            } else {
+                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Server Connection Failed", @"")
+                                                                                                                                   message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
+                                                                                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+                                                                    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                                                       style:UIAlertActionStyleDefault
+                                                                                                                     handler:^(UIAlertAction * action) {} ];
+                                                                    [alert addAction:okButton];
+                                                                    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                                                                });
+                                                            }
                                                         }];
+        
     } else {
         // User not logged in.
         dispatch_async(dispatch_get_main_queue(), ^{
