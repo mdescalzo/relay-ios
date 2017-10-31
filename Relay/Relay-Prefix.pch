@@ -56,7 +56,7 @@
 #define FLForstaSupportURL @"https://support.forsta.io"
 
 // Forsta SMS invitation URL
-#define FLSMSInvitationURL @"https://www.forsta.io/benefits"
+#define FLSMSInvitationURL @"https://www.forsta.io"
 
 // Select based upon build target
 #ifdef DEVELOPMENT
