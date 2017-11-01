@@ -271,6 +271,8 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
         return [MIMETypeUtil filePathForAnimated:uniqueId ofMIMEType:contentType inFolder:folder];
     } else if ([self isBinaryData:contentType]) {
         return [MIMETypeUtil filePathForBinaryData:uniqueId ofMIMEType:contentType inFolder:folder];
+    } else if ([self isDocument:contentType]) {
+        return [MIMETypeUtil filePathForDocument:uniqueId ofMIMEType:contentType inFolder:folder];
     }
     
     DDLogError(@"Got asked for path of file %@ which is unsupported", contentType);
