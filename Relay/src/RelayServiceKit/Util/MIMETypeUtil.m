@@ -8,120 +8,136 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
 
 @implementation MIMETypeUtil
 
++ (NSDictionary *)supportedDocumentMIMETypesToExtensionTypes {
+    return @{
+             @"application/pdf" : @"pdf"
+             };
+}
+
 + (NSDictionary *)supportedVideoMIMETypesToExtensionTypes {
     return @{
-        @"video/3gpp" : @"3gp",
-        @"video/3gpp2" : @"3g2",
-        @"video/mp4" : @"mp4",
-        @"video/quicktime" : @"mov",
-        @"video/x-m4v" : @"m4v"
-    };
+             @"video/3gpp" : @"3gp",
+             @"video/3gpp2" : @"3g2",
+             @"video/mp4" : @"mp4",
+             @"video/quicktime" : @"mov",
+             @"video/x-m4v" : @"m4v"
+             };
 }
 
 + (NSDictionary *)supportedAudioMIMETypesToExtensionTypes {
     return @{
-        @"audio/aac" : @"m4a",
-        @"audio/x-m4p" : @"m4p",
-        @"audio/x-m4b" : @"m4b",
-        @"audio/x-m4a" : @"m4a",
-        @"audio/wav" : @"wav",
-        @"audio/x-wav" : @"wav",
-        @"audio/x-mpeg" : @"mp3",
-        @"audio/mpeg" : @"mp3",
-        @"audio/mp4" : @"mp4",
-        @"audio/mp3" : @"mp3",
-        @"audio/mpeg3" : @"mp3",
-        @"audio/x-mp3" : @"mp3",
-        @"audio/x-mpeg3" : @"mp3",
-        @"audio/amr" : @"amr",
-        @"audio/aiff" : @"aiff",
-        @"audio/x-aiff" : @"aiff",
-        @"audio/3gpp2" : @"3g2",
-        @"audio/3gpp" : @"3gp"
-    };
+             @"audio/aac" : @"m4a",
+             @"audio/x-m4p" : @"m4p",
+             @"audio/x-m4b" : @"m4b",
+             @"audio/x-m4a" : @"m4a",
+             @"audio/wav" : @"wav",
+             @"audio/x-wav" : @"wav",
+             @"audio/x-mpeg" : @"mp3",
+             @"audio/mpeg" : @"mp3",
+             @"audio/mp4" : @"mp4",
+             @"audio/mp3" : @"mp3",
+             @"audio/mpeg3" : @"mp3",
+             @"audio/x-mp3" : @"mp3",
+             @"audio/x-mpeg3" : @"mp3",
+             @"audio/amr" : @"amr",
+             @"audio/aiff" : @"aiff",
+             @"audio/x-aiff" : @"aiff",
+             @"audio/3gpp2" : @"3g2",
+             @"audio/3gpp" : @"3gp"
+             };
 }
 
 + (NSDictionary *)supportedImageMIMETypesToExtensionTypes {
     return @{
-        @"image/jpeg" : @"jpeg",
-        @"image/pjpeg" : @"jpeg",
-        OWSMimeTypeImagePng : @"png",
-        @"image/tiff" : @"tif",
-        @"image/x-tiff" : @"tif",
-        @"image/bmp" : @"bmp",
-        @"image/x-windows-bmp" : @"bmp"
-    };
+             @"image/jpeg" : @"jpeg",
+             @"image/pjpeg" : @"jpeg",
+             OWSMimeTypeImagePng : @"png",
+             @"image/tiff" : @"tif",
+             @"image/x-tiff" : @"tif",
+             @"image/bmp" : @"bmp",
+             @"image/x-windows-bmp" : @"bmp"
+             };
 }
 
 + (NSDictionary *)supportedAnimatedMIMETypesToExtensionTypes {
     return @{
-        @"image/gif" : @"gif",
-    };
+             @"image/gif" : @"gif",
+             };
 }
 
 + (NSDictionary *)supportedBinaryDataMIMETypesToExtensionTypes
 {
     return @{
-        OWSMimeTypeApplicationOctetStream : @"dat",
-    };
+             OWSMimeTypeApplicationOctetStream : @"dat",
+             };
 }
 
++ (NSDictionary *)supportedDocumentExtensionTypesToMIMETypes {
+    return @{
+             @"pdf" : @"application/pdf"
+             };
+    
+}
 + (NSDictionary *)supportedVideoExtensionTypesToMIMETypes {
     return @{
-        @"3gp" : @"video/3gpp",
-        @"3gpp" : @"video/3gpp",
-        @"3gp2" : @"video/3gpp2",
-        @"3gpp2" : @"video/3gpp2",
-        @"mp4" : @"video/mp4",
-        @"mov" : @"video/quicktime",
-        @"mqv" : @"video/quicktime",
-        @"m4v" : @"video/x-m4v"
-    };
+             @"3gp" : @"video/3gpp",
+             @"3gpp" : @"video/3gpp",
+             @"3gp2" : @"video/3gpp2",
+             @"3gpp2" : @"video/3gpp2",
+             @"mp4" : @"video/mp4",
+             @"mov" : @"video/quicktime",
+             @"mqv" : @"video/quicktime",
+             @"m4v" : @"video/x-m4v"
+             };
 }
 + (NSDictionary *)supportedAudioExtensionTypesToMIMETypes {
     return @{
-        @"3gp" : @"audio/3gpp",
-        @"3gpp" : @"@audio/3gpp",
-        @"3g2" : @"audio/3gpp2",
-        @"3gp2" : @"audio/3gpp2",
-        @"aiff" : @"audio/aiff",
-        @"aif" : @"audio/aiff",
-        @"aifc" : @"audio/aiff",
-        @"cdda" : @"audio/aiff",
-        @"amr" : @"audio/amr",
-        @"mp3" : @"audio/mp3",
-        @"swa" : @"audio/mp3",
-        @"mp4" : @"audio/mp4",
-        @"mpeg" : @"audio/mpeg",
-        @"mpg" : @"audio/mpeg",
-        @"wav" : @"audio/wav",
-        @"bwf" : @"audio/wav",
-        @"m4a" : @"audio/x-m4a",
-        @"m4b" : @"audio/x-m4b",
-        @"m4p" : @"audio/x-m4p"
-    };
+             @"3gp" : @"audio/3gpp",
+             @"3gpp" : @"@audio/3gpp",
+             @"3g2" : @"audio/3gpp2",
+             @"3gp2" : @"audio/3gpp2",
+             @"aiff" : @"audio/aiff",
+             @"aif" : @"audio/aiff",
+             @"aifc" : @"audio/aiff",
+             @"cdda" : @"audio/aiff",
+             @"amr" : @"audio/amr",
+             @"mp3" : @"audio/mp3",
+             @"swa" : @"audio/mp3",
+             @"mp4" : @"audio/mp4",
+             @"mpeg" : @"audio/mpeg",
+             @"mpg" : @"audio/mpeg",
+             @"wav" : @"audio/wav",
+             @"bwf" : @"audio/wav",
+             @"m4a" : @"audio/x-m4a",
+             @"m4b" : @"audio/x-m4b",
+             @"m4p" : @"audio/x-m4p"
+             };
 }
 
 + (NSDictionary *)supportedImageExtensionTypesToMIMETypes {
     return @{
-        @"png" : OWSMimeTypeImagePng,
-        @"x-png" : OWSMimeTypeImagePng,
-        @"jfif" : @"image/jpeg",
-        @"jfif" : @"image/pjpeg",
-        @"jfif-tbnl" : @"image/jpeg",
-        @"jpe" : @"image/jpeg",
-        @"jpe" : @"image/pjpeg",
-        @"jpeg" : @"image/jpeg",
-        @"jpg" : @"image/jpeg",
-        @"tif" : @"image/tiff",
-        @"tiff" : @"image/tiff"
-    };
+             @"png" : OWSMimeTypeImagePng,
+             @"x-png" : OWSMimeTypeImagePng,
+             @"jfif" : @"image/jpeg",
+             @"jfif" : @"image/pjpeg",
+             @"jfif-tbnl" : @"image/jpeg",
+             @"jpe" : @"image/jpeg",
+             @"jpe" : @"image/pjpeg",
+             @"jpeg" : @"image/jpeg",
+             @"jpg" : @"image/jpeg",
+             @"tif" : @"image/tiff",
+             @"tiff" : @"image/tiff"
+             };
 }
 
 + (NSDictionary *)supportedAnimatedExtensionTypesToMIMETypes {
     return @{
-        @"gif" : @"image/gif",
-    };
+             @"gif" : @"image/gif",
+             };
+}
+
++(BOOL)isSupportedDocumentMIMEType:(NSString *)contentType {
+    return [[self supportedDocumentMIMETypesToExtensionTypes] objectForKey:contentType] != nil;
 }
 
 + (BOOL)isSupportedVideoMIMEType:(NSString *)contentType {
@@ -147,7 +163,12 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
 
 + (BOOL)isSupportedMIMEType:(NSString *)contentType {
     return [self isSupportedImageMIMEType:contentType] || [self isSupportedAudioMIMEType:contentType] ||
-           [self isSupportedVideoMIMEType:contentType] || [self isSupportedAnimatedMIMEType:contentType];
+    [self isSupportedVideoMIMEType:contentType] || [self isSupportedAnimatedMIMEType:contentType] ||
+    [self isSupportedDocumentMIMEType:contentType];
+}
+
++ (BOOL)isSupportedDocumentFile:(NSString *)filePath {
+    return [[self supportedDocumentExtensionTypesToMIMETypes] objectForKey:[filePath pathExtension]] != nil;
 }
 
 + (BOOL)isSupportedVideoFile:(NSString *)filePath {
@@ -164,6 +185,10 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
 
 + (BOOL)isSupportedAnimatedFile:(NSString *)filePath {
     return [[self supportedAnimatedExtensionTypesToMIMETypes] objectForKey:[filePath pathExtension]] != nil;
+}
+
++ (NSString *)getSupportedExtensionFromDocumentMIMEType:(NSString *)supportedMIMEType {
+    return [[self supportedDocumentMIMETypesToExtensionTypes] objectForKey:supportedMIMEType];
 }
 
 + (NSString *)getSupportedExtensionFromVideoMIMEType:(NSString *)supportedMIMEType {
@@ -185,6 +210,10 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
 + (NSString *)getSupportedExtensionFromBinaryDataMIMEType:(NSString *)supportedMIMEType
 {
     return [[self supportedBinaryDataMIMETypesToExtensionTypes] objectForKey:supportedMIMEType];
+}
+
++ (NSString *)getSupportedMIMETypeFromDocumentFile:(NSString *)supportedDocumentFile {
+    return [[self supportedDocumentExtensionTypesToMIMETypes] objectForKey:[supportedDocumentFile pathExtension]];
 }
 
 + (NSString *)getSupportedMIMETypeFromVideoFile:(NSString *)supportedVideoFile {
@@ -217,6 +246,10 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
     return [MIMETypeUtil isSupportedImageMIMEType:contentType];
 }
 
++(BOOL)isDocument:(NSString *)contentType {
+    return [MIMETypeUtil isSupportedDocumentMIMEType:contentType];
+}
+
 + (BOOL)isVideo:(NSString *)contentType {
     return [MIMETypeUtil isSupportedVideoMIMEType:contentType];
 }
@@ -239,7 +272,7 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
     } else if ([self isBinaryData:contentType]) {
         return [MIMETypeUtil filePathForBinaryData:uniqueId ofMIMEType:contentType inFolder:folder];
     }
-
+    
     DDLogError(@"Got asked for path of file %@ which is unsupported", contentType);
     return nil;
 }
@@ -256,7 +289,7 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
 + (NSURL *)changeFile:(NSURL *)originalFile toHaveExtension:(NSString *)extension {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *newPath =
-        [originalFile.URLByDeletingPathExtension.absoluteString stringByAppendingPathExtension:extension];
+    [originalFile.URLByDeletingPathExtension.absoluteString stringByAppendingPathExtension:extension];
     if (![fileManager fileExistsAtPath:newPath]) {
         NSError *error = nil;
         [fileManager createSymbolicLinkAtPath:newPath withDestinationPath:[originalFile path] error:&error];
@@ -265,30 +298,35 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
     return originalFile;
 }
 
++ (NSString *)filePathForDocument:(NSString *)uniqueId ofMIMEType:(NSString *)contentType inFolder:(NSString *)folder {
+    return [[folder stringByAppendingFormat:@"/%@", uniqueId]
+            stringByAppendingPathExtension:[self getSupportedExtensionFromDocumentMIMEType:contentType]];
+}
+
 + (NSString *)filePathForImage:(NSString *)uniqueId ofMIMEType:(NSString *)contentType inFolder:(NSString *)folder {
     return [[folder stringByAppendingFormat:@"/%@", uniqueId]
-        stringByAppendingPathExtension:[self getSupportedExtensionFromImageMIMEType:contentType]];
+            stringByAppendingPathExtension:[self getSupportedExtensionFromImageMIMEType:contentType]];
 }
 
 + (NSString *)filePathForVideo:(NSString *)uniqueId ofMIMEType:(NSString *)contentType inFolder:(NSString *)folder {
     return [[folder stringByAppendingFormat:@"/%@", uniqueId]
-        stringByAppendingPathExtension:[self getSupportedExtensionFromVideoMIMEType:contentType]];
+            stringByAppendingPathExtension:[self getSupportedExtensionFromVideoMIMEType:contentType]];
 }
 
 + (NSString *)filePathForAudio:(NSString *)uniqueId ofMIMEType:(NSString *)contentType inFolder:(NSString *)folder {
     return [[folder stringByAppendingFormat:@"/%@", uniqueId]
-        stringByAppendingPathExtension:[self getSupportedExtensionFromAudioMIMEType:contentType]];
+            stringByAppendingPathExtension:[self getSupportedExtensionFromAudioMIMEType:contentType]];
 }
 
 + (NSString *)filePathForAnimated:(NSString *)uniqueId ofMIMEType:(NSString *)contentType inFolder:(NSString *)folder {
     return [[folder stringByAppendingFormat:@"/%@", uniqueId]
-        stringByAppendingPathExtension:[self getSupportedExtensionFromAnimatedMIMEType:contentType]];
+            stringByAppendingPathExtension:[self getSupportedExtensionFromAnimatedMIMEType:contentType]];
 }
 
 + (NSString *)filePathForBinaryData:(NSString *)uniqueId ofMIMEType:(NSString *)contentType inFolder:(NSString *)folder
 {
     return [[folder stringByAppendingFormat:@"/%@", uniqueId]
-        stringByAppendingPathExtension:[self getSupportedExtensionFromBinaryDataMIMEType:contentType]];
+            stringByAppendingPathExtension:[self getSupportedExtensionFromBinaryDataMIMEType:contentType]];
 }
 
 #if TARGET_OS_IPHONE
