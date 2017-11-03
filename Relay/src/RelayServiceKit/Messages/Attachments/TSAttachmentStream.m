@@ -92,9 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSString *)filePath
 {
-    return [MIMETypeUtil filePathForAttachment:self.uniqueId
+    return [MIMETypeUtil filePathForAttachment:(self.filename ? self.filename : self.uniqueId)
                                     ofMIMEType:self.contentType
-                                      inFolder:[[self class] attachmentsFolder]];
+                                      inFolder:[NSString stringWithFormat:@"%@/%@", [[self class] attachmentsFolder], self.uniqueId]];
 }
 
 - (nullable NSURL *)mediaURL
