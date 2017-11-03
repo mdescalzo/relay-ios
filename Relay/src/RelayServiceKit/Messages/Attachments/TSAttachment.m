@@ -69,6 +69,8 @@ NSUInteger const TSAttachmentSchemaVersion = 2;
         return [NSString stringWithFormat:@"📻 %@", attachmentString];
     } else if ([MIMETypeUtil isAnimated:self.contentType]) {
         return [NSString stringWithFormat:@"🎡 %@", attachmentString];
+    } else if ([MIMETypeUtil isDocument:self.contentType]) {
+        return [NSString stringWithFormat:@"💼 %@", attachmentString];
     }
 
     return attachmentString;

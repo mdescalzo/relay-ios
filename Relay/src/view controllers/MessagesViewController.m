@@ -822,6 +822,13 @@ typedef enum : NSUInteger {
         } break;
     }
     cell.delegate = collectionView;
+    
+    // Document message catch:
+    if (message.isMediaMessage && [[message.media class] isEqual:[FLDocumentAdapter class]]) {
+        id<JSQMessageBubbleImageDataSource> bubbleImageDataSource = [collectionView.dataSource collectionView:collectionView messageBubbleImageDataForItemAtIndexPath:indexPath];
+        cell.messageBubbleImageView.image = [bubbleImageDataSource messageBubbleImage];
+        cell.messageBubbleImageView.highlightedImage = [bubbleImageDataSource messageBubbleHighlightedImage];
+    }
 
     if (message.shouldStartExpireTimer && [cell conformsToProtocol:@protocol(OWSExpirableMessageView)]) {
         id<OWSExpirableMessageView> expirableView = (id<OWSExpirableMessageView>)cell;
@@ -840,7 +847,7 @@ typedef enum : NSUInteger {
     OWSIncomingMessageCollectionViewCell *cell
         = (OWSIncomingMessageCollectionViewCell *)[super collectionView:self.collectionView
                                                  cellForItemAtIndexPath:indexPath];
-
+    
     if (![cell isKindOfClass:[OWSIncomingMessageCollectionViewCell class]]) {
         DDLogError(@"%@ Unexpected cell type: %@", self.tag, cell);
         return cell;
@@ -1149,7 +1156,14 @@ typedef enum : NSUInteger {
             BOOL isMediaMessage = [messageItem isMediaMessage];
 
             if (isMediaMessage) {
-                if ([[messageItem media] isKindOfClass:[TSPhotoAdapter class]]) {
+                if ([[messageItem media] isKindOfClass:[FLDocumentAdapter class]]) {
+                    FLDocumentAdapter *document = (FLDocumentAdapter *)[messageItem media];
+                    NSURL *documentURL = document.attachment.mediaURL;
+                    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[ documentURL ]
+                                                                                                    applicationActivities:nil];
+                    [self presentViewController:activityController animated:YES completion:nil];
+                    
+                } else if ([[messageItem media] isKindOfClass:[TSPhotoAdapter class]]) {
                     TSPhotoAdapter *messageMedia = (TSPhotoAdapter *)[messageItem media];
 
                     tappedImage = ((UIImageView *)[messageMedia mediaView]).image;

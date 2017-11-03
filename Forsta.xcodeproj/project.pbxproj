@@ -1142,6 +1142,10 @@
 		7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B21F4CF9D900DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF27F5D1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
 		7DFE7C531F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C541F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C551F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
@@ -2136,6 +2140,8 @@
 		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
 		7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
 		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
+		7DF27F581FAB833A00900AF1 /* FLDocumentAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDocumentAdapter.h; sourceTree = "<group>"; };
+		7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDocumentAdapter.m; sourceTree = "<group>"; };
 		7DF8D5E31F7EA1DB00F76A60 /* RelayStage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayStage.entitlements; sourceTree = "<group>"; };
 		7DFE7C511F74398500905909 /* ForstaColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForstaColors.h; sourceTree = "<group>"; };
 		7DFE7C521F74398500905909 /* ForstaColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForstaColors.m; sourceTree = "<group>"; };
@@ -3777,6 +3783,8 @@
 				341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */,
 				4526BD481CA61C8D00166BC8 /* OWSMessageEditing.h */,
 				45666ECE1D995B94008FE134 /* OWSMessageData.h */,
+				7DF27F581FAB833A00900AF1 /* FLDocumentAdapter.h */,
+				7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */,
 			);
 			name = TSMessageAdapters;
 			path = TSMessageAdapaters;
@@ -4779,13 +4787,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-Relay-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3465F381B1856CC06933B3A8 /* [CP] Copy Pods Resources */ = {
@@ -4794,9 +4805,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4854,13 +4875,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-SignalTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		697B8CE9DD615771382AAB55 /* [CP] Copy Pods Resources */ = {
@@ -4869,9 +4893,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4971,9 +5005,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5001,13 +5045,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-RelayDev-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D12FC9EC4E7001CD1E0419A2 /* [CP] Embed Pods Frameworks */ = {
@@ -5031,13 +5078,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-RelayStage-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F76686434770E2BBEBD9665A /* [CP] Copy Pods Resources */ = {
@@ -5046,9 +5096,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5269,6 +5329,7 @@
 				7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */,
 				7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */,
 				7D613AD01F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
+				7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */,
 				7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */,
 				7D613A911F90183C00E18D29 /* TSSubmitMessageRequest.m in Sources */,
@@ -5617,6 +5678,7 @@
 				7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */,
 				7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */,
 				7DCFFDF31F0EE4490003CD95 /* HandshakePacket.m in Sources */,
+				7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A221F9017C900E18D29 /* TSInfoMessage.m in Sources */,
 				7D613A7A1F90182400E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B71F90173D00E18D29 /* ContactsUpdater.m in Sources */,
@@ -5965,6 +6027,7 @@
 				76EB061C18170B33006006FC /* ArrayUtil.m in Sources */,
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
 				76EB05C418170B33006006FC /* HandshakePacket.m in Sources */,
+				7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A231F9017CA00E18D29 /* TSInfoMessage.m in Sources */,
 				7D613A7B1F90182500E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B81F90173D00E18D29 /* ContactsUpdater.m in Sources */,
@@ -6142,6 +6205,7 @@
 				B660F7201C29988E00687D6E /* Release.m in Sources */,
 				B660F7211C29988E00687D6E /* SignalKeyingStorage.m in Sources */,
 				B660F7221C29988E00687D6E /* VersionMigrations.m in Sources */,
+				7DF27F5D1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				B660F7231C29988E00687D6E /* DnsManager.m in Sources */,
 				B660F7241C29988E00687D6E /* HostNameEndPoint.m in Sources */,
 				45D231781DC7E8F10034FA89 /* SessionResetJob.swift in Sources */,

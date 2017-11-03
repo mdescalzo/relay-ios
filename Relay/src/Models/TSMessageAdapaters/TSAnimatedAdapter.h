@@ -18,6 +18,7 @@
 - (BOOL)isImage;
 - (BOOL)isAudio;
 - (BOOL)isVideo;
+-(BOOL)isDocument;
 
 @property NSString *attachmentId;
 @property NSData *fileData;

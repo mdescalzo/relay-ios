@@ -129,6 +129,10 @@ NS_ASSUME_NONNULL_BEGIN
     return [MIMETypeUtil isAudio:self.contentType];
 }
 
+-(BOOL)isDocument {
+    return [MIMETypeUtil isDocument:self.contentType];
+}
+
 - (nullable UIImage *)image
 {
     if ([self isVideo] || [self isAudio]) {

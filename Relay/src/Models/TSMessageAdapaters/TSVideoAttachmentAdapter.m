@@ -59,6 +59,10 @@
     return [MIMETypeUtil isSupportedVideoMIMEType:_contentType];
 }
 
+-(BOOL)isDocument {
+    return NO;
+}
+
 - (NSString *)formatDuration:(NSTimeInterval)duration {
     double dur            = duration;
     int minutes           = (int)(dur / 60);

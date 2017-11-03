@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isAnimated;
 - (BOOL)isImage;
 - (BOOL)isVideo;
+-(BOOL)isDocument;
+
 - (nullable NSString *)filePath;
 - (nullable NSURL *)mediaURL;
 - (nullable NSData *)readDataFromFileWithError:(NSError **)error;
