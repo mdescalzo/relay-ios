@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
     _failed = NO;
     _downloading = NO;
     _relay = relay;
-
+    
     return self;
 }
 

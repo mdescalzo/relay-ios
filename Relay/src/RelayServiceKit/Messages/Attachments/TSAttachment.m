@@ -16,6 +16,8 @@ NSUInteger const TSAttachmentSchemaVersion = 2;
 
 @implementation TSAttachment
 
+@synthesize filename = _filename;
+
 - (instancetype)initWithServerId:(UInt64)serverId
                    encryptionKey:(NSData *)encryptionKey
                      contentType:(NSString *)contentType

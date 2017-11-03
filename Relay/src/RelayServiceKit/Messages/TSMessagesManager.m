@@ -331,8 +331,17 @@ NS_ASSUME_NONNULL_BEGIN
                             dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
     TSThread *thread = [self threadForEnvelope:envelope dataMessage:dataMessage];
+    
+    NSArray *jsonArray = [self arrayFromMessageBody:dataMessage.body];
+    NSDictionary *jsonPayload;
+    if (jsonArray.count > 0) {
+        jsonPayload = [jsonArray lastObject];
+    }
+    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+    
     OWSAttachmentsProcessor *attachmentsProcessor =
     [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
+                                                   properties:[dataBlob objectForKey:@"attachments"]
                                                     timestamp:envelope.timestamp
                                                         relay:envelope.relay
                                                        thread:thread
