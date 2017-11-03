@@ -59,7 +59,7 @@
 #import "SignalRecipient.h"
 #import "TSAccountManager.h"
 #import "TSInvalidIdentityKeySendingErrorMessage.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TSNetworkManager.h"
 #import <YapDatabase/YapDatabaseView.h>
 #import "ImagePreviewViewController.h"
@@ -125,7 +125,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
-@property (nonatomic, readonly) FLMessagesManager *messagesManager;
+@property (nonatomic, readonly) TSMessagesManager *messagesManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 
 @property (nonatomic, strong) UIImage *imageToPreview;
@@ -172,7 +172,7 @@ typedef enum : NSUInteger {
     _messageSender = [Environment getCurrent].messageSender;
     _storageManager = [TSStorageManager sharedManager];
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:_storageManager];
-    _messagesManager = [FLMessagesManager sharedManager];
+    _messagesManager = [TSMessagesManager sharedManager];
     _networkManager = [TSNetworkManager sharedManager];
 }
 

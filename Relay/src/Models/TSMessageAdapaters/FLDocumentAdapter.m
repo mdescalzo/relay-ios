@@ -11,6 +11,7 @@
 #import "JSQMediaItem+OWS.h"
 #import "UIFont+OWS.h"
 #import "JSQMessagesMediaViewBubbleImageMasker.h"
+#import "UIColor+JSQMessages.h"
 
 static const CGFloat cellPadding = 5.0f;
 //static const CGFloat iconSize = 40.0f;
@@ -63,7 +64,7 @@ static const CGFloat spacing = 3.0f;
     if (self.isOutgoing) {
         return [UIColor blackColor];
     } else {
-        return [UIColor lightGrayColor];
+        return [UIColor jsq_messageBubbleLightGrayColor];
     }
 
 }
