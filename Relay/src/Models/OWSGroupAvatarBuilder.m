@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)buildDefaultImage
 {
-    return [UIImage imageNamed:@"empty-group-avatar"];
+    return [UIImage imageNamed:@"empty-group-avatar-gray"];
 }
 
 @end
