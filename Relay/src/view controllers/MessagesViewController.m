@@ -102,17 +102,17 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
 @property (nonatomic, strong) YapDatabaseViewMappings *messageMappings;
 
-@property (nonatomic, retain) JSQMessagesBubbleImage *outgoingBubbleImageData;
-@property (nonatomic, retain) JSQMessagesBubbleImage *incomingBubbleImageData;
-@property (nonatomic, retain) JSQMessagesBubbleImage *currentlyOutgoingBubbleImageData;
-@property (nonatomic, retain) JSQMessagesBubbleImage *outgoingMessageFailedImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *outgoingBubbleImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *incomingBubbleImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *currentlyOutgoingBubbleImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *outgoingMessageFailedImageData;
 
 @property (nonatomic, strong) NSTimer *audioPlayerPoller;
 @property (nonatomic, strong) TSVideoAttachmentAdapter *currentMediaAdapter;
 
-@property (nonatomic, retain) NSTimer *readTimer;
+@property (nonatomic, strong) NSTimer *readTimer;
 @property (nonatomic, strong) UILabel *navbarTitleLabel;
-@property (nonatomic, retain) UIButton *attachButton;
+@property (nonatomic, strong) UIButton *attachButton;
 
 @property (nonatomic) CGFloat previousCollectionViewFrameWidth;
 
