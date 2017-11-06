@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  key:attachmentProto.key
                                                                          contentType:attachmentProto.contentType
                                                                                relay:relay];
-        pointer.filename = [properties objectForKey:@"name"];
+        pointer.filename = [[properties objectForKey:@"name"] stringByDeletingPathExtension];
         [attachmentIds addObject:pointer.uniqueId];
 
         if ([MIMETypeUtil isSupportedMIMEType:pointer.contentType]) {
