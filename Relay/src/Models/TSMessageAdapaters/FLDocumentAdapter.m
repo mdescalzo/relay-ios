@@ -93,7 +93,7 @@ static const CGFloat insetFactor = 0.45f;
     
     CGRect filenameFrame = CGRectMake(imageFrame.origin.x + imageFrame.size.width + spacing,
                                       cellPadding,
-                                      [self mediaViewDisplaySize].width - ((cellPadding + iconInset)*2.0f) - (imageFrame.size.width + cellPadding),
+                                      [self mediaViewDisplaySize].width - ((cellPadding + iconInset)*2.0f) - (imageFrame.size.width + cellPadding*2.0f),
                                       ([self mediaViewDisplaySize].height - ((cellPadding + iconInset)*2.0f)) * 0.6f);
     UILabel *filenameLabel = [[UILabel alloc] initWithFrame:filenameFrame];
     NSString *filename = [[self.attachment filePath] lastPathComponent];
