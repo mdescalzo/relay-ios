@@ -76,6 +76,10 @@
     return NO;
 }
 
+-(BOOL)isDocument {
+    return NO;
+}
+
 #pragma mark - OWSMessageEditing Protocol
 
 - (BOOL)canPerformEditingAction:(SEL)action

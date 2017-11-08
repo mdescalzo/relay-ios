@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithAttachmentProtos:(NSArray<OWSSignalServiceProtosAttachmentPointer *> *)attachmentProtos
+                              properties:(NSArray<NSDictionary *> *)attachmentProperties
                                timestamp:(uint64_t)timestamp
                                    relay:(nullable NSString *)relay
                                   thread:(TSThread *)thread
@@ -62,11 +63,12 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray<NSString *> *supportedAttachmentIds = [NSMutableArray new];
 
     for (OWSSignalServiceProtosAttachmentPointer *attachmentProto in attachmentProtos) {
+        NSDictionary *properties = [attachmentProperties objectAtIndex:[attachmentProtos indexOfObject:attachmentProto]];
         TSAttachmentPointer *pointer = [[TSAttachmentPointer alloc] initWithServerId:attachmentProto.id
                                                                                  key:attachmentProto.key
                                                                          contentType:attachmentProto.contentType
                                                                                relay:relay];
-
+        pointer.filename = [[properties objectForKey:@"name"] stringByDeletingPathExtension];
         [attachmentIds addObject:pointer.uniqueId];
 
         if ([MIMETypeUtil isSupportedMIMEType:pointer.contentType]) {
@@ -166,7 +168,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     TSAttachmentStream *stream = [[TSAttachmentStream alloc] initWithPointer:attachment];
-
+    stream.filename = attachment.filename;
+    
     NSError *error;
     [stream writeData:plaintext error:&error];
     if (error) {

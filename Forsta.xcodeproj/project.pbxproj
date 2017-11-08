@@ -491,12 +491,6 @@
 		7D6139AA1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
 		7D6139AB1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
 		7D6139AC1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
-		7D6139AD1F90173300E18D29 /* FLMessagesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138831F90161500E18D29 /* FLMessagesManager.m */; };
-		7D6139AE1F90173300E18D29 /* FLMessagesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138831F90161500E18D29 /* FLMessagesManager.m */; };
-		7D6139AF1F90173400E18D29 /* FLMessagesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138831F90161500E18D29 /* FLMessagesManager.m */; };
-		7D6139B01F90173500E18D29 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138851F90161500E18D29 /* FLTagMathService.m */; };
-		7D6139B11F90173600E18D29 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138851F90161500E18D29 /* FLTagMathService.m */; };
-		7D6139B21F90173600E18D29 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138851F90161500E18D29 /* FLTagMathService.m */; };
 		7D6139B31F90173A00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
 		7D6139B41F90173B00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
 		7D6139B51F90173B00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
@@ -1142,6 +1136,14 @@
 		7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B21F4CF9D900DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
+		7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF27F5D1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF27F8F1FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
+		7DF27F901FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
+		7DF27F911FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
+		7DF27F921FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
 		7DFE7C531F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C541F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C551F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
@@ -1859,10 +1861,6 @@
 		7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPrivacyPreferences.m; sourceTree = "<group>"; };
 		7D6138801F90161500E18D29 /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCSMStorage.h; path = RelayServiceKit/CCSM/CCSMStorage.h; sourceTree = "<group>"; };
 		7D6138811F90161500E18D29 /* CCSMStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCSMStorage.m; path = RelayServiceKit/CCSM/CCSMStorage.m; sourceTree = "<group>"; };
-		7D6138821F90161500E18D29 /* FLMessagesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLMessagesManager.h; sourceTree = "<group>"; };
-		7D6138831F90161500E18D29 /* FLMessagesManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLMessagesManager.m; sourceTree = "<group>"; };
-		7D6138841F90161500E18D29 /* FLTagMathService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLTagMathService.h; sourceTree = "<group>"; };
-		7D6138851F90161500E18D29 /* FLTagMathService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLTagMathService.m; sourceTree = "<group>"; };
 		7D6138871F90161500E18D29 /* Contact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		7D6138881F90161500E18D29 /* Contact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		7D6138891F90161500E18D29 /* ContactsUpdater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsUpdater.h; sourceTree = "<group>"; };
@@ -2136,6 +2134,10 @@
 		7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTypes.m; sourceTree = "<group>"; };
 		7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
 		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
+		7DF27F581FAB833A00900AF1 /* FLDocumentAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDocumentAdapter.h; sourceTree = "<group>"; };
+		7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDocumentAdapter.m; sourceTree = "<group>"; };
+		7DF27F8D1FACE82800900AF1 /* FLTagMathService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTagMathService.h; path = ../../../../Desktop/FLTagMathService.h; sourceTree = "<group>"; };
+		7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTagMathService.m; path = ../../../../Desktop/FLTagMathService.m; sourceTree = "<group>"; };
 		7DF8D5E31F7EA1DB00F76A60 /* RelayStage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayStage.entitlements; sourceTree = "<group>"; };
 		7DFE7C511F74398500905909 /* ForstaColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForstaColors.h; sourceTree = "<group>"; };
 		7DFE7C521F74398500905909 /* ForstaColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForstaColors.m; sourceTree = "<group>"; };
@@ -3313,10 +3315,6 @@
 		7D61387F1F90161500E18D29 /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
-				7D6138821F90161500E18D29 /* FLMessagesManager.h */,
-				7D6138831F90161500E18D29 /* FLMessagesManager.m */,
-				7D6138841F90161500E18D29 /* FLTagMathService.h */,
-				7D6138851F90161500E18D29 /* FLTagMathService.m */,
 			);
 			path = CCSM;
 			sourceTree = "<group>";
@@ -3777,6 +3775,8 @@
 				341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */,
 				4526BD481CA61C8D00166BC8 /* OWSMessageEditing.h */,
 				45666ECE1D995B94008FE134 /* OWSMessageData.h */,
+				7DF27F581FAB833A00900AF1 /* FLDocumentAdapter.h */,
+				7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */,
 			);
 			name = TSMessageAdapters;
 			path = TSMessageAdapaters;
@@ -4179,6 +4179,8 @@
 		DBE1798C1ED9FF8500327B2B /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
+				7DF27F8D1FACE82800900AF1 /* FLTagMathService.h */,
+				7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */,
 				7D6138801F90161500E18D29 /* CCSMStorage.h */,
 				7D6138811F90161500E18D29 /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
@@ -4782,13 +4784,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-Relay-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3465F381B1856CC06933B3A8 /* [CP] Copy Pods Resources */ = {
@@ -4797,9 +4802,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4857,13 +4872,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-SignalTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		697B8CE9DD615771382AAB55 /* [CP] Copy Pods Resources */ = {
@@ -4872,9 +4890,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4974,9 +5002,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5004,13 +5042,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-RelayDev-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D12FC9EC4E7001CD1E0419A2 /* [CP] Embed Pods Frameworks */ = {
@@ -5034,13 +5075,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Common-RelayStage-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F76686434770E2BBEBD9665A /* [CP] Copy Pods Resources */ = {
@@ -5049,9 +5093,19 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-resources.sh",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
+				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5083,7 +5137,6 @@
 				7D613A541F9017FC00E18D29 /* TSGroupModel.m in Sources */,
 				7D4A39C51F1693930023C29B /* CallConnectUtil.m in Sources */,
 				7D613A601F90180B00E18D29 /* OWSDevicesService.m in Sources */,
-				7D6139AF1F90173400E18D29 /* FLMessagesManager.m in Sources */,
 				7D4A39C61F1693930023C29B /* LoggingUtil.m in Sources */,
 				7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */,
 				7D613A6D1F90181900E18D29 /* OWSDeviceProvisioningRequest.m in Sources */,
@@ -5149,6 +5202,7 @@
 				7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */,
 				7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */,
 				7D613A701F90181B00E18D29 /* OWSGetDevicesRequest.m in Sources */,
+				7DF27F8F1FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				7D613A0F1F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D4A39F61F1693930023C29B /* Release.m in Sources */,
 				7D6139FD1F90179F00E18D29 /* TSAttachmentPointer.m in Sources */,
@@ -5183,7 +5237,6 @@
 				7D4A3A0E1F1693930023C29B /* RecipientUnavailable.m in Sources */,
 				7D4A3A0F1F1693930023C29B /* DropoutTracker.m in Sources */,
 				7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */,
-				7D6139B01F90173500E18D29 /* FLTagMathService.m in Sources */,
 				7D6139DA1F90177700E18D29 /* OWSGroupsOutputStream.m in Sources */,
 				7D4A3A111F1693930023C29B /* CallTermination.m in Sources */,
 				7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */,
@@ -5272,6 +5325,7 @@
 				7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */,
 				7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */,
 				7D613AD01F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
+				7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */,
 				7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */,
 				7D613A911F90183C00E18D29 /* TSSubmitMessageRequest.m in Sources */,
@@ -5436,7 +5490,6 @@
 				7D613A831F90182D00E18D29 /* TSRecipientPrekeyRequest.m in Sources */,
 				7DCFFD731F0EE4490003CD95 /* AppStoreRating.m in Sources */,
 				7D613A8F1F90183A00E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
-				7D6139B11F90173600E18D29 /* FLTagMathService.m in Sources */,
 				7DCFFD741F0EE4490003CD95 /* OWSQRCodeScanningViewController.m in Sources */,
 				7DCFFD751F0EE4490003CD95 /* PriorityQueue.m in Sources */,
 				7DCFFD761F0EE4490003CD95 /* SettingsPopupMenuViewController.m in Sources */,
@@ -5498,6 +5551,7 @@
 				7DCFFD991F0EE4490003CD95 /* SignalUtil.m in Sources */,
 				7DCFFD9A1F0EE4490003CD95 /* AnonymousAudioCallbackHandler.m in Sources */,
 				7D613AD41F90188B00E18D29 /* TSDatabaseView.m in Sources */,
+				7DF27F901FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				7D613A071F9017AB00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				7DCFFD9B1F0EE4490003CD95 /* ConfirmAckPacket.m in Sources */,
 				7DCFFD9C1F0EE4490003CD95 /* CategorizingLogger.m in Sources */,
@@ -5616,10 +5670,10 @@
 				7DCFFDEF1F0EE4490003CD95 /* LoginValidationViewController.m in Sources */,
 				7D6139E11F90177E00E18D29 /* OWSProvisioningMessage.m in Sources */,
 				7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */,
-				7D6139AE1F90173300E18D29 /* FLMessagesManager.m in Sources */,
 				7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */,
 				7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */,
 				7DCFFDF31F0EE4490003CD95 /* HandshakePacket.m in Sources */,
+				7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A221F9017C900E18D29 /* TSInfoMessage.m in Sources */,
 				7D613A7A1F90182400E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B71F90173D00E18D29 /* ContactsUpdater.m in Sources */,
@@ -5784,7 +5838,6 @@
 				7D613A841F90182D00E18D29 /* TSRecipientPrekeyRequest.m in Sources */,
 				458E38311D6682450094BD24 /* OWSQRCodeScanningViewController.m in Sources */,
 				7D613A901F90183A00E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
-				7D6139B21F90173600E18D29 /* FLTagMathService.m in Sources */,
 				76EB062418170B33006006FC /* PriorityQueue.m in Sources */,
 				7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */,
 				B6BADBE71B88D1AC0086A80D /* LockInteractionController.m in Sources */,
@@ -5846,6 +5899,7 @@
 				E197B61718BBEC1A00F073E5 /* AnonymousAudioCallbackHandler.m in Sources */,
 				76EB05BC18170B33006006FC /* ConfirmAckPacket.m in Sources */,
 				7D613AD51F90188B00E18D29 /* TSDatabaseView.m in Sources */,
+				7DF27F911FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				7D613A081F9017AC00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				76EB060C18170B33006006FC /* CategorizingLogger.m in Sources */,
 				76EB058A18170B33006006FC /* Release.m in Sources */,
@@ -5964,10 +6018,10 @@
 				7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */,
 				7D6139E21F90177F00E18D29 /* OWSProvisioningMessage.m in Sources */,
 				76EB057418170B33006006FC /* RecentCallManager.m in Sources */,
-				7D6139AD1F90173300E18D29 /* FLMessagesManager.m in Sources */,
 				76EB061C18170B33006006FC /* ArrayUtil.m in Sources */,
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
 				76EB05C418170B33006006FC /* HandshakePacket.m in Sources */,
+				7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A231F9017CA00E18D29 /* TSInfoMessage.m in Sources */,
 				7D613A7B1F90182500E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B81F90173D00E18D29 /* ContactsUpdater.m in Sources */,
@@ -6145,6 +6199,7 @@
 				B660F7201C29988E00687D6E /* Release.m in Sources */,
 				B660F7211C29988E00687D6E /* SignalKeyingStorage.m in Sources */,
 				B660F7221C29988E00687D6E /* VersionMigrations.m in Sources */,
+				7DF27F5D1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				B660F7231C29988E00687D6E /* DnsManager.m in Sources */,
 				B660F7241C29988E00687D6E /* HostNameEndPoint.m in Sources */,
 				45D231781DC7E8F10034FA89 /* SessionResetJob.swift in Sources */,
@@ -6202,6 +6257,7 @@
 				B660F7501C29988E00687D6E /* LowLatencyConnector.m in Sources */,
 				B660F7511C29988E00687D6E /* StreamPair.m in Sources */,
 				B660F7521C29988E00687D6E /* Certificate.m in Sources */,
+				7DF27F921FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B660F7531C29988E00687D6E /* NetworkStream.m in Sources */,
 				453D28BB1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,

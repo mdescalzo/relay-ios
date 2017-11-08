@@ -51,7 +51,7 @@
 #import "SignalRecipient.h"
 #import "TSAccountManager.h"
 #import "TSInvalidIdentityKeySendingErrorMessage.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TSNetworkManager.h"
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
@@ -76,7 +76,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, strong) FLTagMathService *tagMathService;
 @property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
-@property (nonatomic, readonly) FLMessagesManager *messagesManager;
+@property (nonatomic, readonly) TSMessagesManager *messagesManager;
 //@property (nonatomic, readonly) OWSMessageSender *messageSender;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 
@@ -133,7 +133,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     }
     
     _contactsManager = [Environment getCurrent].contactsManager;
-    _messagesManager = [FLMessagesManager sharedManager];
+    _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                       storageManager:[TSStorageManager sharedManager]
                                                      contactsManager:_contactsManager];
@@ -150,7 +150,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     }
     
     _contactsManager = [Environment getCurrent].contactsManager;
-    _messagesManager = [FLMessagesManager sharedManager];
+    _messagesManager = [TSMessagesManager sharedManager];
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                       storageManager:[TSStorageManager sharedManager]
                                                      contactsManager:_contactsManager];
