@@ -126,7 +126,7 @@
                 TSAttachmentStream *stream = (TSAttachmentStream *)attachment;
                 NSFileManager *fm = [NSFileManager defaultManager];
                 if ([fm fileExistsAtPath:stream.filePath]) {
-                    NSString *filename = [stream.mediaURL.pathComponents lastObject];
+                    NSString *filename = [stream.mediaURL lastPathComponent];
                     NSString *contentType = stream.contentType;
                     NSDictionary *attribs = [fm attributesOfItemAtPath:stream.filePath error:nil];
                     NSNumber *size = [attribs objectForKey:NSFileSize];

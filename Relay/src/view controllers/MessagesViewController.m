@@ -129,6 +129,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 
 @property (nonatomic, strong) UIImage *imageToPreview;
+@property (nonatomic, strong) NSString *filenameToPreview;
 
 @property NSCache *messageAdapterCache;
 
@@ -1355,7 +1356,7 @@ typedef enum : NSUInteger {
             if ([attachment isKindOfClass:[TSAttachmentPointer class]]) {
                 TSAttachmentPointer *pointer = (TSAttachmentPointer *)attachment;
 
-                // FIXME possible for pointer to get stuck in isDownloading state if app is closed while downloading.
+                // FIXME: possible for pointer to get stuck in isDownloading state if app is closed while downloading.
                 // see: https://github.com/WhisperSystems/Signal-iOS/issues/1254
                 if (!pointer.isDownloading) {
                     OWSAttachmentsProcessor *processor =
@@ -1635,6 +1636,7 @@ typedef enum : NSUInteger {
 -(void)didPressSend:(id)sender
 {
     [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:self.imageToPreview]
+                   withFilename:self.filenameToPreview
                          ofType:@"image/jpeg"];
     [sender dismissViewControllerAnimated:YES completion:nil];
 }
@@ -1670,7 +1672,9 @@ typedef enum : NSUInteger {
         }
         NSString *mimeType = [MIMETypeUtil mimeTypeForFileAtPath:filePath];
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-        [self sendMessageAttachment:fileData ofType:mimeType];
+        [self sendMessageAttachment:fileData
+                       withFilename:url.lastPathComponent
+                             ofType:mimeType];
     }
 }
 
@@ -1733,6 +1737,8 @@ typedef enum : NSUInteger {
     [UIUtil modalCompletionBlock]();
     [self resetFrame];
 
+    __block NSString *filename = @"";
+    
     void (^failedToPickAttachment)(NSError *error) = ^void(NSError *error) {
         DDLogError(@"failed to pick attachment with error: %@", error);
     };
@@ -1742,13 +1748,16 @@ typedef enum : NSUInteger {
         // Video picked from library or captured with camera
 
         NSURL *videoURL = info[UIImagePickerControllerMediaURL];
+        filename = videoURL.lastPathComponent;
         [self sendQualityAdjustedAttachmentForVideo:videoURL];
     } else if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
         // Static Image captured from camera
 
         UIImage *imageFromCamera = [info[UIImagePickerControllerOriginalImage] normalizedImage];
         if (imageFromCamera) {
-            [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:imageFromCamera] ofType:@"image/jpeg"];
+            [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:imageFromCamera]
+                           withFilename:filename
+                                 ofType:@"image/jpeg"];
         } else {
             failedToPickAttachment(nil);
         }
@@ -1773,6 +1782,11 @@ typedef enum : NSUInteger {
                            UIImageOrientation orientation,
                            NSDictionary *_Nullable assetInfo) {
 
+                           if ([assetInfo objectForKey:@"PHImageFileURLKey"]) {
+                               NSURL *filenameURL = [assetInfo objectForKey:@"PHImageFileURLKey"];
+                               filename = filenameURL.lastPathComponent;
+                           }
+                           
                            NSError *assetFetchingError = assetInfo[PHImageErrorKey];
                            if (assetFetchingError || !imageData) {
                                return failedToPickAttachment(assetFetchingError);
@@ -1793,12 +1807,15 @@ typedef enum : NSUInteger {
                                 * VideoMaxSize return 100 * MB;
                                 * getAudioMaxSize 100 * MB;
                                 */
-                               [self sendMessageAttachment:imageData ofType:@"image/gif"];
+                               [self sendMessageAttachment:imageData
+                                              withFilename:filename
+                                                    ofType:@"image/gif"];
                            } else {
                                DDLogVerbose(@"Compressing attachment as image/jpeg");
                                UIImage *pickedImage = [[UIImage alloc] initWithData:imageData];
                                
                                self.imageToPreview = pickedImage;
+                               self.filenameToPreview = filename;
                                [self dismissViewControllerAnimated:YES completion:^{
                                    [self performSegueWithIdentifier:@"imagePreviewSegue" sender:pickedImage];
                                }];
@@ -1810,7 +1827,7 @@ typedef enum : NSUInteger {
     }
 }
 
-- (void)sendMessageAttachment:(NSData *)attachmentData ofType:(NSString *)attachmentType
+- (void)sendMessageAttachment:(NSData *)attachmentData withFilename:(NSString *)filename ofType:(NSString *)attachmentType
 {
     TSOutgoingMessage *message;
     OWSDisappearingMessagesConfiguration *configuration =
@@ -1838,6 +1855,7 @@ typedef enum : NSUInteger {
                                               (unsigned long)attachmentData.length,
                                               attachmentType);
                                  [self.messageSender sendAttachmentData:attachmentData
+                                                               filename:filename
                                      contentType:attachmentType
                                      inMessage:message
                                      success:^{
@@ -1853,6 +1871,7 @@ typedef enum : NSUInteger {
                      (unsigned long)attachmentData.length,
                      attachmentType);
         [self.messageSender sendAttachmentData:attachmentData
+                                      filename:filename
                                    contentType:attachmentType
                                      inMessage:message
                                        success:^{
@@ -1893,7 +1912,9 @@ typedef enum : NSUInteger {
     exportSession.outputURL = compressedVideoUrl;
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
       NSError *error;
-      [self sendMessageAttachment:[NSData dataWithContentsOfURL:compressedVideoUrl] ofType:@"video/mp4"];
+        [self sendMessageAttachment:[NSData dataWithContentsOfURL:compressedVideoUrl]
+                       withFilename:@""
+                             ofType:@"video/mp4"];
       [[NSFileManager defaultManager] removeItemAtURL:compressedVideoUrl error:&error];
       if (error) {
           DDLogWarn(@"Failed to remove cached video file: %@", error.debugDescription);
@@ -2149,7 +2170,9 @@ typedef enum : NSUInteger {
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag {
     if (flag) {
-        [self sendMessageAttachment:[NSData dataWithContentsOfURL:recorder.url] ofType:@"audio/m4a"];
+        [self sendMessageAttachment:[NSData dataWithContentsOfURL:recorder.url]
+                       withFilename:@""
+                             ofType:@"audio/m4a"];
     }
 }
 

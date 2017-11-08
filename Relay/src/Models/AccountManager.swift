@@ -20,7 +20,7 @@ class AccountManager : NSObject {
     func register(verificationCode: String) -> Promise<Void> {
         return firstly {
             Promise { fulfill, reject in
-                if verificationCode.characters.count == 0 {
+                if verificationCode.count == 0 {
                     let error = OWSErrorWithCodeDescription(.userError,
                                                             NSLocalizedString("REGISTRATION_ERROR_BLANK_VERIFICATION_CODE",
                                                                               comment: "alert body during registration"))

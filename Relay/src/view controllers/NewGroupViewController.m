@@ -204,6 +204,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                                  message.customMessage = NSLocalizedString(@"GROUP_CREATED", nil);
                                                                  if (model.groupImage) {
                                                                      [self.messageSender sendAttachmentData:UIImagePNGRepresentation(model.groupImage)
+                                                                                                   filename:@""
                                                                                                 contentType:OWSMimeTypeImagePng
                                                                                                   inMessage:message
                                                                                                     success:popToThread
