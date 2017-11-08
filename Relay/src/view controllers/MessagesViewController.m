@@ -85,7 +85,7 @@ typedef enum : NSUInteger {
     kMediaTypeVideo,
 } kMediaTypes;
 
-@interface MessagesViewController() <ImagePreviewViewControllerDelegate>
+@interface MessagesViewController() <ImagePreviewViewControllerDelegate, UIDocumentPickerDelegate>
 {
     UIImage *tappedImage;
     BOOL isGroupConversation;
@@ -1629,6 +1629,43 @@ typedef enum : NSUInteger {
     [sender dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Document picker methods
+-(void)chooseDocument
+{
+    //TODO: ask for/validate iCloud permission
+    UIDocumentPickerViewController *docPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[ (__bridge NSString *)kUTTypeItem ] inMode:UIDocumentPickerModeImport];
+    docPicker.navigationController.navigationBar.backgroundColor  =[UIColor blackColor];
+    docPicker.delegate = self;
+    [self.navigationController presentViewController:docPicker animated:YES completion:[UIUtil modalCompletionBlock]];
+}
+
+-(void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls
+{
+    for (NSURL *url in urls) {
+        NSString *filePath = url.path;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            DDLogDebug(@"Selected file not does exist at: %@", url);
+            return;
+        }
+        BOOL isDirectory;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory]) {
+            if (isDirectory) {
+                DDLogDebug(@"Selected item is a directory.  Skipping: %@", url);
+                return;
+            }
+        }
+        NSString *mimeType = [MIMETypeUtil mimeTypeForFileAtPath:filePath];
+        NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+        [self sendMessageAttachment:fileData ofType:mimeType];
+    }
+}
+
+-(void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller
+{
+    [self.navigationController dismissViewControllerAnimated:YES
+                                                  completion:^{ [UIUtil modalCompletionBlock](); } ];
+}
+
 #pragma mark - UIImagePickerController
 
 /*
@@ -1642,7 +1679,7 @@ typedef enum : NSUInteger {
         picker.mediaTypes = @[ (__bridge NSString *)kUTTypeImage, (__bridge NSString *)kUTTypeMovie ];
         picker.allowsEditing = NO;
         picker.delegate = self;
-        [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
+        [self.navigationController presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
     }];
 }
 - (void)chooseFromLibrary {
@@ -1655,7 +1692,7 @@ typedef enum : NSUInteger {
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     picker.delegate = self;
     picker.mediaTypes = @[ (__bridge NSString *)kUTTypeImage, (__bridge NSString *)kUTTypeMovie ];
-    [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
+    [self.navigationController presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
 }
 
 /*
@@ -1664,7 +1701,7 @@ typedef enum : NSUInteger {
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [UIUtil modalCompletionBlock]();
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)resetFrame {
@@ -1778,7 +1815,10 @@ typedef enum : NSUInteger {
     }
     message.uniqueId = [[NSUUID UUID] UUIDString];
     
-    [self dismissViewControllerAnimated:YES
+    // Check to see if a model view is being presented and dismiss if necessary.
+    UIViewController *vc = [self.navigationController presentedViewController];
+    if (vc) {
+    [self.navigationController dismissViewControllerAnimated:YES
                              completion:^{
                                  DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",
                                               (unsigned long)attachmentData.length,
@@ -1794,6 +1834,21 @@ typedef enum : NSUInteger {
                                              @"%@ Failed to send message attachment with error: %@", self.tag, error);
                                      }];
                              }];
+    } else {
+        DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",
+                     (unsigned long)attachmentData.length,
+                     attachmentType);
+        [self.messageSender sendAttachmentData:attachmentData
+                                   contentType:attachmentType
+                                     inMessage:message
+                                       success:^{
+                                           DDLogDebug(@"%@ Successfully sent message attachment.", self.tag);
+                                       }
+                                       failure:^(NSError *error) {
+                                           DDLogError(
+                                                      @"%@ Failed to send message attachment with error: %@", self.tag, error);
+                                       }];
+    }
 }
 
 - (NSURL *)videoTempFolder {
@@ -2086,7 +2141,7 @@ typedef enum : NSUInteger {
 
 #pragma mark Accessory View
 
-- (void)didPressAccessoryButton:(UIButton *)sender {
+- (void)didPressAccessoryButton:(UIButton *)sender { // Attachment button
 
     BOOL preserveKeyboard = [self.inputToolbar.contentView.textView isFirstResponder];
     
@@ -2107,6 +2162,13 @@ typedef enum : NSUInteger {
                                                                       [self popKeyBoard];
                                                                   }
                                                               }];
+    UIAlertAction *chooseDocutmentButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"CHOOSE_FILE_BUTTON", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action){ [self chooseDocument];
+                                                                  if (preserveKeyboard) {
+                                                                      [self popKeyBoard];
+                                                                  }
+                                                              }];
     UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction *_Nonnull action){
@@ -2116,8 +2178,9 @@ typedef enum : NSUInteger {
                                                          }];
     [alert addAction:takePictureButton];
     [alert addAction:chooseMediaButton];
+    [alert addAction:chooseDocutmentButton];
     [alert addAction:cancelButton];
-    [self presentViewController:alert animated:YES completion:nil];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
 
 //    UIView *presenter = self.parentViewController.view;
 //    [DJWActionSheet showInView:presenter

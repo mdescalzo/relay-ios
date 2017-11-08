@@ -768,6 +768,9 @@
 "TAKE_PICTURE_BUTTON" = "Take a Picture";
 
 /* No comment provided by engineer. */
+"CHOOSE_FILE_BUTTON" = "Choose file...";
+
+/* No comment provided by engineer. */
 "TIMEOUT_CONTACTS_DETAIL" = "We couldn't fetch an updated contact list from the server. Please try again later.";
 
 /* No comment provided by engineer. */
