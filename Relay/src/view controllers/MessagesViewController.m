@@ -1650,9 +1650,8 @@ typedef enum : NSUInteger {
 {
     //TODO: ask for/validate iCloud permission
     UIDocumentPickerViewController *docPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[ (__bridge NSString *)kUTTypeItem ] inMode:UIDocumentPickerModeImport];
-    docPicker.navigationController.navigationBar.backgroundColor  =[UIColor blackColor];
     docPicker.delegate = self;
-    [self.navigationController presentViewController:docPicker animated:YES completion:[UIUtil modalCompletionBlock]];
+    [self.navigationController presentViewController:docPicker animated:YES completion:nil];
 }
 
 -(void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls

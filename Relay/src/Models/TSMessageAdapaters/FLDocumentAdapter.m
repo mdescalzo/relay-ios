@@ -16,7 +16,7 @@
 
 static const CGFloat cellPadding = 5.0f;
 static const CGFloat iconInset = 5.0f;
-static const CGFloat viewHeight = 50.0f;
+static const CGFloat viewHeight = 60.0f;
 static const CGFloat spacing = 3.0f;
 static const CGFloat insetFactor = 0.45f;
 

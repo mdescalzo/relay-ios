@@ -460,6 +460,9 @@
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
+		7D5C7BE21FB3D00D0020E136 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */; };
+		7D5C7BE31FB3D00D0020E136 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */; };
+		7D5C7BE41FB3D00D0020E136 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */; };
 		7D61398A1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398B1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398C1F90162400E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
@@ -1140,10 +1143,6 @@
 		7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
 		7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
 		7DF27F5D1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
-		7DF27F8F1FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
-		7DF27F901FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
-		7DF27F911FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
-		7DF27F921FACE82800900AF1 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */; };
 		7DFE7C531F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C541F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C551F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
@@ -1851,6 +1850,8 @@
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
 		7D516F221EF32B6000E7E15F /* CCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCSMJSONService.m; path = Services/CCSMJSONService.m; sourceTree = "<group>"; };
+		7D5C7BE01FB3D00C0020E136 /* FLTagMathService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTagMathService.h; path = RelayServiceKit/CCSM/FLTagMathService.h; sourceTree = "<group>"; };
+		7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTagMathService.m; path = RelayServiceKit/CCSM/FLTagMathService.m; sourceTree = "<group>"; };
 		7D6138771F90161500E18D29 /* TSAccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAccountManager.h; sourceTree = "<group>"; };
 		7D6138781F90161500E18D29 /* TSAccountManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSAccountManager.m; sourceTree = "<group>"; };
 		7D6138791F90161500E18D29 /* TSAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAttributes.h; sourceTree = "<group>"; };
@@ -2136,8 +2137,6 @@
 		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
 		7DF27F581FAB833A00900AF1 /* FLDocumentAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDocumentAdapter.h; sourceTree = "<group>"; };
 		7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDocumentAdapter.m; sourceTree = "<group>"; };
-		7DF27F8D1FACE82800900AF1 /* FLTagMathService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTagMathService.h; path = ../../../../Desktop/FLTagMathService.h; sourceTree = "<group>"; };
-		7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTagMathService.m; path = ../../../../Desktop/FLTagMathService.m; sourceTree = "<group>"; };
 		7DF8D5E31F7EA1DB00F76A60 /* RelayStage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayStage.entitlements; sourceTree = "<group>"; };
 		7DFE7C511F74398500905909 /* ForstaColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForstaColors.h; sourceTree = "<group>"; };
 		7DFE7C521F74398500905909 /* ForstaColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForstaColors.m; sourceTree = "<group>"; };
@@ -4179,8 +4178,8 @@
 		DBE1798C1ED9FF8500327B2B /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
-				7DF27F8D1FACE82800900AF1 /* FLTagMathService.h */,
-				7DF27F8E1FACE82800900AF1 /* FLTagMathService.m */,
+				7D5C7BE01FB3D00C0020E136 /* FLTagMathService.h */,
+				7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */,
 				7D6138801F90161500E18D29 /* CCSMStorage.h */,
 				7D6138811F90161500E18D29 /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
@@ -4463,12 +4462,18 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 					7DCFFD621F0EE4490003CD95 = {
 						DevelopmentTeam = THHR8L4QV3;
 						SystemCapabilities = {
 							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -5195,6 +5200,7 @@
 				7D4A39F01F1693930023C29B /* TSPhotoAdapter.m in Sources */,
 				7D613AB21F90186200E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
 				7D4A39F11F1693930023C29B /* FunctionalUtil.m in Sources */,
+				7D5C7BE21FB3D00D0020E136 /* FLTagMathService.m in Sources */,
 				7D4A39F21F1693930023C29B /* SignalUtil.m in Sources */,
 				7D613A881F90183300E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
 				7D613A481F9017F100E18D29 /* OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.m in Sources */,
@@ -5202,7 +5208,6 @@
 				7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */,
 				7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */,
 				7D613A701F90181B00E18D29 /* OWSGetDevicesRequest.m in Sources */,
-				7DF27F8F1FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				7D613A0F1F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D4A39F61F1693930023C29B /* Release.m in Sources */,
 				7D6139FD1F90179F00E18D29 /* TSAttachmentPointer.m in Sources */,
@@ -5543,6 +5548,7 @@
 				7DCFFD931F0EE4490003CD95 /* RegistrationViewController.m in Sources */,
 				7DCFFD941F0EE4490003CD95 /* EvpMessageDigest.m in Sources */,
 				7DCFFD951F0EE4490003CD95 /* CyclicalBuffer.m in Sources */,
+				7D5C7BE31FB3D00D0020E136 /* FLTagMathService.m in Sources */,
 				7DCFFD961F0EE4490003CD95 /* NumberUtil.m in Sources */,
 				7DCFFD971F0EE4490003CD95 /* TSPhotoAdapter.m in Sources */,
 				7D613A6E1F90181900E18D29 /* OWSDeviceProvisioningRequest.m in Sources */,
@@ -5551,7 +5557,6 @@
 				7DCFFD991F0EE4490003CD95 /* SignalUtil.m in Sources */,
 				7DCFFD9A1F0EE4490003CD95 /* AnonymousAudioCallbackHandler.m in Sources */,
 				7D613AD41F90188B00E18D29 /* TSDatabaseView.m in Sources */,
-				7DF27F901FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				7D613A071F9017AB00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				7DCFFD9B1F0EE4490003CD95 /* ConfirmAckPacket.m in Sources */,
 				7DCFFD9C1F0EE4490003CD95 /* CategorizingLogger.m in Sources */,
@@ -5891,6 +5896,7 @@
 				701231B518ECAA4500D456C4 /* EvpMessageDigest.m in Sources */,
 				76EB062218170B33006006FC /* CyclicalBuffer.m in Sources */,
 				76EB063C18170B33006006FC /* NumberUtil.m in Sources */,
+				7D5C7BE41FB3D00D0020E136 /* FLTagMathService.m in Sources */,
 				B6A3EB4B1A423B3800B2236B /* TSPhotoAdapter.m in Sources */,
 				76EB063A18170B33006006FC /* FunctionalUtil.m in Sources */,
 				7D613A6F1F90181900E18D29 /* OWSDeviceProvisioningRequest.m in Sources */,
@@ -5899,7 +5905,6 @@
 				E197B61718BBEC1A00F073E5 /* AnonymousAudioCallbackHandler.m in Sources */,
 				76EB05BC18170B33006006FC /* ConfirmAckPacket.m in Sources */,
 				7D613AD51F90188B00E18D29 /* TSDatabaseView.m in Sources */,
-				7DF27F911FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				7D613A081F9017AC00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				76EB060C18170B33006006FC /* CategorizingLogger.m in Sources */,
 				76EB058A18170B33006006FC /* Release.m in Sources */,
@@ -6257,7 +6262,6 @@
 				B660F7501C29988E00687D6E /* LowLatencyConnector.m in Sources */,
 				B660F7511C29988E00687D6E /* StreamPair.m in Sources */,
 				B660F7521C29988E00687D6E /* Certificate.m in Sources */,
-				7DF27F921FACE82800900AF1 /* FLTagMathService.m in Sources */,
 				450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B660F7531C29988E00687D6E /* NetworkStream.m in Sources */,
 				453D28BB1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
