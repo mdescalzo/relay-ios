@@ -71,13 +71,13 @@
     if (!self) {
         return self;
     }
-
+    
     _interaction = interaction;
     _messageDate = interaction.date;
     // TODO casting a string to an integer? At least need a comment here explaining why we are doing this.
     // Can we just remove this? Haven't found where we're using it...
     _identifier = (NSUInteger)interaction.uniqueId;
-
+    
     if ([interaction isKindOfClass:[TSMessage class]]) {
         TSMessage *message = (TSMessage *)interaction;
         _isExpiringMessage = message.isExpiringMessage;
@@ -87,27 +87,27 @@
     } else {
         _isExpiringMessage = NO;
     }
-
+    
     return self;
 }
 
 + (id<OWSMessageData>)messageViewDataWithInteraction:(TSInteraction *)interaction inThread:(TSThread *)thread contactsManager:(id<ContactsManagerProtocol>)contactsManager
 {
     TSMessageAdapter *adapter = [[TSMessageAdapter alloc] initWithInteraction:interaction];
-
-//    if ([thread isKindOfClass:[TSContactThread class]]) {
-//        adapter.thread = (TSContactThread *)thread;
-//        if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
-//            NSString *contactId       = ((TSContactThread *)thread).contactIdentifier;
-//            adapter.senderId          = contactId;
-//            adapter.senderDisplayName = [contactsManager nameStringForContactID:contactId];
-//            adapter.messageType       = TSIncomingMessageAdapter;
-//        } else {
-//            adapter.senderId          = ME_MESSAGE_IDENTIFIER;
-//            adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
-//            adapter.messageType       = TSOutgoingMessageAdapter;
-//        }
-//    } else if ([thread isKindOfClass:[TSGroupThread class]]) {
+    
+    //    if ([thread isKindOfClass:[TSContactThread class]]) {
+    //        adapter.thread = (TSContactThread *)thread;
+    //        if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
+    //            NSString *contactId       = ((TSContactThread *)thread).contactIdentifier;
+    //            adapter.senderId          = contactId;
+    //            adapter.senderDisplayName = [contactsManager nameStringForContactID:contactId];
+    //            adapter.messageType       = TSIncomingMessageAdapter;
+    //        } else {
+    //            adapter.senderId          = ME_MESSAGE_IDENTIFIER;
+    //            adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
+    //            adapter.messageType       = TSOutgoingMessageAdapter;
+    //        }
+    //    } else if ([thread isKindOfClass:[TSGroupThread class]]) {
     if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
         TSIncomingMessage *message = (TSIncomingMessage *)interaction;
         adapter.senderId           = message.authorId;
@@ -118,8 +118,8 @@
         adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
         adapter.messageType       = TSOutgoingMessageAdapter;
     }
-//    }
-
+    //    }
+    
     if ([interaction isKindOfClass:[TSIncomingMessage class]] ||
         [interaction isKindOfClass:[TSOutgoingMessage class]]) {
         TSMessage *message  = (TSMessage *)interaction;
@@ -130,35 +130,41 @@
         if (message.attributedTextBody.string.length > 0) {
             adapter.attributedMessageBody = message.attributedTextBody;
         }
-
+        
         if ([message hasAttachments]) {
             for (NSString *attachmentID in message.attachmentIds) {
                 TSAttachment *attachment = [TSAttachment fetchObjectWithUniqueID:attachmentID];
-
+                
                 if ([attachment isKindOfClass:[TSAttachmentStream class]]) {
                     TSAttachmentStream *stream = (TSAttachmentStream *)attachment;
                     if ([stream isAnimated]) {
                         adapter.mediaItem = [[TSAnimatedAdapter alloc] initWithAttachment:stream];
                         adapter.mediaItem.appliesMediaViewMaskAsOutgoing =
-                            [interaction isKindOfClass:[TSOutgoingMessage class]];
+                        [interaction isKindOfClass:[TSOutgoingMessage class]];
                         break;
                     } else if ([stream isImage]) {
                         adapter.mediaItem = [[TSPhotoAdapter alloc] initWithAttachment:stream];
                         adapter.mediaItem.appliesMediaViewMaskAsOutgoing =
-                            [interaction isKindOfClass:[TSOutgoingMessage class]];
+                        [interaction isKindOfClass:[TSOutgoingMessage class]];
                         break;
-                    } else {
+                    } else if ([stream isVideo]) {
                         adapter.mediaItem = [[TSVideoAttachmentAdapter alloc]
-                            initWithAttachment:stream
-                                      incoming:[interaction isKindOfClass:[TSIncomingMessage class]]];
+                                             initWithAttachment:stream
+                                             incoming:[interaction isKindOfClass:[TSIncomingMessage class]]];
                         adapter.mediaItem.appliesMediaViewMaskAsOutgoing =
-                            [interaction isKindOfClass:[TSOutgoingMessage class]];
+                        [interaction isKindOfClass:[TSOutgoingMessage class]];
                         break;
+                    } else {  // Fall out to document adapter for all other types.
+                        FLDocumentAdapter *attachmentAdapter = [[FLDocumentAdapter alloc] initWithAttachment:stream];
+                        attachmentAdapter.isOutgoing = [interaction isKindOfClass:[TSOutgoingMessage class]];
+                        attachmentAdapter.appliesMediaViewMaskAsOutgoing = [interaction isKindOfClass:[TSOutgoingMessage class]];
+                        adapter.mediaItem = attachmentAdapter;
                     }
+                    
                 } else if ([attachment isKindOfClass:[TSAttachmentPointer class]]) {
                     TSAttachmentPointer *pointer = (TSAttachmentPointer *)attachment;
                     adapter.messageType          = TSInfoMessageAdapter;
-
+                    
                     if (pointer.isDownloading) {
                         adapter.messageBody = NSLocalizedString(@"ATTACHMENT_DOWNLOADING", nil);
                     } else {
@@ -206,11 +212,11 @@
         adapter.messageBody          = errorMessage.description;
         adapter.messageType          = TSErrorMessageAdapter;
     }
-
+    
     if ([interaction isKindOfClass:[TSOutgoingMessage class]]) {
         adapter.outgoingMessageStatus = ((TSOutgoingMessage *)interaction).messageState;
     }
-
+    
     return adapter;
 }
 
@@ -230,12 +236,12 @@
 
 - (BOOL)canPerformEditingAction:(SEL)action
 {
-
+    
     // Deletes are always handled by TSMessageAdapter
     if (action == @selector(delete:)) {
         return YES;
     }
-
+    
     // Delegate other actions for media items
     if (self.isMediaMessage) {
         return [self.mediaItem canPerformEditingAction:action];
@@ -258,7 +264,7 @@
         [self.interaction remove];
         return;
     }
-
+    
     // Delegate other actions for media items
     if (self.isMediaMessage) {
         [self.mediaItem performEditingAction:action];
@@ -270,13 +276,13 @@
             return;
         }
     }
-
+    
     // Shouldn't get here, as only supported actions should be exposed via canPerformEditingAction
     NSString *actionString = NSStringFromSelector(action);
     DDLogError(@"'%@' action unsupported for TSInteraction: uniqueId=%@, mediaType=%@",
-        actionString,
-        self.interaction.uniqueId,
-        [self.mediaItem class]);
+               actionString,
+               self.interaction.uniqueId,
+               [self.mediaItem class]);
 }
 
 - (BOOL)isMediaMessage {

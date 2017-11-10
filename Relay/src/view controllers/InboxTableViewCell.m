@@ -6,7 +6,7 @@
 #import "OWSAvatarBuilder.h"
 #import "PropertyListPreferences.h"
 #import "TSThread.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "Util.h"
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
 #import <JSQMessagesViewController/UIImage+JSQMessages.h>
@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         NSString *snippetText = thread.lastMessageLabel;
         NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
-        NSUInteger unreadCount             = [[FLMessagesManager sharedManager] unreadMessagesInThread:thread];
+        NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
         
         self.nameLabel.text = name;
         self.snippetLabel.text = snippetText;

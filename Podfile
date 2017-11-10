@@ -18,7 +18,7 @@ abstract_target 'Common' do
     pod 'AFNetworking',                '~> 3.1.0'
     pod 'AxolotlKit',                  '~>0.8'
     pod 'Mantle',                      '~> 2.1.0'
-    pod 'YapDatabase/SQLCipher',       '~> 2.9.2'
+    pod 'YapDatabase/SQLCipher',       '~> 2.9.3'
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :commit => '877ac7438be3ad0b45ef5ca3969574e4b97112bf'
     pod 'libPhoneNumber-iOS',          '~> 0.8.17'
     pod 'SAMKeychain',                 '~> 1.5.2'

@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithPointer:(TSAttachmentPointer *)pointer NS_DESIGNATED_INITIALIZER;
 
 @property (atomic, readwrite) BOOL isDownloaded;
+@property (strong) NSString *filename;
 
 #if TARGET_OS_IPHONE
 - (nullable UIImage *)image;
@@ -25,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isAnimated;
 - (BOOL)isImage;
 - (BOOL)isVideo;
+-(BOOL)isDocument;
+
 - (nullable NSString *)filePath;
 - (nullable NSURL *)mediaURL;
 - (nullable NSData *)readDataFromFileWithError:(NSError **)error;

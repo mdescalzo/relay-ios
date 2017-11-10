@@ -13,5 +13,6 @@
 #import "TSMessageAdapter.h"
 #import "TSPhotoAdapter.h"
 #import "TSVideoAttachmentAdapter.h"
+#import "FLDocumentAdapter.h"
 
 #endif /* TSContentAdapters_h */
