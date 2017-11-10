@@ -39,56 +39,58 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 {
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/login/send/%@/%@/?format=json", FLHomeURL, orgName, userName];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                               NSData *data, NSError *connectionError)
-     {
-         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Request Login - Server response code: %ld", (long)HTTPresponse.statusCode);
-         DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-         
-         NSDictionary *result = nil;
-         if (data) {
-             result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-         }
-         
-//         if (connectionError != nil)  // Failed connection
-//         {
-//             failureBlock(connectionError);
-//         }
-         if (HTTPresponse.statusCode == 200) // SUCCESS!
-         {
-             [[Environment getCurrent].ccsmStorage setOrgName:orgName];
-             [[Environment getCurrent].ccsmStorage setUserName:userName];
-             DDLogDebug(@"login result's msg is: %@", [result objectForKey:@"msg"]);
-             successBlock();
-         }
-         else  // Connection good, error from server
-         {
-             NSError *error = nil;
-             if ([result objectForKey:@"non_field_errors"]) {
-                 NSMutableString *errorDescription = [NSMutableString new];
-                 for (NSString *message in [result objectForKey:@"non_field_errors"]) {
-                     [errorDescription appendString:[NSString stringWithFormat:@"\n%@", message]];
-                 }
-                 error = [NSError errorWithDomain:NSURLErrorDomain
-                                             code:HTTPresponse.statusCode
-                                         userInfo:@{ NSLocalizedDescriptionKey : errorDescription }];
-                 
-             } else if ([result objectForKey:@"detail"]) {
-                 error = [NSError errorWithDomain:NSURLErrorDomain
-                                             code:HTTPresponse.statusCode
-                                         userInfo:@{ NSLocalizedDescriptionKey : [result objectForKey:@"detail"] }];
-             } else {
-                 error = [NSError errorWithDomain:NSURLErrorDomain
-                                             code:HTTPresponse.statusCode
-                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-             }
-             failureBlock(error);
-         }
-     }];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10];
+    NSURLSession *loginSession = [NSURLSession sharedSession];
+    NSURLSessionDataTask *loginTask = [loginSession dataTaskWithRequest:request
+                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError)
+                                       {
+                                           NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                           DDLogDebug(@"Request Login - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                           DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                           
+                                           NSDictionary *result = nil;
+                                           if (data) {  // Grab payload if its there
+                                               result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+                                           }
+
+                                           if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                           {
+                                               [Environment.getCurrent.ccsmStorage setOrgName:orgName];
+                                               [Environment.getCurrent.ccsmStorage setUserName:userName];
+                                               DDLogDebug(@"login result's msg is: %@", [result objectForKey:@"msg"]);
+                                               successBlock();
+                                           }
+                                           else  // Connection good, error from server
+                                           {
+                                               NSError *error = nil;
+                                               if ([result objectForKey:@"non_field_errors"]) {
+                                                   NSMutableString *errorDescription = [NSMutableString new];
+                                                   for (NSString *message in [result objectForKey:@"non_field_errors"]) {
+                                                       [errorDescription appendString:[NSString stringWithFormat:@"\n%@", message]];
+                                                   }
+                                                   error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                               code:HTTPresponse.statusCode
+                                                                           userInfo:@{ NSLocalizedDescriptionKey : errorDescription }];
+                                                   
+                                               } else if ([result objectForKey:@"detail"]) {
+                                                   error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                               code:HTTPresponse.statusCode
+                                                                           userInfo:@{ NSLocalizedDescriptionKey : [result objectForKey:@"detail"] }];
+                                               } else {
+                                                   error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                               code:HTTPresponse.statusCode
+                                                                           userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                               }
+                                               failureBlock(error);
+                                           }
+                                       }];
+    
+    [loginSession flushWithCompletionHandler:^{
+        [loginSession resetWithCompletionHandler:^{
+            [loginTask resume];
+        }];
+    }];
+    
 }
 
 +(void)verifyLogin:(NSString *)verificationCode
@@ -439,6 +441,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
             [Environment.getCurrent.ccsmStorage setUsers:@{ }];
             [Environment.getCurrent.ccsmStorage setOrgInfo:@{ }];
             [Environment.getCurrent.ccsmStorage setTags:@{ }];
+            [TSStorageManager.sharedManager storePhoneNumber:userID];
         }
         [[Environment getCurrent].ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
