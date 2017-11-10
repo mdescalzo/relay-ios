@@ -10,7 +10,7 @@
 
 #import "TSAccountManager.h"
 #import "TSConstants.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TSSocketManager.h"
 #import "TSStorageManager+keyingMaterial.h"
 
@@ -170,7 +170,7 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
 
         OWSSignalServiceProtosEnvelope *envelope = [OWSSignalServiceProtosEnvelope parseFromData:decryptedPayload];
 
-        [[FLMessagesManager sharedManager] handleReceivedEnvelope:envelope];
+        [[TSMessagesManager sharedManager] handleReceivedEnvelope:envelope];
     } else {
         DDLogWarn(@"Unsupported WebSocket Request");
     }

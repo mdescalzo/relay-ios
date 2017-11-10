@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, TSGroupMetaMessage) {
 @property (nullable, nonatomic, strong) NSAttributedString *attributedTextBody;
 @property (nonatomic, strong) NSString *messageType;
 @property (nonatomic, strong) NSMutableDictionary *forstaPayload;
-//
+@property (nonatomic, readonly) NSArray *attachmentProperties;
 @property (nonatomic, readonly) NSMutableArray<NSString *> *attachmentIds;
 @property (nullable, nonatomic) NSString *body;
 @property (nonatomic) TSGroupMetaMessage groupMetaMessage;

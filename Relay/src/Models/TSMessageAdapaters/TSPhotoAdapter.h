@@ -13,6 +13,7 @@
 - (BOOL)isImage;
 - (BOOL)isAudio;
 - (BOOL)isVideo;
+-(BOOL)isDocument;
 
 @property TSAttachmentStream *attachment;
 @property NSString *attachmentId;

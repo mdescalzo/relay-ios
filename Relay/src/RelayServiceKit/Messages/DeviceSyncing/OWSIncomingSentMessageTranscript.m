@@ -3,7 +3,7 @@
 #import "OWSIncomingSentMessageTranscript.h"
 #import "OWSAttachmentsProcessor.h"
 #import "OWSSignalServiceProtos.pb.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TSOutgoingMessage.h"
 #import "TSThread.h"
 
