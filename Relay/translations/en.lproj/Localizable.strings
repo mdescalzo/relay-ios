@@ -878,3 +878,12 @@
 /* Mail invite subject */
 "SHARE_INVITE_SUBJECT" = "Forsta | You've been invited.";
 
+/* Send file validation */
+"ATTACHMENT_FILE_VALIDATION" = "Send file: ";
+
+/* YES */
+"YES" = "Yes";
+
+/* NO */
+"NO" = "No";
+

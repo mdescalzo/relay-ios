@@ -1672,11 +1672,31 @@ typedef enum : NSUInteger {
                 return;
             }
         }
-        NSString *mimeType = [MIMETypeUtil mimeTypeForFileAtPath:filePath];
-        NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-        [self sendMessageAttachment:fileData
-                       withFilename:url.lastPathComponent
-                             ofType:mimeType];
+        
+        NSString *validationString = NSLocalizedString(@"ATTACHMENT_FILE_VALIDATION", nil);
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:[NSString stringWithFormat:@"%@%@", validationString, url.lastPathComponent]
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [UIUtil applyForstaAppearence];
+
+                                                              NSString *mimeType = [MIMETypeUtil mimeTypeForFileAtPath:filePath];
+                                                              NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+                                                              [self sendMessageAttachment:fileData
+                                                                             withFilename:url.lastPathComponent
+                                                                                   ofType:mimeType];
+                                                          }];
+        UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+                                                             [UIUtil applyForstaAppearence];
+                                                         }];
+        [alert addAction:yesAction];
+        [alert addAction:noAction];
+        
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
     }
 }
 
@@ -1886,7 +1906,6 @@ typedef enum : NSUInteger {
                                                       @"%@ Failed to send message attachment with error: %@", self.tag, error);
                                        }];
     }
-    [UIUtil applyForstaAppearence];
 }
 
 - (NSURL *)videoTempFolder {
