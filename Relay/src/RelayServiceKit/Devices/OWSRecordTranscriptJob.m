@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
         DDLogDebug(@"JSON Payload received.");
         jsonPayload = [jsonArray lastObject];
     }
-    NSDictionary *dataBlob = [jsonPayload objectForKey:@"attachments"];
+    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     
     OWSAttachmentsProcessor *attachmentsProcessor =
     [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
