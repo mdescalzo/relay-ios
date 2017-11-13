@@ -10,7 +10,7 @@
 #import "TSAccountManager.h"
 #import "TSThread.h"
 #import "TSErrorMessage_privateConstructor.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TextSecureKitEnv.h"
 #import "YapDatabase.h"
 

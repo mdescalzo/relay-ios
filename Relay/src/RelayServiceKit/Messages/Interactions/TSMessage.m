@@ -218,10 +218,14 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
     return self.expiresInSeconds > 0;
 }
 
-#pragma mark - Lazy instantiation
+#pragma mark - Accessors
 /** Checks for self.forstaPayload are implementation of the settings within the json payload
  *   moving away from signals
  */
+-(NSArray *)attachmentProperties
+{
+    return [[self forstaPayload] objectForKey:@"attachments"];
+}
 
 -(NSString *)messageType
 {

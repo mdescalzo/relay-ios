@@ -59,7 +59,7 @@
 #import "SignalRecipient.h"
 #import "TSAccountManager.h"
 #import "TSInvalidIdentityKeySendingErrorMessage.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TSNetworkManager.h"
 #import <YapDatabase/YapDatabaseView.h>
 #import "ImagePreviewViewController.h"
@@ -102,17 +102,17 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
 @property (nonatomic, strong) YapDatabaseViewMappings *messageMappings;
 
-@property (nonatomic, retain) JSQMessagesBubbleImage *outgoingBubbleImageData;
-@property (nonatomic, retain) JSQMessagesBubbleImage *incomingBubbleImageData;
-@property (nonatomic, retain) JSQMessagesBubbleImage *currentlyOutgoingBubbleImageData;
-@property (nonatomic, retain) JSQMessagesBubbleImage *outgoingMessageFailedImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *outgoingBubbleImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *incomingBubbleImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *currentlyOutgoingBubbleImageData;
+@property (nonatomic, strong) JSQMessagesBubbleImage *outgoingMessageFailedImageData;
 
 @property (nonatomic, strong) NSTimer *audioPlayerPoller;
 @property (nonatomic, strong) TSVideoAttachmentAdapter *currentMediaAdapter;
 
-@property (nonatomic, retain) NSTimer *readTimer;
+@property (nonatomic, strong) NSTimer *readTimer;
 @property (nonatomic, strong) UILabel *navbarTitleLabel;
-@property (nonatomic, retain) UIButton *attachButton;
+@property (nonatomic, strong) UIButton *attachButton;
 
 @property (nonatomic) CGFloat previousCollectionViewFrameWidth;
 
@@ -125,7 +125,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
-@property (nonatomic, readonly) FLMessagesManager *messagesManager;
+@property (nonatomic, readonly) TSMessagesManager *messagesManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 
 @property (nonatomic, strong) UIImage *imageToPreview;
@@ -172,7 +172,7 @@ typedef enum : NSUInteger {
     _messageSender = [Environment getCurrent].messageSender;
     _storageManager = [TSStorageManager sharedManager];
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:_storageManager];
-    _messagesManager = [FLMessagesManager sharedManager];
+    _messagesManager = [TSMessagesManager sharedManager];
     _networkManager = [TSNetworkManager sharedManager];
 }
 
@@ -822,6 +822,13 @@ typedef enum : NSUInteger {
         } break;
     }
     cell.delegate = collectionView;
+    
+    // Document message catch:
+    if (message.isMediaMessage && [[message.media class] isEqual:[FLDocumentAdapter class]]) {
+        id<JSQMessageBubbleImageDataSource> bubbleImageDataSource = [collectionView.dataSource collectionView:collectionView messageBubbleImageDataForItemAtIndexPath:indexPath];
+        cell.messageBubbleImageView.image = [bubbleImageDataSource messageBubbleImage];
+        cell.messageBubbleImageView.highlightedImage = [bubbleImageDataSource messageBubbleHighlightedImage];
+    }
 
     if (message.shouldStartExpireTimer && [cell conformsToProtocol:@protocol(OWSExpirableMessageView)]) {
         id<OWSExpirableMessageView> expirableView = (id<OWSExpirableMessageView>)cell;
@@ -840,7 +847,7 @@ typedef enum : NSUInteger {
     OWSIncomingMessageCollectionViewCell *cell
         = (OWSIncomingMessageCollectionViewCell *)[super collectionView:self.collectionView
                                                  cellForItemAtIndexPath:indexPath];
-
+    
     if (![cell isKindOfClass:[OWSIncomingMessageCollectionViewCell class]]) {
         DDLogError(@"%@ Unexpected cell type: %@", self.tag, cell);
         return cell;
@@ -1149,7 +1156,14 @@ typedef enum : NSUInteger {
             BOOL isMediaMessage = [messageItem isMediaMessage];
 
             if (isMediaMessage) {
-                if ([[messageItem media] isKindOfClass:[TSPhotoAdapter class]]) {
+                if ([[messageItem media] isKindOfClass:[FLDocumentAdapter class]]) {
+                    FLDocumentAdapter *document = (FLDocumentAdapter *)[messageItem media];
+                    NSURL *documentURL = document.attachment.mediaURL;
+                    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[ documentURL ]
+                                                                                                    applicationActivities:nil];
+                    [self presentViewController:activityController animated:YES completion:nil];
+                    
+                } else if ([[messageItem media] isKindOfClass:[TSPhotoAdapter class]]) {
                     TSPhotoAdapter *messageMedia = (TSPhotoAdapter *)[messageItem media];
 
                     tappedImage = ((UIImageView *)[messageMedia mediaView]).image;

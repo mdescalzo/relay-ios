@@ -7,7 +7,7 @@
 #import "TSThread.h"
 #import "TSDatabaseView.h"
 #import "TSErrorMessage_privateConstructor.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TSStorageManager+IdentityKeyStore.h"
 #import "TSStorageManager.h"
 #import <AxolotlKit/NSData+keyVersionByte.h>
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.thread receivedMessagesForInvalidKey:newKey];
 
     for (TSInvalidIdentityKeyReceivingErrorMessage *errorMessage in messagesToDecrypt) {
-        [[FLMessagesManager sharedManager] handleReceivedEnvelope:errorMessage.envelope];
+        [[TSMessagesManager sharedManager] handleReceivedEnvelope:errorMessage.envelope];
 
         // Here we remove the existing error message because handleReceivedEnvelope will either
         //  1.) succeed and create a new successful message in the thread or...
