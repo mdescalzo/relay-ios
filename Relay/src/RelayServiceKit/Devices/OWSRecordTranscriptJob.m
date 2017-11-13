@@ -42,12 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
     OWSIncomingSentMessageTranscript *transcript = self.incomingSentMessageTranscript;
     DDLogDebug(@"%@ Recording transcript: %@", self.tag, transcript);
     TSThread *thread = transcript.thread;
-    OWSAttachmentsProcessor *attachmentsProcessor =
-    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
-                                                    timestamp:transcript.timestamp
-                                                        relay:transcript.relay
-                                                       thread:thread
-                                               networkManager:self.networkManager];
     
     // Intercept and attach forstaPayload
     NSArray *jsonArray = [self arrayFromMessageBody:transcript.body];
@@ -56,6 +50,15 @@ NS_ASSUME_NONNULL_BEGIN
         DDLogDebug(@"JSON Payload received.");
         jsonPayload = [jsonArray lastObject];
     }
+    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+    
+    OWSAttachmentsProcessor *attachmentsProcessor =
+    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
+                                                   properties:[dataBlob objectForKey:@"attachments"]
+                                                    timestamp:transcript.timestamp
+                                                        relay:transcript.relay
+                                                       thread:thread
+                                               networkManager:self.networkManager];
     
     // TODO group updates. Currently desktop doesn't support group updates, so not a problem yet.
     TSOutgoingMessage *outgoingMessage =

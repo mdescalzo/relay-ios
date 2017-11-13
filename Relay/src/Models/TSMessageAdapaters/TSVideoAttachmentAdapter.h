@@ -18,6 +18,7 @@
 - (BOOL)isImage;
 - (BOOL)isAudio;
 - (BOOL)isVideo;
+-(BOOL)isDocument;
 - (void)setAudioProgressFromFloat:(float)progress;
 - (void)setAudioIconToPlay;
 - (void)setAudioIconToPause;

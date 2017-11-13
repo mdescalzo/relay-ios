@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 - (instancetype)initWithAttachmentProtos:(NSArray<OWSSignalServiceProtosAttachmentPointer *> *)attachmentProtos
+                              properties:(NSArray<NSDictionary *> *)attachmentProperties
                                timestamp:(uint64_t)timestamp
                                    relay:(nullable NSString *)relay
                                   thread:(TSThread *)thread

@@ -4,7 +4,7 @@
 #import "TSVideoAttachmentAdapter.h"
 #import "MIMETypeUtil.h"
 #import "TSAttachmentStream.h"
-#import "FLMessagesManager.h"
+#import "TSMessagesManager.h"
 #import "TSStorageManager+keyingMaterial.h"
 #import "JSQMediaItem+OWS.h"
 #import <FFCircularProgressView.h>
@@ -57,6 +57,10 @@
 
 - (BOOL)isVideo {
     return [MIMETypeUtil isSupportedVideoMIMEType:_contentType];
+}
+
+-(BOOL)isDocument {
+    return NO;
 }
 
 - (NSString *)formatDuration:(NSTimeInterval)duration {
@@ -229,7 +233,7 @@
             _progressView.hidden     = YES;
             _videoPlayButton.hidden  = NO;
             _attachment.isDownloaded = YES; // TODO isn't this redundant with attachment processor?
-            [[FLMessagesManager sharedManager]
+            [[TSMessagesManager sharedManager]
                     .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
               [_attachment saveWithTransaction:transaction];
             }];

@@ -16,6 +16,8 @@ NSUInteger const TSAttachmentSchemaVersion = 2;
 
 @implementation TSAttachment
 
+@synthesize filename = _filename;
+
 - (instancetype)initWithServerId:(UInt64)serverId
                    encryptionKey:(NSData *)encryptionKey
                      contentType:(NSString *)contentType
@@ -69,6 +71,8 @@ NSUInteger const TSAttachmentSchemaVersion = 2;
         return [NSString stringWithFormat:@"📻 %@", attachmentString];
     } else if ([MIMETypeUtil isAnimated:self.contentType]) {
         return [NSString stringWithFormat:@"🎡 %@", attachmentString];
+    } else if ([MIMETypeUtil isDocument:self.contentType]) {
+        return [NSString stringWithFormat:@"💼 %@", attachmentString];
     }
 
     return attachmentString;

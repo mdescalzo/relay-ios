@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!self) {
         return self;
     }
-
+    
     _contentType = pointer.contentType;
     _isDownloaded = YES;
 
@@ -92,9 +92,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSString *)filePath
 {
-    return [MIMETypeUtil filePathForAttachment:self.uniqueId
+    NSString *folderPath = [NSString stringWithFormat:@"%@/%@", [[self class] attachmentsFolder], self.uniqueId];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:folderPath]) {
+        NSError *error = nil;
+        [[NSFileManager defaultManager] createDirectoryAtPath:folderPath
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:&error];
+        if (error) {
+            DDLogError(@"Failed to create attachments subdirectory: %@", error);
+        }
+    }
+    
+    return [MIMETypeUtil filePathForAttachment:(self.filename ? self.filename : self.uniqueId)
                                     ofMIMEType:self.contentType
-                                      inFolder:[[self class] attachmentsFolder]];
+                                      inFolder:folderPath];
 }
 
 - (nullable NSURL *)mediaURL
@@ -107,9 +120,15 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSError *error;
     [[NSFileManager defaultManager] removeItemAtPath:[self filePath] error:&error];
-
+    // TODO: Remove the subfolder with Attachments as well.
     if (error) {
         DDLogError(@"%@ remove file errored with: %@", self.tag, error);
+    } else {
+        // Remove the UID-named subfolder as well.
+        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", [[self class] attachmentsFolder], self.uniqueId] error:&error];
+        if (error) {
+            DDLogError(@"%@ remove folder errored with: %@", self.tag, error);
+        }
     }
 }
 
@@ -127,6 +146,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isAudio {
     return [MIMETypeUtil isAudio:self.contentType];
+}
+
+-(BOOL)isDocument {
+    return [MIMETypeUtil isDocument:self.contentType];
 }
 
 - (nullable UIImage *)image
