@@ -121,7 +121,6 @@ typedef enum : NSUInteger {
 @property (nonatomic) BOOL peek;
 
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
-//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
@@ -169,7 +168,6 @@ typedef enum : NSUInteger {
 - (void)commonInit
 {
     _contactsManager = [Environment getCurrent].contactsManager;
-//    _contactsUpdater = [Environment getCurrent].contactsUpdater;
     _messageSender = [Environment getCurrent].messageSender;
     _storageManager = [TSStorageManager sharedManager];
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:_storageManager];
@@ -189,7 +187,6 @@ typedef enum : NSUInteger {
 
 - (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing {
     _thread                        = thread;
-//    isGroupConversation            = [self.thread isKindOfClass:[TSGroupThread class]];
     isGroupConversation = YES;
     _composeOnOpen                 = keyboardAppearing;
 
@@ -361,6 +358,8 @@ typedef enum : NSUInteger {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [UIUtil applyForstaAppearence];
 
     // We need to recheck on every appearance, since the user may have left the group in the settings VC,
     // or on another device.
@@ -1649,9 +1648,13 @@ typedef enum : NSUInteger {
 -(void)chooseDocument
 {
     //TODO: ask for/validate iCloud permission
+    [UIUtil applyDefaultSystemAppearence];
+
     UIDocumentPickerViewController *docPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[ (__bridge NSString *)kUTTypeItem ] inMode:UIDocumentPickerModeImport];
     docPicker.delegate = self;
-    [self.navigationController presentViewController:docPicker animated:YES completion:nil];
+    [self.navigationController presentViewController:docPicker animated:YES completion:^{
+        [UIUtil applyDefaultSystemAppearence];
+    }];
 }
 
 -(void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls
@@ -1680,7 +1683,9 @@ typedef enum : NSUInteger {
 -(void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller
 {
     [self.navigationController dismissViewControllerAnimated:YES
-                                                  completion:^{ [UIUtil modalCompletionBlock](); } ];
+                                                  completion:^{
+                                                      [UIUtil applyForstaAppearence];
+                                                  } ];
 }
 
 #pragma mark - UIImagePickerController
@@ -1881,6 +1886,7 @@ typedef enum : NSUInteger {
                                                       @"%@ Failed to send message attachment with error: %@", self.tag, error);
                                        }];
     }
+    [UIUtil applyForstaAppearence];
 }
 
 - (NSURL *)videoTempFolder {

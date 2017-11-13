@@ -81,11 +81,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    
-#warning Override/replace the following?
-    //    [UIUtil applySignalAppearence];
-    
-    [[PushManager sharedManager] registerPushKitNotificationFuture];
+        [[PushManager sharedManager] registerPushKitNotificationFuture];
     
     if (getenv("runningTests_dontStartApp")) {
         return YES;
