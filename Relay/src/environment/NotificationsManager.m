@@ -18,10 +18,13 @@
 #import "TSIncomingMessage.h"
 #import "TextSecureKitEnv.h"
 
+static const NSTimeInterval silenceWindow = 1.0;  // seconds
+
 @interface NotificationsManager ()
 
 @property SystemSoundID newMessageSound;
 @property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
+@property (nonatomic, strong) NSDate *lastNotificationDate;
 
 @end
 
@@ -77,7 +80,8 @@
     if (([UIApplication sharedApplication].applicationState != UIApplicationStateActive) && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.userInfo             = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
-        if ([Environment.preferences soundInBackground]) {
+        if ([Environment.preferences soundInBackground] && self.lastNotificationDate != nil &&
+            [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
             notification.soundName = @"NewMessage.aifc";
         } else {
             notification.soundName = nil;
@@ -106,6 +110,7 @@
             AudioServicesPlayAlertSound(_newMessageSound);
         }
     }
+    self.lastNotificationDate = [NSDate date];
 }
 
 - (void)notifyUserForIncomingMessage:(TSIncomingMessage *)message from:(NSString *)name inThread:(TSThread *)thread {
@@ -113,7 +118,8 @@
     
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
-        if ([Environment.preferences soundInBackground]) {
+        if ([Environment.preferences soundInBackground] && self.lastNotificationDate != nil &&
+            [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
             notification.soundName = @"NewMessage.aifc";
         } else {
             notification.soundName = nil;
@@ -147,7 +153,8 @@
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unread];
 
     } else {
-        if ([Environment.preferences soundInForeground]) {
+        if ([Environment.preferences soundInForeground] && self.lastNotificationDate != nil &&
+            [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
             AudioServicesPlayAlertSound(_newMessageSound);
         }
     }
