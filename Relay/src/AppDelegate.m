@@ -237,7 +237,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
-        [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
+        [TSSocketManager becomeActiveFromForeground];
         [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 [self refreshUsersStore];
@@ -250,6 +250,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                             // Determine if this eror should kick the user out:
                                                             if (error.code >= 400 && error.code < 500) {
                                                                 //  Out they go...
+                                                                [TSSocketManager resignActivity];
                                                                 dispatch_async(dispatch_get_main_queue(), ^{
                                                                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
                                                                                                                             preferredStyle:UIAlertControllerStyleActionSheet];
@@ -414,7 +415,7 @@ forLocalNotification:(UILocalNotification *)notification
         self.hasRootViewController = YES;
         UIStoryboard *storyboard = nil;
         if ([TSAccountManager isRegistered]) { // Check for local sessionKey
-            [TSSocketManager becomeActiveFromForeground];
+//            [TSSocketManager becomeActiveFromForeground];
             storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
             self.window.rootViewController = [storyboard instantiateInitialViewController];
             [self.window makeKeyAndVisible];
