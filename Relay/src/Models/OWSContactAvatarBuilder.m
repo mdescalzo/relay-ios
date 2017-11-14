@@ -47,13 +47,16 @@ NS_ASSUME_NONNULL_BEGIN
                       diameter:(CGFloat)diameter
 {
     NSString *contactId = nil;
-    for (NSString *uid in thread.participants) {
-        if (![uid isEqualToString:TSAccountManager.localNumber]) {
-            contactId = uid;
-            break;
+    if (thread.participants.count == 1) {
+        contactId = thread.participants.lastObject;
+    } else {
+        for (NSString *uid in thread.participants) {
+            if (![uid isEqualToString:TSAccountManager.localNumber]) {
+                contactId = uid;
+                break;
+            }
         }
     }
-    
     SignalRecipient *recipient = [contactsManager recipientForUserID:contactId];
     
     return [self initWithContactId:contactId name:recipient.fullName contactsManager:contactsManager diameter:diameter];
