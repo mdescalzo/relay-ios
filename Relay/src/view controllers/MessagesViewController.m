@@ -85,7 +85,7 @@ typedef enum : NSUInteger {
     kMediaTypeVideo,
 } kMediaTypes;
 
-@interface MessagesViewController() <ImagePreviewViewControllerDelegate>
+@interface MessagesViewController() <ImagePreviewViewControllerDelegate, UIDocumentPickerDelegate>
 {
     UIImage *tappedImage;
     BOOL isGroupConversation;
@@ -121,7 +121,6 @@ typedef enum : NSUInteger {
 @property (nonatomic) BOOL peek;
 
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
-//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
@@ -129,6 +128,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 
 @property (nonatomic, strong) UIImage *imageToPreview;
+@property (nonatomic, strong) NSString *filenameToPreview;
 
 @property NSCache *messageAdapterCache;
 
@@ -168,7 +168,6 @@ typedef enum : NSUInteger {
 - (void)commonInit
 {
     _contactsManager = [Environment getCurrent].contactsManager;
-//    _contactsUpdater = [Environment getCurrent].contactsUpdater;
     _messageSender = [Environment getCurrent].messageSender;
     _storageManager = [TSStorageManager sharedManager];
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:_storageManager];
@@ -188,7 +187,6 @@ typedef enum : NSUInteger {
 
 - (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing {
     _thread                        = thread;
-//    isGroupConversation            = [self.thread isKindOfClass:[TSGroupThread class]];
     isGroupConversation = YES;
     _composeOnOpen                 = keyboardAppearing;
 
@@ -360,6 +358,8 @@ typedef enum : NSUInteger {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [UIUtil applyForstaAppearence];
 
     // We need to recheck on every appearance, since the user may have left the group in the settings VC,
     // or on another device.
@@ -1355,7 +1355,7 @@ typedef enum : NSUInteger {
             if ([attachment isKindOfClass:[TSAttachmentPointer class]]) {
                 TSAttachmentPointer *pointer = (TSAttachmentPointer *)attachment;
 
-                // FIXME possible for pointer to get stuck in isDownloading state if app is closed while downloading.
+                // FIXME: possible for pointer to get stuck in isDownloading state if app is closed while downloading.
                 // see: https://github.com/WhisperSystems/Signal-iOS/issues/1254
                 if (!pointer.isDownloading) {
                     OWSAttachmentsProcessor *processor =
@@ -1635,12 +1635,77 @@ typedef enum : NSUInteger {
 -(void)didPressSend:(id)sender
 {
     [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:self.imageToPreview]
+                   withFilename:self.filenameToPreview
                          ofType:@"image/jpeg"];
     [sender dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)didPressCancel:(id)sender
 {
     [sender dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Document picker methods
+-(void)chooseDocument
+{
+    //TODO: ask for/validate iCloud permission
+    [UIUtil applyDefaultSystemAppearence];
+
+    UIDocumentPickerViewController *docPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[ (__bridge NSString *)kUTTypeItem ] inMode:UIDocumentPickerModeImport];
+    docPicker.delegate = self;
+    [self.navigationController presentViewController:docPicker animated:YES completion:^{
+        [UIUtil applyDefaultSystemAppearence];
+    }];
+}
+
+-(void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls
+{
+    for (NSURL *url in urls) {
+        NSString *filePath = url.path;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            DDLogDebug(@"Selected file not does exist at: %@", url);
+            return;
+        }
+        BOOL isDirectory;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory]) {
+            if (isDirectory) {
+                DDLogDebug(@"Selected item is a directory.  Skipping: %@", url);
+                return;
+            }
+        }
+        
+        NSString *validationString = NSLocalizedString(@"ATTACHMENT_FILE_VALIDATION", nil);
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:[NSString stringWithFormat:@"%@%@", validationString, url.lastPathComponent]
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [UIUtil applyForstaAppearence];
+
+                                                              NSString *mimeType = [MIMETypeUtil mimeTypeForFileAtPath:filePath];
+                                                              NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+                                                              [self sendMessageAttachment:fileData
+                                                                             withFilename:url.lastPathComponent
+                                                                                   ofType:mimeType];
+                                                          }];
+        UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+                                                             [UIUtil applyForstaAppearence];
+                                                         }];
+        [alert addAction:yesAction];
+        [alert addAction:noAction];
+        
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+-(void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller
+{
+    [self.navigationController dismissViewControllerAnimated:YES
+                                                  completion:^{
+                                                      [UIUtil applyForstaAppearence];
+                                                  } ];
 }
 
 #pragma mark - UIImagePickerController
@@ -1656,7 +1721,7 @@ typedef enum : NSUInteger {
         picker.mediaTypes = @[ (__bridge NSString *)kUTTypeImage, (__bridge NSString *)kUTTypeMovie ];
         picker.allowsEditing = NO;
         picker.delegate = self;
-        [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
+        [self.navigationController presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
     }];
 }
 - (void)chooseFromLibrary {
@@ -1669,7 +1734,7 @@ typedef enum : NSUInteger {
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     picker.delegate = self;
     picker.mediaTypes = @[ (__bridge NSString *)kUTTypeImage, (__bridge NSString *)kUTTypeMovie ];
-    [self presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
+    [self.navigationController presentViewController:picker animated:YES completion:[UIUtil modalCompletionBlock]];
 }
 
 /*
@@ -1678,7 +1743,7 @@ typedef enum : NSUInteger {
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [UIUtil modalCompletionBlock]();
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)resetFrame {
@@ -1696,6 +1761,8 @@ typedef enum : NSUInteger {
     [UIUtil modalCompletionBlock]();
     [self resetFrame];
 
+    __block NSString *filename = @"";
+    
     void (^failedToPickAttachment)(NSError *error) = ^void(NSError *error) {
         DDLogError(@"failed to pick attachment with error: %@", error);
     };
@@ -1705,13 +1772,16 @@ typedef enum : NSUInteger {
         // Video picked from library or captured with camera
 
         NSURL *videoURL = info[UIImagePickerControllerMediaURL];
+        filename = videoURL.lastPathComponent;
         [self sendQualityAdjustedAttachmentForVideo:videoURL];
     } else if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
         // Static Image captured from camera
 
         UIImage *imageFromCamera = [info[UIImagePickerControllerOriginalImage] normalizedImage];
         if (imageFromCamera) {
-            [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:imageFromCamera] ofType:@"image/jpeg"];
+            [self sendMessageAttachment:[self qualityAdjustedAttachmentForImage:imageFromCamera]
+                           withFilename:filename
+                                 ofType:@"image/jpeg"];
         } else {
             failedToPickAttachment(nil);
         }
@@ -1736,6 +1806,11 @@ typedef enum : NSUInteger {
                            UIImageOrientation orientation,
                            NSDictionary *_Nullable assetInfo) {
 
+                           if ([assetInfo objectForKey:@"PHImageFileURLKey"]) {
+                               NSURL *filenameURL = [assetInfo objectForKey:@"PHImageFileURLKey"];
+                               filename = filenameURL.lastPathComponent;
+                           }
+                           
                            NSError *assetFetchingError = assetInfo[PHImageErrorKey];
                            if (assetFetchingError || !imageData) {
                                return failedToPickAttachment(assetFetchingError);
@@ -1756,12 +1831,15 @@ typedef enum : NSUInteger {
                                 * VideoMaxSize return 100 * MB;
                                 * getAudioMaxSize 100 * MB;
                                 */
-                               [self sendMessageAttachment:imageData ofType:@"image/gif"];
+                               [self sendMessageAttachment:imageData
+                                              withFilename:filename
+                                                    ofType:@"image/gif"];
                            } else {
                                DDLogVerbose(@"Compressing attachment as image/jpeg");
                                UIImage *pickedImage = [[UIImage alloc] initWithData:imageData];
                                
                                self.imageToPreview = pickedImage;
+                               self.filenameToPreview = filename;
                                [self dismissViewControllerAnimated:YES completion:^{
                                    [self performSegueWithIdentifier:@"imagePreviewSegue" sender:pickedImage];
                                }];
@@ -1773,7 +1851,7 @@ typedef enum : NSUInteger {
     }
 }
 
-- (void)sendMessageAttachment:(NSData *)attachmentData ofType:(NSString *)attachmentType
+- (void)sendMessageAttachment:(NSData *)attachmentData withFilename:(NSString *)filename ofType:(NSString *)attachmentType
 {
     TSOutgoingMessage *message;
     OWSDisappearingMessagesConfiguration *configuration =
@@ -1792,12 +1870,16 @@ typedef enum : NSUInteger {
     }
     message.uniqueId = [[NSUUID UUID] UUIDString];
     
-    [self dismissViewControllerAnimated:YES
+    // Check to see if a model view is being presented and dismiss if necessary.
+    UIViewController *vc = [self.navigationController presentedViewController];
+    if (vc) {
+    [self.navigationController dismissViewControllerAnimated:YES
                              completion:^{
                                  DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",
                                               (unsigned long)attachmentData.length,
                                               attachmentType);
                                  [self.messageSender sendAttachmentData:attachmentData
+                                                               filename:filename
                                      contentType:attachmentType
                                      inMessage:message
                                      success:^{
@@ -1808,6 +1890,22 @@ typedef enum : NSUInteger {
                                              @"%@ Failed to send message attachment with error: %@", self.tag, error);
                                      }];
                              }];
+    } else {
+        DDLogVerbose(@"Sending attachment. Size in bytes: %lu, contentType: %@",
+                     (unsigned long)attachmentData.length,
+                     attachmentType);
+        [self.messageSender sendAttachmentData:attachmentData
+                                      filename:filename
+                                   contentType:attachmentType
+                                     inMessage:message
+                                       success:^{
+                                           DDLogDebug(@"%@ Successfully sent message attachment.", self.tag);
+                                       }
+                                       failure:^(NSError *error) {
+                                           DDLogError(
+                                                      @"%@ Failed to send message attachment with error: %@", self.tag, error);
+                                       }];
+    }
 }
 
 - (NSURL *)videoTempFolder {
@@ -1838,7 +1936,9 @@ typedef enum : NSUInteger {
     exportSession.outputURL = compressedVideoUrl;
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
       NSError *error;
-      [self sendMessageAttachment:[NSData dataWithContentsOfURL:compressedVideoUrl] ofType:@"video/mp4"];
+        [self sendMessageAttachment:[NSData dataWithContentsOfURL:compressedVideoUrl]
+                       withFilename:@""
+                             ofType:@"video/mp4"];
       [[NSFileManager defaultManager] removeItemAtURL:compressedVideoUrl error:&error];
       if (error) {
           DDLogWarn(@"Failed to remove cached video file: %@", error.debugDescription);
@@ -2094,13 +2194,15 @@ typedef enum : NSUInteger {
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag {
     if (flag) {
-        [self sendMessageAttachment:[NSData dataWithContentsOfURL:recorder.url] ofType:@"audio/m4a"];
+        [self sendMessageAttachment:[NSData dataWithContentsOfURL:recorder.url]
+                       withFilename:@""
+                             ofType:@"audio/m4a"];
     }
 }
 
 #pragma mark Accessory View
 
-- (void)didPressAccessoryButton:(UIButton *)sender {
+- (void)didPressAccessoryButton:(UIButton *)sender { // Attachment button
 
     BOOL preserveKeyboard = [self.inputToolbar.contentView.textView isFirstResponder];
     
@@ -2121,6 +2223,13 @@ typedef enum : NSUInteger {
                                                                       [self popKeyBoard];
                                                                   }
                                                               }];
+    UIAlertAction *chooseDocutmentButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"CHOOSE_FILE_BUTTON", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *_Nonnull action){ [self chooseDocument];
+                                                                  if (preserveKeyboard) {
+                                                                      [self popKeyBoard];
+                                                                  }
+                                                              }];
     UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction *_Nonnull action){
@@ -2130,8 +2239,9 @@ typedef enum : NSUInteger {
                                                          }];
     [alert addAction:takePictureButton];
     [alert addAction:chooseMediaButton];
+    [alert addAction:chooseDocutmentButton];
     [alert addAction:cancelButton];
-    [self presentViewController:alert animated:YES completion:nil];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
 
 //    UIView *presenter = self.parentViewController.view;
 //    [DJWActionSheet showInView:presenter

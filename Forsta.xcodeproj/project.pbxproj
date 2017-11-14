@@ -464,6 +464,9 @@
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
+		7D5C7BE21FB3D00D0020E136 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */; };
+		7D5C7BE31FB3D00D0020E136 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */; };
+		7D5C7BE41FB3D00D0020E136 /* FLTagMathService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */; };
 		7D61398A1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398B1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398C1F90162400E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
@@ -1853,6 +1856,8 @@
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
 		7D516F221EF32B6000E7E15F /* CCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCSMJSONService.m; path = Services/CCSMJSONService.m; sourceTree = "<group>"; };
+		7D5C7BE01FB3D00C0020E136 /* FLTagMathService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTagMathService.h; path = RelayServiceKit/CCSM/FLTagMathService.h; sourceTree = "<group>"; };
+		7D5C7BE11FB3D00C0020E136 /* FLTagMathService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTagMathService.m; path = RelayServiceKit/CCSM/FLTagMathService.m; sourceTree = "<group>"; };
 		7D6138771F90161500E18D29 /* TSAccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAccountManager.h; sourceTree = "<group>"; };
 		7D6138781F90161500E18D29 /* TSAccountManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSAccountManager.m; sourceTree = "<group>"; };
 		7D6138791F90161500E18D29 /* TSAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAttributes.h; sourceTree = "<group>"; };
@@ -4463,12 +4468,18 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 					7DCFFD621F0EE4490003CD95 = {
 						DevelopmentTeam = THHR8L4QV3;
 						SystemCapabilities = {
 							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -4492,6 +4503,9 @@
 							};
 							com.apple.VPNLite = {
 								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
 							};
 						};
 					};

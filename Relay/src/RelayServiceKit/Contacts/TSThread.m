@@ -183,7 +183,7 @@ static const NSString *FLExpressionKey = @"expression";
     } else if (self.participants.count == 2) {  // One-on-one conversation
         NSString *userID = nil;
         for (NSString *uid in self.participants) {
-            if (![uid isEqualToString:[TSStorageManager localNumber] ]) {
+            if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId ]) {
                 userID = uid;
             }
         }

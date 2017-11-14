@@ -45,6 +45,8 @@ extern NSString *const OWSMimeTypeImagePng;
 
 + (NSURL *)simLinkCorrectExtensionOfFile:(NSURL *)mediaURL ofMIMEType:(NSString *)contentType;
 
++ (NSString*) mimeTypeForFileAtPath: (NSString *) path;
+
 #if TARGET_OS_IPHONE
 + (NSString *)getSupportedImageMIMETypeFromImage:(UIImage *)image;
 + (BOOL)getIsSupportedTypeFromImage:(UIImage *)image;

@@ -21,6 +21,6 @@ typedef void (^completionBlock)(void);
 
 + (completionBlock)modalCompletionBlock;
 + (void)applyDefaultSystemAppearence;
-+ (void)applySignalAppearence;
++ (void)applyForstaAppearence;
 
 @end

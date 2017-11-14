@@ -51,6 +51,7 @@ NS_SWIFT_NAME(MessageSender)
  * Only necessary to call once. If sending fails, retry with `sendMessage:`.
  */
 - (void)sendAttachmentData:(NSData *)attachmentData
+                  filename:(NSString *)filename
                contentType:(NSString *)contentType
                  inMessage:(TSOutgoingMessage *)outgoingMessage
                    success:(void (^)())successHandler

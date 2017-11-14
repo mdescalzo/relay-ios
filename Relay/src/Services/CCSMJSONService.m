@@ -108,13 +108,12 @@
                                @"distribution" : recipients
                                }];
     // Handler for nil message.body
-    NSDictionary *data;
+    NSMutableDictionary *data = [NSMutableDictionary new];
     if (message.plainTextBody) {
-        data = @{ @"body": @[ @{ @"type": @"text/plain",
-                                 @"value": message.plainTextBody }
-                              ]
-                  };
-        [tmpDict setObject:data forKey:@"data"];
+        [data setObject:@[ @{ @"type": @"text/plain",
+                              @"value": message.plainTextBody }
+                           ]
+                 forKey:@"body"];
     }
     
     // Attachment Handler
@@ -126,7 +125,7 @@
                 TSAttachmentStream *stream = (TSAttachmentStream *)attachment;
                 NSFileManager *fm = [NSFileManager defaultManager];
                 if ([fm fileExistsAtPath:stream.filePath]) {
-                    NSString *filename = [stream.mediaURL.pathComponents lastObject];
+                    NSString *filename = [stream.mediaURL lastPathComponent];
                     NSString *contentType = stream.contentType;
                     NSDictionary *attribs = [fm attributesOfItemAtPath:stream.filePath error:nil];
                     NSNumber *size = [attribs objectForKey:NSFileSize];
@@ -143,9 +142,14 @@
             }
         }
         if ([attachments count] >= 1) {
-            [tmpDict setObject:attachments forKey:@"attachments"];
+            [data setObject:attachments forKey:@"attachments"];
         }
     }
+    
+    if ([data allKeys].count > 0) {
+        [tmpDict setObject:data forKey:@"data"];
+    }
+    
     return @[ tmpDict ];
 }
 

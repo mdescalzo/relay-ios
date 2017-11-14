@@ -768,6 +768,9 @@
 "TAKE_PICTURE_BUTTON" = "Take a Picture";
 
 /* No comment provided by engineer. */
+"CHOOSE_FILE_BUTTON" = "Choose file...";
+
+/* No comment provided by engineer. */
 "TIMEOUT_CONTACTS_DETAIL" = "We couldn't fetch an updated contact list from the server. Please try again later.";
 
 /* No comment provided by engineer. */
@@ -875,6 +878,14 @@
 /* Mail invite subject */
 "SHARE_INVITE_SUBJECT" = "Forsta | You've been invited.";
 
+/* Send file validation */
+"ATTACHMENT_FILE_VALIDATION" = "Send file: ";
+
+/* YES */
+"YES" = "Yes";
+
+/* NO */
+"NO" = "No";
+
 /* Token refresh failure message */
 "REFRESH_FAILURE_MESSAGE" = "Account refresh failed.  Please contact your organization's administrator or Forsta support.";
-

@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillAppear:(BOOL)animated
 {
     // In case we're returning from activity view that needed default system styles.
-    [UIUtil applySignalAppearence];
+    [UIUtil applyForstaAppearence];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (completionHandler) {
             completionHandler();
         }
-        [UIUtil applySignalAppearence];
+        [UIUtil applyForstaAppearence];
     };
 
     activityController.completionWithItemsHandler = activityControllerCompletionHandler;

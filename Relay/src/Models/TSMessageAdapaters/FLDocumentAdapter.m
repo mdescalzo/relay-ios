@@ -16,7 +16,7 @@
 
 static const CGFloat cellPadding = 5.0f;
 static const CGFloat iconInset = 5.0f;
-static const CGFloat viewHeight = 50.0f;
+static const CGFloat viewHeight = 60.0f;
 static const CGFloat spacing = 3.0f;
 static const CGFloat insetFactor = 0.45f;
 
@@ -93,7 +93,7 @@ static const CGFloat insetFactor = 0.45f;
     
     CGRect filenameFrame = CGRectMake(imageFrame.origin.x + imageFrame.size.width + spacing,
                                       cellPadding,
-                                      [self mediaViewDisplaySize].width - ((cellPadding + iconInset)*2.0f) - (imageFrame.size.width + cellPadding),
+                                      [self mediaViewDisplaySize].width - ((cellPadding + iconInset)*2.0f) - (imageFrame.size.width + cellPadding*2.0f),
                                       ([self mediaViewDisplaySize].height - ((cellPadding + iconInset)*2.0f)) * 0.6f);
     UILabel *filenameLabel = [[UILabel alloc] initWithFrame:filenameFrame];
     NSString *filename = [[self.attachment filePath] lastPathComponent];
