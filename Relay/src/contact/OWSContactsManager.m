@@ -68,7 +68,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(void)refreshCCSMRecipients
 {
 #warning XXX Needs catch for failure to communicate with CCSM
-    [[Environment getCurrent].ccsmCommManager refreshCCSMData];
+    [CCSMCommManager refreshCCSMData];
     
     NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     
@@ -121,7 +121,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     
 #warning XXX Lookup is broken. Causes main thread to block, freezing app.  Get more reliable method.
     if (!recipient) {
-        recipient = [[Environment getCurrent].ccsmCommManager recipientFromCCSMWithID:userID synchronoous:YES];
+        recipient = [CCSMCommManager recipientFromCCSMWithID:userID synchronoous:YES];
         if (recipient) {
             [self saveRecipient:recipient];
         }

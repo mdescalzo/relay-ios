@@ -875,3 +875,6 @@
 /* Mail invite subject */
 "SHARE_INVITE_SUBJECT" = "Forsta | You've been invited.";
 
+/* Token refresh failure message */
+"REFRESH_FAILURE_MESSAGE" = "Account refresh failed.  Please contact your organization's administrator or Forsta support.";
+

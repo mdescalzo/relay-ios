@@ -57,7 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (BOOL)isRegistered {
-    return [TSStorageManager localNumber] ? YES : NO;
+    CCSMStorage *ccsmStore = [CCSMStorage new];
+    NSString *sessionToken = [ccsmStore getSessionToken];
+    
+    return ([TSStorageManager localNumber] && sessionToken.length > 0) ? YES : NO;
 }
 
 - (void)ifRegistered:(BOOL)isRegistered runAsync:(void (^)())block
@@ -269,7 +272,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(SignalRecipient *_Nullable)myself
 {
     if (_myself == nil || _myself.fullName.length == 0) {
-    _myself = [SignalRecipient fetchObjectWithUniqueID:[self.class localNumber]];
+        _myself = [SignalRecipient fetchObjectWithUniqueID:[self.class localNumber]];
     }
 
     return _myself;
