@@ -144,12 +144,12 @@
         if ([attachments count] >= 1) {
             [data setObject:attachments forKey:@"attachments"];
         }
-        
-        if ([data allKeys].count > 0) {
-            [tmpDict setObject:data forKey:@"data"];
-        }
-
     }
+    
+    if ([data allKeys].count > 0) {
+        [tmpDict setObject:data forKey:@"data"];
+    }
+    
     return @[ tmpDict ];
 }
 
