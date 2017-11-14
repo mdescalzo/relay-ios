@@ -15,50 +15,50 @@
 
 @interface CCSMCommManager : NSObject
 
--(void)refreshCCSMData;
--(void)refreshCCSMUsers;
--(void)refreshCCSMTags;
++(void)refreshCCSMData;
++(void)refreshCCSMUsers;
++(void)refreshCCSMTags;
 
-- (void)requestLogin:(NSString *)userName
++(void)requestLogin:(NSString *)userName
              orgName:(NSString *)orgName
              success:(void (^)())successBlock
              failure:(void (^)(NSError *error))failureBlock ;
 
-- (void)verifyLogin:(NSString *)verificationCode
++(void)verifyLogin:(NSString *)verificationCode
             success:(void (^)())successBlock
             failure:(void (^)(NSError *error))failureBlock;
 
-- (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
++(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                                        failure:(void (^)(NSError *error))failureBlock;
 
-- (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
++(void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
                                       failure:(void (^)(NSError *))failureBlock;
 
-- (void)updateAllTheThings:(NSString *)urlString
++(void)updateAllTheThings:(NSString *)urlString
                 collection:(NSMutableDictionary *)collection
                synchronous:(BOOL)sync
                    success:(void (^)())successBlock
                    failure:(void (^)(NSError *error))failureBlock;
 
-- (void)getThing:(NSString *)urlString
++(void)getThing:(NSString *)urlString
      synchronous:(BOOL)synchronous
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
 
--(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
++(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
                                success:(void (^)())successBlock
                                failure:(void (^)(NSError *error))failureBlock;
 
-//-(void)registerWithTSSViaCCSMForPhone:(NSString *)phone
+//+(void)registerWithTSSViaCCSMForPhone:(NSString *)phone
 //                              Success:(void (^)())successBlock
 //                              failure:(void (^)(NSError *error))failureBlock;
 
--(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous;
--(void)recipientFromCCSMWithID:(NSString *)userId
++(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous;
++(void)recipientFromCCSMWithID:(NSString *)userId
                                     success:(void (^)(NSDictionary *results))successBlock
                                     failure:(void (^)(NSError *error))failureBlock;
 
--(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
++(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock;
 @end

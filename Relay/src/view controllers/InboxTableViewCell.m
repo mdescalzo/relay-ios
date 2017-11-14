@@ -54,16 +54,15 @@ NS_ASSUME_NONNULL_BEGIN
         });
     }
     
+    NSString *name = thread.displayName;
+    self.threadId = thread.uniqueId;
+    
+    NSString *snippetText = thread.lastMessageLabel;
+    NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
+    NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-        NSString *name = thread.displayName;
         UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
-        self.threadId = thread.uniqueId;
-        
-        NSString *snippetText = thread.lastMessageLabel;
-        NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
-        NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
-        
         self.nameLabel.text = name;
         self.snippetLabel.text = snippetText;
         self.timeLabel.attributedText = attributedDate;

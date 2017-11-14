@@ -260,6 +260,13 @@ static Environment *environment = nil;
     exit(0);
 }
 
++ (void)wipeCommDatabase {
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [transaction removeAllObjectsInCollection:[TSThread collection]];
+        [transaction removeAllObjectsInCollection:[SignalRecipient collection]];
+    }];
+}
+
 //-(FLInvitationService *)invitationService
 //{
 //    if (_invitationService == nil) {
@@ -274,14 +281,6 @@ static Environment *environment = nil;
         _ccsmStorage = [CCSMStorage new];
     }
     return _ccsmStorage;
-}
-
--(CCSMCommManager *)ccsmCommManager
-{
-    if (_ccsmCommManager == nil) {
-        _ccsmCommManager = [CCSMCommManager new];
-    }
-    return _ccsmCommManager;
 }
 
 @end

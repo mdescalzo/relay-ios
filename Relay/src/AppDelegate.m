@@ -19,7 +19,7 @@
 #import <PromiseKit/AnyPromise.h>
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSIncomingMessageReadObserver.h"
-#import "OWSMessageSender.h"
+#import "FLMessageSender.h"
 #import "TSAccountManager.h"
 
 #import "CCSMCommunication.h"
@@ -40,11 +40,10 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 @interface AppDelegate ()
 
-@property (nonatomic, retain) UIWindow *screenProtectionWindow;
-@property (nonatomic) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
-@property (nonatomic) OWSStaleNotificationObserver *staleNotificationObserver;
-
-@property (nonatomic, strong) CCSMCommManager *ccsmCommManager;
+@property (nonatomic, strong) UIWindow *screenProtectionWindow;
+@property (nonatomic, strong) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
+@property (nonatomic, strong) OWSStaleNotificationObserver *staleNotificationObserver;
+@property (nonatomic, assign) BOOL hasRootViewController;
 @property (nonatomic, assign) BOOL awaitingVerification;
 
 @end
@@ -81,7 +80,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-        [[PushManager sharedManager] registerPushKitNotificationFuture];
+    [[PushManager sharedManager] registerPushKitNotificationFuture];
     
     if (getenv("runningTests_dontStartApp")) {
         return YES;
@@ -90,13 +89,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     if ([TSAccountManager isRegistered]) {
         [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
     }
-    //    [Environment.getCurrent initCallListener];
     
     BOOL loggingIsEnabled;
-    
-    // Set SupermanID
-    [ccsmStore setSupermanId:FLSupermanID];
-    
 #ifdef DEBUG
     // Specified at Product -> Scheme -> Edit Scheme -> Test -> Arguments -> Environment to avoid things like
     // the phone directory being looked up during tests.
@@ -115,30 +109,9 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [self setupTSKitEnv];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    
-    __block UIStoryboard *storyboard;
-    
-    NSString *sessionToken = [ccsmStore getSessionToken];
-    if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) // Check for local sessionKey, if there refresh
-    {
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-        [self.ccsmCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
-            [self refreshUsersStore];
-        }
-                                                             failure:^(NSError *error){  // Unable to refresh, login force login
-#warning Probably needs some sort of dialog to tell the user why they got bounced out.
-                                                                 storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-                                                                 UIViewController *rootViewController = [storyboard instantiateInitialViewController];
-                                                                 [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
-                                                                 
-                                                             }];
-    } else { // No local token, login
-        storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-    }
-    
+    // TODO: Generate an informational loading to display here.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
-    
     [self.window makeKeyAndVisible];
     
     // Accept push notification when app is not open
@@ -158,7 +131,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
             [TSSocketManager becomeActiveFromForeground];
         } else if (launchState == UIApplicationStateBackground) {
             DDLogWarn(@"The app was launched from being backgrounded");
-            [TSSocketManager becomeActiveFromBackgroundExpectMessage:NO];
+            [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
         } else {
             DDLogWarn(@"The app was launched in an unknown way");
         }
@@ -259,27 +232,61 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     if (getenv("runningTests_dontStartApp")) {
         return;
     }
-#warning XXX Signals ifRegistered method returning false negatives
-    //    [[TSAccountManager sharedInstance] ifRegistered:YES
-    //                                           runAsync:^{
-    CCSMStorage *ccsmStore = [CCSMStorage new];
-    NSString *sessionToken = [ccsmStore getSessionToken];
-    if ((sessionToken.length > 0) && [TSAccountManager isRegistered]) { // Check for local sessionKey
-        
-        // We're double checking that the app is active, to be sure since we
-        // can't verify in production env due to code
-        // signing.
-        [TSSocketManager becomeActiveFromForeground];
-        
-        // Refresh the contact/recipient database in background
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
-            [[Environment getCurrent].contactsManager refreshCCSMRecipients];
-        });
-        //                                               [[Environment getCurrent].contactsManager verifyABPermission];
-        //                                           }];
-    }
+    [self ensureRootViewController];
     [self removeScreenProtection];
+    
+    // Refresh local data from CCSM
+    if ([TSAccountManager isRegistered]) {
+        [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
+        [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                [self refreshUsersStore];
+            });
+        }
+                                                        failure:^(NSError *error){
+                                                            // Unable to refresh, login force login
+                                                            DDLogDebug(@"Token Refresh failed with error: %@", error.description);
+                                                            
+                                                            // Determine if this eror should kick the user out:
+                                                            if (error.code >= 400 && error.code < 500) {
+                                                                //  Out they go...
+                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
+                                                                                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+                                                                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                                       style:UIAlertActionStyleDefault
+                                                                                                                     handler:^(UIAlertAction *action) {
+                                                                                                                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                                                                                         self.window.rootViewController = [storyboard instantiateInitialViewController];
+                                                                                                                         [self.window makeKeyAndVisible];
+                                                                                                                     }];
+                                                                    [alert addAction:okAction];
+                                                                    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                                                                });
+                                                            } else {
+                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Server Connection Failed", @"")
+                                                                                                                                   message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
+                                                                                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+                                                                    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                                                       style:UIAlertActionStyleDefault
+                                                                                                                     handler:^(UIAlertAction * action) {} ];
+                                                                    [alert addAction:okButton];
+                                                                    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                                                                });
+                                                            }
+                                                        }];
+        
+    } else {
+        // User not logged in.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+            self.window.rootViewController = [storyboard instantiateInitialViewController];
+            [self.window makeKeyAndVisible];
+        });
+    }
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     UIBackgroundTaskIdentifier __block bgTask = UIBackgroundTaskInvalid;
@@ -358,32 +365,7 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 -(void)refreshUsersStore
 {
-    [self.ccsmCommManager refreshCCSMData];
-    //    NSMutableDictionary * users = [[[Environment getCurrent].ccsmStorage getUsers] mutableCopy];
-    //    if (!users) {
-    //        users = [NSMutableDictionary new];
-    //    }
-    //
-    //    NSString *orgUrl = [(NSDictionary *)[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"org"] objectForKey:@"url"];
-    //    [self.ccsmCommManager getThing:orgUrl
-    //                       synchronous:NO
-    //                           success:^(NSDictionary *org){
-    //                               DDLogInfo(@"Retrieved org info after session token refresh");
-    //                               [[Environment getCurrent].ccsmStorage setOrgInfo:org];
-    //                           }
-    //                           failure:^(NSError *err){
-    //                               DDLogError(@"Failed to retrieve org info after session token refresh");
-    //                           }];
-    //    [self.ccsmCommManager updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
-    //                                  collection:users
-    //                                 synchronous:NO
-    //                                     success:^{
-    //                                         DDLogInfo(@"Retrieved all users after session token refresh");
-    //                                         [[Environment getCurrent].ccsmStorage setUsers:users];
-    //                                     }
-    //                                     failure:^(NSError *err){
-    //                                         DDLogError(@"Failed to retrieve all users after session token refresh");
-    //                                     }];
+    [CCSMCommManager refreshCCSMData];
 }
 
 #pragma mark - Push Notifications Delegate Methods
@@ -425,6 +407,25 @@ forLocalNotification:(UILocalNotification *)notification
                            completionHandler:completionHandler];
 }
 
+#pragma mark - Helpers
+-(void)ensureRootViewController
+{
+    if (!self.hasRootViewController) {
+        self.hasRootViewController = YES;
+        UIStoryboard *storyboard = nil;
+        if ([TSAccountManager isRegistered]) { // Check for local sessionKey
+            [TSSocketManager becomeActiveFromForeground];
+            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
+            self.window.rootViewController = [storyboard instantiateInitialViewController];
+            [self.window makeKeyAndVisible];
+        } else { // No local token, login
+            storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+            self.window.rootViewController = [storyboard instantiateInitialViewController];
+            [self.window makeKeyAndVisible];
+        }
+    }
+}
+
 /**
  *  Signal requires an iPhone to be unlocked after reboot to be able to access keying material.
  */
@@ -463,18 +464,10 @@ forLocalNotification:(UILocalNotification *)notification
     return self.class.tag;
 }
 
-#pragma mark - lazy instantiation
--(CCSMCommManager *)ccsmCommManager
-{
-    if (_ccsmCommManager == nil) {
-        _ccsmCommManager = [CCSMCommManager new];
-    }
-    return _ccsmCommManager;
-}
-
 -(BOOL)awaitingVerification
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:FLAwaitingVerification];
 }
 
 @end
+

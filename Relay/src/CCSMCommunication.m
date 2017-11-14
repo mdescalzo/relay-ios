@@ -16,6 +16,7 @@
 #import "TSStorageManager.h"
 #import "TSSocketManager.h"
 #import "TSPreKeyManager.h"
+#import "TSStorageManager.h"
 
 @import Fabric;
 @import Crashlytics;
@@ -31,49 +32,70 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 
 @implementation CCSMCommManager
 
-- (void)requestLogin:(NSString *)userName
-             orgName:(NSString *)orgName
-             success:(void (^)())successBlock
-             failure:(void (^)(NSError *error))failureBlock ;
++(void)requestLogin:(NSString *)userName
+            orgName:(NSString *)orgName
+            success:(void (^)())successBlock
+            failure:(void (^)(NSError *error))failureBlock ;
 {
-    NSString * urlString = [NSString stringWithFormat:@"%@/v1/login/send/%@/%@/?format=json", FLHomeURL, orgName, userName];
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/login/send/%@/%@/?format=json", FLHomeURL, orgName, userName];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                               NSData *data, NSError *connectionError)
-     {
-         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Request Login - Server response code: %ld", (long)HTTPresponse.statusCode);
-         DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-         if (connectionError != nil)  // Failed connection
-         {
-             failureBlock(connectionError);
-         }
-         else if (HTTPresponse.statusCode == 200) // SUCCESS!
-         {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
-             [[Environment getCurrent].ccsmStorage setOrgName:orgName];
-             [[Environment getCurrent].ccsmStorage setUserName:userName];
-             DDLogDebug(@"login result's msg is: %@", [result objectForKey:@"msg"]);
-             successBlock();
-         }
-         else  // Connection good, error from server
-         {
-             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                                  code:HTTPresponse.statusCode
-                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-             failureBlock(error);
-         }
-     }];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10];
+    NSURLSession *loginSession = [NSURLSession sharedSession];
+    NSURLSessionDataTask *loginTask = [loginSession dataTaskWithRequest:request
+                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError)
+                                       {
+                                           NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                           DDLogDebug(@"Request Login - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                           DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                           
+                                           NSDictionary *result = nil;
+                                           if (data) {  // Grab payload if its there
+                                               result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+                                           }
+
+                                           if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                           {
+                                               [Environment.getCurrent.ccsmStorage setOrgName:orgName];
+                                               [Environment.getCurrent.ccsmStorage setUserName:userName];
+                                               DDLogDebug(@"login result's msg is: %@", [result objectForKey:@"msg"]);
+                                               successBlock();
+                                           }
+                                           else  // Connection good, error from server
+                                           {
+                                               NSError *error = nil;
+                                               if ([result objectForKey:@"non_field_errors"]) {
+                                                   NSMutableString *errorDescription = [NSMutableString new];
+                                                   for (NSString *message in [result objectForKey:@"non_field_errors"]) {
+                                                       [errorDescription appendString:[NSString stringWithFormat:@"\n%@", message]];
+                                                   }
+                                                   error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                               code:HTTPresponse.statusCode
+                                                                           userInfo:@{ NSLocalizedDescriptionKey : errorDescription }];
+                                                   
+                                               } else if ([result objectForKey:@"detail"]) {
+                                                   error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                               code:HTTPresponse.statusCode
+                                                                           userInfo:@{ NSLocalizedDescriptionKey : [result objectForKey:@"detail"] }];
+                                               } else {
+                                                   error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                               code:HTTPresponse.statusCode
+                                                                           userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                               }
+                                               failureBlock(error);
+                                           }
+                                       }];
+    
+    [loginSession flushWithCompletionHandler:^{
+        [loginSession resetWithCompletionHandler:^{
+            [loginTask resume];
+        }];
+    }];
+    
 }
 
-- (void)verifyLogin:(NSString *)verificationCode
-            success:(void (^)())successBlock
-            failure:(void (^)(NSError *error))failureBlock
++(void)verifyLogin:(NSString *)verificationCode
+           success:(void (^)())successBlock
+           failure:(void (^)(NSError *error))failureBlock
 {
     NSString *orgName = [[Environment getCurrent].ccsmStorage getOrgName];
     NSString *userName = [[Environment getCurrent].ccsmStorage getUserName];
@@ -117,8 +139,8 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 
-- (void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
-                                      failure:(void (^)(NSError *error))failureBlock
++(void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
+                                     failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
@@ -160,8 +182,8 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
-- (void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
-                                       failure:(void (^)(NSError *error))failureBlock
++(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
+                                      failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
@@ -176,10 +198,14 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                            completionHandler:^(NSURLResponse *response,
                                                NSData *data, NSError *connectionError)
      {
-         
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
          DDLogDebug(@"Refresh Session Token - Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+         
+         NSDictionary *result = nil;
+         if (data) {
+             result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+         }
          
          if (connectionError != nil)  // Failed connection
          {
@@ -187,29 +213,42 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
          }
          else if (HTTPresponse.statusCode == 200) // SUCCESS!
          {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
              [self storeLocalUserDataWithPayload:result];
              
              successBlock();
          }
          else  // Connection good, error from server
          {
-             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                                  code:HTTPresponse.statusCode
-                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+             NSMutableString *errorMessage = [NSMutableString new];
+             if (result) {
+                 NSArray *errorMessages = [result objectForKey:@"non_field_errors"];
+                 for (NSString *message in errorMessages) {
+                     [errorMessage appendString:[NSString stringWithFormat:@"\n%@", message]];
+                 }
+             }
+             
+             NSError *error = nil;
+             if (errorMessage.length == 0) {
+                 error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:HTTPresponse.statusCode
+                                         userInfo:@{ NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode] }];
+             } else {
+                 error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:HTTPresponse.statusCode
+                                         userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
+             }
+             
              failureBlock(error);
          }
          
      }];
 }
 
-- (void)updateAllTheThings:(NSString *)urlString
-                collection:(NSMutableDictionary *)collection
-               synchronous:(BOOL)sync
-                   success:(void (^)())successBlock
-                   failure:(void (^)(NSError *error))failureBlock
++(void)updateAllTheThings:(NSString *)urlString
+               collection:(NSMutableDictionary *)collection
+              synchronous:(BOOL)sync
+                  success:(void (^)())successBlock
+                  failure:(void (^)(NSError *error))failureBlock
 {
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
@@ -261,9 +300,9 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
-- (void)getPageSynchronous:(NSURL *)url
-                   success:(void (^)(NSDictionary *result))successBlock
-                   failure:(void (^)(NSError *error))failureBlock
++(void)getPageSynchronous:(NSURL *)url
+                  success:(void (^)(NSDictionary *result))successBlock
+                  failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -302,9 +341,9 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 
-- (void)getPage:(NSURL *)url
-        success:(void (^)(NSDictionary *result))successBlock
-        failure:(void (^)(NSError *error))failureBlock
++(void)getPage:(NSURL *)url
+       success:(void (^)(NSDictionary *result))successBlock
+       failure:(void (^)(NSError *error))failureBlock
 {
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -330,10 +369,10 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 
-- (void)getThing:(NSString *)urlString
-     synchronous:(BOOL)synchronous
-         success:(void (^)(NSDictionary *))successBlock
-         failure:(void (^)(NSError *error))failureBlock;
++(void)getThing:(NSString *)urlString
+    synchronous:(BOOL)synchronous
+        success:(void (^)(NSDictionary *))successBlock
+        failure:(void (^)(NSError *error))failureBlock;
 {
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
@@ -391,17 +430,27 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Refresh methods
--(void)storeLocalUserDataWithPayload:(NSDictionary *)payload
++(void)storeLocalUserDataWithPayload:(NSDictionary *)payload
 {
     if (payload) {
+        NSDictionary *userDict = [payload objectForKey:@"user"];
+        NSString *userID = [userDict objectForKey:@"id"];
+        // Check to see if user changed.  If so, wiped the database.
+        if (TSStorageManager.localNumber.length > 0 && ![TSStorageManager.localNumber isEqualToString:userID]) {
+            [Environment wipeCommDatabase];
+            [Environment.getCurrent.ccsmStorage setUsers:@{ }];
+            [Environment.getCurrent.ccsmStorage setOrgInfo:@{ }];
+            [Environment.getCurrent.ccsmStorage setTags:@{ }];
+            [TSStorageManager.sharedManager storePhoneNumber:userID];
+        }
         [[Environment getCurrent].ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
-        NSDictionary *userDict = [payload objectForKey:@"user"];
         [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
         SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
         [myself save];
         [TSAccountManager.sharedInstance myself];
         [Environment.getCurrent.contactsManager allContacts];
+        
         [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
         
         NSDictionary *orgDict = [userDict objectForKey:@"org"];
@@ -412,13 +461,13 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
--(void)refreshCCSMData
++(void)refreshCCSMData
 {
     [self refreshCCSMUsers];
     [self refreshCCSMTags];
 }
 
--(void)refreshCCSMUsers
++(void)refreshCCSMUsers
 {
     
     NSMutableDictionary *users = [NSMutableDictionary new];
@@ -436,7 +485,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                      }];
 }
 
--(void)refreshCCSMTags
++(void)refreshCCSMTags
 {
     NSMutableDictionary *tags = [NSMutableDictionary new];
     
@@ -452,16 +501,16 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                              }
                          }
                          [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:holdingDict]];
-//                         [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
+                         //                         [[Environment getCurrent].ccsmStorage setTags:[NSDictionary dictionaryWithDictionary:tags]];
                          [self notifyOfTagsRefresh];
                          DDLogDebug(@"Refreshed all tags.");
-                    }
+                     }
                      failure:^(NSError *err){
                          DDLogError(@"Failed to refresh all tags. Error: %@", err.localizedDescription);
                      }];
 }
 
--(void)processOrgInfoWithURL:(NSString *)urlString
++(void)processOrgInfoWithURL:(NSString *)urlString
 {
     if (urlString.length > 0) {
         [self getThing:urlString
@@ -493,18 +542,18 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     }
 }
 
--(void)notifyOfUsersRefresh
++(void)notifyOfUsersRefresh
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMUsersUpdated object:nil];
 }
 
--(void)notifyOfTagsRefresh
++(void)notifyOfTagsRefresh
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:FLCCSMTagsUpdated object:nil];
 }
 
 #pragma mark - CCSM proxied TextSecure registration
--(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
++(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
                                success:(void (^)())successBlock
                                failure:(void (^)(NSError *error))failureBlock
 {
@@ -579,7 +628,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Lookup methods
--(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous
++(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous
 {
     __block SignalRecipient *recipient = nil;
     
@@ -600,9 +649,9 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
     return recipient;
 }
 
--(void)recipientFromCCSMWithID:(NSString *)userId
-                                    success:(void (^)(NSDictionary *results))successBlock
-                                    failure:(void (^)(NSError *error))failureBlock
++(void)recipientFromCCSMWithID:(NSString *)userId
+                       success:(void (^)(NSDictionary *results))successBlock
+                       failure:(void (^)(NSError *error))failureBlock
 {
     if (userId) {
         NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, userId];
@@ -619,7 +668,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Public account creation
--(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
++(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock
 {
@@ -684,8 +733,8 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                  if (data.length > 0 && connectionError == nil)
                  {
                      result = [NSJSONSerialization JSONObjectWithData:data
-                                                                            options:0
-                                                                              error:NULL];
+                                                              options:0
+                                                                error:NULL];
                      CCSMStorage *ccsmStore = [CCSMStorage new];
                      NSString *userSlug = [result objectForKey:@"username"];
                      NSDictionary *orgDict = [result objectForKey:@"org"];
@@ -707,12 +756,9 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
 }
 
 #pragma mark - Accessors
--(NSArray *)controlTags
++(NSArray *)controlTags
 {
-    if (_controlTags == nil) {
-        _controlTags = @[ @".", @"role", @"position" ];
-    }
-    return _controlTags;
+    return @[ @".", @"role", @"position" ];
 }
 
 @end

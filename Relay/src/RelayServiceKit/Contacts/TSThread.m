@@ -178,7 +178,8 @@ static const NSString *FLExpressionKey = @"expression";
         return _name;
     } else if (self.participants.count == 1 &&
                [[self.participants lastObject] isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {   // conversation with self
-        return TSAccountManager.sharedInstance.myself.fullName;
+        return NSLocalizedString(@"ME_STRING", @"");
+//        return TSAccountManager.sharedInstance.myself.fullName;
     } else if (self.participants.count == 2) {  // One-on-one conversation
         NSString *userID = nil;
         for (NSString *uid in self.participants) {
@@ -212,7 +213,7 @@ static const NSString *FLExpressionKey = @"expression";
                 break;
             case 1:
             {
-                [Environment.getCurrent.contactsManager imageForPhoneIdentifier:TSAccountManager.sharedInstance.myself.uniqueId];
+                [Environment.getCurrent.contactsManager imageForPhoneIdentifier:self.participants.lastObject];
             }
                 break;
             case 2:
