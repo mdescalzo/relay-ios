@@ -80,7 +80,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
     if (([UIApplication sharedApplication].applicationState != UIApplicationStateActive) && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.userInfo             = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
-        if ([Environment.preferences soundInBackground] && self.lastNotificationDate != nil &&
+        if ([Environment.preferences soundInBackground] &&
             [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
             notification.soundName = @"NewMessage.aifc";
         } else {
@@ -118,7 +118,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
     
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
-        if ([Environment.preferences soundInBackground] && self.lastNotificationDate != nil &&
+        if ([Environment.preferences soundInBackground] &&
             [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
             notification.soundName = @"NewMessage.aifc";
         } else {
@@ -153,11 +153,12 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unread];
 
     } else {
-        if ([Environment.preferences soundInForeground] && self.lastNotificationDate != nil &&
+        if ([Environment.preferences soundInForeground] &&
             [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
             AudioServicesPlayAlertSound(_newMessageSound);
         }
     }
+    self.lastNotificationDate = [NSDate date];
 }
 
 @end
