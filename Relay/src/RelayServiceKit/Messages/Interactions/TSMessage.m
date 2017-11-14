@@ -8,10 +8,12 @@
 #import "TSAttachmentPointer.h"
 #import "TSThread.h"
 #import <YapDatabase/YapDatabaseTransaction.h>
+#import "UIFont+OWS.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 static const NSUInteger OWSMessageSchemaVersion = 3;
+static const CGFloat FLDefaultFontSize = 17.0f;
 
 @interface TSMessage ()
 
@@ -335,8 +337,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
             NSString *htmlString = [self htmlBodyStringFromPayload];
             
             if (htmlString.length > 0) {
-                //                    htmlString = [NSString stringWithFormat:@"<font size=\"17\">%@</font>", htmlString];
-                NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
+                 NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
                 
                 __block NSError *error = nil;
                 //            NSDictionary *attributes;
@@ -361,7 +362,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                 NSMutableAttributedString *tmpAtrString = [atrString mutableCopy];
                 
                 [tmpAtrString beginEditing];
-                UIFontDescriptor *baseDescriptor = [UIFont systemFontOfSize:17.0].fontDescriptor;
+                UIFontDescriptor *baseDescriptor = [UIFont ows_regularFontWithSize:FLDefaultFontSize].fontDescriptor;
                 [tmpAtrString enumerateAttribute:NSFontAttributeName
                                          inRange:NSMakeRange(0, tmpAtrString.length)
                                          options:0
@@ -369,10 +370,10 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                                           if (value) {
                                               UIFont *oldFont = (UIFont *)value;
                                               
-                                              // adapting to font size variations....scale up to relative to 17.0
+                                              // adapting to font size variations....scale up to relative to default size
                                               CGFloat oldSize = oldFont.pointSize;
                                               CGFloat multiplier = oldSize/12.0;
-                                              CGFloat size = multiplier * 17.0;
+                                              CGFloat size = multiplier * FLDefaultFontSize;
                                               
                                               UIFontDescriptorSymbolicTraits traits = oldFont.fontDescriptor.symbolicTraits;
                                               UIFontDescriptor *descriptor = [baseDescriptor fontDescriptorWithSymbolicTraits:traits];
@@ -388,7 +389,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                 
             } else  if (plainString.length > 0) {
                 _attributedTextBody = [[NSAttributedString alloc] initWithString:plainString
-                                                                      attributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
+                                                                      attributes:@{ NSFontAttributeName : [UIFont ows_regularFontWithSize:FLDefaultFontSize] }];
             }
         }
     }
