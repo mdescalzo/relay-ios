@@ -482,12 +482,15 @@ typedef enum : NSUInteger {
     (OWSDisappearingMessagesConfiguration *)disappearingMessagesConfiguration
 
 {
-    if (self.userLeftGroup) {
-        self.navigationItem.rightBarButtonItems = @[];
-        return;
-    }
-
     NSMutableArray<UIBarButtonItem *> *barButtons = [NSMutableArray new];
+    
+    // Info button to push converstaion settings view.
+    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [infoButton addTarget:self action:@selector(showConversationSettings) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *infoItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    [barButtons addObject:infoItem];
+
+    // Call button will display if phone # is available
     if ([self canCall]) {
         UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btnPhone--white"]
                                                                        style:UIBarButtonItemStylePlain
@@ -495,25 +498,8 @@ typedef enum : NSUInteger {
                                                                       action:@selector(callAction)];
 //        callButton.imageInsets = UIEdgeInsetsMake(0, -10, 0, 10);
         [barButtons addObject:callButton];
-    } else if (self.thread.participants.count > 2) {
-        UIBarButtonItem *manageGroupButton =
-            [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger"]
-                                             style:UIBarButtonItemStylePlain
-                                            target:self
-                                            action:@selector(didTapManageGroupButton:)];
-        // Hack to shrink button image
-//        manageGroupButton.imageInsets = UIEdgeInsetsMake(10, 20, 10, 0);
-        [barButtons addObject:manageGroupButton];
     }
-
-    // [ps] want to see disappearing message icon in bar
-    // if (disappearingMessagesConfiguration.isEnabled) {
-        [barButtons addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_timer"]
-                                                               style:UIBarButtonItemStylePlain
-                                                              target:self
-                                                              action:@selector(didTapTimerInNavbar)]];
-    //}
-
+    
     self.navigationItem.rightBarButtonItems = [barButtons copy];
 }
 
