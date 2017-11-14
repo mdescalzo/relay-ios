@@ -3,6 +3,8 @@
 #import "UIImage+contentTypes.h"
 #endif
 
+@import MobileCoreServices;
+
 NSString *const OWSMimeTypeApplicationOctetStream = @"application/octet-stream";
 NSString *const OWSMimeTypeImagePng = @"image/png";
 
@@ -331,6 +333,20 @@ NSString *const OWSMimeTypeImagePng = @"image/png";
             stringByAppendingPathExtension:[self getSupportedExtensionFromBinaryDataMIMEType:contentType]];
 }
 
++ (NSString*) mimeTypeForFileAtPath: (NSString *) path {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        return nil;
+    }
+    // Borrowed from https://stackoverflow.com/questions/5996797/determine-mime-type-of-nsdata-loaded-from-a-file
+    // itself, derived from  https://stackoverflow.com/questions/2439020/wheres-the-iphone-mime-type-database
+    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[path pathExtension], NULL);
+    CFStringRef mimeType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
+    CFRelease(UTI);
+    if (!mimeType) {
+        return @"application/octet-stream";
+    }
+    return (__bridge NSString *)mimeType;
+}
 #if TARGET_OS_IPHONE
 
 + (NSString *)getSupportedImageMIMETypeFromImage:(UIImage *)image {

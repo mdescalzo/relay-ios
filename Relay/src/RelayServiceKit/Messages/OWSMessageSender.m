@@ -140,6 +140,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     };
     
     [self sendAttachmentData:attachmentData
+                    filename:@""
                  contentType:contentType
                    inMessage:message
                      success:successWithDeleteHandler
@@ -147,6 +148,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 }
 
 - (void)sendAttachmentData:(NSData *)data
+                  filename:(NSString *)filename
                contentType:(NSString *)contentType
                  inMessage:(TSOutgoingMessage *)message
                    success:(void (^)())successHandler
@@ -154,7 +156,9 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 {
     dispatch_async([OWSDispatch attachmentsQueue], ^{
         TSAttachmentStream *attachmentStream = [[TSAttachmentStream alloc] initWithContentType:contentType];
-        
+        if (filename.length > 0) {
+            attachmentStream.filename = [filename stringByDeletingPathExtension];
+        }
         NSError *error;
         [attachmentStream writeData:data error:&error];
         if (error) {

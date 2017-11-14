@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (atomic, readwrite) UInt64 serverId;
 @property (atomic, readwrite) NSData *encryptionKey;
 @property (nonatomic, readonly) NSString *contentType;
-@property (nonatomic, strong) NSString *filename;
+@property (strong) NSString *filename;
 
 - (instancetype)initWithServerId:(UInt64)serverId
                    encryptionKey:(NSData *)encryptionKey

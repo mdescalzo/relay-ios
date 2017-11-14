@@ -172,7 +172,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [UIUtil applySignalAppearence];
 
     self.editingDbConnection = TSStorageManager.sharedManager.newDatabaseConnection;
     
@@ -214,10 +213,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 {
     [super viewWillAppear:animated];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(selectedUserNotification:)
-//                                                 name:FLUserSelectedFromPopoverDirectoryNotification
-//                                               object:nil];
+    [UIUtil applyForstaAppearence];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(markAllRead)
                                                  name:FLMarkAllReadNotification

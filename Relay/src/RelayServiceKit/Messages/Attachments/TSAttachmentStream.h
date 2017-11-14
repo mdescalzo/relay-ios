@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithPointer:(TSAttachmentPointer *)pointer NS_DESIGNATED_INITIALIZER;
 
 @property (atomic, readwrite) BOOL isDownloaded;
-@property (strong) NSString *filename;
+//@property (strong) NSString *filename;
 
 #if TARGET_OS_IPHONE
 - (nullable UIImage *)image;
