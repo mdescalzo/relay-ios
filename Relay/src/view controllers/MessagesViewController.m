@@ -1682,7 +1682,7 @@ typedef enum : NSUInteger {
                                                           handler:^(UIAlertAction *action) {
                                                               [UIUtil applyForstaAppearence];
 
-                                                              NSString *mimeType = [MIMETypeUtil mimeTypeForFileAtPath:filePath];
+                                                              NSString *mimeType = [MIMETypeUtil getSupportedMIMETypeFromDocumentFile:filePath];
                                                               NSData *fileData = [NSData dataWithContentsOfFile:filePath];
                                                               [self sendMessageAttachment:fileData
                                                                              withFilename:url.lastPathComponent
