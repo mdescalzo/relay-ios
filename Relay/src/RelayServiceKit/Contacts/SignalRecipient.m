@@ -98,6 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                tagSlug:(tagDict ? [tagDict objectForKey:@"slug"] : nil)];
     recipient.email = [userDict objectForKey:@"email"];
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
+    recipient.tagID = (tagDict ? [tagDict objectForKey:@"id"] : nil);
     
     NSDictionary *orgDict = [userDict objectForKey:@"org"];
     if (orgDict) {

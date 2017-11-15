@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (assign) BOOL nameChanged;
 
 /**
- *  Get or create thread with arracy of participant UUIDs
+ *  Get or create thread with array of participant UUIDs
  */
 +(instancetype)getOrCreateThreadWithParticipants:(NSArray <NSString *> *)participantIDs;
 +(instancetype)getOrCreateThreadWithParticipants:(NSArray <NSString *> *)participantIDs
@@ -178,6 +178,13 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)threadWithPayload:(NSDictionary *)payload;
 +(instancetype)threadWithPayload:(NSDictionary *)payload
                      transaction:(YapDatabaseReadWriteTransaction *)transaction;
+
+/**
+ *  Remove participant from thread
+ */
+-(void)removeParticipants:(NSSet *)objects;
+-(void)removeParticipants:(NSSet *)objects tansaction:(YapDatabaseReadWriteTransaction *)transaction;
+
 /**
  *  Exposing a formerly private method...
  *
