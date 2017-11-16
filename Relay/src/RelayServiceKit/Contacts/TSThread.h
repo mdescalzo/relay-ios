@@ -183,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Remove participant from thread
  */
 -(void)removeParticipants:(NSSet *)objects;
--(void)removeParticipants:(NSSet *)objects tansaction:(YapDatabaseReadWriteTransaction *)transaction;
+-(void)removeParticipants:(NSSet *)objects transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 /**
  *  Exposing a formerly private method...

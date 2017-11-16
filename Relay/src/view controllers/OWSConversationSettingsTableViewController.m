@@ -375,7 +375,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
                                                                                 inThread:self.thread
                                                                              messageType:TSInfoMessageTypeConversationQuit];
                 [leavingMessage saveWithTransaction:transaction];
-                [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.tagID] tansaction:transaction];
+                [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.tagID] transaction:transaction];
             }];
        }
         failure:^(NSError *error) {

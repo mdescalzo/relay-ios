@@ -510,9 +510,9 @@ NS_ASSUME_NONNULL_BEGIN
     }
     // Process per messageType
     if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
-        DDLogDebug(@"Control message received.");
-        
         NSString *controlMessageType = [dataBlob objectForKey:@"control"];
+        DDLogDebug(@"Control message received: %@", controlMessageType);
+
         // Conversation update
         if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
             [self handleThreadUpdateControlMessageWithEnvelope:envelope
@@ -521,6 +521,9 @@ NS_ASSUME_NONNULL_BEGIN
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
+            [self handleThreadDeleteControlMessageWithEnvelope:envelope
+                                               withDataMessage:dataMessage
+                                                 attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
         } else {
             DDLogDebug(@"Unhandled control message.");
@@ -708,6 +711,31 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+-(void)handleThreadDeleteControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
+                                    withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                      attachmentIds:(NSArray<NSString *> *)attachmentIds
+{
+    // Remove the sender from the thread
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        
+        SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source withTransaction:transaction];
+        if (sender) {
+            TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
+            if (thread) {
+                if (sender.tagID) {
+                    [thread removeParticipants:[NSSet setWithObject:sender.tagID] transaction:transaction];
+                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
+                                                                                 inThread:thread
+                                                                              messageType:TSInfoMessageTypeConversationUpdate
+                                                                            customMessage:[NSString stringWithFormat:NSLocalizedString(@"GROUP_MEMBER_LEFT", @""), sender.fullName]];
+                    [infoMessage saveWithTransaction:transaction];
+                }
+            }
+        }
+    }];
+}
+    
+
 -(void)handleThreadUpdateControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
@@ -720,7 +748,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     __block NSDictionary *threadUpdates = [dataBlob objectForKey:@"threadUpdates"];
     
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {//TODO: Balag
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         // TODO: Attachments become avatars
         // TODO: Modfiy participants
         NSString *threadID = [threadUpdates objectForKey:@"threadId"];

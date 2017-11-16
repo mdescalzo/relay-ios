@@ -126,7 +126,7 @@ static const NSString *FLExpressionKey = @"expression";
     thread.name = ((threadTitle.length > 0) ? threadTitle : nil );
     thread.type = ((threadType.length > 0) ? threadType : nil );
 
-    [thread updateWithExpression:threadExpression transation:transaction];
+    [thread updateWithExpression:threadExpression transaction:transaction];
 
     return thread;
 }
@@ -156,11 +156,11 @@ static const NSString *FLExpressionKey = @"expression";
 -(void)removeParticipants:(NSSet *)objects
 {
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        [self removeParticipants:objects tansaction:transaction];
+        [self removeParticipants:objects transaction:transaction];
     }];
 }
 
--(void)removeParticipants:(NSSet *)objects tansaction:(YapDatabaseReadWriteTransaction *)transaction
+-(void)removeParticipants:(NSSet *)objects transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     if (objects.count > 0) {
         NSMutableString *goingaway = [NSMutableString new];
@@ -172,7 +172,7 @@ static const NSString *FLExpressionKey = @"expression";
             }
         }
         NSString *newExpression = [NSString stringWithFormat:@"%@-(%@)", self.universalExpression, goingaway];
-        [self updateWithExpression:newExpression transation:transaction];
+        [self updateWithExpression:newExpression transaction:transaction];
     }
 }
 
@@ -198,15 +198,15 @@ static const NSString *FLExpressionKey = @"expression";
     if (_name.length > 0) {
         return _name;
     } else if (self.participants.count == 1) {
-        if ([[self.participants lastObject] isEqualToString:myID]) {   // conversation with self
+        if ([[self.participants lastObject] isEqualToString:myID]) {
             return NSLocalizedString(@"ME_STRING", @"");
         } else {
             return [[TextSecureKitEnv sharedEnv].contactsManager nameStringForContactID:[self.participants lastObject]];
         }
-    } else if (self.participants.count == 2 && [self.participants containsObject:myID]) {  // One-on-one conversation
+    } else if (self.participants.count == 2 && [self.participants containsObject:myID]) {
         NSString *userID = nil;
         for (NSString *uid in self.participants) {
-            if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId ]) {
+            if (![uid isEqualToString:myID]) {
                 userID = uid;
             }
         }
@@ -263,11 +263,11 @@ static const NSString *FLExpressionKey = @"expression";
 -(void)updateWithExpression:(NSString *)expression
 {
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [self updateWithExpression:expression transation:transaction];
+        [self updateWithExpression:expression transaction:transaction];
     }];
 }
 
--(void)updateWithExpression:(NSString *)expression transation:(YapDatabaseReadWriteTransaction *)transaction
+-(void)updateWithExpression:(NSString *)expression transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     if (expression.length > 0) {
         NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:expression];
