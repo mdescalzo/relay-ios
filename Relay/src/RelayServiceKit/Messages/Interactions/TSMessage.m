@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static const NSUInteger OWSMessageSchemaVersion = 3;
-static const CGFloat FLDefaultFontSize = 17.0f;
+//static const CGFloat FLDefaultFontSize = 17.0f;
 
 @interface TSMessage ()
 
@@ -362,7 +362,7 @@ static const CGFloat FLDefaultFontSize = 17.0f;
                 NSMutableAttributedString *tmpAtrString = [atrString mutableCopy];
                 
                 [tmpAtrString beginEditing];
-                UIFontDescriptor *baseDescriptor = [UIFont ows_regularFontWithSize:FLDefaultFontSize].fontDescriptor;
+                UIFontDescriptor *baseDescriptor = [UIFont ows_regularFontWithSize:FLMessageViewFontSize].fontDescriptor;
                 [tmpAtrString enumerateAttribute:NSFontAttributeName
                                          inRange:NSMakeRange(0, tmpAtrString.length)
                                          options:0
@@ -373,7 +373,7 @@ static const CGFloat FLDefaultFontSize = 17.0f;
                                               // adapting to font size variations....scale up to relative to default size
                                               CGFloat oldSize = oldFont.pointSize;
                                               CGFloat multiplier = oldSize/12.0;
-                                              CGFloat size = multiplier * FLDefaultFontSize;
+                                              CGFloat size = multiplier * FLMessageViewFontSize;
                                               
                                               UIFontDescriptorSymbolicTraits traits = oldFont.fontDescriptor.symbolicTraits;
                                               UIFontDescriptor *descriptor = [baseDescriptor fontDescriptorWithSymbolicTraits:traits];
@@ -389,7 +389,7 @@ static const CGFloat FLDefaultFontSize = 17.0f;
                 
             } else  if (plainString.length > 0) {
                 _attributedTextBody = [[NSAttributedString alloc] initWithString:plainString
-                                                                      attributes:@{ NSFontAttributeName : [UIFont ows_regularFontWithSize:FLDefaultFontSize] }];
+                                                                      attributes:@{ NSFontAttributeName : [UIFont ows_regularFontWithSize:FLMessageViewFontSize] }];
             }
         }
     }
