@@ -13,18 +13,18 @@
 #import "TSAccountManager.h"
 
 #ifdef DEVELOPMENT
-#define kNumberOfSettings 7
-#else
 #define kNumberOfSettings 6
+#else
+#define kNumberOfSettings 5
 #endif
 
-#define kLoginInfoIndex 0
-#define kInvitationIndex 1
-#define kLinkedDevicesIndex 2
-#define kSettingsIndex 3
-#define kMarkAllReadIndex 4
-#define kHelpIndex 5
-#define kDeveloperConsoleIndex 6
+#define kLoginInfoIndex 997
+#define kInvitationIndex 0
+#define kLinkedDevicesIndex 1
+#define kSettingsIndex 2
+#define kMarkAllReadIndex 3
+#define kHelpIndex 4
+#define kDeveloperConsoleIndex 5
 
 #define kImportExportIndex 998
 #define kDirectoryIndex 999

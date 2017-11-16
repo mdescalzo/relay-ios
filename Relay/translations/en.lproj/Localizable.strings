@@ -62,7 +62,7 @@
 "CALLBACK_BUTTON_TITLE" = "Call back";
 
 /* No comment provided by engineer. */
-"CHOOSE_MEDIA_BUTTON" = "Choose from Library...";
+"CHOOSE_MEDIA_BUTTON" = "Choose Photo or Video";
 
 /* No comment provided by engineer. */
 "CONFIRM_ACCOUNT_DESTRUCTION_TEXT" = "This will reset the application by deleting your messages and unregister you with the server. The app will close after deletion of data.";
@@ -768,7 +768,7 @@
 "TAKE_PICTURE_BUTTON" = "Take a Picture";
 
 /* No comment provided by engineer. */
-"CHOOSE_FILE_BUTTON" = "Choose file...";
+"CHOOSE_FILE_BUTTON" = "Choose Document";
 
 /* No comment provided by engineer. */
 "TIMEOUT_CONTACTS_DETAIL" = "We couldn't fetch an updated contact list from the server. Please try again later.";
