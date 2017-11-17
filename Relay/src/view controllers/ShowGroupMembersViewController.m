@@ -23,8 +23,9 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 @interface ShowGroupMembersViewController ()
 
-@property GroupContactsResult *groupContacts;
-@property TSThread *thread;
+//@property GroupContactsResult *groupContacts;
+@property (nonatomic, strong) NSArray<SignalRecipient *> *participants;
+@property (nonatomic, strong) TSThread *thread;
 
 @end
 
@@ -32,6 +33,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 - (void)configWithThread:(TSThread *)gThread {
     _thread = gThread;
+    [self participants];
 }
 
 - (void)viewDidLoad {
@@ -42,17 +44,17 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     [self initializeTableView];
 
-    self.groupContacts =
-        [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
-
-    [[Environment.getCurrent contactsManager]
-            .getObservableContacts watchLatestValue:^(id latestValue) {
-      self.groupContacts =
-          [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
-      [self.tableView reloadData];
-    }
-                                           onThread:[NSThread mainThread]
-                                     untilCancelled:nil];
+//    self.groupContacts =
+//        [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
+//
+//    [[Environment.getCurrent contactsManager]
+//            .getObservableContacts watchLatestValue:^(id latestValue) {
+//      self.groupContacts =
+//          [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
+//      [self.tableView reloadData];
+//    }
+//                                           onThread:[NSThread mainThread]
+//                                     untilCancelled:nil];
 }
 
 #pragma mark - Initializers
@@ -71,7 +73,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (NSInteger)[self.groupContacts numberOfMembers] + 1;
+//    return (NSInteger)[self.groupContacts numberOfMembers] + 1;
+    return (NSInteger)self.participants.count + 1;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -90,14 +93,15 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         FLDirectoryCell *tmpCell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
         
         NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
-        if ([self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
-            SignalRecipient *contact = [self contactForIndexPath:relativeIndexPath];
-            [tmpCell configureCellWithContact:contact];
-//            cell.textLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
-            
-        } else {
-            tmpCell.nameLabel.text = [self.groupContacts identifierForIndexPath:relativeIndexPath];
-        }
+//        if ([self.groupContacts isContactAtIndexPath:relativeIndexPath]) {
+//            SignalRecipient *contact = [self contactForIndexPath:relativeIndexPath];
+//            [tmpCell configureCellWithContact:contact];
+////            cell.textLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
+//
+//        } else {
+//            tmpCell.nameLabel.text = [self.groupContacts identifierForIndexPath:relativeIndexPath];
+//        }
+        [tmpCell configureCellWithContact:[self.participants objectAtIndex:(NSUInteger)relativeIndexPath.row]];
         cell = tmpCell;
     } else {     //  Configure the header
         cell = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:indexPath];
@@ -119,7 +123,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     ABUnknownPersonViewController *view = [[ABUnknownPersonViewController alloc] init];
 
     NSIndexPath *relativeIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
-    SignalRecipient *recipient = [self contactForIndexPath:relativeIndexPath];
+    SignalRecipient *recipient = [self.participants objectAtIndex:(NSUInteger)relativeIndexPath.row];
     
     ABRecordRef aContact = ABPersonCreate();
     
@@ -163,10 +167,10 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (SignalRecipient *)contactForIndexPath:(NSIndexPath *)indexPath {
-    SignalRecipient *contact = [self.groupContacts contactForIndexPath:indexPath];
-    return contact;
-}
+//- (SignalRecipient *)contactForIndexPath:(NSIndexPath *)indexPath {
+//    SignalRecipient *contact = [self.groupContacts contactForIndexPath:indexPath];
+//    return contact;
+//}
 
 #pragma mark - Cell Utility
 
@@ -205,6 +209,19 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                          range:NSMakeRange(0, contact.firstName.length)];
     }
     return fullNameAttributedString;
+}
+
+#pragma mark - Accessors
+-(NSArray<SignalRecipient *> *)participants
+{
+    if (_participants == nil) {
+        NSMutableArray *holdingArray = [NSMutableArray new];
+        for (NSString *uid in self.thread.participants) {
+            [holdingArray addObject:[SignalRecipient recipientWithTextSecureIdentifier:uid]];
+        }
+        _participants = [NSArray arrayWithArray:holdingArray];
+    }
+    return _participants;
 }
 
 @end

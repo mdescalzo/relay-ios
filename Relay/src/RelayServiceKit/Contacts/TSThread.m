@@ -117,12 +117,11 @@ static const NSString *FLExpressionKey = @"expression";
 +(instancetype)threadWithPayload:(NSDictionary *)payload
                      transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    __block TSThread *thread = nil;
-    __block NSString *threadExpression = [(NSDictionary *)[payload objectForKey:FLDistributionKey] objectForKey:FLExpressionKey];
-    __block NSString *threadType = [payload objectForKey:FLThreadTypeKey];
-    __block NSString *threadId = [payload objectForKey:FLThreadIDKey];
-    __block NSString *threadTitle = [payload objectForKey:FLThreadTitleKey];
-    thread = [self getOrCreateThreadWithID:threadId transaction:transaction];
+    NSString *threadId = [payload objectForKey:FLThreadIDKey];
+    TSThread *thread = [self getOrCreateThreadWithID:threadId transaction:transaction];
+    NSString *threadExpression = [(NSDictionary *)[payload objectForKey:FLDistributionKey] objectForKey:FLExpressionKey];
+    NSString *threadType = [payload objectForKey:FLThreadTypeKey];
+    NSString *threadTitle = [payload objectForKey:FLThreadTitleKey];
     thread.name = ((threadTitle.length > 0) ? threadTitle : nil );
     thread.type = ((threadType.length > 0) ? threadType : nil );
 

@@ -91,7 +91,7 @@
 //    NSDictionary *orgDict = [selectedTagDict objectForKey:@"org"];
 //    NSString *selectedOrg = [orgDict objectForKey:@"slug"];
     
-    if ([self.validatedSlugs containsObject:aTag.slug]) {
+    if ([self.validatedSlugs containsObject:[NSString stringWithFormat:@"@%@", aTag.slug]]) {
         [self removeSlug:aTag.slug];
     } else {
         [self addSlug:aTag.slug];
@@ -434,6 +434,9 @@
 
 -(void)addSlug:(NSString *)slug
 {
+    if (![[slug substringToIndex:1] isEqualToString:@"@"]) {
+        slug = [NSString stringWithFormat:@"@%@", slug];
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         
         CGRect hiddenFrame = CGRectMake(self.slugContainerView.frame.size.width/2,
@@ -455,8 +458,10 @@
 
 -(void)removeSlug:(NSString *)slug
 {
+    if (![[slug substringToIndex:1] isEqualToString:@"@"]) {
+        slug = [NSString stringWithFormat:@"@%@", slug];
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         NSUInteger index = [self.validatedSlugs indexOfObject:slug];
         [self.validatedSlugs removeObjectAtIndex:index];
         UIView *aView = [self.slugViews objectAtIndex:index];

@@ -22,6 +22,7 @@
 #import "OWSMessageSender.h"
 #import "TSAccountManager.h"
 #import "FLDirectoryCell.h"
+#import "FLControlMessage.h"
 #import "FLTagMathService.h"
 
 @import MobileCoreServices;
@@ -32,7 +33,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 @property TSThread *thread;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
-@property (strong) NSArray <SignalRecipient *> *contacts;
+@property (nonatomic, strong) NSArray <FLTag *> *contacts;
+@property (nonatomic, readonly) NSArray <FLTag *> *selectedTags;
 
 @end
 
@@ -76,6 +78,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
     self.tableView.tableHeaderView.frame = CGRectMake(0, 0, 400, 44);
     self.tableView.tableHeaderView       = self.tableView.tableHeaderView;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self initializeDelegates];
     [self initializeTableView];
@@ -95,7 +98,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"UPDATE_BUTTON_TITLE", @"")
                                              style:UIBarButtonItemStylePlain
                                             target:self
-                                            action:@selector(updateGroup)];
+                                            action:@selector(updateConversation)];
         self.navigationItem.title    = _thread.name;
         self.nameGroupTextField.text = _thread.name;
         if (_thread.image != nil) {
@@ -221,9 +224,41 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 
-- (void)updateGroup
+- (void)updateConversation
 {
     // TODO: throw a threadUpdate control message here.
+    NSCountedSet *participants = [NSCountedSet setWithArray:self.thread.participants];
+    
+    // Get new participant/thread info
+    NSCountedSet *newParticipants = nil;
+    if (self.selectedTags.count > 0) {
+        NSMutableString *lookupString = [NSMutableString new];
+        for (FLTag *aTag in self.selectedTags) {
+            [lookupString appendString:[NSString stringWithFormat:@"@%@:%@ ", aTag.slug, aTag.orgSlug]];
+        }
+        if (lookupString.length > 0) {
+            NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:lookupString];
+            if (lookupDict) {
+                newParticipants = [NSCountedSet setWithArray:[lookupDict objectForKey:@"userids"]];
+                self.thread.participants = [lookupDict objectForKey:@"userids"];
+                self.thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                self.thread.universalExpression = [lookupDict objectForKey:@"universal"];
+                [self.thread save];
+                
+                [participants unionSet:newParticipants];
+            
+                FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
+                [Environment.getCurrent.messageSender sendControlMessage:message toRecipients:participants];
+            }
+        }
+    }
+    
+    // Build control message
+    
+    // Send control message to union of both participants sets
+    
+
+    
     NSMutableArray *mut = [[NSMutableArray alloc] init];
     for (NSIndexPath *idx in _tableView.indexPathsForSelectedRows) {
         [mut addObject:[[self.contacts objectAtIndex:(NSUInteger)idx.row] uniqueId]];
@@ -361,13 +396,14 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
-    SignalRecipient *contact = [self.contacts objectAtIndex:(NSUInteger)indexPath.row];
+    FLTag *aTag = [self.contacts objectAtIndex:(NSUInteger)indexPath.row];
 
-    [cell configureCellWithContact:contact];
+    [cell configureCellWithTag:aTag];
     cell.accessoryType    = UITableViewCellAccessoryNone;
 
-    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
+    if ([self.thread.prettyExpression containsString:aTag.slug]) {
+        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
     if ([[tableView indexPathsForSelectedRows] containsObject:indexPath]) {
         [self adjustSelected:cell];
     }
@@ -424,35 +460,39 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 #pragma mark - accessors
--(void)setContacts:(NSArray<SignalRecipient *> *)value
-{
-    if (![value isEqual:_contacts]) {
-        _contacts = value;
-    }
-}
-
--(NSArray <SignalRecipient *> *)contacts
+-(NSArray <FLTag *> *)contacts
 {
     if (_contacts == nil) {
-        NSMutableArray *mArray = [Environment.getCurrent.contactsManager.allContacts mutableCopy];
+        NSMutableArray *mArray = [[FLTag allObjectsInCollection] mutableCopy];
         
         // Remove self from the array.
-        [mArray removeObject:TSAccountManager.sharedInstance.myself];
+        [mArray removeObject:TSAccountManager.sharedInstance.myself.flTag];
         
-        NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
+//        NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
+//                                                                   ascending:YES
+//                                                                    selector:@selector(localizedCaseInsensitiveCompare:)];
+//        NSSortDescriptor *firstNameSD = [[NSSortDescriptor alloc] initWithKey:@"firstName"
+//                                                                    ascending:YES
+//                                                                     selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"tagDescription"
                                                                    ascending:YES
                                                                     selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSortDescriptor *firstNameSD = [[NSSortDescriptor alloc] initWithKey:@"firstName"
-                                                                    ascending:YES
-                                                                     selector:@selector(localizedCaseInsensitiveCompare:)];
         NSSortDescriptor *orgSD = [[NSSortDescriptor alloc] initWithKey:@"orgSlug"
                                                               ascending:YES
                                                                selector:@selector(localizedCaseInsensitiveCompare:)];
         
-        _contacts = [[NSArray arrayWithArray:mArray] sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
+        _contacts = [[NSArray arrayWithArray:mArray] sortedArrayUsingDescriptors:@[ descriptionSD, orgSD ]];
     }
     return _contacts;
 }
 
+-(NSArray <FLTag *> *)selectedTags
+{
+    NSMutableArray *holdingArray = [NSMutableArray new];
+    for (NSIndexPath *indexPath in [self.tableView indexPathsForSelectedRows]) {
+        [holdingArray addObject:[self.contacts objectAtIndex:(NSUInteger)indexPath.row]];
+    }
+    return [NSArray arrayWithArray:holdingArray];
+}
 
 @end

@@ -514,40 +514,49 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                   success:(void (^)())successHandler
                   failure:(void (^)(NSError *error))failureHandler
 {
+    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:recipientId];
+    NSMutableOrderedSet *devicesIds = nil;
+    if (recipient) {
+        devicesIds = recipient.devices;
+    } else {
+        devicesIds = [NSMutableOrderedSet orderedSetWithObject:[NSNumber numberWithInt:1]];
+    }
     NSData *plainText = [message buildPlainTextData];
     
     BOOL isLegacyMessage = ![message isKindOfClass:[OWSOutgoingSyncMessage class]];
     
     NSDictionary *messageDict = nil;
     
-    @try {
-        messageDict = [self encryptedMessageWithPlaintext:plainText
-                                              toRecipient:recipientId
-                                                 deviceId:[NSNumber numberWithInt:1]
-                                            keyingStorage:[TSStorageManager sharedManager]
-                                                   legacy:isLegacyMessage];
-        NSArray *messagesArray = @[ messageDict ];
-        
-        TSSubmitMessageRequest *request = [[TSSubmitMessageRequest alloc] initWithRecipient:recipientId
-                                                                                   messages:messagesArray
-                                                                                      relay:nil
-                                                                                  timeStamp:message.timestamp];
-        [self.networkManager makeRequest:request
-                                 success:^(NSURLSessionDataTask *task, id responseObject) {
-                                     DDLogDebug(@"Superman send successful.");
-                                     successHandler();
-                                 }
-                                 failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                     //                                                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-                                     //                                                long statuscode = response.statusCode;
-                                     //                                                NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-                                     DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
-                                     
-                                     failureHandler(error);
-                                 }];
-    }
-    @catch (NSException *exception) {
-        DDLogDebug(@"Exception thrown by special sender: %@", exception.name);
+    for (NSNumber *deviceId in devicesIds) {
+        @try {
+            messageDict = [self encryptedMessageWithPlaintext:plainText
+                                                  toRecipient:recipientId
+                                                     deviceId:deviceId
+                                                keyingStorage:[TSStorageManager sharedManager]
+                                                       legacy:isLegacyMessage];
+            NSArray *messagesArray = @[ messageDict ];
+            
+            TSSubmitMessageRequest *request = [[TSSubmitMessageRequest alloc] initWithRecipient:recipientId
+                                                                                       messages:messagesArray
+                                                                                          relay:nil
+                                                                                      timeStamp:message.timestamp];
+            [self.networkManager makeRequest:request
+                                     success:^(NSURLSessionDataTask *task, id responseObject) {
+                                         DDLogDebug(@"Special send successful.");
+                                         successHandler();
+                                     }
+                                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                         //                                                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                                         //                                                long statuscode = response.statusCode;
+                                         //                                                NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                                         DDLogDebug(@"Special send failed.  Error: %@", error.localizedDescription);
+                                         
+                                         failureHandler(error);
+                                     }];
+        }
+        @catch (NSException *exception) {
+            DDLogDebug(@"Exception thrown by special sender: %@", exception.name);
+        }
     }
 }
 

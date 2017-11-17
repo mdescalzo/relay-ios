@@ -2318,7 +2318,9 @@ typedef enum : NSUInteger {
     }];
 
     #warning XXX Control message send for group update here.
-    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
+    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageToThread:self.thread
+                                                                                       forThread:self.thread
+                                                                                           ofType:FLControlMessageThreadUpdateKey];
     [self.messageSender sendMessage:message
                             success:^{
                                 DDLogDebug(@"Successfully send control message.");
