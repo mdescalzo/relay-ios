@@ -50,7 +50,6 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:[Environment getCurrent].contactsManager];
-//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     return self;
 }
 
@@ -64,7 +63,6 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:[TSStorageManager sharedManager]
                                                       contactsManager:[Environment getCurrent].contactsManager];
-//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
     return self;
 }
 
@@ -148,9 +146,9 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     for (NSString *userid in model.groupMemberIds) {
         SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
         if (searchString.length == 0) {
-            searchString =  [NSString stringWithFormat:@"@%@", recipient.tagSlug];
+            searchString =  [NSString stringWithFormat:@"@%@", recipient.flTag.slug];
         } else {
-            searchString = [searchString stringByAppendingString:[NSString stringWithFormat:@" @%@", recipient.tagSlug]];
+            searchString = [searchString stringByAppendingString:[NSString stringWithFormat:@" @%@", recipient.flTag.slug]];
         }
     }
     
@@ -220,74 +218,6 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 #warning XXX insert warning here
                                         }];
    
-//    [[TSStorageManager sharedManager]
-//            .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
-//      self.thread = [TSGroupThread getOrCreateThreadWithGroupModel:model transaction:transaction];
-//                // Assign missing properties
-//                self.thread.participants = [model.groupMemberIds copy];
-//                NSMutableString *searchString = [NSMutableString new];
-//                for (NSString *userid in self.thread.participants) {
-//                    SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithIndentifier:userid withTransaction:transaction];
-//                    [searchString appendString:[NSString stringWithFormat:@" %@", recipient.tagSlug]];
-//                }
-//                [[FLTagMathService new] tagLookupWithString:searchString
-//                                                    success:^(NSDictionary *results) {
-//                                                        self.thread.universalExpression = [results objectForKey:@"universal"];
-//                                                        [self.thread saveWithTransaction:transaction];
-//                                                    }
-//                                                    failure:^(NSError *error) {
-//                                                        DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
-//                                                        [self.thread saveWithTransaction:transaction];
-//                                                    }];
-//    }];
-
-//    void (^popToThread)() = ^{
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self dismissViewControllerAnimated:YES
-//                                     completion:^{
-//                                         [Environment messageGroup:self.thread];
-//                                     }];
-//
-//        });
-//    };
-//
-//    void (^removeThreadWithError)(NSError *error) = ^(NSError *error) {
-//        [self.thread remove];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self dismissViewControllerAnimated:YES
-//                                     completion:^{
-//                                         SignalAlertView(NSLocalizedString(@"GROUP_CREATING_FAILED", nil),
-//                                             error.localizedDescription);
-//                                     }];
-//        });
-//    };
-//
-//    UIAlertController *alertController =
-//        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GROUP_CREATING", nil)
-//                                            message:nil
-//                                     preferredStyle:UIAlertControllerStyleAlert];
-//
-//    [self presentViewController:alertController
-//                       animated:YES
-//                     completion:^{
-//                         TSOutgoingMessage *message =
-//                             [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                                 inThread:self.thread
-//                                                              messageBody:@""
-//                                                            attachmentIds:[NSMutableArray new]];
-//
-//                         message.groupMetaMessage = TSGroupMessageNew;
-//                         message.customMessage = NSLocalizedString(@"GROUP_CREATED", nil);
-//                         if (model.groupImage) {
-//                             [self.messageSender sendAttachmentData:UIImagePNGRepresentation(model.groupImage)
-//                                                        contentType:OWSMimeTypeImagePng
-//                                                          inMessage:message
-//                                                            success:popToThread
-//                                                            failure:removeThreadWithError];
-//                         } else {
-//                             [self.messageSender sendMessage:message success:popToThread failure:removeThreadWithError];
-//                         }
-//                     }];
 }
 
 
@@ -431,11 +361,9 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
-    NSUInteger row   = (NSUInteger)indexPath.row;
-    SignalRecipient *contact = self.contacts[row];
+    SignalRecipient *contact = [self.contacts objectAtIndex:(NSUInteger)indexPath.row];
 
     [cell configureCellWithContact:contact];
-//    cell.nameLabel.attributedText = [self attributedStringForContact:contact inCell:cell];
     cell.accessoryType    = UITableViewCellAccessoryNone;
 
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -470,42 +398,28 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 #pragma mark - Cell Utility
-
 - (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact inCell:(UITableViewCell *)cell {
     NSMutableAttributedString *fullNameAttributedString =
-        [[NSMutableAttributedString alloc] initWithString:contact.fullName];
-
+    [[NSMutableAttributedString alloc] initWithString:contact.fullName];
+    
     UIFont *firstNameFont;
     UIFont *lastNameFont;
-
-//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-//        firstNameFont = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
-//        lastNameFont  = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
-//    } else {
-        firstNameFont = [UIFont ows_regularFontWithSize:cell.textLabel.font.pointSize];
-        lastNameFont  = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
-//    }
+    
+    firstNameFont = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
+    lastNameFont  = [UIFont ows_mediumFontWithSize:cell.textLabel.font.pointSize];
+    
     [fullNameAttributedString addAttribute:NSFontAttributeName
                                      value:firstNameFont
                                      range:NSMakeRange(0, contact.firstName.length)];
     [fullNameAttributedString addAttribute:NSFontAttributeName
                                      value:lastNameFont
                                      range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-
     [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
                                      value:[UIColor blackColor]
                                      range:NSMakeRange(0, contact.fullName.length)];
-
-//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-//        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-//                                         value:[UIColor ows_darkGrayColor]
-//                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-//    } else {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor ows_darkGrayColor]
-                                         range:NSMakeRange(0, contact.firstName.length)];
-//    }
-
+    [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+                                     value:[UIColor blackColor]
+                                     range:NSMakeRange(0, contact.firstName.length)];
     return fullNameAttributedString;
 }
 
@@ -520,8 +434,9 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 -(NSArray <SignalRecipient *> *)contacts
 {
     if (_contacts == nil) {
+        NSMutableArray *mArray = [Environment.getCurrent.contactsManager.allContacts mutableCopy];
         
-        NSMutableArray *mArray = [Environment.getCurrent.contactsManager.ccsmRecipients mutableCopy];
+        // Remove self from the array.
         [mArray removeObject:TSAccountManager.sharedInstance.myself];
         
         NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
@@ -534,10 +449,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                               ascending:YES
                                                                selector:@selector(localizedCaseInsensitiveCompare:)];
         
-        
-        
         _contacts = [[NSArray arrayWithArray:mArray] sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
-        
     }
     return _contacts;
 }

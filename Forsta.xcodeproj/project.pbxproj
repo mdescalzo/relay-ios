@@ -849,6 +849,10 @@
 		7D7DBFCF1F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
 		7D7DBFD01F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
+		7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
+		7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
+		7DA09F401FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
+		7DA09F411FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
 		7DA801441F86CA850048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
 		7DA801511F8710C40048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
 		7DA801521F8710CB0048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
@@ -2125,6 +2129,8 @@
 		7D7DBFCD1F97E24000860D35 /* FLControlMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLControlMessage.h; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
+		7DA09F3C1FBE83AE00F2D859 /* FLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTag.h; path = Relay/src/contact/FLTag.h; sourceTree = SOURCE_ROOT; };
+		7DA09F3D1FBE83AF00F2D859 /* FLTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTag.m; path = Relay/src/contact/FLTag.m; sourceTree = SOURCE_ROOT; };
 		7DA801431F86C4040048950F /* Forsta-values.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Forsta-values.plist"; sourceTree = "<group>"; };
 		7DB55A981F2A7F10001D3058 /* FLInvitationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLInvitationService.h; sourceTree = "<group>"; };
 		7DB55A991F2A7F10001D3058 /* FLInvitationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLInvitationService.m; sourceTree = "<group>"; };
@@ -3329,6 +3335,8 @@
 		7D6138861F90161500E18D29 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				7DA09F3C1FBE83AE00F2D859 /* FLTag.h */,
+				7DA09F3D1FBE83AF00F2D859 /* FLTag.m */,
 				7D6138871F90161500E18D29 /* Contact.h */,
 				7D6138881F90161500E18D29 /* Contact.m */,
 				7D6138891F90161500E18D29 /* ContactsUpdater.h */,
@@ -5301,6 +5309,7 @@
 				7D4A3A2A1F1693930023C29B /* MessagesViewController.m in Sources */,
 				7D4A3A2B1F1693930023C29B /* OWSMessagesBubblesSizeCalculator.m in Sources */,
 				7D4A3A2C1F1693930023C29B /* FLAnimatedImageView.m in Sources */,
+				7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */,
 				7D613A9A1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7D613AD91F90189100E18D29 /* TSStorageManager+messageIDs.m in Sources */,
 				7D4A3A2D1F1693930023C29B /* TSVideoAttachmentAdapter.m in Sources */,
@@ -5649,6 +5658,7 @@
 				7DCFFDD01F0EE4490003CD95 /* IpAddress.m in Sources */,
 				7D613A981F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D613ABC1F90187100E18D29 /* SecurityUtils.m in Sources */,
+				7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */,
 				7DCFFDD11F0EE4490003CD95 /* MessagesViewController.m in Sources */,
 				7DCFFDD21F0EE4490003CD95 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
 				7DCFFDD31F0EE4490003CD95 /* FLAnimatedImageView.m in Sources */,
@@ -5997,6 +6007,7 @@
 				76EB05A018170B33006006FC /* IpAddress.m in Sources */,
 				7D613A991F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D613ABD1F90187100E18D29 /* SecurityUtils.m in Sources */,
+				7DA09F401FBE83AF00F2D859 /* FLTag.m in Sources */,
 				FCAC965119FF0A6E0046DFC5 /* MessagesViewController.m in Sources */,
 				453D28BA1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
 				B68EF9BB1C0B1EBD009C3DCD /* FLAnimatedImageView.m in Sources */,
@@ -6281,6 +6292,7 @@
 				450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B660F7531C29988E00687D6E /* NetworkStream.m in Sources */,
 				453D28BB1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
+				7DA09F411FBE83AF00F2D859 /* FLTag.m in Sources */,
 				B660F7541C29988E00687D6E /* SecureEndPoint.m in Sources */,
 				B660F7551C29988E00687D6E /* UdpSocket.m in Sources */,
 				45843D221D223BA10013E85A /* OWSContactsSearcherTest.m in Sources */,

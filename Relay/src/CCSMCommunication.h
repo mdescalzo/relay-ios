@@ -53,9 +53,9 @@
 //                              Success:(void (^)())successBlock
 //                              failure:(void (^)(NSError *error))failureBlock;
 
-+(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId synchronoous:(BOOL)synchronous;
-+(void)recipientFromCCSMWithID:(NSString *)userId
-                                    success:(void (^)(NSDictionary *results))successBlock
++(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId;
++(void)asyncRecipientFromCCSMWithID:(NSString *)userId
+                                   success:(void (^)(SignalRecipient *recipient))successBlock
                                     failure:(void (^)(NSError *error))failureBlock;
 
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict

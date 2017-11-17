@@ -46,9 +46,9 @@ typedef NS_ENUM(NSUInteger, OWSConversationSettingsTableViewControllerGroupCellI
 };
 
 static NSString *const OWSConversationSettingsTableViewControllerSegueUpdateGroup =
-    @"OWSConversationSettingsTableViewControllerSegueUpdateGroup";
+@"OWSConversationSettingsTableViewControllerSegueUpdateGroup";
 static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupMembers =
-    @"OWSConversationSettingsTableViewControllerSegueShowGroupMembers";
+@"OWSConversationSettingsTableViewControllerSegueShowGroupMembers";
 
 @interface OWSConversationSettingsTableViewController ()
 
@@ -71,7 +71,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 @property (nonatomic) TSThread *thread;
 @property (nonatomic) NSString *contactName;
-@property (nonatomic) NSString *signalId;
+//@property (nonatomic) NSString *signalId;
 @property (nonatomic) UIImage *avatarImage;
 @property (nonatomic) BOOL isGroupThread;
 
@@ -92,14 +92,12 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     if (!self) {
         return self;
     }
-
+    
     _storageManager = [TSStorageManager sharedManager];
     _contactsManager = [Environment getCurrent].contactsManager;
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:_storageManager
                                                       contactsManager:_contactsManager];
-//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
-
     return self;
 }
 
@@ -109,31 +107,25 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     if (!self) {
         return self;
     }
-
+    
     _storageManager = [TSStorageManager sharedManager];
     _contactsManager = [Environment getCurrent].contactsManager;
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:_storageManager
                                                       contactsManager:_contactsManager];
-//                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
-
     return self;
 }
 
 - (void)configureWithThread:(TSThread *)thread
 {
     self.thread = thread;
-    self.signalId = @""; // thread.contactIdentifier;
+//    self.signalId = @"";
     self.contactName = thread.displayName;
-
-//    if ([thread isKindOfClass:[TSGroupThread class]]) {
-        self.isGroupThread = YES;
-        if (self.contactName.length == 0) {
-            self.contactName = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
-        }
-//    } else {
-//        self.isGroupThread = NO;
-//    }
+    
+    self.isGroupThread = YES;
+    if (self.contactName.length == 0) {
+        self.contactName = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
+    }
 }
 
 #pragma mark - View Lifecycle
@@ -141,52 +133,47 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.nameLabel.text = self.contactName;
-    if (self.signalId) {
-        self.signalIdLabel.text =
-            [PhoneNumber bestEffortFormatPartialUserSpecifiedTextToLookLikeAPhoneNumber:self.signalId];
-    } else {
-        // Don't print anything for groups.
-        self.signalIdLabel.text = nil;
-    }
+    self.signalIdLabel.text = nil;
+    
     self.avatar.image = [OWSAvatarBuilder buildImageForThread:self.thread contactsManager:self.contactsManager diameter:self.avatar.frame.size.height];
     self.nameLabel.font = [UIFont ows_dynamicTypeTitle2Font];
-
+    
     // Translations
     self.title = NSLocalizedString(@"CONVERSATION_SETTINGS", @"title for conversation settings screen");
     self.verifyPrivacyCell.textLabel.text
-        = NSLocalizedString(@"VERIFY_PRIVACY", @"table cell label in conversation settings");
+    = NSLocalizedString(@"VERIFY_PRIVACY", @"table cell label in conversation settings");
     self.toggleDisappearingMessagesTitleLabel.text
-        = NSLocalizedString(@"DISAPPEARING_MESSAGES", @"table cell label in conversation settings");
+    = NSLocalizedString(@"DISAPPEARING_MESSAGES", @"table cell label in conversation settings");
     self.toggleDisappearingMessagesDescriptionLabel.text
-        = NSLocalizedString(@"DISAPPEARING_MESSAGES_DESCRIPTION", @"subheading in conversation settings");
+    = NSLocalizedString(@"DISAPPEARING_MESSAGES_DESCRIPTION", @"subheading in conversation settings");
     self.updateGroupCell.textLabel.text
-        = NSLocalizedString(@"EDIT_GROUP_ACTION", @"table cell label in conversation settings");
+    = NSLocalizedString(@"EDIT_GROUP_ACTION", @"table cell label in conversation settings");
     self.leaveGroupCell.textLabel.text
-        = NSLocalizedString(@"LEAVE_GROUP_ACTION", @"table cell label in conversation settings");
+    = NSLocalizedString(@"LEAVE_GROUP_ACTION", @"table cell label in conversation settings");
     self.listGroupMembersCell.textLabel.text
-        = NSLocalizedString(@"LIST_GROUP_MEMBERS_ACTION", @"table cell label in conversation settings");
-
+    = NSLocalizedString(@"LIST_GROUP_MEMBERS_ACTION", @"table cell label in conversation settings");
+    
     self.toggleDisappearingMessagesCell.selectionStyle = UITableViewCellSelectionStyleNone;
     self.disappearingMessagesDurationCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+    
     self.disappearingMessagesDurations = [OWSDisappearingMessagesConfiguration validDurationsSeconds];
     self.disappearingMessagesDurationSlider.maximumValue = (float)(self.disappearingMessagesDurations.count - 1);
     self.disappearingMessagesDurationSlider.minimumValue = 0;
     self.disappearingMessagesDurationSlider.continuous = YES; // NO fires change event only once you let go
-
+    
     self.disappearingMessagesConfiguration =
-        [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
-
+    [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
+    
     if (!self.disappearingMessagesConfiguration) {
         self.disappearingMessagesConfiguration =
-            [[OWSDisappearingMessagesConfiguration alloc] initDefaultWithThreadId:self.thread.uniqueId];
+        [[OWSDisappearingMessagesConfiguration alloc] initDefaultWithThreadId:self.thread.uniqueId];
     }
-
+    
     self.disappearingMessagesDurationSlider.value = self.disappearingMessagesConfiguration.durationIndex;
     [self toggleDisappearingMessages:self.disappearingMessagesConfiguration.isEnabled];
-
+    
     // RADAR http://www.openradar.me/23759908
     // Finding that occasionally the tabel icons are not being tinted
     // i.e. rendered as white making them invisible.
@@ -206,25 +193,25 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
+    
     if (self.disappearingMessagesConfiguration.isNewRecord && !self.disappearingMessagesConfiguration.isEnabled) {
         // don't save defaults, else we'll unintentionally save the configuration and notify the contact.
         return;
     }
-
+    
     if (self.disappearingMessagesConfiguration.dictionaryValueDidChange) {
         [self.disappearingMessagesConfiguration save];
         OWSDisappearingConfigurationUpdateInfoMessage *infoMessage =
-            [[OWSDisappearingConfigurationUpdateInfoMessage alloc]
-                initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                           thread:self.thread
-                    configuration:self.disappearingMessagesConfiguration];
+        [[OWSDisappearingConfigurationUpdateInfoMessage alloc]
+         initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+         thread:self.thread
+         configuration:self.disappearingMessagesConfiguration];
         [infoMessage save];
-
+        
         [OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob
-            runWithConfiguration:self.disappearingMessagesConfiguration
-                          thread:self.thread
-                   messageSender:self.messageSender];
+         runWithConfiguration:self.disappearingMessagesConfiguration
+         thread:self.thread
+         messageSender:self.messageSender];
     }
 }
 
@@ -241,7 +228,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger baseCount = [super tableView:tableView numberOfRowsInSection:section];
-
+    
     if (section == OWSConversationSettingsTableViewControllerSectionGroup) {
         if (self.isGroupThread) {
             return baseCount;
@@ -249,12 +236,12 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
             return 0;
         }
     }
-
+    
     if (section == OWSConversationSettingsTableViewControllerSectionContact) {
         if (!self.thread.hasSafetyNumbers) {
             baseCount -= 1;
         }
-
+        
         if (!self.disappearingMessagesSwitch.isOn) {
             // hide duration slider when disappearing messages is off.
             baseCount -= 1;
@@ -267,32 +254,32 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 {
     if (indexPath.section == OWSConversationSettingsTableViewControllerSectionContact
         && !self.thread.hasSafetyNumbers) {
-
+        
         // Since fingerprint cell is hidden for some threads we offset our index path
         NSIndexPath *offsetIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
         return [super tableView:tableView cellForRowAtIndexPath:offsetIndexPath];
     }
-
+    
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-
+    
     // group vs. contact thread have some cells slider at different index.
     if (cell == self.disappearingMessagesDurationCell) {
         NSIndexPath *originalIndexPath = [NSIndexPath
-            indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration
-                  inSection:OWSConversationSettingsTableViewControllerSectionContact];
-
+                                          indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration
+                                          inSection:OWSConversationSettingsTableViewControllerSectionContact];
+        
         return [super tableView:tableView heightForRowAtIndexPath:originalIndexPath];
     }
     if (cell == self.toggleDisappearingMessagesCell) {
         NSIndexPath *originalIndexPath =
-            [NSIndexPath indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexToggleDisappearingMessages
-                               inSection:OWSConversationSettingsTableViewControllerSectionContact];
-
+        [NSIndexPath indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexToggleDisappearingMessages
+                           inSection:OWSConversationSettingsTableViewControllerSectionContact];
+        
         return [super tableView:tableView heightForRowAtIndexPath:originalIndexPath];
     } else {
         return [super tableView:tableView heightForRowAtIndexPath:indexPath];
@@ -303,7 +290,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (nullable NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-
+    
     // Don't highlight rows that have no selection style.
     if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
         return nil;
@@ -314,10 +301,10 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DDLogDebug(@"%@ tapped indexPath:%@", self.tag, indexPath);
-
+    
     if (indexPath.section == OWSConversationSettingsTableViewControllerSectionGroup
         && indexPath.row == OWSConversationSettingsTableViewControllerCellIndexLeaveGroup) {
-
+        
         [self didTapLeaveConversation];
     }
 }
@@ -340,56 +327,56 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)didTapLeaveConversation
 {
     UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CONFIRM_LEAVE_GROUP_TITLE", @"Alert title")
-                                            message:NSLocalizedString(@"CONFIRM_LEAVE_GROUP_DESCRIPTION", @"Alert body")
-                                     preferredStyle:UIAlertControllerStyleAlert];
-
+    [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CONFIRM_LEAVE_GROUP_TITLE", @"Alert title")
+                                        message:NSLocalizedString(@"CONFIRM_LEAVE_GROUP_DESCRIPTION", @"Alert body")
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
     UIAlertAction *leaveAction = [UIAlertAction
-        actionWithTitle:NSLocalizedString(@"LEAVE_BUTTON_TITLE", @"Confirmation button within contextual alert")
-                  style:UIAlertActionStyleDestructive
-                handler:^(UIAlertAction *_Nonnull action) {
-                    [self leaveConversation];
-                }];
+                                  actionWithTitle:NSLocalizedString(@"LEAVE_BUTTON_TITLE", @"Confirmation button within contextual alert")
+                                  style:UIAlertActionStyleDestructive
+                                  handler:^(UIAlertAction *_Nonnull action) {
+                                      [self leaveConversation];
+                                  }];
     [alertController addAction:leaveAction];
-
+    
     UIAlertAction *cancelAction = [UIAlertAction
-        actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", nil)
-                  style:UIAlertActionStyleCancel
-                handler:^(UIAlertAction *_Nonnull action) {
-                    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-                }];
+                                   actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", nil)
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction *_Nonnull action) {
+                                       [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+                                   }];
     [alertController addAction:cancelAction];
-
+    
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)leaveConversation
 {
     FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadDeleteKey];
-//
+    //
     [self.messageSender sendMessage:message
-        success:^{
-            DDLogInfo(@"%@ Successfully left group.", self.tag);
-            [self.thread.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                inThread:self.thread
-                                                                             messageType:TSInfoMessageTypeConversationQuit];
-                [leavingMessage saveWithTransaction:transaction];
-                [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.tagID] transaction:transaction];
-            }];
-       }
-        failure:^(NSError *error) {
-            DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
-            NSString *alertString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"GROUP_REMOVING_FAILED", @""), error.localizedDescription];
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                           message:alertString
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                               style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction *action) {}];
-            [alert addAction:okAction];
-            [self.navigationController presentViewController:alert animated:YES completion:nil];
-        }];
+                            success:^{
+                                DDLogInfo(@"%@ Successfully left group.", self.tag);
+                                [self.thread.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                    TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                                    inThread:self.thread
+                                                                                                 messageType:TSInfoMessageTypeConversationQuit];
+                                    [leavingMessage saveWithTransaction:transaction];
+                                    [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
+                                }];
+                            }
+                            failure:^(NSError *error) {
+                                DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
+                                NSString *alertString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"GROUP_REMOVING_FAILED", @""), error.localizedDescription];
+                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                               message:alertString
+                                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                   style:UIAlertActionStyleDefault
+                                                                                 handler:^(UIAlertAction *action) {}];
+                                [alert addAction:okAction];
+                                [self.navigationController presentViewController:alert animated:YES completion:nil];
+                            }];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -412,12 +399,12 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)toggleDisappearingMessages:(BOOL)flag
 {
     self.disappearingMessagesConfiguration.enabled = flag;
-
+    
     // When this message is called as a result of the switch being flipped, this will be a no-op
     // but it allows us to resuse the method to set the switch programmatically in view setup.
     self.disappearingMessagesSwitch.on = flag;
     [self durationSliderDidChange:self.disappearingMessagesDurationSlider];
-
+    
     // Animate show/hide of duration settings.
     if (flag) {
         [self.tableView insertRowsAtIndexPaths:@[ self.indexPathForDurationSlider ]
@@ -432,12 +419,12 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 {
     if (!self.thread.hasSafetyNumbers) {
         return [NSIndexPath
-            indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration - 1
-                  inSection:OWSConversationSettingsTableViewControllerSectionContact];
+                indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration - 1
+                inSection:OWSConversationSettingsTableViewControllerSectionContact];
     } else {
         return [NSIndexPath
-            indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration
-                  inSection:OWSConversationSettingsTableViewControllerSectionContact];
+                indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration
+                inSection:OWSConversationSettingsTableViewControllerSectionContact];
     }
 }
 
@@ -448,15 +435,15 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     [slider setValue:index animated:YES];
     NSNumber *numberOfSeconds = self.disappearingMessagesDurations[index];
     self.disappearingMessagesConfiguration.durationSeconds = [numberOfSeconds unsignedIntValue];
-
+    
     if (self.disappearingMessagesConfiguration.isEnabled) {
         NSString *keepForFormat = NSLocalizedString(@"KEEP_MESSAGES_DURATION",
-            @"Slider label embeds {{TIME_AMOUNT}}, e.g. '2 hours'. See *_TIME_AMOUNT strings for examples.");
+                                                    @"Slider label embeds {{TIME_AMOUNT}}, e.g. '2 hours'. See *_TIME_AMOUNT strings for examples.");
         self.disappearingMessagesDurationLabel.text =
-            [NSString stringWithFormat:keepForFormat, self.disappearingMessagesConfiguration.durationString];
+        [NSString stringWithFormat:keepForFormat, self.disappearingMessagesConfiguration.durationString];
     } else {
         self.disappearingMessagesDurationLabel.text
-            = NSLocalizedString(@"KEEP_MESSAGES_FOREVER", @"Slider label when disappearing messages is off");
+        = NSLocalizedString(@"KEEP_MESSAGES_FOREVER", @"Slider label when disappearing messages is off");
     }
 }
 
@@ -467,10 +454,10 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 {
     if ([segue.destinationViewController isKindOfClass:[FingerprintViewController class]]) {
         FingerprintViewController *controller = (FingerprintViewController *)segue.destinationViewController;
-
+        
         OWSFingerprintBuilder *fingerprintBuilder =
-            [[OWSFingerprintBuilder alloc] initWithStorageManager:self.storageManager
-                                                  contactsManager:self.contactsManager];
+        [[OWSFingerprintBuilder alloc] initWithStorageManager:self.storageManager
+                                              contactsManager:self.contactsManager];
         NSString *otherId = nil;
         for (NSString *uid in self.thread.participants) {
             if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
@@ -479,7 +466,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
             }
         }
         OWSFingerprint *fingerprint = [fingerprintBuilder fingerprintWithTheirSignalId:otherId];
-
+        
         [controller configureWithThread:self.thread fingerprint:fingerprint contactName:self.contactName];
         controller.dismissDelegate = self;
     } else if ([segue.identifier isEqualToString:OWSConversationSettingsTableViewControllerSegueUpdateGroup]) {

@@ -121,7 +121,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     
 #warning XXX Lookup is broken. Causes main thread to block, freezing app.  Get more reliable method.
     if (!recipient) {
-        recipient = [CCSMCommManager recipientFromCCSMWithID:userID synchronoous:YES];
+        recipient = [CCSMCommManager recipientFromCCSMWithID:userID];
         if (recipient) {
             [self saveRecipient:recipient];
         }
@@ -261,8 +261,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 //    SignalRecipient *recipient = [[Environment getCurrent].contactsManager recipientForUserID:identifier];
 //    if (recipient.fullName) {
 //        return recipient.fullName;
-//    } else if (recipient.tagSlug){
-//        return recipient.tagSlug;
+//    } else if (recipient.flTag.slug){
+//        return recipient.flTag.slug;
 //    } else {
 //        return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
 //                                 @"Displayed if for some reason we can't determine a contacts ID *or* name");
@@ -285,8 +285,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     NSDictionary *tagDict = [userDict objectForKey:@"tag"];
     SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:[userDict objectForKey:@"id"]
                                                                              firstName:[userDict objectForKey:@"first_name"]
-                                                                              lastName:[userDict objectForKey:@"last_name"]
-                                                                               tagSlug:(tagDict ? [tagDict objectForKey:@"slug"] : nil)];
+                                                                              lastName:[userDict objectForKey:@"last_name"]];
+    recipient.flTag = [FLTag tagWithTagDictionary:tagDict];
     recipient.email = [userDict objectForKey:@"email"];
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
 
@@ -301,8 +301,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     SignalRecipient *recipient = [[Environment getCurrent].contactsManager recipientForUserID:identifier];
     if (recipient.fullName) {
         return recipient.fullName;
-    } else if (recipient.tagSlug){
-        return recipient.tagSlug;
+    } else if (recipient.flTag.slug){
+        return recipient.flTag.slug;
     } else {
         return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
                                  @"Displayed if for some reason we can't determine a contacts ID *or* name");

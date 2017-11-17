@@ -2,6 +2,7 @@
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 
 #import "TSYapDatabaseObject.h"
+#import "FLTag.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype)initWithTextSecureIdentifier:(NSString *)textSecureIdentifier
                                   firstName:(NSString *)firstName
-                                   lastName:(NSString *)lastName
-                                    tagSlug:(NSString *)tagSlug;
+                                   lastName:(NSString *)lastName;
+//                                    tagSlug:(NSString *)tagSlug;
 
 + (instancetype)selfRecipient;
 + (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier;
@@ -44,9 +45,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *notes;
 
 @property (nonatomic, readonly) NSString *fullName;
-@property (nonatomic, strong) NSString *tagSlug;
-@property (nonatomic, strong) NSString *tagID;
-@property (nonatomic, strong) NSString *textSecureIdentifier;
+@property (nonatomic, strong) FLTag *flTag;
+//@property (nonatomic, strong) NSString *tagSlug;
+//@property (nonatomic, strong) NSString *tagID;
+//@property (nonatomic, strong) NSString *textSecureIdentifier;
 @property (nonatomic, strong) UIImage *avatar;
 @property (nonatomic, strong) NSString *orgSlug;
 @property (nonatomic, strong) NSString *orgID;

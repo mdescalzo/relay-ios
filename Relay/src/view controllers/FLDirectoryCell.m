@@ -41,12 +41,11 @@
     }
 }
 
--(void)configureCellWithTagDictionary:(NSDictionary *)tagDict
+-(void)configureCellWithTag:(FLTag *)aTag
 {
-    NSString *description = [tagDict objectForKey:@"description"];
-    NSString *tagId = [tagDict objectForKey:@"id"];
-    NSDictionary *orgDict = [tagDict objectForKey:@"org"];
-    NSString *orgSlug = [orgDict objectForKey:@"slug"];
+    NSString *description = aTag.tagDescription;
+    NSString *tagId = aTag.uniqueId;
+    NSString *orgSlug = aTag.orgSlug;
     
     self.nameLabel.text = description;
     self.detailLabel.text = orgSlug;
@@ -67,13 +66,8 @@
     
     CGFloat fontSize = 17.0;
     
-//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-//        firstNameFont = [UIFont ows_mediumFontWithSize:fontSize];
-//        lastNameFont  = [UIFont ows_regularFontWithSize:fontSize];
-//    } else {
-        firstNameFont = [UIFont ows_regularFontWithSize:fontSize];
-        lastNameFont  = [UIFont ows_mediumFontWithSize:fontSize];
-//    }
+    firstNameFont = [UIFont ows_regularFontWithSize:fontSize];
+    lastNameFont  = [UIFont ows_regularFontWithSize:fontSize];
     [fullNameAttributedString addAttribute:NSFontAttributeName
                                      value:firstNameFont
                                      range:NSMakeRange(0, contact.firstName.length)];
@@ -83,19 +77,10 @@
     [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
                                      value:[UIColor blackColor]
                                      range:NSMakeRange(0, contact.fullName.length)];
-    
-//    if (ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst) {
-//        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-//                                         value:[UIColor ows_darkGrayColor]
-//                                         range:NSMakeRange(contact.firstName.length + 1, contact.lastName.length)];
-//    } else {
-        [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor ows_darkGrayColor]
-                                         range:NSMakeRange(0, contact.firstName.length)];
-//    }
-    
+    [fullNameAttributedString addAttribute:NSForegroundColorAttributeName
+                                     value:[UIColor blackColor]
+                                     range:NSMakeRange(0, contact.firstName.length)];
     return fullNameAttributedString;
 }
-
 
 @end

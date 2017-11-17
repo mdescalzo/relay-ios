@@ -115,7 +115,7 @@ CGFloat const kRowHeight = 40;
             SignalRecipient *myself = TSAccountManager.sharedInstance.myself;
             cell.textLabel.textColor = [ForstaColors mediumDarkBlue2];
             cell.textLabel.adjustsFontSizeToFitWidth= YES;
-            cell.textLabel.text = [NSString stringWithFormat:@"%@@%@:%@", NSLocalizedString(@"Logged In As: ", @""), myself.tagSlug, myself.orgSlug];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@@%@:%@", NSLocalizedString(@"Logged In As: ", @""), myself.flTag.slug, myself.orgSlug];
         }
             break;
         default:

@@ -722,8 +722,8 @@ NS_ASSUME_NONNULL_BEGIN
         if (sender) {
             TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
             if (thread) {
-                if (sender.tagID) {
-                    [thread removeParticipants:[NSSet setWithObject:sender.tagID] transaction:transaction];
+                if (sender.flTag.uniqueId) {
+                    [thread removeParticipants:[NSSet setWithObject:sender.flTag.uniqueId] transaction:transaction];
                     TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
                                                                                  inThread:thread
                                                                               messageType:TSInfoMessageTypeConversationUpdate
