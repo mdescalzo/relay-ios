@@ -3188,12 +3188,12 @@
 		76EB04FE18170B33006006FC /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7D516F181EF3125B00E7E15F /* Developer Panel */,
-				7DBA8D681ED9FC49009FCF65 /* Login */,
-				7D3B865B1EE2190700190FD5 /* ForstaMessages */,
 				7D7DA5B41F30CB3B007FE6E4 /* ContactsPicker */,
-				FC3196311A08141D0094C78E /* Settings */,
+				7D516F181EF3125B00E7E15F /* Developer Panel */,
+				7D3B865B1EE2190700190FD5 /* ForstaMessages */,
 				FC3196321A08142D0094C78E /* Legacy */,
+				7DBA8D681ED9FC49009FCF65 /* Login */,
+				FC3196311A08141D0094C78E /* Settings */,
 				FCFD25791A1543D500F4C644 /* Signup */,
 				B6BADBE51B88D1AC0086A80D /* LockInteractionController.h */,
 				B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */,

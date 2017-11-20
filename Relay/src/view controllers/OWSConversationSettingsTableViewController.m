@@ -352,9 +352,8 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 - (void)leaveConversation
 {
-    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageToThread:self.thread
-                                                                                       forThread:self.thread
-                                                                                          ofType:FLControlMessageThreadDeleteKey];
+    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
+                                                                                           ofType:FLControlMessageThreadDeleteKey];
     //
     [self.messageSender sendMessage:message
                             success:^{
