@@ -119,7 +119,6 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)configureWithThread:(TSThread *)thread
 {
     self.thread = thread;
-//    self.signalId = @"";
     self.contactName = thread.displayName;
     
     self.isGroupThread = YES;
@@ -352,21 +351,9 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 - (void)leaveConversation
 {
-//    NSCountedSet *originalParticipants = [NSCountedSet setWithArray:self.thread.participants];
-//    [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-//    [self.thread save];
-//
-//    FLControlMessage *controlMessage = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
-//    [Environment.getCurrent.messageSender sendControlMessage:controlMessage toRecipients:originalParticipants];
-//
-//    TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                                    inThread:self.thread
-//                                                                 messageType:TSInfoMessageTypeConversationQuit];
-//    [leavingMessage save];
-
+    // Throw a threadDelete control message and remove self
     FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
                                                                                            ofType:FLControlMessageThreadDeleteKey];
-    //
     [Environment.getCurrent.messageSender sendMessage:message
                                               success:^{
                                                   DDLogInfo(@"%@ Successfully left group.", self.tag);
