@@ -568,7 +568,7 @@ typedef enum : NSUInteger {
 // Overiding JSQMVC layout defaults
 - (void)initializeCollectionViewLayout
 {
-    [self.collectionView.collectionViewLayout setMessageBubbleFont:[UIFont ows_dynamicTypeBodyFont]];
+    [self.collectionView.collectionViewLayout setMessageBubbleFont:[UIFont ows_regularFontWithSize:FLMessageViewFontSize]];
 
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
