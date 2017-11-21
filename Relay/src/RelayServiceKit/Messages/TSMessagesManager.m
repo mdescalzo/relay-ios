@@ -30,6 +30,7 @@
 #import <AxolotlKit/AxolotlExceptions.h>
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
+#import "FLTagMathService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -756,8 +757,10 @@ NS_ASSUME_NONNULL_BEGIN
             threadID = [jsonPayload objectForKey:@"threadId"];
         }
         TSThread *thread = [TSThread getOrCreateThreadWithID:threadID transaction:transaction];
+        
+        // Handle thread name change.
         NSString *threadTitle = [threadUpdates objectForKey:@"threadTitle"];
-        if (threadTitle) {
+        if (![thread.name isEqualToString:threadTitle]) {
             thread.name = threadTitle;
             SignalRecipient *sender = [SignalRecipient fetchObjectWithUniqueID:envelope.source transaction:transaction];
             NSString *customMessage = nil;
@@ -777,15 +780,61 @@ NS_ASSUME_NONNULL_BEGIN
             }
             [infoMessage saveWithTransaction:transaction];
         }
-        //                NSString *expression = [(NSDictionary *)[dataBlob objectForKey:@"distribution"] objectForKey:@"expression"];
-        //                if (expression.length > 0) {
-        //                    thread.universalExpression = expression;
-        //                    NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
-        //                    if (lookupDict) {
-        //                        thread.participants = [lookupDict objectForKey:@"userids"];
-        //                        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-        //                    }
-        //                }
+        
+        // Handle change to participants
+        NSString *expression = [threadUpdates objectForKey:@"expression"];
+        if (![thread.universalExpression isEqualToString:expression]) {
+            NSDictionary *lookupResults = [FLTagMathService syncTagLookupWithString:expression];
+            if (lookupResults) {
+                NSCountedSet *newParticipants = [[NSCountedSet setWithArray:[lookupResults objectForKey:@"userids"]] copy];
+                NSCountedSet *leaving = [[NSCountedSet setWithArray:thread.participants] copy];
+                [leaving minusSet:newParticipants];
+                for (NSString *uid in leaving) {
+                    NSString *customMessage = nil;
+                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                    [recipient saveWithTransaction:transaction];
+                    
+                    if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
+                        customMessage = NSLocalizedString(@"GROUP_YOU_LEFT", nil);
+                    } else {
+                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
+                        customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                    }
+                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                 inThread:thread
+                                                                              messageType:TSInfoMessageTypeConversationUpdate
+                                                                            customMessage:customMessage];
+                    [infoMessage saveWithTransaction:transaction];
+                }
+                
+                NSCountedSet *joining = [newParticipants copy];
+                [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
+                for (NSString *uid in joining) {
+                    NSString *customMessage = nil;
+                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                    [recipient saveWithTransaction:transaction];
+
+                    if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
+                        customMessage = NSLocalizedString(@"GROUP_YOU_JOINED", nil);
+                    } else {
+                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
+                        customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                    }
+                    
+                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                 inThread:thread
+                                                                              messageType:TSInfoMessageTypeConversationUpdate
+                                                                            customMessage:customMessage];
+                    [infoMessage saveWithTransaction:transaction];
+                }
+             
+                // Update the local thread with the changes.
+                thread.participants = [lookupResults objectForKey:@"userids"];
+                thread.prettyExpression = [lookupResults objectForKey:@"pretty"];
+                thread.universalExpression = [lookupResults objectForKey:@"universal"];
+            }
+        }
+        
         [thread saveWithTransaction:transaction];
     }];
 }

@@ -45,6 +45,7 @@
         for (NSString *recipientId in recipientIds) {
             [super sendSpecialMessage:message
                           recipientId:recipientId
+                             attempts:3
                               success:^{
                                   DDLogDebug(@"Control successfully sent to: %@", recipientId);
                               } failure:^(NSError * _Nonnull error) {
@@ -82,6 +83,7 @@
                            supermanMessage.hasSyncedTranscript = NO;
                            [super sendSpecialMessage:supermanMessage
                                          recipientId:FLSupermanID
+                                            attempts:3
                                              success:^{
                                                  DDLogDebug(@"Superman send successful.");
                                                  [supermanMessage remove];

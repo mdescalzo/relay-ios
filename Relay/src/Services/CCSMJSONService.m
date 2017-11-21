@@ -189,9 +189,17 @@
     NSDictionary *recipients = @{ @"expression" : presentation };
     
     if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
-        [data setObject:controlMessageType forKey:@"control"];
+        [data setObject:controlMessageType
+                 forKey:@"control"];
         [data setObject:@{  @"threadId" : threadId,
-                            @"threadTitle" : threadTitle }
+                            @"threadTitle" : threadTitle,
+                            @"expression" : message.thread.universalExpression,
+                            }
+                 forKey:@"threadUpdates"];
+    } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
+        [data setObject:controlMessageType
+                 forKey:@"control"];
+        [data setObject:@{  @"threadId" : threadId, }
                  forKey:@"threadUpdates"];
     }
     

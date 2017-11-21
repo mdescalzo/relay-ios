@@ -17,7 +17,7 @@
 #import "OWSDisappearingMessagesConfiguration.h"
 #import "OWSFingerprint.h"
 #import "OWSFingerprintBuilder.h"
-#import "OWSMessageSender.h"
+#import "FLMessageSender.h"
 #import "OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.h"
 #import "TSGroupThread.h"
 #import "TSOutgoingMessage.h"
@@ -80,7 +80,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSContactsManager *contactsManager;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) FLMessageSender *messageSender;
 
 @end
 
@@ -95,7 +95,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     
     _storageManager = [TSStorageManager sharedManager];
     _contactsManager = [Environment getCurrent].contactsManager;
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:_storageManager
                                                       contactsManager:_contactsManager];
     return self;
@@ -110,7 +110,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     
     _storageManager = [TSStorageManager sharedManager];
     _contactsManager = [Environment getCurrent].contactsManager;
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                        storageManager:_storageManager
                                                       contactsManager:_contactsManager];
     return self;
@@ -352,32 +352,44 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 - (void)leaveConversation
 {
+//    NSCountedSet *originalParticipants = [NSCountedSet setWithArray:self.thread.participants];
+//    [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
+//    [self.thread save];
+//
+//    FLControlMessage *controlMessage = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
+//    [Environment.getCurrent.messageSender sendControlMessage:controlMessage toRecipients:originalParticipants];
+//
+//    TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+//                                                                    inThread:self.thread
+//                                                                 messageType:TSInfoMessageTypeConversationQuit];
+//    [leavingMessage save];
+
     FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
                                                                                            ofType:FLControlMessageThreadDeleteKey];
     //
-    [self.messageSender sendMessage:message
-                            success:^{
-                                DDLogInfo(@"%@ Successfully left group.", self.tag);
-                                [self.thread.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                                    TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                                    inThread:self.thread
-                                                                                                 messageType:TSInfoMessageTypeConversationQuit];
-                                    [leavingMessage saveWithTransaction:transaction];
-                                    [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
-                                }];
-                            }
-                            failure:^(NSError *error) {
-                                DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
-                                NSString *alertString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"GROUP_REMOVING_FAILED", @""), error.localizedDescription];
-                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                               message:alertString
-                                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                                   style:UIAlertActionStyleDefault
-                                                                                 handler:^(UIAlertAction *action) {}];
-                                [alert addAction:okAction];
-                                [self.navigationController presentViewController:alert animated:YES completion:nil];
-                            }];
+    [Environment.getCurrent.messageSender sendMessage:message
+                                              success:^{
+                                                  DDLogInfo(@"%@ Successfully left group.", self.tag);
+                                                  [self.thread.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                                      TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                                                      inThread:self.thread
+                                                                                                                   messageType:TSInfoMessageTypeConversationQuit];
+                                                      [leavingMessage saveWithTransaction:transaction];
+                                                      [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
+                                                  }];
+                                              }
+                                              failure:^(NSError *error) {
+                                                  DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
+                                                  NSString *alertString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"GROUP_REMOVING_FAILED", @""), error.localizedDescription];
+                                                  UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                 message:alertString
+                                                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                                                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                                     style:UIAlertActionStyleDefault
+                                                                                                   handler:^(UIAlertAction *action) {}];
+                                                  [alert addAction:okAction];
+                                                  [self.navigationController presentViewController:alert animated:YES completion:nil];
+                                              }];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

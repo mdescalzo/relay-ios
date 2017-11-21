@@ -258,7 +258,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                 
                 [participants unionSet:newParticipants];
                 
-                FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
+                FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
+                                                                                                       ofType:FLControlMessageThreadUpdateKey];
                 
                 [Environment.getCurrent.messageSender sendControlMessage:message toRecipients:participants];
                 

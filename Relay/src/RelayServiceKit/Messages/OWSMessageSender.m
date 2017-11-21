@@ -511,9 +511,17 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 
 -(void)sendSpecialMessage:(TSOutgoingMessage *)message
               recipientId:(NSString *)recipientId
+                 attempts:(int)remainingAttempts
                   success:(void (^)())successHandler
                   failure:(void (^)(NSError *error))failureHandler
 {
+    if (remainingAttempts <= 0) {
+        // We should always fail with a specific error.
+        DDLogError(@"%@ Unexpected generic failure.", self.tag);
+        return failureHandler(OWSErrorMakeFailedToSendOutgoingMessageError());
+    }
+    remainingAttempts -= 1;
+    
     SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:recipientId];
     NSMutableOrderedSet *devicesIds = nil;
     if (recipient) {
@@ -521,20 +529,20 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     } else {
         devicesIds = [NSMutableOrderedSet orderedSetWithObject:[NSNumber numberWithInt:1]];
     }
-    NSData *plainText = [message buildPlainTextData];
+//    NSData *plainText = [message buildPlainTextData];
+//
+//    BOOL isLegacyMessage = ![message isKindOfClass:[OWSOutgoingSyncMessage class]];
+//
+//    NSDictionary *messageDict = nil;
     
-    BOOL isLegacyMessage = ![message isKindOfClass:[OWSOutgoingSyncMessage class]];
-    
-    NSDictionary *messageDict = nil;
-    
-    for (NSNumber *deviceId in devicesIds) {
+//    for (NSNumber *deviceId in devicesIds) {
         @try {
-            messageDict = [self encryptedMessageWithPlaintext:plainText
-                                                  toRecipient:recipientId
-                                                     deviceId:deviceId
-                                                keyingStorage:[TSStorageManager sharedManager]
-                                                       legacy:isLegacyMessage];
-            NSArray *messagesArray = @[ messageDict ];
+//            messageDict = [self encryptedMessageWithPlaintext:plainText
+//                                                  toRecipient:recipientId
+//                                                     deviceId:deviceId
+//                                                keyingStorage:[TSStorageManager sharedManager]
+//                                                       legacy:isLegacyMessage];
+            NSArray *messagesArray = [self deviceMessages:message forRecipient:recipient]; //@[ messageDict ];
             
             TSSubmitMessageRequest *request = [[TSSubmitMessageRequest alloc] initWithRecipient:recipientId
                                                                                        messages:messagesArray
@@ -546,18 +554,70 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                          successHandler();
                                      }
                                      failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                         //                                                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-                                         //                                                long statuscode = response.statusCode;
-                                         //                                                NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-                                         DDLogDebug(@"Special send failed.  Error: %@", error.localizedDescription);
+                                         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                                         long statuscode = response.statusCode;
+                                         NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
                                          
-                                         failureHandler(error);
+                                         void (^retrySend)() = ^void() {
+                                             if (remainingAttempts <= 0) {
+                                                 return failureHandler(error);
+                                             }
+                                             
+                                             dispatch_async([OWSDispatch sendingQueue], ^{
+                                                 [self sendSpecialMessage:message
+                                                              recipientId:recipient.uniqueId
+                                                                 attempts:remainingAttempts
+                                                                  success:successHandler
+                                                                  failure:failureHandler];
+                                             });
+                                         };
+                                         
+                                         switch (statuscode) {
+                                             case 404: {
+                                                 [recipient remove];
+                                                 return failureHandler(OWSErrorMakeNoSuchSignalRecipientError());
+                                             }
+                                             case 409: {
+                                                 // Mismatched devices
+                                                 DDLogWarn(@"%@ Mismatch Devices.", self.tag);
+                                                 
+                                                 NSError *error;
+                                                 NSDictionary *serializedResponse =
+                                                 [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+                                                 if (error) {
+                                                     DDLogError(@"%@ Failed to serialize response of mismatched devices: %@", self.tag, error);
+                                                     return failureHandler(error);
+                                                 }
+                                                 
+                                                 [self handleMismatchedDevices:serializedResponse recipient:recipient];
+                                                 retrySend();
+                                                 break;
+                                             }
+                                             case 410: {
+                                                 // staledevices
+                                                 DDLogWarn(@"Stale devices");
+                                                 
+                                                 if (!responseData) {
+                                                     DDLogWarn(@"Stale devices but server didn't specify devices in response.");
+                                                     NSError *error = OWSErrorMakeUnableToProcessServerResponseError();
+                                                     return failureHandler(error);
+                                                 }
+                                                 
+                                                 [self handleStaleDevicesWithResponse:responseData recipientId:recipient.uniqueId];
+                                                 retrySend();
+                                                 break;
+                                             }
+                                             default:
+                                                 retrySend();
+                                                 break;
+                                         }
                                      }];
+            
         }
         @catch (NSException *exception) {
             DDLogDebug(@"Exception thrown by special sender: %@", exception.name);
         }
-    }
+//    }
 }
 
 
@@ -577,7 +637,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     
     NSArray<NSDictionary *> *deviceMessages;
     @try {
-        deviceMessages = [self deviceMessages:message forRecipient:recipient inThread:thread];
+        deviceMessages = [self deviceMessages:message forRecipient:recipient]; // inThread:thread];
     } @catch (NSException *exception) {
         deviceMessages = @[];
         if ([exception.name isEqualToString:UntrustedIdentityKeyException]) {
@@ -606,8 +666,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         }
         
         if (remainingAttempts == 0) {
-            DDLogWarn(
-                      @"%@ Terminal failure to build any device messages. Giving up with exception:%@", self.tag, exception);
+            DDLogWarn(@"%@ Terminal failure to build any device messages. Giving up with exception:%@", self.tag, exception);
             [self processException:exception outgoingMessage:message inThread:thread];
             NSError *error = OWSErrorMakeFailedToSendOutgoingMessageError();
             return failureHandler(error);
@@ -778,7 +837,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 
 - (NSArray<NSDictionary *> *)deviceMessages:(TSOutgoingMessage *)message
                                forRecipient:(SignalRecipient *)recipient
-                                   inThread:(TSThread *)thread
+//                                   inThread:(TSThread *)thread
 {
     NSMutableArray *messagesArray = [NSMutableArray arrayWithCapacity:recipient.devices.count];
     NSData *plainText = [message buildPlainTextData];

@@ -72,6 +72,11 @@ NS_ASSUME_NONNULL_BEGIN
     __block SignalRecipient *recipient;
     [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
         recipient = [self recipientWithTextSecureIdentifier:textSecureIdentifier withTransaction:transaction];
+        
+        // If nothing local, look it up on CCSM:
+        if (recipient == nil) {
+            recipient = [CCSMCommManager recipientFromCCSMWithID:textSecureIdentifier];
+        }
     }];
     return recipient;
 }
