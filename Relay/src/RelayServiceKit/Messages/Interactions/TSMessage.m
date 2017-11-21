@@ -314,16 +314,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
 -(nullable NSString *)plainTextBody {
     if (_plainTextBody == nil) {
         if (self.forstaPayload) {
-            NSDictionary *data = [self.forstaPayload objectForKey:@"data"];
-            NSArray *body = [data objectForKey:@"body"];
-            for (NSDictionary *dict in body) {
-                if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
-                    NSString *value = [dict objectForKey:@"value"];
-                    if (value.length > 0) {
-                        _plainTextBody = value;
-                    }
-                }
-            }
+            _plainTextBody = [self plainBodyStringFromPayload];
         }
     }
     return _plainTextBody;
@@ -340,14 +331,11 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                  NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
                 
                 __block NSError *error = nil;
-                //            NSDictionary *attributes;
-                __block NSAttributedString *atrString;
-                
-                atrString = [[NSAttributedString alloc] initWithData:data
-                                                             options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                                         NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
-                                                  documentAttributes:nil
-                                                               error:&error];
+                __block NSAttributedString *atrString = [[NSAttributedString alloc] initWithData:data
+                                                                                         options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                                                                                     NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding] }
+                                                                              documentAttributes:nil
+                                                                                           error:&error];
                 if (error) {
                     DDLogError(@"%@", error.description);
                 }
@@ -370,7 +358,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                                           if (value) {
                                               UIFont *oldFont = (UIFont *)value;
                                               
-                                              // adapting to font size variations....scale up to relative to default size
+                                              // adapting to font size variations....scale relative to default size
                                               CGFloat oldSize = oldFont.pointSize;
                                               CGFloat multiplier = oldSize/12.0;
                                               CGFloat size = multiplier * FLMessageViewFontSize;
@@ -388,7 +376,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                 _attributedTextBody = [[NSMutableAttributedString alloc] initWithAttributedString:tmpAtrString];
                 
             } else  if (plainString.length > 0) {
-                _attributedTextBody = [[NSAttributedString alloc] initWithString:plainString
+                _attributedTextBody = [[NSAttributedString alloc] initWithString:self.plainTextBody
                                                                       attributes:@{ NSFontAttributeName : [UIFont ows_regularFontWithSize:FLMessageViewFontSize] }];
             }
         }
