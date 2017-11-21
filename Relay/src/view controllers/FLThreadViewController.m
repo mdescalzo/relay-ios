@@ -59,6 +59,7 @@
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
 #import "FLTagMathService.h"
+#import "FLControlMessage.h"
 
 @import Photos;
 
@@ -322,43 +323,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
     TSThread *thread = [self threadForIndexPath:indexPath];
-#warning XXX put remove from group control message send here
-//    if ([thread isKindOfClass:[TSGroupThread class]]) {
-//        
-//        TSGroupThread *gThread = (TSGroupThread *)thread;
-//        if ([gThread.groupModel.groupMemberIds containsObject:[TSAccountManager localNumber]]) {
-//            UIAlertController *removingFromGroup = [UIAlertController
-//                                                    alertControllerWithTitle:[NSString
-//                                                                              stringWithFormat:NSLocalizedString(@"GROUP_REMOVING", nil), [thread name]]
-//                                                    message:nil
-//                                                    preferredStyle:UIAlertControllerStyleAlert];
-//            [self presentViewController:removingFromGroup animated:YES completion:nil];
-//            
-//            TSOutgoingMessage *message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                                             inThread:thread
-//                                                                          messageBody:@""
-//                                                                        attachmentIds:[NSMutableArray new]];
-//            message.groupMetaMessage = TSGroupMessageQuit;
-//            [self.messageSender sendMessage:message
-//                                    success:^{
-//                                        [self dismissViewControllerAnimated:YES
-//                                                                 completion:^{
-//                                                                     [self deleteThread:thread];
-//                                                                 }];
-//                                    }
-//                                    failure:^(NSError *error) {
-//                                        [self dismissViewControllerAnimated:YES
-//                                                                 completion:^{
-//                                                                     SignalAlertView(NSLocalizedString(@"GROUP_REMOVING_FAILED", nil),
-//                                                                                     error.localizedRecoverySuggestion);
-//                                                                 }];
-//                                    }];
-//        } else {
-//            [self deleteThread:thread];
-//        }
-//    } else {
-        [self deleteThread:thread];
-//    }
+    FLControlMessage *deleteMessage = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
+                                                                                                 ofType:FLControlMessageThreadDeleteKey];
+    [Environment.getCurrent.messageSender sendControlMessage:deleteMessage toRecipients:[NSCountedSet setWithArray:thread.participants]];
+    [self deleteThread:thread];
 }
 - (void)deleteThread:(TSThread *)thread {
     [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
