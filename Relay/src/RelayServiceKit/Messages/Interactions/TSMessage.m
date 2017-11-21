@@ -13,7 +13,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static const NSUInteger OWSMessageSchemaVersion = 3;
-//static const CGFloat FLDefaultFontSize = 17.0f;
 
 @interface TSMessage ()
 
