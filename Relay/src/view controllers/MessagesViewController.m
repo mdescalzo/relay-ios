@@ -205,7 +205,7 @@ typedef enum : NSUInteger {
 
 - (BOOL)userLeftGroup
 {
-    return ![self.thread.participants containsObject:[TSAccountManager localNumber]];
+    return ![self.thread.participants containsObject:TSAccountManager.sharedInstance.myself.uniqueId];
 }
 
 - (void)hideInputIfNeeded {
@@ -2018,6 +2018,7 @@ typedef enum : NSUInteger {
     [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
         [self setNavigationTitle];
+        [self hideInputIfNeeded];
     }];
 
     NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
@@ -2287,9 +2288,8 @@ typedef enum : NSUInteger {
     [messageData performEditingAction:action];
 }
 
-- (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
-{
-    [self.collectionView reloadData];
+//- (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
+//{
 //    __block TSThread *thread = nil;
 
 //    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
@@ -2346,15 +2346,15 @@ typedef enum : NSUInteger {
 //                DDLogError(@"%@ Failed to send group update with error: %@", self.tag, error);
 //            }];
 //    }
-}
+//}
 
 - (IBAction)unwindGroupUpdated:(UIStoryboardSegue *)segue {
-    NewGroupViewController *ngc  = [segue sourceViewController];
-    TSGroupModel *newGroupModel  = [ngc groupModel];
-    NSMutableSet *groupMemberIds = [NSMutableSet setWithArray:newGroupModel.groupMemberIds];
-    [groupMemberIds addObject:[TSAccountManager localNumber]];
-    newGroupModel.groupMemberIds = [NSMutableArray arrayWithArray:[groupMemberIds allObjects]];
-    [self updateGroupModelTo:newGroupModel];
+//    NewGroupViewController *ngc  = [segue sourceViewController];
+//    TSGroupModel *newGroupModel  = [ngc groupModel];
+//    NSMutableSet *groupMemberIds = [NSMutableSet setWithArray:newGroupModel.groupMemberIds];
+//    [groupMemberIds addObject:[TSAccountManager localNumber]];
+//    newGroupModel.groupMemberIds = [NSMutableArray arrayWithArray:[groupMemberIds allObjects]];
+//    [self updateGroupModelTo:newGroupModel];
     [self.collectionView.collectionViewLayout
         invalidateLayoutWithContext:[JSQMessagesCollectionViewFlowLayoutInvalidationContext context]];
     [self.collectionView reloadData];
