@@ -242,7 +242,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     // Send control message to union of both participants sets
     NSCountedSet *newParticipants = nil;
     if (self.selectedRecipients.count > 0) {
-        NSMutableString *lookupString = [NSMutableString new];
+        NSMutableString *lookupString = [self.thread.prettyExpression mutableCopy]; // [NSMutableString new];  <-- switch back to this to allow client to remove participants.
         for (SignalRecipient *recipient in self.selectedRecipients) {
             [lookupString appendString:[NSString stringWithFormat:@"@%@:%@ ", recipient.flTag.slug, recipient.orgSlug]];
         }
@@ -443,9 +443,11 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [cell configureCellWithContact:recipient];
     cell.accessoryType    = UITableViewCellAccessoryNone;
 
-    if ([self.thread.participants containsObject:recipient.uniqueId]) {
-        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
+    // TODO: Re-enable this to allow clien to remove participants.
+//    if ([self.thread.participants containsObject:recipient.uniqueId]) {
+//        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//    }
+    
     if ([[tableView indexPathsForSelectedRows] containsObject:indexPath]) {
         [self adjustSelected:cell];
     }
