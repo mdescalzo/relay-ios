@@ -111,7 +111,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) TSVideoAttachmentAdapter *currentMediaAdapter;
 
 @property (nonatomic, strong) NSTimer *readTimer;
-@property (nonatomic, strong) UILabel *navbarTitleLabel;
+//@property (nonatomic, strong) UILabel *navbarTitleLabel;
 @property (nonatomic, strong) UIButton *attachButton;
 
 @property (nonatomic) CGFloat previousCollectionViewFrameWidth;
@@ -284,11 +284,6 @@ typedef enum : NSUInteger {
         [self.collectionView.collectionViewLayout
             invalidateLayoutWithContext:[JSQMessagesCollectionViewFlowLayoutInvalidationContext context]];
     }
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent
-{
-    [self setupTitleLabelGestureRecognizer];
 }
 
 - (void)registerCustomMessageNibs
@@ -523,46 +518,6 @@ typedef enum : NSUInteger {
     // prevent draft from obscuring message history in case user wants to scroll back to refer to something
     // while composing a long message.
     self.inputToolbar.maximumHeight = 300;
-}
-
-- (void)setupTitleLabelGestureRecognizer
-{
-     // Called on load/unload, but we only want to init once.
-    if (self.navbarTitleLabel) {
-        return;
-    }
-
-    UILabel *navbarTitleLabel = [self findNavbarTitleLabel];
-    if (!navbarTitleLabel) {
-        DDLogError(@"%@ Unable to find navbar title label. Skipping gesture recognition", self.tag);
-        return;
-    }
-
-    self.navbarTitleLabel = navbarTitleLabel;
-    navbarTitleLabel.userInteractionEnabled = YES;
-    navbarTitleLabel.superview.userInteractionEnabled = YES;
-
-    UITapGestureRecognizer *titleTapRecognizer =
-        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapTitle)];
-    [navbarTitleLabel addGestureRecognizer:titleTapRecognizer];
-}
-
-- (nullable UILabel *)findNavbarTitleLabel
-{
-    for (UIView *view in self.navigationController.navigationBar.subviews) {
-        if ([view isKindOfClass:NSClassFromString(@"UINavigationItemView")]) {
-            UIView *navItemView = view;
-            for (UIView *aView in navItemView.subviews) {
-                if ([aView isKindOfClass:[UILabel class]]) {
-                    UILabel *label = (UILabel *)aView;
-                    if ([label.text isEqualToString:self.title]) {
-                        return label;
-                    }
-                }
-            }
-        }
-    }
-    return nil;
 }
 
 // Overiding JSQMVC layout defaults
