@@ -292,6 +292,8 @@
 /* Conversation name/title change */
 "THREAD_TITLE_UPDATE_MESSAGE" = "%@ changed the title.";
 
+"THREAD_IMAGE_CHANGED_MESSAGE" = "%@ changed the avatar.";
+
 /* No comment provided by engineer. */
 "GROUP_UPDATED" = "Conversation updated.";
 
@@ -379,6 +381,7 @@
 
 /* No comment provided by engineer. */
 "ME_STRING" = "Me";
+"YOU_STRING" = "You";
 
 /* No comment provided by engineer. */
 "MESSAGE_COMPOSEVIEW_TITLE" = "New Message";

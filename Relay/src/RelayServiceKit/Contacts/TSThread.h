@@ -4,7 +4,7 @@
 #import "TSStorageManager.h"
 #import "TSAccountManager.h"
 #import "TSYapDatabaseObject.h"
-
+#import "TSAttachmentStream.h"
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -184,6 +184,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 -(void)removeParticipants:(NSSet *)objects;
 -(void)removeParticipants:(NSSet *)objects transaction:(YapDatabaseReadWriteTransaction *)transaction;
+
+/**
+ *  Update avatar/image wiht attachment stream
+ */
+- (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream;
 
 /**
  *  Exposing a formerly private method...

@@ -4,7 +4,7 @@
 #import "OWSConversationSettingsTableViewController.h"
 #import "Environment.h"
 #import "FingerprintViewController.h"
-#import "NewGroupViewController.h"
+#import "ConversationUpdateViewController.h"
 #import "OWSAvatarBuilder.h"
 #import "OWSContactsManager.h"
 #import "PhoneNumber.h"
@@ -470,7 +470,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
         [controller configureWithThread:self.thread fingerprint:fingerprint contactName:self.contactName];
         controller.dismissDelegate = self;
     } else if ([segue.identifier isEqualToString:OWSConversationSettingsTableViewControllerSegueUpdateGroup]) {
-        NewGroupViewController *vc = [segue destinationViewController];
+        ConversationUpdateViewController *vc = [segue destinationViewController];
         [vc configWithThread:(TSThread *)self.thread];
     } else if ([segue.identifier isEqualToString:OWSConversationSettingsTableViewControllerSegueShowGroupMembers]) {
         ShowGroupMembersViewController *vc = [segue destinationViewController];

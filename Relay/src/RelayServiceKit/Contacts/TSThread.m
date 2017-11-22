@@ -259,6 +259,16 @@ static const NSString *FLExpressionKey = @"expression";
     return _image;
 }
 
+- (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream
+{
+    self.image = [attachmentStream image];
+    [self save];
+
+    // Avatars are stored directly in the database, so there's no need
+    // to keep the attachment around after assigning the image.
+    [attachmentStream remove];
+}
+
 -(void)updateWithExpression:(NSString *)expression
 {
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {

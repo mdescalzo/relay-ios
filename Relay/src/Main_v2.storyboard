@@ -208,10 +208,10 @@
             </objects>
             <point key="canvasLocation" x="5377" y="1899"/>
         </scene>
-        <!--New Group View Controller-->
+        <!--Conversation Update View Controller-->
         <scene sceneID="3Ad-6E-GZI">
             <objects>
-                <viewController storyboardIdentifier="NewGroupViewController" id="2sF-N7-xwK" customClass="NewGroupViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ConversationUpdateViewController" id="2sF-N7-xwK" customClass="ConversationUpdateViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gwJ-Bi-tYx"/>
                         <viewControllerLayoutGuide type="bottom" id="ro3-oL-btr"/>

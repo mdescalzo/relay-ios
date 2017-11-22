@@ -1,12 +1,12 @@
 //
-//  NewGroupViewController.m
+//  ConversationUpdateViewController.m
 //  Signal
 //
 //  Created by Dylan Bourgeois on 13/11/14.
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 //
 
-#import "NewGroupViewController.h"
+#import "ConversationUpdateViewController.h"
 #import "DJWActionSheet+OWS.h"
 #import "Environment.h"
 #import "FunctionalUtil.h"
@@ -30,7 +30,7 @@
 
 static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue";
 
-@interface NewGroupViewController ()
+@interface ConversationUpdateViewController ()
 
 @property TSThread *thread;
 @property (readonly) OWSMessageSender *messageSender;
@@ -42,7 +42,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 @end
 
-@implementation NewGroupViewController
+@implementation ConversationUpdateViewController
 
 @synthesize contacts = _contacts;
 
@@ -235,85 +235,111 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 - (void)updateConversation
 {
-    NSCountedSet *participants = [NSCountedSet setWithArray:self.thread.participants];
-    
-    // Get new participant/thread info
-    // Build control message
-    // Send control message to union of both participants sets
-    NSCountedSet *newParticipants = nil;
-    if (self.selectedRecipients.count > 0) {
-        NSMutableString *lookupString = [self.thread.prettyExpression mutableCopy]; // [NSMutableString new];  <-- switch back to this to allow client to remove participants.
-        for (SignalRecipient *recipient in self.selectedRecipients) {
-            [lookupString appendString:[NSString stringWithFormat:@"@%@:%@ ", recipient.flTag.slug, recipient.orgSlug]];
+    // Make sure something changed
+    if (![self.originalThreadAvatar isEqual:self.groupImage] ||
+        ![self.originalThreadName isEqualToString:self.nameGroupTextField.text] ||
+        self.selectedRecipients.count > 0) {
+        
+        // Handle title change
+        if (![self.originalThreadName isEqualToString:self.nameGroupTextField.text]) {
+            self.thread.name = self.nameGroupTextField.text;
+            NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
+            NSString *customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
+            
+            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                         inThread:self.thread
+                                                                      messageType:TSInfoMessageTypeConversationUpdate
+                                                                    customMessage:customMessage];
+            [infoMessage save];
         }
-        if (lookupString.length > 0) {
-            NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:lookupString];
-            if (lookupDict) {
-                newParticipants = [NSCountedSet setWithArray:[lookupDict objectForKey:@"userids"]];
-                self.thread.participants = [lookupDict objectForKey:@"userids"];
-                self.thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-                self.thread.universalExpression = [lookupDict objectForKey:@"universal"];
-                self.thread.name = self.nameGroupTextField.text;
-                [self.thread save];
-                
-                [participants unionSet:newParticipants];
-                
-                FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
-                                                                                                       ofType:FLControlMessageThreadUpdateKey];
-                
-                [Environment.getCurrent.messageSender sendControlMessage:message toRecipients:participants];
-                
-                
-                // TODO: throw info messages locally for thread changes.
-                // Post info message for title change
-                if (![self.originalThreadName isEqualToString:self.thread.name]) {
-                    NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
-                    NSString *customMessage = [NSString stringWithFormat:messageFormat, @"You"];
+        
+        // Handle participant change
+        NSCountedSet *participants = [NSCountedSet setWithArray:self.thread.participants];
+        NSCountedSet *newParticipants = nil;
+        if (self.selectedRecipients.count > 0) {
+            NSMutableString *lookupString = [self.thread.prettyExpression mutableCopy]; // [NSMutableString new];  <-- switch back to this to allow client to remove participants.
+            for (SignalRecipient *recipient in self.selectedRecipients) {
+                [lookupString appendString:[NSString stringWithFormat:@"@%@:%@ ", recipient.flTag.slug, recipient.orgSlug]];
+            }
+            if (lookupString.length > 0) {
+                NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:lookupString];
+                if (lookupDict) {
+                    newParticipants = [NSCountedSet setWithArray:[lookupDict objectForKey:@"userids"]];
+                    self.thread.participants = [lookupDict objectForKey:@"userids"];
+                    self.thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                    self.thread.universalExpression = [lookupDict objectForKey:@"universal"];
+                    [self.thread save];
                     
-                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                 inThread:self.thread
-                                                                              messageType:TSInfoMessageTypeConversationUpdate
-                                                                            customMessage:customMessage];
-                    [infoMessage save];
-                }
-                
-                // Post info message for membership changes
-                if (![self.originalThreadParticipants isEqual:newParticipants]) {
-                    NSCountedSet *leaving = [self.originalThreadParticipants copy];
-                    [leaving minusSet:newParticipants];
-                    for (NSString *uid in leaving) {
-                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
-                        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
-                        NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
-                        
-                        TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                     inThread:self.thread
-                                                                                  messageType:TSInfoMessageTypeConversationUpdate
-                                                                                customMessage:customMessage];
-                        [infoMessage save];
-                    }
+                    [participants unionSet:newParticipants];
                     
-                    NSCountedSet *joining = [newParticipants copy];
-                    [joining minusSet:self.originalThreadParticipants];
-                    for (NSString *uid in joining) {
-                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
-                        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
-                        NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                    // Post info message for membership changes
+                    if (![self.originalThreadParticipants isEqual:newParticipants]) {
+                        NSCountedSet *leaving = [self.originalThreadParticipants copy];
+                        [leaving minusSet:newParticipants];
+                        for (NSString *uid in leaving) {
+                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
+                            SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                            NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                            
+                            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                         inThread:self.thread
+                                                                                      messageType:TSInfoMessageTypeConversationUpdate
+                                                                                    customMessage:customMessage];
+                            [infoMessage save];
+                        }
                         
-                        TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                     inThread:self.thread
-                                                                                  messageType:TSInfoMessageTypeConversationUpdate
-                                                                                customMessage:customMessage];
-                        [infoMessage save];
+                        NSCountedSet *joining = [newParticipants copy];
+                        [joining minusSet:self.originalThreadParticipants];
+                        for (NSString *uid in joining) {
+                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
+                            SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                            NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                            
+                            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                         inThread:self.thread
+                                                                                      messageType:TSInfoMessageTypeConversationUpdate
+                                                                                    customMessage:customMessage];
+                            [infoMessage save];
+                        }
                     }
                 }
             }
         }
+        
+        // Build control message
+        FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
+                                                                                               ofType:FLControlMessageThreadUpdateKey];
+        
+        // Thread image update handling
+        if (![self.originalThreadAvatar isEqual:self.groupImage]) {
+            self.thread.image = self.groupImage;
+            [self.thread save];
+            
+            NSString *messageFormat = NSLocalizedString(@"THREAD_IMAGE_CHANGED_MESSAGE", nil);
+            NSString *customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
+            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                         inThread:self.thread
+                                                                      messageType:TSInfoMessageTypeConversationUpdate
+                                                                    customMessage:customMessage];
+            [infoMessage save];
+            
+            NSData *imageData = UIImagePNGRepresentation(self.thread.image);
+            [Environment.getCurrent.messageSender sendAttachmentData:imageData
+                                                            filename:@""
+                                                         contentType:OWSMimeTypeImagePng
+                                                           inMessage:message
+                                                             success:^{
+                                                                 DDLogDebug(@"Successfully sent avatar update.");
+                                                             }
+                                                             failure:^(NSError *error) {
+                                                                 DDLogError(@"Error sending avatar update control message: %@", error.localizedDescription);
+                                                             }];
+        } else {
+            // Send the control message without attachment
+            [Environment.getCurrent.messageSender sendControlMessage:message toRecipients:participants];
+        }
     }
-    
-    
     [self.nameGroupTextField resignFirstResponder];
-
     [self performSegueWithIdentifier:kUnwindToMessagesViewSegue sender:self];
 }
 

@@ -14,7 +14,7 @@
 #import "FullImageViewController.h"
 #import "MessagesViewController.h"
 #import "NSDate+millisecondTimeStamp.h"
-#import "NewGroupViewController.h"
+#import "ConversationUpdateViewController.h"
 #import "OWSCall.h"
 #import "OWSCallCollectionViewCell.h"
 #import "OWSContactsManager.h"

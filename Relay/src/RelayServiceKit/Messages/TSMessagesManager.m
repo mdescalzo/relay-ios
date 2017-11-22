@@ -16,6 +16,7 @@
 #import "OWSRecordTranscriptJob.h"
 #import "OWSSyncContactsMessage.h"
 #import "OWSSyncGroupsMessage.h"
+#import "OWSAttachmentsProcessor.h"
 #import "TSAccountManager.h"
 #import "TSAttachmentStream.h"
 #import "TSCall.h"
@@ -748,21 +749,21 @@ NS_ASSUME_NONNULL_BEGIN
     }
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     __block NSDictionary *threadUpdates = [dataBlob objectForKey:@"threadUpdates"];
-    
+
+    NSString *threadID = [threadUpdates objectForKey:@"threadId"];
+    if (threadID.length == 0) {
+        threadID = [jsonPayload objectForKey:@"threadId"];
+    }
+    __block TSThread *thread = [TSThread getOrCreateThreadWithID:threadID];
+    __block SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source];
+    [sender save];
+
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        // TODO: Attachments become avatars
-        // TODO: Modfiy participants
-        NSString *threadID = [threadUpdates objectForKey:@"threadId"];
-        if (threadID.length == 0) {
-            threadID = [jsonPayload objectForKey:@"threadId"];
-        }
-        TSThread *thread = [TSThread getOrCreateThreadWithID:threadID transaction:transaction];
         
         // Handle thread name change.
         NSString *threadTitle = [threadUpdates objectForKey:@"threadTitle"];
         if (![thread.name isEqualToString:threadTitle]) {
             thread.name = threadTitle;
-            SignalRecipient *sender = [SignalRecipient fetchObjectWithUniqueID:envelope.source transaction:transaction];
             NSString *customMessage = nil;
             TSInfoMessage *infoMessage = nil;
             if (sender) {
@@ -834,9 +835,46 @@ NS_ASSUME_NONNULL_BEGIN
                 thread.universalExpression = [lookupResults objectForKey:@"universal"];
             }
         }
-        
         [thread saveWithTransaction:transaction];
     }];
+    
+    // Handle change to avatar
+    //  Must be done outside the transaction block
+    if (dataMessage.attachments.count > 0) {
+        OWSAttachmentsProcessor *attachmentsProcessor = [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
+                                                                                                       properties:[dataBlob objectForKey:@"attachments"]
+                                                                                                        timestamp:envelope.timestamp
+                                                                                                            relay:envelope.relay
+                                                                                                           thread:thread
+                                                                                                   networkManager:self.networkManager];
+        
+        if (attachmentsProcessor.hasSupportedAttachments) {
+            [attachmentsProcessor fetchAttachmentsForMessage:nil
+                                                     success:^(TSAttachmentStream *_Nonnull attachmentStream) {
+                                                         [thread updateImageWithAttachmentStream:attachmentStream];
+                                                         
+                                                         NSString *messageFormat = NSLocalizedString(@"THREAD_IMAGE_CHANGED_MESSAGE", nil);
+                                                         NSString *customMessage = nil;
+                                                         if ([sender.uniqueId isEqual:TSAccountManager.sharedInstance.myself]) {
+                                                             customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
+                                                         } else {
+                                                             customMessage = [NSString stringWithFormat:messageFormat, sender.fullName];
+                                                         }
+                                                         
+                                                         TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                                                      inThread:thread
+                                                                                                                   messageType:TSInfoMessageTypeConversationUpdate
+                                                                                                                 customMessage:customMessage];
+                                                         [infoMessage save];
+                                                     }
+                                                     failure:^(NSError *_Nonnull error) {
+                                                         DDLogError(@"%@ failed to fetch attachments for group avatar sent at: %llu. with error: %@",
+                                                                    self.tag,
+                                                                    envelope.timestamp,
+                                                                    error);
+                                                     }];
+        }
+    }
 }
 
 #pragma mark - JSON body parsing methods

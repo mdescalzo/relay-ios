@@ -1,5 +1,5 @@
 //
-//  NewGroupViewController.h
+//  ConversationUpdateViewController.h
 //  Signal
 //
 //  Created by Dylan Bourgeois on 13/11/14.
@@ -10,7 +10,7 @@
 #import "TSGroupModel.h"
 #import "TSThread.h"
 
-@interface NewGroupViewController : UIViewController <UITableViewDelegate,
+@interface ConversationUpdateViewController : UIViewController <UITableViewDelegate,
                                                       UITabBarDelegate,
                                                       UIImagePickerControllerDelegate,
                                                       UINavigationControllerDelegate,
