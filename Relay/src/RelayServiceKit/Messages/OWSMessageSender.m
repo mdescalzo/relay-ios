@@ -471,9 +471,9 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                              NSError *err = nil;
                                              NSDictionary *serializedResponse =
                                              [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
-                                             if (error) {
-                                                 DDLogError(@"%@ Failed to serialize response of mismatched devices: %@", self.tag, error);
-                                                 return failureHandler(error);
+                                             if (err) {
+                                                 DDLogError(@"%@ Failed to serialize response of mismatched devices: %@", self.tag, err);
+                                                 return failureHandler(err);
                                              }
                                              
                                              [self handleMismatchedDevices:serializedResponse recipient:recipient];
@@ -603,10 +603,10 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                          
                                          NSError *err = nil;
                                          NSDictionary *serializedResponse =
-                                         [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
-                                         if (error) {
+                                         [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
+                                         if (err) {
                                              DDLogError(@"%@ Failed to serialize response of mismatched devices: %@", self.tag, err);
-                                             return failureHandler(error);
+                                             return failureHandler(err);
                                          }
                                          
                                          [self handleMismatchedDevices:serializedResponse recipient:recipient];
