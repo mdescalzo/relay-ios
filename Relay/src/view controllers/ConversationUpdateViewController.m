@@ -111,7 +111,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         self.navigationItem.title    = _thread.name;
         self.nameGroupTextField.text = _thread.name;
         if (_thread.image != nil) {
-            _groupImage = _thread.image;
+//            _groupImage = _thread.image;
             [self setupGroupImageButton:_thread.image];
         }
     }
@@ -243,6 +243,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         // Handle title change
         if (![self.originalThreadName isEqualToString:self.nameGroupTextField.text]) {
             self.thread.name = self.nameGroupTextField.text;
+            [self.thread save];
             NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
             NSString *customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
             
@@ -311,7 +312,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                                                                ofType:FLControlMessageThreadUpdateKey];
         
         // Thread image update handling
-        if (![self.originalThreadAvatar isEqual:self.groupImage]) {
+        if (self.groupImage && ![self.originalThreadAvatar isEqual:self.groupImage]) {
             self.thread.image = self.groupImage;
             [self.thread save];
             
