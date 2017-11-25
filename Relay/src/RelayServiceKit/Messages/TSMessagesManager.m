@@ -16,6 +16,7 @@
 #import "OWSRecordTranscriptJob.h"
 #import "OWSSyncContactsMessage.h"
 #import "OWSSyncGroupsMessage.h"
+#import "OWSAttachmentsProcessor.h"
 #import "TSAccountManager.h"
 #import "TSAttachmentStream.h"
 #import "TSCall.h"
@@ -30,6 +31,7 @@
 #import <AxolotlKit/AxolotlExceptions.h>
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
+#import "FLTagMathService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -510,9 +512,9 @@ NS_ASSUME_NONNULL_BEGIN
     }
     // Process per messageType
     if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
-        DDLogDebug(@"Control message received.");
-        
         NSString *controlMessageType = [dataBlob objectForKey:@"control"];
+        DDLogDebug(@"Control message received: %@", controlMessageType);
+
         // Conversation update
         if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
             [self handleThreadUpdateControlMessageWithEnvelope:envelope
@@ -521,6 +523,9 @@ NS_ASSUME_NONNULL_BEGIN
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
+            [self handleThreadDeleteControlMessageWithEnvelope:envelope
+                                               withDataMessage:dataMessage
+                                                 attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
         } else {
             DDLogDebug(@"Unhandled control message.");
@@ -708,6 +713,31 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+-(void)handleThreadDeleteControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
+                                    withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                      attachmentIds:(NSArray<NSString *> *)attachmentIds
+{
+    // Remove the sender from the thread
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        
+        SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source withTransaction:transaction];
+        if (sender) {
+            TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
+            if (thread) {
+                if (sender.flTag.uniqueId) {
+                    [thread removeParticipants:[NSSet setWithObject:sender.flTag.uniqueId] transaction:transaction];
+                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
+                                                                                 inThread:thread
+                                                                              messageType:TSInfoMessageTypeConversationUpdate
+                                                                            customMessage:[NSString stringWithFormat:NSLocalizedString(@"GROUP_MEMBER_LEFT", @""), sender.fullName]];
+                    [infoMessage saveWithTransaction:transaction];
+                }
+            }
+        }
+    }];
+}
+    
+
 -(void)handleThreadUpdateControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
@@ -719,19 +749,21 @@ NS_ASSUME_NONNULL_BEGIN
     }
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     __block NSDictionary *threadUpdates = [dataBlob objectForKey:@"threadUpdates"];
-    
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {//TODO: Balag
-        // TODO: Attachments become avatars
-        // TODO: Modfiy participants
-        NSString *threadID = [threadUpdates objectForKey:@"threadId"];
-        if (threadID.length == 0) {
-            threadID = [jsonPayload objectForKey:@"threadId"];
-        }
-        TSThread *thread = [TSThread getOrCreateThreadWithID:threadID transaction:transaction];
+
+    NSString *threadID = [threadUpdates objectForKey:@"threadId"];
+    if (threadID.length == 0) {
+        threadID = [jsonPayload objectForKey:@"threadId"];
+    }
+    __block TSThread *thread = [TSThread getOrCreateThreadWithID:threadID];
+    __block SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source];
+    [sender save];
+
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        
+        // Handle thread name change.
         NSString *threadTitle = [threadUpdates objectForKey:@"threadTitle"];
-        if (threadTitle) {
+        if (![thread.name isEqualToString:threadTitle]) {
             thread.name = threadTitle;
-            SignalRecipient *sender = [SignalRecipient fetchObjectWithUniqueID:envelope.source transaction:transaction];
             NSString *customMessage = nil;
             TSInfoMessage *infoMessage = nil;
             if (sender) {
@@ -749,17 +781,100 @@ NS_ASSUME_NONNULL_BEGIN
             }
             [infoMessage saveWithTransaction:transaction];
         }
-        //                NSString *expression = [(NSDictionary *)[dataBlob objectForKey:@"distribution"] objectForKey:@"expression"];
-        //                if (expression.length > 0) {
-        //                    thread.universalExpression = expression;
-        //                    NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
-        //                    if (lookupDict) {
-        //                        thread.participants = [lookupDict objectForKey:@"userids"];
-        //                        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-        //                    }
-        //                }
+        
+        // Handle change to participants
+        NSString *expression = [threadUpdates objectForKey:@"expression"];
+        if (![thread.universalExpression isEqualToString:expression]) {
+            NSDictionary *lookupResults = [FLTagMathService syncTagLookupWithString:expression];
+            if (lookupResults) {
+                NSCountedSet *newParticipants = [[NSCountedSet setWithArray:[lookupResults objectForKey:@"userids"]] copy];
+                NSCountedSet *leaving = [[NSCountedSet setWithArray:thread.participants] copy];
+                [leaving minusSet:newParticipants];
+                for (NSString *uid in leaving) {
+                    NSString *customMessage = nil;
+                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                    [recipient saveWithTransaction:transaction];
+                    
+                    if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
+                        customMessage = NSLocalizedString(@"GROUP_YOU_LEFT", nil);
+                    } else {
+                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
+                        customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                    }
+                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                 inThread:thread
+                                                                              messageType:TSInfoMessageTypeConversationUpdate
+                                                                            customMessage:customMessage];
+                    [infoMessage saveWithTransaction:transaction];
+                }
+                
+                NSCountedSet *joining = [newParticipants copy];
+                [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
+                for (NSString *uid in joining) {
+                    NSString *customMessage = nil;
+                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                    [recipient saveWithTransaction:transaction];
+
+                    if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
+                        customMessage = NSLocalizedString(@"GROUP_YOU_JOINED", nil);
+                    } else {
+                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
+                        customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                    }
+                    
+                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                 inThread:thread
+                                                                              messageType:TSInfoMessageTypeConversationUpdate
+                                                                            customMessage:customMessage];
+                    [infoMessage saveWithTransaction:transaction];
+                }
+             
+                // Update the local thread with the changes.
+                thread.participants = [lookupResults objectForKey:@"userids"];
+                thread.prettyExpression = [lookupResults objectForKey:@"pretty"];
+                thread.universalExpression = [lookupResults objectForKey:@"universal"];
+            }
+        }
         [thread saveWithTransaction:transaction];
     }];
+    
+    // Handle change to avatar
+    //  Must be done outside the transaction block
+    if (dataMessage.attachments.count > 0) {
+        OWSAttachmentsProcessor *attachmentsProcessor = [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
+                                                                                                       properties:[dataBlob objectForKey:@"attachments"]
+                                                                                                        timestamp:envelope.timestamp
+                                                                                                            relay:envelope.relay
+                                                                                                           thread:thread
+                                                                                                   networkManager:self.networkManager];
+        
+        if (attachmentsProcessor.hasSupportedAttachments) {
+            [attachmentsProcessor fetchAttachmentsForMessage:nil
+                                                     success:^(TSAttachmentStream *_Nonnull attachmentStream) {
+                                                         [thread updateImageWithAttachmentStream:attachmentStream];
+                                                         
+                                                         NSString *messageFormat = NSLocalizedString(@"THREAD_IMAGE_CHANGED_MESSAGE", nil);
+                                                         NSString *customMessage = nil;
+                                                         if ([sender.uniqueId isEqual:TSAccountManager.sharedInstance.myself]) {
+                                                             customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
+                                                         } else {
+                                                             customMessage = [NSString stringWithFormat:messageFormat, sender.fullName];
+                                                         }
+                                                         
+                                                         TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                                                      inThread:thread
+                                                                                                                   messageType:TSInfoMessageTypeConversationUpdate
+                                                                                                                 customMessage:customMessage];
+                                                         [infoMessage save];
+                                                     }
+                                                     failure:^(NSError *_Nonnull error) {
+                                                         DDLogError(@"%@ failed to fetch attachments for group avatar sent at: %llu. with error: %@",
+                                                                    self.tag,
+                                                                    envelope.timestamp,
+                                                                    error);
+                                                     }];
+        }
+    }
 }
 
 #pragma mark - JSON body parsing methods

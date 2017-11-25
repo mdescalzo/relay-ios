@@ -154,8 +154,8 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 - (void)setUsers:(NSMutableDictionary *)value
 {
     [self setValueForKey:CCSMStorageKeyUsers toValue:value];
-    NSDictionary * tags = [self extractTagsForUsers:value];
-    [self setTags:tags];
+//    NSDictionary * tags = [self extractTagsForUsers:value];
+//    [self setTags:tags];
 }
 
 - (nullable NSMutableDictionary *)getUsers
@@ -167,6 +167,16 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 - (void)setTags:(NSDictionary *)value
 {
     [self setValueForKey:CCSMStorageKeyTags toValue:value];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            for (NSDictionary* tagDict in [value allValues]) {
+                FLTag *aTag = [FLTag tagWithTagDictionary:tagDict];
+                if (aTag) {
+                    [aTag saveWithTransaction:transaction];
+                }
+            }
+        }];
+    });
 }
 
 - (nullable NSDictionary *)getTags

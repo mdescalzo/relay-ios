@@ -156,9 +156,10 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if ([self isVideo] || [self isAudio]) {
         return [self videoThumbnail];
-    } else {
-        // [self isAnimated] || [self isImage]
+    } else  if ([self isAnimated] || [self isImage]) {
         return [UIImage imageWithData:[NSData dataWithContentsOfURL:[self mediaURL]]];
+    } else {
+        return nil;
     }
 }
 

@@ -17,6 +17,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView *avatarImageView;
 
 -(void)configureCellWithContact:(SignalRecipient *)recipient;
--(void)configureCellWithTagDictionary:(NSDictionary *)tagDict;
+-(void)configureCellWithTag:(FLTag *)aTag;
 
 @end

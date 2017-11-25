@@ -14,7 +14,7 @@
 #import "FullImageViewController.h"
 #import "MessagesViewController.h"
 #import "NSDate+millisecondTimeStamp.h"
-#import "NewGroupViewController.h"
+#import "ConversationUpdateViewController.h"
 #import "OWSCall.h"
 #import "OWSCallCollectionViewCell.h"
 #import "OWSContactsManager.h"
@@ -130,6 +130,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) UIImage *imageToPreview;
 @property (nonatomic, strong) NSString *filenameToPreview;
 
+@property (nonatomic, strong) UIButton *infoButton;
+
 @property NSCache *messageAdapterCache;
 
 @end
@@ -205,22 +207,31 @@ typedef enum : NSUInteger {
 
 - (BOOL)userLeftGroup
 {
-    return ![self.thread.participants containsObject:[TSAccountManager localNumber]];
+    return ![self.thread.participants containsObject:TSAccountManager.sharedInstance.myself.uniqueId];
 }
 
 - (void)hideInputIfNeeded {
     if (_peek) {
-        [self inputToolbar].hidden = YES;
+        self.inputToolbar.hidden = YES;
         [self.inputToolbar endEditing:TRUE];
         return;
     }
 
-    if (self.userLeftGroup) {
-        [self inputToolbar].hidden = YES; // user has requested they leave the group. further sends disallowed
+    if ([self userLeftGroup]) {
+        self.inputToolbar.hidden = YES; // user has requested they leave the group. further sends disallowed
         [self.inputToolbar endEditing:TRUE];
     } else {
-        [self inputToolbar].hidden = NO;
+        self.inputToolbar.hidden = NO;
         [self loadDraftInCompose];
+    }
+}
+
+-(void)disableInfoButtonIfNeeded
+{
+    if ([self userLeftGroup]) {
+        self.infoButton.enabled = NO;
+    } else {
+        self.infoButton.enabled = YES;
     }
 }
 
@@ -359,6 +370,7 @@ typedef enum : NSUInteger {
     // We need to recheck on every appearance, since the user may have left the group in the settings VC,
     // or on another device.
     [self hideInputIfNeeded];
+    [self disableInfoButtonIfNeeded];
 
     [self toggleObservers:YES];
 
@@ -480,9 +492,7 @@ typedef enum : NSUInteger {
     NSMutableArray<UIBarButtonItem *> *barButtons = [NSMutableArray new];
     
     // Info button to push converstaion settings view.
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [infoButton addTarget:self action:@selector(showConversationSettings) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *infoItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    UIBarButtonItem *infoItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
     [barButtons addObject:infoItem];
 
     // Call button will display if phone # is available
@@ -1973,6 +1983,8 @@ typedef enum : NSUInteger {
     [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
         [self setNavigationTitle];
+        [self hideInputIfNeeded];
+        [self disableInfoButtonIfNeeded];
     }];
 
     NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
@@ -2183,37 +2195,6 @@ typedef enum : NSUInteger {
     [alert addAction:chooseDocutmentButton];
     [alert addAction:cancelButton];
     [self.navigationController presentViewController:alert animated:YES completion:nil];
-
-//    UIView *presenter = self.parentViewController.view;
-//    [DJWActionSheet showInView:presenter
-//                     withTitle:nil
-//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-//        destructiveButtonTitle:nil
-//             otherButtonTitles:@[
-//                 NSLocalizedString(@"TAKE_MEDIA_BUTTON", @""),
-//                 NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
-//             ] //,@"Record audio"]
-//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-//                        if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-//                            DDLogVerbose(@"User Cancelled");
-//                        } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-//                            DDLogVerbose(@"Destructive button tapped");
-//                        } else {
-//                            switch (tappedButtonIndex) {
-//                                case 0:
-//                                    [self takePictureOrVideo];
-//                                    break;
-//                                case 1:
-//                                    [self chooseFromLibrary];
-//                                    break;
-//                                case 2:
-//                                    [self recordAudio];
-//                                    break;
-//                                default:
-//                                    break;
-//                            }
-//                        }
-//                      }];
 }
 
 - (void)markAllMessagesAsRead
@@ -2242,74 +2223,7 @@ typedef enum : NSUInteger {
     [messageData performEditingAction:action];
 }
 
-- (void)updateGroupModelTo:(TSGroupModel *)newGroupModel
-{
-    __block TSThread *thread = nil;
-
-//    __block TSGroupModel *oldGroupModel = [[TSGroupModel alloc] initWithTitle:self.thread.name
-//                                                                    memberIds:[self.thread.participants mutableCopy]
-//                                                                        image:self.thread.image
-//                                                                      groupId:nil];
-
-    [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        thread = [TSThread getOrCreateThreadWithID:self.thread.uniqueId transaction:transaction];
-        
-//        NSString *updateGroupInfo = [oldGroupModel getInfoStringAboutUpdateTo:newGroupModel contactsManager:self.contactsManager];
-
-        self.thread.name = newGroupModel.groupName;
-        self.thread.participants = [NSArray arrayWithArray:newGroupModel.groupMemberIds];
-        self.thread.image = newGroupModel.groupImage;
-        
-        [self.thread saveWithTransaction:transaction];
-        
-        NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
-        NSString *customMessage = [NSString stringWithFormat:messageFormat, @"You"];
-        
-        TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                     inThread:thread
-                                                                  messageType:TSInfoMessageTypeConversationUpdate
-                                                                customMessage:customMessage];
-        [infoMessage saveWithTransaction:transaction];
-    }];
-
-    #warning XXX Control message send for group update here.
-    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread ofType:FLControlMessageThreadUpdateKey];
-    [self.messageSender sendMessage:message
-                            success:^{
-                                DDLogDebug(@"Successfully send control message.");
-                            }
-                            failure:^(NSError *error){
-                                DDLogDebug(@"Failed to send control message with error: %@", error.localizedDescription);
-                            }];
-    
-//    if (newGroupModel.groupImage) {
-//        [self.messageSender sendAttachmentData:UIImagePNGRepresentation(newGroupModel.groupImage)
-//            contentType:OWSMimeTypeImagePng
-//            inMessage:message
-//            success:^{
-//                DDLogDebug(@"%@ Successfully sent group update with avatar", self.tag);
-//            }
-//            failure:^(NSError *_Nonnull error) {
-//                DDLogError(@"%@ Failed to send group avatar update with error: %@", self.tag, error);
-//            }];
-//    } else {
-//        [self.messageSender sendMessage:message
-//            success:^{
-//                DDLogDebug(@"%@ Successfully sent group update", self.tag);
-//            }
-//            failure:^(NSError *_Nonnull error) {
-//                DDLogError(@"%@ Failed to send group update with error: %@", self.tag, error);
-//            }];
-//    }
-}
-
 - (IBAction)unwindGroupUpdated:(UIStoryboardSegue *)segue {
-    NewGroupViewController *ngc  = [segue sourceViewController];
-    TSGroupModel *newGroupModel  = [ngc groupModel];
-    NSMutableSet *groupMemberIds = [NSMutableSet setWithArray:newGroupModel.groupMemberIds];
-    [groupMemberIds addObject:[TSAccountManager localNumber]];
-    newGroupModel.groupMemberIds = [NSMutableArray arrayWithArray:[groupMemberIds allObjects]];
-    [self updateGroupModelTo:newGroupModel];
     [self.collectionView.collectionViewLayout
         invalidateLayoutWithContext:[JSQMessagesCollectionViewFlowLayoutInvalidationContext context]];
     [self.collectionView reloadData];
@@ -2410,6 +2324,16 @@ typedef enum : NSUInteger {
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
     return @[];
+}
+
+#pragma mark - Accessors
+-(UIButton *)infoButton
+{
+    if (_infoButton == nil) {
+        _infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+        [_infoButton addTarget:self action:@selector(showConversationSettings) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _infoButton;
 }
 
 #pragma mark - Logging

@@ -16,27 +16,18 @@
 
 @implementation FLTag
 
--(instancetype _Nullable )tagWithTagDictionary:(NSDictionary *_Nonnull)tagDictionary
++(instancetype _Nullable )tagWithTagDictionary:(NSDictionary *_Nonnull)tagDictionary
 {
-    __block FLTag *newTag = nil;
-    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        newTag = [self tagWithTagDictionary:tagDictionary transaction:transaction];
-    }];
-    return newTag;
-}
-
--(instancetype _Nullable )tagWithTagDictionary:(NSDictionary *_Nonnull)tagDictionary
-                                   transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
-{
-    __block FLTag *newTag = nil;
     NSString *tagId = [tagDictionary objectForKey:@"id"];
-    [FLTag fetchObjectWithUniqueID:tagId transaction:transaction];
-    if (newTag == nil) {
-        newTag = [[FLTag alloc] initWithUniqueId:tagId];
-    }
+    FLTag *newTag = [[FLTag alloc] initWithUniqueId:tagId];
+    newTag.url = [tagDictionary objectForKey:@"url"];
     newTag.tagDescription = [tagDictionary objectForKey:@"description"];
     newTag.slug = [tagDictionary objectForKey:@"slug"];
-    newTag.orgSlug = [tagDictionary objectForKey:]
+    NSDictionary *orgDict = [tagDictionary objectForKey:@"org"];
+    if (orgDict) {
+        newTag.orgSlug = [orgDict objectForKey:@"slug"];
+        newTag.orgUrl = [orgDict objectForKey:@"url"];
+    }
     
     return newTag;
 }

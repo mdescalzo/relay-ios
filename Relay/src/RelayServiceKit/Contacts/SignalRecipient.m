@@ -25,7 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     _devices = [NSMutableOrderedSet orderedSetWithObject:[NSNumber numberWithInt:1]];
     _relay = [relay isEqualToString:@""] ? nil : relay;
-    //    _supportsVoice = voiceCapable;
     
     return self;
 }
@@ -33,12 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 -(instancetype)initWithTextSecureIdentifier:(NSString *)textSecureIdentifier
                                   firstName:(NSString *)firstName
                                    lastName:(NSString *)lastName
-                                    tagSlug:(NSString *)tagSlug
 {
     if ([super initWithUniqueId:textSecureIdentifier]) {
         _firstName = firstName;
         _lastName = lastName;
-        _tagSlug = tagSlug;
     }
     return self;
 }
@@ -75,13 +72,18 @@ NS_ASSUME_NONNULL_BEGIN
     __block SignalRecipient *recipient;
     [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
         recipient = [self recipientWithTextSecureIdentifier:textSecureIdentifier withTransaction:transaction];
+        
+        // If nothing local, look it up on CCSM:
+        if (recipient == nil) {
+            recipient = [CCSMCommManager recipientFromCCSMWithID:textSecureIdentifier];
+        }
     }];
     return recipient;
 }
 
 + (instancetype)selfRecipient
 {
-    SignalRecipient *myself = [self recipientWithTextSecureIdentifier:TSAccountManager.sharedInstance.myself.uniqueId];
+    SignalRecipient *myself = TSAccountManager.sharedInstance.myself;
     if (!myself) {
         myself = [[self alloc] initWithTextSecureIdentifier:TSAccountManager.sharedInstance.myself.uniqueId relay:nil supportsVoice:YES];
     }
@@ -94,16 +96,25 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary *tagDict = [userDict objectForKey:@"tag"];
     SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:[userDict objectForKey:@"id"]
                                                                              firstName:[userDict objectForKey:@"first_name"]
-                                                                              lastName:[userDict objectForKey:@"last_name"]
-                                                                               tagSlug:(tagDict ? [tagDict objectForKey:@"slug"] : nil)];
+                                                                              lastName:[userDict objectForKey:@"last_name"]];
     recipient.email = [userDict objectForKey:@"email"];
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
-    
+
     NSDictionary *orgDict = [userDict objectForKey:@"org"];
     if (orgDict) {
         recipient.orgID = [orgDict objectForKey:@"id"];
         recipient.orgSlug = [orgDict objectForKey:@"slug"];
     }
+    
+    recipient.flTag = [FLTag tagWithTagDictionary:tagDict];
+    if (recipient.flTag.tagDescription.length == 0) {
+        recipient.flTag.tagDescription = recipient.fullName;
+    }
+    if (recipient.flTag.orgSlug.length == 0) {
+        recipient.flTag.orgSlug = recipient.orgSlug;
+    }
+//    recipient.tagID = (tagDict ? [tagDict objectForKey:@"id"] : nil);
+    
     
     return recipient;
 }
@@ -132,7 +143,23 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-#pragma mark - getter/setter/lazy instantiation
+#pragma mark - overrides
+-(void)save
+{
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self saveWithTransaction:transaction];
+    }];
+}
+
+-(void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    [super saveWithTransaction:transaction];
+    if (self.flTag) {
+        [self.flTag saveWithTransaction:transaction];
+    }
+}
+
+#pragma mark - Accessors
 -(NSString *)textSecureIdentifier
 {
     return self.uniqueId;

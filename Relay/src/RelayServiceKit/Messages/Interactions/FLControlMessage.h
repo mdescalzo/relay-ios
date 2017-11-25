@@ -17,6 +17,6 @@
 
 @property (strong, readonly) NSString * _Nonnull controlMessageType;
 
--(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *)controlType;
+-(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *_Nonnull)controlType;
 
 @end

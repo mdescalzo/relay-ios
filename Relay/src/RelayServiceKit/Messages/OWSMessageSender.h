@@ -42,6 +42,7 @@ NS_SWIFT_NAME(MessageSender)
  */
 -(void)sendSpecialMessage:(TSOutgoingMessage *)message
               recipientId:(NSString *)recipientId
+                 attempts:(int)remainingAttempts
                   success:(void (^)())successHandler
                   failure:(void (^)(NSError *error))failureHandler;
 

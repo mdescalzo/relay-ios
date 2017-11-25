@@ -60,16 +60,17 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"slugCell" forIndexPath:indexPath];
     
-    NSDictionary *tagDict = nil;
+    FLTag *aTag = nil;
+    
     if (self.searchResults) {
-        tagDict = self.searchResults[(NSUInteger)indexPath.row];
+        aTag = [self.searchResults objectAtIndex:(NSUInteger)[indexPath row]];
     } else {
-        tagDict = self.content[(NSUInteger)indexPath.row];
+        aTag = [self.content objectAtIndex:(NSUInteger)[indexPath row]];
     }
     
-    [cell configureCellWithTagDictionary:tagDict];
+    [cell configureCellWithTag:aTag];
     
-    if ([self.validatedSlugs containsObject:[NSString stringWithFormat:@"@%@", [tagDict objectForKey:@"slug"]]]) {
+    if ([self.validatedSlugs containsObject:aTag.slug]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -80,20 +81,20 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *selectedTagDict = nil;
+    FLTag *aTag = nil;
     if (self.searchResults) {
-        selectedTagDict = [self.searchResults objectAtIndex:(NSUInteger)indexPath.row];
+        aTag = [self.searchResults objectAtIndex:(NSUInteger)[indexPath row]];
     } else {
-        selectedTagDict = [self.content objectAtIndex:(NSUInteger)indexPath.row];
+        aTag = [self.content objectAtIndex:(NSUInteger)[indexPath row]];
     }
-    NSString *selectedTag = [NSString stringWithFormat:@"@%@", [selectedTagDict objectForKey:@"slug"]];
-    NSDictionary *orgDict = [selectedTagDict objectForKey:@"org"];
+//    NSString *selectedTag = [NSString stringWithFormat:@"@%@", [selectedTagDict objectForKey:@"slug"]];
+//    NSDictionary *orgDict = [selectedTagDict objectForKey:@"org"];
 //    NSString *selectedOrg = [orgDict objectForKey:@"slug"];
     
-    if ([self.validatedSlugs containsObject:selectedTag]) {
-        [self removeSlug:selectedTag];
+    if ([self.validatedSlugs containsObject:[NSString stringWithFormat:@"@%@", aTag.slug]]) {
+        [self removeSlug:aTag.slug];
     } else {
-        [self addSlug:selectedTag];
+        [self addSlug:aTag.slug];
     }
     self.searchBar.text = @"";
     [self refreshTableView];
@@ -227,17 +228,17 @@
                                          __block NSMutableArray *badStrings = [NSMutableArray new];
                                          if (warnings.count > 0) {
                                              for (NSDictionary *warning in warnings) {
-                                                 NSRange range = NSMakeRange([[warning objectForKey:@"position"] integerValue]+1,
-                                                                              [[warning objectForKey:@"length"] integerValue]-1);
+                                                 NSRange range = NSMakeRange((NSUInteger)[[warning objectForKey:@"position"] intValue]+1,
+                                                                              (NSUInteger)[[warning objectForKey:@"length"] intValue]-1);
                                                  NSString *badString = [searchText substringWithRange:range];
                                                  [badStrings addObject:badString];
                                              }
-                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                  NSMutableString *badStuff = [NSMutableString new];
                                                  for (NSString *string in badStrings) {
                                                      [badStuff appendFormat:@"%@\n", string];
                                                  }
                                                  NSString *message = [NSString stringWithFormat:@"%@\n%@", NSLocalizedString(@"Tag not found for:", @"Alert message for no results from taglookup"), badStuff];
+                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                  UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
                                                                                                                 message:message
                                                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
@@ -245,7 +246,7 @@
                                                                                                     style:UIAlertActionStyleDefault
                                                                                                   handler:^(UIAlertAction *action) { /* do nothing */}];
                                                  [alert addAction:okButton];
-                                                 [self presentViewController:alert animated:YES completion:nil];
+                                                 [self.navigationController presentViewController:alert animated:YES completion:nil];
                                              });
                                          }
                                          if (pretty.length > 0) {
@@ -280,7 +281,7 @@
                                                                                                 style:UIAlertActionStyleDefault
                                                                                               handler:^(UIAlertAction *action) {}];
                                              [alert addAction:okAction];
-                                             [self presentViewController:alert animated:YES completion:nil];
+                                             [self.navigationController presentViewController:alert animated:YES completion:nil];
                                          });
                                      }];
     }
@@ -324,6 +325,7 @@
         [FLTagMathService asyncTagLookupWithString:threadSlugs
                                      success:^(NSDictionary *results) {
                                          [self buildThreadWithResults:results];
+                                         [self storeUsersInResults:results];
                                      }
                                      failure:^(NSError *error) {
                                          DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
@@ -336,7 +338,7 @@
                                                                                                 style:UIAlertActionStyleDefault
                                                                                               handler:^(UIAlertAction *action) {}];
                                              [alert addAction:okAction];
-                                             [self presentViewController:alert animated:YES completion:nil];
+                                             [self.navigationController presentViewController:alert animated:YES completion:nil];
                                          });
                                      }];
     }
@@ -347,7 +349,7 @@
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
     }
-    [self dismissViewControllerAnimated:YES completion:^{ }];
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{ }];
 }
 
 -(void)didSwipeDown:(id)sender
@@ -367,6 +369,27 @@
     }
 }
 
+// Lookup and refresh/store discovered users
+-(void)storeUsersInResults:(NSDictionary *)results
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSArray *userIds = [[results objectForKey:@"userids"] copy];
+        for (NSString *uid in userIds) {
+            // do the lookup things
+            [CCSMCommManager asyncRecipientFromCCSMWithID:uid
+                                                  success:^(SignalRecipient *recipient) {
+                                                      if (recipient) {
+                                                          [recipient save];
+                                                          DDLogDebug(@"CCSM lookup succeeded for: %@", recipient.fullName);
+                                                      }
+                                                  } failure:^(NSError *error) {
+                                                      DDLogDebug(@"CCSM lookup failed for uid: %@", uid);
+                                                  }];
+            
+        }
+    });
+}
+
 -(void)buildThreadWithResults:(NSDictionary *)results
 {
     // Check to see if myself is included
@@ -374,7 +397,7 @@
     if (![userIds containsObject:TSAccountManager.sharedInstance.myself.uniqueId]) {
         // add self run again
         NSMutableString *pretty = [[results objectForKey:@"pretty"] mutableCopy];
-        [pretty appendFormat:@" + @%@", TSAccountManager.sharedInstance.myself.tagSlug];
+        [pretty appendFormat:@" + @%@", TSAccountManager.sharedInstance.myself.flTag.slug];
         [FLTagMathService asyncTagLookupWithString:pretty
                                      success:^(NSDictionary *newResults){
                                          [self buildThreadWithResults:newResults];
@@ -390,12 +413,12 @@
                                                                                             style:UIAlertActionStyleDefault
                                                                                           handler:^(UIAlertAction *action) {}];
                                          [alert addAction:okAction];
-                                         [self presentViewController:alert animated:YES completion:nil];
+                                         [self.navigationController presentViewController:alert animated:YES completion:nil];
                                          });
                                      }];
     } else {
         // build thread and go
-        [self dismissViewControllerAnimated:YES
+        [self.navigationController dismissViewControllerAnimated:YES
                                  completion:^() {
                                      __block TSThread *thread = nil;
                                      [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
@@ -411,6 +434,9 @@
 
 -(void)addSlug:(NSString *)slug
 {
+    if (![[slug substringToIndex:1] isEqualToString:@"@"]) {
+        slug = [NSString stringWithFormat:@"@%@", slug];
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         
         CGRect hiddenFrame = CGRectMake(self.slugContainerView.frame.size.width/2,
@@ -432,8 +458,10 @@
 
 -(void)removeSlug:(NSString *)slug
 {
+    if (![[slug substringToIndex:1] isEqualToString:@"@"]) {
+        slug = [NSString stringWithFormat:@"@%@", slug];
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         NSUInteger index = [self.validatedSlugs indexOfObject:slug];
         [self.validatedSlugs removeObjectAtIndex:index];
         UIView *aView = [self.slugViews objectAtIndex:index];
@@ -509,8 +537,8 @@
 - (CGRect)frameOfTextRange:(NSRange)range inTextView:(UITextView *)textView
 {
     UITextPosition *beginning = textView.beginningOfDocument;
-    UITextPosition *start = [textView positionFromPosition:beginning offset:range.location];
-    UITextPosition *end = [textView positionFromPosition:start offset:range.length];
+    UITextPosition *start = [textView positionFromPosition:beginning offset:(NSInteger)range.location];
+    UITextPosition *end = [textView positionFromPosition:start offset:(NSInteger)range.length];
     UITextRange *textRange = [textView textRangeFromPosition:start toPosition:end];
     CGRect rect = [textView firstRectForRange:textRange];
     return [textView convertRect:rect fromView:textView.textInputView];
@@ -555,12 +583,18 @@
 -(NSArray *)content
 {
     if (_content == nil) {
-        NSArray *storedTagDicts = [Environment.getCurrent.ccsmStorage.getTags allValues];
-        
-        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"description" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSArray *allTags = [FLTag allObjectsInCollection];
+
+        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"tagDescription" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         NSSortDescriptor *slugSD = [[NSSortDescriptor alloc] initWithKey:@"slug" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+
+        _content = [allTags sortedArrayUsingDescriptors:@[ descriptionSD, slugSD ]];
         
-        _content = [storedTagDicts sortedArrayUsingDescriptors:@[ descriptionSD, slugSD ]];
+//        NSArray *storedTagDicts = [Environment.getCurrent.ccsmStorage.getTags allValues];
+//        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"description" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+//        NSSortDescriptor *slugSD = [[NSSortDescriptor alloc] initWithKey:@"slug" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        
+//        _content = [storedTagDicts sortedArrayUsingDescriptors:@[ descriptionSD, slugSD ]];
     }
     return _content;
 }
@@ -572,7 +606,7 @@
             NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", [self.searchBar.text substringFromIndex:1]];
             return [self.content filteredArrayUsingPredicate:slugPred];
         } else {
-            NSPredicate *descriptionPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"description", self.searchBar.text];
+            NSPredicate *descriptionPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"tagDescription", self.searchBar.text];
             NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", self.searchBar.text];
             NSCompoundPredicate *filterPred = [NSCompoundPredicate orPredicateWithSubpredicates:@[ descriptionPred, slugPred ]];
             return [self.content filteredArrayUsingPredicate:filterPred];

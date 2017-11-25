@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     OWSSignalServiceProtosContactDetailsBuilder *contactBuilder = [OWSSignalServiceProtosContactDetailsBuilder new];
     [contactBuilder setName:recipient.fullName];
-    [contactBuilder setNumber:recipient.textSecureIdentifier];
+    [contactBuilder setNumber:recipient.uniqueId];
     
     NSData *avatarPng;
     if (recipient.avatar) {

@@ -221,7 +221,7 @@ static Environment *environment = nil;
     });
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [FLTagMathService asyncTagLookupWithString:[NSString stringWithFormat:@"%@+%@", recipient.tagSlug, selfRec.tagSlug]
+        [FLTagMathService asyncTagLookupWithString:[NSString stringWithFormat:@"%@+%@", recipient.flTag.slug, selfRec.flTag.slug]
                                             success:^(NSDictionary *results) {
 #warning XXX Needs catch for return with no results.
                                                 thread.universalExpression = [results objectForKey:@"universal"];

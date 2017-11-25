@@ -4,7 +4,7 @@
 #import "TSStorageManager.h"
 #import "TSAccountManager.h"
 #import "TSYapDatabaseObject.h"
-
+#import "TSAttachmentStream.h"
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (assign) BOOL nameChanged;
 
 /**
- *  Get or create thread with arracy of participant UUIDs
+ *  Get or create thread with array of participant UUIDs
  */
 +(instancetype)getOrCreateThreadWithParticipants:(NSArray <NSString *> *)participantIDs;
 +(instancetype)getOrCreateThreadWithParticipants:(NSArray <NSString *> *)participantIDs
@@ -178,6 +178,18 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)threadWithPayload:(NSDictionary *)payload;
 +(instancetype)threadWithPayload:(NSDictionary *)payload
                      transaction:(YapDatabaseReadWriteTransaction *)transaction;
+
+/**
+ *  Remove participant from thread
+ */
+-(void)removeParticipants:(NSSet *)objects;
+-(void)removeParticipants:(NSSet *)objects transaction:(YapDatabaseReadWriteTransaction *)transaction;
+
+/**
+ *  Update avatar/image wiht attachment stream
+ */
+- (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream;
+
 /**
  *  Exposing a formerly private method...
  *

@@ -14,6 +14,7 @@
 #import "Environment.h"
 #import "OWSDispatch.h"
 #import "NSDate+millisecondTimeStamp.h"
+#import "FLControlMessage.h"
 
 @interface FLMessageSender()
 
@@ -30,6 +31,30 @@
     }
     return self;
 }
+
+-(void)sendControlMessage:(FLControlMessage *)message toRecipients:(NSCountedSet<NSString *> *)recipientIds
+{
+    dispatch_async([OWSDispatch sendingQueue], ^{
+        // Check to see if blob is already JSON
+        // Convert message body to JSON blob if necessary
+        NSString *messageBlob = nil;
+        if (!(message.body && [NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil])) {
+            messageBlob = [CCSMJSONService blobFromMessage:message];
+            message.body = messageBlob;
+        }
+        for (NSString *recipientId in recipientIds) {
+            [super sendSpecialMessage:message
+                          recipientId:recipientId
+                             attempts:3
+                              success:^{
+                                  DDLogDebug(@"Control successfully sent to: %@", recipientId);
+                              } failure:^(NSError * _Nonnull error) {
+                                  DDLogDebug(@"Control message send failed to %@\nError: %@", recipientId, error.localizedDescription);
+                              }];
+        }
+    });
+}
+
 
 -(void)sendMessage:(TSOutgoingMessage *)message success:(void (^)())successHandler failure:(void (^)(NSError * _Nonnull))failureHandler
 {
@@ -58,6 +83,7 @@
                            supermanMessage.hasSyncedTranscript = NO;
                            [super sendSpecialMessage:supermanMessage
                                          recipientId:FLSupermanID
+                                            attempts:3
                                              success:^{
                                                  DDLogDebug(@"Superman send successful.");
                                                  [supermanMessage remove];
