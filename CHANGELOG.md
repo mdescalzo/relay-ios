@@ -3,6 +3,7 @@
 ## [1.1.1]
 ### Fixed
 - Fix font size irregularity in conversation view.  Occasionally cause message truncation.
+- Fix disappearing sync messages.
 
 ## [1.1.0]
 ### Added

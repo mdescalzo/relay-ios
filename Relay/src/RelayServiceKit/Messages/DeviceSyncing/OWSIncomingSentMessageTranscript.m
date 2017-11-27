@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
     _body = _dataMessage.body;
     _isGroupUpdate = _dataMessage.hasGroup && (_dataMessage.group.type == OWSSignalServiceProtosGroupContextTypeUpdate);
     _isExpirationTimerUpdate = (_dataMessage.flags & OWSSignalServiceProtosDataMessageFlagsExpirationTimerUpdate) != 0;
+    _jsonPayload = [[self arrayFromMessageBody:_body] lastObject];
 
     return self;
 }

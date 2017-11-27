@@ -256,7 +256,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         _body = [value copy];
         
         // Force re-render of attributedText
-//        self.plainTextBody = nil;
+        //        self.plainTextBody = nil;
         self.attributedTextBody = nil;
     }
 }
@@ -271,42 +271,44 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         _plainTextBody = value;
         
         // Add the new value to the forstaPayload
-        if (_plainTextBody.length > 0) {
-            NSMutableDictionary *dataDict = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
-            if (!dataDict) {
-                dataDict = [NSMutableDictionary new];
-            }
-            NSMutableArray *body = [[dataDict objectForKey:@"body"] mutableCopy];
-            if (!body) {
-                body = [NSMutableArray new];
-            }
-            
-            NSDictionary *oldDict = nil;
-            if (body.count > 0) {
-                for (NSDictionary *dict in body) {
-                    if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
-                        oldDict = dict;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            if (_plainTextBody.length > 0) {
+                NSMutableDictionary *dataDict = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
+                if (!dataDict) {
+                    dataDict = [NSMutableDictionary new];
+                }
+                NSMutableArray *body = [[dataDict objectForKey:@"body"] mutableCopy];
+                if (!body) {
+                    body = [NSMutableArray new];
+                }
+                
+                NSDictionary *oldDict = nil;
+                if (body.count > 0) {
+                    for (NSDictionary *dict in body) {
+                        if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
+                            oldDict = dict;
+                        }
                     }
                 }
-            }
-            NSDictionary *newDict = @{ @"type" : @"text/plain",
-                                       @"value" : value };
-            [body addObject:newDict];
-            
-            if (oldDict) {
-                [body removeObject:oldDict];
-            }
-            
-            [dataDict setObject:body forKey:@"body"];
-            [self.forstaPayload setObject:dataDict forKey:@"data"];
-        } else {
-            // Empty value passed, remove the object from the payload
-            NSMutableDictionary *dataDict = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
-            if (dataDict) {
-                [dataDict removeObjectForKey:@"body"];
+                NSDictionary *newDict = @{ @"type" : @"text/plain",
+                                           @"value" : value };
+                [body addObject:newDict];
+                
+                if (oldDict) {
+                    [body removeObject:oldDict];
+                }
+                
+                [dataDict setObject:body forKey:@"body"];
                 [self.forstaPayload setObject:dataDict forKey:@"data"];
+            } else {
+                // Empty value passed, remove the object from the payload
+                NSMutableDictionary *dataDict = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
+                if (dataDict) {
+                    [dataDict removeObjectForKey:@"body"];
+                    [self.forstaPayload setObject:dataDict forKey:@"data"];
+                }
             }
-        }
+        });
     }
 }
 
@@ -323,7 +325,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
 -(nullable NSAttributedString *)attributedTextBody {
     if (_attributedTextBody == nil) {
         if (self.forstaPayload) {
-            NSString *plainString = [self plainBodyStringFromPayload];
+            NSString *plainString = self.plainTextBody;
             NSString *htmlString = [self htmlBodyStringFromPayload];
             
             if (htmlString.length > 0) {
