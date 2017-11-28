@@ -145,12 +145,17 @@ NS_ASSUME_NONNULL_BEGIN
             outgoingMessage.messageState = TSOutgoingMessageStateDelivered;
             
             // Hand thread changes made by myself on a different client
-            NSString *threadTitle = [outgoingMessage.forstaPayload objectForKey:@"threadTitle"];
-            TSThread *thread = [TSThread getOrCreateThreadWithID:outgoingMessage.uniqueThreadId transaction:transaction];
-            if (threadTitle) {
-                thread.name = threadTitle;
+            if ([outgoingMessage respondsToSelector:@selector(forstaPayload)]) {
+                NSString *threadTitle = [outgoingMessage.forstaPayload objectForKey:@"threadTitle"];
+                TSThread *thread = [TSThread getOrCreateThreadWithID:outgoingMessage.uniqueThreadId transaction:transaction];
+                if (threadTitle) {
+                    thread.name = threadTitle;
+                }
+                [thread saveWithTransaction:transaction];
+            } else {
+                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source];
+                DDLogDebug(@"Received malformed receipt from %@, uid: %@, device %d", recipient.fullName, envelope.source, envelope.sourceDevice);
             }
-            [thread saveWithTransaction:transaction];
             [outgoingMessage saveWithTransaction:transaction];
         }
     }];
