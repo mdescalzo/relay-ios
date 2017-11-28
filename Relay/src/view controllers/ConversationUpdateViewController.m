@@ -337,7 +337,10 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                              }];
         } else {
             // Send the control message without attachment
-            [Environment.getCurrent.messageSender sendControlMessage:message toRecipients:participants];
+            [Environment.getCurrent.messageSender sendControlMessage:message
+                                                        toRecipients:participants
+                                                             success:nil
+                                                             failure:nil];
         }
     }
     [self.nameGroupTextField resignFirstResponder];
