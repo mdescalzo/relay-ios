@@ -323,13 +323,13 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
 
 
 -(nullable NSAttributedString *)attributedTextBody {
-    if (_attributedTextBody == nil) {
+    if (_attributedTextBody == nil || _attributedTextBody.length == 0) {
         if (self.forstaPayload) {
             NSString *plainString = self.plainTextBody;
             NSString *htmlString = [self htmlBodyStringFromPayload];
             
             if (htmlString.length > 0) {
-                 NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
+                NSData *data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
                 
                 __block NSError *error = nil;
                 __block NSAttributedString *atrString = [[NSAttributedString alloc] initWithData:data
@@ -341,40 +341,46 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                     DDLogError(@"%@", error.description);
                 }
                 
-                // hack to deal with appended newline on attributedStrings
-                NSString *lastChar = [atrString.string substringWithRange:NSMakeRange(atrString.string.length-1, 1)];
-                if ([lastChar isEqualToString:[NSString stringWithFormat:@"\n"]]) {
-                    atrString = [atrString attributedSubstringFromRange:NSMakeRange(0, atrString.string.length-1)];
-                }
-                
-                // Enumerate and change to correct font size and face.
-                NSMutableAttributedString *tmpAtrString = [atrString mutableCopy];
-                
-                [tmpAtrString beginEditing];
-                UIFontDescriptor *baseDescriptor = [UIFont ows_regularFontWithSize:FLMessageViewFontSize].fontDescriptor;
-                [tmpAtrString enumerateAttribute:NSFontAttributeName
-                                         inRange:NSMakeRange(0, tmpAtrString.length)
-                                         options:0
-                                      usingBlock:^(id value, NSRange range, BOOL *stop) {
-                                          if (value) {
-                                              UIFont *oldFont = (UIFont *)value;
-                                              
-                                              // adapting to font size variations....scale relative to default size
-                                              CGFloat oldSize = oldFont.pointSize;
-                                              CGFloat multiplier = oldSize/12.0;
-                                              CGFloat size = multiplier * FLMessageViewFontSize;
-                                              
-                                              UIFontDescriptorSymbolicTraits traits = oldFont.fontDescriptor.symbolicTraits;
-                                              UIFontDescriptor *descriptor = [baseDescriptor fontDescriptorWithSymbolicTraits:traits];
-                                              if (descriptor) {
-                                                  UIFont *newFont = [UIFont fontWithDescriptor:descriptor size:size];
-                                                  [tmpAtrString removeAttribute:NSFontAttributeName range:range];
-                                                  [tmpAtrString addAttribute:NSFontAttributeName value:newFont range:range];
+                // If the string parses to nothing viewable, fall back to plain text.
+                if (atrString.length == 0) {
+                    _attributedTextBody = [[NSAttributedString alloc] initWithString:self.plainTextBody
+                                                                          attributes:@{ NSFontAttributeName : [UIFont ows_regularFontWithSize:FLMessageViewFontSize] }];
+                } else {
+                    // hack to deal with appended newline on attributedStrings
+                    NSString *lastChar = [atrString.string substringWithRange:NSMakeRange(atrString.string.length-1, 1)];
+                    if ([lastChar isEqualToString:[NSString stringWithFormat:@"\n"]]) {
+                        atrString = [atrString attributedSubstringFromRange:NSMakeRange(0, atrString.string.length-1)];
+                    }
+                    
+                    // Enumerate and change to correct font size and face.
+                    NSMutableAttributedString *tmpAtrString = [atrString mutableCopy];
+                    
+                    [tmpAtrString beginEditing];
+                    UIFontDescriptor *baseDescriptor = [UIFont ows_regularFontWithSize:FLMessageViewFontSize].fontDescriptor;
+                    [tmpAtrString enumerateAttribute:NSFontAttributeName
+                                             inRange:NSMakeRange(0, tmpAtrString.length)
+                                             options:0
+                                          usingBlock:^(id value, NSRange range, BOOL *stop) {
+                                              if (value) {
+                                                  UIFont *oldFont = (UIFont *)value;
+                                                  
+                                                  // adapting to font size variations....scale relative to default size
+                                                  CGFloat oldSize = oldFont.pointSize;
+                                                  CGFloat multiplier = oldSize/12.0;
+                                                  CGFloat size = multiplier * FLMessageViewFontSize;
+                                                  
+                                                  UIFontDescriptorSymbolicTraits traits = oldFont.fontDescriptor.symbolicTraits;
+                                                  UIFontDescriptor *descriptor = [baseDescriptor fontDescriptorWithSymbolicTraits:traits];
+                                                  if (descriptor) {
+                                                      UIFont *newFont = [UIFont fontWithDescriptor:descriptor size:size];
+                                                      [tmpAtrString removeAttribute:NSFontAttributeName range:range];
+                                                      [tmpAtrString addAttribute:NSFontAttributeName value:newFont range:range];
+                                                  }
                                               }
-                                          }
-                                      }];
-                
-                _attributedTextBody = [[NSMutableAttributedString alloc] initWithAttributedString:tmpAtrString];
+                                          }];
+                    
+                    _attributedTextBody = [[NSMutableAttributedString alloc] initWithAttributedString:tmpAtrString];
+                }
                 
             } else  if (plainString.length > 0) {
                 _attributedTextBody = [[NSAttributedString alloc] initWithString:self.plainTextBody
