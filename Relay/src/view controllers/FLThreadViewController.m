@@ -326,11 +326,16 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
     FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
                                                                                            ofType:FLControlMessageThreadUpdateKey];
-    [Environment.getCurrent.messageSender sendControlMessage:message toRecipients:[NSCountedSet setWithArray:thread.participants]];
-//    FLControlMessage *deleteMessage = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
-//                                                                                                 ofType:FLControlMessageThreadDeleteKey];
-//    [Environment.getCurrent.messageSender sendControlMessage:deleteMessage toRecipients:[NSCountedSet setWithArray:thread.participants]];
-    [self deleteThread:thread];
+    [Environment.getCurrent.messageSender sendControlMessage:message
+                                                toRecipients:[NSCountedSet setWithArray:thread.participants]
+                                                     success:^{
+                                                         [self deleteThread:thread];
+                                                     }
+                                                     failure:^(NSError *error) {
+                                                         DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
+                                                         [self deleteThread:thread];
+                                                     }];
+    
 }
 - (void)deleteThread:(TSThread *)thread {
     [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {

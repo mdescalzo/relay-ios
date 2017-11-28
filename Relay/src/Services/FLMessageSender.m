@@ -32,7 +32,10 @@
     return self;
 }
 
--(void)sendControlMessage:(FLControlMessage *)message toRecipients:(NSCountedSet<NSString *> *)recipientIds
+-(void)sendControlMessage:(FLControlMessage *)message
+             toRecipients:(NSCountedSet<NSString *> *)recipientIds
+                  success:(void (^)())successHandler
+                  failure:(void (^)(NSError *error))failureHandler
 {
     dispatch_async([OWSDispatch sendingQueue], ^{
         // Check to see if blob is already JSON
@@ -48,8 +51,10 @@
                              attempts:3
                               success:^{
                                   DDLogDebug(@"Control successfully sent to: %@", recipientId);
+                                  successHandler();
                               } failure:^(NSError * _Nonnull error) {
                                   DDLogDebug(@"Control message send failed to %@\nError: %@", recipientId, error.localizedDescription);
+                                  failureHandler(error);
                               }];
         }
     });

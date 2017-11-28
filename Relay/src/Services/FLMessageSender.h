@@ -12,6 +12,9 @@
 
 @interface FLMessageSender : OWSMessageSender
 
--(void)sendControlMessage:(FLControlMessage *)message toRecipients:(NSCountedSet<NSString *> *)recipientIds;
+-(void)sendControlMessage:(FLControlMessage *)message
+             toRecipients:(NSCountedSet<NSString *> *)recipientIds
+                  success:(void (^)())successHandler
+                  failure:(void (^)(NSError *error))failureHandler;
 
 @end
