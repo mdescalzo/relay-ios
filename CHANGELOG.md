@@ -39,7 +39,7 @@
 ## [1.0.0]
 - Initial release
 
-[1.1.01: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.1
+[1.1.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.1
 [1.1.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.0
 [1.0.3]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.0.3
 [1.0.2]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.0.2
