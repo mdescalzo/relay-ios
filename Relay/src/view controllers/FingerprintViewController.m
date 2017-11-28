@@ -9,7 +9,7 @@
 #import "FingerprintViewController.h"
 #import "DJWActionSheet+OWS.h"
 #import "Environment.h"
-#import "OWSConversationSettingsTableViewController.h"
+#import "ConversationSettingsViewController.h"
 #import "Relay-Swift.h"
 #import "UIUtil.h"
 #import "UIViewController+CameraPermissions.h"

@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TSThread;
 
-@interface OWSConversationSettingsTableViewController : UITableViewController
+@interface ConversationSettingsViewController : UITableViewController
 
 - (void)configureWithThread:(TSThread *)thread;
 - (void)presentedModalWasDismissed;

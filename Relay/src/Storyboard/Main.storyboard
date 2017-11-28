@@ -324,7 +324,7 @@
         <!--Conversation Settings-->
         <scene sceneID="Flt-X5-Amc">
             <objects>
-                <tableViewController title="Contact Information" id="4oU-Rv-yJi" userLabel="Conversation Settings" customClass="OWSConversationSettingsTableViewController" sceneMemberID="viewController">
+                <tableViewController title="Contact Information" id="4oU-Rv-yJi" userLabel="Conversation Settings" customClass="ConversationSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="Dgp-fo-Lyr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -523,7 +523,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="bDi-2Q-XOC" kind="push" identifier="OWSConversationSettingsTableViewControllerSegueUpdateGroup" id="E8S-Yc-X7E"/>
+                                            <segue destination="bDi-2Q-XOC" kind="push" identifier="ConversationSettingsViewControllerSegueUpdateGroup" id="E8S-Yc-X7E"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="geN-YN-TQg" style="IBUITableViewCellStyleDefault" id="w57-rz-BWN" userLabel="Leave Group">
@@ -560,7 +560,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="JeZ-9g-U61" kind="push" identifier="OWSConversationSettingsTableViewControllerSegueShowGroupMembers" id="uLh-RA-Vq1"/>
+                                            <segue destination="JeZ-9g-U61" kind="push" identifier="ConversationSettingsViewControllerSegueShowGroupMembers" id="uLh-RA-Vq1"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>

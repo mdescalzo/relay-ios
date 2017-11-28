@@ -18,7 +18,7 @@
 #import "OWSCall.h"
 #import "OWSCallCollectionViewCell.h"
 #import "OWSContactsManager.h"
-#import "OWSConversationSettingsTableViewController.h"
+#import "ConversationSettingsViewController.h"
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSDisplayedMessageCollectionViewCell.h"
 #import "OWSExpirableMessageView.h"
@@ -1568,9 +1568,9 @@ typedef enum : NSUInteger {
 
         NSString *contactName = [self.contactsManager nameStringForContactID:fingerprint.theirStableId];
         [vc configureWithThread:self.thread fingerprint:fingerprint contactName:contactName];
-    } else if ([segue.destinationViewController isKindOfClass:[OWSConversationSettingsTableViewController class]]) {
-        OWSConversationSettingsTableViewController *controller
-            = (OWSConversationSettingsTableViewController *)segue.destinationViewController;
+    } else if ([segue.destinationViewController isKindOfClass:[ConversationSettingsViewController class]]) {
+        ConversationSettingsViewController *controller
+            = (ConversationSettingsViewController *)segue.destinationViewController;
         [controller configureWithThread:self.thread];
     } else if ([segue.identifier isEqualToString:@"imagePreviewSegue"]) {
         UINavigationController *nvc = (UINavigationController *)segue.destinationViewController;

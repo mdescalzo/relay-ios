@@ -717,24 +717,25 @@ NS_ASSUME_NONNULL_BEGIN
                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
+    DDLogDebug(@"Received unhandled threadDelete control message.");
     // Remove the sender from the thread
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        
-        SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source withTransaction:transaction];
-        if (sender) {
-            TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
-            if (thread) {
-                if (sender.flTag.uniqueId) {
-                    [thread removeParticipants:[NSSet setWithObject:sender.flTag.uniqueId] transaction:transaction];
-                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
-                                                                                 inThread:thread
-                                                                              messageType:TSInfoMessageTypeConversationUpdate
-                                                                            customMessage:[NSString stringWithFormat:NSLocalizedString(@"GROUP_MEMBER_LEFT", @""), sender.fullName]];
-                    [infoMessage saveWithTransaction:transaction];
-                }
-            }
-        }
-    }];
+//    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+//
+//        SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source withTransaction:transaction];
+//        if (sender) {
+//            TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
+//            if (thread) {
+//                if (sender.flTag.uniqueId) {
+//                    [thread removeParticipants:[NSSet setWithObject:sender.flTag.uniqueId] transaction:transaction];
+//                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
+//                                                                                 inThread:thread
+//                                                                              messageType:TSInfoMessageTypeConversationUpdate
+//                                                                            customMessage:[NSString stringWithFormat:NSLocalizedString(@"GROUP_MEMBER_LEFT", @""), sender.fullName]];
+//                    [infoMessage saveWithTransaction:transaction];
+//                }
+//            }
+//        }
+//    }];
 }
     
 
