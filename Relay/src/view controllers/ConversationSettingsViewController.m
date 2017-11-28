@@ -1,7 +1,7 @@
 //  Created by Michael Kirk on 9/21/16.
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
-#import "OWSConversationSettingsTableViewController.h"
+#import "ConversationSettingsViewController.h"
 #import "Environment.h"
 #import "FingerprintViewController.h"
 #import "ConversationUpdateViewController.h"
@@ -28,29 +28,29 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, OWSConversationSettingsTableViewControllerSection) {
-    OWSConversationSettingsTableViewControllerSectionContact,
-    OWSConversationSettingsTableViewControllerSectionGroup
+typedef NS_ENUM(NSUInteger, ConversationSettingsViewControllerSection) {
+    ConversationSettingsViewControllerSectionContact,
+    ConversationSettingsViewControllerSectionGroup
 };
 
-typedef NS_ENUM(NSUInteger, OWSConversationSettingsTableViewControllerContactCellIndex) {
-    OWSConversationSettingsTableViewControllerCellIndexShowFingerprint,
-    OWSConversationSettingsTableViewControllerCellIndexToggleDisappearingMessages,
-    OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration
+typedef NS_ENUM(NSUInteger, ConversationSettingsViewControllerContactCellIndex) {
+    ConversationSettingsViewControllerCellIndexShowFingerprint,
+    ConversationSettingsViewControllerCellIndexToggleDisappearingMessages,
+    ConversationSettingsViewControllerCellIndexSetDisappearingMessagesDuration
 };
 
-typedef NS_ENUM(NSUInteger, OWSConversationSettingsTableViewControllerGroupCellIndex) {
-    OWSConversationSettingsTableViewControllerCellIndexUpdateGroup,
-    OWSConversationSettingsTableViewControllerCellIndexLeaveGroup,
-    OWSConversationSettingsTableViewControllerCellIndexSeeGroupMembers
+typedef NS_ENUM(NSUInteger, ConversationSettingsViewControllerGroupCellIndex) {
+    ConversationSettingsViewControllerCellIndexUpdateGroup,
+    ConversationSettingsViewControllerCellIndexLeaveGroup,
+    ConversationSettingsViewControllerCellIndexSeeGroupMembers
 };
 
-static NSString *const OWSConversationSettingsTableViewControllerSegueUpdateGroup =
-@"OWSConversationSettingsTableViewControllerSegueUpdateGroup";
-static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupMembers =
-@"OWSConversationSettingsTableViewControllerSegueShowGroupMembers";
+static NSString *const ConversationSettingsViewControllerSegueUpdateGroup =
+@"ConversationSettingsViewControllerSegueUpdateGroup";
+static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
+@"ConversationSettingsViewControllerSegueShowGroupMembers";
 
-@interface OWSConversationSettingsTableViewController ()
+@interface ConversationSettingsViewController ()
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *verifyPrivacyCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *toggleDisappearingMessagesCell;
@@ -84,7 +84,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 @end
 
-@implementation OWSConversationSettingsTableViewController
+@implementation ConversationSettingsViewController
 
 - (instancetype)init
 {
@@ -228,7 +228,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 {
     NSInteger baseCount = [super tableView:tableView numberOfRowsInSection:section];
     
-    if (section == OWSConversationSettingsTableViewControllerSectionGroup) {
+    if (section == ConversationSettingsViewControllerSectionGroup) {
         if (self.isGroupThread) {
             return baseCount;
         } else {
@@ -236,7 +236,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
         }
     }
     
-    if (section == OWSConversationSettingsTableViewControllerSectionContact) {
+    if (section == ConversationSettingsViewControllerSectionContact) {
         if (!self.thread.hasSafetyNumbers) {
             baseCount -= 1;
         }
@@ -251,7 +251,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (indexPath.section == OWSConversationSettingsTableViewControllerSectionContact
+    if (indexPath.section == ConversationSettingsViewControllerSectionContact
         && !self.thread.hasSafetyNumbers) {
         
         // Since fingerprint cell is hidden for some threads we offset our index path
@@ -269,15 +269,15 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
     // group vs. contact thread have some cells slider at different index.
     if (cell == self.disappearingMessagesDurationCell) {
         NSIndexPath *originalIndexPath = [NSIndexPath
-                                          indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration
-                                          inSection:OWSConversationSettingsTableViewControllerSectionContact];
+                                          indexPathForRow:ConversationSettingsViewControllerCellIndexSetDisappearingMessagesDuration
+                                          inSection:ConversationSettingsViewControllerSectionContact];
         
         return [super tableView:tableView heightForRowAtIndexPath:originalIndexPath];
     }
     if (cell == self.toggleDisappearingMessagesCell) {
         NSIndexPath *originalIndexPath =
-        [NSIndexPath indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexToggleDisappearingMessages
-                           inSection:OWSConversationSettingsTableViewControllerSectionContact];
+        [NSIndexPath indexPathForRow:ConversationSettingsViewControllerCellIndexToggleDisappearingMessages
+                           inSection:ConversationSettingsViewControllerSectionContact];
         
         return [super tableView:tableView heightForRowAtIndexPath:originalIndexPath];
     } else {
@@ -301,8 +301,8 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 {
     DDLogDebug(@"%@ tapped indexPath:%@", self.tag, indexPath);
     
-    if (indexPath.section == OWSConversationSettingsTableViewControllerSectionGroup
-        && indexPath.row == OWSConversationSettingsTableViewControllerCellIndexLeaveGroup) {
+    if (indexPath.section == ConversationSettingsViewControllerSectionGroup
+        && indexPath.row == ConversationSettingsViewControllerCellIndexLeaveGroup) {
         
         [self didTapLeaveConversation];
     }
@@ -310,7 +310,7 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == OWSConversationSettingsTableViewControllerSectionGroup) {
+    if (section == ConversationSettingsViewControllerSectionGroup) {
         if (self.isGroupThread) {
             return NSLocalizedString(@"GROUP_MANAGEMENT_SECTION", @"Conversation settings table section title");
         } else {
@@ -352,8 +352,9 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 - (void)leaveConversation
 {
     // Throw a threadDelete control message and remove self
-    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
-                                                                                           ofType:FLControlMessageThreadDeleteKey];
+    [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
+   FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
+                                                                                           ofType:FLControlMessageThreadUpdateKey];
     [Environment.getCurrent.messageSender sendMessage:message
                                               success:^{
                                                   DDLogInfo(@"%@ Successfully left group.", self.tag);
@@ -419,12 +420,12 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
 {
     if (!self.thread.hasSafetyNumbers) {
         return [NSIndexPath
-                indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration - 1
-                inSection:OWSConversationSettingsTableViewControllerSectionContact];
+                indexPathForRow:ConversationSettingsViewControllerCellIndexSetDisappearingMessagesDuration - 1
+                inSection:ConversationSettingsViewControllerSectionContact];
     } else {
         return [NSIndexPath
-                indexPathForRow:OWSConversationSettingsTableViewControllerCellIndexSetDisappearingMessagesDuration
-                inSection:OWSConversationSettingsTableViewControllerSectionContact];
+                indexPathForRow:ConversationSettingsViewControllerCellIndexSetDisappearingMessagesDuration
+                inSection:ConversationSettingsViewControllerSectionContact];
     }
 }
 
@@ -469,10 +470,10 @@ static NSString *const OWSConversationSettingsTableViewControllerSegueShowGroupM
         
         [controller configureWithThread:self.thread fingerprint:fingerprint contactName:self.contactName];
         controller.dismissDelegate = self;
-    } else if ([segue.identifier isEqualToString:OWSConversationSettingsTableViewControllerSegueUpdateGroup]) {
+    } else if ([segue.identifier isEqualToString:ConversationSettingsViewControllerSegueUpdateGroup]) {
         ConversationUpdateViewController *vc = [segue destinationViewController];
         [vc configWithThread:(TSThread *)self.thread];
-    } else if ([segue.identifier isEqualToString:OWSConversationSettingsTableViewControllerSegueShowGroupMembers]) {
+    } else if ([segue.identifier isEqualToString:ConversationSettingsViewControllerSegueShowGroupMembers]) {
         ShowGroupMembersViewController *vc = [segue destinationViewController];
         [vc configWithThread:(TSThread *)self.thread];
     }

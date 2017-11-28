@@ -19,7 +19,7 @@
 #import "OWSCall.h"
 #import "OWSCallCollectionViewCell.h"
 #import "OWSContactsManager.h"
-#import "OWSConversationSettingsTableViewController.h"
+#import "ConversationSettingsViewController.h"
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSDisplayedMessageCollectionViewCell.h"
 #import "OWSExpirableMessageView.h"
@@ -323,9 +323,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
     TSThread *thread = [self threadForIndexPath:indexPath];
-    FLControlMessage *deleteMessage = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
-                                                                                                 ofType:FLControlMessageThreadDeleteKey];
-    [Environment.getCurrent.messageSender sendControlMessage:deleteMessage toRecipients:[NSCountedSet setWithArray:thread.participants]];
+    [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
+    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
+                                                                                           ofType:FLControlMessageThreadUpdateKey];
+    [Environment.getCurrent.messageSender sendControlMessage:message toRecipients:[NSCountedSet setWithArray:thread.participants]];
+//    FLControlMessage *deleteMessage = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
+//                                                                                                 ofType:FLControlMessageThreadDeleteKey];
+//    [Environment.getCurrent.messageSender sendControlMessage:deleteMessage toRecipients:[NSCountedSet setWithArray:thread.participants]];
     [self deleteThread:thread];
 }
 - (void)deleteThread:(TSThread *)thread {

@@ -4,7 +4,7 @@
 ### Fixed
 - Fixed font size irregularity in conversation view.  Occasionally cause message truncation.
 - Fixed disappearing sync messages.
-- Fixed empty bubble for giphy messages from web client
+- Fixed empty bubble for unrenderabe markup messages from web client.
 - Fixed Edit Conversation and Leave Conversation implementing control message sends for them.
 
 ## [1.1.0]
