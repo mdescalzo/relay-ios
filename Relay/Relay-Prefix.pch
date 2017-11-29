@@ -74,4 +74,7 @@
 // Key for BOOL for awaiting login verification
 #define FLAwaitingVerification @"FLAwaitingVerification"
 
+// Gravatar URL format
+#define FLGravatarURLFormat @"https://www.gravatar.com/avatar/%@?d=404"
+
 #endif

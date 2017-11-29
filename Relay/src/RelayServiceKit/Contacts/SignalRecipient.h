@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIImage *avatar;
 @property (nonatomic, strong) NSString *orgSlug;
 @property (nonatomic, strong) NSString *orgID;
+@property (nonatomic, strong) NSString *gravatarHash;
 
 
 @end
