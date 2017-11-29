@@ -62,7 +62,12 @@ NS_ASSUME_NONNULL_BEGIN
     NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIImage *avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
+        UIImage *avatar = nil;
+        if (thread.image) {
+            avatar = thread.image;
+        } else {
+            avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
+        }
         self.nameLabel.text = name;
         self.snippetLabel.text = snippetText;
         self.timeLabel.attributedText = attributedDate;
