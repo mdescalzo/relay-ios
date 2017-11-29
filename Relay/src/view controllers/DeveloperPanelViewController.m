@@ -10,6 +10,8 @@
 #import "CCSMStorage.h"
 #import "TSAccountManager.h"
 
+@import Crashlytics;
+
 @interface DeveloperPanelViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *supermanIDLabel;
@@ -87,6 +89,11 @@
     }
     
     return YES;
+}
+
+-(IBAction)crashTheThings:(id)sender
+{
+    [[Crashlytics sharedInstance] crash];
 }
 
 //-(void)successfulLookupWithResults:(NSDictionary *)results

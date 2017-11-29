@@ -4964,7 +4964,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 402e249164f7a639103f082f592a694e92ff9318 4315712d641b4a295cb0511ad4f27b0323ee2fd074dbd63c41263dca22e506ab";
+			shellScript = "APIKey=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricAPIKey`\nBuildSecret=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricBuildSecret`\n\"${PODS_ROOT}/Fabric/run\" ${APIKey} ${BuildSecret}";
 		};
 		7DB8FEDD1F06E8160031BA89 /* Fabric start */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4978,7 +4978,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 402e249164f7a639103f082f592a694e92ff9318 4315712d641b4a295cb0511ad4f27b0323ee2fd074dbd63c41263dca22e506ab";
+			shellScript = "APIKey=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricAPIKey`\nBuildSecret=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricBuildSecret`\n\"${PODS_ROOT}/Fabric/run\" ${APIKey} ${BuildSecret}";
 		};
 		7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5007,7 +5007,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 402e249164f7a639103f082f592a694e92ff9318 4315712d641b4a295cb0511ad4f27b0323ee2fd074dbd63c41263dca22e506ab";
+			shellScript = "APIKey=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricAPIKey`\nBuildSecret=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricBuildSecret`\n\"${PODS_ROOT}/Fabric/run\" ${APIKey} ${BuildSecret}";
 		};
 		833D2BBCF87EAAE07502F1E3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6463,7 +6463,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 108;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6532,7 +6532,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 108;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6599,7 +6599,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 108;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6667,7 +6667,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 108;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6873,7 +6873,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 108;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6939,7 +6939,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 108;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
