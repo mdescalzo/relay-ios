@@ -25,6 +25,7 @@
 #import "FLControlMessage.h"
 #import "FLTagMathService.h"
 #import "TSInfoMessage.h"
+#import "OWSAvatarBuilder.h"
 
 @import MobileCoreServices;
 
@@ -93,7 +94,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     [self initializeTableView];
     [self initializeKeyboardHandlers];
 
-    if (_thread == nil) {
+    if (self.thread == nil) {
         self.navigationItem.rightBarButtonItem =
             [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"add-conversation"]
                                                        imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
@@ -108,11 +109,14 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                              style:UIBarButtonItemStylePlain
                                             target:self
                                             action:@selector(updateConversation)];
-        self.navigationItem.title    = _thread.name;
-        self.nameGroupTextField.text = _thread.name;
-        if (_thread.image != nil) {
-//            _groupImage = _thread.image;
-            [self setupGroupImageButton:_thread.image];
+        self.navigationItem.title    = self.thread.name;
+        self.nameGroupTextField.text = self.thread.name;
+        if (self.thread.image) {
+        [self setupGroupImageButton:self.thread.image];
+        } else {
+            [self setupGroupImageButton:[OWSAvatarBuilder buildImageForThread:self.thread
+                                                              contactsManager:Environment.getCurrent.contactsManager
+                                                                     diameter:self.groupImageButton.frame.size.height]];
         }
     }
     _nameGroupTextField.placeholder = NSLocalizedString(@"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT", @"");
@@ -364,33 +368,29 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 - (IBAction)addGroupPhoto:(id)sender {
     [self.nameGroupTextField resignFirstResponder];
-    [DJWActionSheet showInView:self.parentViewController.view
-                     withTitle:nil
-             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-        destructiveButtonTitle:nil
-             otherButtonTitles:@[
-                 NSLocalizedString(@"TAKE_PICTURE_BUTTON", @""),
-                 NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
-             ]
-                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-
-                        if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-                            DDLogDebug(@"User Cancelled");
-                        } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-                            DDLogDebug(@"Destructive button tapped");
-                        } else {
-                            switch (tappedButtonIndex) {
-                                case 0:
-                                    [self takePicture];
-                                    break;
-                                case 1:
-                                    [self chooseFromLibrary];
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                      }];
+    
+    UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                        message:nil
+                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *takePictureAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"TAKE_PICTURE_BUTTON", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * _Nonnull action) {
+                                                                  [self takePicture];
+                                                              }];
+    UIAlertAction *choosePictureAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"CHOOSE_MEDIA_BUTTON", @"")
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * _Nonnull action) {
+                                                                    [self chooseFromLibrary];
+                                                                }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             // User cancelled.
+                                                         }];
+    [alertSheet addAction:takePictureAction];
+    [alertSheet addAction:choosePictureAction];
+    [alertSheet addAction:cancelAction];
+    [self.navigationController presentViewController:alertSheet animated:YES completion:nil];
 }
 
 #pragma mark - Group Image
@@ -442,12 +442,12 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 - (void)setupGroupImageButton:(UIImage *)image {
-    [_groupImageButton setImage:image forState:UIControlStateNormal];
-    _groupImageButton.imageView.layer.cornerRadius  = CGRectGetWidth([_groupImageButton.imageView frame]) / 2.0f;
-    _groupImageButton.imageView.layer.masksToBounds = YES;
-    _groupImageButton.imageView.layer.borderColor   = [[UIColor lightGrayColor] CGColor];
-    _groupImageButton.imageView.layer.borderWidth   = 0.5f;
-    _groupImageButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.groupImageButton setImage:image forState:UIControlStateNormal];
+    self.groupImageButton.imageView.layer.cornerRadius  = CGRectGetWidth([_groupImageButton.imageView frame]) / 2.0f;
+    self.groupImageButton.imageView.layer.masksToBounds = YES;
+    self.groupImageButton.imageView.layer.borderColor   = [[UIColor lightGrayColor] CGColor];
+    self.groupImageButton.imageView.layer.borderWidth   = 0.5f;
+    self.groupImageButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
 #pragma mark - Table view data source

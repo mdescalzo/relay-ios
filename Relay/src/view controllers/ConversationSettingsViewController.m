@@ -136,7 +136,12 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
     self.nameLabel.text = self.contactName;
     self.signalIdLabel.text = nil;
     
-    self.avatar.image = [OWSAvatarBuilder buildImageForThread:self.thread contactsManager:self.contactsManager diameter:self.avatar.frame.size.height];
+    if (self.thread.image) {
+        self.avatar.image = self.thread.image;
+    } else {
+        self.avatar.image = [OWSAvatarBuilder buildImageForThread:self.thread contactsManager:self.contactsManager diameter:self.avatar.frame.size.height];
+    }
+    
     self.nameLabel.font = [UIFont ows_dynamicTypeTitle2Font];
     
     // Translations

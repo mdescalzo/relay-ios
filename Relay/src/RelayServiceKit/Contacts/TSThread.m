@@ -177,6 +177,20 @@ static const NSString *FLExpressionKey = @"expression";
 
 
 #pragma mark - Accessors
+-(void)setName:(NSString *)value
+{
+    if (![_name isEqualToString:value]) {
+        _name = [value copy];
+    }
+}
+
+-(NSString *)name
+{
+    if (_name == nil) {
+        _name = @"";
+    }
+    return _name;
+}
 
 -(void)setPrettyExpression:(NSString *)value
 {
@@ -194,8 +208,8 @@ static const NSString *FLExpressionKey = @"expression";
 {
     NSString *myID = TSAccountManager.sharedInstance.myself.uniqueId;
     
-    if (_name.length > 0) {
-        return _name;
+    if (self.name.length > 0) {
+        return self.name;
     } else if (self.participants.count == 1) {
         if ([[self.participants lastObject] isEqualToString:myID]) {
             return NSLocalizedString(@"ME_STRING", @"");
@@ -235,7 +249,9 @@ static const NSString *FLExpressionKey = @"expression";
                 break;
             case 1:
             {
-                [Environment.getCurrent.contactsManager imageForPhoneIdentifier:self.participants.lastObject];
+                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:self.participants.lastObject];
+                return recipient.avatar;
+//                return [Environment.getCurrent.contactsManager imageForPhoneIdentifier:self.participants.lastObject];
             }
                 break;
             case 2:
@@ -246,7 +262,9 @@ static const NSString *FLExpressionKey = @"expression";
                         otherId = uid;
                     }
                 }
-                return [Environment.getCurrent.contactsManager imageForPhoneIdentifier:otherId];
+                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:otherId];
+                return recipient.avatar;
+//                return [Environment.getCurrent.contactsManager imageForPhoneIdentifier:otherId];
             }
                 break;
             default:
