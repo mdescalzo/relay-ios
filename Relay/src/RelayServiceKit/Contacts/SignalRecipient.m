@@ -160,6 +160,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Accessors
+-(UIImage *)avatar
+{
+    if (_avatar == nil) {
+        
+    }
+    return _avatar;
+}
+
 -(NSString *)textSecureIdentifier
 {
     return self.uniqueId;
