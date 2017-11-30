@@ -17,7 +17,7 @@
 #import "ConversationUpdateViewController.h"
 #import "OWSCall.h"
 #import "OWSCallCollectionViewCell.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "ConversationSettingsViewController.h"
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSDisplayedMessageCollectionViewCell.h"
@@ -120,7 +120,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) BOOL composeOnOpen;
 @property (nonatomic) BOOL peek;
 
-@property (nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;

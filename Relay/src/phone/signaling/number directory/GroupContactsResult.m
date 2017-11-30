@@ -10,7 +10,7 @@
 
 #import "TSAccountManager.h"
 #import "SignalRecipient.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "Environment.h"
 #import "SignalKeyingStorage.h"
 
@@ -28,7 +28,7 @@
 - (instancetype)initWithMembersId:(NSArray *)memberIdentifiers without:(NSArray *)removeIds {
     self = [super init];
 
-    OWSContactsManager *manager = [Environment.getCurrent contactsManager];
+    FLContactsManager *manager = [Environment.getCurrent contactsManager];
 
     NSMutableSet *remainingIdentifiers = [NSMutableSet setWithArray:memberIdentifiers];
 
@@ -49,7 +49,7 @@
             continue;
         }
 
-        SignalRecipient *contact = [manager recipientForUserID:identifier];
+        SignalRecipient *contact = [manager recipientWithUserID:identifier];
         
         if (!contact) {
             continue;

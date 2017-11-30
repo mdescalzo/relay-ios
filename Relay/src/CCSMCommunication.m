@@ -449,7 +449,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
         SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
         [myself save];
         [TSAccountManager.sharedInstance myself];
-        [Environment.getCurrent.contactsManager allContacts];
+        [Environment.getCurrent.contactsManager allRecipients];
         
         [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
         

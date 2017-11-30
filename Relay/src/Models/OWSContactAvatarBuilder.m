@@ -3,7 +3,7 @@
 //
 
 #import "OWSContactAvatarBuilder.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "TSContactThread.h"
 #import "TSGroupThread.h"
 #import "TSThread.h"
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OWSContactAvatarBuilder ()
 
-@property (nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) NSString *signalId;
 @property (nonatomic, readonly) NSString *contactName;
 @property (nonatomic, readonly) CGFloat diameter;
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithContactId:(NSString *)contactId
                              name:(NSString *)name
-                  contactsManager:(OWSContactsManager *)contactsManager
+                  contactsManager:(FLContactsManager *)contactsManager
                          diameter:(CGFloat)diameter
 {
     self = [super init];
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithThread:(TSThread *)thread
-               contactsManager:(OWSContactsManager *)contactsManager
+               contactsManager:(FLContactsManager *)contactsManager
                       diameter:(CGFloat)diameter
 {
     NSString *contactId = nil;
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
             }
         }
     }
-    SignalRecipient *recipient = [contactsManager recipientForUserID:contactId];
+    SignalRecipient *recipient = [contactsManager recipientWithUserID:contactId];
     
     return [self initWithContactId:contactId name:recipient.fullName contactsManager:contactsManager diameter:diameter];
 }

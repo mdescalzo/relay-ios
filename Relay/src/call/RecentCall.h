@@ -2,7 +2,7 @@
 #import <Foundation/Foundation.h>
 #import "TSCall.h"
 #import "Contact.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "PhoneNumber.h"
 
 /**

@@ -42,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (nonatomic, readonly) OWSMessageSender *messageSender;
 //@property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 
+@property NSUInteger preKeyRetries;
+
 @end
 
 @implementation TSMessagesManager
@@ -93,6 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     _dbConnection = storageManager.newDatabaseConnection;
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:storageManager];
+    
+    _preKeyRetries = FLPreKeyRetries;
     
     return self;
 }
@@ -199,6 +203,8 @@ NS_ASSUME_NONNULL_BEGIN
             [self processException:exception envelope:messageEnvelope];
             return;
         }
+        
+        self.preKeyRetries = FLPreKeyRetries;
         
         if (messageEnvelope.hasContent) {
             OWSSignalServiceProtosContent *content = [OWSSignalServiceProtosContent parseFromData:plaintextData];
@@ -587,6 +593,10 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (keyErrorMessage) {
         [keyErrorMessage acceptNewIdentityKey];
+        if (self.preKeyRetries > 0) {
+            [self handlePreKeyBundle:envelope];
+        }
+        self.preKeyRetries -= 1;
     }
 }
 

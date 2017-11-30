@@ -12,7 +12,7 @@
 #import "NSData+ows_StripToken.h"
 #import "NSDate+millisecondTimeStamp.h"
 #import "NotificationTracker.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "PropertyListPreferences.h"
 #import "RPServerRequestsManager.h"
 #import "TSOutgoingMessage.h"
@@ -29,7 +29,7 @@
 @property UILocalNotification *lastCallNotification;
 @property (nonatomic, retain) NSMutableArray *currentNotifications;
 @property (nonatomic) UIBackgroundTaskIdentifier callBackgroundTask;
-@property (nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) OWSMessageSender *messageSender;
 
 @end
@@ -54,7 +54,7 @@
 //                         contactsUpdater:[Environment getCurrent].contactsUpdater];
 }
 
-- (instancetype)initWithContactsManager:(OWSContactsManager *)contactsManager
+- (instancetype)initWithContactsManager:(FLContactsManager *)contactsManager
                     notificationTracker:(NotificationTracker *)notificationTracker
                          networkManager:(TSNetworkManager *)networkManager
                          storageManager:(TSStorageManager *)storageManager
@@ -238,7 +238,7 @@
 //    } else if ([identifier isEqualToString:Signal_CallBack_Identifier]) {
 //        NSString *contactId = notification.userInfo[Signal_Call_UserInfo_Key];
 //        PhoneNumber *number = [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
-//        SignalRecipient *contact = [self.contactsManager recipientForUserID:contactId];
+//        SignalRecipient *contact = [self.contactsManager recipientWithUserID:contactId];
 //        [Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
     } else if ([identifier isEqualToString:Signal_Message_MarkAsRead_Identifier]) {
         [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];
