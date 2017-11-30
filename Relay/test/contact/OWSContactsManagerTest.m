@@ -1,30 +1,30 @@
 #import <XCTest/XCTest.h>
 #import "TestUtil.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 
-@interface OWSContactsManagerTest : XCTestCase
+@interface FLContactsManagerTest : XCTestCase
 
 @end
 
 
-@implementation OWSContactsManagerTest
+@implementation FLContactsManagerTest
 
 - (void)testQueryMatching {
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"big dave"]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"dave big"]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"dave"]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"big"]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"big "]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"      big       "]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"dav"]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"bi dav"]);
-    test([OWSContactsManager name:@"big dave" matchesQuery:@"big big big big big big big big big big dave dave dave dave dave"]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"big dave"]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"dave big"]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"dave"]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"big"]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"big "]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"      big       "]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"dav"]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"bi dav"]);
+    test([FLContactsManager name:@"big dave" matchesQuery:@"big big big big big big big big big big dave dave dave dave dave"]);
 
-    test(![OWSContactsManager name:@"big dave" matchesQuery:@"ave"]);
-    test(![OWSContactsManager name:@"big dave" matchesQuery:@"dare"]);
-    test(![OWSContactsManager name:@"big dave" matchesQuery:@"mike"]);
-    test(![OWSContactsManager name:@"big dave" matchesQuery:@"mike"]);
-    test(![OWSContactsManager name:@"dave" matchesQuery:@"big"]);
+    test(![FLContactsManager name:@"big dave" matchesQuery:@"ave"]);
+    test(![FLContactsManager name:@"big dave" matchesQuery:@"dare"]);
+    test(![FLContactsManager name:@"big dave" matchesQuery:@"mike"]);
+    test(![FLContactsManager name:@"big dave" matchesQuery:@"mike"]);
+    test(![FLContactsManager name:@"dave" matchesQuery:@"big"]);
 }
 
 @end

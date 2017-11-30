@@ -74,4 +74,6 @@
 // Key for BOOL for awaiting login verification
 #define FLAwaitingVerification @"FLAwaitingVerification"
 
+#define FLPreKeyRetries 1
+
 #endif

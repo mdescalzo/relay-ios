@@ -523,7 +523,7 @@
 - (void)refreshContacts {
     // Refresh from CCSM
     
-    [[Environment getCurrent].contactsManager refreshCCSMRecipients];
+    [[Environment getCurrent].contactsManager refreshRecipients];
     
     self.contacts = nil;
     [self contacts];
@@ -579,7 +579,7 @@
                                                               ascending:YES
                                                                selector:@selector(localizedCaseInsensitiveCompare:)];
         
-        _contacts = [Environment.getCurrent.contactsManager.ccsmRecipients sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
+        _contacts = [Environment.getCurrent.contactsManager.allRecipients sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
 
     }
     return _contacts;

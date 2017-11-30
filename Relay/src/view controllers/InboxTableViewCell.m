@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
     return NSStringFromClass(self.class);
 }
 
-- (void)configureWithThread:(TSThread *)thread contactsManager:(OWSContactsManager *)contactsManager
+- (void)configureWithThread:(TSThread *)thread contactsManager:(FLContactsManager *)contactsManager
 {
     if (!_threadId || ![_threadId isEqualToString:thread.uniqueId]) {
         dispatch_async(dispatch_get_main_queue(), ^{

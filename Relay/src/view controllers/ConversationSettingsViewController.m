@@ -6,7 +6,7 @@
 #import "FingerprintViewController.h"
 #import "ConversationUpdateViewController.h"
 #import "OWSAvatarBuilder.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "PhoneNumber.h"
 #import "ShowGroupMembersViewController.h"
 #import "UIFont+OWS.h"
@@ -79,7 +79,7 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
 @property (nonatomic) OWSDisappearingMessagesConfiguration *disappearingMessagesConfiguration;
 
 @property (nonatomic, readonly) TSStorageManager *storageManager;
-@property (nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 
 @end

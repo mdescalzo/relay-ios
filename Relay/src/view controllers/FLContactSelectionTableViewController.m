@@ -189,7 +189,7 @@
 -(NSArray<SignalRecipient *> *)content
 {
     if (_content == nil) {
-        NSArray *allContacts = [[[Environment getCurrent] contactsManager] allContacts];
+        NSArray *allContacts = Environment.getCurrent.contactsManager.allRecipients;
         // Sort by last name
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastName" ascending:YES];
         _content = [allContacts sortedArrayUsingDescriptors:@[ sortDescriptor ]];

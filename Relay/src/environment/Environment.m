@@ -7,7 +7,6 @@
 #import "MessagesViewController.h"
 #import "RecentCallManager.h"
 #import "SignalKeyingStorage.h"
-//#import "SignalsViewController.h"
 #import "TSThread.h"
 #import "ContactsUpdater.h"
 #import "FLTagMathService.h"
@@ -66,7 +65,7 @@ static Environment *environment = nil;
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
-                contactsManager:(OWSContactsManager *)contactsManager
+                contactsManager:(FLContactsManager *)contactsManager
 //                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender
