@@ -51,10 +51,14 @@
                              attempts:3
                               success:^{
                                   DDLogDebug(@"Control successfully sent to: %@", recipientId);
-                                  successHandler();
+                                  if (successHandler) {
+                                      successHandler();
+                                  }
                               } failure:^(NSError * _Nonnull error) {
                                   DDLogDebug(@"Control message send failed to %@\nError: %@", recipientId, error.localizedDescription);
-                                  failureHandler(error);
+                                  if (failureHandler) {
+                                      failureHandler(error);
+                                  }
                               }];
         }
     });
