@@ -26,10 +26,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 @synthesize dbConnection = _dbConnection;
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_life cancel];
 }
 
-- (id)init {
+- (instancetype)init {
     self = [super init];
     if (self) {
         _life = [TOCCancelTokenSource new];
@@ -37,6 +38,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         _latestRecipientsById = @{};
         _dbConnection = [[TSStorageManager sharedManager].database newConnection];
         _backgroundConnection = [[TSStorageManager sharedManager].database newConnection];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(processUsersBlob)
+                                                     name:FLCCSMUsersUpdated
+                                                   object:nil];
     }
     return self;
 }
@@ -67,21 +73,22 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 #pragma mark - Setup
 -(void)refreshCCSMRecipients
 {
-#warning XXX Needs catch for failure to communicate with CCSM
     [CCSMCommManager refreshCCSMData];
-    
+    [self processUsersBlob];
+}
+
+-(void)processUsersBlob
+{
     NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     
     if (usersBlob.count > 0) {
-        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
+        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
          {
              for (NSDictionary *userDict in usersBlob.allValues) {
                  SignalRecipient *newRecipient = [SignalRecipient recipientForUserDict:userDict];
                  [newRecipient saveWithTransaction:transaction];
              }
          }];
-    } else {
-        // TODO: Make call to CCSM to attempt to get users and repeat.
     }
 }
 
