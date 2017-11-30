@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable UIImage *)buildSavedImage
 {
-    return [self.contactsManager imageForPhoneIdentifier:self.signalId];
+    return [self.contactsManager imageForIdentifier:self.signalId];
 }
 
 - (UIImage *)buildDefaultImage
