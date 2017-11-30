@@ -13,7 +13,7 @@
 + (BOOL)name:(NSString *)nameString matchesQuery:(NSString *)queryString;
 
 #if TARGET_OS_IPHONE
-- (UIImage *)imageForPhoneIdentifier:(NSString *)phoneNumber;
+- (UIImage *)imageForIdentifier:(NSString *)uid;
 #endif
 
 @end

@@ -304,8 +304,6 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DDLogDebug(@"%@ tapped indexPath:%@", self.tag, indexPath);
-    
     if (indexPath.section == ConversationSettingsViewControllerSectionGroup
         && indexPath.row == ConversationSettingsViewControllerCellIndexLeaveGroup) {
         

@@ -26,10 +26,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 @synthesize dbConnection = _dbConnection;
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_life cancel];
 }
 
-- (id)init {
+- (instancetype)init {
     self = [super init];
     if (self) {
         _life = [TOCCancelTokenSource new];
@@ -37,51 +38,57 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         _latestRecipientsById = @{};
         _dbConnection = [[TSStorageManager sharedManager].database newConnection];
         _backgroundConnection = [[TSStorageManager sharedManager].database newConnection];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(processUsersBlob)
+                                                     name:FLCCSMUsersUpdated
+                                                   object:nil];
     }
     return self;
 }
 
 - (void)doAfterEnvironmentInitSetup {
 #warning XXX is this method still necessary?
-//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
-//        self.contactStore = [[CNContactStore alloc] init];
-//        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
-//                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
-//                                      if (!granted) {
-//                                          // We're still using the old addressbook API.
-//                                          // User warned if permission not granted in that setup.
-//                                      }
-//                                    }];
-//    }
-
-//    [self setupAddressBook];
-
+    //    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
+    //        self.contactStore = [[CNContactStore alloc] init];
+    //        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
+    //                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
+    //                                      if (!granted) {
+    //                                          // We're still using the old addressbook API.
+    //                                          // User warned if permission not granted in that setup.
+    //                                      }
+    //                                    }];
+    //    }
+    
+    //    [self setupAddressBook];
+    
     [self.observableContactsController watchLatestValueOnArbitraryThread:^(NSArray *latestContacts) {
-      @synchronized(self) {
-          [self setupLatestRecipients:latestContacts];
-      }
+        @synchronized(self) {
+            [self setupLatestRecipients:latestContacts];
+        }
     }
-                                                     untilCancelled:_life.token];
+                                                          untilCancelled:_life.token];
 }
 
 #pragma mark - Setup
 -(void)refreshCCSMRecipients
 {
-#warning XXX Needs catch for failure to communicate with CCSM
     [CCSMCommManager refreshCCSMData];
-    
+    [self processUsersBlob];
+}
+
+-(void)processUsersBlob
+{
     NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     
     if (usersBlob.count > 0) {
-        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
+        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
          {
              for (NSDictionary *userDict in usersBlob.allValues) {
                  SignalRecipient *newRecipient = [SignalRecipient recipientForUserDict:userDict];
                  [newRecipient saveWithTransaction:transaction];
              }
          }];
-    } else {
-#warning XXX Make call to CCSM to attempt to get users and repeat.
     }
 }
 
@@ -112,44 +119,44 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(SignalRecipient *)recipientForUserID:(NSString *)userID
 {
     __block SignalRecipient *recipient = nil;
-
-    if (userID.length > 0) {
-        [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-            recipient = [transaction objectForKey:userID inCollection:[SignalRecipient collection]];
-        }];
-    }
     
-#warning XXX Lookup is broken. Causes main thread to block, freezing app.  Get more reliable method.
-    if (!recipient) {
-        recipient = [CCSMCommManager recipientFromCCSMWithID:userID];
-        if (recipient) {
-            [self saveRecipient:recipient];
+    for (SignalRecipient *contact in self.allContacts) {
+        if ([contact.uniqueId isEqualToString:userID]) {
+            return contact;
         }
     }
     
-    return recipient;
+    if (!recipient) {
+        recipient = [CCSMCommManager recipientFromCCSMWithID:userID];
+        [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction){
+            [recipient saveWithTransaction:transaction];
+        }];
+        return recipient;
+    }
+    
+    return nil;
 }
 
 - (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber
 {
     NSArray *allContacts = [self allContacts];
-
+    
     ContactSearchBlock searchBlock = ^BOOL(SignalRecipient *contact, NSUInteger idx, BOOL *stop) {
         if ([contact.phoneNumber isEqual:phoneNumber.toE164]) {
             *stop = YES;
             return YES;
         }
-//      for (PhoneNumber *number in contact.phoneNumber) {
-//          if ([self phoneNumber:number matchesNumber:phoneNumber]) {
-//              *stop = YES;
-//              return YES;
-//          }
-//      }
-      return NO;
+        //      for (PhoneNumber *number in contact.phoneNumber) {
+        //          if ([self phoneNumber:number matchesNumber:phoneNumber]) {
+        //              *stop = YES;
+        //              return YES;
+        //          }
+        //      }
+        return NO;
     };
-
+    
     NSUInteger contactIndex = [allContacts indexOfObjectPassingTest:searchBlock];
-
+    
     if (contactIndex != NSNotFound) {
         return allContacts[contactIndex];
     } else {
@@ -161,49 +168,25 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     return [phoneNumber1.toE164 isEqualToString:phoneNumber2.toE164];
 }
 
-//- (NSArray *)phoneNumbersForRecord:(ABRecordRef)record {
-//    ABMultiValueRef numberRefs = ABRecordCopyValue(record, kABPersonPhoneProperty);
-//
-//    @try {
-//        NSArray *phoneNumbers = (__bridge_transfer NSArray *)ABMultiValueCopyArrayOfAllValues(numberRefs);
-//
-//        if (phoneNumbers == nil)
-//            phoneNumbers = @[];
-//
-//        NSMutableArray *numbers = [NSMutableArray array];
-//
-//        for (NSUInteger i = 0; i < phoneNumbers.count; i++) {
-//            NSString *phoneNumber = phoneNumbers[i];
-//            [numbers addObject:phoneNumber];
-//        }
-//
-//        return numbers;
-//
-//    } @finally {
-//        if (numberRefs) {
-//            CFRelease(numberRefs);
-//        }
-//    }
-//}
 
 #warning keyRecipientsById may not be necessary with Address Book
 + (NSDictionary *)keyRecipientsById:(NSArray *)recipients {
     return [recipients keyedBy:^id(SignalRecipient *recipient) {
-      return @((int)recipient.uniqueId);
+        return @((int)recipient.uniqueId);
     }];
 }
 
 - (NSArray<SignalRecipient *> *)allContacts {
-//    NSMutableArray *allContacts = [NSMutableArray array];
-//
-//    for (NSString *key in self.latestContactsById.allKeys) {
-//        Contact *contact = [self.latestContactsById objectForKey:key];
-//
-//        if ([contact isKindOfClass:[Contact class]]) {
-//            [allContacts addObject:contact];
-//        }
-//    }
-//    return allContacts;
+    //    NSMutableArray *allContacts = [NSMutableArray array];
+    //
+    //    for (NSString *key in self.latestContactsById.allKeys) {
+    //        Contact *contact = [self.latestContactsById objectForKey:key];
+    //
+    //        if ([contact isKindOfClass:[Contact class]]) {
+    //            [allContacts addObject:contact];
+    //        }
+    //    }
+    //    return allContacts;
     return self.ccsmRecipients;
 }
 
@@ -212,14 +195,14 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     NSCharacterSet *whitespaceSet = NSCharacterSet.whitespaceCharacterSet;
     NSArray *queryStrings         = [queryString componentsSeparatedByCharactersInSet:whitespaceSet];
     NSArray *nameStrings          = [nameString componentsSeparatedByCharactersInSet:whitespaceSet];
-
+    
     return [queryStrings all:^int(NSString *query) {
-      if (query.length == 0)
-          return YES;
-      return [nameStrings any:^int(NSString *nameWord) {
-        NSStringCompareOptions searchOpts = NSCaseInsensitiveSearch | NSAnchoredSearch;
-        return [nameWord rangeOfString:query options:searchOpts].location != NSNotFound;
-      }];
+        if (query.length == 0)
+            return YES;
+        return [nameStrings any:^int(NSString *nameWord) {
+            NSStringCompareOptions searchOpts = NSCaseInsensitiveSearch | NSAnchoredSearch;
+            return [nameWord rangeOfString:query options:searchOpts].location != NSNotFound;
+        }];
     }];
 }
 
@@ -246,58 +229,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     };
 }
 
-//- (NSArray<Contact *> *)signalContacts {
-//    return [self getSignalUsersFromContactsArray:[self allContacts]];
-//}
-
-//- (NSArray *)textSecureContacts {
-//    return [[self.allContacts filter:^int(Contact *contact) {
-//      return [contact isSignalContact];
-//    }] sortedArrayUsingComparator:[[self class] contactComparator]];
-//}
-
-//- (NSString *)nameStringForIdentifier:(NSString *)identifier
-//{
-//    SignalRecipient *recipient = [[Environment getCurrent].contactsManager recipientForUserID:identifier];
-//    if (recipient.fullName) {
-//        return recipient.fullName;
-//    } else if (recipient.flTag.slug){
-//        return recipient.flTag.slug;
-//    } else {
-//        return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
-//                                 @"Displayed if for some reason we can't determine a contacts ID *or* name");
-//    }
-//}
-
-- (UIImage *)imageForPhoneIdentifier:(NSString *)identifier {
-    for (SignalRecipient *contact in self.allContacts) {
-            if ([contact.uniqueId isEqualToString:identifier]) {
-                return contact.avatar;
-        }
-    }
-    return nil;
-}
-
--(SignalRecipient *)recipientForUserDict:(NSDictionary *)userDict
+- (NSString *)nameStringForContactID:(NSString *)identifier
 {
-    //    Contact *contact = [Contact getContactWithUserID:[userDict objectForKey:@"id"]];
-
-    NSDictionary *tagDict = [userDict objectForKey:@"tag"];
-    SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:[userDict objectForKey:@"id"]
-                                                                             firstName:[userDict objectForKey:@"first_name"]
-                                                                              lastName:[userDict objectForKey:@"last_name"]];
-    recipient.flTag = [FLTag tagWithTagDictionary:tagDict];
-    recipient.email = [userDict objectForKey:@"email"];
-    recipient.phoneNumber = [userDict objectForKey:@"phone"];
-
-    return recipient;
-}
-
-- (NSString *)nameStringForContactID:(NSString *)identifier {
-//    if (!identifier) {
-//        return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
-//                                 @"Displayed if for some reason we can't determine a contacts ID *or* name");
-//    }
     SignalRecipient *recipient = [[Environment getCurrent].contactsManager recipientForUserID:identifier];
     if (recipient.fullName) {
         return recipient.fullName;
@@ -307,26 +240,19 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
                                  @"Displayed if for some reason we can't determine a contacts ID *or* name");
     }
-    
-    
-//    for (SignalRecipient *contact in [self ccsmRecipients]) {
-//        if ([contact.uniqueId isEqualToString:identifier]) {
-//            return contact.fullName;
-//        }
-//    }
-//    return identifier;
 }
 
-- (UIImage *)imageForContactID:(NSString *)identifier {
+-(UIImage *)imageForIdentifier:(NSString *)uid
+{
     for (SignalRecipient *contact in self.allContacts) {
-        if ([contact.uniqueId isEqualToString:identifier]) {
+        if ([contact.uniqueId isEqualToString:uid]) {
             return contact.avatar;
         }
     }
     return nil;
 }
 
-#pragma mark - Lazy Instantiation
+#pragma mark - Accessors
 - (NSArray<SignalRecipient *> *)ccsmRecipients;
 {
     if (_ccsmRecipients == nil) {
@@ -338,29 +264,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         _ccsmRecipients = [NSArray arrayWithArray:mArray];
     }
     return _ccsmRecipients;
-    
-//    if (_ccsmContacts == nil) {
-//        NSMutableArray *tmpArray = [NSMutableArray new];
-//        
-////        NSDictionary *tagsBlob = [Environment.ccsmStorage getTags];
-//        NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
-////        NSDictionary *userInfo = [Environment.ccsmStorage getUserInfo];
-//        
-//        for (NSString *key in usersBlob.allKeys) {
-////            NSDictionary *tmpDict = [usersBlob objectForKey:key];
-//            NSDictionary *userDict = [usersBlob objectForKey:key]; //[tmpDict objectForKey:tmpDict.allKeys.lastObject];
-//            
-//            // Filter out superman, no one sees superman
-//            if (!([[userDict objectForKey:@"phone"] isEqualToString:FLSupermanDevID] ||
-//                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanStageID] ||
-//                  [[userDict objectForKey:@"phone"] isEqualToString:FLSupermanProdID])) {
-//                
-//                [tmpArray addObject:[self contactForUserDict:userDict]];
-//            }
-//        }
-//        _ccsmContacts = [NSArray arrayWithArray:tmpArray];
-//    }
-//    return _ccsmContacts;
 }
 
 -(void)refreshCCSMContacts
@@ -381,7 +284,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(NSSet *)identifiersForTagSlug:(NSString *)tagSlug
 {
-    
+    // TODO: BUILD THIS!
 }
 
 #pragma mark - Logging

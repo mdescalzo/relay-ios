@@ -31,7 +31,6 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 - (NSArray<SignalRecipient *> *)ccsmRecipients;
 - (void)doAfterEnvironmentInitSetup;
 - (NSString *)nameStringForRecipientID:(NSString *)identifier;
-- (UIImage *)avatarForRecipientID:(NSString *)identifier;
 
 + (NSComparator)recipientComparator;
 
