@@ -10,7 +10,7 @@
 #import "DJWActionSheet+OWS.h"
 #import "Environment.h"
 #import "FunctionalUtil.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "SecurityUtils.h"
 #import "SignalKeyingStorage.h"
 #import "SignalsViewController.h"

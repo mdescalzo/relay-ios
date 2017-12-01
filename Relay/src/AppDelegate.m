@@ -5,7 +5,7 @@
 #import "DebugLogger.h"
 #import "Environment.h"
 #import "NotificationsManager.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "OWSStaleNotificationObserver.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"

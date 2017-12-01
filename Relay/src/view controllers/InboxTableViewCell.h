@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class OWSContactsManager;
+@class FLContactsManager;
 
 typedef enum : NSUInteger { kArchiveState = 0, kInboxState = 1 } CellState;
 
@@ -22,7 +22,7 @@ typedef enum : NSUInteger { kArchiveState = 0, kInboxState = 1 } CellState;
 
 + (instancetype)inboxTableViewCell;
 
-- (void)configureWithThread:(TSThread *)thread contactsManager:(OWSContactsManager *)contactsManager;
+- (void)configureWithThread:(TSThread *)thread contactsManager:(FLContactsManager *)contactsManager;
 - (void)animateDisappear;
 
 @end

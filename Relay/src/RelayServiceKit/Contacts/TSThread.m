@@ -249,9 +249,9 @@ static const NSString *FLExpressionKey = @"expression";
                 break;
             case 1:
             {
-                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:self.participants.lastObject];
-                return recipient.avatar;
-//                return [Environment.getCurrent.contactsManager imageForPhoneIdentifier:self.participants.lastObject];
+//                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:self.participants.lastObject];
+//                return recipient.avatar;
+                return [Environment.getCurrent.contactsManager imageForIdentifier:self.participants.lastObject];
             }
                 break;
             case 2:
@@ -262,9 +262,9 @@ static const NSString *FLExpressionKey = @"expression";
                         otherId = uid;
                     }
                 }
-                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:otherId];
-                return recipient.avatar;
-//                return [Environment.getCurrent.contactsManager imageForPhoneIdentifier:otherId];
+//                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:otherId];
+//                return recipient.avatar;
+                return [Environment.getCurrent.contactsManager imageForIdentifier:otherId];
             }
                 break;
             default:

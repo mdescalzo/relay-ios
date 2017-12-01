@@ -9,7 +9,7 @@
 #import "CCSMCommunication.h"
 #import "FLMessageSender.h"
 //#import "FLContactsManager.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "FLInvitationService.h"
 
 static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
@@ -31,7 +31,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 #define TESTING_OPTION_USE_DH_FOR_HANDSHAKE @"DhKeyAgreementOnly"
 
 //@class RecentCallManager;
-@class OWSContactsManager;
+@class FLContactsManager;
 //@class FLContactsManager;
 //@class PhoneManager;
 @class SignalsViewController;
@@ -57,7 +57,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
-                contactsManager:(OWSContactsManager *)contactsManager
+                contactsManager:(FLContactsManager *)contactsManager
 //                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender;
@@ -70,20 +70,16 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) NSString *relayServerHostNameSuffix;
 @property (nonatomic, readonly) NSArray *keyAgreementProtocolsInDescendingPriority;
 @property (nonatomic, readonly) ErrorHandlerBlock errorNoter;
-//@property (nonatomic, readonly) PhoneManager *phoneManager;
-//@property (nonatomic, readonly) RecentCallManager *recentCallManager;
 @property (nonatomic, readonly) NSArray *testingAndLegacyOptions;
 @property (nonatomic, readonly) NSData *zrtpClientId;
 @property (nonatomic, readonly) NSData *zrtpVersionId;
-@property (nonatomic, readonly) OWSContactsManager *contactsManager;
-//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
+@property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, readonly) FLInvitationService *invitationService;
 
 @property (nonatomic, readonly) FLThreadViewController *forstaViewController;
-//@property (nonatomic, readonly) SignalsViewController *signalsViewController;
 @property (nonatomic, readonly, weak) UINavigationController *signUpFlowNavigationController;
 
 + (SecureEndPoint *)getMasterServerSecureEndPoint;

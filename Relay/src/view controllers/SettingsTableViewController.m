@@ -17,7 +17,7 @@
 
 #import "TSSocketManager.h"
 
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 
 #import "AboutTableViewController.h"
 #import "AdvancedSettingsTableViewController.h"

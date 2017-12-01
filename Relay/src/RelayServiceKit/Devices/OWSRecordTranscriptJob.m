@@ -8,6 +8,7 @@
 #import "OWSMessageSender.h"
 #import "TSOutgoingMessage.h"
 #import "TSStorageManager.h"
+#import "TSThread.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,66 +42,86 @@ NS_ASSUME_NONNULL_BEGIN
 {
     OWSIncomingSentMessageTranscript *transcript = self.incomingSentMessageTranscript;
     DDLogDebug(@"%@ Recording transcript: %@", self.tag, transcript);
-    TSThread *thread = transcript.thread;
     
     // Intercept and attach forstaPayload
     NSArray *jsonArray = [self arrayFromMessageBody:transcript.body];
-    NSDictionary *jsonPayload;
+    __block NSDictionary *jsonPayload;
     if (jsonArray.count > 0) {
         DDLogDebug(@"JSON Payload received.");
         jsonPayload = [jsonArray lastObject];
     }
-    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     
-    OWSAttachmentsProcessor *attachmentsProcessor =
-    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
-                                                   properties:[dataBlob objectForKey:@"attachments"]
-                                                    timestamp:transcript.timestamp
-                                                        relay:transcript.relay
-                                                       thread:thread
-                                               networkManager:self.networkManager];
-    
-    // TODO group updates. Currently desktop doesn't support group updates, so not a problem yet.
-    TSOutgoingMessage *outgoingMessage =
-    [[TSOutgoingMessage alloc] initWithTimestamp:transcript.timestamp
-                                        inThread:thread
-                                     messageBody:@""
-                                   attachmentIds:[attachmentsProcessor.attachmentIds mutableCopy]
-                                expiresInSeconds:transcript.expirationDuration
-                                 expireStartedAt:transcript.expirationStartedAt];
-    outgoingMessage.forstaPayload = [jsonPayload mutableCopy];
-    if (transcript.isExpirationTimerUpdate) {
-        [self.messageSender becomeConsistentWithDisappearingConfigurationForMessage:outgoingMessage];
-        // early return to avoid saving an empty incoming message.
-        return;
-    }
-    
-    [self.messageSender handleMessageSentRemotely:outgoingMessage sentAt:transcript.expirationStartedAt];
-    
-    [attachmentsProcessor
-     fetchAttachmentsForMessage:outgoingMessage
-     success:attachmentHandler
-     failure:^(NSError *_Nonnull error) {
-         DDLogError(@"%@ failed to fetch transcripts attachments for message: %@",
-                    self.tag,
-                    outgoingMessage);
-     }];
-    
-    
-    
-    // If there is an attachment + text, render the text here, as Signal-iOS renders two messages.
-    if (attachmentsProcessor.hasSupportedAttachments && outgoingMessage.plainTextBody && ![outgoingMessage.plainTextBody isEqualToString:@""]) {
-        // render text *after* the attachment
-        uint64_t textMessageTimestamp = transcript.timestamp + 1;
-        TSOutgoingMessage *textMessage = [[TSOutgoingMessage alloc] initWithTimestamp:textMessageTimestamp
-                                                                             inThread:thread
-                                                                          messageBody:@""
-                                                                        attachmentIds:[NSMutableArray new]
-                                                                     expiresInSeconds:transcript.expirationDuration
-                                                                      expireStartedAt:transcript.expirationStartedAt];
-        textMessage.forstaPayload = [jsonPayload mutableCopy];
-        textMessage.messageState = TSOutgoingMessageStateDelivered;
-        [textMessage save];
+    // Check for control message
+    if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
+        __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+        NSString *controlType = [dataBlob objectForKey:@"control"];
+        
+        if ([controlType isEqualToString:@"threadClose"]) {  // Archive the thread
+            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                NSString *threadId = [jsonPayload objectForKey:@"threadId"];
+                TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId transaction:transaction];
+                if (thread) {
+                    NSDate *archiveDate = [NSDate dateWithTimeIntervalSince1970:transcript.timestamp/1000.0];
+                    [thread archiveThreadWithTransaction:transaction referenceDate:archiveDate];
+                }
+            }];
+        } else {
+            DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
+        }
+    } else {
+        TSThread *thread = transcript.thread;
+        
+        NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+        
+        OWSAttachmentsProcessor *attachmentsProcessor =
+        [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
+                                                       properties:[dataBlob objectForKey:@"attachments"]
+                                                        timestamp:transcript.timestamp
+                                                            relay:transcript.relay
+                                                           thread:thread
+                                                   networkManager:self.networkManager];
+        
+        TSOutgoingMessage *outgoingMessage =
+        [[TSOutgoingMessage alloc] initWithTimestamp:transcript.timestamp
+                                            inThread:thread
+                                         messageBody:@""
+                                       attachmentIds:[attachmentsProcessor.attachmentIds mutableCopy]
+                                    expiresInSeconds:transcript.expirationDuration
+                                     expireStartedAt:transcript.expirationStartedAt];
+        outgoingMessage.forstaPayload = [jsonPayload mutableCopy];
+        if (transcript.isExpirationTimerUpdate) {
+            [self.messageSender becomeConsistentWithDisappearingConfigurationForMessage:outgoingMessage];
+            // early return to avoid saving an empty incoming message.
+            return;
+        }
+        
+        [self.messageSender handleMessageSentRemotely:outgoingMessage sentAt:transcript.expirationStartedAt];
+        
+        [attachmentsProcessor
+         fetchAttachmentsForMessage:outgoingMessage
+         success:attachmentHandler
+         failure:^(NSError *_Nonnull error) {
+             DDLogError(@"%@ failed to fetch transcripts attachments for message: %@",
+                        self.tag,
+                        outgoingMessage);
+         }];
+        
+        
+        
+        // If there is an attachment + text, render the text here, as Signal-iOS renders two messages.
+        if (attachmentsProcessor.hasSupportedAttachments && outgoingMessage.plainTextBody && ![outgoingMessage.plainTextBody isEqualToString:@""]) {
+            // render text *after* the attachment
+            uint64_t textMessageTimestamp = transcript.timestamp + 1;
+            TSOutgoingMessage *textMessage = [[TSOutgoingMessage alloc] initWithTimestamp:textMessageTimestamp
+                                                                                 inThread:thread
+                                                                              messageBody:@""
+                                                                            attachmentIds:[NSMutableArray new]
+                                                                         expiresInSeconds:transcript.expirationDuration
+                                                                          expireStartedAt:transcript.expirationStartedAt];
+            textMessage.forstaPayload = [jsonPayload mutableCopy];
+            textMessage.messageState = TSOutgoingMessageStateDelivered;
+            [textMessage save];
+        }
     }
 }
 

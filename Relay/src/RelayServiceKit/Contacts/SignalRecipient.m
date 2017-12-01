@@ -92,8 +92,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(instancetype)recipientForUserDict:(NSDictionary *)userDict;
 {
-#warning XXX save all the things here
-    NSDictionary *tagDict = [userDict objectForKey:@"tag"];
     SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:[userDict objectForKey:@"id"]
                                                                              firstName:[userDict objectForKey:@"first_name"]
                                                                               lastName:[userDict objectForKey:@"last_name"]];
@@ -104,18 +102,22 @@ NS_ASSUME_NONNULL_BEGIN
     if (orgDict) {
         recipient.orgID = [orgDict objectForKey:@"id"];
         recipient.orgSlug = [orgDict objectForKey:@"slug"];
+    } else {
+        DDLogDebug(@"Missing orgDictionary for Recipient: %@", recipient);
     }
     
-    recipient.flTag = [FLTag tagWithTagDictionary:tagDict];
-    if (recipient.flTag.tagDescription.length == 0) {
-        recipient.flTag.tagDescription = recipient.fullName;
+    NSDictionary *tagDict = [userDict objectForKey:@"tag"];
+    if (tagDict) {
+        recipient.flTag = [FLTag tagWithTagDictionary:tagDict];
+        if (recipient.flTag.tagDescription.length == 0) {
+            recipient.flTag.tagDescription = recipient.fullName;
+        }
+        if (recipient.flTag.orgSlug.length == 0) {
+            recipient.flTag.orgSlug = recipient.orgSlug;
+        }
+    } else {
+        DDLogDebug(@"Missing tagDictionary for Recipient: %@", recipient);
     }
-    if (recipient.flTag.orgSlug.length == 0) {
-        recipient.flTag.orgSlug = recipient.orgSlug;
-    }
-//    recipient.tagID = (tagDict ? [tagDict objectForKey:@"id"] : nil);
-    
-    
     return recipient;
 }
 

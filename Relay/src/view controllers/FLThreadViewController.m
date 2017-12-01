@@ -18,7 +18,7 @@
 #import "NSDate+millisecondTimeStamp.h"
 #import "OWSCall.h"
 #import "OWSCallCollectionViewCell.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "ConversationSettingsViewController.h"
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSDisplayedMessageCollectionViewCell.h"
@@ -76,7 +76,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, strong) FLTagMathService *tagMathService;
-@property (strong, nonatomic, readonly) OWSContactsManager *contactsManager;
+@property (strong, nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
 //@property (nonatomic, readonly) OWSMessageSender *messageSender;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
