@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation OWSAvatarBuilder
 
 + (UIImage *)buildImageForThread:(TSThread *)thread
-                 contactsManager:(OWSContactsManager *)contactsManager
+                 contactsManager:(FLContactsManager *)contactsManager
                         diameter:(CGFloat)diameter
 {
     OWSAvatarBuilder *avatarBuilder;

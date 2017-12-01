@@ -5,7 +5,7 @@
 #import "DebugLogger.h"
 #import "Environment.h"
 #import "NotificationsManager.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 #import "OWSStaleNotificationObserver.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
@@ -63,11 +63,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     
     
     // Initialize crash reporting
-    [Fabric with:@[ [Crashlytics class] ]];
-    CCSMStorage *ccsmStore = [CCSMStorage new];
-    if ([ccsmStore getUserName] != nil) {
-        [CrashlyticsKit setUserName:[ccsmStore getUserName]];
-    }
+    [Crashlytics startWithAPIKey:[self fabricAPIKey]];
     
     // Navbar background color iOS10 bug workaround
     [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
@@ -286,6 +282,10 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
             [self.window makeKeyAndVisible];
         });
     }
+    if ([Environment.getCurrent.ccsmStorage getUserName] != nil) {
+        [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
+    }
+
 }
 
 
@@ -451,6 +451,21 @@ forLocalNotification:(UILocalNotification *)notification
     }
     
     return NO;
+}
+
+#pragma mark - Crashlytics
+-(NSString *)fabricAPIKey
+{
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"Forsta-values" ofType:@"plist"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if ([fileManager fileExistsAtPath: path]) {
+        NSDictionary *forstaDict = [[NSDictionary alloc] initWithContentsOfFile:path];
+        NSDictionary *fabricDict = [forstaDict objectForKey:@"Fabric"];
+        return [fabricDict objectForKey:@"APIKey"];
+    } else {
+        return @"";
+    }
 }
 
 #pragma mark - Logging

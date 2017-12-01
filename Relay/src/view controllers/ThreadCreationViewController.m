@@ -87,14 +87,15 @@
     } else {
         aTag = [self.content objectAtIndex:(NSUInteger)[indexPath row]];
     }
-//    NSString *selectedTag = [NSString stringWithFormat:@"@%@", [selectedTagDict objectForKey:@"slug"]];
-//    NSDictionary *orgDict = [selectedTagDict objectForKey:@"org"];
-//    NSString *selectedOrg = [orgDict objectForKey:@"slug"];
     
-    if ([self.validatedSlugs containsObject:[NSString stringWithFormat:@"@%@", aTag.slug]]) {
-        [self removeSlug:aTag.slug];
+    NSString *slugDisplayString = [NSString stringWithFormat:@"@%@", aTag.slug];
+    if (![TSAccountManager.sharedInstance.myself.flTag.orgSlug isEqualToString:aTag.orgSlug]) {
+        slugDisplayString = [slugDisplayString stringByAppendingString:[NSString stringWithFormat:@":%@", aTag.orgSlug]];
+    }
+    if ([self.validatedSlugs containsObject:slugDisplayString]) {
+        [self removeSlug:slugDisplayString];
     } else {
-        [self addSlug:aTag.slug];
+        [self addSlug:slugDisplayString];
     }
     self.searchBar.text = @"";
     [self refreshTableView];
@@ -325,7 +326,7 @@
         [FLTagMathService asyncTagLookupWithString:threadSlugs
                                      success:^(NSDictionary *results) {
                                          [self buildThreadWithResults:results];
-                                         [self storeUsersInResults:results];
+//                                         [self storeUsersInResults:results];
                                      }
                                      failure:^(NSError *error) {
                                          DDLogDebug(@"Tag Lookup failed with error: %@", error.description);

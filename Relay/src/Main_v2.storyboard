@@ -1677,6 +1677,17 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PWn-Vk-szp">
+                                <rect key="frame" x="141" y="157" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.49327188729999999" blue="0.47399842739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Crash">
+                                    <color key="titleShadowColor" red="0.29411764709999999" green="0.29411764709999999" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="crashTheThings:" destination="RfC-zh-ph2" eventType="touchUpInside" id="vY0-dM-pOf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -1701,6 +1712,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="crashButton" destination="PWn-Vk-szp" id="r8e-2n-hGP"/>
                         <outlet property="forstaURLLabel" destination="9r7-0d-7sF" id="Jo5-Po-AcX"/>
                         <outlet property="outputLabel" destination="JvP-PH-F77" id="Act-yq-v97"/>
                         <outlet property="supermanIDLabel" destination="fr4-p6-F8n" id="vgu-Ym-ZGU"/>

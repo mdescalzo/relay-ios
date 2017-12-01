@@ -449,7 +449,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
         SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
         [myself save];
         [TSAccountManager.sharedInstance myself];
-        [Environment.getCurrent.contactsManager allContacts];
+        [Environment.getCurrent.contactsManager allRecipients];
         
         [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
         
@@ -689,7 +689,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
         NSString *path = [[NSBundle mainBundle] pathForResource:@"Forsta-values" ofType:@"plist"];
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
-        if (![fileManager fileExistsAtPath: path]) //4
+        if (![fileManager fileExistsAtPath: path])
         {
             DDLogDebug(@"Tokens Not Found.");
         }

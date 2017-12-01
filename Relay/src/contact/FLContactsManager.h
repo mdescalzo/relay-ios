@@ -8,19 +8,24 @@
 
 #import "SignalRecipient.h"
 #import <YapDatabase/YapDatabase.h>
-
+#import "ObservableValue.h"
 #import <Foundation/Foundation.h>
+#import "PhoneNumber.h"
 
-@interface FLContactsManager : NSObject
+@interface FLContactsManager : NSObject <ContactsManagerProtocol>
 
 @property (nonatomic, strong) YapDatabaseConnection * _Nonnull mainConnection;
 @property (strong) YapDatabaseConnection * _Nonnull backgroundConnection;
 
-//-(void)setupDatabase;
++ (NSComparator)recipientComparator;
 
+-(void)setupDatabase;
+-(ObservableValue *_Nullable)getObservableContacts;
+- (void)doAfterEnvironmentInitSetup;
 -(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID;
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
--(NSSet<SignalRecipient *> *_Nonnull)allContacts;
--(void)saveContact:(SignalRecipient *_Nonnull)recipient;
+-(NSArray<SignalRecipient *> *_Nonnull)allRecipients;
+-(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
+-(void)refreshRecipients;
 
 @end

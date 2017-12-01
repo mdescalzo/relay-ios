@@ -9,7 +9,7 @@
 #import "FLInvitationService.h"
 #import "UIUtil.h"
 #import "Contact.h"
-#import "OWSContactsManager.h"
+#import "FLContactsManager.h"
 
 @interface FLInvitationService() <FLContactSelectionTableViewControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
