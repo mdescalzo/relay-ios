@@ -170,7 +170,7 @@ NS_ASSUME_NONNULL_BEGIN
     @synchronized(self) {
         TSStorageManager *storageManager = [TSStorageManager sharedManager];
         NSString *recipientId = messageEnvelope.source;
-        int deviceId = messageEnvelope.sourceDevice;
+        int deviceId = (int)messageEnvelope.sourceDevice;
         
         if (![storageManager containsSession:recipientId deviceId:deviceId]) {
             [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
@@ -228,7 +228,7 @@ NS_ASSUME_NONNULL_BEGIN
     @synchronized(self) {
         TSStorageManager *storageManager = [TSStorageManager sharedManager];
         NSString *recipientId = preKeyEnvelope.source;
-        int deviceId = preKeyEnvelope.sourceDevice;
+        int deviceId = (int)preKeyEnvelope.sourceDevice;
         
         // DEPRECATED - Remove after all clients have been upgraded.
         NSData *encryptedData = preKeyEnvelope.hasContent ? preKeyEnvelope.content : preKeyEnvelope.legacyMessage;
@@ -274,24 +274,8 @@ NS_ASSUME_NONNULL_BEGIN
                withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
     if (dataMessage.hasGroup) {
-//        __block BOOL ignoreMessage = NO;
         // Since no clients should be using this, this should never trip
         DDLogDebug(@"%@ Old school group message received.", self.tag);
-#warning XXX SOMETHING IS BROKEN HERE
-        //  *** I don't see a reason to ignore a message in this manner in Forsta land. ***
-//        [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-//            TSGroupModel *emptyModelToFillOutId =
-//            [[TSGroupModel alloc] initWithTitle:nil memberIds:nil image:nil groupId:dataMessage.group.id];
-//            TSGroupThread *gThread = [TSGroupThread threadWithGroupModel:emptyModelToFillOutId transaction:transaction];
-//            if (gThread == nil && dataMessage.group.type != OWSSignalServiceProtosGroupContextTypeUpdate) {
-//                ignoreMessage = YES;
-//            }
-//        }];
-//        if (ignoreMessage) {
-//            // FIXME: https://github.com/WhisperSystems/Signal-iOS/issues/1340
-//            DDLogDebug(@"%@ Received message from group that I left or don't know about, ignoring", self.tag);
-//            return;
-//        }
     }
     if ((dataMessage.flags & OWSSignalServiceProtosDataMessageFlagsEndSession) != 0) {
         DDLogVerbose(@"%@ Received end session message", self.tag);
