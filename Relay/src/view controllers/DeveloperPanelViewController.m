@@ -18,6 +18,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *forstaURLLabel;
 @property (nonatomic, weak) IBOutlet UITextField *inputField;
 @property (nonatomic, weak) IBOutlet UILabel *outputLabel;
+@property (weak, nonatomic) IBOutlet UIButton *crashButton;
 
 @property (nonatomic, strong) FLTagMathService *tagService;
 
