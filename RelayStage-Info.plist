@@ -40,23 +40,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>112</string>
+	<string>113</string>
 	<key>FLSupermanID</key>
 	<string>88e7165e-d2da-4c3f-a14a-bb802bb0cefb</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>402e249164f7a639103f082f592a694e92ff9318</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LOGS_EMAIL</key>

@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
                 NSString *threadId = [jsonPayload objectForKey:@"threadId"];
                 TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId transaction:transaction];
                 if (thread) {
-                    NSDate *archiveDate = [NSDate dateWithTimeIntervalSince1970:transcript.timestamp/1000];
+                    NSDate *archiveDate = [NSDate dateWithTimeIntervalSince1970:transcript.timestamp/1000.0];
                     [thread archiveThreadWithTransaction:transaction referenceDate:archiveDate];
                 }
             }];
