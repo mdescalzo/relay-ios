@@ -145,6 +145,21 @@
     return [self colorFromHexString:@"#9CCCE0"];
 }
 
++(UIColor *)mediumPurple
+{
+    return [UIColor colorWithRed:94.0f green:55.0f blue:196.0f alpha:1.0f];
+}
+
++(UIColor *)mediumYellow
+{
+    return [UIColor colorWithRed:255.0f green:187.0f blue:55.0f alpha:1.0f];
+}
+
++(UIColor *)mediumPink
+{
+    return [UIColor colorWithRed:227.0f green:45.0f blue:148.0f alpha:1.0f];
+}
+
 // Assumes input like "#00FF00" (#RRGGBB).
 + (UIColor *)colorFromHexString:(NSString *)hexString {
     unsigned rgbValue = 0;
