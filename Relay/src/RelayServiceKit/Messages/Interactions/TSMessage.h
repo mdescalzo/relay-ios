@@ -35,6 +35,7 @@ typedef NS_ENUM(NSInteger, TSGroupMetaMessage) {
 @property (nonatomic, readonly) uint64_t expiresAt;
 @property (nonatomic, readonly) BOOL isExpiringMessage;
 @property (nonatomic, readonly) BOOL shouldStartExpireTimer;
+@property BOOL hasAnnotation;
 
 - (instancetype)initWithTimestamp:(uint64_t)timestamp;
 

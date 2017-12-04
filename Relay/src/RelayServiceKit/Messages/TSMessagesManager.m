@@ -655,10 +655,10 @@ NS_ASSUME_NONNULL_BEGIN
             incomingMessage.messageType = [jsonPayload objectForKey:@"messageType"];
         }
         incomingMessage.forstaPayload = [jsonPayload mutableCopy];
-        [incomingMessage saveWithTransaction:transaction];
         
-        // Android allows attachments to be sent with body.
-        if ([attachmentIds count] > 0 && incomingMessage.plainTextBody.length > 0) {
+        // Android & web client allow attachments to be sent with body.
+        if (attachmentIds.count > 0 && incomingMessage.plainTextBody.length > 0) {
+            incomingMessage.hasAnnotation = YES;
             // We want the text to be displayed under the attachment
             uint64_t textMessageTimestamp = envelope.timestamp + 1;
             TSIncomingMessage *textMessage = [[TSIncomingMessage alloc] initWithTimestamp:textMessageTimestamp
@@ -670,6 +670,7 @@ NS_ASSUME_NONNULL_BEGIN
             textMessage.expiresInSeconds = dataMessage.expireTimer;
             [textMessage saveWithTransaction:transaction];
         }
+        [incomingMessage saveWithTransaction:transaction];
     }];
     
     if (incomingMessage && thread) {
