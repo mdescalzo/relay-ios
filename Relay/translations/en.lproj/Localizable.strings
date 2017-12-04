@@ -379,6 +379,8 @@
 /* No comment provided by engineer. */
 "LOGGING_SECTION" = "Logging";
 
+"ACCOUNT_SECTION" = "Account";
+
 /* No comment provided by engineer. */
 "ME_STRING" = "Me";
 "YOU_STRING" = "You";
