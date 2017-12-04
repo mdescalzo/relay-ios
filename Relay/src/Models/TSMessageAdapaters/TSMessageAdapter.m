@@ -172,7 +172,7 @@
         return [[OWSCall alloc] initWithCallRecord:callRecord];
     } else if ([interaction isKindOfClass:[TSInfoMessage class]]) {
         TSInfoMessage *infoMessage = (TSInfoMessage *)interaction;
-        adapter.infoMessageType    = infoMessage.messageType;
+        adapter.infoMessageType    = (TSInfoMessageType)infoMessage.messageType;
         adapter.messageBody        = infoMessage.description;
         adapter.messageType        = TSInfoMessageAdapter;
         if (adapter.infoMessageType == TSInfoMessageTypeConversationQuit ||

@@ -665,21 +665,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  inThread:thread
                                                                                  authorId:envelope.source
                                                                               messageBody:@""];
-            textMessage.forstaPayload = incomingMessage.forstaPayload;
-            textMessage.plainTextBody = incomingMessage.plainTextBody;
-            textMessage.expiresInSeconds = dataMessage.expireTimer;
-            [textMessage saveWithTransaction:transaction];
-        }
-        
-        // Android allows attachments to be sent with body.
-        if ([attachmentIds count] > 0 && incomingMessage.plainTextBody.length > 0) {
-            // We want the text to be displayed under the attachment
-            uint64_t textMessageTimestamp = envelope.timestamp + 1;
-            TSIncomingMessage *textMessage = [[TSIncomingMessage alloc] initWithTimestamp:textMessageTimestamp
-                                                                                 inThread:thread
-                                                                                 authorId:envelope.source
-                                                                              messageBody:@""];
-            textMessage.forstaPayload = incomingMessage.forstaPayload;
+//            textMessage.forstaPayload = incomingMessage.forstaPayload;
             textMessage.plainTextBody = incomingMessage.plainTextBody;
             textMessage.expiresInSeconds = dataMessage.expireTimer;
             [textMessage saveWithTransaction:transaction];
