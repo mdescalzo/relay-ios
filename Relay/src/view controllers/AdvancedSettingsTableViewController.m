@@ -19,6 +19,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define kLoggingSectionIndex 0
+#define kNotificationSectionIndex 1
+#define kDeleteAccountSectionIndex 2
+
 @interface AdvancedSettingsTableViewController ()
 
 @property NSArray *sectionsArray;
@@ -26,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UITableViewCell *enableLogCell;
 @property (strong, nonatomic) UITableViewCell *submitLogCell;
 @property (strong, nonatomic) UITableViewCell *registerPushCell;
+@property (strong, nonatomic) UITableViewCell *deleteAccountCell;
 
 @property (strong, nonatomic) UISwitch *enableLogSwitch;
 
@@ -42,7 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init {
     self.sectionsArray = @[
         NSLocalizedString(@"LOGGING_SECTION", nil),
-        NSLocalizedString(@"PUSH_REGISTER_TITLE", @"Used in table section header and alert view title contexts")
+        NSLocalizedString(@"PUSH_REGISTER_TITLE", @"Used in table section header and alert view title contexts"),
+        NSLocalizedString(@"ACCOUNT_SECTION", nil),
     ];
 
     return [super initWithStyle:UITableViewStyleGrouped];
@@ -75,6 +81,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Table view data source
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == kDeleteAccountSectionIndex && indexPath.row == 0) {
+        return 80.0f;
+    } else {
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return (NSInteger)[self.sectionsArray count];
@@ -82,9 +96,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case 0:
+        case kLoggingSectionIndex:
             return self.enableLogSwitch.isOn ? 2 : 1;
-        case 1:
+        case kNotificationSectionIndex:
+            return 1;
+        case kDeleteAccountSectionIndex:
             return 1;
         default:
             return 0;
@@ -96,20 +112,33 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.sectionsArray objectAtIndex:(NSUInteger)section];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        switch (indexPath.row) {
-            case 0:
-                return self.enableLogCell;
-            case 1:
-                return self.enableLogSwitch.isOn ? self.submitLogCell : self.registerPushCell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case kLoggingSectionIndex:
+            switch (indexPath.row) {
+                case 0:
+                    return self.enableLogCell;
+                case 1:
+                    return self.enableLogSwitch.isOn ? self.submitLogCell : self.registerPushCell;
+            }
+            break;
+        case 1:
+        {
+            return self.registerPushCell;
         }
-    } else {
-        return self.registerPushCell;
+            break;
+        case 2:
+        {
+            return self.deleteAccountCell;
+        }
+            break;
+        default:
+        {
+            NSAssert(false, @"No Cell configured");
+        }
+            break;
     }
-
-    NSAssert(false, @"No Cell configured");
-
     return nil;
 }
 
@@ -150,6 +179,55 @@ NS_ASSUME_NONNULL_BEGIN
 
     [Environment.preferences setLoggingEnabled:sender.isOn];
     [self.tableView reloadData];
+}
+
+- (IBAction)unregisterUser:(id)sender {
+    UIAlertController *alertController =
+    [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CONFIRM_ACCOUNT_DESTRUCTION_TITLE", @"")
+                                        message:NSLocalizedString(@"CONFIRM_ACCOUNT_DESTRUCTION_TEXT", @"")
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"PROCEED_BUTTON", @"")
+                                                        style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction *action) {
+                                                          [self proceedToUnregistration];
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)proceedToUnregistration {
+    [TSAccountManager unregisterTextSecureWithSuccess:^{
+        [Environment resetAppData];
+    }
+                                              failure:^(NSError *error) {
+                                                  SignalAlertView(NSLocalizedString(@"UNREGISTER_SIGNAL_FAIL", @""), @"");
+                                              }];
+}
+
+#pragma mark - Accessors
+-(UITableViewCell *)deleteAccountCell
+{
+    if (_deleteAccountCell == nil) {
+        _deleteAccountCell = [UITableViewCell new];
+        //        _deleteAccountCell.backgroundColor = [UIColor clearColor];
+        
+        UIButton *deleteAccoutButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [deleteAccoutButton setTitle:NSLocalizedString(@"SETTINGS_DELETE_ACCOUNT_BUTTON", @"") forState:UIControlStateNormal];
+        [deleteAccoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        deleteAccoutButton.titleLabel.font = [UIFont systemFontOfSize:17.0 weight:UIFontWeightBold];
+        deleteAccoutButton.backgroundColor = [ForstaColors mediumDarkRed];
+        CGRect screenRect = UIScreen.mainScreen.bounds;
+        deleteAccoutButton.frame = CGRectMake(screenRect.origin.x + 20,
+                                              ([self tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]]- _deleteAccountCell.frame.size.height)/2,
+                                              screenRect.size.width - 40,
+                                              _deleteAccountCell.frame.size.height);
+        [deleteAccoutButton addTarget:self action:@selector(unregisterUser:) forControlEvents:UIControlEventTouchUpInside];
+        [_deleteAccountCell.contentView addSubview:deleteAccoutButton];
+    }
+    return _deleteAccountCell;
 }
 
 #pragma mark - Logging

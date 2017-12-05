@@ -43,4 +43,9 @@
 +(UIColor *)mediumLightBlue2;
 +(UIColor *)lightBlue2;
 
++(UIColor *)mediumPurple;
+
++(UIColor *)mediumYellow;
+
++(UIColor *)mediumPink;
 @end

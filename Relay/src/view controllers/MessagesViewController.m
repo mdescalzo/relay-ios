@@ -1025,12 +1025,13 @@ typedef enum : NSUInteger {
         }
     } else if (message.messageType == TSIncomingMessageAdapter) {
         TSIncomingMessage *incomingMessage = (TSIncomingMessage *)message.interaction;
-        NSString *_Nonnull name = [self.contactsManager nameStringForContactID:incomingMessage.authorId];
-        NSAttributedString *senderNameString = [[NSAttributedString alloc] initWithString:name];
-
-        return senderNameString;
+        if (!incomingMessage.hasAnnotation) {
+            NSString *_Nonnull name = [self.contactsManager nameStringForContactID:incomingMessage.authorId];
+            NSAttributedString *senderNameString = [[NSAttributedString alloc] initWithString:name];
+            
+            return senderNameString;
+        }
     }
-
     return nil;
 }
 

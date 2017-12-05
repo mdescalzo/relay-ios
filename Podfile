@@ -10,7 +10,7 @@ abstract_target 'Common' do
     pod 'PastelogKit',                 '~> 1.3'
     pod 'FFCircularProgressView',      '~> 0.5'
     pod 'SCWaveformView',              '~> 1.0'
-    pod 'ZXingObjC',                   '~> 3.1.0'
+    pod 'ZXingObjC',                   '~> 3.2.2'
     pod 'DJWActionSheet',              '~> 1.0.4'
     pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: '7.3.4-attributedText'
     pod '25519',                       '~> 2.0.2'
