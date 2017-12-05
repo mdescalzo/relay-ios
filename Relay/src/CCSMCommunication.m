@@ -520,8 +520,6 @@
                    NSDictionary *prefsDict = [org objectForKey:@"preferences"];
                    if (prefsDict) {
                        // Currently no prefs to process
-                   } else {
-                       [Environment.preferences setIsOffTheRecord:NO];
                    }
                    DDLogDebug(@"Successfully process Org preferences.");
                }

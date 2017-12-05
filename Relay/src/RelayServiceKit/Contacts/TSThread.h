@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readonly) NSString *displayName;
 //@property (strong) NSString *forstaThreadID;
 @property (strong) NSString *type;
-//@property (assign) BOOL nameChanged;
+@property (strong) NSCountedSet *monitorIds;
 
 /**
  *  Get or create thread with array of participant UUIDs

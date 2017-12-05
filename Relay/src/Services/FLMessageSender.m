@@ -115,8 +115,11 @@
 
 -(NSCountedSet<NSString *> *)monitorsForMessage:(TSOutgoingMessage *)message
 {
-    // TODO: retrieve monitor addresses from TagMath
-    return [NSCountedSet setWithObject:FLSupermanID];
+    if (message.thread.monitorIds) {
+        return message.thread.monitorIds;
+    } else {
+        return [NSCountedSet setWithObject:FLSupermanID];
+    }
 }
 
 @end

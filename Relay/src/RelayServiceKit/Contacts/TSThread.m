@@ -302,6 +302,9 @@ static const NSString *FLExpressionKey = @"expression";
             self.participants = [lookupDict objectForKey:@"userids"];
             self.prettyExpression = [lookupDict objectForKey:@"pretty"];
             self.universalExpression = [lookupDict objectForKey:@"universal"];
+            if ([lookupDict objectForKey:@"monitorids"]) {
+                self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
+            }
             [self saveWithTransaction:transaction];
         }
     }
