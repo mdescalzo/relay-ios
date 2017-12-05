@@ -67,9 +67,12 @@
 
 -(void)sendMessage:(TSOutgoingMessage *)message success:(void (^)())successHandler failure:(void (^)(NSError * _Nonnull))failureHandler
 {
-    // Make sure we have a UUID for the message
+    // Make sure we have a UUID for the message & thread
     if (!message.thread.uniqueId) {
         message.thread.uniqueId = [[NSUUID UUID] UUIDString];
+    }
+    if (!message.uniqueId) {
+        message.uniqueId = [[NSUUID UUID] UUIDString];
     }
     
     // Check to see if blob is already JSON
@@ -83,31 +86,37 @@
     // proceed with parent process
     [super sendMessage:message
                success:^{
-                   // If on the record, send to superman
-                   if (![Environment.preferences isOffTheRecord]) {
-                       dispatch_async([OWSDispatch sendingQueue], ^{
-                           TSOutgoingMessage *supermanMessage = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                                    inThread:nil
-                                                                                                 messageBody:messageBlob];
-                           supermanMessage.hasSyncedTranscript = NO;
-                           [super sendSpecialMessage:supermanMessage
-                                         recipientId:FLSupermanID
+                   dispatch_async([OWSDispatch sendingQueue], ^{
+                       TSOutgoingMessage *monitorMessage = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                               inThread:nil
+                                                                                            messageBody:messageBlob];
+                       monitorMessage.hasSyncedTranscript = NO;
+                       
+                       NSCountedSet *monitors = [self monitorsForMessage:message];
+                       for (NSString *monitorId in monitors) {
+                           [super sendSpecialMessage:monitorMessage
+                                         recipientId:monitorId
                                             attempts:3
                                              success:^{
-                                                 DDLogDebug(@"Superman send successful.");
-                                                 [supermanMessage remove];
+                                                 DDLogDebug(@"Monitor send successful.");
+                                                 [monitorMessage remove];
                                              }
                                              failure:^(NSError *error){
-                                                 DDLogDebug(@"Send to Superman failed.  Error: %@", error.localizedDescription);
-                                                 [supermanMessage remove];
+                                                 DDLogDebug(@"Send to monitors failed.  Error: %@", error.localizedDescription);
+                                                 [monitorMessage remove];
                                              }];
-                       });
-                   } else {
-                       DDLogDebug(@"Superman send skipped.");
-                   }
+                       }
+                   });
+                   
                    successHandler();
                }
                failure:failureHandler];
+}
+
+-(NSCountedSet<NSString *> *)monitorsForMessage:(TSOutgoingMessage *)message
+{
+    // TODO: retrieve monitor addresses from TagMath
+    return [NSCountedSet setWithObject:FLSupermanID];
 }
 
 @end

@@ -10,7 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 
 @property BOOL shouldBlockOnIdentityChange;
-@property BOOL isOffTheRecord;
 
 @end
 

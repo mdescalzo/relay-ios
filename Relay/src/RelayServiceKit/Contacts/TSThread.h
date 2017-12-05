@@ -190,12 +190,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream;
 
-/**
- *  Exposing a formerly private method...
- *
- */
-- (NSArray<TSInteraction *> *)allInteractions;
-
 @end
 
 NS_ASSUME_NONNULL_END
