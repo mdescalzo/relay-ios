@@ -97,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                               lastName:[userDict objectForKey:@"last_name"]];
     recipient.email = [userDict objectForKey:@"email"];
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
+    recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
 
     NSDictionary *orgDict = [userDict objectForKey:@"org"];
     if (orgDict) {
@@ -165,7 +166,16 @@ NS_ASSUME_NONNULL_BEGIN
 -(UIImage *)avatar
 {
     if (_avatar == nil) {
-        
+        if (self.gravatarHash.length > 0) {
+            NSString *gravatarURL = [NSString stringWithFormat:FLGravatarURLFormat, self.gravatarHash];
+            NSData *gravatarData = [NSData dataWithContentsOfURL:[NSURL URLWithString:gravatarURL]];
+            if (gravatarData) {
+                UIImage *gravatarImage = [UIImage imageWithData:gravatarData];
+                if (gravatarImage) {
+                    _avatar = gravatarImage;
+                }
+            }
+        }
     }
     return _avatar;
 }
