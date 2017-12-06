@@ -157,12 +157,11 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [[TSStorageManager sharedManager] setupDatabase];
     [TextSecureKitEnv sharedEnv].notificationsManager = [[NotificationsManager alloc] init];
     
-    OWSMessageSender *messageSender =
-    [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    FLMessageSender *messageSender =
+    [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                       storageManager:[TSStorageManager sharedManager]
                                      contactsManager:[Environment getCurrent].contactsManager];
-    //                                     contactsUpdater:[Environment getCurrent].contactsUpdater];
-    
+     
     self.incomingMessageReadObserver =
     [[OWSIncomingMessageReadObserver alloc] initWithStorageManager:[TSStorageManager sharedManager]
                                                      messageSender:messageSender];
