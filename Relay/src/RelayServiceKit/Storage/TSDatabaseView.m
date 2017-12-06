@@ -17,7 +17,6 @@
 
 NSString *TSInboxGroup   = @"TSInboxGroup";
 NSString *TSArchiveGroup = @"TSArchiveGroup";
-NSString *FLSupermanGroup = @"FLSupermanGroup"; // Used for hiding superman threads
 
 NSString *TSUnreadIncomingMessagesGroup = @"TSUnreadIncomingMessagesGroup";
 NSString *TSSecondaryDevicesGroup = @"TSSecondaryDevicesGroup";
@@ -73,14 +72,7 @@ NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesData
                                              withObjectBlock:^NSString *(YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
                                                  if ([object isKindOfClass:[TSThread class]]) {
                                                      TSThread *thread = (TSThread *)object;
-                                                     if ([thread.participants containsObject:@"+17017328731"] ||
-                                                         [thread.participants containsObject:@"1e1116aa-31b3-4fb2-a4db-21e8136d4f3a"] ||
-                                                         [thread.participants containsObject:@"+17017328732"] ||
-                                                         [thread.participants containsObject:@"cf40fca2-dfa8-4356-8ae7-45f56f7551ca"] ||
-                                                         [thread.participants containsObject:@"88e7165e-d2da-4c3f-a14a-bb802bb0cefb"] ||
-                                                         [thread.participants containsObject:@"+17017328733"]) {
-                                                         return FLSupermanGroup;
-                                                     } else if (thread.archivalDate) {
+                                                     if (thread.archivalDate) {
                                                          return ([self threadShouldBeInInbox:thread]) ? TSInboxGroup : TSArchiveGroup;
                                                      } else if (thread.archivalDate) {
                                                          return TSArchiveGroup;

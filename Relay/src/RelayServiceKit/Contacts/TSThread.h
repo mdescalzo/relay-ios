@@ -155,9 +155,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong) NSString *universalExpression;
 @property (strong) NSString *prettyExpression;
 @property (strong, readonly) NSString *displayName;
-//@property (strong) NSString *forstaThreadID;
 @property (strong) NSString *type;
-//@property (assign) BOOL nameChanged;
+@property (strong) NSCountedSet *monitorIds;
 
 /**
  *  Get or create thread with array of participant UUIDs
@@ -191,10 +190,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream;
 
 /**
- *  Exposing a formerly private method...
- *
+ *  Update thread with its expression
  */
-- (NSArray<TSInteraction *> *)allInteractions;
+-(void)validate;
+-(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 @end
 

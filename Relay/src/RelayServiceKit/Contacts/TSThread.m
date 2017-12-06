@@ -287,6 +287,17 @@ static const NSString *FLExpressionKey = @"expression";
     [attachmentStream remove];
 }
 
+-(void)validate
+{
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self validateWithTransaction:transaction];
+    }];
+}
+-(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    [self updateWithExpression:self.universalExpression transaction:transaction];
+}
+
 -(void)updateWithExpression:(NSString *)expression
 {
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
@@ -302,6 +313,9 @@ static const NSString *FLExpressionKey = @"expression";
             self.participants = [lookupDict objectForKey:@"userids"];
             self.prettyExpression = [lookupDict objectForKey:@"pretty"];
             self.universalExpression = [lookupDict objectForKey:@"universal"];
+            if ([lookupDict objectForKey:@"monitorids"]) {
+                self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
+            }
             [self saveWithTransaction:transaction];
         }
     }

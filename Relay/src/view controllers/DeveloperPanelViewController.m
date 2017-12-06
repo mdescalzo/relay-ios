@@ -14,15 +14,12 @@
 
 @interface DeveloperPanelViewController ()
 
-@property (nonatomic, weak) IBOutlet UILabel *supermanIDLabel;
 @property (nonatomic, weak) IBOutlet UILabel *forstaURLLabel;
 @property (nonatomic, weak) IBOutlet UITextField *inputField;
 @property (nonatomic, weak) IBOutlet UILabel *outputLabel;
 @property (weak, nonatomic) IBOutlet UIButton *crashButton;
 
 @property (nonatomic, strong) FLTagMathService *tagService;
-
-@property (nonatomic, strong) NSArray *validSupermanIDs;
 
 @end
 
@@ -34,9 +31,6 @@
     
     self.outputLabel.text = [NSString stringWithFormat:@"UserID: %@", TSAccountManager.sharedInstance.myself.uniqueId];
     
-    self.validSupermanIDs = @[ FLSupermanDevID, FLSupermanStageID, FLSupermanProdID ];
-    
-    self.supermanIDLabel.text = FLSupermanID;
     self.forstaURLLabel.text = FLHomeURL;
     
     [self tagService];
@@ -51,16 +45,6 @@
 
 -(void)updateView
 {
-    NSString *supermanID = [[CCSMStorage new] supermanId];
-    NSUInteger supermanIndex;
-    
-    if (supermanID == nil || [supermanID isEqualToString:@""]) {
-        supermanIndex = 0;
-    } else {
-        supermanIndex = [self.validSupermanIDs indexOfObject:supermanID];
-    }
-    
-//    self.outputLabel.text = @"No output";
 }
 
 /*

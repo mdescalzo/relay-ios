@@ -13,8 +13,6 @@
 
 extern NSString *TSInboxGroup;
 extern NSString *TSArchiveGroup;
-extern NSString *FLSupermanGroup;   //  Used for hiding the Superman threads
-extern NSString *TSUnreadIncomingMessagesGroup;
 extern NSString *TSSecondaryDevicesGroup;
 
 extern NSString *TSThreadDatabaseViewExtensionName;

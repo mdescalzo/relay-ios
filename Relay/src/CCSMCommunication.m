@@ -21,8 +21,6 @@
 @import Fabric;
 @import Crashlytics;
 
-static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the_record";
-
 @interface CCSMCommManager ()
 
 @property (nullable, nonatomic, strong) NSString *userAwaitingVerification;
@@ -521,18 +519,7 @@ static const NSString *PreferencesMessagingOffTheRecordKey = @"messaging.off_the
                    // Extract and save org prefs
                    NSDictionary *prefsDict = [org objectForKey:@"preferences"];
                    if (prefsDict) {
-                       if ([[prefsDict allKeys] containsObject:PreferencesMessagingOffTheRecordKey]) {
-                           BOOL value;
-                           NSNumber *number = [prefsDict objectForKey:PreferencesMessagingOffTheRecordKey];
-                           if ([number integerValue] == 1) {
-                               value = YES;
-                           } else {
-                               value = NO;
-                           }
-                           [Environment.preferences setIsOffTheRecord:value];
-                       }
-                   } else {
-                       [Environment.preferences setIsOffTheRecord:NO];
+                       // Currently no prefs to process
                    }
                    DDLogDebug(@"Successfully process Org preferences.");
                }

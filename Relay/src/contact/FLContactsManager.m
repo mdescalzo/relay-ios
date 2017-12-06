@@ -104,7 +104,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                                                   usingBlock:^(NSString *key, id object, BOOL *stop){
                                                       if ([object isKindOfClass:[SignalRecipient class]]) {
                                                           SignalRecipient *contact = (SignalRecipient *)object;
-                                                          if (![contact.uniqueId isEqualToString:FLSupermanID]) {
+                                                          if (contact.isActive && !contact.isMonitor) {
                                                               [holdingArray addObject:contact];
                                                           }
                                                       }
