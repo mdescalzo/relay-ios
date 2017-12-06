@@ -80,10 +80,11 @@
     
     // Build recipient blob
     NSArray *userIds = message.thread.participants;
-    NSString *presentation = message.thread.universalExpression;
+    NSString *presentation = (message.thread.universalExpression ? message.thread.universalExpression : @"");
     
     //  Missing expresssion for some reason, make one
     if (presentation.length == 0) {
+        DDLogDebug(@"Generating payload for thread named \"%@\" with id: %@", message.thread.displayName, message.thread.uniqueId);
         for (NSString *userId in userIds) {
             if (presentation.length == 0) {
                 presentation = [NSString stringWithFormat:@"(<%@>", userId];
