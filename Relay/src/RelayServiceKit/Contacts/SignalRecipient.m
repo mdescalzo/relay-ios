@@ -98,6 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
     recipient.email = [userDict objectForKey:@"email"];
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
     recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
+    recipient.isMonitor = ([(NSNumber *)[userDict objectForKey:@"is_monitor"] intValue] == 1 ? YES : NO);
+    recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
 
     NSDictionary *orgDict = [userDict objectForKey:@"org"];
     if (orgDict) {

@@ -105,37 +105,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleReceivedEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
 {
-    NSString *supermanID = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FLSupermanID"];
-    if (![envelope.source isEqualToString:supermanID]) {
-        
-        @try {
-            switch (envelope.type) {
-                case OWSSignalServiceProtosEnvelopeTypeCiphertext:
-                    [self handleSecureMessage:envelope];
-                    break;
-                case OWSSignalServiceProtosEnvelopeTypePrekeyBundle:
-                    [self handlePreKeyBundle:envelope];
-                    break;
-                case OWSSignalServiceProtosEnvelopeTypeReceipt:
-                    DDLogInfo(@"Received a delivery receipt");
-                    [self handleDeliveryReceipt:envelope];
-                    break;
-                    
-                    // Other messages are just dismissed for now.
-                    
-                case OWSSignalServiceProtosEnvelopeTypeKeyExchange:
-                    DDLogWarn(@"Received Key Exchange Message, not supported");
-                    break;
-                case OWSSignalServiceProtosEnvelopeTypeUnknown:
-                    DDLogWarn(@"Received an unknown message type");
-                    break;
-                default:
-                    DDLogWarn(@"Received unhandled envelope type: %d", (int)envelope.type);
-                    break;
-            }
-        } @catch (NSException *exception) {
-            DDLogWarn(@"Received an incorrectly formatted protocol buffer: %@", exception.debugDescription);
+    @try {
+        switch (envelope.type) {
+            case OWSSignalServiceProtosEnvelopeTypeCiphertext:
+                [self handleSecureMessage:envelope];
+                break;
+            case OWSSignalServiceProtosEnvelopeTypePrekeyBundle:
+                [self handlePreKeyBundle:envelope];
+                break;
+            case OWSSignalServiceProtosEnvelopeTypeReceipt:
+                DDLogInfo(@"Received a delivery receipt");
+                [self handleDeliveryReceipt:envelope];
+                break;
+                
+                // Other messages are just dismissed for now.
+                
+            case OWSSignalServiceProtosEnvelopeTypeKeyExchange:
+                DDLogWarn(@"Received Key Exchange Message, not supported");
+                break;
+            case OWSSignalServiceProtosEnvelopeTypeUnknown:
+                DDLogWarn(@"Received an unknown message type");
+                break;
+            default:
+                DDLogWarn(@"Received unhandled envelope type: %d", (int)envelope.type);
+                break;
         }
+    } @catch (NSException *exception) {
+        DDLogWarn(@"Received an incorrectly formatted protocol buffer: %@", exception.debugDescription);
     }
 }
 

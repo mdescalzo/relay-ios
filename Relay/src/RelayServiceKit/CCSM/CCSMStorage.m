@@ -40,7 +40,6 @@
 
 @implementation CCSMStorage
 
-@synthesize supermanId = _supermanId;
 @synthesize textSecureURL = _textSecureURL;
 @synthesize dbConnection = _dbConnection;
 
@@ -54,7 +53,6 @@ NSString *const CCSMStorageKeyUserInfo = @"User Info";
 NSString *const CCSMStorageKeyOrgInfo = @"Org Info";
 NSString *const CCSMStorageKeyUsers = @"Users";
 NSString *const CCSMStorageKeyTags = @"Tags";
-NSString *const CCSMStorageKeySupermanId = @"SupermanID";
 NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 
 -(instancetype)init
@@ -182,22 +180,6 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 - (nullable NSDictionary *)getTags
 {
     return [self tryGetValueForKey:CCSMStorageKeyTags];
-}
-
--(NSString *)supermanId
-{
-    if (_supermanId == nil) {
-        _supermanId = [self tryGetValueForKey:CCSMStorageKeySupermanId];
-    }
-    return _supermanId;
-}
-
--(void)setSupermanId:(NSString *)value
-{
-    if (![_supermanId isEqualToString:value]) {
-        _supermanId = [value copy];
-        [self setValueForKey:CCSMStorageKeySupermanId toValue:value];
-    }
 }
 
 -(NSString *)textSecureURL

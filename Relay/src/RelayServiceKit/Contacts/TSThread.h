@@ -155,7 +155,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong) NSString *universalExpression;
 @property (strong) NSString *prettyExpression;
 @property (strong, readonly) NSString *displayName;
-//@property (strong) NSString *forstaThreadID;
 @property (strong) NSString *type;
 @property (strong) NSCountedSet *monitorIds;
 
@@ -189,6 +188,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  Update avatar/image wiht attachment stream
  */
 - (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream;
+
+/**
+ *  Update thread with its expression
+ */
+-(void)validate;
+-(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 @end
 

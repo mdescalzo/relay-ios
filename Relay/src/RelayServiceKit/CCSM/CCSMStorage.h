@@ -11,7 +11,6 @@
 
 @interface CCSMStorage : NSObject
 
-@property (strong) NSString *supermanId;
 @property (strong) NSString *textSecureURL;
 
 - (NSString *)getOrgName;

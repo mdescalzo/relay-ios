@@ -67,6 +67,8 @@
 
 -(void)sendMessage:(TSOutgoingMessage *)message success:(void (^)())successHandler failure:(void (^)(NSError * _Nonnull))failureHandler
 {
+    // Validate the thread's expression
+    [message.thread validate];
     // Make sure we have a UUID for the message & thread
     if (!message.thread.uniqueId) {
         message.thread.uniqueId = [[NSUUID UUID] UUIDString];
@@ -118,7 +120,7 @@
     if (message.thread.monitorIds) {
         return message.thread.monitorIds;
     } else {
-        return [NSCountedSet setWithObject:FLSupermanID];
+        return [NSCountedSet new];
     }
 }
 

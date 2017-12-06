@@ -32,14 +32,6 @@
 #define FLCCSMUsersUpdated @"FLCCSMUsersUpdated"
 #define FLCCSMTagsUpdated @"FLCCSMTagsUpdated"
 
-// Superman IDs....
-//#define FLSupermanDevID @"+17017328731"
-#define FLSupermanDevID @"1e1116aa-31b3-4fb2-a4db-21e8136d4f3a"
-//#define FLSupermanStageID @"+17017328732"
-#define FLSupermanStageID @"88e7165e-d2da-4c3f-a14a-bb802bb0cefb"
-//#define FLSupermanProdID @"+17017328733"
-#define FLSupermanProdID @"cf40fca2-dfa8-4356-8ae7-45f56f7551ca"
-
 // Forsta home URLs
 #define FLForstaDevURL @"https://ccsm-dev-api.forsta.io"
 #define FLForstaStageURL @"https://ccsm-stage-api.forsta.io"
@@ -59,15 +51,12 @@
 // Select based upon build target
 #ifdef DEVELOPMENT
     #define FLHomeURL FLForstaDevURL
-    #define FLSupermanID FLSupermanDevID
     #define FLDomainCreateURL FLDomainCreateDevURL
 #elif STAGE
     #define FLHomeURL FLForstaStageURL
-    #define FLSupermanID FLSupermanStageID
     #define FLDomainCreateURL FLDomainCreateStageURL
 #elif PRODUCTION
     #define FLHomeURL FLForstaProdURL
-    #define FLSupermanID FLSupermanProdID
     #define FLDomainCreateURL FLDomainCreateProdURL
 #endif
 

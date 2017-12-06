@@ -41,8 +41,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>117</string>
-	<key>FLSupermanID</key>
-	<string>1e1116aa-31b3-4fb2-a4db-21e8136d4f3a</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LOGS_EMAIL</key>

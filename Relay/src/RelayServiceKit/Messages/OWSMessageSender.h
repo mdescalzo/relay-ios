@@ -37,7 +37,7 @@ NS_SWIFT_NAME(MessageSender)
             failure:(void (^)(NSError *error))failureHandler;
 
 /**
- *  Direct send only used for superman or other sends which don't require the usual
+ *  Direct send only used for monitor or other sends which don't require the usual
  *  processing.
  */
 -(void)sendSpecialMessage:(TSOutgoingMessage *)message

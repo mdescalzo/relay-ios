@@ -422,7 +422,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     
     SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:recipientId];
     NSMutableOrderedSet *devicesIds = nil;
-    if (recipient) {
+    if (recipient.devices.count > 0) {
         devicesIds = recipient.devices;
     } else {
         devicesIds = [NSMutableOrderedSet orderedSetWithObject:[NSNumber numberWithInt:1]];
@@ -433,7 +433,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         
         TSSubmitMessageRequest *request = [[TSSubmitMessageRequest alloc] initWithRecipient:recipientId
                                                                                    messages:messagesArray
-                                                                                      relay:nil
+                                                                                      relay:recipient.relay
                                                                                   timeStamp:message.timestamp];
         [self.networkManager makeRequest:request
                                  success:^(NSURLSessionDataTask *task, id responseObject) {
