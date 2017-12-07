@@ -18,6 +18,7 @@
 #import "TSAttachment.h"
 #import "TSAttachmentPointer.h"
 #import "TSAttachmentStream.h"
+#import "OWSReadReceiptsMessage.h"
 
 @interface CCSMJSONService()
 
@@ -37,9 +38,12 @@
     NSArray *holdingArray = nil;
     if ([message.messageType isEqualToString:@"control"]) {
         holdingArray = [self arrayForTypeControlFromMessage:message];
+    } else if ([message.messageType isEqualToString:@"content"]) {
+        holdingArray = [self arrayForTypeContentFromMessage:message];
     } else {
-        if (message.messageType.length == 0) {
-            message.messageType = @"content";
+        // TODO: add addition messageType handlers
+        if ([message isKindOfClass:[OWSReadReceiptsMessage class]]) {
+            message.messageType = @"receipt";
         }
         holdingArray = [self arrayForTypeContentFromMessage:message];
     }
@@ -64,17 +68,14 @@
 +(NSArray *)arrayForTypeContentFromMessage:(TSOutgoingMessage *)message
 {
     NSNumber *version = [NSNumber numberWithInt:FLBlobShapeRevision];
-    NSString *userAgent = [DeviceTypes deviceModelName];
-    NSString *messageId = message.uniqueId;
-    NSString *threadId = message.thread.uniqueId;
+    NSString *userAgent = ([DeviceTypes deviceModelName] ? [DeviceTypes deviceModelName] : @"Unidentified iOS Device");
+    NSString *messageId = (message.uniqueId ? message.uniqueId : @"");
+    NSString *threadId = (message.thread.uniqueId ? message.thread.uniqueId : @"");
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
-    NSString *messageType = message.messageType;
-    NSString *threadType = message.thread.type;
-    if (threadType.length == 0) {
-        threadType = @"conversation";
-    }
-    
+    NSString *messageType = (message.messageType.length > 0 ? message.messageType : @"");
+    NSString *threadType = (message.thread.type.length > 0 ? message.thread.type : @"");
+
     // Sender blob
     NSDictionary *sender = @{ @"userId" :  TSAccountManager.sharedInstance.myself.uniqueId };
     
@@ -85,20 +86,24 @@
     //  Missing expresssion for some reason, make one
     if (presentation.length == 0) {
         DDLogDebug(@"Generating payload for thread named \"%@\" with id: %@", message.thread.displayName, message.thread.uniqueId);
-        for (NSString *userId in userIds) {
-            if (presentation.length == 0) {
-                presentation = [NSString stringWithFormat:@"(<%@>", userId];
-            } else {
-                presentation = [presentation stringByAppendingString:[NSString stringWithFormat:@"+<%@>", userId]];
+        if (userIds.count > 0) {
+            for (NSString *userId in userIds) {
+                if (presentation.length == 0) {
+                    presentation = [NSString stringWithFormat:@"(<%@>", userId];
+                } else {
+                    presentation = [presentation stringByAppendingString:[NSString stringWithFormat:@"+<%@>", userId]];
+                }
             }
+            presentation = [presentation stringByAppendingString:@")"];
+        } else {
+            presentation = @"";
         }
-        presentation = [presentation stringByAppendingString:@")"];
     }
     NSDictionary *recipients = @{ @"expression" : presentation };
     
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithDictionary:
-                            @{ @"version" : version,
-                               @"userAgent" : userAgent,
+                                    @{ @"version" : version,
+                                       @"userAgent" : userAgent,
                                @"messageId" : messageId,
                                @"threadId" : threadId,
                                @"threadTitle" : threadTitle,

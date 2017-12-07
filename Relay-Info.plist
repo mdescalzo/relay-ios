@@ -40,11 +40,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>118</string>
+	<string>119</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LOGS_EMAIL</key>
-	<string>support@forsta.io</string>
+	<string>iossupport@forsta.io</string>
 	<key>LOGS_URL</key>
 	<string>https://github.com/ForstaLabs/relay-ios/issues</string>
 	<key>LSApplicationCategoryType</key>

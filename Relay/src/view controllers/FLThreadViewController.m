@@ -357,19 +357,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     if ([segue.identifier isEqualToString:@"SettingsPopoverSegue"]) {
         segue.destinationViewController.popoverPresentationController.delegate = self;
         segue.destinationViewController.preferredContentSize = CGSizeMake(self.tableView.frame.size.width*2/3, [self.settingsViewController heightForTableView]);
-
-        UIBarButtonItem *settingsButton = (UIBarButtonItem *)sender;
-        UIView *targetView = (UIView *)[settingsButton valueForKey:@"view"];
-        CGRect rect = CGRectMake(self.navigationController.navigationBar.frame.size.width - targetView.frame.size.width,
-                                 20,
-                                 targetView.frame.size.width,
-                                 targetView.frame.size.height);
-        segue.destinationViewController.popoverPresentationController.sourceRect = rect;
-        segue.destinationViewController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        segue.destinationViewController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
     }
     else if ([[segue identifier] isEqualToString:@"threadSelectedSegue"]) {
         self.navigationItem.backBarButtonItem.title = @"";
-        
         MessagesViewController *destination = (MessagesViewController *)segue.destinationViewController;
         [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
     }
@@ -811,25 +802,20 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_logo_DEV"]
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
-                                 //                                                                action:@selector(onSettingsTap:)];
                                                                 action:nil];
 #elif STAGE
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_logo_PRE"]
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
-                                 //                                                                action:@selector(onSettingsTap:)];
                                                                 action:nil];
 #else // Assume Production build
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_text_logo"]
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
-//                                                                action:@selector(onSettingsTap:)];
                                                                 action:nil];
 #endif
     logoItem.tag = kLogoButtonTag;
     self.navigationItem.leftBarButtonItem = logoItem;
-    
-//    self.navigationItem.rightBarButtonItems = @[ self.settingsButton, self.composeButton ];
 }
 
 -(void)reloadTableView

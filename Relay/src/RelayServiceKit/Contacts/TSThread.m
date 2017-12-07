@@ -36,6 +36,7 @@ static const NSString *FLExpressionKey = @"expression";
 @synthesize name = _name;
 @synthesize image = _image;
 @synthesize prettyExpression = _prettyExpression;
+@synthesize universalExpression = _universalExpression;
 
 + (NSString *)collection {
     return @"TSThread";
@@ -192,6 +193,21 @@ static const NSString *FLExpressionKey = @"expression";
     return _name;
 }
 
+-(void)setUniversalExpression:(NSString *)value
+{
+    if (![_universalExpression isEqualToString:value] && value.length > 0) {
+        _universalExpression = [value copy];
+    }
+}
+
+-(NSString *)universalExpression
+{
+    if (_universalExpression)
+        return _universalExpression;
+    else
+        return @"";
+}
+
 -(void)setPrettyExpression:(NSString *)value
 {
     if (![_prettyExpression isEqualToString:value] && value.length > 0) {
@@ -201,7 +217,10 @@ static const NSString *FLExpressionKey = @"expression";
 
 -(NSString *)prettyExpression
 {
-    return _prettyExpression;
+    if (_prettyExpression)
+        return _prettyExpression;
+    else
+        return @"";
 }
 
 -(NSString *)displayName
