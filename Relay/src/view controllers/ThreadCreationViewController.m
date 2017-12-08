@@ -424,6 +424,7 @@
                                      __block TSThread *thread = nil;
                                      [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                                          thread = [TSThread getOrCreateThreadWithParticipants:userIds transaction:transaction];
+                                         thread.type = @"conversation";
                                          thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
                                          thread.universalExpression = [[results objectForKey:@"universal"] copy];
                                          [thread saveWithTransaction:transaction];

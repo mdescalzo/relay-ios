@@ -7,7 +7,6 @@
 //
 
 #import "ConversationUpdateViewController.h"
-#import "DJWActionSheet+OWS.h"
 #import "Environment.h"
 #import "FunctionalUtil.h"
 #import "FLContactsManager.h"

@@ -7,7 +7,6 @@
 //
 
 #import "FingerprintViewController.h"
-#import "DJWActionSheet+OWS.h"
 #import "Environment.h"
 #import "ConversationSettingsViewController.h"
 #import "Relay-Swift.h"

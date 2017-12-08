@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 
-#import "DJWActionSheet+OWS.h"
 #import "Environment.h"
 #import "FingerprintViewController.h"
 #import "FullImageViewController.h"
@@ -1414,27 +1413,53 @@ typedef enum : NSUInteger {
 
 - (void)handleUnsentMessageTap:(TSOutgoingMessage *)message {
     [self dismissKeyBoard];
-    [DJWActionSheet showInView:self.parentViewController.view
-                     withTitle:message.mostRecentFailureText
-             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-        destructiveButtonTitle:NSLocalizedString(@"TXT_DELETE_TITLE", @"")
-             otherButtonTitles:@[ NSLocalizedString(@"SEND_AGAIN_BUTTON", @"") ]
-                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-                              DDLogDebug(@"%@ User cancelled unsent dialog", self.tag);
-                          } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-                              DDLogInfo(@"%@ User chose to delete unsent message.", self.tag);
-                              [message remove];
-                          } else {
-                              [self.messageSender sendMessage:message
-                                  success:^{
-                                      DDLogInfo(@"%@ Successfully resent failed message.", self.tag);
-                                  }
-                                  failure:^(NSError *_Nonnull error) {
-                                      DDLogWarn(@"%@ Failed to send message with error: %@", self.tag, error);
-                                  }];
-                          }
-                      }];
+    UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                        message:message.mostRecentFailureText
+                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SEND_AGAIN_BUTTON", @"")
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                     [self.messageSender sendMessage:message
+                                                                             success:^{
+                                                                                 DDLogInfo(@"%@ Successfully resent failed message.", self.tag);
+                                                                             }
+                                                                             failure:^(NSError *_Nonnull error) {
+                                                                                 DDLogWarn(@"%@ Failed to send message with error: %@", self.tag, error);
+                                                                             }];
+                                                 }]];
+    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_DELETE_TITLE", @"")
+                                                   style:UIAlertActionStyleDestructive
+                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                     DDLogInfo(@"%@ User chose to delete unsent message.", self.tag);
+                                                     [message remove];
+                                                 }]];
+    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                   style:UIAlertActionStyleCancel
+                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                     DDLogDebug(@"%@ User cancelled unsent dialog", self.tag);
+                                                 }]];
+    [self.parentViewController presentViewController:alertSheet animated:YES completion:nil];
+//    [DJWActionSheet showInView:self.parentViewController.view
+//                     withTitle:message.mostRecentFailureText
+//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+//        destructiveButtonTitle:NSLocalizedString(@"TXT_DELETE_TITLE", @"")
+//             otherButtonTitles:@[ NSLocalizedString(@"SEND_AGAIN_BUTTON", @"") ]
+//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
+//                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
+//                              DDLogDebug(@"%@ User cancelled unsent dialog", self.tag);
+//                          } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
+//                              DDLogInfo(@"%@ User chose to delete unsent message.", self.tag);
+//                              [message remove];
+//                          } else {
+//                              [self.messageSender sendMessage:message
+//                                  success:^{
+//                                      DDLogInfo(@"%@ Successfully resent failed message.", self.tag);
+//                                  }
+//                                  failure:^(NSError *_Nonnull error) {
+//                                      DDLogWarn(@"%@ Failed to send message with error: %@", self.tag, error);
+//                                  }];
+//                          }
+//                      }];
 }
 
 - (void)handleErrorMessageTap:(TSErrorMessage *)message
@@ -1456,39 +1481,67 @@ typedef enum : NSUInteger {
     NSString *actionSheetTitle = [NSString
         stringWithFormat:NSLocalizedString(@"CORRUPTED_SESSION_DESCRIPTION", @"ActionSheet title"), self.thread.displayName];
 
-    [DJWActionSheet showInView:self.view
-                     withTitle:actionSheetTitle
-             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-        destructiveButtonTitle:nil
-             otherButtonTitles:@[ NSLocalizedString(@"FINGERPRINT_SHRED_KEYMATERIAL_BUTTON", nil) ]
-                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-                              DDLogDebug(@"User Cancelled");
-                          } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-                              DDLogDebug(@"Destructive button tapped");
-                          } else {
-                              switch (tappedButtonIndex) {
-                                  case 0: {
+    UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                        message:actionSheetTitle
+                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"FINGERPRINT_SHRED_KEYMATERIAL_BUTTON", nil)
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * _Nonnull action) {
 #warning XXX Corrupted message handling here
 //                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
 //                                          // Corrupt Message errors only appear in contact threads.
-                                          DDLogError(
-                                              @"%@ Unexpected request to reset session in group thread. Refusing",
-                                              self.tag);
-                                          return;
+                                                     DDLogError(
+                                                                @"%@ Unexpected request to reset session in group thread. Refusing",
+                                                                self.tag);
+                                                     return;
 //                                      }
 //                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
 //                                      [OWSSessionResetJob runWithCorruptedMessage:message
 //                                                                    contactThread:contactThread
 //                                                                    messageSender:self.messageSender
 //                                                                   storageManager:self.storageManager];
-                                      break;
-                                  }
-                                  default:
-                                      break;
-                              }
-                          }
-                      }];
+                                                 }]];
+    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                   style:UIAlertActionStyleCancel
+                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                     DDLogDebug(@"User Cancelled");
+                                                 }]];
+    [self.parentViewController presentViewController:alertSheet animated:YES completion:nil];
+    
+//    [DJWActionSheet showInView:self.view
+//                     withTitle:actionSheetTitle
+//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+//        destructiveButtonTitle:nil
+//             otherButtonTitles:@[ NSLocalizedString(@"FINGERPRINT_SHRED_KEYMATERIAL_BUTTON", nil) ]
+//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
+//                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
+//                              DDLogDebug(@"User Cancelled");
+//                          } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
+//                              DDLogDebug(@"Destructive button tapped");
+//                          } else {
+//                              switch (tappedButtonIndex) {
+//                                  case 0: {
+//#warning XXX Corrupted message handling here
+////                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
+////                                          // Corrupt Message errors only appear in contact threads.
+//                                          DDLogError(
+//                                              @"%@ Unexpected request to reset session in group thread. Refusing",
+//                                              self.tag);
+//                                          return;
+////                                      }
+////                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
+////                                      [OWSSessionResetJob runWithCorruptedMessage:message
+////                                                                    contactThread:contactThread
+////                                                                    messageSender:self.messageSender
+////                                                                   storageManager:self.storageManager];
+//                                      break;
+//                                  }
+//                                  default:
+//                                      break;
+//                              }
+//                          }
+//                      }];
 }
 
 - (void)tappedInvalidIdentityKeyErrorMessage:(TSInvalidIdentityKeyErrorMessage *)errorMessage
