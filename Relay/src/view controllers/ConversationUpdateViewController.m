@@ -34,7 +34,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 @property TSThread *thread;
 @property (readonly) OWSMessageSender *messageSender;
-@property NSArray <SignalRecipient *> *contacts;
+@property (nonatomic, strong) NSArray <SignalRecipient *> *contacts;
 @property (readonly) NSArray <SignalRecipient *> *selectedRecipients;
 @property NSString *originalThreadName;
 @property NSCountedSet *originalThreadParticipants;
@@ -536,10 +536,12 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 -(NSArray <SignalRecipient *> *)contacts
 {
     if (_contacts == nil) {
-        NSMutableArray *mArray = [[SignalRecipient allObjectsInCollection] mutableCopy];
-        
-        // Remove self from the array.
-        [mArray removeObject:TSAccountManager.sharedInstance.myself.flTag];
+        NSMutableArray *mArray = [NSMutableArray new];
+        for (SignalRecipient *recipient in [SignalRecipient allObjectsInCollection]) {
+            if (![self.thread.participants containsObject:recipient.uniqueId] && recipient.isActive) {
+                [mArray addObject:recipient];
+            }
+        }
         
         NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
                                                                    ascending:YES
