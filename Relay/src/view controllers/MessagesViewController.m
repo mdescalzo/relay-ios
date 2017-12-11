@@ -191,6 +191,10 @@ typedef enum : NSUInteger {
     isGroupConversation = YES;
     _composeOnOpen                 = keyboardAppearing;
 
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self markAllMessagesAsRead];
+    });
+
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
     self.messageMappings =
         [[YapDatabaseViewMappings alloc] initWithGroups:@[ thread.uniqueId ] view:TSMessageDatabaseViewExtensionName];
@@ -198,7 +202,6 @@ typedef enum : NSUInteger {
       [self.messageMappings updateWithTransaction:transaction];
       self.page = 0;
       [self updateRangeOptionsForPage:self.page];
-      [self markAllMessagesAsRead];
       [self.collectionView reloadData];
     }];
     [self updateLoadEarlierVisible];
@@ -210,28 +213,32 @@ typedef enum : NSUInteger {
 }
 
 - (void)hideInputIfNeeded {
-    if (_peek) {
-        self.inputToolbar.hidden = YES;
-        [self.inputToolbar endEditing:TRUE];
-        return;
-    }
-
-    if ([self userLeftGroup]) {
-        self.inputToolbar.hidden = YES; // user has requested they leave the group. further sends disallowed
-        [self.inputToolbar endEditing:TRUE];
-    } else {
-        self.inputToolbar.hidden = NO;
-        [self loadDraftInCompose];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (_peek) {
+            self.inputToolbar.hidden = YES;
+            [self.inputToolbar endEditing:TRUE];
+            return;
+        }
+        
+        if ([self userLeftGroup]) {
+            self.inputToolbar.hidden = YES; // user has requested they leave the group. further sends disallowed
+            [self.inputToolbar endEditing:TRUE];
+        } else {
+            self.inputToolbar.hidden = NO;
+            [self loadDraftInCompose];
+        }
+    });
 }
 
 -(void)disableInfoButtonIfNeeded
 {
-    if ([self userLeftGroup]) {
-        self.infoButton.enabled = NO;
-    } else {
-        self.infoButton.enabled = YES;
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self userLeftGroup]) {
+            self.infoButton.enabled = NO;
+        } else {
+            self.infoButton.enabled = YES;
+        }
+    });
 }
 
 - (void)viewDidLoad
@@ -422,12 +429,12 @@ typedef enum : NSUInteger {
 }
 
 - (void)updateBackButtonAsync {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSUInteger count = [self.messagesManager unreadMessagesCountExcept:self.thread];
-            if (self) {
-                [self setUnreadCount:count];
-            }
-    });
+    NSUInteger count = [self.messagesManager unreadMessagesCountExcept:self.thread];
+    if (self) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setUnreadCount:count];
+        });
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -477,11 +484,10 @@ typedef enum : NSUInteger {
 
 - (void)setNavigationTitle
 {
-    NSString *navTitle = self.thread.displayName;
-//    if (isGroupConversation && [navTitle length] == 0) {
-//        navTitle = NSLocalizedString(@"NEW_GROUP_DEFAULT_TITLE", @"");
-//    }
-    self.title = navTitle;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *navTitle = self.thread.displayName;
+        self.title = navTitle;
+    });
 }
 
 - (void)setBarButtonItemsForDisappearingMessagesConfiguration:
@@ -504,7 +510,7 @@ typedef enum : NSUInteger {
         [barButtons addObject:callButton];
     }
     
-    self.navigationItem.rightBarButtonItems = [barButtons copy];
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithArray:barButtons];
 }
 
 - (void)initializeToolbars
@@ -596,13 +602,11 @@ typedef enum : NSUInteger {
 - (void)callAction {
     if ([self canCall]) {
         PhoneNumber *number = [self phoneNumberForThread];
-        //Contact *contact = [self.contactsManager latestContactForPhoneNumber:number];
         NSString *phoneStr = [[NSString alloc] initWithFormat:@"tel://%@",number];
         // Prepare the NSURL
         NSURL *phoneURL = [[NSURL alloc] initWithString:phoneStr];
         // Make the call
         [[UIApplication sharedApplication] openURL:phoneURL];
-        //[Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
     } else {
         DDLogWarn(@"Tried to initiate a call but thread is not callable.");
     }
