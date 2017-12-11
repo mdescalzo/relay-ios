@@ -119,6 +119,10 @@ static const NSString *FLExpressionKey = @"expression";
                      transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     NSString *threadId = [payload objectForKey:FLThreadIDKey];
+    if (![payload objectForKey:FLThreadIDKey]) {
+        DDLogDebug(@"%@ - Attempted to retrieve thread with payload without a UID.", self.tag);
+        return nil;
+    }
     TSThread *thread = [self getOrCreateThreadWithID:threadId transaction:transaction];
     NSString *threadExpression = [(NSDictionary *)[payload objectForKey:FLDistributionKey] objectForKey:FLExpressionKey];
     NSString *threadType = [payload objectForKey:FLThreadTypeKey];
