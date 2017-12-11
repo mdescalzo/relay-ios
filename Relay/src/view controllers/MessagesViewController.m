@@ -191,6 +191,10 @@ typedef enum : NSUInteger {
     isGroupConversation = YES;
     _composeOnOpen                 = keyboardAppearing;
 
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self markAllMessagesAsRead];
+    });
+
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
     self.messageMappings =
         [[YapDatabaseViewMappings alloc] initWithGroups:@[ thread.uniqueId ] view:TSMessageDatabaseViewExtensionName];
@@ -198,7 +202,6 @@ typedef enum : NSUInteger {
       [self.messageMappings updateWithTransaction:transaction];
       self.page = 0;
       [self updateRangeOptionsForPage:self.page];
-      [self markAllMessagesAsRead];
       [self.collectionView reloadData];
     }];
     [self updateLoadEarlierVisible];
