@@ -144,9 +144,9 @@ NS_ASSUME_NONNULL_BEGIN
                               usingBlock:^(id _Nullable value, NSRange range, BOOL *_Nonnull stop) {
                                   UIFont *rangeFont = (UIFont *)value;
                                   if ([rangeFont.fontName isEqualToString:@".AppleColorEmojiUI"]) {
-                                      DDLogVerbose(@"Detected Emoji at location: %lu, for length: %lu",
-                                          (unsigned long)range.location,
-                                          (unsigned long)range.length);
+//                                      DDLogVerbose(@"Detected Emoji at location: %lu, for length: %lu",
+//                                          (unsigned long)range.location,
+//                                          (unsigned long)range.length);
                                       foundEmoji = YES;
                                       *stop = YES;
                                   }
