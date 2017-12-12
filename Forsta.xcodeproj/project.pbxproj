@@ -305,7 +305,6 @@
 		7D4A3A421F1693930023C29B /* EncodedAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EF18BBEC1A00F073E5 /* EncodedAudioFrame.m */; };
 		7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
 		7D4A3A451F1693930023C29B /* CallController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048B18170B33006006FC /* CallController.m */; };
-		7D4A3A461F1693930023C29B /* MessageComposeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */; };
 		7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
 		7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
 		7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
@@ -981,7 +980,6 @@
 		7DCFFDE91F0EE4490003CD95 /* EncodedAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5EF18BBEC1A00F073E5 /* EncodedAudioFrame.m */; };
 		7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
 		7DCFFDEC1F0EE4490003CD95 /* CallController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048B18170B33006006FC /* CallController.m */; };
-		7DCFFDED1F0EE4490003CD95 /* MessageComposeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */; };
 		7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
 		7DCFFDEF1F0EE4490003CD95 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
 		7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
@@ -1457,7 +1455,6 @@
 		E1CD329618BCFF9900B1A496 /* SoundInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CD329518BCFF9900B1A496 /* SoundInstance.m */; };
 		EF764C351DB67CC5000D9A87 /* UIViewController+CameraPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */; };
 		F44C8FB073F65C830B188C53 /* libPods-SignalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */; };
-		FC31962A1A067D8F0094C78E /* MessageComposeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */; };
 		FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
 		FC3BD9881A30A790005B96BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3BD9871A30A790005B96BB /* Social.framework */; };
@@ -2393,8 +2390,6 @@
 		EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+CameraPermissions.m"; path = "util/UIViewController+CameraPermissions.m"; sourceTree = "<group>"; };
 		F3104673105562C09C636C3D /* Pods-Common-SignalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-SignalTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F7BEFF9560BDFB012DD85B4F /* Pods-Common-Relay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-Relay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay.debug.xcconfig"; sourceTree = "<group>"; };
-		FC3196281A067D8F0094C78E /* MessageComposeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageComposeTableViewController.h; sourceTree = "<group>"; };
-		FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageComposeTableViewController.m; sourceTree = "<group>"; };
 		FC31962B1A06A2190094C78E /* FingerprintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FingerprintViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		FC31962C1A06A2190094C78E /* FingerprintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FingerprintViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		FC31962E1A0814130094C78E /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
@@ -4306,8 +4301,6 @@
 		FC3196321A08142D0094C78E /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
-				FC3196281A067D8F0094C78E /* MessageComposeTableViewController.h */,
-				FC3196291A067D8F0094C78E /* MessageComposeTableViewController.m */,
 				FCAC964F19FF0A6E0046DFC5 /* MessagesViewController.h */,
 				FCAC965019FF0A6E0046DFC5 /* MessagesViewController.m */,
 				FC31962B1A06A2190094C78E /* FingerprintViewController.h */,
@@ -5335,7 +5328,6 @@
 				7D4A3A421F1693930023C29B /* EncodedAudioFrame.m in Sources */,
 				7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */,
 				7D4A3A451F1693930023C29B /* CallController.m in Sources */,
-				7D4A3A461F1693930023C29B /* MessageComposeTableViewController.m in Sources */,
 				7D613ABE1F90187700E18D29 /* TSStorageManager+IdentityKeyStore.m in Sources */,
 				7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */,
 				7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */,
@@ -5678,7 +5670,6 @@
 				7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */,
 				7DCFFDEC1F0EE4490003CD95 /* CallController.m in Sources */,
 				7D613AF81F9018ED00E18D29 /* NSData+Base64.m in Sources */,
-				7DCFFDED1F0EE4490003CD95 /* MessageComposeTableViewController.m in Sources */,
 				7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BB1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7DCFFDEF1F0EE4490003CD95 /* LoginValidationViewController.m in Sources */,
@@ -6025,7 +6016,6 @@
 				76EB061818170B33006006FC /* AnonymousValueLogger.m in Sources */,
 				76EB05E618170B33006006FC /* CallController.m in Sources */,
 				7D613AF91F9018ED00E18D29 /* NSData+Base64.m in Sources */,
-				FC31962A1A067D8F0094C78E /* MessageComposeTableViewController.m in Sources */,
 				E16E5BEE18AAC40200B7C403 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BA1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */,
@@ -6443,7 +6433,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6512,7 +6502,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6579,7 +6569,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6647,7 +6637,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6853,7 +6843,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6919,7 +6909,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

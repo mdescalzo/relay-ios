@@ -204,45 +204,45 @@ static Environment *environment = nil;
 }
 
 // Get or create a thread for identifier(ContactID)
-+ (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose {
-    Environment *env          = [self getCurrent];
-    FLThreadViewController *vc = env.forstaViewController;
-    //    SignalsViewController *vc = env.signalsViewController;
-    
-    // Collect parts
-    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier];
-    SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
-    
-    __block TSThread *thread = [TSThread getOrCreateThreadWithParticipants:@[ recipient.uniqueId, selfRec.uniqueId ]];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [vc presentThread:thread keyboardOnViewAppearing:YES];
-    });
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [FLTagMathService asyncTagLookupWithString:[NSString stringWithFormat:@"%@+%@", recipient.flTag.slug, selfRec.flTag.slug]
-                                            success:^(NSDictionary *results) {
-#warning XXX Needs catch for return with no results.
-                                                thread.universalExpression = [results objectForKey:@"universal"];
-                                                thread.participants = [results objectForKey:@"userids"];
-                                                thread.prettyExpression = [results objectForKey:@"pretty"];
-                                                [thread save];
-                                                
-                                                //                                                [vc presentThread:thread keyboardOnViewAppearing:YES];
-                                            }
-                                            failure:^(NSError *error) {
-                                                DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
-#warning XXX insert alert here on main thread
-                                            }];
-    });
-//    [[TSStorageManager sharedManager]
-//     .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
-//         TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier transaction:transaction];
-//         [vc presentThread:thread keyboardOnViewAppearing:YES];
-//     }];
-    
-     
-}
+//+ (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose {
+//    Environment *env          = [self getCurrent];
+//    FLThreadViewController *vc = env.forstaViewController;
+//    //    SignalsViewController *vc = env.signalsViewController;
+//    
+//    // Collect parts
+//    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:identifier];
+//    SignalRecipient *selfRec = TSAccountManager.sharedInstance.myself;
+//    
+//    __block TSThread *thread = [TSThread getOrCreateThreadWithParticipants:@[ recipient.uniqueId, selfRec.uniqueId ]];
+//    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [vc presentThread:thread keyboardOnViewAppearing:YES];
+//    });
+//    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [FLTagMathService asyncTagLookupWithString:[NSString stringWithFormat:@"%@+%@", recipient.flTag.slug, selfRec.flTag.slug]
+//                                            success:^(NSDictionary *results) {
+//#warning XXX Needs catch for return with no results.
+//                                                thread.universalExpression = [results objectForKey:@"universal"];
+//                                                thread.participants = [results objectForKey:@"userids"];
+//                                                thread.prettyExpression = [results objectForKey:@"pretty"];
+//                                                [thread save];
+//                                                
+//                                                //                                                [vc presentThread:thread keyboardOnViewAppearing:YES];
+//                                            }
+//                                            failure:^(NSError *error) {
+//                                                DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
+//#warning XXX insert alert here on main thread
+//                                            }];
+//    });
+////    [[TSStorageManager sharedManager]
+////     .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
+////         TSThread *thread = [TSContactThread getOrCreateThreadWithContactId:identifier transaction:transaction];
+////         [vc presentThread:thread keyboardOnViewAppearing:YES];
+////     }];
+//    
+//     
+//}
 
 + (void)messageGroup:(TSThread *)groupThread {
     Environment *env          = [self getCurrent];

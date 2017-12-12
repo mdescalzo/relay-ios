@@ -626,7 +626,9 @@
 "SCAN_CODE_INSTRUCTIONS" = "Scan the QR Code on your contact's device.";
 
 /* No comment provided by engineer. */
-"SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT" = "Enter name or number";
+"SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT" = "Enter name or tag...";
+
+"SEARCH_HELP_STRING" = "No results found.  Enter a name and organization to search outside of your organization.\n\n\tFormat:  \"user.name:organization\"";
 
 /* {{number of seconds}} embedded in strings, e.g. 'Alice updated disappearing messages expiration to {{5 seconds}}'. See other *_TIME_AMOUNT strings */
 "SECONDS_TIME_AMOUNT" = "%u seconds";

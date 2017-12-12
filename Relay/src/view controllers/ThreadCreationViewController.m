@@ -25,8 +25,9 @@
 @property (nonatomic, weak) IBOutlet UITextView *slugContainerView;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *exitButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *goButton;
-
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *slugViewHeight;
+@property (weak, nonatomic) IBOutlet UIView *searchInfoContainer;
+@property (weak, nonatomic) IBOutlet UILabel *searchInfoLabel;
 
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeRecognizer;
 
@@ -49,6 +50,13 @@
 //    self.slugContainerView.layoutManager.delegate = self;
     self.slugContainerView.textContainerInset = UIEdgeInsetsMake(8, 0, 8, KMinInputHeight);
     self.goButton.tintColor = [ForstaColors mediumLightGreen];
+    
+    self.searchBar.placeholder = NSLocalizedString(@"SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT", nil);
+    
+    self.searchInfoLabel.text = NSLocalizedString(@"SEARCH_HELP_STRING", @"Informational string for tag lookups.");
+
+    self.view.backgroundColor = [ForstaColors whiteColor];
+    
     [self updateGoButton];
 }
 
@@ -132,13 +140,14 @@
 -(void)refreshTableView
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-
-//    if ([self.tableView numberOfRowsInSection:0] == 0) {
-//        self.tableView.alpha = 0.0;
-//    } else {
-//        self.tableView.alpha = 1.0;
+        if (self.searchBar.text.length > 0 && self.searchResults.count == 0) {
+            self.searchInfoContainer.hidden = NO;
+            self.tableView.hidden = YES;
+        } else {
+            self.searchInfoContainer.hidden = YES;
+            self.tableView.hidden = NO;
+        }
         [self.tableView reloadData];
-//    }
     });
 }
 
@@ -477,8 +486,7 @@
 
 -(void)refreshSlugView
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
+    
         NSMutableString *tmpString = [NSMutableString new];
         for (NSString *slug in self.validatedSlugs) {
             if (tmpString.length == 0) {
@@ -508,7 +516,8 @@
         } else {
             newHeight = 0.0;
         }
-        
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.25 animations:^{
             self.slugViewHeight.constant = newHeight;
             self.slugContainerView.text = [NSString stringWithString:tmpString];
@@ -556,6 +565,26 @@
 }
 
 #pragma mark - Accessors
+//-(UIButton *)searchInfoLabel
+//{
+//    if (_searchInfoLabel == nil) {
+//        _searchInfoLabel = [[UIButton alloc] init];
+//        _searchInfoLabel.layer.borderWidth = 0.25f;
+//        _searchInfoLabel.layer.borderColor = [ForstaColors darkestGray].CGColor;
+//        [_searchInfoLabel setTitle:NSLocalizedString(@"SEARCH_HELP_STRING", @"Informational string for tag lookups.") forState:UIControlStateNormal];
+//        [_searchInfoLabel setContentEdgeInsets:UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 8.0f)];
+//        _searchInfoLabel.backgroundColor = [UIColor whiteColor];
+//        _searchInfoLabel.titleLabel.font = [UIFont italicSystemFontOfSize:15.0f];
+//        _searchInfoLabel.titleLabel.numberOfLines = 0;
+//        [_searchInfoLabel setTitleColor:[ForstaColors darkestGray] forState:UIControlStateNormal];
+//        _searchInfoLabel.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//        _searchInfoLabel.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//        _searchInfoLabel.userInteractionEnabled = NO;
+//        [_searchInfoLabel sizeToFit];
+//    }
+//    return _searchInfoLabel;
+//}
+
 -(NSMutableArray *)validatedSlugs
 {
     if (_validatedSlugs == nil) {
