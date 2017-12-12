@@ -106,7 +106,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 - (void)setSignUpFlowNavigationController:(UINavigationController *)signUpFlowNavigationController;
 
 + (void)messageThreadId:(NSString *)threadId;
-+ (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose;
+//+ (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose;
 + (void)messageGroup:(TSThread *)groupThread;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ForstaColors : NSObject
+@interface ForstaColors : UIColor
 
 +(UIColor *)randomPopColor;
 

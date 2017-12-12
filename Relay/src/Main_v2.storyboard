@@ -99,6 +99,35 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="KwJ-W5-ybd">
+                                <rect key="frame" x="0.0" y="37" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                                <connections>
+                                    <outlet property="delegate" destination="yHf-6V-fDx" id="jn1-Jq-3ht"/>
+                                </connections>
+                            </searchBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKS-ZC-ykg" userLabel="searchInfoContainer">
+                                <rect key="frame" x="0.0" y="93" width="375" height="34"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WXs-NV-JFe" userLabel="searchInfoLabel">
+                                        <rect key="frame" x="8" y="8" width="359" height="18"/>
+                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="WXs-NV-JFe" firstAttribute="top" secondItem="vKS-ZC-ykg" secondAttribute="topMargin" id="4Di-Hi-GVs"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="WXs-NV-JFe" secondAttribute="trailing" id="Ehe-ig-b9k"/>
+                                    <constraint firstAttribute="leadingMargin" secondItem="WXs-NV-JFe" secondAttribute="leading" id="fTd-it-m2O"/>
+                                    <constraint firstAttribute="height" secondItem="WXs-NV-JFe" secondAttribute="height" constant="16" id="mNO-jC-Y3D"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="A70-yG-BT4">
                                 <rect key="frame" x="0.0" y="93" width="375" height="510"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -156,20 +185,10 @@
                                     <outlet property="delegate" destination="yHf-6V-fDx" id="lYh-Xu-IDW"/>
                                 </connections>
                             </tableView>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="KwJ-W5-ybd">
-                                <rect key="frame" x="0.0" y="37" width="375" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                                <connections>
-                                    <outlet property="delegate" destination="yHf-6V-fDx" id="jn1-Jq-3ht"/>
-                                </connections>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="vKS-ZC-ykg" secondAttribute="trailing" id="5e5-Hg-bXq"/>
                             <constraint firstAttribute="trailing" secondItem="A70-yG-BT4" secondAttribute="trailing" id="6o9-Yd-Pir"/>
                             <constraint firstItem="g1I-95-xQA" firstAttribute="top" secondItem="mfd-cA-QtS" secondAttribute="bottom" constant="3" id="8KR-NX-jFu"/>
                             <constraint firstItem="A70-yG-BT4" firstAttribute="leading" secondItem="15x-QP-RNC" secondAttribute="leading" id="FqA-R1-YQ4"/>
@@ -178,7 +197,9 @@
                             <constraint firstItem="A70-yG-BT4" firstAttribute="top" secondItem="KwJ-W5-ybd" secondAttribute="bottom" id="Yrt-ma-XdY"/>
                             <constraint firstItem="1Jr-NZ-myo" firstAttribute="top" secondItem="A70-yG-BT4" secondAttribute="bottom" id="iID-5Q-Oef"/>
                             <constraint firstAttribute="trailing" secondItem="g1I-95-xQA" secondAttribute="trailing" constant="3" id="jqA-qF-Z1q"/>
+                            <constraint firstItem="vKS-ZC-ykg" firstAttribute="top" secondItem="KwJ-W5-ybd" secondAttribute="bottom" id="k0p-2h-6Qy"/>
                             <constraint firstItem="KwJ-W5-ybd" firstAttribute="leading" secondItem="15x-QP-RNC" secondAttribute="leading" id="oIt-Tm-e3m"/>
+                            <constraint firstItem="vKS-ZC-ykg" firstAttribute="leading" secondItem="15x-QP-RNC" secondAttribute="leading" id="oKf-bX-AGG"/>
                             <constraint firstAttribute="trailing" secondItem="KwJ-W5-ybd" secondAttribute="trailing" id="y90-Qp-SY7"/>
                         </constraints>
                     </view>
@@ -198,6 +219,8 @@
                         <outlet property="exitButton" destination="wpp-nf-SJ0" id="92r-5W-Wfz"/>
                         <outlet property="goButton" destination="4Op-Vs-twn" id="fei-Jg-ds7"/>
                         <outlet property="searchBar" destination="KwJ-W5-ybd" id="7Wk-UG-Esr"/>
+                        <outlet property="searchInfoContainer" destination="vKS-ZC-ykg" id="opO-D9-dO0"/>
+                        <outlet property="searchInfoLabel" destination="WXs-NV-JFe" id="nuF-fw-i0I"/>
                         <outlet property="slugContainerView" destination="g1I-95-xQA" id="b3K-qi-e08"/>
                         <outlet property="slugViewHeight" destination="DIb-uZ-SuY" id="9p1-K9-pfQ"/>
                         <outlet property="tableView" destination="A70-yG-BT4" id="8Mu-s4-SY5"/>
@@ -206,7 +229,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7c-eM-XXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5377" y="1899"/>
+            <point key="canvasLocation" x="5376.8000000000002" y="1898.5007496251876"/>
         </scene>
         <!--Conversation Update View Controller-->
         <scene sceneID="3Ad-6E-GZI">
