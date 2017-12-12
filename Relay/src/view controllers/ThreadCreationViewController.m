@@ -60,10 +60,10 @@
     self.view.backgroundColor = [ForstaColors whiteColor];
     
     // Refresh control handling
-    UIView *refreshView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 0.0f, 0.0f)];
+    UIView *refreshView = [UIView new];  //[[UIView alloc] initWithFrame:CGRectMake(0.0f, 8.0f, 0.0f, 0.0f)];
     [self.tableView insertSubview:refreshView atIndex:0];
     self.refreshControl = [UIRefreshControl new];
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
+//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
     [self.refreshControl addTarget:self
                             action:@selector(refreshContentFromSource)
                   forControlEvents:UIControlEventValueChanged];
