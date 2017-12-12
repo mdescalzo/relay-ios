@@ -886,6 +886,9 @@
 /* NO */
 "NO" = "No";
 
+/* Refreshing. */
+"REFRESHING" = "Refreshing...";
+
 /* Token refresh failure message */
 "REFRESH_FAILURE_MESSAGE" = "Account refresh failed.  Please contact your organization's administrator or Forsta support.";
 

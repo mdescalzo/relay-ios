@@ -38,6 +38,8 @@
 @property (nonatomic, strong) NSArray *content;
 @property (nonatomic, strong) NSArray *searchResults;
 
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+
 @end
 
 @implementation ThreadCreationViewController
@@ -56,6 +58,16 @@
     self.searchInfoLabel.text = NSLocalizedString(@"SEARCH_HELP_STRING", @"Informational string for tag lookups.");
 
     self.view.backgroundColor = [ForstaColors whiteColor];
+    
+    // Refresh control handling
+    UIView *refreshView = [UIView new];  //[[UIView alloc] initWithFrame:CGRectMake(0.0f, 8.0f, 0.0f, 0.0f)];
+    [self.tableView insertSubview:refreshView atIndex:0];
+    self.refreshControl = [UIRefreshControl new];
+//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
+    [self.refreshControl addTarget:self
+                            action:@selector(refreshContentFromSource)
+                  forControlEvents:UIControlEventValueChanged];
+    [refreshView addSubview:self.refreshControl];
     
     [self updateGoButton];
 }
@@ -135,6 +147,17 @@
             return 0;
             break;
     }
+}
+
+-(void)refreshContentFromSource
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.refreshControl beginRefreshing];
+        [CCSMCommManager refreshCCSMData];
+        [Environment.getCurrent.contactsManager refreshRecipients];
+        [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
+    });
 }
 
 -(void)refreshTableView
