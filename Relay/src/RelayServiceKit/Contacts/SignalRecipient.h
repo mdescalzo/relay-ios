@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(instancetype)initWithTextSecureIdentifier:(NSString *)textSecureIdentifier
                                   firstName:(NSString *)firstName
                                    lastName:(NSString *)lastName;
-//                                    tagSlug:(NSString *)tagSlug;
 
 + (instancetype)selfRecipient;
 + (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier;
@@ -40,7 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *firstName;
 @property (strong, nonatomic) NSString *lastName;
 @property (strong, nonatomic) NSString *phoneNumber;
-//@property (strong, nonatomic) NSArray *userTextPhoneNumbers;
 @property (strong, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *notes;
 

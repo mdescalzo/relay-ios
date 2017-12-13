@@ -16,7 +16,7 @@
 @interface CCSMCommManager : NSObject
 
 +(void)refreshCCSMData;
-+(void)refreshCCSMUsers;
+//+(void)refreshCCSMUsers;
 +(void)refreshCCSMTags;
 
 +(void)requestLogin:(NSString *)userName
