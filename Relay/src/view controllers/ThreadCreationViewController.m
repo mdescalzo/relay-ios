@@ -31,12 +31,12 @@
 
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeRecognizer;
 
-@property (nonatomic, strong) NSMutableArray *validatedSlugs;
-@property (nonatomic, strong) NSMutableArray *slugViews;
-//@property (nonatomic, strong) NSMutableDictionary *slugs;
+@property (nonatomic, strong) NSMutableArray<NSString *> *validatedSlugs;
+@property (nonatomic, strong) NSMutableArray<UIView *> *slugViews;
+//@property (nonatomic, strong) NSMutableArray<FLTag *> *selectedTags;
 
-@property (nonatomic, strong) NSArray *content;
-@property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) NSArray<FLTag *> *content;
+@property (nonatomic, strong) NSArray<FLTag *> *searchResults;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 
@@ -90,7 +90,7 @@
     
     [cell configureCellWithTag:aTag];
     
-    if ([self.validatedSlugs containsObject:aTag.slug]) {
+    if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -108,14 +108,12 @@
         aTag = [self.content objectAtIndex:(NSUInteger)[indexPath row]];
     }
     
-    NSString *slugDisplayString = [NSString stringWithFormat:@"@%@", aTag.slug];
-    if (![TSAccountManager.sharedInstance.myself.flTag.orgSlug isEqualToString:aTag.orgSlug]) {
-        slugDisplayString = [slugDisplayString stringByAppendingString:[NSString stringWithFormat:@":%@", aTag.orgSlug]];
-    }
-    if ([self.validatedSlugs containsObject:slugDisplayString]) {
-        [self removeSlug:slugDisplayString];
+    if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
+        [self removeSlug:aTag.displaySlug];
+//        [self removeTagFromSelection:aTag];
     } else {
-        [self addSlug:slugDisplayString];
+        [self addSlug:aTag.displaySlug];
+//        [self addTagToSelection:aTag];
     }
     self.searchBar.text = @"";
     [self refreshTableView];
@@ -123,7 +121,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 65.0;
+    return 60.0f;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -348,7 +346,7 @@
 {
     if (self.validatedSlugs.count > 0) {
         NSMutableString *threadSlugs =[NSMutableString new];
-        for (NSString* slug in self.validatedSlugs) {
+        for (NSString *slug in self.validatedSlugs) {
             if (threadSlugs.length == 0) {
                 [threadSlugs appendString:slug];
             } else {
@@ -471,8 +469,8 @@
     if (![[slug substringToIndex:1] isEqualToString:@"@"]) {
         slug = [NSString stringWithFormat:@"@%@", slug];
     }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         CGRect hiddenFrame = CGRectMake(self.slugContainerView.frame.size.width/2,
                                         self.slugContainerView.frame.size.height*2,
                                         0, 0);
@@ -490,6 +488,34 @@
     });
 }
 
+// TODO: For future implementation.  Requires cross-org tag lookup implementation
+//-(void)addTagToSelection:(FLTag *)aTag
+//{
+//    [self.selectedTags addObject:aTag];
+//
+//    NSString *tagSlug = aTag.slug;
+//    if (![[tagSlug substringToIndex:1] isEqualToString:@"@"]) {
+//        tagSlug = [NSString stringWithFormat:@"@%@", tagSlug];
+//    }
+//
+//    CGRect hiddenFrame = CGRectMake(self.slugContainerView.frame.size.width/2,
+//                                    self.slugContainerView.frame.size.height*2,
+//                                    0, 0);
+//    SlugOverLayView *aView = [[SlugOverLayView alloc] initWithSlug:tagSlug frame:hiddenFrame];
+//    aView.delegate = self;
+//    [self.slugViews addObject:aView];
+//
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        aView.backgroundColor = [ForstaColors lightGreen];
+//        [self.slugContainerView addSubview:aView];
+//        [self.slugContainerView bringSubviewToFront:aView];
+//        [self refreshTableView];
+//        [self refreshSlugView];
+//        [self updateGoButton];
+//        [self.slugContainerView scrollRangeToVisible:NSMakeRange(self.slugContainerView.text.length-1, 1)];
+//    });
+//}
+
 -(void)removeSlug:(NSString *)slug
 {
     if (![[slug substringToIndex:1] isEqualToString:@"@"]) {
@@ -506,6 +532,26 @@
         [self updateGoButton];
     });
 }
+
+// TODO: For future implementation.  Requires cross-org tag lookup implementation
+//-(void)removeTagFromSelection:(FLTag *)aTag
+//{
+//    NSUInteger index = [self.selectedTags indexOfObject:aTag];
+//    [self.selectedTags removeObjectAtIndex:index];
+//    UIView *aView = [self.slugViews objectAtIndex:index];
+//    [self.slugViews removeObjectAtIndex:index];
+//
+//    NSString *tagSlug = aTag.slug;
+//    if (![[tagSlug substringToIndex:1] isEqualToString:@"@"]) {
+//        tagSlug = [NSString stringWithFormat:@"@%@", tagSlug];
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [aView removeFromSuperview];
+//        [self refreshTableView];
+//        [self refreshSlugView];
+//        [self updateGoButton];
+//    });
+//}
 
 -(void)refreshSlugView
 {
@@ -588,26 +634,6 @@
 }
 
 #pragma mark - Accessors
-//-(UIButton *)searchInfoLabel
-//{
-//    if (_searchInfoLabel == nil) {
-//        _searchInfoLabel = [[UIButton alloc] init];
-//        _searchInfoLabel.layer.borderWidth = 0.25f;
-//        _searchInfoLabel.layer.borderColor = [ForstaColors darkestGray].CGColor;
-//        [_searchInfoLabel setTitle:NSLocalizedString(@"SEARCH_HELP_STRING", @"Informational string for tag lookups.") forState:UIControlStateNormal];
-//        [_searchInfoLabel setContentEdgeInsets:UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 8.0f)];
-//        _searchInfoLabel.backgroundColor = [UIColor whiteColor];
-//        _searchInfoLabel.titleLabel.font = [UIFont italicSystemFontOfSize:15.0f];
-//        _searchInfoLabel.titleLabel.numberOfLines = 0;
-//        [_searchInfoLabel setTitleColor:[ForstaColors darkestGray] forState:UIControlStateNormal];
-//        _searchInfoLabel.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//        _searchInfoLabel.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-//        _searchInfoLabel.userInteractionEnabled = NO;
-//        [_searchInfoLabel sizeToFit];
-//    }
-//    return _searchInfoLabel;
-//}
-
 -(NSMutableArray *)validatedSlugs
 {
     if (_validatedSlugs == nil) {
@@ -615,6 +641,15 @@
     }
     return _validatedSlugs;
 }
+
+// TODO: For future implementation.  Requires cross-org tag lookup implementation
+//-(NSMutableArray *)selectedTags
+//{
+//    if (_selectedTags == nil) {
+//        _selectedTags = [NSMutableArray new];
+//    }
+//    return _selectedTags;
+//}
 
 -(NSMutableArray *)slugViews
 {
@@ -643,12 +678,6 @@
         NSSortDescriptor *slugSD = [[NSSortDescriptor alloc] initWithKey:@"slug" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
 
         _content = [allTags sortedArrayUsingDescriptors:@[ descriptionSD, slugSD ]];
-        
-//        NSArray *storedTagDicts = [Environment.getCurrent.ccsmStorage.getTags allValues];
-//        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"description" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-//        NSSortDescriptor *slugSD = [[NSSortDescriptor alloc] initWithKey:@"slug" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        
-//        _content = [storedTagDicts sortedArrayUsingDescriptors:@[ descriptionSD, slugSD ]];
     }
     return _content;
 }

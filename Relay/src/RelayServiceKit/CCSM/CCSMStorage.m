@@ -167,12 +167,13 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
     [self setValueForKey:CCSMStorageKeyTags toValue:value];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            for (NSDictionary* tagDict in [value allValues]) {
-                FLTag *aTag = [FLTag tagWithTagDictionary:tagDict];
+            [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *tagDict = (NSDictionary *)obj;
+                FLTag *aTag = [[FLTag alloc] initWithTagDictionary:tagDict];
                 if (aTag) {
                     [aTag saveWithTransaction:transaction];
                 }
-            }
+            }];
         }];
     });
 }

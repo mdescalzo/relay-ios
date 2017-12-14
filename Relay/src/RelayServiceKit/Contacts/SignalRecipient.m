@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSDictionary *tagDict = [userDict objectForKey:@"tag"];
     if (tagDict) {
-        recipient.flTag = [FLTag tagWithTagDictionary:tagDict];
+        recipient.flTag = [[FLTag alloc] initWithTagDictionary:tagDict];
         if (recipient.flTag.tagDescription.length == 0) {
             recipient.flTag.tagDescription = recipient.fullName;
         }

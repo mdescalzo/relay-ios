@@ -26,7 +26,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 @property ObservableValueController *observableContactsController;
 @property TOCCancelTokenSource *life;
 @property(atomic, copy) NSDictionary *latestRecipientsById;
-@property (strong, nonatomic) NSMutableArray *allRecipientsBacker;
+@property (strong, nonatomic) NSMutableArray<SignalRecipient *> *activeRecipientsBacker;
+@property (strong, nonatomic) NSCompoundPredicate *visibleRecipientsPredicate;
 
 @end
 
@@ -97,22 +98,35 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(NSArray<SignalRecipient *> *)allRecipients
 {
     // TODO: implement NSCache here?
-    if (self.allRecipientsBacker == nil) {
-        __block NSMutableArray *holdingArray = [NSMutableArray new];
-        [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-            [transaction enumerateKeysAndObjectsInCollection:[SignalRecipient collection]
-                                                  usingBlock:^(NSString *key, id object, BOOL *stop){
-                                                      if ([object isKindOfClass:[SignalRecipient class]]) {
-                                                          SignalRecipient *contact = (SignalRecipient *)object;
-                                                          if (contact.isActive && !contact.isMonitor) {
-                                                              [holdingArray addObject:contact];
-                                                          }
-                                                      }
-                                                  }];
-        }];
-        self.allRecipientsBacker = [holdingArray copy];
+    if (_allRecipients == nil) {
+        _allRecipients = [SignalRecipient allObjectsInCollection];
     }
-    return [NSArray arrayWithArray:self.allRecipientsBacker];
+    return _allRecipients;
+}
+
+-(NSArray<SignalRecipient *> *)activeRecipients
+{
+        NSPredicate *activePred = [NSPredicate predicateWithFormat:@"isActive == YES"];
+        NSPredicate *monitorPred = [NSPredicate predicateWithFormat:@"isMonitor == NO"];
+        NSCompoundPredicate *preds = [NSCompoundPredicate andPredicateWithSubpredicates:@[ activePred, monitorPred ]];
+        NSArray *filteredArray = [self.allRecipients filteredArrayUsingPredicate:preds];
+        return filteredArray;
+    
+//    if (self.activeRecipientsBacker.count == 0) {
+//        [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+//            [transaction enumerateKeysAndObjectsInCollection:[SignalRecipient collection]
+//                                                  usingBlock:^(NSString *key, id object, BOOL *stop){
+//                                                      if ([object isKindOfClass:[SignalRecipient class]]) {
+//                                                          SignalRecipient *contact = (SignalRecipient *)object;
+//                                                          if (contact.isActive && !contact.isMonitor) {
+//                                                              [self.activeRecipientsBacker addObject:contact];
+//                                                          }
+//                                                      }
+//                                                  }];
+//        }];
+//    }
+//    return [NSArray arrayWithArray:self.activeRecipientsBacker];
+
 }
 
 -(void)saveContact:(SignalRecipient *_Nonnull)contact
@@ -139,23 +153,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_life cancel];
 }
-
-//- (instancetype)init {
-//    self = [super init];
-//    if (self) {
-//        _life = [TOCCancelTokenSource new];
-//        _observableContactsController = [ObservableValueController observableValueControllerWithInitialValue:nil];
-//        _latestRecipientsById = @{};
-//        _dbConnection = [[TSStorageManager sharedManager].database newConnection];
-//        _backgroundConnection = [[TSStorageManager sharedManager].database newConnection];
-//
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(processUsersBlob)
-//                                                     name:FLCCSMUsersUpdated
-//                                                   object:nil];
-//    }
-//    return self;
-//}
 
 - (void)doAfterEnvironmentInitSetup {
 #warning XXX is this method still necessary?
@@ -219,7 +216,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(void)saveRecipient:(SignalRecipient *)recipient
 {
-    [self.allRecipientsBacker addObject:recipient];
+//    [self.allRecipientsBacker addObject:recipient];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [transaction setObject:recipient forKey:recipient.uniqueId inCollection:[SignalRecipient collection]];
@@ -286,7 +283,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(void)refreshRecipients
 {
-    _allRecipientsBacker = nil;
+    _allRecipients = nil;
     [self allRecipients];
 }
 
@@ -344,21 +341,38 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(UIImage *)imageForIdentifier:(NSString *)uid
 {
-    for (SignalRecipient *contact in self.allRecipients) {
-        if ([contact.uniqueId isEqualToString:uid]) {
-            return contact.avatar;
+    __block UIImage *returnImage = nil;
+    [self.allRecipients enumerateObjectsUsingBlock:^(SignalRecipient * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj.uniqueId isEqualToString:uid]) {
+            returnImage = obj.avatar;
+            *stop = YES;
         }
-    }
-    return nil;
+    }];
+//    for (SignalRecipient *contact in self.allRecipients) {
+//        if ([contact.uniqueId isEqualToString:uid]) {
+//            return contact.avatar;
+//        }
+//    }
+    return returnImage;
 }
 
 #pragma mark - Accessors
--(NSMutableArray *)allRecipientsBacker
+-(NSCompoundPredicate *)visibleRecipientsPredicate
 {
-    if (_allRecipientsBacker == nil) {
-        _allRecipientsBacker = [NSMutableArray new];
+    if (_visibleRecipientsPredicate == nil) {
+        NSPredicate *activePred = [NSPredicate predicateWithFormat:@"isActive == YES"];
+        NSPredicate *monitorPred = [NSPredicate predicateWithFormat:@"isMonitor == NO"];
+        _visibleRecipientsPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[ activePred, monitorPred ]];
     }
-    return _allRecipientsBacker;
+    return _visibleRecipientsPredicate;
+}
+
+-(NSMutableArray<SignalRecipient *> *)activeRecipientsBacker
+{
+    if (_activeRecipientsBacker == nil) {
+        _activeRecipientsBacker = [NSMutableArray new];
+    }
+    return _activeRecipientsBacker;
 }
 
 -(NSSet *)identifiersForTagSlug:(NSString *)tagSlug

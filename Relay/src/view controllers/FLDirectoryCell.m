@@ -12,12 +12,16 @@
 #import "OWSContactAvatarBuilder.h"
 #import "Environment.h"
 #import "SignalRecipient.h"
+#import "UIImageView+Extension.h"
 
 @implementation FLDirectoryCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+//    self.avatarImageView.clipsToBounds = YES;
+//    self.avatarImageView.layer.masksToBounds = YES;
+    self.avatarImageView.circle = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -37,7 +41,7 @@
         OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                name:recipient.fullName
                                                                                     contactsManager:[Environment getCurrent].contactsManager
-                                                                                           diameter:self.contentView.frame.size.height];
+                                                                                           diameter:self.avatarImageView.frame.size.height];
         self.avatarImageView.image = [avatarBuilder buildDefaultImage];
     }
 }
@@ -50,17 +54,35 @@
     } else {
         description = aTag.tagDescription;
     }
-    NSString *tagId = aTag.uniqueId;
     NSString *orgSlug = aTag.orgSlug;
     
     self.nameLabel.text = description;
     self.detailLabel.text = orgSlug;
     
-    OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:tagId
-                                                                                           name:description
-                                                                                contactsManager:[Environment getCurrent].contactsManager
-                                                                                       diameter:self.contentView.frame.size.height];
-    self.avatarImageView.image = [avatarBuilder buildDefaultImage];
+    // Get an avatar
+    if (aTag.avatar == nil) {
+        if (aTag.recipientIds.count == 1) {
+            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:[aTag.recipientIds anyObject]];
+            if (recipient.avatar) {
+                aTag.avatar = recipient.avatar;
+            } else {
+                OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
+                                                                                                       name:recipient.fullName
+                                                                                            contactsManager:[Environment getCurrent].contactsManager
+                                                                                                   diameter:self.contentView.frame.size.height];
+                aTag.avatar = [avatarBuilder buildDefaultImage];
+            }
+        } else {
+            OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:aTag.uniqueId
+                                                                                                   name:description
+                                                                                        contactsManager:[Environment getCurrent].contactsManager
+                                                                                               diameter:self.contentView.frame.size.height];
+            aTag.avatar = [avatarBuilder buildDefaultImage];
+        }
+        [aTag save];
+    }
+
+    self.avatarImageView.image = aTag.avatar;
 }
 
 - (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact
