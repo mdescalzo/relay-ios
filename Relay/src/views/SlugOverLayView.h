@@ -17,12 +17,14 @@
 
 @interface SlugOverLayView : UIView
 
+//@property (nonatomic, strong) FLTag *flTag;
 @property (nonatomic, strong) NSString *slug;
 @property (nonatomic, strong) UIButton *deleteButton;
 @property (nonatomic, strong) UILabel *slugLabel;
 
 @property (nonatomic, weak) id<SlugOverLayViewDelegate>delegate;
 
--(id)initWithSlug:(NSString *)slug frame:(CGRect)frame;
+//-(instancetype)initWithTag:(FLTag *)aTag frame:(CGRect)frame;
+-(instancetype)initWithSlug:(NSString *)slug frame:(CGRect)frame;
 
 @end

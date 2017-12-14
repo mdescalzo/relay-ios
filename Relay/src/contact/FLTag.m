@@ -23,62 +23,60 @@
 
 @implementation FLTag
 
-+(instancetype _Nullable )tagWithTagDictionary:(NSDictionary *_Nonnull)tagDictionary
+-(instancetype _Nullable )initWithTagDictionary:(NSDictionary *_Nonnull)tagDictionary
 {
-    if ([tagDictionary respondsToSelector:@selector(objectForKey:)]) {
+    if (![tagDictionary respondsToSelector:@selector(objectForKey:)]) {
+        DDLogDebug(@"Attempted to init FLTag with bad input: %@", tagDictionary);
+        return nil;
+    } else {
         NSString *tagId = [tagDictionary objectForKey:FLTagIdKey];
-        FLTag *newTag = [[FLTag alloc] initWithUniqueId:tagId];
-        newTag.url = [tagDictionary objectForKey:FLTagURLKey];
-        newTag.tagDescription = [tagDictionary objectForKey:FLTagDescriptionKey];
-        newTag.slug = [tagDictionary objectForKey:FLTagSlugKey];
-        
-        NSArray *users = [tagDictionary objectForKey:FLTagUsersKey];
-        NSMutableArray *holdingAray = [NSMutableArray new];
-        id object = [tagDictionary objectForKey:@"user"];
-        if (![[object class] isEqual:[NSNull class]]) {
-            NSDictionary *singleUser = (NSDictionary *)object;
-            NSString *uid = [singleUser objectForKey:FLTagIdKey];
-            if (uid) {
-                [holdingAray addObject:uid];
-            }
-        }
-        [users enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            id associationType = [obj objectForKey:@"association_type"];
-            if (![[associationType class] isEqual:[NSNull class]]) {
-                if ([associationType isEqualToString:@"MEMBEROF"]) {
-                    NSDictionary *user = [obj objectForKey:@"user"];
-                    if (user) {
-                        [holdingAray addObject:[user objectForKey:FLTagIdKey]];
-                    }
+        if (self = [super initWithUniqueId:tagId]) {
+            
+            _url = [tagDictionary objectForKey:FLTagURLKey];
+            _tagDescription = [tagDictionary objectForKey:FLTagDescriptionKey];
+            _slug = [tagDictionary objectForKey:FLTagSlugKey];
+            
+            NSArray *users = [tagDictionary objectForKey:FLTagUsersKey];
+            NSMutableArray *holdingAray = [NSMutableArray new];
+            id object = [tagDictionary objectForKey:@"user"];
+            if (![[object class] isEqual:[NSNull class]]) {
+                NSDictionary *singleUser = (NSDictionary *)object;
+                NSString *uid = [singleUser objectForKey:FLTagIdKey];
+                if (uid) {
+                    [holdingAray addObject:uid];
                 }
             }
-        }];
-        newTag.recipientIds = [NSCountedSet setWithArray:holdingAray];
-        
-        NSDictionary *orgDict = [tagDictionary objectForKey:FLTagOrgKey];
-        if (orgDict) {
-            newTag.orgSlug = [orgDict objectForKey:FLTagSlugKey];
-            newTag.orgUrl = [orgDict objectForKey:FLTagURLKey];
+            [users enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                id associationType = [obj objectForKey:@"association_type"];
+                if (![[associationType class] isEqual:[NSNull class]]) {
+                    if ([associationType isEqualToString:@"MEMBEROF"]) {
+                        NSDictionary *user = [obj objectForKey:@"user"];
+                        if (user) {
+                            [holdingAray addObject:[user objectForKey:FLTagIdKey]];
+                        }
+                    }
+                }
+            }];
+            _recipientIds = [NSCountedSet setWithArray:holdingAray];
+            
+            NSDictionary *orgDict = [tagDictionary objectForKey:FLTagOrgKey];
+            if (orgDict) {
+                _orgSlug = [orgDict objectForKey:FLTagSlugKey];
+                _orgUrl = [orgDict objectForKey:FLTagURLKey];
+            }
         }
-        
-        return newTag;
-    }else {
-        DDLogDebug(@"tagWithTagDictionary called with bad input: %@", tagDictionary);
-        return nil;
     }
+    return self;
 }
 
-//-(UIImage *)avatar
-//{
-//    if (self.recipientIds.count == 1) {
-//        NSString *recId = [self.recipientIds anyObject];
-//        SignalRecipient *rec = [Environment.getCurrent.contactsManager recipientWithUserID:recId];
-//        return rec.avatar;
-//    } else {
-//        // TODO: Make call to avatar factory with description?
-//        return nil;
-//    }
-//}
+-(NSString *)displaySlug
+{
+    NSString *slugDisplayString = [NSString stringWithFormat:@"@%@", self.slug];
+    if (![SignalRecipient.selfRecipient.flTag.orgSlug isEqualToString:self.orgSlug]) {
+        slugDisplayString = [slugDisplayString stringByAppendingString:[NSString stringWithFormat:@":%@", self.orgSlug]];
+    }
+    return slugDisplayString;
+}
 
 + (NSString *)collection
 {

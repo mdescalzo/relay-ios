@@ -169,7 +169,7 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
         [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
             [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSDictionary *tagDict = (NSDictionary *)obj;
-                FLTag *aTag = [FLTag tagWithTagDictionary:tagDict];
+                FLTag *aTag = [[FLTag alloc] initWithTagDictionary:tagDict];
                 if (aTag) {
                     [aTag saveWithTransaction:transaction];
                 }

@@ -18,6 +18,8 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.avatarImageView.clipsToBounds = YES;
+    self.avatarImageView.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
