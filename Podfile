@@ -10,7 +10,7 @@ abstract_target 'Common' do
     pod 'PastelogKit',                 '~> 1.3', :inhibit_warnings => true
     pod 'FFCircularProgressView',      '~> 0.5', :inhibit_warnings => true
     pod 'SCWaveformView',              '~> 1.0', :inhibit_warnings => true
-    pod 'ZXingObjC',                   '~> 3.2.2', :inhibit_warnings => true
+    pod 'ZXingObjC',                   '~> 3.2.2',  :inhibit_warnings => true
     pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: '7.3.4-attributedText', :inhibit_warnings => true
     pod '25519',                       '~> 2.0.2', :inhibit_warnings => true
     pod 'CocoaLumberjack',             '~> 2.4.0', :inhibit_warnings => true
@@ -22,6 +22,7 @@ abstract_target 'Common' do
     pod 'libPhoneNumber-iOS',          '~> 0.9.12', :inhibit_warnings => true
     pod 'SAMKeychain',                 '~> 1.5.2', :inhibit_warnings => true
     pod 'TwistedOakCollapsingFutures', '~> 1.0.0', :inhibit_warnings => true
+    pod 'UIImageView+Extension',       '~> 0.2.5.1', :inhibit_warnings => true
     
     target 'Relay' do
     end

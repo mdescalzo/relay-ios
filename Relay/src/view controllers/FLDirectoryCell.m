@@ -12,14 +12,16 @@
 #import "OWSContactAvatarBuilder.h"
 #import "Environment.h"
 #import "SignalRecipient.h"
+#import "UIImageView+Extension.h"
 
 @implementation FLDirectoryCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.avatarImageView.clipsToBounds = YES;
-    self.avatarImageView.layer.masksToBounds = YES;
+//    self.avatarImageView.clipsToBounds = YES;
+//    self.avatarImageView.layer.masksToBounds = YES;
+    self.avatarImageView.circle = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -48,8 +50,6 @@
 
 -(void)configureCellWithTag:(FLTag *)aTag
 {
-    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.height/2;
-    
     NSString *description = nil;
     if ([aTag.uniqueId isEqualToString:SignalRecipient.selfRecipient.flTag.uniqueId]) {
         description = NSLocalizedString(@"ME_STRING", \@"");
