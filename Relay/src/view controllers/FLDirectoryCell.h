@@ -7,6 +7,7 @@
 //
 
 #import "SignalRecipient.h"
+#import "FLTag.h"
 
 #import <UIKit/UIKit.h>
 

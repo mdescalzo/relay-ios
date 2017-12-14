@@ -15,7 +15,6 @@
 #define FLTagOrgKey @"org"
 #define FLTagUsersKey @"users"
 
-
 @interface FLTag()
 
 @property (nonatomic, strong) NSDictionary *tagDictionary;
@@ -69,17 +68,17 @@
     }
 }
 
--(UIImage *)avatar
-{
-    if (self.recipientIds.count == 1) {
-        NSString *recId = [self.recipientIds anyObject];
-        SignalRecipient *rec = [Environment.getCurrent.contactsManager recipientWithUserID:recId];
-        return rec.avatar;
-    } else {
-        // TODO: Make call to avatar factory with description?
-        return nil;
-    }
-}
+//-(UIImage *)avatar
+//{
+//    if (self.recipientIds.count == 1) {
+//        NSString *recId = [self.recipientIds anyObject];
+//        SignalRecipient *rec = [Environment.getCurrent.contactsManager recipientWithUserID:recId];
+//        return rec.avatar;
+//    } else {
+//        // TODO: Make call to avatar factory with description?
+//        return nil;
+//    }
+//}
 
 + (NSString *)collection
 {

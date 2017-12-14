@@ -28,6 +28,8 @@
 
 -(void)configureCellWithContact:(SignalRecipient *)recipient
 {
+    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.height/2;
+    
     self.nameLabel.attributedText = [self attributedStringForContact:recipient];
     self.detailLabel.text = recipient.orgSlug;
     
@@ -37,13 +39,15 @@
         OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                name:recipient.fullName
                                                                                     contactsManager:[Environment getCurrent].contactsManager
-                                                                                           diameter:self.contentView.frame.size.height];
+                                                                                           diameter:self.avatarImageView.frame.size.height];
         self.avatarImageView.image = [avatarBuilder buildDefaultImage];
     }
 }
 
 -(void)configureCellWithTag:(FLTag *)aTag
 {
+    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.height/2;
+    
     NSString *description = nil;
     if ([aTag.uniqueId isEqualToString:SignalRecipient.selfRecipient.flTag.uniqueId]) {
         description = NSLocalizedString(@"ME_STRING", \@"");
@@ -56,11 +60,30 @@
     self.nameLabel.text = description;
     self.detailLabel.text = orgSlug;
     
-    OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:tagId
-                                                                                           name:description
-                                                                                contactsManager:[Environment getCurrent].contactsManager
-                                                                                       diameter:self.contentView.frame.size.height];
-    self.avatarImageView.image = [avatarBuilder buildDefaultImage];
+    // Get an avatar
+    if (aTag.avatar == nil) {
+        if (aTag.recipientIds.count == 1) {
+            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:[aTag.recipientIds anyObject]];
+            if (recipient.avatar) {
+                aTag.avatar = recipient.avatar;
+            } else {
+                OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
+                                                                                                       name:recipient.fullName
+                                                                                            contactsManager:[Environment getCurrent].contactsManager
+                                                                                                   diameter:self.contentView.frame.size.height];
+                aTag.avatar = [avatarBuilder buildDefaultImage];
+            }
+        } else {
+            OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:aTag.uniqueId
+                                                                                                   name:description
+                                                                                        contactsManager:[Environment getCurrent].contactsManager
+                                                                                               diameter:self.contentView.frame.size.height];
+            aTag.avatar = [avatarBuilder buildDefaultImage];
+        }
+        [aTag save];
+    }
+
+    self.avatarImageView.image = aTag.avatar;
 }
 
 - (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact
