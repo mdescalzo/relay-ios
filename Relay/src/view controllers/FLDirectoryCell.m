@@ -32,8 +32,6 @@
 
 -(void)configureCellWithContact:(SignalRecipient *)recipient
 {
-    self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.height/2;
-    
     self.nameLabel.attributedText = [self attributedStringForContact:recipient];
     self.detailLabel.text = recipient.orgSlug;
     
@@ -56,7 +54,6 @@
     } else {
         description = aTag.tagDescription;
     }
-    NSString *tagId = aTag.uniqueId;
     NSString *orgSlug = aTag.orgSlug;
     
     self.nameLabel.text = description;
