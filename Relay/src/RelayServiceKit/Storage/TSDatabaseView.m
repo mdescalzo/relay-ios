@@ -169,6 +169,13 @@ NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesData
                 
                 return [thread1.lastMessageDate compare:thread2.lastMessageDate];
             }
+        } else if ([group isEqualToString:TSPinnedGroup]) {
+            if ([object1 isKindOfClass:[TSThread class]] && [object2 isKindOfClass:[TSThread class]]) {
+                TSThread *thread1 = (TSThread *)object1;
+                TSThread *thread2 = (TSThread *)object2;
+                
+                return [thread1.pinPosition compare:thread2.pinPosition];
+            }
         }
         
         return NSOrderedSame;
