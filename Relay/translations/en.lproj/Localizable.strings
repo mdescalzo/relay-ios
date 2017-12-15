@@ -278,9 +278,9 @@
 "GROUP_MANAGEMENT_SECTION" = "Conversation Management";
 
 /* Pinned conversation section heading */
-"PINNED_CONVERSATION_SECTION" = "Pinned Conversations";
+"PINNED_CONVERSATION_SECTION" = "Pinned";
 
-"RECENT_CONVERSATION_SECTION" = "Recent Conversations";
+"RECENT_CONVERSATION_SECTION" = "Recent";
 
 /* No comment provided by engineer. */
 "GROUP_MEMBER_JOINED" = " %@ joined the conversation. ";
