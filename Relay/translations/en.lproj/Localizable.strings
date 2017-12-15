@@ -37,6 +37,12 @@
 /* No comment provided by engineer. */
 "APN_MESSAGE_IN_GROUP_DETAILED" = "%@ in conversation %@: %@";
 
+/* Pressing this button pins a thread */
+"PIN_ACTION" = "Pin";
+
+/* Pressing this button unpins a thread */
+"UNPIN_ACTION" = "Unpin";
+
 /* Pressing this button moves a thread from the inbox to the archive */
 "ARCHIVE_ACTION" = "Archive";
 

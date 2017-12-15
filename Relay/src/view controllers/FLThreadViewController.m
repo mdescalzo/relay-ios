@@ -366,24 +366,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
-//-(CGRect)frameForSettingsButton
-//{
-//    // Workaround for UIBarButtomItem not inheriting from UIView
-//    NSMutableArray* buttons = [[NSMutableArray alloc] init];
-//    for (UIControl* btn in self.navigationController.navigationBar.subviews) {
-//        if ([btn isKindOfClass:[UIControl class]] && btn.tag == kSettingsButtonTag) {
-//            [buttons addObject:btn];
-//        }
-//    }
-//    CGRect buttonFrame = ((UIView*)[buttons lastObject]).frame;
-//    CGRect returnFrame = CGRectMake(buttonFrame.origin.x,
-//                                    buttonFrame.origin.y,
-//                                    buttonFrame.size.width + 72,
-//                                    buttonFrame.size.height + 60);
-//    
-//    return returnFrame;
-//}
-
 -(IBAction)unwindToMessagesView:(UIStoryboardSegue *)sender
 {
 }
@@ -433,65 +415,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //        [self hideDomainTableView];
 //    }
 //}
-
-#pragma mark - helpers
-//-(void)sendMessageWithText:(NSString *)text
-//                    thread:(TSThread *)thread
-//{
-//    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        thread.universalExpression = self.universalTagExpression;
-////    thread.participants = [NSArray arrayWithArray:[self.taggedRecipientIDs allObjects]];
-//        thread.prettyExpression = self.prettyTagString;
-//        thread.type = @"conversation";
-//        [thread saveWithTransaction:transaction];
-//    }];
-//
-//    TSOutgoingMessage *message = nil;
-//
-//    OWSDisappearingMessagesConfiguration *configuration = [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
-//
-//    if (configuration.isEnabled) {
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:thread
-//                                                   messageBody:@""
-//                                                 attachmentIds:_attachmentIDs
-//                                              expiresInSeconds:configuration.durationSeconds];
-//    } else {
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:thread
-//                                                   messageBody:@""
-//                                                 attachmentIds:_attachmentIDs];
-//    }
-//    message.plainTextBody = text;
-//
-//    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        [message saveWithTransaction:transaction];
-//    }];
-//
-//    [self.recipientTags removeAllObjects];
-//    self.taggedRecipientIDs = nil;
-//    self.prettyTagString = nil;
-//    [self updateRecipientsLabel];
-//
-//    [self.messageSender sendMessage:message
-//                            success:^{
-//                                self.newConversation = NO;
-//                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
-//                            }
-//                            failure:^(NSError *error) {
-//                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-//                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
-//                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                                [alert show];
-//                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-//                            }];
-//}
-
-//-(NSString *)recipientIDFromUserTag:(nonnull NSString *)usertag
-//{
-//    return [[[Environment getCurrent].ccsmStorage getTags] objectForKey:usertag];
-//}
-
 
 #pragma mark - Domain View handling
 -(void)showDomainTableView
