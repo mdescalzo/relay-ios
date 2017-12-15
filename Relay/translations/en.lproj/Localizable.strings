@@ -903,4 +903,7 @@
 /* Token refresh failure message */
 "REFRESH_FAILURE_MESSAGE" = "Account refresh failed.  Please contact your organization's administrator or Forsta support.";
 
+/* Thread/conversation deletion */
 "DELETE_THREAD_FAILURE_MESSAGE" = "Unable to delete this conversation.  Check your network connection and try again.";
+
+"DELETE_THREAD_VALIDATION_MESSAGE" = "Are you sure you wish to delete this consversation?\n\n%@";

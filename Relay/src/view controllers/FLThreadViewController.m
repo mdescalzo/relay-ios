@@ -360,22 +360,39 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return YES;
 }
 
-#pragma mark - HomeFeedTableViewCellDelegate
-
-- (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
-    TSThread *thread = [self threadForIndexPath:indexPath];
-    [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-    FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
-                                                                               ofType:FLControlMessageThreadUpdateKey];
-    [Environment.getCurrent.messageSender sendControlMessage:message
-                                                toRecipients:[NSCountedSet setWithArray:thread.participants]
-                                                     success:^{
-                                                         [self deleteThread:thread];
-                                                     }
-                                                     failure:^(NSError *error) {
-                                                         DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
-                                                         [self deleteThread:thread];
-                                                     }];
+#pragma mark - Cell Swipe Actions
+- (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+    __block TSThread *thread = [self threadForIndexPath:indexPath];
+    
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"DELETE_THREAD_VALIDATION_MESSAGE", nil), thread.displayName];
+    UIAlertController *validationAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:alertMessage
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
+                                                        style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
+                                                          FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
+                                                                                                                                     ofType:FLControlMessageThreadUpdateKey];
+                                                          [Environment.getCurrent.messageSender sendControlMessage:message
+                                                                                                      toRecipients:[NSCountedSet setWithArray:thread.participants]
+                                                                                                           success:^{
+                                                                                                               [self deleteThread:thread];
+                                                                                                           }
+                                                                                                           failure:^(NSError *error) {
+                                                                                                               DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
+                                                                                                               [self deleteThread:thread];
+                                                                                                           }];
+                                                      }]];
+    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          //
+                                                      }]];
+        [self.navigationController presentViewController:validationAlert animated:YES completion:nil];
+    });
 }
 
 - (void)deleteThread:(TSThread *)thread {
