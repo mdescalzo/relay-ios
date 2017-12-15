@@ -224,6 +224,11 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
                                              selector:@selector(markAllRead)
                                                  name:FLMarkAllReadNotification
                                                object:nil];
+    if (self.archiveSelector.selectedSegmentIndex == 0) {
+        self.viewingThreadsIn = kInboxState;
+    } else if (self.archiveSelector.selectedSegmentIndex == 1) {
+        self.viewingThreadsIn = kArchiveState;
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -310,12 +315,24 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *archiveAction =
-    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                       title:NSLocalizedString(@"ARCHIVE_ACTION", nil)
-                                     handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
-//                                         [self tableViewCellTappedDelete:swipedIndexPath];
-                                     }];
+    UITableViewRowAction *archiveAction;
+    if (self.viewingThreadsIn == kInboxState) {
+        archiveAction = [UITableViewRowAction
+                         rowActionWithStyle:UITableViewRowActionStyleNormal
+                         title:NSLocalizedString(@"ARCHIVE_ACTION", @"Pressing this button moves a thread from the inbox to the archive")
+                         handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull tappedIndexPath) {
+                             [self archiveIndexPath:tappedIndexPath];
+                             [Environment.preferences setHasArchivedAMessage:YES];
+                         }];
+        
+    } else {
+        archiveAction = [UITableViewRowAction
+                         rowActionWithStyle:UITableViewRowActionStyleNormal
+                         title:NSLocalizedString(@"UNARCHIVE_ACTION", @"Pressing this button moves an archived thread from the archive back to the inbox")
+                         handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull tappedIndexPath) {
+                             [self archiveIndexPath:tappedIndexPath];
+                         }];
+    }
 
     UITableViewRowAction *deleteAction =
     [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
@@ -335,7 +352,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
     TSThread *thread = [self threadForIndexPath:indexPath];
     [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
+    FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
                                                                                            ofType:FLControlMessageThreadUpdateKey];
     [Environment.getCurrent.messageSender sendControlMessage:message
                                                 toRecipients:[NSCountedSet setWithArray:thread.participants]
@@ -446,63 +463,28 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //}
 
 #pragma mark - helpers
-//-(void)sendMessageWithText:(NSString *)text
-//                    thread:(TSThread *)thread
-//{
-//    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        thread.universalExpression = self.universalTagExpression;
-////    thread.participants = [NSArray arrayWithArray:[self.taggedRecipientIDs allObjects]];
-//        thread.prettyExpression = self.prettyTagString;
-//        thread.type = @"conversation";
-//        [thread saveWithTransaction:transaction];
-//    }];
-//
-//    TSOutgoingMessage *message = nil;
-//
-//    OWSDisappearingMessagesConfiguration *configuration = [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:thread.uniqueId];
-//
-//    if (configuration.isEnabled) {
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:thread
-//                                                   messageBody:@""
-//                                                 attachmentIds:_attachmentIDs
-//                                              expiresInSeconds:configuration.durationSeconds];
-//    } else {
-//        message = [[TSOutgoingMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                                      inThread:thread
-//                                                   messageBody:@""
-//                                                 attachmentIds:_attachmentIDs];
-//    }
-//    message.plainTextBody = text;
-//
-//    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        [message saveWithTransaction:transaction];
-//    }];
-//
-//    [self.recipientTags removeAllObjects];
-//    self.taggedRecipientIDs = nil;
-//    self.prettyTagString = nil;
-//    [self updateRecipientsLabel];
-//
-//    [self.messageSender sendMessage:message
-//                            success:^{
-//                                self.newConversation = NO;
-//                                DDLogInfo(@"%@ Successfully sent message.", self.tag);
-//                            }
-//                            failure:^(NSError *error) {
-//                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-//                                                                                message:[NSString stringWithFormat:@"Message failed to send.\n%@", [error localizedDescription] ]
-//                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                                [alert show];
-//                                DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
-//                            }];
-//}
+- (void)archiveIndexPath:(NSIndexPath *)indexPath {
+    TSThread *thread = [self threadForIndexPath:indexPath];
+    
+    BOOL viewingThreadsIn = self.viewingThreadsIn;
+    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        viewingThreadsIn == kInboxState ? [thread archiveThreadWithTransaction:transaction]
+        : [thread unarchiveThreadWithTransaction:transaction];
+    }];
+    
+    FLControlMessage *controlMessage = nil;
+    if (viewingThreadsIn == kInboxState) {
+        // TODO: Change to FLControlMessageThreadArchiveKey after other clients setup handling for it.
+        controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadCloseKey];
+    } else if (viewingThreadsIn == kArchiveState) {
+        controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadRestoreKey];
+    }
+    if (controlMessage) {
+        [Environment.getCurrent.messageSender sendSyncTranscriptForMessage:controlMessage];
+    }
 
-//-(NSString *)recipientIDFromUserTag:(nonnull NSString *)usertag
-//{
-//    return [[[Environment getCurrent].ccsmStorage getTags] objectForKey:usertag];
-//}
-
+//    [self checkIfEmptyView];
+}
 
 #pragma mark - Domain View handling
 -(void)showDomainTableView

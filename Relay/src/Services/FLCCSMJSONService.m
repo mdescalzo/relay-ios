@@ -1,5 +1,5 @@
 //
-//  CCSMJSONService.m
+//  FLCCSMJSONService.m
 //  Forsta
 //
 //  Created by Mark on 6/15/17.
@@ -9,7 +9,7 @@
 #define FLBlobShapeRevision 1
 
 #import "Environment.h"
-#import "CCSMJSONService.h"
+#import "FLCCSMJSONService.h"
 #import "TSOutgoingMessage.h"
 #import "FLControlMessage.h"
 #import "TSThread.h"
@@ -20,7 +20,7 @@
 #import "TSAttachmentStream.h"
 #import "OWSReadReceiptsMessage.h"
 
-@interface CCSMJSONService()
+@interface FLCCSMJSONService()
 
 +(NSArray *)arrayForTypeContentFromMessage:(TSOutgoingMessage *)message;
 +(NSArray *)arrayForTypeBroadcastFromMessage:(TSOutgoingMessage *)message;
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation CCSMJSONService
+@implementation FLCCSMJSONService
 
 +(NSString *_Nullable)blobFromMessage:(TSOutgoingMessage *_Nonnull)message
 {
@@ -183,6 +183,7 @@
     NSString *threadTitle = (message.thread.name ? message.thread.name : @"");
     NSString *sendTime = [self formattedStringFromDate:[NSDate date]];
     NSString *messageType = message.messageType;
+    NSString *threadType = (message.thread.type.length > 0 ? message.thread.type : @"");
     NSString *controlMessageType = message.controlMessageType;
     NSMutableDictionary *data = [NSMutableDictionary new];
 
@@ -194,18 +195,21 @@
     NSString *presentation = message.thread.universalExpression;
     NSDictionary *recipients = @{ @"expression" : presentation };
     
+    [data setObject:controlMessageType forKey:@"control"];
+    
     if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
-        [data setObject:controlMessageType
-                 forKey:@"control"];
         [data setObject:@{  @"threadId" : threadId,
                             @"threadTitle" : threadTitle,
                             @"expression" : message.thread.universalExpression,
                             }
                  forKey:@"threadUpdates"];
-    } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
-        [data setObject:controlMessageType
-                 forKey:@"control"];
-        [data setObject:@{  @"threadId" : threadId, }
+    } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey] ||
+               [controlMessageType isEqualToString:FLControlMessageThreadArchiveKey] ||
+               [controlMessageType isEqualToString:FLControlMessageThreadRestoreKey]) {
+        [data setObject:@{  @"threadId" : threadId,
+                            @"threadTitle" : threadTitle,
+                            @"expression" : message.thread.universalExpression,
+                            }
                  forKey:@"threadUpdates"];
     }
     
@@ -216,6 +220,7 @@
                                        @"threadId" : threadId,
                                        @"sendTime" : sendTime,
                                        @"messageType" : messageType,
+                                       @"threadType" : threadType,
                                        @"sender" : sender,
                                        @"distribution" : recipients,
                                        }];
@@ -281,6 +286,16 @@
 }
 
 #pragma mark - JSON body parsing methods
++(nullable NSDictionary *)payloadDictionaryFromMessageBody:(NSString *_Nullable)body
+{
+    NSArray *jsonArray = [self arrayFromMessageBody:body];
+    NSDictionary *jsonPayload = nil;
+    if (jsonArray.count > 0) {
+        jsonPayload = [jsonArray lastObject];
+    }
+    return jsonPayload;
+}
+
 +(nullable NSArray *)arrayFromMessageBody:(NSString *_Nonnull)body
 {
     // Checks passed message body to see if it is JSON,

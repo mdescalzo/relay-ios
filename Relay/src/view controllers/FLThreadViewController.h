@@ -22,7 +22,7 @@
 
 @property (nonatomic) BOOL newlyRegisteredUser;
 //@property (nonatomic, strong) CallState * _Nullable latestCall;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UITableView *_Nullable tableView;
 @property (nonatomic, assign) BOOL newConversation;
 @property (nonatomic, strong) NSDictionary * _Nullable targetUserInfo;
 

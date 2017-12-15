@@ -7,16 +7,20 @@
 
 #import "FLControlMessage.h"
 #import "NSDate+millisecondTimeStamp.h"
+#import "FLCCSMJSONService.h"
 
 @implementation FLControlMessage
 
--(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *)controlType;
+-(instancetype _Nonnull)initControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *)controlType;
 {
-    self = (FLControlMessage *)[super initWithTimestamp:[NSDate ows_millisecondTimeStamp] inThread:thread messageBody:nil attachmentIds:[NSMutableArray new]];
-    self.messageType = @"control";
-    self.uniqueId = [[NSUUID UUID] UUIDString];
-    _controlMessageType = controlType;
-    
+    if (self = (FLControlMessage *)[super initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                   inThread:thread messageBody:nil
+                                              attachmentIds:[NSMutableArray new]]) {;
+        self.messageType = @"control";
+        self.uniqueId = [[NSUUID UUID] UUIDString];
+        _controlMessageType = controlType;
+        self.body = [FLCCSMJSONService blobFromMessage:self];
+    }
     return self;
 }
 

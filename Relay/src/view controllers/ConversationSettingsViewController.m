@@ -356,7 +356,7 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
 {
     // Throw a threadDelete control message and remove self
     [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-   FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
+   FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
                                                                                            ofType:FLControlMessageThreadUpdateKey];
     [Environment.getCurrent.messageSender sendMessage:message
                                               success:^{

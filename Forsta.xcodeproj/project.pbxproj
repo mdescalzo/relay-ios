@@ -201,7 +201,7 @@
 		7D4A39D01F1693930023C29B /* LockInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */; };
 		7D4A39D11F1693930023C29B /* DiscardingLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C618170B33006006FC /* DiscardingLog.m */; };
 		7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
-		7D4A39D31F1693930023C29B /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
+		7D4A39D31F1693930023C29B /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
 		7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
 		7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB11D921A12A4AA002F93FB /* FullImageViewController.m */; };
 		7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = B60C16641988999D00E97A6C /* VersionMigrations.m */; };
@@ -460,7 +460,7 @@
 		7D4A3AE61F1693930023C29B /* audio_pause_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3E1A73426500B5C81A /* audio_pause_button@2x.png */; };
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
-		7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
+		7D516F231EF32B6000E7E15F /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
 		7D61398A1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398B1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398C1F90162400E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
@@ -876,7 +876,7 @@
 		7DCFFD771F0EE4490003CD95 /* LockInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */; };
 		7DCFFD781F0EE4490003CD95 /* DiscardingLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C618170B33006006FC /* DiscardingLog.m */; };
 		7DCFFD791F0EE4490003CD95 /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
-		7DCFFD7A1F0EE4490003CD95 /* CCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* CCSMJSONService.m */; };
+		7DCFFD7A1F0EE4490003CD95 /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
 		7DCFFD7B1F0EE4490003CD95 /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
 		7DCFFD7D1F0EE4490003CD95 /* FullImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB11D921A12A4AA002F93FB /* FullImageViewController.m */; };
 		7DCFFD7E1F0EE4490003CD95 /* VersionMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = B60C16641988999D00E97A6C /* VersionMigrations.m */; };
@@ -1847,8 +1847,8 @@
 		7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPopupMenuViewController.m; sourceTree = "<group>"; };
 		7D516F1B1EF3195100E7E15F /* FLMessageSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLMessageSender.h; path = Services/FLMessageSender.h; sourceTree = "<group>"; };
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
-		7D516F211EF32B6000E7E15F /* CCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCSMJSONService.h; path = Services/CCSMJSONService.h; sourceTree = "<group>"; };
-		7D516F221EF32B6000E7E15F /* CCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCSMJSONService.m; path = Services/CCSMJSONService.m; sourceTree = "<group>"; };
+		7D516F211EF32B6000E7E15F /* FLCCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLCCSMJSONService.h; path = Services/FLCCSMJSONService.h; sourceTree = "<group>"; };
+		7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLCCSMJSONService.m; path = Services/FLCCSMJSONService.m; sourceTree = "<group>"; };
 		7D6138771F90161500E18D29 /* TSAccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAccountManager.h; sourceTree = "<group>"; };
 		7D6138781F90161500E18D29 /* TSAccountManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSAccountManager.m; sourceTree = "<group>"; };
 		7D6138791F90161500E18D29 /* TSAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAttributes.h; sourceTree = "<group>"; };
@@ -3261,8 +3261,8 @@
 			isa = PBXGroup;
 			children = (
 				7DCFFEC41F0FE2330003CD95 /* DeviceTypes */,
-				7D516F211EF32B6000E7E15F /* CCSMJSONService.h */,
-				7D516F221EF32B6000E7E15F /* CCSMJSONService.m */,
+				7D516F211EF32B6000E7E15F /* FLCCSMJSONService.h */,
+				7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */,
 				7D516F1B1EF3195100E7E15F /* FLMessageSender.h */,
 				7D516F1C1EF3195100E7E15F /* FLMessageSender.m */,
 				7DB55A981F2A7F10001D3058 /* FLInvitationService.h */,
@@ -5164,7 +5164,7 @@
 				7D4A39D01F1693930023C29B /* LockInteractionController.m in Sources */,
 				7D4A39D11F1693930023C29B /* DiscardingLog.m in Sources */,
 				7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */,
-				7D4A39D31F1693930023C29B /* CCSMJSONService.m in Sources */,
+				7D4A39D31F1693930023C29B /* FLCCSMJSONService.m in Sources */,
 				7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */,
 				7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */,
 				7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */,
@@ -5504,7 +5504,7 @@
 				7DCFFD771F0EE4490003CD95 /* LockInteractionController.m in Sources */,
 				7DCFFD781F0EE4490003CD95 /* DiscardingLog.m in Sources */,
 				7DCFFD791F0EE4490003CD95 /* OWSLogger.m in Sources */,
-				7DCFFD7A1F0EE4490003CD95 /* CCSMJSONService.m in Sources */,
+				7DCFFD7A1F0EE4490003CD95 /* FLCCSMJSONService.m in Sources */,
 				7D613A431F9017EB00E18D29 /* OWSMessageSender.m in Sources */,
 				7DCFFD7B1F0EE4490003CD95 /* SrtpSocket.m in Sources */,
 				7DCFFD7D1F0EE4490003CD95 /* FullImageViewController.m in Sources */,
@@ -5849,7 +5849,7 @@
 				7D6139F91F90179A00E18D29 /* OWSAttachmentsProcessor.m in Sources */,
 				76EB061A18170B33006006FC /* DiscardingLog.m in Sources */,
 				45CD81F21DC03A22004C9430 /* OWSLogger.m in Sources */,
-				7D516F231EF32B6000E7E15F /* CCSMJSONService.m in Sources */,
+				7D516F231EF32B6000E7E15F /* FLCCSMJSONService.m in Sources */,
 				76EB05AC18170B33006006FC /* SrtpSocket.m in Sources */,
 				7D613A441F9017EB00E18D29 /* OWSMessageSender.m in Sources */,
 				FCB11D931A12A4AA002F93FB /* FullImageViewController.m in Sources */,

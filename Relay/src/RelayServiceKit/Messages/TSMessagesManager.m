@@ -32,6 +32,7 @@
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
 #import "FLTagMathService.h"
+#import "FLCCSMJSONService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -137,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleDeliveryReceipt:(OWSSignalServiceProtosEnvelope *)envelope
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         TSInteraction *interaction =
         [TSInteraction interactionForTimestamp:envelope.timestamp withTransaction:transaction];
         if ([interaction isKindOfClass:[TSOutgoingMessage class]]) {
@@ -295,7 +296,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)handleReceivedGroupAvatarUpdateWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
                                         dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
-    DDLogDebug(@"&@ Avatar update received!.  Unsupported until control message implementation.", self.tag);
+    DDLogDebug(@"%@ Avatar update received!.  Unsupported until control message implementation.", self.tag);
 //    TSGroupThread *groupThread = [TSGroupThread getOrCreateThreadWithGroupIdData:dataMessage.group.id];
 //    OWSAttachmentsProcessor *attachmentsProcessor =
 //    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:@[ dataMessage.group.avatar ]
@@ -513,6 +514,17 @@ NS_ASSUME_NONNULL_BEGIN
                                                  attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
+            [self handleThreadArchiveControlMessageWithEnvelope:envelope
+                                                withDataMessage:dataMessage
+                                                  attachmentIds:attachmentIds];
+        } else if ([controlMessageType isEqualToString:FLControlMessageThreadArchiveKey]) {
+            [self handleThreadArchiveControlMessageWithEnvelope:envelope
+                                                withDataMessage:dataMessage
+                                                  attachmentIds:attachmentIds];
+        } else if ([controlMessageType isEqualToString:FLControlMessageThreadRestoreKey]) {
+            [self handleThreadRestoreControlMessageWithEnvelope:envelope
+                                                withDataMessage:dataMessage
+                                                  attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
             [self handleThreadDeleteControlMessageWithEnvelope:envelope
                                                withDataMessage:dataMessage
@@ -629,8 +641,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                          withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                                            attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
-    NSArray *jsonArray = [self arrayFromMessageBody:dataMessage.body];
-    __block NSDictionary *jsonPayload = [jsonArray lastObject];
+    __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     __block TSIncomingMessage *incomingMessage = nil;
     __block TSThread *thread = nil;
     
@@ -719,30 +730,56 @@ NS_ASSUME_NONNULL_BEGIN
 //        }
 //    }];
 }
-    
+
+-(void)handleThreadArchiveControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
+                                    withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                      attachmentIds:(NSArray<NSString *> *)attachmentIds
+{
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
+        NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+        TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
+        if (thread) {
+            [thread archiveThreadWithTransaction:transaction
+                                   referenceDate:[NSDate ows_dateWithMillisecondsSince1970:envelope.timestamp]];
+            DDLogDebug(@"%@: Archived thread: %@", self.tag, thread);
+        }
+    }];
+}
+
+-(void)handleThreadRestoreControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
+                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
+{
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
+        NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+        TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
+        if (thread) {
+            [thread unarchiveThreadWithTransaction:transaction];
+            DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread);
+        }
+    }];
+}
 
 -(void)handleThreadUpdateControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
-    NSArray *jsonArray = [self arrayFromMessageBody:dataMessage.body];
-    NSDictionary *jsonPayload;
-    if (jsonArray.count > 0) {
-        jsonPayload = [jsonArray lastObject];
-    }
+    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-    __block NSDictionary *threadUpdates = [dataBlob objectForKey:@"threadUpdates"];
+    NSDictionary *threadUpdates = [dataBlob objectForKey:@"threadUpdates"];
 
-    NSString *threadID = [threadUpdates objectForKey:@"threadId"];
+    __block NSString *threadID = [threadUpdates objectForKey:@"threadId"];
     if (threadID.length == 0) {
         threadID = [jsonPayload objectForKey:@"threadId"];
     }
-    __block TSThread *thread = [TSThread getOrCreateThreadWithID:threadID];
-    __block SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source];
-    [sender save];
+    __block TSThread *thread = nil;
+    __block SignalRecipient *sender = [Environment.getCurrent.contactsManager recipientWithUserID:envelope.source];
 
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        thread = [TSThread getOrCreateThreadWithID:threadID transaction:transaction];
+
         // Handle thread name change.
         NSString *threadTitle = [threadUpdates objectForKey:@"threadTitle"];
         if (![thread.name isEqualToString:threadTitle]) {
