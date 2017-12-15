@@ -37,31 +37,37 @@
                   success:(void (^)())successHandler
                   failure:(void (^)(NSError *error))failureHandler
 {
-    dispatch_async([OWSDispatch sendingQueue], ^{
-        // Check to see if blob is already JSON
-        // Convert message body to JSON blob if necessary
-        NSString *messageBlob = nil;
-        if (!(message.body && [NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil])) {
-            messageBlob = [FLCCSMJSONService blobFromMessage:message];
-            message.body = messageBlob;
-        }
-        for (NSString *recipientId in recipientIds) {
-            [super sendSpecialMessage:message
-                          recipientId:recipientId
-                             attempts:3
-                              success:^{
-                                  DDLogDebug(@"Control successfully sent to: %@", recipientId);
-                                  if (successHandler) {
-                                      successHandler();
-                                  }
-                              } failure:^(NSError * _Nonnull error) {
-                                  DDLogDebug(@"Control message send failed to %@\nError: %@", recipientId, error.localizedDescription);
-                                  if (failureHandler) {
-                                      failureHandler(error);
-                                  }
-                              }];
-        }
-    });
+    // If nothing to do, bail and call success
+    if (recipientIds.count == 0) {
+        successHandler();
+    } else {
+        dispatch_async([OWSDispatch sendingQueue], ^{
+            // Check to see if blob is already JSON
+            // Convert message body to JSON blob if necessary
+            NSString *messageBlob = nil;
+            if (!(message.body && [NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil])) {
+                messageBlob = [FLCCSMJSONService blobFromMessage:message];
+                message.body = messageBlob;
+            }
+            
+            for (NSString *recipientId in recipientIds) {
+                [super sendSpecialMessage:message
+                              recipientId:recipientId
+                                 attempts:3
+                                  success:^{
+                                      DDLogDebug(@"Control successfully sent to: %@", recipientId);
+                                      if (successHandler) {
+                                          successHandler();
+                                      }
+                                  } failure:^(NSError * _Nonnull error) {
+                                      DDLogDebug(@"Control message send failed to %@\nError: %@", recipientId, error.localizedDescription);
+                                      if (failureHandler) {
+                                          failureHandler(error);
+                                      }
+                                  }];
+            }
+        });
+    }
 }
 
 
