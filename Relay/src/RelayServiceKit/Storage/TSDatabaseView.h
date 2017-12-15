@@ -13,6 +13,8 @@
 
 extern NSString *TSInboxGroup;
 extern NSString *TSArchiveGroup;
+extern NSString *TSPinnedGroup;
+
 extern NSString *TSSecondaryDevicesGroup;
 
 extern NSString *TSThreadDatabaseViewExtensionName;

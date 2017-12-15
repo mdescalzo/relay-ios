@@ -212,6 +212,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // Archive selector
     [self.archiveSelector setTitle:NSLocalizedString(@"WHISPER_NAV_BAR_TITLE", nil) forSegmentAtIndex:0];
     [self.archiveSelector setTitle:NSLocalizedString(@"ARCHIVE_NAV_BAR_TITLE", nil) forSegmentAtIndex:1];
+    [self archiveSelectorValueChanged:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -224,11 +225,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
                                              selector:@selector(markAllRead)
                                                  name:FLMarkAllReadNotification
                                                object:nil];
-    if (self.archiveSelector.selectedSegmentIndex == 0) {
-        self.viewingThreadsIn = kInboxState;
-    } else if (self.archiveSelector.selectedSegmentIndex == 1) {
-        self.viewingThreadsIn = kArchiveState;
-    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -315,8 +311,31 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *archiveAction;
+    UITableViewRowAction *deleteAction =
+    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                       title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
+                                     handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
+                                         [self tableViewCellTappedDelete:swipedIndexPath];
+                                     }];
+    
+    UITableViewRowAction *archiveAction = nil;
     if (self.viewingThreadsIn == kInboxState) {
+        UITableViewRowAction *pinAction = nil;
+        if (indexPath.section == 0) {  //  Pinned conversation
+            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                           title:NSLocalizedString(@"UNPIN_ACTION", nil)
+                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                             [self togglePinningForThreadAtIndexPath:indexPath];
+                                                         }];
+        } else if (indexPath.section == 1) {  // Unpinned conversation
+            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                           title:NSLocalizedString(@"PIN_ACTION", nil)
+                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                             [self togglePinningForThreadAtIndexPath:indexPath];
+                                                         }];
+        }
+        pinAction.backgroundColor = [ForstaColors mediumGreen];
+        
         archiveAction = [UITableViewRowAction
                          rowActionWithStyle:UITableViewRowActionStyleNormal
                          title:NSLocalizedString(@"ARCHIVE_ACTION", @"Pressing this button moves a thread from the inbox to the archive")
@@ -324,7 +343,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                              [self archiveIndexPath:tappedIndexPath];
                              [Environment.preferences setHasArchivedAMessage:YES];
                          }];
-        
+        return @[ archiveAction, pinAction, deleteAction ];
     } else {
         archiveAction = [UITableViewRowAction
                          rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -332,15 +351,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                          handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull tappedIndexPath) {
                              [self archiveIndexPath:tappedIndexPath];
                          }];
+        return @[ archiveAction, deleteAction ];
     }
-
-    UITableViewRowAction *deleteAction =
-    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
-                                       title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
-                                     handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
-                                         [self tableViewCellTappedDelete:swipedIndexPath];
-                                     }];
-    return @[ archiveAction, deleteAction ];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -445,6 +457,21 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //}
 
 #pragma mark - helpers
+-(void)togglePinningForThreadAtIndexPath:(NSIndexPath *)indexPath
+{
+    TSThread *thread = [self threadForIndexPath:indexPath];
+    if (thread) {
+        if (thread.pinPosition) {
+            thread.pinPosition = nil;
+        } else {
+            thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:0] + 1];
+        }
+        [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [thread saveWithTransaction:transaction];
+        }];
+    }
+}
+
 - (void)archiveIndexPath:(NSIndexPath *)indexPath {
     TSThread *thread = [self threadForIndexPath:indexPath];
     
@@ -648,11 +675,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)scrollTableViewToBottom
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+//    dispatch_async(dispatch_get_main_queue(), ^{
 //        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0]-1 inSection:0];
-        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    });
+//        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//        [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    });
     
     //    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
     //    {
@@ -666,12 +693,27 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return (NSInteger)[self.threadMappings numberOfSections];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     if ([tableView isEqual:self.tableView]) {
         return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
     }
     else {
         return (NSInteger)self.searchResult.count;
+    }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSInteger rows = [self tableView:tableView numberOfRowsInSection:section];
+    if (rows > 0) {
+        if (section == 0) {
+            return NSLocalizedString(@"PINNED_CONVERSATION_SECTION", nil);
+        } else if (section == 1) {
+            return NSLocalizedString(@"RECENT_CONVERSATION_SECTION", nil);
+        }
+    } else {
+        return nil;
     }
 }
 
@@ -972,18 +1014,20 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (IBAction)selectedInbox:(id)sender {
     self.viewingThreadsIn = kInboxState;
-    [self changeToGrouping:TSInboxGroup];
+    [self changeToGrouping:@[ TSPinnedGroup, TSInboxGroup ]];
 }
 
 - (IBAction)selectedArchive:(id)sender {
     self.viewingThreadsIn = kArchiveState;
-    [self changeToGrouping:TSArchiveGroup];
+    [self changeToGrouping:@[ TSArchiveGroup ]];
 }
 
-- (void)changeToGrouping:(NSString *)grouping {
+- (void)changeToGrouping:(NSArray *)grouping {
     self.threadMappings =
-    [[YapDatabaseViewMappings alloc] initWithGroups:@[ grouping ] view:TSThreadDatabaseViewExtensionName];
-    [self.threadMappings setIsReversed:YES forGroup:grouping];
+    [[YapDatabaseViewMappings alloc] initWithGroups:grouping view:TSThreadDatabaseViewExtensionName];
+    for (NSString *group in grouping) {
+        [self.threadMappings setIsReversed:YES forGroup:group];
+    }
     
     [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
         [self.threadMappings updateWithTransaction:transaction];
@@ -998,9 +1042,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 -(YapDatabaseViewMappings *)threadMappings
 {
     if (_threadMappings == nil) {
+        NSArray *groups = nil;
+        if (self.viewingThreadsIn == kInboxState) {
+            groups = @[ TSPinnedGroup, TSInboxGroup ];
+        } else {
+            groups =  @[ TSArchiveGroup ];
+        }
         _threadMappings =
-        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
+        [[YapDatabaseViewMappings alloc] initWithGroups:groups
+                                                   view:TSThreadDatabaseViewExtensionName];
         [_threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+        [_threadMappings setIsReversed:YES forGroup:TSArchiveGroup];
+        [_threadMappings setIsReversed:YES forGroup:TSPinnedGroup];
         
         [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
             [_threadMappings updateWithTransaction:transaction];

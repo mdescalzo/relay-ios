@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readonly) NSString *displayName;
 @property (strong) NSString *type;
 @property (strong) NSCountedSet *monitorIds;
-@property (strong) NSNumber *pinPosition;
+@property (strong) NSNumber *_Nullable pinPosition;
 
 /**
  *  Get or create thread with array of participant UUIDs

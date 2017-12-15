@@ -17,6 +17,7 @@
 
 NSString *TSInboxGroup   = @"TSInboxGroup";
 NSString *TSArchiveGroup = @"TSArchiveGroup";
+NSString *TSPinnedGroup  = @"TSPinnedGroup";
 
 NSString *TSUnreadIncomingMessagesGroup = @"TSUnreadIncomingMessagesGroup";
 NSString *TSSecondaryDevicesGroup = @"TSSecondaryDevicesGroup";
@@ -72,12 +73,14 @@ NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesData
                                              withObjectBlock:^NSString *(YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
                                                  if ([object isKindOfClass:[TSThread class]]) {
                                                      TSThread *thread = (TSThread *)object;
-                                                     if (thread.archivalDate) {
-                                                         return ([self threadShouldBeInInbox:thread]) ? TSInboxGroup : TSArchiveGroup;
-                                                     } else if (thread.archivalDate) {
+                                                     if (thread.archivalDate && ![self threadShouldBeInInbox:thread]) {
                                                          return TSArchiveGroup;
                                                      } else {
-                                                         return TSInboxGroup;
+                                                         if (thread.pinPosition) {
+                                                             return TSPinnedGroup;
+                                                         } else {
+                                                             return TSInboxGroup;
+                                                         }
                                                      }
                                                  }
                                                  return nil;
