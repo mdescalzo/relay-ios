@@ -105,7 +105,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, strong) NSMutableArray *messages;
 
 //@property (nonatomic, strong) IBOutlet UISearchController *searchController;
-//@property (nonatomic, weak) IBOutlet UILabel *bannerLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *archiveSelector;
 
 @property (nonatomic, strong) FLDomainViewController *domainTableViewController;
 @property (nonatomic, strong) SettingsPopupMenuViewController *settingsViewController;
@@ -208,6 +208,10 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // FAB
     [self.view addSubview:self.fabButton];
     [self.view bringSubviewToFront:self.fabButton];
+    
+    // Archive selector
+    [self.archiveSelector setTitle:NSLocalizedString(@"WHISPER_NAV_BAR_TITLE", nil) forSegmentAtIndex:0];
+    [self.archiveSelector setTitle:NSLocalizedString(@"ARCHIVE_NAV_BAR_TITLE", nil) forSegmentAtIndex:1];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -220,6 +224,11 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
                                              selector:@selector(markAllRead)
                                                  name:FLMarkAllReadNotification
                                                object:nil];
+    if (self.archiveSelector.selectedSegmentIndex == 0) {
+        self.viewingThreadsIn = kInboxState;
+    } else if (self.archiveSelector.selectedSegmentIndex == 1) {
+        self.viewingThreadsIn = kArchiveState;
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -306,13 +315,32 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UITableViewRowAction *archiveAction;
+    if (self.viewingThreadsIn == kInboxState) {
+        archiveAction = [UITableViewRowAction
+                         rowActionWithStyle:UITableViewRowActionStyleNormal
+                         title:NSLocalizedString(@"ARCHIVE_ACTION", @"Pressing this button moves a thread from the inbox to the archive")
+                         handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull tappedIndexPath) {
+                             [self archiveIndexPath:tappedIndexPath];
+                             [Environment.preferences setHasArchivedAMessage:YES];
+                         }];
+        
+    } else {
+        archiveAction = [UITableViewRowAction
+                         rowActionWithStyle:UITableViewRowActionStyleNormal
+                         title:NSLocalizedString(@"UNARCHIVE_ACTION", @"Pressing this button moves an archived thread from the archive back to the inbox")
+                         handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull tappedIndexPath) {
+                             [self archiveIndexPath:tappedIndexPath];
+                         }];
+    }
+
     UITableViewRowAction *deleteAction =
-    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault
+    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
                                        title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
                                      handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
                                          [self tableViewCellTappedDelete:swipedIndexPath];
                                      }];
-    return @[ deleteAction ];
+    return @[ archiveAction, deleteAction ];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -324,7 +352,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
     TSThread *thread = [self threadForIndexPath:indexPath];
     [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-    FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:thread
+    FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
                                                                                            ofType:FLControlMessageThreadUpdateKey];
     [Environment.getCurrent.messageSender sendControlMessage:message
                                                 toRecipients:[NSCountedSet setWithArray:thread.participants]
@@ -415,6 +443,30 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //        [self hideDomainTableView];
 //    }
 //}
+
+#pragma mark - helpers
+- (void)archiveIndexPath:(NSIndexPath *)indexPath {
+    TSThread *thread = [self threadForIndexPath:indexPath];
+    
+    BOOL viewingThreadsIn = self.viewingThreadsIn;
+    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        viewingThreadsIn == kInboxState ? [thread archiveThreadWithTransaction:transaction]
+        : [thread unarchiveThreadWithTransaction:transaction];
+    }];
+    
+    FLControlMessage *controlMessage = nil;
+    if (viewingThreadsIn == kInboxState) {
+        // TODO: Change to FLControlMessageThreadArchiveKey after other clients setup handling for it.
+        controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadCloseKey];
+    } else if (viewingThreadsIn == kArchiveState) {
+        controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadRestoreKey];
+    }
+    if (controlMessage) {
+        [Environment.getCurrent.messageSender sendSyncTranscriptForMessage:controlMessage];
+    }
+
+//    [self checkIfEmptyView];
+}
 
 #pragma mark - Domain View handling
 -(void)showDomainTableView
@@ -800,7 +852,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //    self.sendTextButton.hidden = YES;
 }
 
-
+#pragma mark - UISegmentController methods
+- (IBAction)archiveSelectorValueChanged:(id)sender {
+    if (self.archiveSelector.selectedSegmentIndex == 0) {
+        [self selectedInbox:sender];
+    } else if (self.archiveSelector.selectedSegmentIndex == 1) {
+        [self selectedArchive:sender];
+    }
+}
 
 #pragma mark - Accessors
 -(UIButton *)fabButton
@@ -910,6 +969,31 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //    }
 //    return _leftSwipeRecognizer;
 //}
+
+- (IBAction)selectedInbox:(id)sender {
+    self.viewingThreadsIn = kInboxState;
+    [self changeToGrouping:TSInboxGroup];
+}
+
+- (IBAction)selectedArchive:(id)sender {
+    self.viewingThreadsIn = kArchiveState;
+    [self changeToGrouping:TSArchiveGroup];
+}
+
+- (void)changeToGrouping:(NSString *)grouping {
+    self.threadMappings =
+    [[YapDatabaseViewMappings alloc] initWithGroups:@[ grouping ] view:TSThreadDatabaseViewExtensionName];
+    [self.threadMappings setIsReversed:YES forGroup:grouping];
+    
+    [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        [self.threadMappings updateWithTransaction:transaction];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+//            [self checkIfEmptyView];
+        });
+    }];
+}
 
 -(YapDatabaseViewMappings *)threadMappings
 {

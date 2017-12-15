@@ -7,7 +7,7 @@
 //
 
 #import "FLMessageSender.h"
-#import "CCSMJSONService.h"
+#import "FLCCSMJSONService.h"
 #import "CCSMStorage.h"
 #import "TSOutgoingMessage.h"
 #import "TSThread.h"
@@ -42,7 +42,7 @@
         // Convert message body to JSON blob if necessary
         NSString *messageBlob = nil;
         if (!(message.body && [NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil])) {
-            messageBlob = [CCSMJSONService blobFromMessage:message];
+            messageBlob = [FLCCSMJSONService blobFromMessage:message];
             message.body = messageBlob;
         }
         for (NSString *recipientId in recipientIds) {
@@ -81,7 +81,7 @@
     // Convert message body to JSON blob if necessary
     NSString *messageBlob = nil;
     if (!(message.body && [NSJSONSerialization JSONObjectWithData:[message.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil])) {
-            messageBlob = [CCSMJSONService blobFromMessage:message];
+            messageBlob = [FLCCSMJSONService blobFromMessage:message];
         message.body = messageBlob;
     }
     
