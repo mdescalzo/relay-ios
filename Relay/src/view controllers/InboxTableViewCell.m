@@ -10,6 +10,7 @@
 #import "Util.h"
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
 #import <JSQMessagesViewController/UIImage+JSQMessages.h>
+#import "UIImageView+Extension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -72,8 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
         self.snippetLabel.text = snippetText;
         self.timeLabel.attributedText = attributedDate;
         self.contactPictureView.image = avatar;
-        [UIUtil applyRoundedBorderToImageView:&_contactPictureView];
-
+        self.contactPictureView.circle = YES;
+        
         self.separatorInset = UIEdgeInsetsMake(0, _contactPictureView.frame.size.width * 1.5f, 0, 0);
 
         if (thread.hasUnreadMessages) {

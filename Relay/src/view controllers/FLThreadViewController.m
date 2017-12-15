@@ -60,6 +60,7 @@
 #import "SecurityUtils.h"
 #import "FLTagMathService.h"
 #import "FLControlMessage.h"
+#import "OWSDispatch.h"
 
 @import Photos;
 
@@ -173,7 +174,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.editingDbConnection = TSStorageManager.sharedManager.newDatabaseConnection;
     
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
@@ -212,6 +213,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     // Archive selector
     [self.archiveSelector setTitle:NSLocalizedString(@"WHISPER_NAV_BAR_TITLE", nil) forSegmentAtIndex:0];
     [self.archiveSelector setTitle:NSLocalizedString(@"ARCHIVE_NAV_BAR_TITLE", nil) forSegmentAtIndex:1];
+    [self archiveSelectorValueChanged:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -219,23 +221,18 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [super viewWillAppear:animated];
     
     [UIUtil applyForstaAppearence];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(markAllRead)
                                                  name:FLMarkAllReadNotification
                                                object:nil];
-    if (self.archiveSelector.selectedSegmentIndex == 0) {
-        self.viewingThreadsIn = kInboxState;
-    } else if (self.archiveSelector.selectedSegmentIndex == 1) {
-        self.viewingThreadsIn = kArchiveState;
-    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                    name:FLUserSelectedFromPopoverDirectoryNotification
-//                                                  object:nil];
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self
+    //                                                    name:FLUserSelectedFromPopoverDirectoryNotification
+    //                                                  object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:FLMarkAllReadNotification
                                                   object:nil];
@@ -315,8 +312,31 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *archiveAction;
+    UITableViewRowAction *deleteAction =
+    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                       title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
+                                     handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
+                                         [self tableViewCellTappedDelete:swipedIndexPath];
+                                     }];
+    
+    UITableViewRowAction *archiveAction = nil;
     if (self.viewingThreadsIn == kInboxState) {
+        UITableViewRowAction *pinAction = nil;
+        if (indexPath.section == 0) {  //  Pinned conversation
+            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                           title:NSLocalizedString(@"UNPIN_ACTION", nil)
+                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                             [self togglePinningForThreadAtIndexPath:indexPath];
+                                                         }];
+        } else if (indexPath.section == 1) {  // Unpinned conversation
+            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                           title:NSLocalizedString(@"PIN_ACTION", nil)
+                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                             [self togglePinningForThreadAtIndexPath:indexPath];
+                                                         }];
+        }
+        pinAction.backgroundColor = [ForstaColors mediumGreen];
+        
         archiveAction = [UITableViewRowAction
                          rowActionWithStyle:UITableViewRowActionStyleNormal
                          title:NSLocalizedString(@"ARCHIVE_ACTION", @"Pressing this button moves a thread from the inbox to the archive")
@@ -324,7 +344,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                              [self archiveIndexPath:tappedIndexPath];
                              [Environment.preferences setHasArchivedAMessage:YES];
                          }];
-        
+        return @[ archiveAction, pinAction, deleteAction ];
     } else {
         archiveAction = [UITableViewRowAction
                          rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -332,41 +352,51 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                          handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull tappedIndexPath) {
                              [self archiveIndexPath:tappedIndexPath];
                          }];
+        return @[ archiveAction, deleteAction ];
     }
-
-    UITableViewRowAction *deleteAction =
-    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
-                                       title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
-                                     handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
-                                         [self tableViewCellTappedDelete:swipedIndexPath];
-                                     }];
-    return @[ archiveAction, deleteAction ];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 
-#pragma mark - HomeFeedTableViewCellDelegate
-
-- (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath {
-    TSThread *thread = [self threadForIndexPath:indexPath];
-    [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-    FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
-                                                                                           ofType:FLControlMessageThreadUpdateKey];
-    [Environment.getCurrent.messageSender sendControlMessage:message
-                                                toRecipients:[NSCountedSet setWithArray:thread.participants]
-                                                     success:^{
-                                                         [self deleteThread:thread];
-                                                     }
-                                                     failure:^(NSError *error) {
-                                                         DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
-                                                         [self deleteThread:thread];
-                                                     }];
+#pragma mark - Cell Swipe Actions
+- (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+    __block TSThread *thread = [self threadForIndexPath:indexPath];
     
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"DELETE_THREAD_VALIDATION_MESSAGE", nil), thread.displayName];
+    UIAlertController *validationAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:alertMessage
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
+                                                        style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
+                                                          FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
+                                                                                                                                     ofType:FLControlMessageThreadUpdateKey];
+                                                          [Environment.getCurrent.messageSender sendControlMessage:message
+                                                                                                      toRecipients:[NSCountedSet setWithArray:thread.participants]
+                                                                                                           success:^{
+                                                                                                               [self deleteThread:thread];
+                                                                                                           }
+                                                                                                           failure:^(NSError *error) {
+                                                                                                               DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
+                                                                                                               [self deleteThread:thread];
+                                                                                                           }];
+                                                      }]];
+    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          //
+                                                      }]];
+        [self.navigationController presentViewController:validationAlert animated:YES completion:nil];
+    });
 }
+
 - (void)deleteThread:(TSThread *)thread {
-    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [thread removeWithTransaction:transaction];
     }];
     
@@ -393,24 +423,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
     }
 }
-
-//-(CGRect)frameForSettingsButton
-//{
-//    // Workaround for UIBarButtomItem not inheriting from UIView
-//    NSMutableArray* buttons = [[NSMutableArray alloc] init];
-//    for (UIControl* btn in self.navigationController.navigationBar.subviews) {
-//        if ([btn isKindOfClass:[UIControl class]] && btn.tag == kSettingsButtonTag) {
-//            [buttons addObject:btn];
-//        }
-//    }
-//    CGRect buttonFrame = ((UIView*)[buttons lastObject]).frame;
-//    CGRect returnFrame = CGRectMake(buttonFrame.origin.x,
-//                                    buttonFrame.origin.y,
-//                                    buttonFrame.size.width + 72,
-//                                    buttonFrame.size.height + 60);
-//    
-//    return returnFrame;
-//}
 
 -(IBAction)unwindToMessagesView:(UIStoryboardSegue *)sender
 {
@@ -463,6 +475,21 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //}
 
 #pragma mark - helpers
+-(void)togglePinningForThreadAtIndexPath:(NSIndexPath *)indexPath
+{
+    TSThread *thread = [self threadForIndexPath:indexPath];
+    if (thread) {
+        if (thread.pinPosition) {
+            thread.pinPosition = nil;
+        } else {
+            thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:0] + 1];
+        }
+        [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [thread saveWithTransaction:transaction];
+        }];
+    }
+}
+
 - (void)archiveIndexPath:(NSIndexPath *)indexPath {
     TSThread *thread = [self threadForIndexPath:indexPath];
     
@@ -480,10 +507,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadRestoreKey];
     }
     if (controlMessage) {
-        [Environment.getCurrent.messageSender sendSyncTranscriptForMessage:controlMessage];
+        dispatch_async([OWSDispatch sendingQueue], ^{
+            [Environment.getCurrent.messageSender sendSyncTranscriptForMessage:controlMessage];
+        });
     }
-
-//    [self checkIfEmptyView];
+    
+    //    [self checkIfEmptyView];
 }
 
 #pragma mark - Domain View handling
@@ -666,11 +695,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)scrollTableViewToBottom
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-//        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0]-1 inSection:0];
-        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    });
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0]-1 inSection:0];
+    //        NSIndexPath *bottomPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    //        [self.tableView scrollToRowAtIndexPath:bottomPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //    });
     
     //    if (self.tableView.contentSize.height > self.tableView.frame.size.height)
     //    {
@@ -684,13 +713,27 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return (NSInteger)[self.threadMappings numberOfSections];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     if ([tableView isEqual:self.tableView]) {
         return (NSInteger)[self.threadMappings numberOfItemsInSection:(NSUInteger)section];
     }
     else {
         return (NSInteger)self.searchResult.count;
     }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSInteger rows = [self tableView:tableView numberOfRowsInSection:section];
+    if (rows > 0 && self.viewingThreadsIn == kInboxState) {
+        if (section == 0) {
+            return NSLocalizedString(@"PINNED_CONVERSATION_SECTION", nil);
+        } else if (section == 1) {
+            return NSLocalizedString(@"RECENT_CONVERSATION_SECTION", nil);
+        }
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -706,7 +749,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        return [self messageCellForRowAtIndexPath:indexPath];
+    return [self messageCellForRowAtIndexPath:indexPath];
 }
 
 -(UITableViewCell *)messageCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -732,9 +775,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
-        
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (TSThread *)threadForIndexPath:(NSIndexPath *)indexPath {
@@ -751,10 +794,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
             if (lookupDict) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                         thread.participants = [lookupDict objectForKey:@"userids"];
                         thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-                        
                         [thread saveWithTransaction:transaction];
                     }];
                 });
@@ -787,10 +829,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     [UINavigationBar appearance].barTintColor = [UIColor blackColor];
     [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     
-//    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    //    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    //    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = NO;
-
+    
 #ifdef DEVELOPMENT
     UIBarButtonItem *logoItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Forsta_logo_DEV"]
                                                                  style:UIBarButtonItemStylePlain
@@ -852,22 +894,22 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 #pragma mark - UISearchResultsUpdating
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-//    NSString *searchString = [self.searchController.searchBar text];
-//    
-//    [self filterContentForSearchText:searchString scope:nil];
-//    
-//    [self.tableView reloadData];
+    //    NSString *searchString = [self.searchController.searchBar text];
+    //
+    //    [self filterContentForSearchText:searchString scope:nil];
+    //
+    //    [self.tableView reloadData];
 }
 
 
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
-//    [self updateSearchResultsForSearchController:self.searchController];
+    //    [self updateSearchResultsForSearchController:self.searchController];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-//    self.sendTextButton.hidden = YES;
+    //    self.sendTextButton.hidden = YES;
 }
 
 #pragma mark - UISegmentController methods
@@ -887,7 +929,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         _fabButton.backgroundColor = [ForstaColors mediumDarkBlue2];
         [_fabButton setImage:[UIImage imageNamed:@"pencil-1"] forState:UIControlStateNormal];
         _fabButton.tintColor = [UIColor whiteColor];
-//        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
+        //        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
         _fabButton.titleLabel.font = [UIFont systemFontOfSize:30.0 weight:UIFontWeightBold];
         [_fabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         CGSize buttonSize = CGSizeMake(60.0, 60.0);
@@ -990,25 +1032,27 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (IBAction)selectedInbox:(id)sender {
     self.viewingThreadsIn = kInboxState;
-    [self changeToGrouping:TSInboxGroup];
+    [self changeToGrouping:@[ TSPinnedGroup, TSInboxGroup ]];
 }
 
 - (IBAction)selectedArchive:(id)sender {
     self.viewingThreadsIn = kArchiveState;
-    [self changeToGrouping:TSArchiveGroup];
+    [self changeToGrouping:@[ TSArchiveGroup ]];
 }
 
-- (void)changeToGrouping:(NSString *)grouping {
+- (void)changeToGrouping:(NSArray *)grouping {
     self.threadMappings =
-    [[YapDatabaseViewMappings alloc] initWithGroups:@[ grouping ] view:TSThreadDatabaseViewExtensionName];
-    [self.threadMappings setIsReversed:YES forGroup:grouping];
+    [[YapDatabaseViewMappings alloc] initWithGroups:grouping view:TSThreadDatabaseViewExtensionName];
+    for (NSString *group in grouping) {
+        [self.threadMappings setIsReversed:YES forGroup:group];
+    }
     
     [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
         [self.threadMappings updateWithTransaction:transaction];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-//            [self checkIfEmptyView];
+            //            [self checkIfEmptyView];
         });
     }];
 }
@@ -1016,9 +1060,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 -(YapDatabaseViewMappings *)threadMappings
 {
     if (_threadMappings == nil) {
+        NSArray *groups = nil;
+        if (self.viewingThreadsIn == kInboxState) {
+            groups = @[ TSPinnedGroup, TSInboxGroup ];
+        } else {
+            groups =  @[ TSArchiveGroup ];
+        }
         _threadMappings =
-        [[YapDatabaseViewMappings alloc] initWithGroups:@[ TSInboxGroup ] view:TSThreadDatabaseViewExtensionName];
+        [[YapDatabaseViewMappings alloc] initWithGroups:groups
+                                                   view:TSThreadDatabaseViewExtensionName];
         [_threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+        [_threadMappings setIsReversed:YES forGroup:TSArchiveGroup];
+        [_threadMappings setIsReversed:YES forGroup:TSPinnedGroup];
         
         [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
             [_threadMappings updateWithTransaction:transaction];

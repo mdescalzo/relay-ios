@@ -37,6 +37,12 @@
 /* No comment provided by engineer. */
 "APN_MESSAGE_IN_GROUP_DETAILED" = "%@ in conversation %@: %@";
 
+/* Pressing this button pins a thread */
+"PIN_ACTION" = "Pin";
+
+/* Pressing this button unpins a thread */
+"UNPIN_ACTION" = "Unpin";
+
 /* Pressing this button moves a thread from the inbox to the archive */
 "ARCHIVE_ACTION" = "Archive";
 
@@ -270,6 +276,11 @@
 
 /* Conversation settings table section title */
 "GROUP_MANAGEMENT_SECTION" = "Conversation Management";
+
+/* Pinned conversation section heading */
+"PINNED_CONVERSATION_SECTION" = "Pinned";
+
+"RECENT_CONVERSATION_SECTION" = "Recent";
 
 /* No comment provided by engineer. */
 "GROUP_MEMBER_JOINED" = " %@ joined the conversation. ";
@@ -892,4 +903,7 @@
 /* Token refresh failure message */
 "REFRESH_FAILURE_MESSAGE" = "Account refresh failed.  Please contact your organization's administrator or Forsta support.";
 
+/* Thread/conversation deletion */
 "DELETE_THREAD_FAILURE_MESSAGE" = "Unable to delete this conversation.  Check your network connection and try again.";
+
+"DELETE_THREAD_VALIDATION_MESSAGE" = "Are you sure you wish to delete this consversation?\n\n%@";
