@@ -9,6 +9,9 @@
 #import "TSOutgoingMessage.h"
 #import "TSStorageManager.h"
 #import "TSThread.h"
+#import "NSDate+millisecondTimeStamp.h"
+#import "FLCCSMJSONService.h"
+#import "FLControlMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -44,28 +47,38 @@ NS_ASSUME_NONNULL_BEGIN
     DDLogDebug(@"%@ Recording transcript: %@", self.tag, transcript);
     
     // Intercept and attach forstaPayload
-    NSArray *jsonArray = [self arrayFromMessageBody:transcript.body];
-    __block NSDictionary *jsonPayload;
-    if (jsonArray.count > 0) {
-        DDLogDebug(@"JSON Payload received.");
-        jsonPayload = [jsonArray lastObject];
-    }
-    
+    __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
+
     // Check for control message
     if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
         __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
         NSString *controlType = [dataBlob objectForKey:@"control"];
         
-        if ([controlType isEqualToString:@"threadClose"]) {  // Archive the thread
+          // Archive a thread
+        if ([controlType isEqualToString:FLControlMessageThreadArchiveKey] ||
+            [controlType isEqualToString:FLControlMessageThreadCloseKey]) {
             [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                NSString *threadId = [jsonPayload objectForKey:@"threadId"];
-                TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId transaction:transaction];
+                NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+                TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
                 if (thread) {
-                    NSDate *archiveDate = [NSDate dateWithTimeIntervalSince1970:transcript.timestamp/1000.0];
-                    [thread archiveThreadWithTransaction:transaction referenceDate:archiveDate];
+                    [thread archiveThreadWithTransaction:transaction
+                                           referenceDate:[NSDate ows_dateWithMillisecondsSince1970:transcript.timestamp]];
+                    DDLogDebug(@"%@: Archived thread: %@", self.tag, thread);
                 }
             }];
-        } else {
+        }
+        // Restore Archived thread
+        else if ([controlType isEqualToString:FLControlMessageThreadRestoreKey]) {
+        [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+            TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
+            if (thread) {
+                [thread unarchiveThreadWithTransaction:transaction];
+                DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread);
+            }
+        }];
+    }
+        else {
             DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
         }
     } else {
@@ -124,34 +137,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
 }
-
-#pragma mark - JSON body parsing methods
--(nullable NSArray *)arrayFromMessageBody:(NSString *)body
-{
-    // Checks passed message body to see if it is JSON,
-    //    If it is, return the array of contents
-    //    else, return nil.
-    if (body.length == 0) {
-        return nil;
-    }
-    
-    NSError *error =  nil;
-    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
-    
-    if (data == nil) { // Not parseable.  Bounce out.
-        return nil;
-    }
-    
-    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    
-    if (error) {
-        DDLogError(@"JSON Parsing error: %@", error.description);
-        return nil;
-    } else {
-        return output;
-    }
-}
-
 
 #pragma mark - Logging
 

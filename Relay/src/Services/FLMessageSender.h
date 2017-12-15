@@ -17,4 +17,6 @@
                   success:(void (^)())successHandler
                   failure:(void (^)(NSError *error))failureHandler;
 
+- (void)sendSyncTranscriptForMessage:(TSOutgoingMessage *)message;
+
 @end

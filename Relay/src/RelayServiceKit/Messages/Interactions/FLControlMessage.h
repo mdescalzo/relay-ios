@@ -10,6 +10,8 @@
 #define FLControlMessageThreadUpdateKey @"threadUpdate"
 #define FLControlMessageThreadClearKey @"threadClear"
 #define FLControlMessageThreadCloseKey @"threadClose"
+#define FLControlMessageThreadArchiveKey @"threadArchive"
+#define FLControlMessageThreadRestoreKey @"threadRestore"
 #define FLControlMessageThreadDeleteKey @"threadDelete"
 #define FLControlMessageThreadSnoozeKey @"snooze"
 
@@ -17,6 +19,6 @@
 
 @property (strong, readonly) NSString * _Nonnull controlMessageType;
 
--(instancetype _Nonnull)initThreadUpdateControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *_Nonnull)controlType;
+-(instancetype _Nonnull)initControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *_Nonnull)controlType;
 
 @end

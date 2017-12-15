@@ -311,8 +311,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         }
         
         // Build control message
-        FLControlMessage *message = [[FLControlMessage alloc] initThreadUpdateControlMessageForThread:self.thread
-                                                                                               ofType:FLControlMessageThreadUpdateKey];
+        FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
+                                                                                   ofType:FLControlMessageThreadUpdateKey];
         
         // Thread image update handling
         if (self.groupImage && ![self.originalThreadAvatar isEqual:self.groupImage]) {
