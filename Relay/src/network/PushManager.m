@@ -321,31 +321,35 @@
     return self.pushNotificationFutureSource.future;
 }
 
-- (void)requestPushTokenWithSuccess:(pushTokensSuccessBlock)success failure:(failedPushRegistrationBlock)failure {
-    if (!self.wantRemoteNotifications) {
-        DDLogWarn(@"%@ Using fake push tokens", self.tag);
-        success(@"fakePushToken", @"fakeVoipToken");
-        return;
-    }
-
-    TOCFuture *requestPushTokenFuture = [self registerPushNotificationFuture];
-
-    [requestPushTokenFuture thenDo:^(NSData *pushTokenData) {
-      NSString *pushToken = [pushTokenData ows_tripToken];
-      TOCFuture *pushKit  = [self registerPushKitNotificationFuture];
-
-      [pushKit thenDo:^(NSString *voipToken) {
-        success(pushToken, voipToken);
-      }];
-
-      [pushKit catchDo:^(NSError *error) {
-        failure(error);
-      }];
-    }];
-
-    [requestPushTokenFuture catchDo:^(NSError *error) {
-      failure(error);
-    }];
+- (void)requestPushTokenWithSuccess:(pushTokensSuccessBlock)success failure:(failedPushRegistrationBlock)failure
+{
+    // Forcing this to main_queue since Apple require push notification registration to be on the main
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.wantRemoteNotifications) {
+            DDLogWarn(@"%@ Using fake push tokens", self.tag);
+            success(@"fakePushToken", @"fakeVoipToken");
+            return;
+        }
+        
+        TOCFuture *requestPushTokenFuture = [self registerPushNotificationFuture];
+        
+        [requestPushTokenFuture thenDo:^(NSData *pushTokenData) {
+            NSString *pushToken = [pushTokenData ows_tripToken];
+            TOCFuture *pushKit  = [self registerPushKitNotificationFuture];
+            
+            [pushKit thenDo:^(NSString *voipToken) {
+                success(pushToken, voipToken);
+            }];
+            
+            [pushKit catchDo:^(NSError *error) {
+                failure(error);
+            }];
+        }];
+        
+        [requestPushTokenFuture catchDo:^(NSError *error) {
+            failure(error);
+        }];
+    });
 }
 
 - (UIUserNotificationCategory *)fullNewMessageNotificationCategory {
