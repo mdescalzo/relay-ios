@@ -1057,33 +1057,33 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }];
 }
 
--(YapDatabaseViewMappings *)threadMappings
-{
-    if (_threadMappings == nil) {
-        NSArray *groups = nil;
-        if (self.viewingThreadsIn == kInboxState) {
-            groups = @[ TSPinnedGroup, TSInboxGroup ];
-        } else {
-            groups =  @[ TSArchiveGroup ];
-        }
-        _threadMappings =
-        [[YapDatabaseViewMappings alloc] initWithGroups:groups
-                                                   view:TSThreadDatabaseViewExtensionName];
-        [_threadMappings setIsReversed:YES forGroup:TSInboxGroup];
-        [_threadMappings setIsReversed:YES forGroup:TSArchiveGroup];
-        [_threadMappings setIsReversed:YES forGroup:TSPinnedGroup];
-        
-        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-            [_threadMappings updateWithTransaction:transaction];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-                //            [self checkIfEmptyView];
-            });
-        }];
-        
-    }
-    return _threadMappings;
-}
+//-(YapDatabaseViewMappings *)threadMappings
+//{
+//    if (_threadMappings == nil) {
+//        NSArray *groups = nil;
+//        if (self.viewingThreadsIn == kInboxState) {
+//            groups = @[ TSPinnedGroup, TSInboxGroup ];
+//        } else {
+//            groups =  @[ TSArchiveGroup ];
+//        }
+//        _threadMappings =
+//        [[YapDatabaseViewMappings alloc] initWithGroups:groups
+//                                                   view:TSThreadDatabaseViewExtensionName];
+//        [_threadMappings setIsReversed:YES forGroup:TSInboxGroup];
+//        [_threadMappings setIsReversed:YES forGroup:TSArchiveGroup];
+//        [_threadMappings setIsReversed:YES forGroup:TSPinnedGroup];
+//
+//        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+//            [_threadMappings updateWithTransaction:transaction];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.tableView reloadData];
+//                //            [self checkIfEmptyView];
+//            });
+//        }];
+//
+//    }
+//    return _threadMappings;
+//}
 
 -(NSArray *)userTags
 {
