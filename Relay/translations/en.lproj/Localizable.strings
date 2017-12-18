@@ -680,6 +680,13 @@
 /* No comment provided by engineer. */
 "SETTINGS_ADVANCED_TITLE" = "Advanced";
 
+/* No comment provided by engineer. */
+"SETTINGS_APPEARANCE" = "Appearance";
+"APPEARANCE_GRAVATAR_SECTION" = "Gravatars";
+"APPEARANCE_USE_GRAVATARS" = "Use Gravatars";
+"APPEARANCE_MESSAGES_SECTION" = "Messages";
+"APPEARANCE_MESSAGE_BUBBLE_COLOR" = "Message Bubble Color";
+
 /* User settings section footer, a detailed explanation */
 "SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL" = "Requires your approval before communicating with someone who has new safety numbers, commonly from a reinstall of Forsta.";
 

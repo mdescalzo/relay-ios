@@ -62,7 +62,6 @@
             return 0;
             break;
     }
-//    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

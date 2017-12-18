@@ -56,6 +56,8 @@ typedef NS_ENUM(NSUInteger, TSImageQuality) {
 - (nullable NSString *)lastRanVersion;
 - (NSString *)setAndGetCurrentVersion;
 
+@property (nonatomic, assign) BOOL useGravatars;
+
 #pragma mark - Block on Identity Change
 
 - (BOOL)shouldBlockOnIdentityChange;

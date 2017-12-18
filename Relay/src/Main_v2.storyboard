@@ -852,8 +852,25 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="kyg-gV-Hd3" style="IBUITableViewCellStyleDefault" id="ky5-lm-QcU" userLabel="Notifications Cell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="BKz-AK-pds" style="IBUITableViewCellStyleDefault" id="4Hm-bU-u0M" userLabel="About Cell">
                                         <rect key="frame" x="0.0" y="313" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Hm-bU-u0M" id="s9m-yZ-r0Q">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Appearance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BKz-AK-pds">
+                                                    <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="kyg-gV-Hd3" style="IBUITableViewCellStyleDefault" id="ky5-lm-QcU" userLabel="Notifications Cell">
+                                        <rect key="frame" x="0.0" y="357" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ky5-lm-QcU" id="0uv-dK-vmc">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -870,7 +887,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Xhx-7i-bgF" style="IBUITableViewCellStyleDefault" id="hE1-5j-pCv" userLabel="Privacy Cell">
-                                        <rect key="frame" x="0.0" y="357" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="401" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hE1-5j-pCv" id="caE-1l-1is">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -887,7 +904,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="fOg-rE-Obl" style="IBUITableViewCellStyleDefault" id="WZj-ca-tYW" userLabel="Advanced Cell">
-                                        <rect key="frame" x="0.0" y="401" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="445" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WZj-ca-tYW" id="4cW-7p-PQH">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -908,7 +925,7 @@
                             <tableViewSection id="XbV-x4-QdO">
                                 <cells>
                                     <tableViewCell autoresizesSubviews="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="100" id="TRe-Zj-BCV" userLabel="Destroy Account Cell">
-                                        <rect key="frame" x="0.0" y="481" width="375" height="100"/>
+                                        <rect key="frame" x="0.0" y="525" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TRe-Zj-BCV" id="Hev-BG-RSd">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
@@ -954,6 +971,7 @@
                     <connections>
                         <outlet property="aboutLabel" destination="lhY-TQ-DZD" id="zAq-Tq-j1T"/>
                         <outlet property="advancedLabel" destination="fOg-rE-Obl" id="kcx-oI-7ec"/>
+                        <outlet property="appearanceLabel" destination="BKz-AK-pds" id="moS-dI-bAS"/>
                         <outlet property="destroyAccountButton" destination="uGO-B2-8P1" id="E6d-2I-2Qs"/>
                         <outlet property="networkStatusHeader" destination="BWn-Wl-rrP" id="nsn-nt-ynA"/>
                         <outlet property="networkStatusLabel" destination="EfZ-ME-0MU" id="Swp-P2-Ecu"/>

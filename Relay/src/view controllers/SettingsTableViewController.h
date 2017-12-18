@@ -10,16 +10,17 @@
 
 @interface SettingsTableViewController : UITableViewController
 
-@property (strong, nonatomic) IBOutlet UILabel *registeredName;
-@property (strong, nonatomic) IBOutlet UILabel *registeredNumber;
-@property (strong, nonatomic) IBOutlet UILabel *networkStatusLabel;
-@property (strong, nonatomic) IBOutlet UILabel *networkStatusHeader;
-@property (strong, nonatomic) IBOutlet UILabel *privacyLabel;
-@property (strong, nonatomic) IBOutlet UILabel *notificationsLabel;
-@property (strong, nonatomic) IBOutlet UILabel *linkedDevicesLabel;
-@property (strong, nonatomic) IBOutlet UILabel *advancedLabel;
-@property (strong, nonatomic) IBOutlet UILabel *aboutLabel;
-@property (strong, nonatomic) IBOutlet UIButton *destroyAccountButton;
+@property (weak, nonatomic) IBOutlet UILabel *registeredName;
+@property (weak, nonatomic) IBOutlet UILabel *registeredNumber;
+@property (weak, nonatomic) IBOutlet UILabel *networkStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *networkStatusHeader;
+@property (weak, nonatomic) IBOutlet UILabel *privacyLabel;
+@property (weak, nonatomic) IBOutlet UILabel *notificationsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *linkedDevicesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *advancedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *aboutLabel;
+@property (weak, nonatomic) IBOutlet UIButton *destroyAccountButton;
+@property (weak, nonatomic) IBOutlet UILabel *appearanceLabel;
 
 - (IBAction)unregisterUser:(id)sender;
 

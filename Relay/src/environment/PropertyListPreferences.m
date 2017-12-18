@@ -20,6 +20,8 @@ NSString *const PropertyListPreferencesKeyPlaySoundInBackground = @"Notification
 NSString *const PropertyListPreferencesKeyHasRegisteredVoipPush = @"VOIPPushEnabled";
 NSString *const PropertyListPreferencesKeyLastRecordedPushToken = @"LastRecordedPushToken";
 NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecordedVoipToken";
+NSString *const PropertyListPreferencesKeyUseGravatars = @"UseGravatars";
+
 
 @implementation PropertyListPreferences
 
@@ -257,6 +259,16 @@ NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecorded
 - (nullable NSString *)getVoipToken
 {
     return [self tryGetValueForKey:PropertyListPreferencesKeyLastRecordedVoipToken];
+}
+
+-(void)setUseGravatars:(BOOL)value
+{
+    [self setValueForKey:PropertyListPreferencesKeyUseGravatars toValue:@(value)];
+}
+
+-(BOOL)useGravatars
+{
+    return [self tryGetValueForKey:PropertyListPreferencesKeyUseGravatars];
 }
 
 @end

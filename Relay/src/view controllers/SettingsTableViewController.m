@@ -23,6 +23,7 @@
 #import "AdvancedSettingsTableViewController.h"
 #import "NotificationSettingsViewController.h"
 #import "PrivacySettingsTableViewController.h"
+#import "AppearanceSettingsViewController.h"
 #import "PushManager.h"
 
 #define kProfileCellHeight 87.0f
@@ -31,16 +32,19 @@
 #define kNumberOfSections 4
 
 #define kRegisteredNumberRow 0
-#define kPrivacyRow 2
-#define kNotificationRow 1
-#define kAdvancedRow 3
-#define kAboutRow 0
 #define kNetworkRow 0
+
+#define kAboutRow 0
+#define kAppearanceRow 1
+#define kNotificationRow 2
+#define kPrivacyRow 3
+#define kAdvancedRow 4
+
 #define kUnregisterRow 0
 
 typedef enum {
     kRegisteredRows = 1,
-    kGeneralRows = 4,
+    kGeneralRows = 5,
     kNetworkStatusRows = 1,
     kUnregisterRows = 0,
 } kRowsForSection;
@@ -83,6 +87,7 @@ typedef enum {
     self.notificationsLabel.text = NSLocalizedString(@"SETTINGS_NOTIFICATIONS", nil);
     self.linkedDevicesLabel.text
         = NSLocalizedString(@"LINKED_DEVICES_TITLE", @"Menu item and navbar title for the device manager");
+    self.appearanceLabel.text = NSLocalizedString(@"SETTINGS_APPEARANCE", @"");
     [self.destroyAccountButton setTitle:NSLocalizedString(@"SETTINGS_DELETE_ACCOUNT_BUTTON", @"")
                                forState:UIControlStateNormal];
     self.destroyAccountButton.backgroundColor = [ForstaColors mediumDarkRed];
@@ -139,6 +144,11 @@ typedef enum {
                 }
                 case kNotificationRow: {
                     NotificationSettingsViewController *vc = [[NotificationSettingsViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    break;
+                }
+                case kAppearanceRow: {
+                    AppearanceSettingsViewController *vc = [[AppearanceSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
