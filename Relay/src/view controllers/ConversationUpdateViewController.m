@@ -34,8 +34,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 
 @property TSThread *thread;
 @property (readonly) OWSMessageSender *messageSender;
-@property (nonatomic, strong) NSArray <SignalRecipient *> *contacts;
-@property (readonly) NSArray <SignalRecipient *> *selectedRecipients;
+@property (nonatomic, strong) NSArray <FLTag *> *contacts;
+@property (readonly) NSArray <FLTag *> *selectedTags;
 @property NSString *originalThreadName;
 @property NSCountedSet *originalThreadParticipants;
 @property UIImage *originalThreadAvatar;
@@ -230,7 +230,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                         }
                                         failure:^(NSError *error) {
                                             DDLogDebug(@"TagMathLookup failed.  Error: %@", error.localizedDescription);
-#warning XXX insert warning here
+                                            // TODO: Add warning message here.
                                         }];
    
 }
@@ -241,7 +241,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     // Make sure something changed
     if (![self.originalThreadAvatar isEqual:self.groupImage] ||
         ![self.originalThreadName isEqualToString:self.nameGroupTextField.text] ||
-        self.selectedRecipients.count > 0) {
+        self.selectedTags.count > 0) {
         
         // Handle title change
         if (![self.originalThreadName isEqualToString:self.nameGroupTextField.text]) {
@@ -260,10 +260,10 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         // Handle participant change
         NSCountedSet *participants = [NSCountedSet setWithArray:self.thread.participants];
         NSCountedSet *newParticipants = nil;
-        if (self.selectedRecipients.count > 0) {
+        if (self.selectedTags.count > 0) {
             NSMutableString *lookupString = [self.thread.prettyExpression mutableCopy]; // [NSMutableString new];  <-- switch back to this to allow client to remove participants.
-            for (SignalRecipient *recipient in self.selectedRecipients) {
-                [lookupString appendString:[NSString stringWithFormat:@"@%@:%@ ", recipient.flTag.slug, recipient.orgSlug]];
+            for (FLTag *aTag in self.selectedTags) {
+                [lookupString appendString:[NSString stringWithFormat:@"@%@:%@ ", aTag.slug, aTag.orgSlug]];
             }
             if (lookupString.length > 0) {
                 NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:lookupString];
@@ -467,9 +467,11 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"GroupSearchCell" forIndexPath:indexPath];
 
-    SignalRecipient *recipient = [self.contacts objectAtIndex:(NSUInteger)indexPath.row];
+//    SignalRecipient *recipient = [self.contacts objectAtIndex:(NSUInteger)indexPath.row];
+    FLTag *aTag = [self.contacts objectAtIndex:(NSUInteger)indexPath.row];
 
-    [cell configureCellWithContact:recipient];
+//    [cell configureCellWithContact:recipient];
+    [cell configureCellWithTag:aTag];
     cell.accessoryType    = UITableViewCellAccessoryNone;
 
     // TODO: Re-enable this to allow clien to remove participants.
@@ -533,35 +535,45 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 }
 
 #pragma mark - accessors
--(NSArray <SignalRecipient *> *)contacts
+//-(NSArray <SignalRecipient *> *)contacts
+-(NSArray <FLTag *> *)contacts
 {
     if (_contacts == nil) {
         NSMutableArray *mArray = [NSMutableArray new];
-        for (SignalRecipient *recipient in [SignalRecipient allObjectsInCollection]) {
-            if (![self.thread.participants containsObject:recipient.uniqueId] && recipient.isActive) {
-                [mArray addObject:recipient];
+        [[FLTag allObjectsInCollection] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:[FLTag class]]) {
+                FLTag *aTag = (FLTag *)obj;
+                if (![aTag.uniqueId isEqualToString:[SignalRecipient selfRecipient].flTag.uniqueId]) {
+                    [mArray addObject:aTag];
+                }
             }
-        }
+        }];
+//        for (SignalRecipient *recipient in [Environment.getCurrent.contactsManager activeRecipients]) {
+//            if (![self.thread.participants containsObject:recipient.uniqueId] && recipient.isActive) {
+//                [mArray addObject:recipient];
+//            }
+//        }
         
-        NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
-                                                                   ascending:YES
-                                                                    selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSortDescriptor *firstNameSD = [[NSSortDescriptor alloc] initWithKey:@"firstName"
-                                                                    ascending:YES
-                                                                     selector:@selector(localizedCaseInsensitiveCompare:)];
-//        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"tagDescription"
+//        NSSortDescriptor *lastNameSD = [[NSSortDescriptor alloc] initWithKey:@"lastName"
 //                                                                   ascending:YES
 //                                                                    selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSortDescriptor *orgSD = [[NSSortDescriptor alloc] initWithKey:@"orgSlug"
-                                                              ascending:YES
-                                                               selector:@selector(localizedCaseInsensitiveCompare:)];
+//        NSSortDescriptor *firstNameSD = [[NSSortDescriptor alloc] initWithKey:@"firstName"
+//                                                                    ascending:YES
+//                                                                     selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"tagDescription"
+                                                                   ascending:YES
+                                                                    selector:@selector(localizedCaseInsensitiveCompare:)];
+//        NSSortDescriptor *orgSD = [[NSSortDescriptor alloc] initWithKey:@"orgSlug"
+//                                                              ascending:YES
+//                                                               selector:@selector(localizedCaseInsensitiveCompare:)];
         
-        _contacts = [[NSArray arrayWithArray:mArray] sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
+//        _contacts = [[NSArray arrayWithArray:mArray] sortedArrayUsingDescriptors:@[ lastNameSD, firstNameSD, orgSD ]];
+        _contacts = [[NSArray arrayWithArray:mArray] sortedArrayUsingDescriptors:@[ descriptionSD ]];
     }
     return _contacts;
 }
 
--(NSArray <SignalRecipient *> *)selectedRecipients
+-(NSArray <FLTag *> *)selectedTags
 {
     NSMutableArray *holdingArray = [NSMutableArray new];
     for (NSIndexPath *indexPath in [self.tableView indexPathsForSelectedRows]) {
