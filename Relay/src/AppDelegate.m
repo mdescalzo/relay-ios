@@ -54,38 +54,12 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    // Initializing logger
-    CategorizingLogger *logger = [CategorizingLogger categorizingLogger];
-    [logger addLoggingCallback:^(NSString *category, id details, NSUInteger index){
-    }];
-    
-    
-    // Initialize crash reporting
-    [Crashlytics startWithAPIKey:[self fabricAPIKey]];
-    
-    // Navbar background color iOS10 bug workaround
-    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
-    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
-    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
-    [UINavigationBar appearance].translucent = YES;
-    
-    // Setting up environment
-    [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [[PushManager sharedManager] registerPushKitNotificationFuture];
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     if (getenv("runningTests_dontStartApp")) {
         return YES;
     }
-    
-    if ([TSAccountManager isRegistered]) {
-        [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
-    }
-    
+
     BOOL loggingIsEnabled;
 #ifdef DEBUG
     // Specified at Product -> Scheme -> Edit Scheme -> Test -> Arguments -> Environment to avoid things like
@@ -96,20 +70,89 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     loggingIsEnabled = Environment.preferences.loggingIsEnabled;
 #endif
     
-    [self verifyBackgroundBeforeKeysAvailableLaunch];
-    
     if (loggingIsEnabled) {
         [DebugLogger.sharedLogger enableFileLogging];
     }
+    DDLogDebug(@"DebugLogger setup complete.");
     
-    [self setupTSKitEnv];
+    DDLogDebug(@"didFinishLaunchingWithOptions Begins.");
+    DDLogDebug(@"Crashlytics starts.");
+    // Initialize crash reporting
+    [Crashlytics startWithAPIKey:[self fabricAPIKey]];
+    [Fabric with:@[ [Crashlytics class] ]];
+
+    // Initializing logger
+    DDLogDebug(@"CategorizingLogger starts.");
+    CategorizingLogger *logger = [CategorizingLogger categorizingLogger];
+    [logger addLoggingCallback:^(NSString *category, id details, NSUInteger index){
+    }];
     
+    DDLogDebug(@"Environment object init.");
+    // Setting up environment
+    [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
+
+    DDLogDebug(@"Navbar appearance setup.");
+    // Navbar background color iOS10 bug workaround
+    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
+    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
+    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+    [UINavigationBar appearance].translucent = YES;
+    
+    DDLogDebug(@"Setup screen protection.");
+    [self prepareScreenProtection];
+    
+    DDLogDebug(@"Init main window and make visible.");
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // TODO: Generate an informational loading to display here.
+    // TODO: Generate an informational loading view to display here.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
+
+    DDLogDebug(@"[self setupTSKitEnv] called.");
+    [self setupTSKitEnv];
     
+    DDLogDebug(@"TSAccountManager isRegistered called.");
+    UIApplicationState launchState = application.applicationState;
+    if ([TSAccountManager isRegistered]) {
+        DDLogDebug(@"Pushmanager registers.");
+        [[PushManager sharedManager] registerPushKitNotificationFuture];
+
+        DDLogDebug(@"TSAccountManager isRegistered TRUE.");
+        [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            if (launchState == UIApplicationStateInactive) {
+                DDLogWarn(@"The app was launched from inactive");
+                [TSSocketManager becomeActiveFromForeground];
+            } else if (launchState == UIApplicationStateBackground) {
+                DDLogWarn(@"The app was launched from being backgrounded");
+                [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
+            } else {
+                DDLogWarn(@"The app was launched in an unknown way");
+            }
+            
+            OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
+            
+            [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
+                                      accountManager:accountManager
+                                         preferences:[Environment preferences]].then(^{
+                DDLogDebug(@"%@ Successfully ran syncPushTokensJob.", self.tag);
+            }).catch(^(NSError *_Nonnull error) {
+                DDLogDebug(@"%@ Failed to run syncPushTokensJob with error: %@", self.tag, error);
+            });
+            
+            [TSPreKeyManager refreshPreKeys];
+            
+            // Clean up any messages that expired since last launch.
+            [[[OWSDisappearingMessagesJob alloc] initWithStorageManager:[TSStorageManager sharedManager]] run];
+            [AppStoreRating setupRatingLibrary];
+        });
+    }
+
+    DDLogDebug(@"[self verifyBackgroundBeforeKeysAvailableLaunch] called.");
+    [self verifyBackgroundBeforeKeysAvailableLaunch];
+    
+    DDLogDebug(@"Remote notification hanler.");
     // Accept push notification when app is not open
     NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
@@ -117,58 +160,40 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         [self application:application didReceiveRemoteNotification:remoteNotif];
     }
     
-    [self prepareScreenProtection];
-    
-    // Avoid blocking app launch by putting all further possible DB access in async thread.
-    UIApplicationState launchState = application.applicationState;
-    [[TSAccountManager sharedInstance] ifRegistered:YES runAsync:^{
-        if (launchState == UIApplicationStateInactive) {
-            DDLogWarn(@"The app was launched from inactive");
-            [TSSocketManager becomeActiveFromForeground];
-        } else if (launchState == UIApplicationStateBackground) {
-            DDLogWarn(@"The app was launched from being backgrounded");
-            [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
-        } else {
-            DDLogWarn(@"The app was launched in an unknown way");
-        }
-        
-        OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
-        
-        [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
-                                  accountManager:accountManager
-                                     preferences:[Environment preferences]].then(^{
-            DDLogDebug(@"%@ Successfully ran syncPushTokensJob.", self.tag);
-        }).catch(^(NSError *_Nonnull error) {
-            DDLogDebug(@"%@ Failed to run syncPushTokensJob with error: %@", self.tag, error);
-        });
-        
-        [TSPreKeyManager refreshPreKeys];
-        
-        // Clean up any messages that expired since last launch.
-        [[[OWSDisappearingMessagesJob alloc] initWithStorageManager:[TSStorageManager sharedManager]] run];
-        [AppStoreRating setupRatingLibrary];
-    }];
-    
+    DDLogDebug(@"didFinishLaunchingWithOptions ends.");
     return YES;
 }
 
-- (void)setupTSKitEnv {
+- (void)setupTSKitEnv
+{
+    DDLogDebug(@"[TextSecureKitEnv sharedEnv].contactsManager");
     [TextSecureKitEnv sharedEnv].contactsManager = [Environment getCurrent].contactsManager;
+
+    DDLogDebug(@"[[TSStorageManager sharedManager] setupDatabase]");
     [[TSStorageManager sharedManager] setupDatabase];
+    
+    DDLogDebug(@"[TextSecureKitEnv sharedEnv].notificationsManager init");
     [TextSecureKitEnv sharedEnv].notificationsManager = [[NotificationsManager alloc] init];
     
+    DDLogDebug(@"FLMessageSender *messageSender init");
     FLMessageSender *messageSender =
     [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                       storageManager:[TSStorageManager sharedManager]
                                      contactsManager:[Environment getCurrent].contactsManager];
      
+    DDLogDebug(@"incomingMessageReadObserver init");
     self.incomingMessageReadObserver =
     [[OWSIncomingMessageReadObserver alloc] initWithStorageManager:[TSStorageManager sharedManager]
                                                      messageSender:messageSender];
+    DDLogDebug(@"incomingMessageReadObserver starts");
     [self.incomingMessageReadObserver startObserving];
     
+    DDLogDebug(@"staleNotificationObserver init");
     self.staleNotificationObserver = [OWSStaleNotificationObserver new];
+    DDLogDebug(@"staleNotificationObserver starts");
     [self.staleNotificationObserver startObserving];
+    
+    DDLogDebug(@"setupTSKitEnv ends.");
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -281,10 +306,6 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
             [self.window makeKeyAndVisible];
         });
     }
-    if ([Environment.getCurrent.ccsmStorage getUserName] != nil) {
-        [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
-    }
-
 }
 
 
