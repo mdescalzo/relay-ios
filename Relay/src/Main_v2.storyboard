@@ -259,11 +259,15 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSf-Qr-IRY" userLabel="Group Details">
                                 <rect key="frame" x="0.0" y="20" width="375" height="100"/>
                                 <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name this group chat" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sNC-Vf-c1o">
+                                        <rect key="frame" x="103.5" y="8" width="263.5" height="84"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ih-fP-yXb">
-                                        <rect key="frame" x="8" y="20" width="60" height="60"/>
+                                        <rect key="frame" x="8" y="8" width="75" height="75"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="3da-ag-XNL"/>
-                                            <constraint firstAttribute="width" constant="60" id="f60-Rv-thi"/>
+                                            <constraint firstAttribute="width" secondItem="5ih-fP-yXb" secondAttribute="height" multiplier="1:1" id="y9Y-N2-Y0A"/>
                                         </constraints>
                                         <state key="normal" image="empty-group-avatar-gray">
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -272,23 +276,33 @@
                                             <action selector="addGroupPhoto:" destination="2sF-N7-xwK" eventType="touchUpInside" id="uAg-qh-yVl"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name this group chat" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sNC-Vf-c1o">
-                                        <rect key="frame" x="86" y="35" width="276" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Osc-FF-5yP">
+                                        <rect key="frame" x="8.5" y="83" width="75" height="17"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="UAE-F8-ZjQ"/>
+                                            <constraint firstAttribute="height" constant="17" id="cEv-aB-1ue"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                    </textField>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <state key="normal" title="Tap to change">
+                                            <color key="titleColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addGroupPhoto:" destination="2sF-N7-xwK" eventType="touchUpInside" id="71M-gj-J1G"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="5ih-fP-yXb" firstAttribute="top" secondItem="iSf-Qr-IRY" secondAttribute="top" constant="20" id="EAn-kY-YaP"/>
-                                    <constraint firstItem="5ih-fP-yXb" firstAttribute="leading" secondItem="iSf-Qr-IRY" secondAttribute="leading" constant="8" id="IQq-J7-sJ4"/>
-                                    <constraint firstAttribute="trailing" secondItem="sNC-Vf-c1o" secondAttribute="trailing" constant="13" id="SJm-5f-Jgb"/>
-                                    <constraint firstItem="sNC-Vf-c1o" firstAttribute="top" secondItem="iSf-Qr-IRY" secondAttribute="top" constant="35" id="quA-7x-MGZ"/>
-                                    <constraint firstItem="sNC-Vf-c1o" firstAttribute="leading" secondItem="5ih-fP-yXb" secondAttribute="trailing" constant="18" id="u62-Co-kf0"/>
+                                    <constraint firstAttribute="bottom" secondItem="Osc-FF-5yP" secondAttribute="bottom" id="0bo-1K-JYr"/>
+                                    <constraint firstItem="Osc-FF-5yP" firstAttribute="width" secondItem="5ih-fP-yXb" secondAttribute="width" id="BQ1-2C-DVE"/>
+                                    <constraint firstItem="Osc-FF-5yP" firstAttribute="centerX" secondItem="5ih-fP-yXb" secondAttribute="centerX" id="JTy-Ct-7AS"/>
+                                    <constraint firstAttribute="trailing" secondItem="sNC-Vf-c1o" secondAttribute="trailing" constant="8" id="RAx-X8-jMO"/>
+                                    <constraint firstItem="5ih-fP-yXb" firstAttribute="leading" secondItem="iSf-Qr-IRY" secondAttribute="leading" constant="8" id="Rc7-Sc-xJm"/>
+                                    <constraint firstItem="5ih-fP-yXb" firstAttribute="top" secondItem="iSf-Qr-IRY" secondAttribute="top" constant="8" id="Sj3-Ct-BYr"/>
+                                    <constraint firstItem="Osc-FF-5yP" firstAttribute="top" secondItem="5ih-fP-yXb" secondAttribute="bottom" id="c3U-Vc-9Pg"/>
+                                    <constraint firstItem="sNC-Vf-c1o" firstAttribute="leading" secondItem="Osc-FF-5yP" secondAttribute="trailing" constant="20" id="kuO-3G-uZG"/>
                                     <constraint firstAttribute="height" constant="100" id="ype-Ee-lmJ"/>
+                                    <constraint firstItem="sNC-Vf-c1o" firstAttribute="top" secondItem="iSf-Qr-IRY" secondAttribute="top" constant="8" id="yxh-Dz-Ais"/>
+                                    <constraint firstAttribute="bottom" secondItem="sNC-Vf-c1o" secondAttribute="bottom" constant="8" id="zmv-Ei-Mah"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="o27-I4-NuM">
@@ -381,6 +395,7 @@
                     <navigationItem key="navigationItem" id="tLd-Ch-lIP"/>
                     <connections>
                         <outlet property="addPeopleLabel" destination="fEm-WD-3Tc" id="cvJ-0D-fyz"/>
+                        <outlet property="avatarChangeButton" destination="Osc-FF-5yP" id="uuV-wV-hBe"/>
                         <outlet property="groupImageButton" destination="5ih-fP-yXb" id="LZM-BO-TzH"/>
                         <outlet property="nameGroupTextField" destination="sNC-Vf-c1o" id="HSo-m7-gnH"/>
                         <outlet property="tableView" destination="o27-I4-NuM" id="b1d-Kn-YoH"/>

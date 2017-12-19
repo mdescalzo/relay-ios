@@ -448,7 +448,7 @@
 "NEW_GROUP_DEFAULT_TITLE" = "New Conversation";
 
 /* No comment provided by engineer. */
-"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT" = "Name this conversation";
+"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT" = "Rename this conversation";
 
 /* No comment provided by engineer. */
 "NEW_GROUP_REQUEST_ADDPEOPLE" = "Add people";
@@ -906,6 +906,9 @@
 
 /* Refreshing. */
 "REFRESHING" = "Refreshing...";
+
+/* Tap to change */
+"TAP_TO_CHANGE" = "Tap to change";
 
 /* Token refresh failure message */
 "REFRESH_FAILURE_MESSAGE" = "Account refresh failed.  Please contact your organization's administrator or Forsta support.";
