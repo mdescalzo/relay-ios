@@ -164,6 +164,21 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+-(void)remove
+{
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self removeWithTransaction:transaction];
+    }];
+}
+
+-(void)removeWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    [super removeWithTransaction:transaction];
+    if (self.flTag) {
+        [self.flTag removeWithTransaction:transaction];
+    }
+}
+
 #pragma mark - Accessors
 -(UIImage *)avatar
 {

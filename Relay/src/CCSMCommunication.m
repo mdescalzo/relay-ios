@@ -17,6 +17,7 @@
 #import "TSSocketManager.h"
 #import "TSPreKeyManager.h"
 #import "TSStorageManager.h"
+#import "AFNetworking.h"
 
 @import Fabric;
 @import Crashlytics;
@@ -461,27 +462,27 @@
 
 +(void)refreshCCSMData
 {
-//    [self refreshCCSMUsers];
+    [self refreshCCSMUsers];
     [self refreshCCSMTags];
 }
 
-//+(void)refreshCCSMUsers
-//{
-//    
-//    NSMutableDictionary *users = [NSMutableDictionary new];
-//    
-//    [self updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
-//                  collection:users
-//                 synchronous:YES
-//                     success:^{
-//                         DDLogDebug(@"Refreshed all users.");
-//                         [[Environment getCurrent].ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
-//                         [self notifyOfUsersRefresh];
-//                     }
-//                     failure:^(NSError *err){
-//                         DDLogError(@"Failed to refresh all users. Error: %@", err.localizedDescription);
-//                     }];
-//}
++(void)refreshCCSMUsers
+{
+    
+    NSMutableDictionary *users = [NSMutableDictionary new];
+    
+    [self updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
+                  collection:users
+                 synchronous:YES
+                     success:^{
+                         DDLogDebug(@"Refreshed all users.");
+                         [[Environment getCurrent].ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
+                         [self notifyOfUsersRefresh];
+                     }
+                     failure:^(NSError *err){
+                         DDLogError(@"Failed to refresh all users. Error: %@", err.localizedDescription);
+                     }];
+}
 
 +(void)refreshCCSMTags
 {

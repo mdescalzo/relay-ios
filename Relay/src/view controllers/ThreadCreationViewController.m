@@ -669,7 +669,7 @@
     return _downSwipeRecognizer;
 }
 
--(NSArray *)content
+-(NSArray<FLTag *> *)content
 {
     if (_content == nil) {
         NSArray *allTags = [FLTag allObjectsInCollection];
@@ -677,20 +677,21 @@
         NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"tagDescription" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         NSSortDescriptor *slugSD = [[NSSortDescriptor alloc] initWithKey:@"slug" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
 
+        // Filter out monitors
         _content = [allTags sortedArrayUsingDescriptors:@[ descriptionSD, slugSD ]];
     }
     return _content;
 }
 
--(NSArray *)searchResults
+-(NSArray<FLTag *> *)searchResults
 {
     if (self.searchBar.text.length > 0 && ![self.searchBar.text isEqualToString:@"@"]) {
         if ([[self.searchBar.text substringToIndex:1] isEqualToString:@"@"]) {
-            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", [self.searchBar.text substringFromIndex:1]];
+            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"displaySlug", [self.searchBar.text substringFromIndex:1]];
             return [self.content filteredArrayUsingPredicate:slugPred];
         } else {
             NSPredicate *descriptionPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"tagDescription", self.searchBar.text];
-            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", self.searchBar.text];
+            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"displaySlug", self.searchBar.text];
             NSCompoundPredicate *filterPred = [NSCompoundPredicate orPredicateWithSubpredicates:@[ descriptionPred, slugPred ]];
             return [self.content filteredArrayUsingPredicate:filterPred];
         }

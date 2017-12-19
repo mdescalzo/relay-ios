@@ -193,7 +193,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
          {
              for (NSDictionary *userDict in usersBlob.allValues) {
                  SignalRecipient *newRecipient = [SignalRecipient recipientForUserDict:userDict];
-                 [newRecipient saveWithTransaction:transaction];
+                 if (newRecipient.isActive) {
+                     [newRecipient saveWithTransaction:transaction];
+                 } else {
+                     [newRecipient removeWithTransaction:transaction];
+                 }
              }
          }];
     }
