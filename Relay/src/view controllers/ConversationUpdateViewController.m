@@ -38,6 +38,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 @property (readonly) NSArray <FLTag *> *selectedTags;
 @property NSString *originalThreadName;
 @property NSCountedSet *originalThreadParticipants;
+@property (weak, nonatomic) IBOutlet UIButton *avatarChangeButton;
 @property UIImage *originalThreadAvatar;
 
 @end
@@ -118,8 +119,9 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                                      diameter:self.groupImageButton.frame.size.height]];
         }
     }
-    _nameGroupTextField.placeholder = NSLocalizedString(@"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT", @"");
-    _addPeopleLabel.text            = NSLocalizedString(@"NEW_GROUP_REQUEST_ADDPEOPLE", @"");
+    self.nameGroupTextField.placeholder = NSLocalizedString(@"NEW_GROUP_NAMEGROUP_REQUEST_DEFAULT", @"");
+    self.addPeopleLabel.text = NSLocalizedString(@"NEW_GROUP_REQUEST_ADDPEOPLE", @"");
+    [self.avatarChangeButton setTitle:NSLocalizedString(@"TAP_TO_CHANGE", nil) forState:UIControlStateNormal];
 }
 
 -(void)viewWillAppear:(BOOL)animated
