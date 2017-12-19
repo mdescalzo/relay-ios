@@ -171,6 +171,9 @@
 		7D3366251F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3366261F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3366271F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
+		7D3A672E1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
+		7D3A672F1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
+		7D3A67301FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
@@ -1829,6 +1832,8 @@
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D3366231F7B786E0094DAFA /* SlugOverLayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlugOverLayView.h; sourceTree = "<group>"; };
 		7D3366241F7B786E0094DAFA /* SlugOverLayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlugOverLayView.m; sourceTree = "<group>"; };
+		7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppearanceSettingsViewController.h; sourceTree = "<group>"; };
+		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
@@ -4284,6 +4289,8 @@
 				FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */,
 				FCD274E61A5AFDC900202277 /* AdvancedSettingsTableViewController.h */,
 				FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */,
+				7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */,
+				7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */,
 				B66B9F701AEA6D1100E2E609 /* NotificationSettingsViewController.h */,
 				B66B9F711AEA6D1100E2E609 /* NotificationSettingsViewController.m */,
 				B66B9F7B1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.h */,
@@ -5301,6 +5308,7 @@
 				7D4A3A341F1693930023C29B /* DebugLogger.m in Sources */,
 				7D613AAC1F90185D00E18D29 /* OWSFingerprintBuilder.m in Sources */,
 				7D613ADF1F90189700E18D29 /* TSYapDatabaseObject.m in Sources */,
+				7D3A672E1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */,
 				7D613ADC1F90189400E18D29 /* TSStorageManager.m in Sources */,
 				7D4A3A351F1693930023C29B /* Crc32.m in Sources */,
 				7D6139F11F90179000E18D29 /* OWSRecordTranscriptJob.m in Sources */,
@@ -5647,6 +5655,7 @@
 				7DCFFDD91F0EE4490003CD95 /* UIColor+OWS.m in Sources */,
 				7DCFFDDA1F0EE4490003CD95 /* DhPacketSharedSecretHashes.m in Sources */,
 				7D6139F51F90179300E18D29 /* OWSSendReadReceiptsJob.m in Sources */,
+				7D3A672F1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */,
 				7D613A771F90182100E18D29 /* TSAttachmentRequest.m in Sources */,
 				7DCFFDDB1F0EE4490003CD95 /* DebugLogger.m in Sources */,
 				7DCFFDDC1F0EE4490003CD95 /* Crc32.m in Sources */,
@@ -5993,6 +6002,7 @@
 				FCFA64B41A24F3880007FB87 /* UIColor+OWS.m in Sources */,
 				76EB05C218170B33006006FC /* DhPacketSharedSecretHashes.m in Sources */,
 				7D6139F61F90179400E18D29 /* OWSSendReadReceiptsJob.m in Sources */,
+				7D3A67301FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */,
 				7D613A781F90182200E18D29 /* TSAttachmentRequest.m in Sources */,
 				B6C93C4E199567AD00EDF894 /* DebugLogger.m in Sources */,
 				76EB063218170B33006006FC /* Crc32.m in Sources */,
@@ -6433,7 +6443,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 129;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6502,7 +6512,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 129;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6569,7 +6579,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 129;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6637,7 +6647,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 129;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6843,7 +6853,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 129;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6909,7 +6919,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 128;
+				CURRENT_PROJECT_VERSION = 129;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
