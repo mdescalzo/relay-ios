@@ -642,10 +642,6 @@ typedef enum : NSUInteger {
 {
     button.enabled = NO;
     if (text.length > 0) {
-        if ([Environment.preferences soundInForeground]) {
-            [JSQSystemSoundPlayer jsq_playMessageSentSound];
-        }
-
         TSOutgoingMessage *message = nil;
         OWSDisappearingMessagesConfiguration *configuration =
             [OWSDisappearingMessagesConfiguration fetchObjectWithUniqueID:self.thread.uniqueId];
@@ -664,17 +660,17 @@ typedef enum : NSUInteger {
         message.messageType = @"content";
         message.uniqueId = [[NSUUID UUID] UUIDString];
 
-        [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [message saveWithTransaction:transaction];
+            [self.thread setDraft:@"" transaction:transaction];
         }];
         
         [self.messageSender sendMessage:message
             success:^{
                 DDLogInfo(@"%@ Successfully sent message.", self.tag);
-                [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    [message saveWithTransaction:transaction];
-                }];
-
+                if ([Environment.preferences soundInForeground]) {
+                    [JSQSystemSoundPlayer jsq_playMessageSentSound];
+                }
             }
             failure:^(NSError *error) {
                 DDLogWarn(@"%@ Failed to deliver message with error: %@", self.tag, error);
@@ -1413,7 +1409,7 @@ typedef enum : NSUInteger {
     [self.messageMappings setRangeOptions:rangeOptions forGroup:self.thread.uniqueId];
 }
 
-#pragma mark Bubble User Actions
+#pragma mark - Bubble User Actions
 
 - (void)handleUnsentMessageTap:(TSOutgoingMessage *)message {
     [self dismissKeyBoard];
@@ -1443,27 +1439,6 @@ typedef enum : NSUInteger {
                                                      DDLogDebug(@"%@ User cancelled unsent dialog", self.tag);
                                                  }]];
     [self.parentViewController presentViewController:alertSheet animated:YES completion:nil];
-//    [DJWActionSheet showInView:self.parentViewController.view
-//                     withTitle:message.mostRecentFailureText
-//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-//        destructiveButtonTitle:NSLocalizedString(@"TXT_DELETE_TITLE", @"")
-//             otherButtonTitles:@[ NSLocalizedString(@"SEND_AGAIN_BUTTON", @"") ]
-//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-//                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-//                              DDLogDebug(@"%@ User cancelled unsent dialog", self.tag);
-//                          } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-//                              DDLogInfo(@"%@ User chose to delete unsent message.", self.tag);
-//                              [message remove];
-//                          } else {
-//                              [self.messageSender sendMessage:message
-//                                  success:^{
-//                                      DDLogInfo(@"%@ Successfully resent failed message.", self.tag);
-//                                  }
-//                                  failure:^(NSError *_Nonnull error) {
-//                                      DDLogWarn(@"%@ Failed to send message with error: %@", self.tag, error);
-//                                  }];
-//                          }
-//                      }];
 }
 
 - (void)handleErrorMessageTap:(TSErrorMessage *)message
@@ -1512,80 +1487,11 @@ typedef enum : NSUInteger {
                                                      DDLogDebug(@"User Cancelled");
                                                  }]];
     [self.parentViewController presentViewController:alertSheet animated:YES completion:nil];
-    
-//    [DJWActionSheet showInView:self.view
-//                     withTitle:actionSheetTitle
-//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-//        destructiveButtonTitle:nil
-//             otherButtonTitles:@[ NSLocalizedString(@"FINGERPRINT_SHRED_KEYMATERIAL_BUTTON", nil) ]
-//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-//                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-//                              DDLogDebug(@"User Cancelled");
-//                          } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-//                              DDLogDebug(@"Destructive button tapped");
-//                          } else {
-//                              switch (tappedButtonIndex) {
-//                                  case 0: {
-//#warning XXX Corrupted message handling here
-////                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
-////                                          // Corrupt Message errors only appear in contact threads.
-//                                          DDLogError(
-//                                              @"%@ Unexpected request to reset session in group thread. Refusing",
-//                                              self.tag);
-//                                          return;
-////                                      }
-////                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
-////                                      [OWSSessionResetJob runWithCorruptedMessage:message
-////                                                                    contactThread:contactThread
-////                                                                    messageSender:self.messageSender
-////                                                                   storageManager:self.storageManager];
-//                                      break;
-//                                  }
-//                                  default:
-//                                      break;
-//                              }
-//                          }
-//                      }];
 }
 
 - (void)tappedInvalidIdentityKeyErrorMessage:(TSInvalidIdentityKeyErrorMessage *)errorMessage
 {
     [self acceptNewIDKeyWithMessage:errorMessage];
-//    NSString *keyOwner = [self.contactsManager nameStringForContactID:errorMessage.theirSignalId];
-//    NSString *titleFormat = NSLocalizedString(@"SAFETY_NUMBERS_ACTIONSHEET_TITLE", @"Action sheet heading");
-//    NSString *titleText = [NSString stringWithFormat:titleFormat, keyOwner];
-//    NSArray *actions = @[
-//        NSLocalizedString(@"SHOW_SAFETY_NUMBER_ACTION", @"Action sheet item"),
-//        NSLocalizedString(@"ACCEPT_NEW_IDENTITY_ACTION", @"Action sheet item")
-//    ];
-
-//    [DJWActionSheet showInView:self.parentViewController.view
-//                     withTitle:titleText
-//             cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-//        destructiveButtonTitle:nil
-//             otherButtonTitles:actions
-//                      tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-//                          if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-//                              DDLogDebug(@"%@ Remote Key Changed actions: Tapped cancel", self.tag);
-//                          } else {
-//                              switch (tappedButtonIndex) {
-//                                  case 0:
-//                                      DDLogInfo(@"%@ Remote Key Changed actions: Show fingerprint display", self.tag);
-//                                      [self showFingerprintWithTheirIdentityKey:errorMessage.newIdentityKey
-//                                                                  theirSignalId:errorMessage.theirSignalId];
-//                                      break;
-//                                  case 1: {
-//                                      [self acceptNewIDKeyWithMessage:errorMessage];
-//                                  }
-//                                      break;
-//                                  default:
-//                                      DDLogInfo(@"%@ Remote Key Changed actions: Unhandled button pressed: %d",
-//                                          self.tag,
-//                                          (int)tappedButtonIndex);
-//                                      break;
-//                              }
-//                          }
-//                      }];
 }
 
 -(void)acceptNewIDKeyWithMessage:(TSInvalidIdentityKeyErrorMessage *)errorMessage
@@ -2016,7 +1922,7 @@ typedef enum : NSUInteger {
     }
 }
 
-#pragma mark Storage access
+#pragma mark - Storage access
 
 - (YapDatabaseConnection *)uiDatabaseConnection {
     NSAssert([NSThread isMainThread], @"Must access uiDatabaseConnection on main thread!");
@@ -2035,24 +1941,27 @@ typedef enum : NSUInteger {
 }
 
 
-- (void)yapDatabaseModified:(NSNotification *)notification {
+- (void)yapDatabaseModified:(NSNotification *)notification
+{
     [self updateBackButtonAsync];
+
+    NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
+    if (![[self.uiDatabaseConnection ext:TSMessageDatabaseViewExtensionName]
+          hasChangesForNotifications:notifications]) {
+        [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            [self.messageMappings updateWithTransaction:transaction];
+        }];
+        return;
+    }
 
     [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
-        [self setNavigationTitle];
+    }];
+    
+    [self setNavigationTitle];
+    if ([self userLeftGroup]) {
         [self hideInputIfNeeded];
         [self disableInfoButtonIfNeeded];
-    }];
-
-    NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
-
-    if (![[self.uiDatabaseConnection ext:TSMessageDatabaseViewExtensionName]
-            hasChangesForNotifications:notifications]) {
-        [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-          [self.messageMappings updateWithTransaction:transaction];
-        }];
-        return;
     }
 
     // HACK to work around radar #28167779
@@ -2071,7 +1980,7 @@ typedef enum : NSUInteger {
 
     __block BOOL scrollToBottom = NO;
 
-    if ([sectionChanges count] == 0 & [messageRowChanges count] == 0) {
+    if ([sectionChanges count] == 0 && [messageRowChanges count] == 0) {
         return;
     }
 
@@ -2211,7 +2120,7 @@ typedef enum : NSUInteger {
     }
 }
 
-#pragma mark Accessory View
+#pragma mark - Accessory View
 
 - (void)didPressAccessoryButton:(UIButton *)sender { // Attachment button
 
@@ -2300,14 +2209,14 @@ typedef enum : NSUInteger {
 - (void)loadDraftInCompose {
     __block NSString *placeholder;
     [self.editingDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-      placeholder = [_thread currentDraftWithTransaction:transaction];
+        placeholder = [_thread currentDraftWithTransaction:transaction];
     }
-        completionBlock:^{
-          dispatch_async(dispatch_get_main_queue(), ^{
-            [self.inputToolbar.contentView.textView setText:placeholder];
-            [self textViewDidChange:self.inputToolbar.contentView.textView];
-          });
-        }];
+                                       completionBlock:^{
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               self.inputToolbar.contentView.textView.text = placeholder;
+                                               [self textViewDidChange:self.inputToolbar.contentView.textView];
+                                           });
+                                       }];
 }
 
 - (void)saveDraft {
