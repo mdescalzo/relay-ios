@@ -148,8 +148,8 @@ typedef enum {
                     break;
                 }
                 case kAppearanceRow: {
-                    AppearanceSettingsViewController *vc = [[AppearanceSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-                    [self.navigationController pushViewController:vc animated:YES];
+//                    AppearanceSettingsViewController *vc = [[AppearanceSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+//                    [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
                 case kAdvancedRow: {

@@ -917,3 +917,6 @@
 "DELETE_THREAD_FAILURE_MESSAGE" = "Unable to delete this conversation.  Check your network connection and try again.";
 
 "DELETE_THREAD_VALIDATION_MESSAGE" = "Are you sure you wish to delete this consversation?\n\n%@";
+
+/* Sample text */
+"SAMPLE" = "Sample";

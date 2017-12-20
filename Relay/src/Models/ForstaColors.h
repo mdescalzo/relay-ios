@@ -13,6 +13,7 @@
 +(UIColor *)randomPopColor;
 
 +(NSArray <UIColor *>*)popColors;
++(NSDictionary *)bubbleColors;
 
 +(UIColor *)lightGray;
 +(UIColor *)mediumGray;
