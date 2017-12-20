@@ -25,15 +25,17 @@
               [self darkBlue2], [self mediumDarkBlue2], [self mediumBlue2], [self mediumLightBlue2], [self lightBlue2] ];
 }
 
-+(NSDictionary *)bubbleColors
++(NSDictionary *)outgoingBubbleColors
 {
     return @{ @"Black" : [UIColor blackColor],
-              @"Red" : [self darkRed],
+              @"Brick" : [self darkRed],
               @"Green" : [self darkGreen],
               @"Blue" : [self darkBlue1],
               @"Midnight" : [self darkBlue2],
               @"Purple" : [self mediumPurple],
-              @"Pink" : [self mediumPink] };
+              @"Pink" : [self mediumPink],
+              @"Gold" : [self mediumYellow],
+              };
 }
 
 +(UIColor *)lightGray

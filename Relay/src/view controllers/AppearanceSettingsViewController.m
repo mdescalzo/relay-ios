@@ -22,7 +22,6 @@
 @property (nonatomic, strong) NSArray *sectionsHeadings;
 @property (nonatomic, strong) UIColor *selectedOutgoingBubbleColor;
 @property (nonatomic, strong) PropertyListPreferences *prefs;
-@property (nonatomic, strong, readonly) UIView *outgoingBubbleColorPicker;
 @property (nonatomic, strong) UISwitch *gravatarSwitch;
 
 @end
@@ -149,7 +148,7 @@
                     tmpCell.pickerView.tag = kOutgoingColorPickerTag;
                     tmpCell.pickerView.showsSelectionIndicator = YES;
                     NSString *colorKey = self.prefs.outgoingBubbleColorKey;
-                    NSInteger index = (NSInteger)[[[ForstaColors bubbleColors] allKeys] indexOfObject:colorKey];
+                    NSInteger index = (NSInteger)[[[ForstaColors outgoingBubbleColors] allKeys] indexOfObject:colorKey];
                     [tmpCell.pickerView selectRow:index
                                       inComponent:0
                                          animated:NO];
@@ -264,8 +263,8 @@
 -(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
     if (pickerView.tag == kOutgoingColorPickerTag) {
-        NSArray *colors = [[ForstaColors bubbleColors] allValues];
-        NSArray *colorTitles = [[ForstaColors bubbleColors] allKeys];
+        NSArray *colors = [[ForstaColors outgoingBubbleColors] allValues];
+        NSArray *colorTitles = [[ForstaColors outgoingBubbleColors] allKeys];
         UILabel *newView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width*0.75f, 37.0f)];
         newView.backgroundColor = colors[(NSUInteger)row];
         newView.layer.cornerRadius = 12.0f;
@@ -289,7 +288,7 @@
 - (NSInteger)pickerView:(nonnull UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     if (pickerView.tag == kOutgoingColorPickerTag) {
         if (component == 0) {
-            return (NSInteger)[[ForstaColors bubbleColors] allValues].count;
+            return (NSInteger)[[ForstaColors outgoingBubbleColors] allValues].count;
         }
     }
     return 0;
@@ -298,8 +297,7 @@
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if (pickerView.tag == kOutgoingColorPickerTag) {
-//        UIColor *selectedColor = [[[ForstaColors bubbleColors] allValues] objectAtIndex:(NSUInteger)row];
-        NSString *colorKey = [[[ForstaColors bubbleColors] allKeys] objectAtIndex:(NSUInteger)row];
+        NSString *colorKey = [[[ForstaColors outgoingBubbleColors] allKeys] objectAtIndex:(NSUInteger)row];
         self.prefs.outgoingBubbleColorKey = colorKey;
         [self.tableView reloadRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:kOutgoingColorSettingIndex inSection:kMessagesSectionIndex] ]
                               withRowAnimation:UITableViewRowAnimationFade];
@@ -346,7 +344,7 @@
 -(UIColor *)selectedOutgoingBubbleColor
 {
         NSString *colorKey = self.prefs.outgoingBubbleColorKey;
-        return [[ForstaColors bubbleColors] objectForKey:colorKey];
+        return [[ForstaColors outgoingBubbleColors] objectForKey:colorKey];
 }
 
 -(PropertyListPreferences *)prefs
