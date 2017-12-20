@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) NSArray<SignalRecipient *> * _Nonnull allRecipients;
 @property (nonatomic, strong) NSArray<SignalRecipient *> * _Nonnull activeRecipients;
+@property (nonatomic, strong) NSCache * _Nonnull avatarCache;
 
 + (NSComparator _Nonnull )recipientComparator;
 
@@ -27,6 +28,7 @@
 - (void)doAfterEnvironmentInitSetup;
 -(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID;
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
+-(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
 //-(NSArray<SignalRecipient *> *_Nonnull)allRecipients;
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
 -(void)refreshRecipients;

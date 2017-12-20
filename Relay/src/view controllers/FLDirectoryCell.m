@@ -35,8 +35,10 @@
     self.nameLabel.attributedText = [self attributedStringForContact:recipient];
     self.detailLabel.text = recipient.orgSlug;
     
-    if (recipient.avatar) {
-        self.avatarImageView.image = recipient.avatar;
+    UIImage *avatar = [Environment.getCurrent.contactsManager imageForIdentifier:recipient.uniqueId];
+
+    if (avatar) {
+        self.avatarImageView.image = avatar;
     } else {
         OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                name:recipient.fullName
@@ -60,29 +62,28 @@
     self.detailLabel.text = orgSlug;
     
     // Get an avatar
-    if (aTag.avatar == nil) {
+    UIImage *avatar = nil;
+//    if (aTag.avatar == nil) {
         if (aTag.recipientIds.count == 1) {
             SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:[aTag.recipientIds anyObject]];
-            if (recipient.avatar) {
-                aTag.avatar = recipient.avatar;
-            } else {
+            avatar = [Environment.getCurrent.contactsManager imageForIdentifier:recipient.uniqueId];
+            if (avatar == nil) {
                 OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                        name:recipient.fullName
                                                                                             contactsManager:[Environment getCurrent].contactsManager
                                                                                                    diameter:self.contentView.frame.size.height];
-                aTag.avatar = [avatarBuilder buildDefaultImage];
+                avatar = [avatarBuilder buildDefaultImage];
             }
         } else {
             OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:aTag.uniqueId
                                                                                                    name:description
                                                                                         contactsManager:[Environment getCurrent].contactsManager
                                                                                                diameter:self.contentView.frame.size.height];
-            aTag.avatar = [avatarBuilder buildDefaultImage];
+            avatar = [avatarBuilder buildDefaultImage];
         }
-        [aTag save];
-    }
+//    }
 
-    self.avatarImageView.image = aTag.avatar;
+    self.avatarImageView.image = avatar;
 }
 
 - (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact

@@ -51,6 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *orgSlug;
 @property (nonatomic, strong) NSString *orgID;
 @property (nonatomic, strong) NSString *gravatarHash;
+@property (nonatomic, strong) UIImage *gravatarImage;
+
 @property BOOL isMonitor;
 @property BOOL isActive;
 

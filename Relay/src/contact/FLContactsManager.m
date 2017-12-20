@@ -11,6 +11,7 @@
 #import <25519/Randomness.h>
 #import "NSData+Base64.h"
 #import "Util.h"
+#import "FLTagMathService.h"
 
 static const NSString *const databaseName = @"ForstaContacts.sqlite";
 static NSString *keychainService          = @"TSKeyChainService";
@@ -22,7 +23,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 @property (strong) YapDatabase *database;
 @property (nonatomic, strong) NSString *dbPath;
-
+@property (nonatomic, strong) PropertyListPreferences *prefs;
 @property ObservableValueController *observableContactsController;
 @property TOCCancelTokenSource *life;
 @property(atomic, copy) NSDictionary *latestRecipientsById;
@@ -46,7 +47,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         options.cipherKeyBlock      = ^{
             return [self databasePassword];
         };
-    
+        
         _database = [[YapDatabase alloc] initWithPath:self.dbPath
                                               options:options];
         _backgroundConnection = [self.database newConnection];
@@ -56,6 +57,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                                                  selector:@selector(processUsersBlob)
                                                      name:FLCCSMUsersUpdated
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(processTags)
+                                                     name:FLCCSMTagsUpdated
+                                                   object:nil];
+
     }
     return self;
 }
@@ -81,7 +87,25 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     return [dbPassword dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-#pragma mark - Contact management
+#pragma mark - Tag management
+-(void)processTags
+{
+    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        
+        // Look for badly formed tags and fix them
+        [[FLTag allObjectsInCollection] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FLTag *aTag = (FLTag *)obj;
+            if (aTag.recipientIds.count == 0) {
+                NSDictionary *results = [FLTagMathService syncTagLookupWithString:aTag.displaySlug];
+                NSArray *uids = [results objectForKey:@"userids"];
+                aTag.recipientIds = [NSCountedSet setWithArray:uids];
+                [aTag saveWithTransaction:transaction];
+            }
+        }];
+    }];
+}
+
+#pragma mark - Recipient/Contact management
 -(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID
 {
     __block SignalRecipient *contact = nil;
@@ -98,35 +122,20 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(NSArray<SignalRecipient *> *)allRecipients
 {
     // TODO: implement NSCache here?
-    if (_allRecipients == nil) {
-        _allRecipients = [SignalRecipient allObjectsInCollection];
-    }
-    return _allRecipients;
+    //    if (_allRecipients == nil) {
+    //        _allRecipients = [SignalRecipient allObjectsInCollection];
+    //    }
+    //    return _allRecipients;
+    return [SignalRecipient allObjectsInCollection];
 }
 
 -(NSArray<SignalRecipient *> *)activeRecipients
 {
-        NSPredicate *activePred = [NSPredicate predicateWithFormat:@"isActive == YES"];
-        NSPredicate *monitorPred = [NSPredicate predicateWithFormat:@"isMonitor == NO"];
-        NSCompoundPredicate *preds = [NSCompoundPredicate andPredicateWithSubpredicates:@[ activePred, monitorPred ]];
-        NSArray *filteredArray = [self.allRecipients filteredArrayUsingPredicate:preds];
-        return filteredArray;
-    
-//    if (self.activeRecipientsBacker.count == 0) {
-//        [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-//            [transaction enumerateKeysAndObjectsInCollection:[SignalRecipient collection]
-//                                                  usingBlock:^(NSString *key, id object, BOOL *stop){
-//                                                      if ([object isKindOfClass:[SignalRecipient class]]) {
-//                                                          SignalRecipient *contact = (SignalRecipient *)object;
-//                                                          if (contact.isActive && !contact.isMonitor) {
-//                                                              [self.activeRecipientsBacker addObject:contact];
-//                                                          }
-//                                                      }
-//                                                  }];
-//        }];
-//    }
-//    return [NSArray arrayWithArray:self.activeRecipientsBacker];
-
+    NSPredicate *activePred = [NSPredicate predicateWithFormat:@"isActive == YES"];
+    NSPredicate *monitorPred = [NSPredicate predicateWithFormat:@"isMonitor == NO"];
+    NSCompoundPredicate *preds = [NSCompoundPredicate andPredicateWithSubpredicates:@[ activePred, monitorPred ]];
+    NSArray *filteredArray = [self.allRecipients filteredArrayUsingPredicate:preds];
+    return filteredArray;
 }
 
 -(void)saveContact:(SignalRecipient *_Nonnull)contact
@@ -220,7 +229,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(void)saveRecipient:(SignalRecipient *)recipient
 {
-//    [self.allRecipientsBacker addObject:recipient];
+    //    [self.allRecipientsBacker addObject:recipient];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [transaction setObject:recipient forKey:recipient.uniqueId inCollection:[SignalRecipient collection]];
@@ -245,6 +254,23 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     
     return recipient;
 }
+
+-(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+{
+    // Check to see if we already it locally
+    for (SignalRecipient *contact in self.allRecipients) {
+        if ([contact.uniqueId isEqualToString:userID]) {
+            return contact;
+        }
+    }
+    
+    // If not, go get it, build it, and save it.
+    SignalRecipient *recipient = [CCSMCommManager recipientFromCCSMWithID:userID];
+    if (recipient) {
+        [recipient saveWithTransaction:transaction];
+    }
+    
+    return recipient;}
 
 - (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber
 {
@@ -348,19 +374,27 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     __block UIImage *returnImage = nil;
     [self.allRecipients enumerateObjectsUsingBlock:^(SignalRecipient * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj.uniqueId isEqualToString:uid]) {
-            returnImage = obj.avatar;
+            if (self.prefs.useGravatars) {
+                returnImage = obj.gravatarImage;
+            } else {
+                returnImage = obj.avatar;
+            }
             *stop = YES;
         }
     }];
-//    for (SignalRecipient *contact in self.allRecipients) {
-//        if ([contact.uniqueId isEqualToString:uid]) {
-//            return contact.avatar;
-//        }
-//    }
+    
     return returnImage;
 }
 
 #pragma mark - Accessors
+-(PropertyListPreferences *)prefs
+{
+    if (_prefs == nil) {
+        _prefs = Environment.preferences;
+    }
+    return _prefs;
+}
+
 -(NSCompoundPredicate *)visibleRecipientsPredicate
 {
     if (_visibleRecipientsPredicate == nil) {
@@ -383,6 +417,14 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 {
     // TODO: BUILD THIS!
     return [NSSet new];
+}
+
+-(NSCache *)avatarCache
+{
+    if (_avatarCache == nil) {
+        _avatarCache = [NSCache new];
+    }
+    return _avatarCache;
 }
 
 #pragma mark - Logging

@@ -102,9 +102,10 @@ typedef enum {
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SocketOpenedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SocketClosedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SocketConnectingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:SocketOpenedNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:SocketClosedNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:SocketConnectingNotification object:nil];
 }
 
 #pragma mark - Table view data source

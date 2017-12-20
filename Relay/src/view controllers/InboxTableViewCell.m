@@ -64,8 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIImage *avatar = nil;
-        if (thread.image) {
-            avatar = thread.image;
+        if ([thread image]) {
+            avatar = [thread image];
         } else {
             avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
         }

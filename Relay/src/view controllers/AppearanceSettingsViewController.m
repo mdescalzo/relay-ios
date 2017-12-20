@@ -48,6 +48,8 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLSettingsUpdatedNotification object:nil];
+
     [self.prefs removeObserver:self forKeyPath:@"selectedOutgoingBubbleColor"];
     [super viewDidDisappear:animated];
 }

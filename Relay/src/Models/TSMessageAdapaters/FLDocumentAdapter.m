@@ -20,6 +20,12 @@ static const CGFloat viewHeight = 60.0f;
 static const CGFloat spacing = 3.0f;
 static const CGFloat insetFactor = 0.45f;
 
+@interface FLDocumentAdapter()
+
+@property (nonatomic, strong) PropertyListPreferences *prefs;
+
+@end
+
 @implementation FLDocumentAdapter
 
 - (instancetype)initWithAttachment:(TSAttachmentStream *)attachment {
@@ -63,7 +69,7 @@ static const CGFloat insetFactor = 0.45f;
 
 -(UIColor *)bubbleColor {
     if (self.isOutgoing) {
-        return [UIColor blackColor];
+        return [[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey];
     } else {
         return [UIColor jsq_messageBubbleLightGrayColor];
     }
@@ -77,6 +83,14 @@ static const CGFloat insetFactor = 0.45f;
     } else {
         return [UIImage imageNamed:@"file-black-40"];
     }
+}
+
+-(PropertyListPreferences *)prefs
+{
+    if (_prefs == nil) {
+        _prefs = Environment.preferences;
+    }
+    return _prefs;
 }
 
 #pragma mark - JSQMessageMediaData protocol

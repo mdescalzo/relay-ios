@@ -69,11 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)buildDefaultImage
 {
-//    NSString *cacheKey = [NSString stringWithFormat:@"signalId:%@:diamater:%lu", self.signalId, (unsigned long)self.diameter];
-//    UIImage *cachedAvatar = [self.contactsManager.avatarCache objectForKey:cacheKey];
-//    if (cachedAvatar) {
-//        return cachedAvatar;
-//    }
+    NSString *cacheKey = [NSString stringWithFormat:@"signalId:%@", self.signalId];
+    UIImage *cachedAvatar = [self.contactsManager.avatarCache objectForKey:cacheKey];
+    if (cachedAvatar) {
+        return cachedAvatar;
+    }
 
     NSMutableString *initials = [NSMutableString string];
 
@@ -108,7 +108,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                        textColor:[UIColor whiteColor]
                                                                             font:[UIFont ows_boldFontWithSize:fontSize]
                                                                         diameter:self.diameter] avatarImage];
-//    [self.contactsManager.avatarCache setObject:image forKey:self.signalId];
+    [self.contactsManager.avatarCache setObject:image forKey:cacheKey];
+    
     return image;
 }
 

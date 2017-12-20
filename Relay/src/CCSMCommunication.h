@@ -17,7 +17,7 @@
 
 +(void)refreshCCSMData;
 //+(void)refreshCCSMUsers;
-+(void)refreshCCSMTags;
+//+(void)refreshCCSMTags;
 
 +(void)requestLogin:(NSString *)userName
              orgName:(NSString *)orgName

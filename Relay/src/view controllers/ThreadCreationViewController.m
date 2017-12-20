@@ -69,7 +69,22 @@
                   forControlEvents:UIControlEventValueChanged];
     [refreshView addSubview:self.refreshControl];
     
+    // Notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentRefreshed)
+                                                 name:FLCCSMTagsUpdated
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentRefreshed)
+                                                 name:FLCCSMUsersUpdated
+                                               object:nil];
+
     [self updateGoButton];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -391,6 +406,12 @@
 }
 
 #pragma mark - worker methods
+-(void)contentRefreshed
+{
+    self.content = nil;
+    [self.tableView reloadData];
+}
+
 -(void)updateGoButton
 {
     if (self.validatedSlugs.count == 0) {

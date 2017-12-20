@@ -8,6 +8,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface SignalRecipient()
+
+@end
+
 @implementation SignalRecipient
 
 + (NSString *)collection {
@@ -112,6 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary *tagDict = [userDict objectForKey:@"tag"];
     if (tagDict) {
         recipient.flTag = [[FLTag alloc] initWithTagDictionary:tagDict];
+        recipient.flTag.recipientIds = [NSCountedSet setWithObject:recipient.uniqueId];
         if (recipient.flTag.tagDescription.length == 0) {
             recipient.flTag.tagDescription = recipient.fullName;
         }
@@ -158,10 +163,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    [super saveWithTransaction:transaction];
     if (self.flTag) {
         [self.flTag saveWithTransaction:transaction];
     }
+    [super saveWithTransaction:transaction];
 }
 
 -(void)remove
@@ -173,28 +178,41 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)removeWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    [super removeWithTransaction:transaction];
     if (self.flTag) {
         [self.flTag removeWithTransaction:transaction];
     }
+    [super removeWithTransaction:transaction];
 }
 
 #pragma mark - Accessors
 -(UIImage *)avatar
 {
-    if (_avatar == nil) {
+        return _avatar;
+}
+
+-(void)setGravatarHash:(NSString *)value
+{
+    if (![_gravatarHash isEqualToString:value]) {
+        _gravatarHash = value;
+        _gravatarImage = nil;
+    }
+}
+
+-(UIImage *)gravatarImage
+{
+    if (_gravatarImage == nil) {
         if (self.gravatarHash.length > 0) {
             NSString *gravatarURL = [NSString stringWithFormat:FLGravatarURLFormat, self.gravatarHash];
             NSData *gravatarData = [NSData dataWithContentsOfURL:[NSURL URLWithString:gravatarURL]];
             if (gravatarData) {
                 UIImage *gravatarImage = [UIImage imageWithData:gravatarData];
                 if (gravatarImage) {
-                    _avatar = gravatarImage;
+                    _gravatarImage = gravatarImage;
                 }
             }
         }
     }
-    return _avatar;
+    return _gravatarImage;
 }
 
 -(NSString *)textSecureIdentifier

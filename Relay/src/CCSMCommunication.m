@@ -442,13 +442,13 @@
             [Environment.getCurrent.ccsmStorage setTags:@{ }];
             [TSStorageManager.sharedManager storePhoneNumber:userID];
         }
-        [[Environment getCurrent].ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
+        [Environment.getCurrent.ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
-        [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
+        [Environment.getCurrent.ccsmStorage setUserInfo:userDict];
         SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
         [myself save];
         [TSAccountManager.sharedInstance myself];
-        [Environment.getCurrent.contactsManager allRecipients];
+//        [Environment.getCurrent.contactsManager allRecipients];
         
         [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
         
@@ -462,7 +462,7 @@
 
 +(void)refreshCCSMData
 {
-    [self refreshCCSMUsers];
+//    [self refreshCCSMUsers];
     [self refreshCCSMTags];
 }
 
