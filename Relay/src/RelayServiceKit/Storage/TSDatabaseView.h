@@ -14,6 +14,8 @@
 extern NSString *TSInboxGroup;
 extern NSString *TSArchiveGroup;
 extern NSString *TSPinnedGroup;
+extern NSString *FLActiveTagsGroup;
+//extern NSString *FLSearchTagsGroup;
 
 extern NSString *TSSecondaryDevicesGroup;
 
@@ -21,10 +23,15 @@ extern NSString *TSThreadDatabaseViewExtensionName;
 extern NSString *TSMessageDatabaseViewExtensionName;
 extern NSString *TSUnreadDatabaseViewExtensionName;
 extern NSString *TSSecondaryDevicesDatabaseViewExtensionName;
+extern NSString *FLTagDatabaseViewExtensionName;
+extern NSString *FLFilteredTagDatabaseViewExtensionName;
+//extern NSString *FLTagFullTextSearch;
 
 + (BOOL)registerThreadDatabaseView;
 + (BOOL)registerBuddyConversationDatabaseView;
 + (BOOL)registerUnreadDatabaseView;
++(BOOL)registerTagDatabaseView;
++(BOOL)registerFilteredTagDatabaseView;
 + (void)asyncRegisterSecondaryDevicesDatabaseView;
 
 @end
