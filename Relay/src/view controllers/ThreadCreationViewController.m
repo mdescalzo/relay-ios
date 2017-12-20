@@ -16,7 +16,12 @@
 #import "TSAccountManager.h"
 #import "SlugOverLayView.h"
 #import "TSStorageManager.h"
+#import "TSDatabaseView.h"
 #import "TSThread.h"
+#import <YapDatabase/YapDatabaseViewChange.h>
+#import <YapDatabase/YapDatabaseViewConnection.h>
+#import <YapDatabase/YapDatabaseFilteredView.h>
+#import <YapDatabase/YapDatabaseFilteredViewTransaction.h>
 
 @interface ThreadCreationViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, SlugOverLayViewDelegate, NSLayoutManagerDelegate>
 
@@ -35,10 +40,12 @@
 @property (nonatomic, strong) NSMutableArray<UIView *> *slugViews;
 //@property (nonatomic, strong) NSMutableArray<FLTag *> *selectedTags;
 
-@property (nonatomic, strong) NSArray<FLTag *> *content;
-@property (nonatomic, strong) NSArray<FLTag *> *searchResults;
-
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+
+@property (nonatomic, strong) YapDatabaseViewMappings *tagMappings;
+
+@property (nonatomic, strong) YapDatabaseConnection *uiDbConnection;
+@property (nonatomic, strong) YapDatabaseConnection *searchDbConnection;
 
 @end
 
@@ -69,7 +76,17 @@
                   forControlEvents:UIControlEventValueChanged];
     [refreshView addSubview:self.refreshControl];
     
+    self.uiDbConnection = [TSStorageManager.sharedManager.database newConnection];
+    self.searchDbConnection = [TSStorageManager.sharedManager.database newConnection];
+    [self.uiDbConnection beginLongLivedReadTransaction];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(yapDatabaseModified:)
+                                                 name:TSUIDatabaseConnectionDidUpdateNotification
+                                               object:nil];
+    
     [self updateGoButton];
+    [self updateMappings];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,13 +97,7 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"slugCell" forIndexPath:indexPath];
     
-    FLTag *aTag = nil;
-    
-    if (self.searchResults) {
-        aTag = [self.searchResults objectAtIndex:(NSUInteger)[indexPath row]];
-    } else {
-        aTag = [self.content objectAtIndex:(NSUInteger)[indexPath row]];
-    }
+    FLTag *aTag = [self tagForIndexPath:indexPath];
     
     [cell configureCellWithTag:aTag];
     
@@ -101,12 +112,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FLTag *aTag = nil;
-    if (self.searchResults) {
-        aTag = [self.searchResults objectAtIndex:(NSUInteger)[indexPath row]];
-    } else {
-        aTag = [self.content objectAtIndex:(NSUInteger)[indexPath row]];
-    }
+    FLTag *aTag = [self tagForIndexPath:indexPath];
     
     if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
         [self removeSlug:aTag.displaySlug];
@@ -126,25 +132,13 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return (NSInteger)[self.tagMappings numberOfSections];
+
 }
 
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case 0:
-        {
-            if (self.searchResults) {
-                return (NSInteger)self.searchResults.count;
-            } else {
-                return (NSInteger)self.content.count;
-            }
-        }
-            break;
-            
-        default:
-            return 0;
-            break;
-    }
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return (NSInteger)[self.tagMappings numberOfItemsInSection:(NSUInteger)section];
 }
 
 -(void)refreshContentFromSource
@@ -160,16 +154,23 @@
 
 -(void)refreshTableView
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.searchBar.text.length > 0 && self.searchResults.count == 0) {
-            self.searchInfoContainer.hidden = NO;
-            self.tableView.hidden = YES;
-        } else {
-            self.searchInfoContainer.hidden = YES;
-            self.tableView.hidden = NO;
-        }
-        [self.tableView reloadData];
-    });
+    [self.uiDbConnection beginLongLivedReadTransaction];
+    [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        [self.tagMappings updateWithTransaction:transaction];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([self.tagMappings numberOfItemsInAllGroups] == 0) {
+//            if (self.searchBar.text.length > 0 && self.searchResults.count == 0) {
+                self.searchInfoContainer.hidden = NO;
+                self.tableView.hidden = YES;
+            } else {
+                self.searchInfoContainer.hidden = YES;
+                self.tableView.hidden = NO;
+            }
+            [self.tableView reloadData];
+        });
+    }];
+    [self.uiDbConnection endLongLivedReadTransaction];
 }
 
 //- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
@@ -226,9 +227,79 @@
  }
  */
 
+#pragma mark - Database updates
+- (void)yapDatabaseModified:(NSNotification *)notification {
+    NSArray *notifications  = [self.uiDbConnection beginLongLivedReadTransaction];
+    NSArray *sectionChanges = nil;
+    NSArray *rowChanges     = nil;
+    
+    [[self.uiDbConnection ext:FLFilteredTagDatabaseViewExtensionName] getSectionChanges:&sectionChanges
+                                                                              rowChanges:&rowChanges
+                                                                        forNotifications:notifications
+                                                                            withMappings:self.tagMappings];
+    
+    if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
+        return;
+    }
+    
+    [self.tableView beginUpdates];
+    
+    for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
+        switch (sectionChange.type) {
+            case YapDatabaseViewChangeDelete: {
+                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeInsert: {
+                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+            case YapDatabaseViewChangeUpdate:
+            case YapDatabaseViewChangeMove:
+                break;
+        }
+    }
+    
+    for (YapDatabaseViewRowChange *rowChange in rowChanges) {
+        switch (rowChange.type) {
+            case YapDatabaseViewChangeDelete: {
+                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+                break;
+            case YapDatabaseViewChangeInsert: {
+                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+                break;
+            case YapDatabaseViewChangeMove: {
+                [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+                break;
+            
+            case YapDatabaseViewChangeUpdate: {
+                [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
+                                      withRowAnimation:UITableViewRowAnimationNone];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+    
+    [self.tableView endUpdates];
+    
+}
+
 #pragma mark - SearchBar delegate methods
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    [self updateMappings];
     [self refreshTableView];
 }
 
@@ -391,6 +462,53 @@
 }
 
 #pragma mark - worker methods
+- (FLTag *)tagForIndexPath:(NSIndexPath *)indexPath {
+    __block FLTag *aTag = nil;
+    [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        aTag = [[transaction extension:FLFilteredTagDatabaseViewExtensionName] objectAtIndexPath:indexPath
+                                                                                    withMappings:self.tagMappings];
+    }];
+    return aTag;
+}
+
+-(void)updateMappings
+{
+    __block NSString *filterString = [self.searchBar.text lowercaseString];
+    __block YapDatabaseViewFiltering *filtering = [YapDatabaseViewFiltering withObjectBlock:^BOOL(YapDatabaseReadTransaction * _Nonnull transaction,
+                                                                                                  NSString * _Nonnull group,
+                                                                                                  NSString * _Nonnull collection,
+                                                                                                  NSString * _Nonnull key,
+                                                                                                  id  _Nonnull object) {
+        FLTag *aTag = (FLTag *)object;
+        BOOL val;
+        
+        if (filterString.length > 0) {
+            val = ([[aTag.displaySlug lowercaseString] containsString:filterString] ||
+                   [[aTag.slug lowercaseString] containsString:filterString] ||
+                   [[aTag.tagDescription lowercaseString] containsString:filterString] ||
+                   [[aTag.orgSlug lowercaseString] containsString:filterString]);
+        } else {
+            val = YES;
+            
+        }
+        return val;
+    }];
+    
+    [self.searchDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        
+        [[transaction ext:FLFilteredTagDatabaseViewExtensionName] setFiltering:filtering
+                                                                    versionTag:filterString];
+        
+    }];
+    
+    
+    [self.uiDbConnection beginLongLivedReadTransaction];
+    [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        [self.tagMappings updateWithTransaction:transaction];
+    }];
+    [self.uiDbConnection endLongLivedReadTransaction];
+}
+
 -(void)updateGoButton
 {
     if (self.validatedSlugs.count == 0) {
@@ -634,6 +752,22 @@
 }
 
 #pragma mark - Accessors
+-(YapDatabaseViewMappings *)tagMappings
+{
+    if (_tagMappings == nil) {
+        _tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ FLActiveTagsGroup ]
+                                                                  view:FLFilteredTagDatabaseViewExtensionName];
+        [_tagMappings setIsReversed:NO forGroup:FLActiveTagsGroup];
+        [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+            [_tagMappings updateWithTransaction:transaction];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }];
+    }
+    return _tagMappings;
+}
+
 -(NSMutableArray *)validatedSlugs
 {
     if (_validatedSlugs == nil) {
@@ -667,36 +801,6 @@
         [self.tableView addGestureRecognizer:_downSwipeRecognizer];
     }
     return _downSwipeRecognizer;
-}
-
--(NSArray *)content
-{
-    if (_content == nil) {
-        NSArray *allTags = [FLTag allObjectsInCollection];
-
-        NSSortDescriptor *descriptionSD = [[NSSortDescriptor alloc] initWithKey:@"tagDescription" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSortDescriptor *slugSD = [[NSSortDescriptor alloc] initWithKey:@"slug" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-
-        _content = [allTags sortedArrayUsingDescriptors:@[ descriptionSD, slugSD ]];
-    }
-    return _content;
-}
-
--(NSArray *)searchResults
-{
-    if (self.searchBar.text.length > 0 && ![self.searchBar.text isEqualToString:@"@"]) {
-        if ([[self.searchBar.text substringToIndex:1] isEqualToString:@"@"]) {
-            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", [self.searchBar.text substringFromIndex:1]];
-            return [self.content filteredArrayUsingPredicate:slugPred];
-        } else {
-            NSPredicate *descriptionPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"tagDescription", self.searchBar.text];
-            NSPredicate *slugPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"slug", self.searchBar.text];
-            NSCompoundPredicate *filterPred = [NSCompoundPredicate orPredicateWithSubpredicates:@[ descriptionPred, slugPred ]];
-            return [self.content filteredArrayUsingPredicate:filterPred];
-        }
-    } else {
-        return nil;
-    }
 }
 
 @end

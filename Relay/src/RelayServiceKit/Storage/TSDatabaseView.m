@@ -9,6 +9,7 @@
 #import "TSDatabaseView.h"
 
 #import <YapDatabase/YapDatabaseView.h>
+#import <YapDatabase/YapDatabaseFilteredView.h>
 
 #import "OWSDevice.h"
 #import "TSIncomingMessage.h"
@@ -18,6 +19,9 @@
 NSString *TSInboxGroup   = @"TSInboxGroup";
 NSString *TSArchiveGroup = @"TSArchiveGroup";
 NSString *TSPinnedGroup  = @"TSPinnedGroup";
+NSString *FLActiveTagsGroup = @"FLActiveTagsGroup";
+//NSString *FLSearchTagsGroup = @"FLSearchTagsGroup";
+
 
 NSString *TSUnreadIncomingMessagesGroup = @"TSUnreadIncomingMessagesGroup";
 NSString *TSSecondaryDevicesGroup = @"TSSecondaryDevicesGroup";
@@ -26,6 +30,9 @@ NSString *TSThreadDatabaseViewExtensionName  = @"TSThreadDatabaseViewExtensionNa
 NSString *TSMessageDatabaseViewExtensionName = @"TSMessageDatabaseViewExtensionName";
 NSString *TSUnreadDatabaseViewExtensionName  = @"TSUnreadDatabaseViewExtensionName";
 NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesDatabaseViewExtensionName";
+NSString *FLTagDatabaseViewExtensionName = @"FLTagDatabaseViewExtensionName";
+NSString *FLFilteredTagDatabaseViewExtensionName = @"FLFilteredTagDatabaseViewExtensionName";
+NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
 
 @implementation TSDatabaseView
 
@@ -60,6 +67,57 @@ NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesData
     
     return
     [[TSStorageManager sharedManager].database registerExtension:view withName:TSUnreadDatabaseViewExtensionName];
+}
+
++(BOOL)registerTagDatabaseView
+{
+    YapDatabaseView *tagView = [TSStorageManager.sharedManager.database registeredExtension:FLTagDatabaseViewExtensionName];
+    if (tagView) {
+        return YES;
+    }
+    
+    YapDatabaseViewGrouping *viewGrouping = [YapDatabaseViewGrouping
+                                             withObjectBlock:^NSString *(YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
+                                                 if ([object isKindOfClass:[FLTag class]]) {
+//                                                     FLTag *aTag = (FLTag *)object;
+                                                     return FLActiveTagsGroup;
+                                                 }
+                                                 return nil;
+                                             }];
+    YapDatabaseViewSorting *viewSorting = [self tagSorting];
+    
+    YapDatabaseViewOptions *options = [[YapDatabaseViewOptions alloc] init];
+    options.isPersistent = NO;
+    options.allowedCollections = [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObject:[FLTag collection]]];
+    
+    YapDatabaseView *databaseView =
+    [[YapDatabaseView alloc] initWithGrouping:viewGrouping
+                                      sorting:viewSorting
+                                   versionTag:@"1" options:options];
+    
+    return [TSStorageManager.sharedManager.database registerExtension:databaseView
+                                                             withName:FLTagDatabaseViewExtensionName];
+}
+
++(BOOL)registerFilteredTagDatabaseView
+{
+    YapDatabaseFilteredView *filteredView = [TSStorageManager.sharedManager.database registeredExtension:FLFilteredTagDatabaseViewExtensionName];
+    if (filteredView) {
+        return YES;
+    }
+
+    YapDatabaseViewFiltering *filtering = [YapDatabaseViewFiltering withObjectBlock:^BOOL(YapDatabaseReadTransaction * _Nonnull transaction,
+                                                                                          NSString * _Nonnull group,
+                                                                                          NSString * _Nonnull collection,
+                                                                                          NSString * _Nonnull key,
+                                                                                          id  _Nonnull object) {
+        return YES;
+    }];
+    
+    filteredView = [[YapDatabaseFilteredView alloc] initWithParentViewName:FLTagDatabaseViewExtensionName filtering:filtering];
+    
+    return [TSStorageManager.sharedManager.database registerExtension:filteredView
+                                                             withName:FLFilteredTagDatabaseViewExtensionName];
 }
 
 + (BOOL)registerThreadDatabaseView {
@@ -151,6 +209,28 @@ NSString *TSSecondaryDevicesDatabaseViewExtensionName = @"TSSecondaryDevicesData
     }
     
     return YES;
+}
+
++(YapDatabaseViewSorting *)tagSorting
+{
+    return [YapDatabaseViewSorting withObjectBlock:^NSComparisonResult(YapDatabaseReadTransaction * _Nonnull transaction,
+                                                                       NSString * _Nonnull group,
+                                                                       NSString * _Nonnull collection1,
+                                                                       NSString * _Nonnull key1,
+                                                                       id  _Nonnull object1,
+                                                                       NSString * _Nonnull collection2,
+                                                                       NSString * _Nonnull key2,
+                                                                       id  _Nonnull object2) {
+        if ([group isEqualToString:FLActiveTagsGroup]) {
+            if ([object1 isKindOfClass:[FLTag class]] && [object2 isKindOfClass:[FLTag class]]) {
+                FLTag *aTag1 = (FLTag *)object1;
+                FLTag *aTag2 = (FLTag *)object2;
+                
+                return [aTag1.tagDescription compare:aTag2.tagDescription];
+            }
+        }
+        return NSOrderedSame;
+    }];
 }
 
 + (YapDatabaseViewSorting *)threadSorting {
