@@ -257,6 +257,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
+        [Environment.getCurrent.contactsManager intersectLocalContacts];
         [TSSocketManager becomeActiveFromForeground];
         [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{

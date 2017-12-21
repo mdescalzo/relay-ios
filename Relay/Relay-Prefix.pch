@@ -34,7 +34,7 @@
 #define FLCCSMTagsUpdated @"FLCCSMTagsUpdated"
 
 // Forsta "public" domain name
-#define FLPublicDomainName @"forsta"
+#define FLPublicDomainName @"public"
 
 // Forsta home URLs
 #define FLForstaDevURL @"https://ccsm-dev-api.forsta.io"

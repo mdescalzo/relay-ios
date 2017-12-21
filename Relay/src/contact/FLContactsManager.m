@@ -168,34 +168,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 - (void)doAfterEnvironmentInitSetup
 {
-    // Lookup compare locally stored contacts to those in Atlas for "public" only
-    if ([[SignalRecipient selfRecipient].orgSlug isEqualToString:FLPublicDomainName]) {
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
-            self.contactStore = [[CNContactStore alloc] init];
-            [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
-                                        completionHandler:^(BOOL granted, NSError *_Nullable error) {
-                                            if (granted) {
-                                                __block NSMutableSet *contactPhoneNumbers = [NSMutableSet new];
-                                                NSArray *keysToFetch = @[ CNContactPhoneNumbersKey ];
-                                                CNContactFetchRequest *fetchRequest = [[CNContactFetchRequest alloc] initWithKeysToFetch:keysToFetch];
-                                                
-                                                NSError *fetchError = nil;
-                                                if (![self.contactStore enumerateContactsWithFetchRequest:fetchRequest
-                                                                                                   error:&fetchError
-                                                                                              usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
-                                                                                                  for (CNPhoneNumber *phoneNumber in contact.phoneNumbers) {
-                                                                                                      [contactPhoneNumbers addObject:phoneNumber.stringValue];
-                                                                                                  }
-                                                                                              }]) {
-                                                                                                  DDLogDebug(@"Enumeration of local contacts failed.  Error: %@", error.description);
-                                                }
-                                                DDLogDebug(@"Pulled phone #s: %@", contactPhoneNumbers);
-                                            } else {
-                                                DDLogDebug(@"User denied access to local Contacts.");
-                                            }
-                                        }];
-        }
-    }
     [self.observableContactsController watchLatestValueOnArbitraryThread:^(NSArray *latestContacts) {
         @synchronized(self) {
             [self setupLatestRecipients:latestContacts];
@@ -244,6 +216,43 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 #pragma mark - Contact/Phone Number util
+-(void)intersectLocalContacts
+{
+    // Lookup compare locally stored contacts to those in Atlas for "public" only
+//    if ([[SignalRecipient selfRecipient].orgSlug isEqualToString:FLPublicDomainName]) {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
+            self.contactStore = [[CNContactStore alloc] init];
+            [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
+                                        completionHandler:^(BOOL granted, NSError *_Nullable error) {
+                                            if (granted) {
+                                                // We have permission, do the extraction
+                                                __block NSMutableSet *contactPhoneNumbers = [NSMutableSet new];
+                                                NSArray *keysToFetch = @[ CNContactPhoneNumbersKey ];
+                                                CNContactFetchRequest *fetchRequest = [[CNContactFetchRequest alloc] initWithKeysToFetch:keysToFetch];
+                                                NSError *fetchError = nil;
+                                                [self.contactStore enumerateContactsWithFetchRequest:fetchRequest
+                                                                                                    error:&fetchError
+                                                                                               usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
+                                                                                                   for (CNLabeledValue *labelValue in contact.phoneNumbers) {
+                                                                                                       CNPhoneNumber *phoneNumber = (CNPhoneNumber *)labelValue.value;
+                                                                                                       [contactPhoneNumbers addObject:phoneNumber.stringValue];
+                                                                                                   }
+                                                                                               }];
+                                                DDLogDebug(@"Pulled local phone #s: %ld", contactPhoneNumbers.count);
+                                                // Parse the results
+                                                NSMutableSet *prettyNumbers = [NSMutableSet new];
+                                                for (NSString *foundNumber in contactPhoneNumbers) {
+                                                    NSString *parsedNumber = [[NBPhoneNumberUtil sharedInstance] normalize:foundNumber];
+                                                    [prettyNumbers addObject:parsedNumber];
+                                                }
+
+                                            } else {
+                                                DDLogDebug(@"User denied access to local Contacts.");
+                                            }
+                                        }];
+        }
+//    }
+}
 
 -(void)saveRecipient:(SignalRecipient *)recipient
 {
@@ -321,6 +330,13 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 - (BOOL)phoneNumber:(PhoneNumber *)phoneNumber1 matchesNumber:(PhoneNumber *)phoneNumber2 {
     return [phoneNumber1.toE164 isEqualToString:phoneNumber2.toE164];
+}
+
+#warning keyRecipientsById may not be necessary with Address Book
++ (NSDictionary *)keyRecipientsById:(NSArray *)recipients {
+    return [recipients keyedBy:^id(SignalRecipient *recipient) {
+        return @((int)recipient.uniqueId);
+    }];
 }
 
 -(void)refreshRecipients

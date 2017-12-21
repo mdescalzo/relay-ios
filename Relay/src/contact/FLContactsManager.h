@@ -32,5 +32,6 @@
 //-(NSArray<SignalRecipient *> *_Nonnull)allRecipients;
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
 -(void)refreshRecipients;
+-(void)intersectLocalContacts;
 
 @end
