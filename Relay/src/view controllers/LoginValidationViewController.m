@@ -158,6 +158,7 @@ NSUInteger maximumValidationAttempts = 9999;
     // Check if registered and proceed to next storyboard accordingly
     if ([TSAccountManager isRegistered]) {
         // We are, move onto main
+        [Environment.getCurrent.contactsManager intersectLocalContacts];
         [TSSocketManager becomeActiveFromForeground];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.spinner stopAnimating];
