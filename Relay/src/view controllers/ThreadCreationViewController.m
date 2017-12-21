@@ -79,14 +79,27 @@
     self.uiDbConnection = [TSStorageManager.sharedManager.database newConnection];
     self.searchDbConnection = [TSStorageManager.sharedManager.database newConnection];
     [self.uiDbConnection beginLongLivedReadTransaction];
-    
+
+    // Notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTableView)
+                                                 name:FLCCSMTagsUpdated
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTableView)
+                                                 name:FLCCSMUsersUpdated
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(yapDatabaseModified:)
                                                  name:TSUIDatabaseConnectionDidUpdateNotification
                                                object:nil];
-    
     [self updateGoButton];
     [self updateMappings];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -369,10 +382,25 @@
                                          }
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              self.searchBar.text = [NSString stringWithString:badStuff];
+                                             [self updateMappings];
                                          });
-
+                                         
+                                         // take this opportunity to store any userids
+                                         NSArray *userids = [results objectForKey:@"userids"];
+                                         if (userids.count > 0) {
+                                             [self.uiDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                                                 for (NSString *uid in userids) {
+                                                     SignalRecipient *recipient = [SignalRecipient fetchObjectWithUniqueID:uid transaction:transaction];
+                                                     if (recipient == nil) {
+                                                         recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
+                                                     }
+                                                 }
+                                             } completionBlock:^{
+                                                 [self refreshTableView];
+                                             }];
+                                         }
                                      }
-                                     failure:^(NSError *error) {
+                                           failure:^(NSError *error) {
                                          DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              

@@ -17,6 +17,7 @@
 #import "TSSocketManager.h"
 #import "TSPreKeyManager.h"
 #import "TSStorageManager.h"
+#import "AFNetworking.h"
 
 @import Fabric;
 @import Crashlytics;
@@ -441,13 +442,13 @@
             [Environment.getCurrent.ccsmStorage setTags:@{ }];
             [TSStorageManager.sharedManager storePhoneNumber:userID];
         }
-        [[Environment getCurrent].ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
+        [Environment.getCurrent.ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
-        [[Environment getCurrent].ccsmStorage setUserInfo:userDict];
+        [Environment.getCurrent.ccsmStorage setUserInfo:userDict];
         SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
         [myself save];
         [TSAccountManager.sharedInstance myself];
-        [Environment.getCurrent.contactsManager allRecipients];
+//        [Environment.getCurrent.contactsManager allRecipients];
         
         [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
         
@@ -465,23 +466,23 @@
     [self refreshCCSMTags];
 }
 
-//+(void)refreshCCSMUsers
-//{
-//    
-//    NSMutableDictionary *users = [NSMutableDictionary new];
-//    
-//    [self updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
-//                  collection:users
-//                 synchronous:YES
-//                     success:^{
-//                         DDLogDebug(@"Refreshed all users.");
-//                         [[Environment getCurrent].ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
-//                         [self notifyOfUsersRefresh];
-//                     }
-//                     failure:^(NSError *err){
-//                         DDLogError(@"Failed to refresh all users. Error: %@", err.localizedDescription);
-//                     }];
-//}
++(void)refreshCCSMUsers
+{
+    
+    NSMutableDictionary *users = [NSMutableDictionary new];
+    
+    [self updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
+                  collection:users
+                 synchronous:YES
+                     success:^{
+                         DDLogDebug(@"Refreshed all users.");
+                         [[Environment getCurrent].ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
+                         [self notifyOfUsersRefresh];
+                     }
+                     failure:^(NSError *err){
+                         DDLogError(@"Failed to refresh all users. Error: %@", err.localizedDescription);
+                     }];
+}
 
 +(void)refreshCCSMTags
 {

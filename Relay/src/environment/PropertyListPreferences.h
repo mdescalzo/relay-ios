@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, NotificationType) {
@@ -56,7 +58,8 @@ typedef NS_ENUM(NSUInteger, TSImageQuality) {
 - (nullable NSString *)lastRanVersion;
 - (NSString *)setAndGetCurrentVersion;
 
-@property (nonatomic, assign) BOOL useGravatars;
+@property (assign) BOOL useGravatars;
+@property (strong) NSString *outgoingBubbleColorKey;
 
 #pragma mark - Block on Identity Change
 

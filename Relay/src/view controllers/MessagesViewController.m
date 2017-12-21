@@ -95,6 +95,7 @@ typedef enum : NSUInteger {
     NSUInteger _unreadCount;
 }
 
+@property (nonatomic, strong) PropertyListPreferences *prefs;
 @property TSThread *thread;
 @property TSMessageAdapter *lastDeliveredMessage;
 @property (nonatomic, strong) YapDatabaseConnection *editingDatabaseConnection;
@@ -548,8 +549,8 @@ typedef enum : NSUInteger {
     self.collectionView.collectionViewLayout.bubbleSizeCalculator = [[OWSMessagesBubblesSizeCalculator alloc] init];
     JSQMessagesBubbleImageFactory *bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
     self.incomingBubbleImageData = [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
-    self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor ows_materialBlueColor]];
-    self.currentlyOutgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor ows_fadedBlueColor]];
+    self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey]];
+    self.currentlyOutgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey]];
     self.outgoingMessageFailedImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor grayColor]];
 
 }
@@ -2301,6 +2302,14 @@ typedef enum : NSUInteger {
         [_infoButton addTarget:self action:@selector(showConversationSettings) forControlEvents:UIControlEventTouchUpInside];
     }
     return _infoButton;
+}
+
+-(PropertyListPreferences *)prefs
+{
+    if (_prefs == nil) {
+        _prefs = Environment.preferences;
+    }
+    return _prefs;
 }
 
 #pragma mark - Logging

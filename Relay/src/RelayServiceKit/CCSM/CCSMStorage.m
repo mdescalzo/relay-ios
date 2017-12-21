@@ -165,18 +165,21 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 - (void)setTags:(NSDictionary *)value
 {
     [self setValueForKey:CCSMStorageKeyTags toValue:value];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                NSDictionary *tagDict = (NSDictionary *)obj;
-                FLTag *aTag = [[FLTag alloc] initWithTagDictionary:tagDict];
-                if (aTag) {
-                    [aTag saveWithTransaction:transaction];
+    // Process the newly received blob
+    //    NSDictionary *tagBlob = [Environment.getCurrent.ccsmStorage getTags];
+        [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSDictionary *tagDict = (NSDictionary *)obj;
+            FLTag *aTag = [[FLTag alloc] initWithTagDictionary:tagDict];
+            
+            if (aTag) {
+                [aTag save];
+                
+                for (NSString *uid in aTag.recipientIds) {
+                    [Environment.getCurrent.contactsManager recipientWithUserID:uid];
                 }
-            }];
+            }
         }];
-    });
-}
+ }
 
 - (nullable NSDictionary *)getTags
 {

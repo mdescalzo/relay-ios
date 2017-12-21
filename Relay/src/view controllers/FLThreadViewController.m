@@ -184,6 +184,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
                                                  name:TSUIDatabaseConnectionDidUpdateNotification
                                                object:nil];
     
+    // TODO: Investigate this!
     [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
         [self.tableView reloadData];
     }
@@ -225,6 +226,10 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(markAllRead)
                                                  name:FLMarkAllReadNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadTableView)
+                                                 name:FLSettingsUpdatedNotification
                                                object:nil];
 }
 

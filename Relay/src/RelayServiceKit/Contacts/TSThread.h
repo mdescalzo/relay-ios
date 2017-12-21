@@ -46,8 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return UIImage of the thread, or nil.
  */
-//- (nullable UIImage *)image;
-@property (strong) UIImage *_Nullable image;
+- (nullable UIImage *)image;
+-(void)setImage:(UIImage *_Nullable)value;
+//@property (strong) UIImage *_Nullable image;
 #endif
 
 #pragma mark Interactions

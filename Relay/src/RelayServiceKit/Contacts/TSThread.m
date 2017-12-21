@@ -22,10 +22,11 @@ static const NSString *FLExpressionKey = @"expression";
 
 @interface TSThread ()
 
-@property (nonatomic, retain) NSDate *creationDate;
+@property (nonatomic, strong) NSDate *creationDate;
 @property (nonatomic, copy) NSDate *archivalDate;
-@property (nonatomic, retain) NSDate *lastMessageDate;
+@property (nonatomic, strong) NSDate *lastMessageDate;
 @property (nonatomic, copy) NSString *messageDraft;
+@property (nonatomic, strong) UIImage *imageBacker;
 
 - (TSInteraction *)lastInteraction;
 
@@ -34,7 +35,6 @@ static const NSString *FLExpressionKey = @"expression";
 @implementation TSThread
 
 @synthesize name = _name;
-@synthesize image = _image;
 @synthesize prettyExpression = _prettyExpression;
 @synthesize universalExpression = _universalExpression;
 
@@ -102,6 +102,13 @@ static const NSString *FLExpressionKey = @"expression";
         thread = [TSThread getOrCreateThreadWithID:[[NSUUID UUID] UUIDString] transaction:transaction];
         thread.participants = [participantIDs copy];
         [thread saveWithTransaction:transaction];
+    }
+    
+    for (NSString *uid in thread.participants) {
+        SignalRecipient *recipient = [SignalRecipient fetchObjectWithUniqueID:uid transaction:transaction];
+        if (recipient == nil) {
+            recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
+        }
     }
     return thread;
 }
@@ -256,24 +263,24 @@ static const NSString *FLExpressionKey = @"expression";
 
 -(void)setImage:(UIImage *_Nullable)value
 {
-    if (![_image isEqual:value]) {
-        _image = value;
+    if (![_imageBacker isEqual:value]) {
+        _imageBacker = value;
     }
 }
 
 - (UIImage *_Nullable)image
 {
-    if (_image == nil) {
+    if (_imageBacker) {
+        return _imageBacker;
+    } else {
         switch (self.participants.count) {
             case 0:
             {
-                _image = nil;
+                return nil;
             }
                 break;
             case 1:
             {
-//                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:self.participants.lastObject];
-//                return recipient.avatar;
                 return [Environment.getCurrent.contactsManager imageForIdentifier:self.participants.lastObject];
             }
                 break;
@@ -285,8 +292,6 @@ static const NSString *FLExpressionKey = @"expression";
                         otherId = uid;
                     }
                 }
-//                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:otherId];
-//                return recipient.avatar;
                 return [Environment.getCurrent.contactsManager imageForIdentifier:otherId];
             }
                 break;
@@ -297,12 +302,11 @@ static const NSString *FLExpressionKey = @"expression";
                 break;
         }
     }
-    return _image;
 }
 
 - (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream
 {
-    self.image = [attachmentStream image];
+    [self setImage:[attachmentStream image]];
     [self save];
 
     // Avatars are stored directly in the database, so there's no need

@@ -174,6 +174,9 @@
 		7D3A672E1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
 		7D3A672F1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
 		7D3A67301FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
+		7D3A67771FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
+		7D3A67781FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
+		7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
@@ -1834,6 +1837,8 @@
 		7D3366241F7B786E0094DAFA /* SlugOverLayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlugOverLayView.m; sourceTree = "<group>"; };
 		7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppearanceSettingsViewController.h; sourceTree = "<group>"; };
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
+		7D3A67751FE9BB1700C4096A /* FLPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPickerCell.h; sourceTree = "<group>"; };
+		7D3A67761FE9BB1800C4096A /* FLPickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLPickerCell.m; sourceTree = "<group>"; };
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
@@ -3198,6 +3203,8 @@
 			children = (
 				7D7DA5861F2F8797007FE6E4 /* FLDirectoryCell.h */,
 				7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */,
+				7D3A67751FE9BB1700C4096A /* FLPickerCell.h */,
+				7D3A67761FE9BB1800C4096A /* FLPickerCell.m */,
 				45B201751DAECBFE00C461E0 /* HighlightableLabel.swift */,
 				45C681C11D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.h */,
 				45C681C21D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m */,
@@ -5189,6 +5196,7 @@
 				7D4A39E01F1693930023C29B /* UIViewController+CameraPermissions.m in Sources */,
 				7D4A39E11F1693930023C29B /* HttpManager.m in Sources */,
 				7D4A39E21F1693930023C29B /* AccountManager.swift in Sources */,
+				7D3A67771FE9BB1800C4096A /* FLPickerCell.m in Sources */,
 				7D4A39E31F1693930023C29B /* CallState.m in Sources */,
 				7D4A39E41F1693930023C29B /* ZrtpInitiator.m in Sources */,
 				7D613AEB1F9018D800E18D29 /* OperationFailed.m in Sources */,
@@ -5536,6 +5544,7 @@
 				7DCFFD841F0EE4490003CD95 /* RtpSocket.m in Sources */,
 				7D613ACB1F90188300E18D29 /* TSStorageManager+SignedPreKeyStore.m in Sources */,
 				7D6139A61F90172100E18D29 /* TSPreKeyManager.m in Sources */,
+				7D3A67781FE9BB1800C4096A /* FLPickerCell.m in Sources */,
 				7DCFFD851F0EE4490003CD95 /* RemoteIOAudio.m in Sources */,
 				7DCFFD861F0EE4490003CD95 /* RPServerRequestsManager.m in Sources */,
 				7DCFFD871F0EE4490003CD95 /* UIViewController+CameraPermissions.m in Sources */,
@@ -5883,6 +5892,7 @@
 				E197B61818BBEC1A00F073E5 /* RemoteIOAudio.m in Sources */,
 				7D613ACC1F90188300E18D29 /* TSStorageManager+SignedPreKeyStore.m in Sources */,
 				7D6139A71F90172100E18D29 /* TSPreKeyManager.m in Sources */,
+				7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */,
 				B67ADDC41989FF8700E1A773 /* RPServerRequestsManager.m in Sources */,
 				EF764C351DB67CC5000D9A87 /* UIViewController+CameraPermissions.m in Sources */,
 				76EB059418170B33006006FC /* HttpManager.m in Sources */,
@@ -6443,7 +6453,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 132;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6512,7 +6522,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 132;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6579,7 +6589,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 132;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6647,7 +6657,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 132;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6853,7 +6863,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 132;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6919,7 +6929,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 132;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

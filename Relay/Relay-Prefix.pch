@@ -27,6 +27,7 @@
 #define FLMessageViewFontSize 17.0f
 
 // Notification strings
+#define FLSettingsUpdatedNotification @"FLSettingsUpdatedNotification"
 #define FLUserSelectedFromPopoverDirectoryNotification @"FLUserSelectedFromPopoverDirectoryNotification"
 #define FLMarkAllReadNotification @"FLMarkAllReadNotification"
 #define FLCCSMUsersUpdated @"FLCCSMUsersUpdated"

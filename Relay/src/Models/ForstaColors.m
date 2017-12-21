@@ -14,7 +14,7 @@
 
 +(UIColor *)randomPopColor
 {
-    return [[self popColors] objectAtIndex:arc4random_uniform([self popColors].count)];
+    return [[self popColors] objectAtIndex:arc4random_uniform((uint32_t)[self popColors].count)];
 }
 
 +(NSArray <UIColor *>*)popColors
@@ -23,6 +23,19 @@
               [self darkRed], [self mediumDarkRed], [self mediumRed], [self mediumLightRed], [self lightRed],
               [self darkBlue1], [self mediumDarkBlue1], [self mediumBlue1], [self mediumLightBlue1], [self lightBlue1],
               [self darkBlue2], [self mediumDarkBlue2], [self mediumBlue2], [self mediumLightBlue2], [self lightBlue2] ];
+}
+
++(NSDictionary *)outgoingBubbleColors
+{
+    return @{ @"Black" : [UIColor blackColor],
+              @"Brick" : [self darkRed],
+              @"Green" : [self darkGreen],
+              @"Blue" : [self darkBlue1],
+              @"Midnight" : [self darkBlue2],
+              @"Purple" : [self mediumPurple],
+              @"Pink" : [self mediumPink],
+              @"Gold" : [self mediumYellow],
+              };
 }
 
 +(UIColor *)lightGray
@@ -147,17 +160,17 @@
 
 +(UIColor *)mediumPurple
 {
-    return [UIColor colorWithRed:94.0f green:55.0f blue:196.0f alpha:1.0f];
+    return [self colorFromHexString:@"#5e37c4"];
 }
 
 +(UIColor *)mediumYellow
 {
-    return [UIColor colorWithRed:255.0f green:187.0f blue:55.0f alpha:1.0f];
+    return [self colorFromHexString:@"#ffbb37"];
 }
 
 +(UIColor *)mediumPink
 {
-    return [UIColor colorWithRed:227.0f green:45.0f blue:148.0f alpha:1.0f];
+    return [self colorFromHexString:@"#e32d94"];
 }
 
 // Assumes input like "#00FF00" (#RRGGBB).
