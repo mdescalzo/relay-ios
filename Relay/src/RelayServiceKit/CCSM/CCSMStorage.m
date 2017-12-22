@@ -163,15 +163,17 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
     [self setValueForKey:CCSMStorageKeyTags toValue:value];
     // Process the newly received blob
     //    NSDictionary *tagBlob = [Environment.getCurrent.ccsmStorage getTags];
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSDictionary *tagDict = (NSDictionary *)obj;
-            FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
-            if (aTag.recipientIds.count == 0) {
-                [aTag removeWithTransaction:transaction];
-            }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *tagDict = (NSDictionary *)obj;
+                FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
+                if (aTag.recipientIds.count == 0) {
+                    [aTag removeWithTransaction:transaction];
+                }
+            }];
         }];
-    }];
+    });
 }
 
 - (nullable NSDictionary *)getTags
