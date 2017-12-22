@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.2.0]
+### Added
+- Conversation pinning.
+- Conversation archiving.
+- Appearance settings view.
+- Optional Gravatar support in appearance.
+- Selectable colors for incoming and outgoing message bubbles.
+- Avatar and app preference caching for better table performance and fewer db hits.
+### Fixed
+- PushNotification registration bug preventing consistent receipt of push notifications.
+- Vanishing input text when new message received.
+
 ## [1.1.1]
 ### Fixed
 - Fixed font size irregularity in conversation view.  Occasionally cause message truncation.
@@ -39,6 +51,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.2.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.2.0
 [1.1.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.1
 [1.1.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.0
 [1.0.3]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.0.3
