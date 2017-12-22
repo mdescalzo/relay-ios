@@ -64,6 +64,11 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
     return self;
 }
 
+-(YapDatabaseConnection *)dbConnection
+{
+    return TSStorageManager.sharedManager.messagesConnection;
+}
+
 + (nullable instancetype)findMessageWithAuthorId:(NSString *)authorId timestamp:(uint64_t)timestamp
 {
     __block TSIncomingMessage *foundMessage;
@@ -115,13 +120,14 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
 
 - (void)markAsReadLocally
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self markAsReadWithoutNotificationWithTransaction:transaction];
+    } completionBlock:^{
+        // Notification must happen outside of the transaction, else we'll likely crash when the notification receiver
+        // tries to do anything with the DB.
+        [[NSNotificationCenter defaultCenter] postNotificationName:TSIncomingMessageWasReadOnThisDeviceNotification
+                                                            object:self];
     }];
-    // Notification must happen outside of the transaction, else we'll likely crash when the notification receiver
-    // tries to do anything with the DB.
-    [[NSNotificationCenter defaultCenter] postNotificationName:TSIncomingMessageWasReadOnThisDeviceNotification
-                                                        object:self];
 }
 
 - (void)markAsReadWithoutNotificationWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
