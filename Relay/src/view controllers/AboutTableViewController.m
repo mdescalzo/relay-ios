@@ -48,6 +48,7 @@
     self.versionLabel.textColor = [UIColor lightGrayColor];
     self.versionLabel.font      = [UIFont ows_regularFontWithSize:16.0f];
     self.versionLabel.textAlignment = NSTextAlignmentRight;
+    [self.versionLabel sizeToFit];
 
     self.versionCell.accessoryView          = self.versionLabel;
     self.versionCell.userInteractionEnabled = NO;
