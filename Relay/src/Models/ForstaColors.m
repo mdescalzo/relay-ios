@@ -25,6 +25,18 @@
               [self darkBlue2], [self mediumDarkBlue2], [self mediumBlue2], [self mediumLightBlue2], [self lightBlue2] ];
 }
 
++(NSDictionary *)incomingBubbleColors
+{
+    return @{ @"Gray" : [self lightGray],
+              @"Orange" : [self lightRed],
+              @"Lime" : [self lightGreen],
+              @"Mist" : [self lightBlue1],
+              @"Blue" : [self lightBlue2],
+              @"Lavender" : [self lightPurple],
+              @"Pink" : [self lightPink],
+              @"Gold" : [self lightYellow],
+              };
+}
 +(NSDictionary *)outgoingBubbleColors
 {
     return @{ @"Black" : [UIColor blackColor],
@@ -158,14 +170,29 @@
     return [self colorFromHexString:@"#9CCCE0"];
 }
 
++(UIColor *)lightPurple
+{
+    return [self colorFromHexString:@"#ccc3e5"];
+}
+
 +(UIColor *)mediumPurple
 {
     return [self colorFromHexString:@"#5e37c4"];
 }
 
++(UIColor *)lightYellow
+{
+    return [self colorFromHexString:@"#ffe5b2"];
+}
+
 +(UIColor *)mediumYellow
 {
     return [self colorFromHexString:@"#ffbb37"];
+}
+
++(UIColor *)lightPink
+{
+    return [self colorFromHexString:@"#e2c0d4"];
 }
 
 +(UIColor *)mediumPink
