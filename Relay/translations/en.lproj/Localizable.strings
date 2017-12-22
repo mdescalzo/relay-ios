@@ -685,7 +685,8 @@
 "APPEARANCE_GRAVATAR_SECTION" = "Gravatars";
 "APPEARANCE_USE_GRAVATARS" = "Use Gravatars";
 "APPEARANCE_MESSAGES_SECTION" = "Messages";
-"APPEARANCE_MESSAGE_BUBBLE_COLOR" = "Outgoing Bubble Color";
+"APPEARANCE_OUTGOING_MESSAGE_BUBBLE_COLOR" = "Outgoing Bubble Color";
+"APPEARANCE_INCOMING_MESSAGE_BUBBLE_COLOR" = "Incoming Bubble Color";
 
 /* User settings section footer, a detailed explanation */
 "SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL" = "Requires your approval before communicating with someone who has new safety numbers, commonly from a reinstall of Forsta.";
