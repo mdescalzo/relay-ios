@@ -256,16 +256,16 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
         recipient = [SignalRecipient fetchObjectWithUniqueID:userID transaction:transaction];
     }];
-
+    
     if (!recipient) {
-        recipient = [CCSMCommManager recipientFromCCSMWithID:userID];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            if (recipient) {
-                [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                if (recipient) {
                     [recipient saveWithTransaction:transaction];
-                }];
-            }
-        });
+                }
+            });
+        }];
     }
     return recipient;
 }
@@ -280,7 +280,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     }
     
     // If not, go get it, build it, and save it.
-    SignalRecipient *recipient = [CCSMCommManager recipientFromCCSMWithID:userID];
+    SignalRecipient *recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
     if (recipient) {
         [recipient saveWithTransaction:transaction];
     }
