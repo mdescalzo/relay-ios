@@ -90,19 +90,27 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 #pragma mark - Tag management
 -(void)processTags
 {
-    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        
-        // Look for badly formed tags and fix them
-        [[FLTag allObjectsInCollection] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            FLTag *aTag = (FLTag *)obj;
-            if (aTag.recipientIds.count == 0) {
-                NSDictionary *results = [FLTagMathService syncTagLookupWithString:aTag.displaySlug];
-                NSArray *uids = [results objectForKey:@"userids"];
-                aTag.recipientIds = [NSCountedSet setWithArray:uids];
-                [aTag saveWithTransaction:transaction];
-            }
-        }];
-    }];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+//        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+//            // Look for badly formed tags and fix them
+//            [[FLTag allObjectsInCollection] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//                FLTag *aTag = (FLTag *)obj;
+//                if (aTag.recipientIds.count == 0) {
+//                    DDLogDebug(@"Tag with no recipients found: %@", aTag.displaySlug);
+//                    NSDictionary *results = [FLTagMathService syncTagLookupWithString:[NSString stringWithFormat:@"<%@>", aTag.uniqueId]];
+//                    NSArray *uids = [results objectForKey:@"userids"];
+//                    if (uids.count > 0) {
+//                        DDLogDebug(@"Attempt to restore successful with %ld recipients.", aTag.recipientIds.count);
+//                        aTag.recipientIds = [NSCountedSet setWithArray:uids];
+//                        [aTag saveWithTransaction:transaction];
+//                    } else {
+//                        DDLogDebug(@"Attempt to restore failed.  Removing.");
+//                        [aTag removeWithTransaction:transaction];
+//                    }
+//                }
+//            }];
+//        }];
+//    });
 }
 
 #pragma mark - Recipient/Contact management
@@ -198,17 +206,20 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     
     if (usersBlob.count > 0) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+
         [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
          {
              for (NSDictionary *userDict in usersBlob.allValues) {
-                 SignalRecipient *newRecipient = [SignalRecipient recipientForUserDict:userDict];
-                 if (newRecipient.isActive) {
-                     [newRecipient saveWithTransaction:transaction];
-                 } else {
-                     [newRecipient removeWithTransaction:transaction];
-                 }
+                 [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
+//                 if (newRecipient.isActive) {
+//                     [newRecipient saveWithTransaction:transaction];
+//                 } else {
+//                     [newRecipient removeWithTransaction:transaction];
+//                 }
              }
          }];
+        });
     }
 }
 
@@ -248,12 +259,14 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
     if (!recipient) {
         recipient = [CCSMCommManager recipientFromCCSMWithID:userID];
-        if (recipient) {
-            [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                [recipient saveWithTransaction:transaction];
-            }];
-        }
-    }    
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            if (recipient) {
+                [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                    [recipient saveWithTransaction:transaction];
+                }];
+            }
+        });
+    }
     return recipient;
 }
 
@@ -374,17 +387,27 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(UIImage *)imageForIdentifier:(NSString *)uid
 {
     __block UIImage *returnImage = nil;
-    [self.allRecipients enumerateObjectsUsingBlock:^(SignalRecipient * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj.uniqueId isEqualToString:uid]) {
-            if (self.prefs.useGravatars) {
-                returnImage = obj.gravatarImage;
-            } else {
-                returnImage = obj.avatar;
-            }
-            *stop = YES;
-        }
-    }];
+    NSString *cacheKey = nil;
+    if (self.prefs.useGravatars) {
+        cacheKey = [NSString stringWithFormat:@"gravatar:%@", uid];
+    } else {
+        cacheKey = [NSString stringWithFormat:@"avatar:%@", uid];
+    }
+    returnImage = [self.avatarCache objectForKey:cacheKey];
     
+    if (returnImage == nil) {
+        [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            SignalRecipient *recipient = [self recipientWithUserID:uid transaction:transaction];
+            if (self.prefs.useGravatars) {
+                returnImage = recipient.gravatarImage;
+            } else {
+                returnImage = recipient.avatar;
+            }
+        }];
+    }
+    if (returnImage) {
+        [self.avatarCache setObject:returnImage forKey:cacheKey];
+    }
     return returnImage;
 }
 

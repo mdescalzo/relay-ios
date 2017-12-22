@@ -23,51 +23,83 @@
 
 @implementation FLTag
 
--(instancetype _Nullable )initWithTagDictionary:(NSDictionary *_Nonnull)tagDictionary
++(instancetype _Nullable)getOrCreateTagWithDictionary:(NSDictionary *_Nonnull)tagDictionary;
+{
+    __block FLTag *aTag = nil;
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        aTag = [self getOrCreateTagWithDictionary:tagDictionary transaction:transaction];
+    }];
+    return aTag;
+}
+
++(instancetype _Nullable)getOrCreateTagWithDictionary:(NSDictionary *_Nonnull)tagDictionary transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
 {
     if (![tagDictionary respondsToSelector:@selector(objectForKey:)]) {
-        DDLogDebug(@"Attempted to init FLTag with bad input: %@", tagDictionary);
+        DDLogDebug(@"Attempted to update FLTag with bad object: %@", tagDictionary);
         return nil;
-    } else {
-        NSString *tagId = [tagDictionary objectForKey:FLTagIdKey];
-        if (self = [super initWithUniqueId:tagId]) {
-            
-            _url = [tagDictionary objectForKey:FLTagURLKey];
-            _tagDescription = [tagDictionary objectForKey:FLTagDescriptionKey];
-            _slug = [tagDictionary objectForKey:FLTagSlugKey];
-            
-            NSArray *users = [tagDictionary objectForKey:FLTagUsersKey];
-            NSMutableArray *holdingAray = [NSMutableArray new];
-            id object = [tagDictionary objectForKey:@"user"];
-            if (![[object class] isEqual:[NSNull class]]) {
-                NSDictionary *singleUser = (NSDictionary *)object;
-                NSString *uid = [singleUser objectForKey:FLTagIdKey];
-                if (uid) {
-                    [holdingAray addObject:uid];
-                }
-            }
-            [users enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                id associationType = [obj objectForKey:@"association_type"];
-                if (![[associationType class] isEqual:[NSNull class]]) {
-                    if ([associationType isEqualToString:@"MEMBEROF"]) {
-                        NSDictionary *user = [obj objectForKey:@"user"];
-                        if (user) {
-                            [holdingAray addObject:[user objectForKey:FLTagIdKey]];
-                        }
-                    }
-                }
-            }];
-            _recipientIds = [NSCountedSet setWithArray:holdingAray];
-            
-            NSDictionary *orgDict = [tagDictionary objectForKey:FLTagOrgKey];
-            if (orgDict) {
-                _orgSlug = [orgDict objectForKey:FLTagSlugKey];
-                _orgUrl = [orgDict objectForKey:FLTagURLKey];
-            }
+    }
+    
+    NSString *tagId = [tagDictionary objectForKey:FLTagIdKey];
+    FLTag *aTag = [self getOrCreateTagWithId:tagId transaction:transaction];
+    
+    if ([tagDictionary objectForKey:FLTagURLKey])
+        aTag.url = [tagDictionary objectForKey:FLTagURLKey];
+    
+    if ([tagDictionary objectForKey:FLTagDescriptionKey])
+        aTag.tagDescription = [tagDictionary objectForKey:FLTagDescriptionKey];
+    
+    if ([tagDictionary objectForKey:FLTagSlugKey])
+        aTag.slug = [tagDictionary objectForKey:FLTagSlugKey];
+    
+    NSArray *users = [tagDictionary objectForKey:FLTagUsersKey];
+    NSMutableArray *holdingArray = [NSMutableArray new];
+    id object = [tagDictionary objectForKey:@"user"];
+    if (![[object class] isEqual:[NSNull class]]) {
+        NSDictionary *singleUser = (NSDictionary *)object;
+        NSString *uid = [singleUser objectForKey:FLTagIdKey];
+        if (uid) {
+            [holdingArray addObject:uid];
         }
     }
-    return self;
+    [users enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        id associationType = [obj objectForKey:@"association_type"];
+        if (![[associationType class] isEqual:[NSNull class]]) {
+            if ([associationType isEqualToString:@"MEMBEROF"]) {
+                NSDictionary *user = [obj objectForKey:@"user"];
+                if (user) {
+                    [holdingArray addObject:[user objectForKey:FLTagIdKey]];
+                }
+            }
+        }
+    }];
+    aTag.recipientIds = [NSCountedSet setWithArray:holdingArray];
+    
+    NSDictionary *orgDict = [tagDictionary objectForKey:FLTagOrgKey];
+    if (orgDict) {
+        aTag.orgSlug = [orgDict objectForKey:FLTagSlugKey];
+        aTag.orgUrl = [orgDict objectForKey:FLTagURLKey];
+    }
+    return aTag;
 }
+
++(instancetype _Nonnull)getOrCreateTagWithId:(NSString *_Nonnull)tagId
+{
+    __block FLTag *aTag = nil;
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self getOrCreateTagWithId:tagId transaction:transaction];
+    }];
+    return aTag;
+}
+
++(instancetype _Nonnull)getOrCreateTagWithId:(NSString *_Nonnull)tagId transaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    FLTag *aTag = [self fetchObjectWithUniqueID:tagId transaction:transaction];
+    if (!aTag) {
+        aTag = [[FLTag alloc] initWithUniqueId:tagId];
+    }
+    return aTag;
+}
+
 
 -(NSString *)displaySlug
 {
@@ -76,6 +108,12 @@
         slugDisplayString = [slugDisplayString stringByAppendingString:[NSString stringWithFormat:@":%@", self.orgSlug]];
     }
     return slugDisplayString;
+}
+
+-(UIImage *)avatar
+{
+    _avatar = nil;
+    return _avatar;
 }
 
 + (NSString *)collection

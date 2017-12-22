@@ -25,7 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)getOrCreateRecipientWithIndentifier:(NSString *)identifier
                                    withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
-+(instancetype)recipientForUserDict:(NSDictionary *)userDict;
++(instancetype)getOrCreateRecipientWithUserDictionary:(NSDictionary *)userDict;
++(instancetype)getOrCreateRecipientWithUserDictionary:(NSDictionary *)userDict transaction:(YapDatabaseReadWriteTransaction *)transaction;
+
+//+(instancetype)recipientForUserDict:(NSDictionary *)userDict;
 
 - (void)addDevices:(NSSet *)set;
 

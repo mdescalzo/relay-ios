@@ -94,28 +94,47 @@ NS_ASSUME_NONNULL_BEGIN
     return myself;
 }
 
-+(instancetype)recipientForUserDict:(NSDictionary *)userDict;
++(instancetype)getOrCreateRecipientWithUserDictionary:(NSDictionary *)userDict
 {
-    SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:[userDict objectForKey:@"id"]
-                                                                             firstName:[userDict objectForKey:@"first_name"]
-                                                                              lastName:[userDict objectForKey:@"last_name"]];
+    __block SignalRecipient *recipient = nil;
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        recipient = [self getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
+    }];
+    return recipient;
+}
+
++(instancetype)getOrCreateRecipientWithUserDictionary:(NSDictionary *)userDict transaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    if (![userDict respondsToSelector:@selector(objectForKey:)]) {
+        DDLogDebug(@"Attempted to update SignalRecipient with bad dictionary: %@", userDict);
+        return nil;
+    }
+    NSString *uid = [userDict objectForKey:@"id"];
+    SignalRecipient *recipient = [self getOrCreateRecipientWithIndentifier:uid withTransaction:transaction];
+    
+    recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
+    if (!recipient.isActive) {
+        [recipient removeWithTransaction:transaction];
+        return nil;
+    }
+    
     recipient.email = [userDict objectForKey:@"email"];
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
     recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
     recipient.isMonitor = ([(NSNumber *)[userDict objectForKey:@"is_monitor"] intValue] == 1 ? YES : NO);
     recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
-
+    
     NSDictionary *orgDict = [userDict objectForKey:@"org"];
     if (orgDict) {
         recipient.orgID = [orgDict objectForKey:@"id"];
         recipient.orgSlug = [orgDict objectForKey:@"slug"];
     } else {
-        DDLogDebug(@"Missing orgDictionary for Recipient: %@", recipient);
+        DDLogDebug(@"Missing orgDictionary for Recipient: %@", self);
     }
     
     NSDictionary *tagDict = [userDict objectForKey:@"tag"];
     if (tagDict) {
-        recipient.flTag = [[FLTag alloc] initWithTagDictionary:tagDict];
+        recipient.flTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
         recipient.flTag.recipientIds = [NSCountedSet setWithObject:recipient.uniqueId];
         if (recipient.flTag.tagDescription.length == 0) {
             recipient.flTag.tagDescription = recipient.fullName;
@@ -124,10 +143,48 @@ NS_ASSUME_NONNULL_BEGIN
             recipient.flTag.orgSlug = recipient.orgSlug;
         }
     } else {
-        DDLogDebug(@"Missing tagDictionary for Recipient: %@", recipient);
+        DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
+    [recipient saveWithTransaction:transaction];
+    
     return recipient;
 }
+
+
+//+(instancetype)recipientForUserDict:(NSDictionary *)userDict
+//{
+//    SignalRecipient *recipient = [[SignalRecipient alloc] initWithTextSecureIdentifier:[userDict objectForKey:@"id"]
+//                                                                             firstName:[userDict objectForKey:@"first_name"]
+//                                                                              lastName:[userDict objectForKey:@"last_name"]];
+//    recipient.email = [userDict objectForKey:@"email"];
+//    recipient.phoneNumber = [userDict objectForKey:@"phone"];
+//    recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
+//    recipient.isMonitor = ([(NSNumber *)[userDict objectForKey:@"is_monitor"] intValue] == 1 ? YES : NO);
+//    recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
+//
+//    NSDictionary *orgDict = [userDict objectForKey:@"org"];
+//    if (orgDict) {
+//        recipient.orgID = [orgDict objectForKey:@"id"];
+//        recipient.orgSlug = [orgDict objectForKey:@"slug"];
+//    } else {
+//        DDLogDebug(@"Missing orgDictionary for Recipient: %@", recipient);
+//    }
+//
+//    NSDictionary *tagDict = [userDict objectForKey:@"tag"];
+//    if (tagDict) {
+//        recipient.flTag = [[FLTag alloc] initWithTagDictionary:tagDict];
+//        recipient.flTag.recipientIds = [NSCountedSet setWithObject:recipient.uniqueId];
+//        if (recipient.flTag.tagDescription.length == 0) {
+//            recipient.flTag.tagDescription = recipient.fullName;
+//        }
+//        if (recipient.flTag.orgSlug.length == 0) {
+//            recipient.flTag.orgSlug = recipient.orgSlug;
+//        }
+//    } else {
+//        DDLogDebug(@"Missing tagDictionary for Recipient: %@", recipient);
+//    }
+//    return recipient;
+//}
 
 
 - (NSMutableOrderedSet *)devices {
