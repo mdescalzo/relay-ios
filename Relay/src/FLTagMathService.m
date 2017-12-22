@@ -32,7 +32,7 @@
                                                NSData *data, NSError *connectionError)
      {
          NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Tag Math. Server response code: %ld", (long)HTTPresponse.statusCode);
+         DDLogDebug(@"TagMath Lookup async - Server response code: %ld", (long)HTTPresponse.statusCode);
          DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
 
          if (connectionError != nil)  // Failed connection
@@ -67,7 +67,7 @@
                                          returningResponse:&HTTPresponse
                                                      error:&connectionError];
     
-    DDLogDebug(@"Server response code: %ld", (long)HTTPresponse.statusCode);
+    DDLogDebug(@"TagMath Lookup sync - Server response code: %ld", (long)HTTPresponse.statusCode);
     DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
     if (connectionError != nil)  // Failed connection
     {

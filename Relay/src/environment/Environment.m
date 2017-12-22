@@ -160,7 +160,7 @@ static Environment *environment = nil;
 //}
 
 + (PropertyListPreferences *)preferences {
-    return [PropertyListPreferences new];
+    return [PropertyListPreferences sharedInstance];
 }
 
 -(void)setForstaViewController:(FLThreadViewController *)forstaViewController

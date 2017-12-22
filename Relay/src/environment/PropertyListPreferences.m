@@ -23,8 +23,42 @@ NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecorded
 NSString *const PropertyListPreferencesKeyUseGravatars = @"UseGravatars";
 NSString *const PropertyListPreferencesKeyOutgoingBubbleColorKey = @"OutgoingBubbleColorKey";
 
+@interface PropertyListPreferences()
+
+@property (atomic, strong) NSCache *prefsCache;
+
+@end
+
 
 @implementation PropertyListPreferences
+
++ (instancetype)sharedInstance
+{
+    static PropertyListPreferences *sharedInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (!sharedInstance) {
+            sharedInstance = [[self alloc] init];
+        }
+    });
+    
+    return sharedInstance;
+}
+
+-(instancetype)init
+{
+    if (self = [super init]) {
+        _prefsCache = [NSCache new];
+        // Preload the cache
+        [TSStorageManager.sharedManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+            [transaction enumerateKeysAndObjectsInCollection:PropertyListPreferencesSignalDatabaseCollection
+                                                  usingBlock:^(NSString * _Nonnull key, id  _Nonnull object, BOOL * _Nonnull stop) {
+                                                      [_prefsCache setObject:object forKey:key];
+                                                  }];
+        }];
+    }
+    return self;
+}
 
 #pragma mark - Helpers
 
@@ -38,17 +72,32 @@ NSString *const PropertyListPreferencesKeyOutgoingBubbleColorKey = @"OutgoingBub
 - (nullable id)tryGetValueForKey:(NSString *)key
 {
     ows_require(key != nil);
-    return
-        [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
+    
+    id object = [self.prefsCache objectForKey:key];
+    
+    if (object) {
+        return object;
+    } else {
+        object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
+        if (object) {
+            [self.prefsCache setObject:object forKey:key];
+        }
+        return object;
+        
+    }
 }
 
 - (void)setValueForKey:(NSString *)key toValue:(nullable id)value
 {
     ows_require(key != nil);
-
-    [TSStorageManager.sharedManager setObject:value
-                                       forKey:key
-                                 inCollection:PropertyListPreferencesSignalDatabaseCollection];
+    
+    id oldObject = [self.prefsCache objectForKey:key];
+    if (![oldObject isEqual:value]) {
+        [self.prefsCache setObject:value forKey:key];
+        [TSStorageManager.sharedManager setObject:value
+                                           forKey:key
+                                     inCollection:PropertyListPreferencesSignalDatabaseCollection];
+    }
 }
 
 - (TSPrivacyPreferences *)tsPrivacyPreferences
