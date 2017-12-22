@@ -246,6 +246,7 @@ typedef enum : NSUInteger {
 {
     [super viewDidLoad];
 
+    DDLogDebug(@"Loading MessagesViewController.");
     [self.navigationController.navigationBar setTranslucent:NO];
 
     self.messageAdapterCache = [[NSCache alloc] init];

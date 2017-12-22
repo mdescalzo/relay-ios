@@ -17,6 +17,8 @@ typedef NS_ENUM(NSUInteger, TSImageQuality) {
 
 @interface PropertyListPreferences : NSObject
 
++ (instancetype)sharedInstance;
+
 #pragma mark - Helpers
 
 - (nullable id)tryGetValueForKey:(NSString *)key;

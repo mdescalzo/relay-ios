@@ -100,6 +100,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
                                      deserializer:[[self class] logOnFailureDeserializer]
                                           options:options];
     _dbConnection = self.newDatabaseConnection;
+    _messagesConnection = self.newDatabaseConnection;
 
     return self;
 }

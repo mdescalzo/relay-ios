@@ -47,6 +47,7 @@ extern NSString *const TSUIDatabaseConnectionDidUpdateNotification;
 - (void)purgeCollection:(NSString *)collection;
 
 @property (nonatomic, readonly) YapDatabaseConnection *dbConnection;
+@property (nonatomic ,readonly) YapDatabaseConnection *messagesConnection;
 @property (nonatomic, readonly) TSPrivacyPreferences *privacyPreferences;
 
 @end
