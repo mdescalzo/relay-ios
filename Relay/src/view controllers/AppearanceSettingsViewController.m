@@ -414,14 +414,20 @@
 
 -(UIColor *)selectedOutgoingBubbleColor
 {
-    NSString *colorKey = self.prefs.outgoingBubbleColorKey;
-    return [[ForstaColors outgoingBubbleColors] objectForKey:colorKey];
+    UIColor *outgoingBubbleColor = [[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey];
+    if (outgoingBubbleColor == nil) {
+        outgoingBubbleColor = [ForstaColors lightGray];
+    }
+    return outgoingBubbleColor;
 }
 
 -(UIColor *)selectedIncomingBubbleColor
 {
-    NSString *colorKey = self.prefs.incomingBubbleColorKey;
-    return [[ForstaColors incomingBubbleColors] objectForKey:colorKey];
+    UIColor *incomingBubbleColor = [[ForstaColors incomingBubbleColors] objectForKey:self.prefs.incomingBubbleColorKey];
+    if (incomingBubbleColor == nil) {
+        incomingBubbleColor = [ForstaColors blackColor];
+    }
+    return incomingBubbleColor;
 }
 
 -(PropertyListPreferences *)prefs
