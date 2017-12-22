@@ -74,12 +74,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier
 {
     __block SignalRecipient *recipient;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
         recipient = [self recipientWithTextSecureIdentifier:textSecureIdentifier withTransaction:transaction];
         
         // If nothing local, look it up on CCSM:
         if (recipient == nil) {
-            recipient = [CCSMCommManager recipientFromCCSMWithID:textSecureIdentifier];
+            recipient = [CCSMCommManager recipientFromCCSMWithID:textSecureIdentifier transaction:transaction];
         }
     }];
     return recipient;
