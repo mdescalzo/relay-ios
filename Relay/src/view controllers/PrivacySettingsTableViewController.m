@@ -29,6 +29,8 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 //@property (nonatomic, strong) UISwitch *blockOnIdentityChangeSwitch;
 @property (nonatomic, strong) UISwitch *onOffRecordChangeSwitch;
 @property (nonatomic, strong) UITableViewCell *clearHistoryLogCell;
+@property (nonatomic, strong) UISwitch *requirePINSwitch;
+@property (nonatomic, strong) UITableViewCell *requirePINCell;
 
 @end
 
@@ -56,10 +58,22 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     self.enableScreenSecuritySwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
     self.enableScreenSecurityCell.accessoryView          = self.enableScreenSecuritySwitch;
     self.enableScreenSecurityCell.userInteractionEnabled = YES;
-    [self.enableScreenSecuritySwitch setOn:[Environment.preferences screenSecurityIsEnabled]];
+    [self.enableScreenSecuritySwitch setOn:Environment.preferences.screenSecurityIsEnabled];
     [self.enableScreenSecuritySwitch addTarget:self
-                                        action:@selector(didToggleScreenSecuritySwitch:)
+                                        action:@selector(didToggleSettingsSwitch:)
                               forControlEvents:UIControlEventTouchUpInside];
+    
+    // Enable PIN Access
+    self.requirePINCell                = [[UITableViewCell alloc] init];
+    self.requirePINCell.textLabel.text = NSLocalizedString(@"SETTINGS_REQUIRE_PIN", @"");
+    self.requirePINSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+    self.requirePINCell.accessoryView          = self.requirePINSwitch;
+    self.requirePINCell.userInteractionEnabled = YES;
+    [self.requirePINSwitch setOn:Environment.preferences.requirePINAccess];
+    [self.requirePINSwitch addTarget:self
+                                        action:@selector(didToggleSettingsSwitch:)
+                              forControlEvents:UIControlEventTouchUpInside];
+
 
     // Clear History Log Cell
     self.clearHistoryLogCell                = [[UITableViewCell alloc] init];
@@ -87,7 +101,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case PrivacySettingsTableViewControllerSectionIndexScreenSecurity:
-            return 1;
+            return 2;
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return 1;
 //        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
@@ -113,15 +127,40 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case PrivacySettingsTableViewControllerSectionIndexScreenSecurity:
-            return self.enableScreenSecurityCell;
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    return self.enableScreenSecurityCell;
+                }
+                    break;
+                case 1:
+                {
+                    return self.requirePINCell;
+                }
+                    break;
+                default:
+                {
+                    DDLogError(@"%@ Requested unknown table view cell for row at indexPath: %@", self.tag, indexPath);
+                    return [UITableViewCell new];
+                }
+                    break;
+            }
+        }
+            break;
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
+        {
             return self.clearHistoryLogCell;
+        }
+            break;
 //        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
 //            return self.blockOnIdentityChangeCell;
-        default: {
+        default:
+        {
             DDLogError(@"%@ Requested unknown table view cell for row at indexPath: %@", self.tag, indexPath);
             return [UITableViewCell new];
         }
+            break;
     }
 }
 
@@ -141,43 +180,27 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
     switch (indexPath.section) {
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog: {
-
-    UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil
-                                                                        message:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION", @"")
-                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON", @"")
-                                                   style:UIAlertActionStyleDestructive
-                                                 handler:^(UIAlertAction * _Nonnull action) {
-                                                     [[TSStorageManager sharedManager] deleteThreadsAndMessages];
-                                                 }]];
-    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-                                                   style:UIAlertActionStyleCancel
-                                                 handler:^(UIAlertAction * _Nonnull action) {
-                                                     DDLogDebug(@"User Cancelled");
-                                                 }]];
+            
+            UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                                message:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION", @"")
+                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
+            [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON", @"")
+                                                           style:UIAlertActionStyleDestructive
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             [[TSStorageManager sharedManager] deleteThreadsAndMessages];
+                                                         }]];
+            [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             DDLogDebug(@"User Cancelled");
+                                                         }]];
             [self.parentViewController presentViewController:alertSheet animated:YES completion:^{
                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             }];
             
-//            [DJWActionSheet showInView:self.parentViewController.view
-//                             withTitle:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION", @"")
-//                     cancelButtonTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-//                destructiveButtonTitle:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON", @"")
-//                     otherButtonTitles:@[]
-//                              tapBlock:^(DJWActionSheet *actionSheet, NSInteger tappedButtonIndex) {
-//                                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-//                                if (tappedButtonIndex == actionSheet.cancelButtonIndex) {
-//                                    DDLogDebug(@"User Cancelled");
-//                                } else if (tappedButtonIndex == actionSheet.destructiveButtonIndex) {
-//                                    [[TSStorageManager sharedManager] deleteThreadsAndMessages];
-//                                } else {
-//                                    DDLogDebug(@"The user tapped button at index: %li", (long)tappedButtonIndex);
-//                                }
-//                              }];
-
             break;
         }
         default:
@@ -187,11 +210,17 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 
 #pragma mark - Toggle
 
-- (void)didToggleScreenSecuritySwitch:(UISwitch *)sender
+- (void)didToggleSettingsSwitch:(UISwitch *)sender
 {
-    BOOL enabled = self.enableScreenSecuritySwitch.isOn;
-    DDLogInfo(@"%@ toggled screen security: %@", self.tag, enabled ? @"ON" : @"OFF");
-    [Environment.preferences setScreenSecurity:enabled];
+    if ([sender isEqual:self.requirePINSwitch]) {
+        BOOL enabled = self.requirePINSwitch.isOn;
+        DDLogInfo(@"%@ toggled require PIN security: %@", self.tag, enabled ? @"ON" : @"OFF");
+        [Environment.preferences setRequirePINAccess:enabled];
+    } else if ([sender isEqual:self.enableScreenSecuritySwitch]) {
+        BOOL enabled = self.enableScreenSecuritySwitch.isOn;
+        DDLogInfo(@"%@ toggled screen security: %@", self.tag, enabled ? @"ON" : @"OFF");
+        [Environment.preferences setScreenSecurity:enabled];
+    }
 }
 
 //- (void)didToggleBlockOnIdentityChangeSwitch:(UISwitch *)sender
