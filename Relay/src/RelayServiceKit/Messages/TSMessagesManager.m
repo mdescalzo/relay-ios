@@ -695,9 +695,10 @@ NS_ASSUME_NONNULL_BEGIN
         
         // TODO Delay notification by 100ms?
         // It's pretty annoying when you're phone keeps buzzing while you're having a conversation on Desktop.
-        NSString *name = thread.displayName;
+
+        NSString *senderName = [Environment.getCurrent.contactsManager nameStringForContactID:envelope.source];
         [[TextSecureKitEnv sharedEnv].notificationsManager notifyUserForIncomingMessage:incomingMessage
-                                                                                   from:name
+                                                                                   from:senderName
                                                                                inThread:thread];
         return incomingMessage;
     } else {
