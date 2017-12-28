@@ -21,7 +21,7 @@
 #import "OWSIncomingMessageReadObserver.h"
 #import "FLMessageSender.h"
 #import "TSAccountManager.h"
-
+#import "SmileAuthenticator.h"
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
 
@@ -38,7 +38,7 @@ static NSString *const kInitialViewControllerIdentifier = @"UserInitialViewContr
 static NSString *const kURLSchemeSGNLKey                = @"sgnl";
 static NSString *const kURLHostVerifyPrefix             = @"verify";
 
-@interface AppDelegate ()
+@interface AppDelegate () <SmileAuthenticatorDelegate>
 
 @property (nonatomic, strong) UIWindow *screenProtectionWindow;
 @property (nonatomic, strong) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
@@ -253,7 +253,14 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         return;
     }
     [self ensureRootViewController];
-    [self removeScreenProtection];
+    
+    if ([SmileAuthenticator hasPassword]) {
+        if (SmileAuthenticator.sharedInstance.isAuthenticated) {
+            [self removeScreenProtection];
+        }
+    } else {
+        [self removeScreenProtection];
+    }
     
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
@@ -380,7 +387,13 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 - (void)removeScreenProtection {
     if (Environment.preferences.screenSecurityIsEnabled) {
-        self.screenProtectionWindow.hidden = YES;
+        if (Environment.preferences.requirePINAccess) {
+            SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
+            [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+            
+        } else {
+            self.screenProtectionWindow.hidden = YES;
+        }
     }
 }
 
@@ -437,14 +450,15 @@ forLocalNotification:(UILocalNotification *)notification
         if ([TSAccountManager isRegistered]) { // Check for local sessionKey
 //            [TSSocketManager becomeActiveFromForeground];
             storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-            self.window.rootViewController = [storyboard instantiateInitialViewController];
-            [self.window makeKeyAndVisible];
         } else { // No local token, login
             storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-            self.window.rootViewController = [storyboard instantiateInitialViewController];
-            [self.window makeKeyAndVisible];
         }
+        self.window.rootViewController = [storyboard instantiateInitialViewController];
+        [self.window makeKeyAndVisible];
     }
+    SmileAuthenticator.sharedInstance.delegate = self;
+    SmileAuthenticator.sharedInstance.tintColor = [ForstaColors blackColor];
+    SmileAuthenticator.sharedInstance.rootVC = self.window.rootViewController;
 }
 
 /**
@@ -473,6 +487,17 @@ forLocalNotification:(UILocalNotification *)notification
     return NO;
 }
 
+#pragma mark - Smile Authentication Delegate methods
+//-(void)userFailAuthenticationWithCount:(NSInteger)failCount
+//{
+//
+//}
+//
+//-(void)userSuccessAuthentication
+//{
+//    [self removeScreenProtection];
+//}
+
 #pragma mark - Crashlytics
 -(NSString *)fabricAPIKey
 {
@@ -484,6 +509,7 @@ forLocalNotification:(UILocalNotification *)notification
         NSDictionary *fabricDict = [forstaDict objectForKey:@"Fabric"];
         return [fabricDict objectForKey:@"APIKey"];
     } else {
+        DDLogDebug(@"Fabric API key not found!");
         return @"";
     }
 }

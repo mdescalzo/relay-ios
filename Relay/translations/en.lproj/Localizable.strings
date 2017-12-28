@@ -742,11 +742,16 @@
 /* No comment provided by engineer. */
 "SETTINGS_SCREEN_SECURITY" = "Enable Screen Security";
 
+"SETTINGS_CONFIGURE_PIN" = "Change App Passcode";
+
 /* No comment provided by engineer. */
 "SETTINGS_SCREEN_SECURITY_DETAIL" = "Prevents Forsta previews from appearing in the app switcher.";
 
 /* Section header */
 "SETTINGS_SECURITY_TITLE" = "Screen Security";
+
+/* Section header */
+"SETTINGS_PIN_TOUCHID_TITLE" = "PIN/TouchID Access";
 
 /* No comment provided by engineer. */
 "SETTINGS_SHARE_INSTALL" = "Share Install Link";
@@ -924,3 +929,18 @@
 
 /* Sample text */
 "SAMPLE" = "Forsta";
+
+/*
+ SMILE Authentication localizations
+ */
+"SMILE_REASON" = "Are you device owner?";
+"SMILE_INPUT_FAILED" = "%ld Failed Passcode Attempt. Try again.";
+"SMILE_INPUT_DESCRIPTION" = "Enter %ld digit passcode";
+"SMILE_INPUT_NOT_MATCH" = "Passcode not match. Try again.";
+"SMILE_INPUT_RE-ENTER" = "Re-enter your %ld digit Passcode";
+"SMILE_INPUT_TOUCHID_TITLE" = "Enter Passcode";
+"SMILE_INPUT_ONCE_TITLE" = "Turn off Passcode";
+"SMILE_INPUT_TWICE_TITLE" = "Set Passcode";
+"SMILE_INPUT_THREE_TITLE" = "Change Passcode";
+"SMILE_INPUT_THREE_STEP_1_DESCRIPTION" = "Enter your old %ld digit Passcode";
+"SMILE_INPUT_THREE_STEP_2_DESCRIPTION" = "Enter your new %ld digit Passcode";

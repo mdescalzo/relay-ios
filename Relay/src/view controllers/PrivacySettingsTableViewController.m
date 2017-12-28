@@ -12,11 +12,13 @@
 #import "PropertyListPreferences.h"
 #import "UIUtil.h"
 #import <25519/Curve25519.h>
+#import "SmileAuthenticator.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     PrivacySettingsTableViewControllerSectionIndexScreenSecurity,
+    PrivacySettingsTableViewControllerSectionIndexRequirePIN,
     PrivacySettingsTableViewControllerSectionIndexHistoryLog,
 //    PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange
 };
@@ -31,6 +33,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 @property (nonatomic, strong) UITableViewCell *clearHistoryLogCell;
 @property (nonatomic, strong) UISwitch *requirePINSwitch;
 @property (nonatomic, strong) UITableViewCell *requirePINCell;
+@property (nonatomic, strong) UITableViewCell *configurePINCell;
 
 @end
 
@@ -58,6 +61,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     self.enableScreenSecuritySwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
     self.enableScreenSecurityCell.accessoryView          = self.enableScreenSecuritySwitch;
     self.enableScreenSecurityCell.userInteractionEnabled = YES;
+    self.enableScreenSecuritySwitch.enabled = !self.enableScreenSecuritySwitch.isOn;
     [self.enableScreenSecuritySwitch setOn:Environment.preferences.screenSecurityIsEnabled];
     [self.enableScreenSecuritySwitch addTarget:self
                                         action:@selector(didToggleSettingsSwitch:)
@@ -73,12 +77,18 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     [self.requirePINSwitch addTarget:self
                                         action:@selector(didToggleSettingsSwitch:)
                               forControlEvents:UIControlEventTouchUpInside];
+    
+    // Configure PIN Access Cell
+    self.configurePINCell                = [[UITableViewCell alloc] init];
+    self.configurePINCell.textLabel.text = NSLocalizedString(@"SETTINGS_CONFIGURE_PIN", @"");
+    self.configurePINCell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+
 
 
     // Clear History Log Cell
     self.clearHistoryLogCell                = [[UITableViewCell alloc] init];
     self.clearHistoryLogCell.textLabel.text = NSLocalizedString(@"SETTINGS_CLEAR_HISTORY", @"");
-    self.clearHistoryLogCell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    self.clearHistoryLogCell.accessoryType  = UITableViewCellAccessoryNone;
 
 //    // Block Identity on KeyChange
 //    self.blockOnIdentityChangeCell = [UITableViewCell new];
@@ -95,13 +105,33 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == PrivacySettingsTableViewControllerSectionIndexRequirePIN) {
+        if (indexPath.row == 1) {
+            if (self.requirePINSwitch.on) {
+                return self.tableView.rowHeight;
+            }else {
+                return 0.0f;
+            }
+        }
+    }
+    return self.tableView.rowHeight;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case PrivacySettingsTableViewControllerSectionIndexScreenSecurity:
-            return 2;
+            return 1;
+        case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
+            if (Environment.preferences.requirePINAccess) {
+                return 2;
+            } else {
+                return 1;
+            }
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return 1;
 //        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
@@ -119,12 +149,15 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 //        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
 //            return NSLocalizedString(
 //                @"SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL", @"User settings section footer, a detailed explanation");
+        case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
+            return NSLocalizedString(@"SETTINGS_REQUIRE_PIN_DETAIL", @"Privacy setting section foorter.  Explain PIN/TouchID access");
         default:
             return nil;
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     switch (indexPath.section) {
         case PrivacySettingsTableViewControllerSectionIndexScreenSecurity:
         {
@@ -134,9 +167,26 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
                     return self.enableScreenSecurityCell;
                 }
                     break;
-                case 1:
+                default:
+                {
+                    DDLogError(@"%@ Requested unknown table view cell for row at indexPath: %@", self.tag, indexPath);
+                    return [UITableViewCell new];
+                }
+                    break;
+            }
+        }
+            break;
+        case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
+        {
+            switch (indexPath.row) {
+                case 0:
                 {
                     return self.requirePINCell;
+                }
+                    break;
+                case 1:
+                {
+                    return self.configurePINCell;
                 }
                     break;
                 default:
@@ -145,6 +195,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
                     return [UITableViewCell new];
                 }
                     break;
+
             }
         }
             break;
@@ -171,6 +222,8 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
             return NSLocalizedString(@"SETTINGS_SECURITY_TITLE", @"Section header");
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return NSLocalizedString(@"SETTINGS_HISTORYLOG_TITLE", @"Section header");
+        case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
+            return NSLocalizedString(@"SETTINGS_PIN_TOUCHID_TITLE", @"Section header");
 //        case PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange:
 //            return NSLocalizedString(@"SETTINGS_PRIVACY_VERIFICATION_TITLE", @"Section header");
         default:
@@ -182,28 +235,54 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     switch (indexPath.section) {
-        case PrivacySettingsTableViewControllerSectionIndexHistoryLog: {
-            
-            UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil
-                                                                                message:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION", @"")
-                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
-            [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON", @"")
-                                                           style:UIAlertActionStyleDestructive
-                                                         handler:^(UIAlertAction * _Nonnull action) {
-                                                             [[TSStorageManager sharedManager] deleteThreadsAndMessages];
-                                                         }]];
-            [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction * _Nonnull action) {
-                                                             DDLogDebug(@"User Cancelled");
-                                                         }]];
-            [self.parentViewController presentViewController:alertSheet animated:YES completion:^{
-                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            }];
-            
+        case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
+        {
+            switch (indexPath.row) {
+                case 1:
+                {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    [self dismissViewControllerAnimated:YES completion:^{
+                        SmileAuthenticator.sharedInstance.securityType = INPUT_THREE;
+                        [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+                    }];
+                }
+                    break;
+                    
+                default:
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    break;
+            }
+        }
             break;
+        case PrivacySettingsTableViewControllerSectionIndexHistoryLog: {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                                        message:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION", @"")
+                                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
+                    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON", @"")
+                                                                   style:UIAlertActionStyleDestructive
+                                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                                     [[TSStorageManager sharedManager] deleteThreadsAndMessages];
+                                                                 }]];
+                    [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
+                                                                   style:UIAlertActionStyleCancel
+                                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                                     DDLogDebug(@"User Cancelled");
+                                                                 }]];
+                    [self.parentViewController presentViewController:alertSheet animated:YES completion:^{
+                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    }];
+                }
+                    break;
+                default:
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    break;
+            }
         }
         default:
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
     }
 }
@@ -212,14 +291,27 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 
 - (void)didToggleSettingsSwitch:(UISwitch *)sender
 {
+    if (self.requirePINSwitch.isOn) {
+        SmileAuthenticator.sharedInstance.securityType = INPUT_TWICE;
+        self.enableScreenSecuritySwitch.on = YES;
+        self.enableScreenSecuritySwitch.enabled = NO;
+        
+    } else {
+        SmileAuthenticator.sharedInstance.securityType = INPUT_ONCE;
+        self.enableScreenSecuritySwitch.enabled = YES;
+    }
+    
+    [Environment.preferences setScreenSecurity:self.enableScreenSecuritySwitch.isOn];
+    [Environment.preferences setRequirePINAccess:self.requirePINSwitch.isOn];
+
     if ([sender isEqual:self.requirePINSwitch]) {
-        BOOL enabled = self.requirePINSwitch.isOn;
-        DDLogInfo(@"%@ toggled require PIN security: %@", self.tag, enabled ? @"ON" : @"OFF");
-        [Environment.preferences setRequirePINAccess:enabled];
+        DDLogInfo(@"%@ toggled require PIN security: %@", self.tag, self.requirePINSwitch.isOn ? @"ON" : @"OFF");
+        [self dismissViewControllerAnimated:YES completion:^{
+            [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+        }];
+        
     } else if ([sender isEqual:self.enableScreenSecuritySwitch]) {
-        BOOL enabled = self.enableScreenSecuritySwitch.isOn;
-        DDLogInfo(@"%@ toggled screen security: %@", self.tag, enabled ? @"ON" : @"OFF");
-        [Environment.preferences setScreenSecurity:enabled];
+        DDLogInfo(@"%@ toggled screen security: %@", self.tag, self.enableScreenSecuritySwitch.isOn ? @"ON" : @"OFF");
     }
 }
 

@@ -4834,6 +4834,9 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -4922,6 +4925,9 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -5034,6 +5040,9 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -5125,6 +5134,9 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
+				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
