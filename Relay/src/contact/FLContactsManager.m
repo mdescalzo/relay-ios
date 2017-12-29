@@ -114,19 +114,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 #pragma mark - Recipient/Contact management
--(SignalRecipient *_Nonnull)getOrCreateContactWithUserID:(NSString *_Nonnull)userID
-{
-    __block SignalRecipient *contact = nil;
-    [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        contact = [transaction objectForKey:userID inCollection:[SignalRecipient collection]];
-        if (!contact) {
-            contact = [[SignalRecipient alloc] initWithUniqueId:userID];
-            [contact saveWithTransaction:transaction];
-        }
-    }];
-    return contact;
-}
-
 -(NSArray<SignalRecipient *> *)allRecipients
 {
     // TODO: implement NSCache here?
@@ -250,32 +237,32 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(SignalRecipient *)recipientWithUserID:(NSString *)userID
 {
-    // Check to see if we already it locally
-    __block SignalRecipient *recipient = nil;
-    
-    [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        recipient = [SignalRecipient fetchObjectWithUniqueID:userID transaction:transaction];
-    }];
-    
-    if (!recipient) {
-        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                if (recipient) {
-                    [recipient saveWithTransaction:transaction];
-                }
-            });
-        }];
+    // Check to see if we already have it locally
+    for (SignalRecipient *recipient in self.allRecipients) {
+        if ([recipient.uniqueId isEqualToString:userID]) {
+            return recipient;
+        }
     }
+    
+    // If not, go get it, build it, and save it.
+    __block SignalRecipient *recipient = nil;
+    [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        if (!recipient) {
+            recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
+            if (recipient) {
+                [recipient saveWithTransaction:transaction];
+            }
+        }
+    }];
     return recipient;
 }
 
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
     // Check to see if we already it locally
-    for (SignalRecipient *contact in self.allRecipients) {
-        if ([contact.uniqueId isEqualToString:userID]) {
-            return contact;
+    for (SignalRecipient *recipient in self.allRecipients) {
+        if ([recipient.uniqueId isEqualToString:userID]) {
+            return recipient;
         }
     }
     
@@ -373,11 +360,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 - (NSString *)nameStringForContactID:(NSString *)identifier
 {
-    SignalRecipient *recipient = [[Environment getCurrent].contactsManager recipientWithUserID:identifier];
+    SignalRecipient *recipient = [self recipientWithUserID:identifier];
     if (recipient.fullName) {
         return recipient.fullName;
-    } else if (recipient.flTag.slug){
-        return recipient.flTag.slug;
+    } else if (recipient.flTag.displaySlug){
+        return recipient.flTag.displaySlug;
     } else {
         return NSLocalizedString(@"UNKNOWN_CONTACT_NAME",
                                  @"Displayed if for some reason we can't determine a contacts ID *or* name");

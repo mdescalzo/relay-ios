@@ -813,7 +813,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [leaving minusSet:newParticipants];
                 for (NSString *uid in leaving) {
                     NSString *customMessage = nil;
-                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid withTransaction:transaction];
                     [recipient saveWithTransaction:transaction];
                     
                     if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
@@ -833,7 +833,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
                 for (NSString *uid in joining) {
                     NSString *customMessage = nil;
-                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid withTransaction:transaction];
                     [recipient saveWithTransaction:transaction];
 
                     if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {

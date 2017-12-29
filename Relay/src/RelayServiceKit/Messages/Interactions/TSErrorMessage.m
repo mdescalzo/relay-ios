@@ -38,7 +38,7 @@
 
     _errorType = errorMessageType;
 
-    [[TextSecureKitEnv sharedEnv].notificationsManager notifyUserForErrorMessage:self inThread:thread];
+//    [[TextSecureKitEnv sharedEnv].notificationsManager notifyUserForErrorMessage:self inThread:thread];
 
     return self;
 }

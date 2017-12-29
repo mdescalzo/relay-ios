@@ -118,6 +118,8 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     
+    recipient.firstName = [userDict objectForKey:@"first_name"];
+    recipient.lastName = [userDict objectForKey:@"last_name"];
     recipient.email = [userDict objectForKey:@"email"];
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
     recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
