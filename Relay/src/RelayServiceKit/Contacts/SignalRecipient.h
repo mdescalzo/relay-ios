@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier
                                            withTransaction:(YapDatabaseReadTransaction *)transaction;
 
-+(instancetype)getOrCreateRecipientWithIndentifier:(NSString *)identifier;
-+(instancetype)getOrCreateRecipientWithIndentifier:(NSString *)identifier
++(instancetype)getOrCreateRecipientWithId:(NSString *)identifier;
++(instancetype)getOrCreateRecipientWithId:(NSString *)identifier
                                    withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 +(instancetype)getOrCreateRecipientWithUserDictionary:(NSDictionary *)userDict;

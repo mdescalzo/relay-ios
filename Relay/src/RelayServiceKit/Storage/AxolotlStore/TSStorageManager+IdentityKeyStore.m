@@ -58,7 +58,7 @@
     }
 
     DDLogInfo(@"Updating identity key for recipient:%@", recipientId);
-    [self createIdentityChangeInfoMessageForRecipientId:recipientId];
+//    [self createIdentityChangeInfoMessageForRecipientId:recipientId];
     [self saveRemoteIdentity:identityKey recipientId:recipientId];
     return YES;
 }

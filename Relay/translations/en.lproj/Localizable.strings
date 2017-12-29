@@ -35,7 +35,7 @@
 "APN_MESSAGE_IN_GROUP" = "Message in conversation";
 
 /* No comment provided by engineer. */
-"APN_MESSAGE_IN_GROUP_DETAILED" = "%@ in conversation %@: %@";
+"APN_MESSAGE_IN_GROUP_DETAILED" = "%@ in %@: %@";
 
 /* Pressing this button pins a thread */
 "PIN_ACTION" = "Pin";

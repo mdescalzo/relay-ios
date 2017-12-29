@@ -317,7 +317,9 @@
 
 - (TOCFuture *)registerPushNotificationFuture {
     self.pushNotificationFutureSource = [TOCFutureSource new];
-    [UIApplication.sharedApplication registerForRemoteNotifications];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIApplication.sharedApplication registerForRemoteNotifications];
+    });
     return self.pushNotificationFutureSource.future;
 }
 
