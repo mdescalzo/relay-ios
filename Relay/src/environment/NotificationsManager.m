@@ -130,8 +130,11 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
                 notification.category = Signal_Full_New_Message_Category;
                 notification.userInfo =
                 @{Signal_Thread_UserInfo_Key : thread.uniqueId, Signal_Message_UserInfo_Key : message.uniqueId};
-                
-                notification.alertBody = [NSString stringWithFormat:@"%@: %@", name, messageDescription];
+                if ([name isEqualToString:thread.displayName]) {
+                    notification.alertBody = [NSString stringWithFormat:@"%@: %@", name, messageDescription];
+                } else {
+                    notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"APN_MESSAGE_IN_GROUP_DETAILED", nil), name, thread.displayName, messageDescription];
+                }
                 break;
             case NotificationNameNoPreview: {
                 notification.userInfo = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
