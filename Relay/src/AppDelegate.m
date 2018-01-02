@@ -254,16 +254,16 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     }
     [self ensureRootViewController];
     
-    if ([SmileAuthenticator hasPassword]) {
-        if (SmileAuthenticator.sharedInstance.isAuthenticated) {
-            [self removeScreenProtection];
-        }
-    } else {
-        [self removeScreenProtection];
-    }
-    
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
+        [self removeScreenProtection];
+        if (Environment.preferences.requirePINAccess) {
+            if (![SmileAuthenticator.sharedInstance isShowingAuthVC]) {
+                SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
+                [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+            }
+        }
+        
         [TSSocketManager becomeActiveFromForeground];
         [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -324,7 +324,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([TSAccountManager isRegistered]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [self protectScreen];
                 [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
             });
@@ -381,24 +381,14 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 - (void)protectScreen {
     if (Environment.preferences.screenSecurityIsEnabled) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        if (![SmileAuthenticator.sharedInstance isShowingAuthVC])
             self.screenProtectionWindow.hidden = NO;
-        });
     }
 }
 
 - (void)removeScreenProtection
 {
-    if (Environment.preferences.screenSecurityIsEnabled) {
-        if (Environment.preferences.requirePINAccess) {
-            SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
-            [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.screenProtectionWindow.hidden = YES;
-            });
-        }
-    }
+    self.screenProtectionWindow.hidden = YES;
 }
 
 -(void)refreshUsersStore
@@ -497,10 +487,10 @@ forLocalNotification:(UILocalNotification *)notification
 //
 //}
 //
-//-(void)userSuccessAuthentication
-//{
-//    [self removeScreenProtection];
-//}
+-(void)userSuccessAuthentication
+{
+    [self removeScreenProtection];
+}
 
 #pragma mark - Crashlytics
 -(NSString *)fabricAPIKey
