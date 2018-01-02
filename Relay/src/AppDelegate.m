@@ -275,7 +275,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                             DDLogDebug(@"Token Refresh failed with error: %@", error.description);
                                                             
                                                             // Determine if this eror should kick the user out:
-                                                            if (error.code >= 400 && error.code < 500) {
+                                                            if (error.code >= 400 && error.code <= 404) {
                                                                 //  Out they go...
                                                                 [TSSocketManager resignActivity];
                                                                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -326,7 +326,9 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         if ([TSAccountManager isRegistered]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (application.keyWindow.rootViewController.presentedViewController) {
-                    [application.keyWindow.rootViewController dismissViewControllerAnimated:NO completion:nil];
+                    if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
+                        [application.keyWindow.rootViewController dismissViewControllerAnimated:NO completion:nil];
+                    }
                 }
                 [self protectScreen];
                 [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
