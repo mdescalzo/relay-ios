@@ -325,6 +325,9 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([TSAccountManager isRegistered]) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (application.keyWindow.rootViewController.presentedViewController) {
+                    [application.keyWindow.rootViewController dismissViewControllerAnimated:NO completion:nil];
+                }
                 [self protectScreen];
                 [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
             });
