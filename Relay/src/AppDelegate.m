@@ -487,11 +487,14 @@ forLocalNotification:(UILocalNotification *)notification
 }
 
 #pragma mark - Smile Authentication Delegate methods
-//-(void)userFailAuthenticationWithCount:(NSInteger)failCount
-//{
-//
-//}
-//
+-(void)userFailAuthenticationWithCount:(NSInteger)failCount
+{
+    if (failCount > 5) {
+        // TODO: Put a delay of failCount seconds in to make brute force less appealing
+    }
+}
+
+
 -(void)userSuccessAuthentication
 {
     [self removeScreenProtection];

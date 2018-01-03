@@ -691,6 +691,8 @@
 /* Require user to enter a PIN or fingerprint ID when waking app */
 "SETTINGS_REQUIRE_PIN" = "Enable PIN/TouchID";
 
+"SETTINGS_PIN_LENGTH" = "PIN Length";
+
 /* User settings section footer, a detailed explanation */
 "SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL" = "Requires your approval before communicating with someone who has new safety numbers, commonly from a reinstall of Forsta.";
 
@@ -933,7 +935,7 @@
 /*
  SMILE Authentication localizations
  */
-"SMILE_REASON" = "Are you device owner?";
+"SMILE_REASON" = "Use TouchID to unlock Forsta Relay or tap Cancel to enter passcode.";
 "SMILE_INPUT_FAILED" = "%ld Failed Passcode Attempt. Try again.";
 "SMILE_INPUT_DESCRIPTION" = "Enter %ld digit passcode";
 "SMILE_INPUT_NOT_MATCH" = "Passcode not match. Try again.";

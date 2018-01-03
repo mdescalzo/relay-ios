@@ -23,6 +23,12 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 //    PrivacySettingsTableViewControllerSectionIndexBlockOnIdentityChange
 };
 
+typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
+    PrivacySettingsPINSectionIndexPINLength,
+    PrivacySettingsPINSectionIndexRequirePIN,
+    PrivacySettingsPINSectionIndexChangePIN,
+};
+
 @interface PrivacySettingsTableViewController ()
 
 @property (nonatomic, strong) UITableViewCell *enableScreenSecurityCell;
@@ -33,7 +39,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 @property (nonatomic, strong) UITableViewCell *clearHistoryLogCell;
 @property (nonatomic, strong) UISwitch *requirePINSwitch;
 @property (nonatomic, strong) UITableViewCell *requirePINCell;
-@property (nonatomic, strong) UITableViewCell *configurePINCell;
+@property (nonatomic, strong) UITableViewCell *changePINCell;
+@property (nonatomic, strong) UITableViewCell *pinLengthCell;
+@property (nonatomic, strong) NSArray *allowedPINLengths;
 
 @end
 
@@ -43,6 +51,19 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
 
+    // Allowed PIN setup
+    self.allowedPINLengths = @[ @(4), @(6) ];
+    BOOL found = NO;
+    NSNumber *pinLength = @(Environment.preferences.PINLength);
+    for (NSNumber *num in self.allowedPINLengths) {
+        if ([num isEqual:pinLength]) {
+            found = YES;
+        }
+    }
+    if (!found) {
+        Environment.preferences.PINLength = 4;
+    }
+    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
@@ -79,9 +100,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
                               forControlEvents:UIControlEventTouchUpInside];
     
     // Configure PIN Access Cell
-    self.configurePINCell                = [[UITableViewCell alloc] init];
-    self.configurePINCell.textLabel.text = NSLocalizedString(@"SETTINGS_CONFIGURE_PIN", @"");
-    self.configurePINCell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    self.changePINCell                = [[UITableViewCell alloc] init];
+    self.changePINCell.textLabel.text = NSLocalizedString(@"SETTINGS_CONFIGURE_PIN", @"");
+    self.changePINCell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
 
 
 
@@ -89,6 +110,12 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     self.clearHistoryLogCell                = [[UITableViewCell alloc] init];
     self.clearHistoryLogCell.textLabel.text = NSLocalizedString(@"SETTINGS_CLEAR_HISTORY", @"");
     self.clearHistoryLogCell.accessoryType  = UITableViewCellAccessoryNone;
+    
+    // PIN Length Cell
+    self.pinLengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"pinLength"];
+    self.pinLengthCell.textLabel.text = NSLocalizedString(@"SETTINGS_PIN_LENGTH", nil);
+    self.pinLengthCell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", Environment.preferences.PINLength];
+    self.pinLengthCell.accessoryType = UITableViewCellAccessoryNone;
 
 //    // Block Identity on KeyChange
 //    self.blockOnIdentityChangeCell = [UITableViewCell new];
@@ -111,10 +138,10 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == PrivacySettingsTableViewControllerSectionIndexRequirePIN) {
-        if (indexPath.row == 1) {
+        if (indexPath.row == PrivacySettingsPINSectionIndexChangePIN) {
             if (self.requirePINSwitch.on) {
                 return self.tableView.rowHeight;
-            }else {
+            } else {
                 return 0.0f;
             }
         }
@@ -128,9 +155,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
             return 1;
         case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
             if (Environment.preferences.requirePINAccess) {
-                return 2;
+                return 3;
             } else {
-                return 1;
+                return 2;
             }
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return 1;
@@ -179,14 +206,19 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
         case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
         {
             switch (indexPath.row) {
-                case 0:
+                case PrivacySettingsPINSectionIndexPINLength:
+                {
+                    return self.pinLengthCell;
+                }
+                    break;
+                case PrivacySettingsPINSectionIndexRequirePIN:
                 {
                     return self.requirePINCell;
                 }
                     break;
-                case 1:
+                case PrivacySettingsPINSectionIndexChangePIN:
                 {
-                    return self.configurePINCell;
+                    return self.changePINCell;
                 }
                     break;
                 default:
@@ -238,7 +270,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
         case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
         {
             switch (indexPath.row) {
-                case 1:
+                case PrivacySettingsPINSectionIndexChangePIN:
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     [self dismissViewControllerAnimated:YES completion:^{

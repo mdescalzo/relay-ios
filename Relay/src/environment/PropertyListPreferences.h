@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, TSImageQuality) {
 
 @property (assign) BOOL useGravatars;
 @property (assign) BOOL requirePINAccess;
+@property (assign) NSInteger PINLength;
 @property (strong) NSString *outgoingBubbleColorKey;
 @property (strong) NSString *incomingBubbleColorKey;
 
