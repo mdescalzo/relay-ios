@@ -112,6 +112,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
     // PIN Length Picker Cell
     self.pinLengthPickerCell = [UITableViewCell new];
     self.pinLengthPickerView = [UIPickerView new];
+    self.pinLengthPickerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.pinLengthPickerView.delegate = self;
     self.pinLengthPickerView.dataSource = self;
     self.pinLengthPickerView.showsSelectionIndicator = YES;
@@ -147,7 +148,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
             }
         } else if (indexPath.row == PrivacySettingsPINSectionIndexPINLengthPicker) {
             if (editingPINLength) {
-                return 216.0f;
+                return 162.0f;
             } else {
                 return 0.0f;
             }
@@ -368,9 +369,6 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
         self.enableScreenSecuritySwitch.enabled = YES;
     }
     
-//    [Environment.preferences setScreenSecurity:self.enableScreenSecuritySwitch.isOn];
-//    [Environment.preferences setRequirePINAccess:self.requirePINSwitch.isOn];
-
     if ([sender isEqual:self.requirePINSwitch]) {
         DDLogInfo(@"%@ toggled require PIN security: %@", self.tag, self.requirePINSwitch.isOn ? @"ON" : @"OFF");
         [self dismissViewControllerAnimated:YES completion:^{
