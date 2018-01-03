@@ -26,6 +26,10 @@
 // Message font size
 #define FLMessageViewFontSize 17.0f
 
+// Authentication fails
+#define FLMaxAuthFailures 5
+#define FLAuthFailCooldown 10
+
 // Notification strings
 #define FLSettingsUpdatedNotification @"FLSettingsUpdatedNotification"
 #define FLUserSelectedFromPopoverDirectoryNotification @"FLUserSelectedFromPopoverDirectoryNotification"

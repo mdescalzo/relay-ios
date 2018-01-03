@@ -46,6 +46,8 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 @property (nonatomic, assign) BOOL hasRootViewController;
 @property (nonatomic, assign) BOOL awaitingVerification;
 
+@property (nonatomic, strong) UIImageView *coverImageView;
+
 @end
 
 @implementation AppDelegate
@@ -158,7 +160,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     }
     
     DDLogDebug(@"Setup screen protection.");
-    [self prepareScreenProtection];
+//    [self prepareScreenProtection];
     
     DDLogDebug(@"didFinishLaunchingWithOptions ends.");
     return YES;
@@ -253,15 +255,23 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         return;
     }
     [self ensureRootViewController];
+    if (Environment.preferences.screenSecurityIsEnabled) {
+        [self protectScreen];
+    }
     
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
-        [self removeScreenProtection];
         if (Environment.preferences.requirePINAccess) {
-            if (![SmileAuthenticator.sharedInstance isShowingAuthVC]) {
+            if ([SmileAuthenticator hasPassword] && SmileAuthenticator.sharedInstance.isAuthenticated) {
+                [self removeScreenProtection];
+            } else {
+                if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
                 SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
                 [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+                }
             }
+        } else {
+            [self removeScreenProtection];
         }
         
         [TSSocketManager becomeActiveFromForeground];
@@ -326,11 +336,14 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         if ([TSAccountManager isRegistered]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (application.keyWindow.rootViewController.presentedViewController) {
-                    if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
-                        [application.keyWindow.rootViewController dismissViewControllerAnimated:NO completion:nil];
-                    }
+//                    if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
+                        [application.keyWindow.rootViewController dismissViewControllerAnimated:NO completion:^{
+                            [self protectScreen];
+                        }];
+//                    }
+                } else {
+                    [self protectScreen];
                 }
-                [self protectScreen];
                 [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
             });
             [TSSocketManager resignActivity];
@@ -368,37 +381,39 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 }
 
 /**
- * Screen protection obscures the app screen shown in the app switcher.
+ * MARK: - Screen protection obscures the app screen shown in the app switcher.
  */
-- (void)prepareScreenProtection
+
+-(UIImageView *)coverImageView
 {
-    UIWindow *window = [[UIWindow alloc] initWithFrame:self.window.bounds];
-    window.hidden = YES;
-    window.opaque = YES;
-    window.userInteractionEnabled = NO;
-    window.windowLevel = CGFLOAT_MAX;
-    window.backgroundColor = UIColor.ows_materialBlueColor;
-    window.rootViewController =
-    [[UIStoryboard storyboardWithName:@"Launch Screen" bundle:nil] instantiateInitialViewController];
-    
-    self.screenProtectionWindow = window;
+    if (_coverImageView == nil) {
+        _coverImageView = [[UIImageView alloc]initWithFrame:[self.window bounds]];
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
+        UIImage *image = [UIImage imageNamed:@"forsta_splash.png"];
+        [_coverImageView setImage:image];
+        _coverImageView.alpha = 1.0;
+    }
+    return _coverImageView;
 }
 
-- (void)protectScreen {
-    if (Environment.preferences.screenSecurityIsEnabled) {
-        if (![SmileAuthenticator.sharedInstance isShowingAuthVC])
-            self.screenProtectionWindow.hidden = NO;
-    }
+- (void)protectScreen
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.coverImageView.superview) {
+            [self.window.rootViewController.view addSubview:self.coverImageView];
+        }
+        self.coverImageView.alpha = 1.0;
+    });
 }
 
 - (void)removeScreenProtection
 {
-    self.screenProtectionWindow.hidden = YES;
-}
-
--(void)refreshUsersStore
-{
-    [CCSMCommManager refreshCCSMData];
+    if (self.coverImageView.superview) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.coverImageView.alpha = 0.0;
+            [self.coverImageView removeFromSuperview];
+        });
+    }
 }
 
 #pragma mark - Push Notifications Delegate Methods
@@ -459,6 +474,8 @@ forLocalNotification:(UILocalNotification *)notification
     SmileAuthenticator.sharedInstance.passcodeDigit = Environment.preferences.PINLength;
     SmileAuthenticator.sharedInstance.tintColor = [ForstaColors blackColor];
     SmileAuthenticator.sharedInstance.rootVC = self.window.rootViewController;
+    // Allow us to control 
+//    [[NSNotificationCenter defaultCenter] removeObserver:SmileAuthenticator.sharedInstance];
 }
 
 /**
@@ -487,11 +504,51 @@ forLocalNotification:(UILocalNotification *)notification
     return NO;
 }
 
+-(void)refreshUsersStore
+{
+    [CCSMCommManager refreshCCSMData];
+}
+
 #pragma mark - Smile Authentication Delegate methods
 -(void)userFailAuthenticationWithCount:(NSInteger)failCount
 {
-    if (failCount > 5) {
+    if (failCount > FLMaxAuthFailures) {
         // TODO: Put a delay of failCount seconds in to make brute force less appealing
+        [SmileAuthenticator.sharedInstance.rootVC dismissViewControllerAnimated:YES completion:^{
+            [self protectScreen];
+            
+            __block NSString *formatString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"FL_SMILE_TOOMANYFAILS_MESSAGE", nil), NSLocalizedString(@"FL_SMILE_FAIL_WAIT_MESSAGE", nil)];
+            __block UIAlertController *failAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                                       message:[NSString stringWithFormat:formatString, FLAuthFailCooldown]
+                                                                                preferredStyle:UIAlertControllerStyleAlert];
+            __block UIAlertAction *tryAgain = [UIAlertAction actionWithTitle:@"Try Again"
+                                                                       style:UIAlertActionStyleDefault
+                                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                                         SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
+                                                                         [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+                                                                     }];
+            tryAgain.enabled = NO;
+//            [failAlert addAction:tryAgain];
+            [self.window.rootViewController presentViewController:failAlert
+                                                         animated:YES
+                                                       completion:^{
+                                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                               for (NSInteger i = FLAuthFailCooldown; i >= 0 ; i--) {
+                                                                   //Here your non-main thread.
+                                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                                       //Here you return to main thread.
+                                                                       failAlert.message = [NSString stringWithFormat:formatString, i];
+                                                                   });
+                                                                   [NSThread sleepForTimeInterval:1.0f];
+                                                               }
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   failAlert.message = NSLocalizedString(@"FL_SMILE_TOOMANYFAILS_MESSAGE", nil);
+                                                                   [failAlert addAction:tryAgain];
+                                                                   tryAgain.enabled = YES;
+                                                               });
+                                                           });
+                                                       }];
+        }];
     }
 }
 

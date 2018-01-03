@@ -938,8 +938,10 @@
 /*
  SMILE Authentication localizations
  */
+"FL_SMILE_TOOMANYFAILS_MESSAGE" = "Too many failed authentication attempts.";
+"FL_SMILE_FAIL_WAIT_MESSAGE" = "Please wait %ld seconds and try again.";
 "SMILE_REASON" = "Use TouchID to unlock Forsta Relay or tap Cancel to enter passcode.";
-"SMILE_INPUT_FAILED" = "%ld Failed Passcode Attempts. Try again.";
+"SMILE_INPUT_FAILED" = "%ld Failed Attempts. Try again.";
 "SMILE_INPUT_DESCRIPTION" = "Enter %ld digit passcode";
 "SMILE_INPUT_NOT_MATCH" = "Passcode does not match. Try again.";
 "SMILE_INPUT_RE-ENTER" = "Re-enter your %ld digit Passcode";
