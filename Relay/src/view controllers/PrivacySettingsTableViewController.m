@@ -24,9 +24,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 };
 
 typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
+    PrivacySettingsPINSectionIndexRequirePIN,
     PrivacySettingsPINSectionIndexPINLength,
     PrivacySettingsPINSectionIndexPINLengthPicker,
-    PrivacySettingsPINSectionIndexRequirePIN,
     PrivacySettingsPINSectionIndexChangePIN,
 };
 
@@ -86,11 +86,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
     
     // Enable PIN Access
     self.requirePINCell                = [[UITableViewCell alloc] init];
-    self.requirePINCell.textLabel.text = NSLocalizedString(@"SETTINGS_REQUIRE_PIN", @"");
     self.requirePINSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
     self.requirePINCell.accessoryView          = self.requirePINSwitch;
     self.requirePINCell.userInteractionEnabled = YES;
-    [self.requirePINSwitch setOn:Environment.preferences.requirePINAccess];
     [self.requirePINSwitch addTarget:self
                                         action:@selector(didToggleSettingsSwitch:)
                               forControlEvents:UIControlEventTouchUpInside];
@@ -231,6 +229,8 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
                     break;
                 case PrivacySettingsPINSectionIndexRequirePIN:
                 {
+                    self.requirePINCell.textLabel.text = NSLocalizedString(@"SETTINGS_REQUIRE_PIN", @"");
+                    [self.requirePINSwitch setOn:Environment.preferences.requirePINAccess];
                     return self.requirePINCell;
                 }
                     break;
@@ -368,8 +368,8 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
         self.enableScreenSecuritySwitch.enabled = YES;
     }
     
-    [Environment.preferences setScreenSecurity:self.enableScreenSecuritySwitch.isOn];
-    [Environment.preferences setRequirePINAccess:self.requirePINSwitch.isOn];
+//    [Environment.preferences setScreenSecurity:self.enableScreenSecuritySwitch.isOn];
+//    [Environment.preferences setRequirePINAccess:self.requirePINSwitch.isOn];
 
     if ([sender isEqual:self.requirePINSwitch]) {
         DDLogInfo(@"%@ toggled require PIN security: %@", self.tag, self.requirePINSwitch.isOn ? @"ON" : @"OFF");

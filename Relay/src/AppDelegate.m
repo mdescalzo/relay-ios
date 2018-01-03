@@ -495,6 +495,16 @@ forLocalNotification:(UILocalNotification *)notification
     }
 }
 
+-(void)userTurnPasswordOn
+{
+    [Environment.preferences setScreenSecurity:YES];
+    Environment.preferences.requirePINAccess = YES;
+}
+
+-(void)userTurnPasswordOff
+{
+    Environment.preferences.requirePINAccess = NO;
+}
 
 -(void)userSuccessAuthentication
 {
