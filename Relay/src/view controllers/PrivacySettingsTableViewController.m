@@ -109,8 +109,6 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
     
     // PIN Length Cell
     self.pinLengthCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"pinLength"];
-    self.pinLengthCell.textLabel.text = NSLocalizedString(@"SETTINGS_PIN_LENGTH", nil);
-    self.pinLengthCell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", Environment.preferences.PINLength];
     self.pinLengthCell.accessoryType = UITableViewCellAccessoryNone;
     
     // PIN Length Picker Cell
@@ -219,7 +217,15 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
             switch (indexPath.row) {
                 case PrivacySettingsPINSectionIndexPINLength:
                 {
+                    self.pinLengthCell.textLabel.text = NSLocalizedString(@"SETTINGS_PIN_LENGTH", nil);
                     self.pinLengthCell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", Environment.preferences.PINLength];
+                    if (Environment.preferences.requirePINAccess) {
+                        self.pinLengthCell.userInteractionEnabled = NO;
+                        self.pinLengthCell.contentView.backgroundColor = [ForstaColors lightGray];
+                    } else {
+                        self.pinLengthCell.userInteractionEnabled = YES;
+                        self.pinLengthCell.contentView.backgroundColor = [ForstaColors whiteColor];
+                    }
                     return self.pinLengthCell;
                 }
                     break;
@@ -400,7 +406,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    Environment.preferences.PINLength = [[self.allowedPINLengths objectAtIndex:(NSUInteger)row] integerValue];
+    NSInteger selectedLength = [[self.allowedPINLengths objectAtIndex:(NSUInteger)row] integerValue];
+    Environment.preferences.PINLength = selectedLength;
+    SmileAuthenticator.sharedInstance.passcodeDigit = selectedLength;
     [self.tableView reloadData];
 }
 

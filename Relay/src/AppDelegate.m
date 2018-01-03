@@ -456,6 +456,7 @@ forLocalNotification:(UILocalNotification *)notification
         [self.window makeKeyAndVisible];
     }
     SmileAuthenticator.sharedInstance.delegate = self;
+    SmileAuthenticator.sharedInstance.passcodeDigit = Environment.preferences.PINLength;
     SmileAuthenticator.sharedInstance.tintColor = [ForstaColors blackColor];
     SmileAuthenticator.sharedInstance.rootVC = self.window.rootViewController;
 }
