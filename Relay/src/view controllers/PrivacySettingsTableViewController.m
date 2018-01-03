@@ -25,11 +25,15 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
 
 typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
     PrivacySettingsPINSectionIndexPINLength,
+    PrivacySettingsPINSectionIndexPINLengthPicker,
     PrivacySettingsPINSectionIndexRequirePIN,
     PrivacySettingsPINSectionIndexChangePIN,
 };
 
-@interface PrivacySettingsTableViewController ()
+@interface PrivacySettingsTableViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
+{
+    BOOL editingPINLength;
+}
 
 @property (nonatomic, strong) UITableViewCell *enableScreenSecurityCell;
 @property (nonatomic, strong) UISwitch *enableScreenSecuritySwitch;
@@ -41,7 +45,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
 @property (nonatomic, strong) UITableViewCell *requirePINCell;
 @property (nonatomic, strong) UITableViewCell *changePINCell;
 @property (nonatomic, strong) UITableViewCell *pinLengthCell;
-@property (nonatomic, strong) NSArray *allowedPINLengths;
+@property (nonatomic, strong) UITableViewCell *pinLengthPickerCell;
+@property (nonatomic, strong) UIPickerView *pinLengthPickerView;
+@property (nonatomic, strong) NSArray<NSNumber *> *allowedPINLengths;
 
 @end
 
@@ -52,18 +58,8 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
     [self.navigationController.navigationBar setTranslucent:NO];
 
     // Allowed PIN setup
-    self.allowedPINLengths = @[ @(4), @(6) ];
-    BOOL found = NO;
-    NSNumber *pinLength = @(Environment.preferences.PINLength);
-    for (NSNumber *num in self.allowedPINLengths) {
-        if ([num isEqual:pinLength]) {
-            found = YES;
-        }
-    }
-    if (!found) {
-        Environment.preferences.PINLength = 4;
-    }
-    
+    self.allowedPINLengths = @[ @(4), @(6), @(8) ];
+
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
@@ -116,6 +112,15 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
     self.pinLengthCell.textLabel.text = NSLocalizedString(@"SETTINGS_PIN_LENGTH", nil);
     self.pinLengthCell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", Environment.preferences.PINLength];
     self.pinLengthCell.accessoryType = UITableViewCellAccessoryNone;
+    
+    // PIN Length Picker Cell
+    self.pinLengthPickerCell = [UITableViewCell new];
+    self.pinLengthPickerView = [UIPickerView new];
+    self.pinLengthPickerView.delegate = self;
+    self.pinLengthPickerView.dataSource = self;
+    self.pinLengthPickerView.showsSelectionIndicator = YES;
+    [self.pinLengthPickerCell.contentView addSubview:self.pinLengthPickerView];
+    self.pinLengthPickerCell.contentView.hidden = !editingPINLength;
 
 //    // Block Identity on KeyChange
 //    self.blockOnIdentityChangeCell = [UITableViewCell new];
@@ -144,6 +149,12 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
             } else {
                 return 0.0f;
             }
+        } else if (indexPath.row == PrivacySettingsPINSectionIndexPINLengthPicker) {
+            if (editingPINLength) {
+                return 216.0f;
+            } else {
+                return 0.0f;
+            }
         }
     }
     return self.tableView.rowHeight;
@@ -155,9 +166,9 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
             return 1;
         case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
             if (Environment.preferences.requirePINAccess) {
-                return 3;
+                return 4;
             } else {
-                return 2;
+                return 3;
             }
         case PrivacySettingsTableViewControllerSectionIndexHistoryLog:
             return 1;
@@ -208,6 +219,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
             switch (indexPath.row) {
                 case PrivacySettingsPINSectionIndexPINLength:
                 {
+                    self.pinLengthCell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", Environment.preferences.PINLength];
                     return self.pinLengthCell;
                 }
                     break;
@@ -219,6 +231,18 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
                 case PrivacySettingsPINSectionIndexChangePIN:
                 {
                     return self.changePINCell;
+                }
+                    break;
+                case PrivacySettingsPINSectionIndexPINLengthPicker:
+                {
+                    NSUInteger idx;
+                    for (NSUInteger i = 0; i < self.allowedPINLengths.count ; i++) {
+                        if ([(NSNumber*)[self.allowedPINLengths objectAtIndex:i] integerValue] == Environment.preferences.PINLength) {
+                            idx = i;
+                        }
+                    }
+                    [self.pinLengthPickerView selectRow:(NSInteger)idx inComponent:0 animated:YES];
+                    return self.pinLengthPickerCell;
                 }
                     break;
                 default:
@@ -263,25 +287,21 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     switch (indexPath.section) {
         case PrivacySettingsTableViewControllerSectionIndexRequirePIN:
         {
             switch (indexPath.row) {
                 case PrivacySettingsPINSectionIndexChangePIN:
                 {
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     [self dismissViewControllerAnimated:YES completion:^{
                         SmileAuthenticator.sharedInstance.securityType = INPUT_THREE;
                         [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
                     }];
                 }
                     break;
-                    
                 default:
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     break;
             }
         }
@@ -309,14 +329,23 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
                 }
                     break;
                 default:
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     break;
             }
         }
         default:
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
     }
+    
+    [tableView beginUpdates];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == PrivacySettingsTableViewControllerSectionIndexRequirePIN &&
+        indexPath.row == PrivacySettingsPINSectionIndexPINLength) {
+        editingPINLength = !editingPINLength;
+    } else {
+        editingPINLength = NO;
+    }
+    self.pinLengthPickerCell.contentView.hidden = !editingPINLength;
+    [tableView endUpdates];
 }
 
 #pragma mark - Toggle
@@ -353,6 +382,27 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
 //    DDLogInfo(@"%@ toggled blockOnIdentityChange: %@", self.tag, enabled ? @"ON" : @"OFF");
 //    [Environment.preferences setShouldBlockOnIdentityChange:enabled];
 //}
+
+#pragma mark - picker delegate/datasouce methods
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+-(NSString *_Nullable)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [NSString stringWithFormat:@"%ld", [(NSNumber *)[self.allowedPINLengths objectAtIndex:(NSUInteger)row] integerValue]];
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return (NSInteger)[self.allowedPINLengths count];
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    Environment.preferences.PINLength = [[self.allowedPINLengths objectAtIndex:(NSUInteger)row] integerValue];
+    [self.tableView reloadData];
+}
 
 #pragma mark - Log util
 

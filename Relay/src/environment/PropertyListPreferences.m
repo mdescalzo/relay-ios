@@ -341,7 +341,11 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
 
 -(NSInteger)PINLength
 {
-    return [[self tryGetValueForKey:PropertyListPreferencesKeyPINLength] integerValue];
+    NSInteger value = [[self tryGetValueForKey:PropertyListPreferencesKeyPINLength] integerValue];
+    if (value == 0) {
+        value = 4;
+    }
+    return value;
 }
 
 -(void)setOutgoingBubbleColorKey:(NSString *)value
