@@ -547,11 +547,20 @@ typedef enum : NSUInteger {
     }
 
     // Bubbles
+    UIColor *outgoingBubbleColor = [[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey];
+    if (outgoingBubbleColor == nil) {
+        outgoingBubbleColor = [ForstaColors lightGray];
+    }
+    UIColor *incomingBubbleColor = [[ForstaColors incomingBubbleColors] objectForKey:self.prefs.incomingBubbleColorKey];
+    if (incomingBubbleColor == nil) {
+        incomingBubbleColor = [ForstaColors blackColor];
+    }
+
     self.collectionView.collectionViewLayout.bubbleSizeCalculator = [[OWSMessagesBubblesSizeCalculator alloc] init];
     JSQMessagesBubbleImageFactory *bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
-    self.incomingBubbleImageData = [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
-    self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey]];
-    self.currentlyOutgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey]];
+    self.incomingBubbleImageData = [bubbleFactory incomingMessagesBubbleImageWithColor:incomingBubbleColor];
+    self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:outgoingBubbleColor];
+    self.currentlyOutgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:outgoingBubbleColor];
     self.outgoingMessageFailedImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor grayColor]];
 
 }

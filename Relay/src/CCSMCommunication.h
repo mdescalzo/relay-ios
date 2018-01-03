@@ -54,9 +54,7 @@
 //                              failure:(void (^)(NSError *error))failureBlock;
 
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId;
-+(void)asyncRecipientFromCCSMWithID:(NSString *)userId
-                                   success:(void (^)(SignalRecipient *recipient))successBlock
-                                    failure:(void (^)(NSError *error))failureBlock;
++(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock

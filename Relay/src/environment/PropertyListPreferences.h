@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, TSImageQuality) {
 
 @property (assign) BOOL useGravatars;
 @property (strong) NSString *outgoingBubbleColorKey;
+@property (strong) NSString *incomingBubbleColorKey;
 
 #pragma mark - Block on Identity Change
 

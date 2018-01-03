@@ -112,7 +112,9 @@
     
     FLTag *aTag = [self tagForIndexPath:indexPath];
     
-    [cell configureCellWithTag:aTag];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [cell configureCellWithTag:aTag];
+//    });
     
     if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -508,18 +510,14 @@
                                                                                                   NSString * _Nonnull key,
                                                                                                   id  _Nonnull object) {
         FLTag *aTag = (FLTag *)object;
-        BOOL val;
-        
         if (filterString.length > 0) {
-            val = ([[aTag.displaySlug lowercaseString] containsString:filterString] ||
+            return ([[aTag.displaySlug lowercaseString] containsString:filterString] ||
                    [[aTag.slug lowercaseString] containsString:filterString] ||
                    [[aTag.tagDescription lowercaseString] containsString:filterString] ||
                    [[aTag.orgSlug lowercaseString] containsString:filterString]);
         } else {
-            val = YES;
-            
+            return YES;
         }
-        return val;
     }];
     
     [self.searchDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
@@ -550,20 +548,13 @@
 -(void)storeUsersInResults:(NSDictionary *)results
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSArray *userIds = [[results objectForKey:@"userids"] copy];
-        for (NSString *uid in userIds) {
-            // do the lookup things
-            [CCSMCommManager asyncRecipientFromCCSMWithID:uid
-                                                  success:^(SignalRecipient *recipient) {
-                                                      if (recipient) {
-                                                          [recipient save];
-                                                          DDLogDebug(@"CCSM lookup succeeded for: %@", recipient.fullName);
-                                                      }
-                                                  } failure:^(NSError *error) {
-                                                      DDLogDebug(@"CCSM lookup failed for uid: %@", uid);
-                                                  }];
-            
-        }
+        [self.searchDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            NSArray *userIds = [[results objectForKey:@"userids"] copy];
+            for (NSString *uid in userIds) {
+                // do the lookup things
+                [CCSMCommManager recipientFromCCSMWithID:uid transaction:transaction];
+            }
+        }];
     });
 }
 

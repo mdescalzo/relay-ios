@@ -12,15 +12,19 @@
 #define kGravatarSectionIdex 0
 #define KUseGravatarIndex 0
 #define kMessagesSectionIndex 1
-#define kOutgoingColorSettingIndex 0
-#define kOutgoingColorPickerIndex 1
+#define kIncomingColorSettingIndex 0
+#define kIncomingColorPickerIndex 1
+#define kOutgoingColorSettingIndex 2
+#define kOutgoingColorPickerIndex 3
 
-#define kOutgoingColorPickerTag 101
+#define kIncomingColorPickerTag 101
+#define kOutgoingColorPickerTag 102
 
 @interface AppearanceSettingsViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (nonatomic, strong) NSArray *sectionsHeadings;
 @property (nonatomic, strong) UIColor *selectedOutgoingBubbleColor;
+@property (nonatomic, strong) UIColor *selectedIncomingBubbleColor;
 @property (nonatomic, strong) PropertyListPreferences *prefs;
 @property (nonatomic, strong) UISwitch *gravatarSwitch;
 
@@ -29,9 +33,11 @@
 @implementation AppearanceSettingsViewController
 {
     BOOL editingOutgoingBubbleColor;
+    BOOL editingIncomingBubbleColor;
 }
 
 @synthesize selectedOutgoingBubbleColor = _selectedOutgoingBubbleColor;
+@synthesize selectedIncomingBubbleColor = _selectedIncomingBubbleColor;
 
 - (void)viewDidLoad
 {
@@ -49,7 +55,7 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:FLSettingsUpdatedNotification object:nil];
-
+    
     [self.prefs removeObserver:self forKeyPath:@"selectedOutgoingBubbleColor"];
     [super viewDidDisappear:animated];
 }
@@ -68,7 +74,13 @@
         } else {
             return 0;
         }
-    } else {
+    } else if ((indexPath.section == kMessagesSectionIndex && indexPath.row == kIncomingColorPickerIndex)) {
+        if (editingIncomingBubbleColor) {
+            return 216;
+        } else {
+            return 0;
+        }
+    }else {
         return self.tableView.rowHeight;
     }
 }
@@ -89,7 +101,7 @@
             return 1;
             break;
         case kMessagesSectionIndex: // Messages section
-            return 2;
+            return 4;
             break;
         default:
             return 0;
@@ -101,9 +113,9 @@
 {
     NSString *cellIdentifier = @"ForstaTableViewCellIdentifier";
     NSString *pickerCellID = @"PickerCell";
-
+    
     UITableViewCell *cell = nil;
-
+    
     // Configure the cell...
     switch (indexPath.section) {
         case kGravatarSectionIdex:  // Gravatars
@@ -126,10 +138,42 @@
         case kMessagesSectionIndex:  // Message bubbles
         {
             switch (indexPath.row) {
+                case kIncomingColorSettingIndex:
+                {
+                    cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+                    cell.textLabel.text = NSLocalizedString(@"APPEARANCE_INCOMING_MESSAGE_BUBBLE_COLOR", nil);
+                    cell.detailTextLabel.text = nil;
+                    UILabel *colorPreview = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 72.0f, 30.0f)];
+                    colorPreview.text = NSLocalizedString(@"SAMPLE", nil);
+                    colorPreview.textAlignment = NSTextAlignmentCenter;
+                    colorPreview.font = [UIFont systemFontOfSize:15.0f];
+                    colorPreview.textColor = [UIColor blackColor];
+                    colorPreview.layer.cornerRadius = 12.0f;
+                    colorPreview.backgroundColor = self.selectedIncomingBubbleColor;
+                    colorPreview.clipsToBounds = YES;
+                    cell.accessoryView = colorPreview;
+                }
+                    break;
+                case kIncomingColorPickerIndex:
+                {
+                    FLPickerCell *tmpCell = (FLPickerCell *)[tableView dequeueReusableCellWithIdentifier:pickerCellID forIndexPath:indexPath];
+                    tmpCell.pickerView.delegate = self;
+                    tmpCell.pickerView.dataSource = self;
+                    tmpCell.pickerView.tag = kIncomingColorPickerTag;
+                    tmpCell.pickerView.showsSelectionIndicator = YES;
+                    NSString *colorKey = self.prefs.incomingBubbleColorKey;
+                    NSInteger index = (NSInteger)[[[ForstaColors incomingBubbleColors] allKeys] indexOfObject:colorKey];
+                    [tmpCell.pickerView selectRow:index
+                                      inComponent:0
+                                         animated:NO];
+                    cell = tmpCell;
+                }
+                    break;
+                    
                 case kOutgoingColorSettingIndex:
                 {
                     cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-                    cell.textLabel.text = NSLocalizedString(@"APPEARANCE_MESSAGE_BUBBLE_COLOR", nil);
+                    cell.textLabel.text = NSLocalizedString(@"APPEARANCE_OUTGOING_MESSAGE_BUBBLE_COLOR", nil);
                     cell.detailTextLabel.text = nil;
                     UILabel *colorPreview = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 72.0f, 30.0f)];
                     colorPreview.text = NSLocalizedString(@"SAMPLE", nil);
@@ -171,32 +215,37 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     switch (indexPath.section) {
         case kGravatarSectionIdex:
         {
             self.gravatarSwitch.on = !self.gravatarSwitch.on;
             [self didToggleGravatarSwitch:self.gravatarSwitch];
             [tableView beginUpdates];
-//            [self.tableView reloadRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:KUseGravatarIndex inSection:kGravatarSectionIdex] ]
-//                                  withRowAnimation:UITableViewRowAnimationFade];
-
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            if (editingOutgoingBubbleColor) {
-                editingOutgoingBubbleColor = !editingOutgoingBubbleColor;
-            }
+            editingOutgoingBubbleColor = NO;
+            editingIncomingBubbleColor = NO;
             [tableView endUpdates];
         }
             break;
         case kMessagesSectionIndex:
         {
             switch (indexPath.row) {
+                    case kIncomingColorSettingIndex:
+                {
+                    [tableView beginUpdates];
+                    editingIncomingBubbleColor = !editingIncomingBubbleColor;
+                    editingOutgoingBubbleColor = NO;
+                    [tableView endUpdates];
+                }
+                    break;
                 case kOutgoingColorSettingIndex:
-                    {
-                        [tableView beginUpdates];
-                        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                        editingOutgoingBubbleColor = !editingOutgoingBubbleColor;
-                        [tableView endUpdates];
-                    }
+                {
+                    [tableView beginUpdates];
+                    editingOutgoingBubbleColor = !editingOutgoingBubbleColor;
+                    editingIncomingBubbleColor = NO;
+                    [tableView endUpdates];
+                }
                     break;
                     
                 default:
@@ -210,53 +259,53 @@
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 #pragma mark - Picker view methods
 -(CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
 {
-    if (pickerView.tag == kOutgoingColorPickerTag) {
+    if (pickerView.tag == kOutgoingColorPickerTag || pickerView.tag == kIncomingColorPickerTag) {
         return 40.0f;
     }
     return 21.0f;
@@ -274,6 +323,17 @@
         newView.textColor = [UIColor whiteColor];
         newView.text = colorTitles[(NSUInteger)row];
         newView.textAlignment = NSTextAlignmentCenter;
+        return newView;
+    } else if (pickerView.tag == kIncomingColorPickerTag) {
+        NSArray *colors = [[ForstaColors incomingBubbleColors] allValues];
+        NSArray *colorTitles = [[ForstaColors incomingBubbleColors] allKeys];
+        UILabel *newView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width*0.75f, 37.0f)];
+        newView.backgroundColor = colors[(NSUInteger)row];
+        newView.layer.cornerRadius = 12.0f;
+        newView.clipsToBounds = YES;
+        newView.textColor = [UIColor blackColor];
+        newView.text = colorTitles[(NSUInteger)row];
+        newView.textAlignment = NSTextAlignmentCenter;
         
         return newView;
     }
@@ -281,7 +341,7 @@
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(nonnull UIPickerView *)pickerView {
-    if (pickerView.tag == kOutgoingColorPickerTag) {
+    if (pickerView.tag == kOutgoingColorPickerTag || pickerView.tag == kIncomingColorPickerTag) {
         return 1;
     }
     return 0;
@@ -291,6 +351,10 @@
     if (pickerView.tag == kOutgoingColorPickerTag) {
         if (component == 0) {
             return (NSInteger)[[ForstaColors outgoingBubbleColors] allValues].count;
+        }
+    } else if (pickerView.tag == kIncomingColorPickerTag) {
+        if (component == 0) {
+            return (NSInteger)[[ForstaColors incomingBubbleColors] allValues].count;
         }
     }
     return 0;
@@ -302,6 +366,11 @@
         NSString *colorKey = [[[ForstaColors outgoingBubbleColors] allKeys] objectAtIndex:(NSUInteger)row];
         self.prefs.outgoingBubbleColorKey = colorKey;
         [self.tableView reloadRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:kOutgoingColorSettingIndex inSection:kMessagesSectionIndex] ]
+                              withRowAnimation:UITableViewRowAnimationFade];
+    } else if (pickerView.tag == kIncomingColorPickerTag) {
+        NSString *colorKey = [[[ForstaColors incomingBubbleColors] allKeys] objectAtIndex:(NSUInteger)row];
+        self.prefs.incomingBubbleColorKey = colorKey;
+        [self.tableView reloadRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:kIncomingColorSettingIndex inSection:kMessagesSectionIndex] ]
                               withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -337,16 +406,28 @@
         _gravatarSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         _gravatarSwitch.on = self.prefs.useGravatars;
         [_gravatarSwitch addTarget:self
-                    action:@selector(didToggleGravatarSwitch:)
-          forControlEvents:UIControlEventValueChanged];
+                            action:@selector(didToggleGravatarSwitch:)
+                  forControlEvents:UIControlEventValueChanged];
     }
     return _gravatarSwitch;
 }
 
 -(UIColor *)selectedOutgoingBubbleColor
 {
-        NSString *colorKey = self.prefs.outgoingBubbleColorKey;
-        return [[ForstaColors outgoingBubbleColors] objectForKey:colorKey];
+    UIColor *outgoingBubbleColor = [[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey];
+    if (outgoingBubbleColor == nil) {
+        outgoingBubbleColor = [ForstaColors lightGray];
+    }
+    return outgoingBubbleColor;
+}
+
+-(UIColor *)selectedIncomingBubbleColor
+{
+    UIColor *incomingBubbleColor = [[ForstaColors incomingBubbleColors] objectForKey:self.prefs.incomingBubbleColorKey];
+    if (incomingBubbleColor == nil) {
+        incomingBubbleColor = [ForstaColors blackColor];
+    }
+    return incomingBubbleColor;
 }
 
 -(PropertyListPreferences *)prefs

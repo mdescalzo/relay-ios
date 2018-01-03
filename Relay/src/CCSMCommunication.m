@@ -445,8 +445,8 @@
         [Environment.getCurrent.ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
         [Environment.getCurrent.ccsmStorage setUserInfo:userDict];
-        SignalRecipient *myself = [SignalRecipient recipientForUserDict:userDict];
-        [myself save];
+        [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict];
+//        [myself save];
         [TSAccountManager.sharedInstance myself];
 //        [Environment.getCurrent.contactsManager allRecipients];
         
@@ -462,7 +462,7 @@
 
 +(void)refreshCCSMData
 {
-//    [self refreshCCSMUsers];
+    [self refreshCCSMUsers];
     [self refreshCCSMTags];
 }
 
@@ -619,6 +619,17 @@
 {
     __block SignalRecipient *recipient = nil;
     
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        recipient = [self recipientFromCCSMWithID:userId transaction:transaction];
+    }];
+    
+    return recipient;
+}
+
++(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    __block SignalRecipient *recipient = nil;
+
     if (userId) {
         NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, userId];
         [self getThing:url
@@ -626,36 +637,35 @@
                success:^(NSDictionary *payload) {
                    NSArray *tmpArray = [payload objectForKey:@"results"];
                    NSDictionary *results = [tmpArray lastObject];
-                   recipient = [SignalRecipient recipientForUserDict:results];
+                   recipient = [SignalRecipient getOrCreateRecipientWithUserDictionary:results transaction:transaction];
                }
                failure:^(NSError *error) {
                    DDLogDebug(@"CCSM User lookup failed or returned no results.");
                }];
     }
-    
     return recipient;
 }
 
-+(void)asyncRecipientFromCCSMWithID:(NSString *)userId
-                       success:(void (^)(SignalRecipient *recipient))successBlock
-                       failure:(void (^)(NSError *error))failureBlock
-{
-    if (userId) {
-        NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, userId];
-        [self getThing:url
-           synchronous:NO
-               success:^(NSDictionary *result) {
-                   NSArray *payload = [result objectForKey:@"results"];
-                   NSDictionary *userDict = [payload lastObject];
-                   SignalRecipient *recipient = [SignalRecipient recipientForUserDict:userDict];
-                   successBlock(recipient);
-               }
-               failure:^(NSError *error) {
-                   DDLogDebug(@"CCSM User lookup failed or returned no results.");
-                   failureBlock(error);
-               }];
-    }
-}
+//+(void)asyncRecipientFromCCSMWithID:(NSString *)userId
+//                       success:(void (^)(SignalRecipient *recipient))successBlock
+//                       failure:(void (^)(NSError *error))failureBlock
+//{
+//    if (userId) {
+//        NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, userId];
+//        [self getThing:url
+//           synchronous:NO
+//               success:^(NSDictionary *result) {
+//                   NSArray *payload = [result objectForKey:@"results"];
+//                   NSDictionary *userDict = [payload lastObject];
+//                   SignalRecipient *recipient = [SignalRecipient recipientForUserDict:userDict];
+//                   successBlock(recipient);
+//               }
+//               failure:^(NSError *error) {
+//                   DDLogDebug(@"CCSM User lookup failed or returned no results.");
+//                   failureBlock(error);
+//               }];
+//    }
+//}
 
 #pragma mark - Public account creation
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict

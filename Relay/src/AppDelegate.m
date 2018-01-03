@@ -91,16 +91,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     // Setting up environment
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
 
-    DDLogDebug(@"Navbar appearance setup.");
-    // Navbar background color iOS10 bug workaround
-    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
-    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
-    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
-    [UINavigationBar appearance].translucent = YES;
-    
-    DDLogDebug(@"Setup screen protection.");
-    [self prepareScreenProtection];
-    
     DDLogDebug(@"Init main window and make visible.");
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // TODO: Generate an informational loading view to display here.
@@ -108,6 +98,13 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
 
+    DDLogDebug(@"Navbar appearance setup.");
+    // Navbar background color iOS10 bug workaround
+    [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
+    [UINavigationBar appearance].barTintColor = [UIColor blackColor];
+    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+    [UINavigationBar appearance].translucent = YES;
+    
     DDLogDebug(@"[self setupTSKitEnv] called.");
     [self setupTSKitEnv];
     
@@ -159,6 +156,9 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         DDLogInfo(@"Application was launched by tapping a push notification.");
         [self application:application didReceiveRemoteNotification:remoteNotif];
     }
+    
+    DDLogDebug(@"Setup screen protection.");
+    [self prepareScreenProtection];
     
     DDLogDebug(@"didFinishLaunchingWithOptions ends.");
     return YES;
@@ -375,13 +375,17 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 - (void)protectScreen {
     if (Environment.preferences.screenSecurityIsEnabled) {
-        self.screenProtectionWindow.hidden = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.screenProtectionWindow.hidden = NO;
+        });
     }
 }
 
 - (void)removeScreenProtection {
     if (Environment.preferences.screenSecurityIsEnabled) {
-        self.screenProtectionWindow.hidden = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.screenProtectionWindow.hidden = YES;
+        });
     }
 }
 

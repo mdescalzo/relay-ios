@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSCountedSet<SignalRecipient *> * _Nullable recpients;
 @property (nonatomic, strong) NSCountedSet<NSString *> * _Nullable recipientIds;
 
--(instancetype _Nullable )initWithTagDictionary:(NSDictionary *_Nonnull)tagDictionary;
++(instancetype _Nullable)getOrCreateTagWithDictionary:(NSDictionary *_Nonnull)tagDictionary;
++(instancetype _Nullable)getOrCreateTagWithDictionary:(NSDictionary *_Nonnull)tagDictionary transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
 
 @end

@@ -14,6 +14,7 @@
 
 +(NSArray <UIColor *>*)popColors;
 +(NSDictionary *)outgoingBubbleColors;
++(NSDictionary *)incomingBubbleColors;
 
 +(UIColor *)lightGray;
 +(UIColor *)mediumGray;
@@ -44,9 +45,12 @@
 +(UIColor *)mediumLightBlue2;
 +(UIColor *)lightBlue2;
 
++(UIColor *)lightPurple;
 +(UIColor *)mediumPurple;
 
++(UIColor *)lightYellow;
 +(UIColor *)mediumYellow;
 
++(UIColor *)lightPink;
 +(UIColor *)mediumPink;
 @end

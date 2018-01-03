@@ -237,17 +237,12 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         
         // Handle sync message
         if ([message isKindOfClass:[OWSOutgoingSyncMessage class]]) {
-            //            [self saveMessage:message withState:TSOutgoingMessageStateAttemptingOut];
-            NSString *recipientContactId = self.storageManager.localNumber;
-            SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithIndentifier:recipientContactId];
-            
             [self sendMessage:message
-                    recipient:recipient
+                    recipient:[SignalRecipient selfRecipient]
                        thread:thread
                      attempts:OWSMessageSenderRetryAttempts
                       success:successHandler
-                      failure:failureHandler];
-            
+                      failure:failureHandler];            
         } else {
             // Message send.
             

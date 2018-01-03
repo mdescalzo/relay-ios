@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsTableViewControllerSectionIndex) {
     // Clear History Log Cell
     self.clearHistoryLogCell                = [[UITableViewCell alloc] init];
     self.clearHistoryLogCell.textLabel.text = NSLocalizedString(@"SETTINGS_CLEAR_HISTORY", @"");
-    self.clearHistoryLogCell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    self.clearHistoryLogCell.accessoryType  = UITableViewCellAccessoryNone;
 
 //    // Block Identity on KeyChange
 //    self.blockOnIdentityChangeCell = [UITableViewCell new];

@@ -77,11 +77,7 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 {
     ows_require(key != nil);
     
-//    [TSStorageManager.sharedManager setObject:value
-//                                       forKey:key
-//                                 inCollection:CCSMStorageDatabaseCollection];
-    
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction setObject:value forKey:key inCollection:CCSMStorageDatabaseCollection];
     }];
 }
@@ -167,19 +163,18 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
     [self setValueForKey:CCSMStorageKeyTags toValue:value];
     // Process the newly received blob
     //    NSDictionary *tagBlob = [Environment.getCurrent.ccsmStorage getTags];
-        [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSDictionary *tagDict = (NSDictionary *)obj;
-            FLTag *aTag = [[FLTag alloc] initWithTagDictionary:tagDict];
-            
-            if (aTag) {
-                [aTag save];
-                
-                for (NSString *uid in aTag.recipientIds) {
-                    [Environment.getCurrent.contactsManager recipientWithUserID:uid];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *tagDict = (NSDictionary *)obj;
+                FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
+                if (aTag.recipientIds.count == 0) {
+                    [aTag removeWithTransaction:transaction];
                 }
-            }
+            }];
         }];
- }
+    });
+}
 
 - (nullable NSDictionary *)getTags
 {

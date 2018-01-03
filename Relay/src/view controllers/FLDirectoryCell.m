@@ -58,8 +58,6 @@
     }
     NSString *orgSlug = aTag.orgSlug;
     
-    self.nameLabel.text = description;
-    self.detailLabel.text = orgSlug;
     
     // Get an avatar
     UIImage *avatar = nil;
@@ -70,9 +68,11 @@
             if (avatar == nil) {
                 OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                        name:recipient.fullName
-                                                                                            contactsManager:[Environment getCurrent].contactsManager
+                                                                                            contactsManager:Environment.getCurrent.contactsManager
                                                                                                    diameter:self.contentView.frame.size.height];
                 avatar = [avatarBuilder buildDefaultImage];
+                recipient.avatar = avatar;
+                [recipient save];
             }
         } else {
             OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:aTag.uniqueId
@@ -82,8 +82,17 @@
             avatar = [avatarBuilder buildDefaultImage];
         }
 //    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.nameLabel.text = description;
+        self.detailLabel.text = orgSlug;
+        self.avatarImageView.image = avatar;
+    });
+}
 
-    self.avatarImageView.image = avatar;
+-(void)prepareForReuse
+{
+    
+    [super prepareForReuse];
 }
 
 - (NSAttributedString *)attributedStringForContact:(SignalRecipient *)contact
