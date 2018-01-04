@@ -141,7 +141,7 @@
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "forsta_icon@3x.png",
+      "filename" : "AppStoreIcon-1.png",
       "scale" : "1x"
     },
     {
@@ -201,7 +201,7 @@
     {
       "size" : "1024x1024",
       "idiom" : "watch-marketing",
-      "filename" : "forsta_icon@3x.png",
+      "filename" : "AppStoreIcon.png",
       "scale" : "1x"
     }
   ],
