@@ -176,6 +176,8 @@ NSUInteger maximumValidationAttempts = 9999;
         // Not registered with TSS, ask CCSM to do it for us.
         [CCSMCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
                                                       success:^{
+                                                          // TODO: Make call to AppDelegate instead of doing anything more than UI stuff here
+                                                          [Environment.getCurrent.contactsManager intersectLocalContacts];
                                                           [TSSocketManager becomeActiveFromForeground];
                                                           dispatch_async(dispatch_get_main_queue(), ^{
                                                               [self.spinner stopAnimating];

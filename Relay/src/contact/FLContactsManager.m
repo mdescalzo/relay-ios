@@ -217,39 +217,81 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(void)intersectLocalContacts
 {
     // Lookup compare locally stored contacts to those in Atlas for "public" only
-//    if ([[SignalRecipient selfRecipient].orgSlug isEqualToString:FLPublicDomainName]) {
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
-            self.contactStore = [[CNContactStore alloc] init];
-            [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
-                                        completionHandler:^(BOOL granted, NSError *_Nullable error) {
-                                            if (granted) {
-                                                // We have permission, do the extraction
-                                                __block NSMutableSet *contactPhoneNumbers = [NSMutableSet new];
-                                                NSArray *keysToFetch = @[ CNContactPhoneNumbersKey ];
-                                                CNContactFetchRequest *fetchRequest = [[CNContactFetchRequest alloc] initWithKeysToFetch:keysToFetch];
-                                                NSError *fetchError = nil;
-                                                [self.contactStore enumerateContactsWithFetchRequest:fetchRequest
-                                                                                                    error:&fetchError
-                                                                                               usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
-                                                                                                   for (CNLabeledValue *labelValue in contact.phoneNumbers) {
-                                                                                                       CNPhoneNumber *phoneNumber = (CNPhoneNumber *)labelValue.value;
-                                                                                                       [contactPhoneNumbers addObject:phoneNumber.stringValue];
-                                                                                                   }
-                                                                                               }];
-                                                DDLogDebug(@"Pulled local phone #s: %ld", contactPhoneNumbers.count);
-                                                // Parse the results
-                                                NSMutableSet *prettyNumbers = [NSMutableSet new];
-                                                for (NSString *foundNumber in contactPhoneNumbers) {
-                                                    NSString *parsedNumber = [[NBPhoneNumberUtil sharedInstance] normalize:foundNumber];
-                                                    [prettyNumbers addObject:parsedNumber];
-                                                }
-
-                                            } else {
-                                                DDLogDebug(@"User denied access to local Contacts.");
+    // TODO: add a check against array of public orgs ("forsta" & "public")
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
+        self.contactStore = [[CNContactStore alloc] init];
+        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
+                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
+                                        if (granted) {
+                                            // We have permission, do the extraction
+                                            __block NSMutableSet *contactPhoneNumbers = [NSMutableSet new];
+                                            NSArray *keysToFetch = @[ CNContactPhoneNumbersKey ];
+                                            CNContactFetchRequest *fetchRequest = [[CNContactFetchRequest alloc] initWithKeysToFetch:keysToFetch];
+                                            NSError *fetchError = nil;
+                                            [self.contactStore enumerateContactsWithFetchRequest:fetchRequest
+                                                                                           error:&fetchError
+                                                                                      usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
+                                                                                          for (CNLabeledValue *labelValue in contact.phoneNumbers) {
+                                                                                              CNPhoneNumber *phoneNumber = (CNPhoneNumber *)labelValue.value;
+                                                                                              [contactPhoneNumbers addObject:phoneNumber.stringValue];
+                                                                                          }
+                                                                                      }];
+                                            DDLogDebug(@"Pulled local phone #s: %ld", contactPhoneNumbers.count);
+                                            // Parse the results
+                                            NSMutableSet *prettyNumbers = [NSMutableSet new];
+                                            for (NSString *foundNumber in contactPhoneNumbers) {
+                                                NSString *parsedNumber = [[NBPhoneNumberUtil sharedInstance] normalize:foundNumber];
+                                                [prettyNumbers addObject:parsedNumber];
                                             }
-                                        }];
+                                            // TODO: do the background lookup here
+                                            [self intersectPhoneNumbersWithCCSM:prettyNumbers];
+                                        } else {
+                                            DDLogDebug(@"User denied access to local Contacts.  Unable to intersect contacts.");
+                                        }
+                                    }];
+    } else {
+        DDLogDebug(@"Attempt intersect contacts on unsupported version of iOS.");
+    }
+}
+
+-(void)intersectPhoneNumbersWithCCSM:(NSSet *)numbers
+{
+    NSInteger lookupLimit = 1000;
+    NSInteger counter = 0;
+    
+    NSString *urlPreString = [NSString stringWithFormat:@"%@/v1/user/?phone_in=", FLHomeURL];
+    
+    NSMutableString *chunkOfNumbers = [NSMutableString new];
+    
+    for (NSString *phoneNumber in numbers) {
+        counter++;
+        
+        [chunkOfNumbers appendFormat:@"%@,", phoneNumber];
+        if (counter % lookupLimit == 0) {
+            NSString *urlFinal = [NSString stringWithFormat:@"%@%@", urlPreString, chunkOfNumbers];
+            [CCSMCommManager getThing:urlFinal
+                          synchronous:NO success:^(NSDictionary *results) {
+                              DDLogDebug(@"Intersect results: %@", results);
+                              // Parge the things
+                          } failure:^(NSError *error) {
+                              DDLogDebug(@"Intersect error: %@", error);
+                              // Something went wrong
+                          }];
+            chunkOfNumbers = [NSMutableString new];
         }
-//    }
+    }
+    // Lookup the remainder
+    if (chunkOfNumbers.length > 0) {
+        NSString *urlFinal = [NSString stringWithFormat:@"%@%@", urlPreString, chunkOfNumbers];
+        [CCSMCommManager getThing:urlFinal
+                      synchronous:NO success:^(NSDictionary *results) {
+                          DDLogDebug(@"Intersect results: %@", results);
+                          // Parge the things
+                      } failure:^(NSError *error) {
+                          DDLogDebug(@"Intersect error: %@", error);
+                          // Something went wrong
+                      }];
+    }
 }
 
 -(void)saveRecipient:(SignalRecipient *)recipient
