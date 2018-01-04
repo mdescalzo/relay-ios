@@ -310,14 +310,6 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                                 });
                                                             }
                                                         }];
-        
-    } else {
-        // User not logged in.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-            self.window.rootViewController = [storyboard instantiateInitialViewController];
-            [self.window makeKeyAndVisible];
-        });
     }
 }
 
