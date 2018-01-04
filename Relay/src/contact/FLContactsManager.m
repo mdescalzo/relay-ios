@@ -236,7 +236,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                                                                                               [contactPhoneNumbers addObject:phoneNumber.stringValue];
                                                                                           }
                                                                                       }];
-                                            DDLogDebug(@"Pulled local phone #s: %ld", contactPhoneNumbers.count);
+                                            DDLogDebug(@"Pulled local phone #s for intersection: %ld", contactPhoneNumbers.count);
                                             // Parse the results
                                             NSMutableSet *prettyNumbers = [NSMutableSet new];
                                             for (NSString *foundNumber in contactPhoneNumbers) {
@@ -266,31 +266,48 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     for (NSString *phoneNumber in numbers) {
         counter++;
         
-        [chunkOfNumbers appendFormat:@"%@,", phoneNumber];
+        [chunkOfNumbers appendFormat:@"+%@,", phoneNumber];
         if (counter % lookupLimit == 0) {
-            NSString *urlFinal = [NSString stringWithFormat:@"%@%@", urlPreString, chunkOfNumbers];
-            [CCSMCommManager getThing:urlFinal
-                          synchronous:NO success:^(NSDictionary *results) {
-                              DDLogDebug(@"Intersect results: %@", results);
-                              // Parge the things
-                          } failure:^(NSError *error) {
-                              DDLogDebug(@"Intersect error: %@", error);
-                              // Something went wrong
-                          }];
+            [CCSMCommManager getThing:[NSString stringWithFormat:@"%@%@", urlPreString, chunkOfNumbers]
+                          synchronous:NO
+                              success:^(NSDictionary *results) {
+                                  NSNumber *count = [results objectForKey:@"count"];
+                                  DDLogDebug(@"Intersected contacts found: %d", [count intValue]);
+                                  if (count.intValue > 0) {
+                                      [self parseIntersectResults:[results objectForKey:@"results"]];
+                                  }
+                              } failure:^(NSError *error) {
+                                  DDLogError(@"Intersect error: %@", error);
+                              }];
             chunkOfNumbers = [NSMutableString new];
         }
     }
     // Lookup the remainder
     if (chunkOfNumbers.length > 0) {
-        NSString *urlFinal = [NSString stringWithFormat:@"%@%@", urlPreString, chunkOfNumbers];
-        [CCSMCommManager getThing:urlFinal
-                      synchronous:NO success:^(NSDictionary *results) {
-                          DDLogDebug(@"Intersect results: %@", results);
-                          // Parge the things
-                      } failure:^(NSError *error) {
-                          DDLogDebug(@"Intersect error: %@", error);
-                          // Something went wrong
-                      }];
+        [CCSMCommManager getThing:[NSString stringWithFormat:@"%@%@", urlPreString, chunkOfNumbers]
+                      synchronous:NO
+                          success:^(NSDictionary *results) {
+                              NSNumber *count = [results objectForKey:@"count"];
+                              DDLogDebug(@"Intersected contacts found: %d", [count intValue]);
+                              if (count.intValue > 0) {
+                                  [self parseIntersectResults:[results objectForKey:@"results"]];
+                              }
+                          } failure:^(NSError *error) {
+                              DDLogError(@"Intersect error: %@", error);
+                          }];
+    }
+}
+
+-(void)parseIntersectResults:(NSArray<NSDictionary *> *)results
+{
+    if (results.count > 0) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                for (NSDictionary *userDict in results) {
+                    [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
+                }
+            }];
+        });
     }
 }
 
