@@ -23,6 +23,7 @@ abstract_target 'Common' do
     pod 'SAMKeychain',                 '~> 1.5.2', :inhibit_warnings => true
     pod 'TwistedOakCollapsingFutures', '~> 1.0.0', :inhibit_warnings => true
     pod 'UIImageView+Extension',       '~> 0.2.5.1', :inhibit_warnings => true
+    pod 'SmileTouchID'
     
     target 'Relay' do
     end

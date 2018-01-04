@@ -688,6 +688,14 @@
 "APPEARANCE_OUTGOING_MESSAGE_BUBBLE_COLOR" = "Outgoing Bubble Color";
 "APPEARANCE_INCOMING_MESSAGE_BUBBLE_COLOR" = "Incoming Bubble Color";
 
+/* Require user to enter a PIN or fingerprint ID when waking app */
+"SETTINGS_REQUIRE_PIN" = "Enable PIN/TouchID";
+
+/* Detail footer for PIN requirement section */
+"SETTINGS_REQUIRE_PIN_DETAIL" = "Allows you to require a unique PIN or TouchID to access the app.  Requires screen security to be enabled.";
+
+"SETTINGS_PIN_LENGTH" = "PIN Length";
+
 /* User settings section footer, a detailed explanation */
 "SETTINGS_BLOCK_ON_IDENITY_CHANGE_DETAIL" = "Requires your approval before communicating with someone who has new safety numbers, commonly from a reinstall of Forsta.";
 
@@ -739,11 +747,16 @@
 /* No comment provided by engineer. */
 "SETTINGS_SCREEN_SECURITY" = "Enable Screen Security";
 
+"SETTINGS_CONFIGURE_PIN" = "Change App Passcode";
+
 /* No comment provided by engineer. */
 "SETTINGS_SCREEN_SECURITY_DETAIL" = "Prevents Forsta previews from appearing in the app switcher.";
 
 /* Section header */
 "SETTINGS_SECURITY_TITLE" = "Screen Security";
+
+/* Section header */
+"SETTINGS_PIN_TOUCHID_TITLE" = "PIN/TouchID Access";
 
 /* No comment provided by engineer. */
 "SETTINGS_SHARE_INSTALL" = "Share Install Link";
@@ -921,3 +934,20 @@
 
 /* Sample text */
 "SAMPLE" = "Forsta";
+
+/*
+ SMILE Authentication localizations
+ */
+"FL_SMILE_TOOMANYFAILS_MESSAGE" = "Too many failed authentication attempts.";
+"FL_SMILE_FAIL_WAIT_MESSAGE" = "Please wait %ld seconds and try again.";
+"SMILE_REASON" = "Use TouchID to unlock Forsta Relay or tap Cancel to enter passcode.";
+"SMILE_INPUT_FAILED" = "%ld Failed Attempts. Try again.";
+"SMILE_INPUT_DESCRIPTION" = "Enter %ld digit passcode";
+"SMILE_INPUT_NOT_MATCH" = "Passcode does not match. Try again.";
+"SMILE_INPUT_RE-ENTER" = "Re-enter your %ld digit Passcode";
+"SMILE_INPUT_TOUCHID_TITLE" = "Enter Passcode";
+"SMILE_INPUT_ONCE_TITLE" = "Disable Passcode";
+"SMILE_INPUT_TWICE_TITLE" = "Set Passcode";
+"SMILE_INPUT_THREE_TITLE" = "Change Passcode";
+"SMILE_INPUT_THREE_STEP_1_DESCRIPTION" = "Enter your old %ld digit Passcode";
+"SMILE_INPUT_THREE_STEP_2_DESCRIPTION" = "Enter your new %ld digit Passcode";

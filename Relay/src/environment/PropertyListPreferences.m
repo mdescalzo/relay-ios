@@ -21,6 +21,8 @@ NSString *const PropertyListPreferencesKeyHasRegisteredVoipPush = @"VOIPPushEnab
 NSString *const PropertyListPreferencesKeyLastRecordedPushToken = @"LastRecordedPushToken";
 NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecordedVoipToken";
 NSString *const PropertyListPreferencesKeyUseGravatars = @"UseGravatars";
+NSString *const PropertyListPreferencesKeyRequirePINAccess = @"RequirePINAccess";
+NSString *const PropertyListPreferencesKeyPINLength = @"PINLength";
 NSString *const PropertyListPreferencesKeyOutgoingBubbleColorKey = @"OutgoingBubbleColorKey";
 NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBubbleColorKey";
 
@@ -320,6 +322,30 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
 -(BOOL)useGravatars
 {
     return [[self tryGetValueForKey:PropertyListPreferencesKeyUseGravatars] boolValue];
+}
+
+-(void)setRequirePINAccess:(BOOL)value
+{
+    [self setValueForKey:PropertyListPreferencesKeyRequirePINAccess toValue:@(value)];
+}
+
+-(BOOL)requirePINAccess
+{
+    return [[self tryGetValueForKey:PropertyListPreferencesKeyRequirePINAccess] boolValue];
+}
+
+-(void)setPINLength:(NSInteger)value
+{
+    [self setValueForKey:PropertyListPreferencesKeyPINLength toValue:@(value)];
+}
+
+-(NSInteger)PINLength
+{
+    NSInteger value = [[self tryGetValueForKey:PropertyListPreferencesKeyPINLength] integerValue];
+    if (value == 0) {
+        value = 4;
+    }
+    return value;
 }
 
 -(void)setOutgoingBubbleColorKey:(NSString *)value
