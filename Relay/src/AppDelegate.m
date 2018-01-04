@@ -93,12 +93,13 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     // Setting up environment
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
 
-    DDLogDebug(@"Init main window and make visible.");
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // TODO: Generate an informational loading view to display here.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
-    self.window.rootViewController = [storyboard instantiateInitialViewController];
-    [self.window makeKeyAndVisible];
+    // Moved this to ensureRootViewController method since this was redundent.
+//    DDLogDebug(@"Init main window and make visible.");
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    // TODO: Generate an informational loading view to display here.
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
+//    self.window.rootViewController = [storyboard instantiateInitialViewController];
+//    [self.window makeKeyAndVisible];
 
     DDLogDebug(@"Navbar appearance setup.");
     // Navbar background color iOS10 bug workaround
@@ -158,9 +159,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         DDLogInfo(@"Application was launched by tapping a push notification.");
         [self application:application didReceiveRemoteNotification:remoteNotif];
     }
-    
-    DDLogDebug(@"Setup screen protection.");
-//    [self prepareScreenProtection];
     
     DDLogDebug(@"didFinishLaunchingWithOptions ends.");
     return YES;
@@ -255,9 +253,6 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         return;
     }
     [self ensureRootViewController];
-    if (Environment.preferences.screenSecurityIsEnabled) {
-        [self protectScreen];
-    }
     
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
@@ -336,15 +331,15 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         if ([TSAccountManager isRegistered]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (application.keyWindow.rootViewController.presentedViewController) {
-//                    if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
+                    if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
                         [application.keyWindow.rootViewController dismissViewControllerAnimated:NO completion:^{
                             [self protectScreen];
                         }];
-//                    }
+                    }
                 } else {
                     [self protectScreen];
                 }
-                [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
+                [Environment.getCurrent.forstaViewController updateInboxCountLabel];
             });
             [TSSocketManager resignActivity];
         }
@@ -398,21 +393,21 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 - (void)protectScreen
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+//    dispatch_async(dispatch_get_main_queue(), ^{
         if (!self.coverImageView.superview) {
             [self.window.rootViewController.view addSubview:self.coverImageView];
         }
         self.coverImageView.alpha = 1.0;
-    });
+//    });
 }
 
 - (void)removeScreenProtection
 {
     if (self.coverImageView.superview) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
             self.coverImageView.alpha = 0.0;
             [self.coverImageView removeFromSuperview];
-        });
+//        });
     }
 }
 
@@ -467,15 +462,16 @@ forLocalNotification:(UILocalNotification *)notification
         } else { // No local token, login
             storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
         }
+        self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         self.window.rootViewController = [storyboard instantiateInitialViewController];
         [self.window makeKeyAndVisible];
     }
+
+    // Setup Authenticator
     SmileAuthenticator.sharedInstance.delegate = self;
     SmileAuthenticator.sharedInstance.passcodeDigit = Environment.preferences.PINLength;
     SmileAuthenticator.sharedInstance.tintColor = [ForstaColors blackColor];
     SmileAuthenticator.sharedInstance.rootVC = self.window.rootViewController;
-    // Allow us to control 
-//    [[NSNotificationCenter defaultCenter] removeObserver:SmileAuthenticator.sharedInstance];
 }
 
 /**
@@ -552,6 +548,7 @@ forLocalNotification:(UILocalNotification *)notification
     }
 }
 
+// TODO: return to the privacy settings VC after making changes to auth
 -(void)userTurnPasswordOn
 {
     [Environment.preferences setScreenSecurity:YES];
@@ -562,6 +559,11 @@ forLocalNotification:(UILocalNotification *)notification
 {
     Environment.preferences.requirePINAccess = NO;
 }
+
+//-(void)userChangePassword
+//{
+//
+//}
 
 -(void)userSuccessAuthentication
 {
