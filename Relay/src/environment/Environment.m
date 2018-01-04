@@ -12,6 +12,7 @@
 #import "FLTagMathService.h"
 #import "TSAccountManager.h"
 #import "FLThreadViewController.h"
+#import "SmileAuthenticator.h"
 
 #define isRegisteredUserDefaultString @"isRegistered"
 
@@ -252,7 +253,9 @@ static Environment *environment = nil;
     [vc presentThread:groupThread keyboardOnViewAppearing:YES];
 }
 
-+ (void)resetAppData {
++ (void)resetAppData
+{
+    [SmileAuthenticator clearPassword];
     [[TSStorageManager sharedManager] wipeSignalStorage];
     [Environment.preferences clear];
     [DebugLogger.sharedLogger wipeLogs];

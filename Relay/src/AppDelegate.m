@@ -21,7 +21,7 @@
 #import "OWSIncomingMessageReadObserver.h"
 #import "FLMessageSender.h"
 #import "TSAccountManager.h"
-
+#import "SmileAuthenticator.h"
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
 
@@ -38,13 +38,15 @@ static NSString *const kInitialViewControllerIdentifier = @"UserInitialViewContr
 static NSString *const kURLSchemeSGNLKey                = @"sgnl";
 static NSString *const kURLHostVerifyPrefix             = @"verify";
 
-@interface AppDelegate ()
+@interface AppDelegate () <SmileAuthenticatorDelegate>
 
 @property (nonatomic, strong) UIWindow *screenProtectionWindow;
 @property (nonatomic, strong) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
 @property (nonatomic, strong) OWSStaleNotificationObserver *staleNotificationObserver;
 @property (nonatomic, assign) BOOL hasRootViewController;
 @property (nonatomic, assign) BOOL awaitingVerification;
+
+@property (nonatomic, strong) UIImageView *coverImageView;
 
 @end
 
@@ -91,12 +93,13 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     // Setting up environment
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
 
-    DDLogDebug(@"Init main window and make visible.");
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // TODO: Generate an informational loading view to display here.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
-    self.window.rootViewController = [storyboard instantiateInitialViewController];
-    [self.window makeKeyAndVisible];
+    // Moved this to ensureRootViewController method since this was redundent.
+//    DDLogDebug(@"Init main window and make visible.");
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    // TODO: Generate an informational loading view to display here.
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
+//    self.window.rootViewController = [storyboard instantiateInitialViewController];
+//    [self.window makeKeyAndVisible];
 
     DDLogDebug(@"Navbar appearance setup.");
     // Navbar background color iOS10 bug workaround
@@ -156,9 +159,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
         DDLogInfo(@"Application was launched by tapping a push notification.");
         [self application:application didReceiveRemoteNotification:remoteNotif];
     }
-    
-    DDLogDebug(@"Setup screen protection.");
-    [self prepareScreenProtection];
     
     DDLogDebug(@"didFinishLaunchingWithOptions ends.");
     return YES;
@@ -253,14 +253,26 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         return;
     }
     [self ensureRootViewController];
-    [self removeScreenProtection];
     
     // Refresh local data from CCSM
     if ([TSAccountManager isRegistered]) {
-        [Environment.getCurrent.contactsManager intersectLocalContacts];
+        if (Environment.preferences.requirePINAccess) {
+            if ([SmileAuthenticator hasPassword] && SmileAuthenticator.sharedInstance.isAuthenticated) {
+                [self removeScreenProtection];
+            } else {
+                if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
+                SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
+                [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+                }
+            }
+        } else {
+            [self removeScreenProtection];
+        }
+
         [TSSocketManager becomeActiveFromForeground];
         [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                [Environment.getCurrent.contactsManager intersectLocalContacts];
                 [self refreshUsersStore];
             });
         }
@@ -269,7 +281,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                                                             DDLogDebug(@"Token Refresh failed with error: %@", error.description);
                                                             
                                                             // Determine if this eror should kick the user out:
-                                                            if (error.code >= 400 && error.code < 500) {
+                                                            if (error.code >= 400 && error.code <= 404) {
                                                                 //  Out they go...
                                                                 [TSSocketManager resignActivity];
                                                                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -318,9 +330,17 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([TSAccountManager isRegistered]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [self protectScreen];
-                [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (application.keyWindow.rootViewController.presentedViewController) {
+                    if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
+                        [application.keyWindow.rootViewController dismissViewControllerAnimated:NO completion:^{
+                            [self protectScreen];
+                        }];
+                    }
+                } else {
+                    [self protectScreen];
+                }
+                [Environment.getCurrent.forstaViewController updateInboxCountLabel];
             });
             [TSSocketManager resignActivity];
         }
@@ -357,41 +377,39 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 }
 
 /**
- * Screen protection obscures the app screen shown in the app switcher.
+ * MARK: - Screen protection obscures the app screen shown in the app switcher.
  */
-- (void)prepareScreenProtection
+
+-(UIImageView *)coverImageView
 {
-    UIWindow *window = [[UIWindow alloc] initWithFrame:self.window.bounds];
-    window.hidden = YES;
-    window.opaque = YES;
-    window.userInteractionEnabled = NO;
-    window.windowLevel = CGFLOAT_MAX;
-    window.backgroundColor = UIColor.ows_materialBlueColor;
-    window.rootViewController =
-    [[UIStoryboard storyboardWithName:@"Launch Screen" bundle:nil] instantiateInitialViewController];
-    
-    self.screenProtectionWindow = window;
-}
-
-- (void)protectScreen {
-    if (Environment.preferences.screenSecurityIsEnabled) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.screenProtectionWindow.hidden = NO;
-        });
+    if (_coverImageView == nil) {
+        _coverImageView = [[UIImageView alloc]initWithFrame:[self.window bounds]];
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
+        UIImage *image = [UIImage imageNamed:@"forsta_splash.png"];
+        [_coverImageView setImage:image];
+        _coverImageView.alpha = 1.0;
     }
+    return _coverImageView;
 }
 
-- (void)removeScreenProtection {
-    if (Environment.preferences.screenSecurityIsEnabled) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.screenProtectionWindow.hidden = YES;
-        });
-    }
-}
-
--(void)refreshUsersStore
+- (void)protectScreen
 {
-    [CCSMCommManager refreshCCSMData];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.coverImageView.superview) {
+            [self.window.rootViewController.view addSubview:self.coverImageView];
+        }
+        self.coverImageView.alpha = 1.0;
+//    });
+}
+
+- (void)removeScreenProtection
+{
+    if (self.coverImageView.superview) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+            self.coverImageView.alpha = 0.0;
+            [self.coverImageView removeFromSuperview];
+//        });
+    }
 }
 
 #pragma mark - Push Notifications Delegate Methods
@@ -442,14 +460,19 @@ forLocalNotification:(UILocalNotification *)notification
         if ([TSAccountManager isRegistered]) { // Check for local sessionKey
 //            [TSSocketManager becomeActiveFromForeground];
             storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:[NSBundle mainBundle]];
-            self.window.rootViewController = [storyboard instantiateInitialViewController];
-            [self.window makeKeyAndVisible];
         } else { // No local token, login
             storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-            self.window.rootViewController = [storyboard instantiateInitialViewController];
-            [self.window makeKeyAndVisible];
         }
+        self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        self.window.rootViewController = [storyboard instantiateInitialViewController];
+        [self.window makeKeyAndVisible];
     }
+
+    // Setup Authenticator
+    SmileAuthenticator.sharedInstance.delegate = self;
+    SmileAuthenticator.sharedInstance.passcodeDigit = Environment.preferences.PINLength;
+    SmileAuthenticator.sharedInstance.tintColor = [ForstaColors blackColor];
+    SmileAuthenticator.sharedInstance.rootVC = self.window.rootViewController;
 }
 
 /**
@@ -478,6 +501,76 @@ forLocalNotification:(UILocalNotification *)notification
     return NO;
 }
 
+-(void)refreshUsersStore
+{
+    [CCSMCommManager refreshCCSMData];
+}
+
+#pragma mark - Smile Authentication Delegate methods
+-(void)userFailAuthenticationWithCount:(NSInteger)failCount
+{
+    if (failCount > FLMaxAuthFailures) {
+        // TODO: Put a delay of failCount seconds in to make brute force less appealing
+        [SmileAuthenticator.sharedInstance.rootVC dismissViewControllerAnimated:YES completion:^{
+            [self protectScreen];
+            
+            __block NSString *formatString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"FL_SMILE_TOOMANYFAILS_MESSAGE", nil), NSLocalizedString(@"FL_SMILE_FAIL_WAIT_MESSAGE", nil)];
+            __block UIAlertController *failAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                                       message:[NSString stringWithFormat:formatString, FLAuthFailCooldown]
+                                                                                preferredStyle:UIAlertControllerStyleAlert];
+            __block UIAlertAction *tryAgain = [UIAlertAction actionWithTitle:@"Try Again"
+                                                                       style:UIAlertActionStyleDefault
+                                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                                         SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
+                                                                         [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+                                                                     }];
+            tryAgain.enabled = NO;
+//            [failAlert addAction:tryAgain];
+            [self.window.rootViewController presentViewController:failAlert
+                                                         animated:YES
+                                                       completion:^{
+                                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                               for (NSInteger i = FLAuthFailCooldown; i >= 0 ; i--) {
+                                                                   //Here your non-main thread.
+                                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                                       //Here you return to main thread.
+                                                                       failAlert.message = [NSString stringWithFormat:formatString, i];
+                                                                   });
+                                                                   [NSThread sleepForTimeInterval:1.0f];
+                                                               }
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   failAlert.message = NSLocalizedString(@"FL_SMILE_TOOMANYFAILS_MESSAGE", nil);
+                                                                   [failAlert addAction:tryAgain];
+                                                                   tryAgain.enabled = YES;
+                                                               });
+                                                           });
+                                                       }];
+        }];
+    }
+}
+
+// TODO: return to the privacy settings VC after making changes to auth
+-(void)userTurnPasswordOn
+{
+    [Environment.preferences setScreenSecurity:YES];
+    Environment.preferences.requirePINAccess = YES;
+}
+
+-(void)userTurnPasswordOff
+{
+    Environment.preferences.requirePINAccess = NO;
+}
+
+//-(void)userChangePassword
+//{
+//
+//}
+
+-(void)userSuccessAuthentication
+{
+    [self removeScreenProtection];
+}
+
 #pragma mark - Crashlytics
 -(NSString *)fabricAPIKey
 {
@@ -489,6 +582,7 @@ forLocalNotification:(UILocalNotification *)notification
         NSDictionary *fabricDict = [forstaDict objectForKey:@"Fabric"];
         return [fabricDict objectForKey:@"APIKey"];
     } else {
+        DDLogDebug(@"Fabric API key not found!");
         return @"";
     }
 }
