@@ -24,6 +24,7 @@ abstract_target 'Common' do
     pod 'TwistedOakCollapsingFutures', '~> 1.0.0', :inhibit_warnings => true
     pod 'UIImageView+Extension',       '~> 0.2.5.1', :inhibit_warnings => true
     pod 'SmileTouchID'
+    pod 'NSAttributedString-DDHTML', git: 'git@github.com:ForstaLabs/NSAttributedString-DDHTML.git', branch: 'master'
     
     target 'Relay' do
     end
