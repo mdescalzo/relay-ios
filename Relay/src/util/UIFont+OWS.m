@@ -31,6 +31,11 @@
     return [UIFont boldSystemFontOfSize:size];
 }
 
++(UIFont *)ows_italicFontWithSize:(CGFloat)size
+{
+    return [UIFont italicSystemFontOfSize:size];
+}
+
 #pragma mark Dynamic Type
 
 + (UIFont *)ows_dynamicTypeBodyFont {
