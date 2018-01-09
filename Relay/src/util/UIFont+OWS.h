@@ -20,6 +20,8 @@
 
 + (UIFont *)ows_boldFontWithSize:(CGFloat)size;
 
++(UIFont *)ows_italicFontWithSize:(CGFloat)size;
+
 
 #pragma mark Dynamic Type
 
