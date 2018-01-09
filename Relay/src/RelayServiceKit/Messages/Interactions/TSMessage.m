@@ -337,14 +337,12 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                         htmlString = [htmlString substringToIndex:htmlString.length-4];
                     }
                 }
-                
                 _attributedTextBody = [NSAttributedString attributedStringFromHTML:htmlString
                                                                         normalFont:[UIFont ows_regularFontWithSize:FLMessageViewFontSize]
                                                                           boldFont:[UIFont ows_boldFontWithSize:FLMessageViewFontSize]
                                                                         italicFont:[UIFont ows_italicFontWithSize:FLMessageViewFontSize]];
             }
         }
-        
         // Couldn't part the html string so fall back to plain
         if (_attributedTextBody.length == 0 && self.plainTextBody.length > 0) {
             _attributedTextBody = [NSAttributedString attributedStringFromHTML:self.plainTextBody
@@ -352,11 +350,12 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                                                                       boldFont:[UIFont ows_boldFontWithSize:FLMessageViewFontSize]
                                                                     italicFont:[UIFont ows_italicFontWithSize:FLMessageViewFontSize]];
         }
-        
         // hack to deal with appended newline on attributedStrings
-        NSString *lastChar = [_attributedTextBody.string substringWithRange:NSMakeRange(_attributedTextBody.string.length-1, 1)];
-        if ([lastChar isEqualToString:[NSString stringWithFormat:@"\n"]]) {
-            _attributedTextBody = [_attributedTextBody attributedSubstringFromRange:NSMakeRange(0, _attributedTextBody.string.length-1)];
+        if (_attributedTextBody.length > 0) {
+            NSString *lastChar = [_attributedTextBody.string substringFromIndex:_attributedTextBody.string.length-1];
+            if ([lastChar isEqualToString:[NSString stringWithFormat:@"\n"]]) {
+                _attributedTextBody = [_attributedTextBody attributedSubstringFromRange:NSMakeRange(0, _attributedTextBody.string.length-1)];
+            }
         }
     }
     return _attributedTextBody;
