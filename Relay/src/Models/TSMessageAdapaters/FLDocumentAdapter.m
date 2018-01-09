@@ -71,7 +71,7 @@ static const CGFloat insetFactor = 0.45f;
     if (self.isOutgoing) {
         return [[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey];
     } else {
-        return [UIColor jsq_messageBubbleLightGrayColor];
+        return [[ForstaColors incomingBubbleColors] objectForKey:self.prefs.incomingBubbleColorKey];
     }
 
 }
