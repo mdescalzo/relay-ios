@@ -462,6 +462,7 @@ forLocalNotification:(UILocalNotification *)notification
     // Setup Authenticator
     SmileAuthenticator.sharedInstance.delegate = self;
     SmileAuthenticator.sharedInstance.passcodeDigit = Environment.preferences.PINLength;
+    SmileAuthenticator.sharedInstance.backgroundImage = [UIImage imageNamed:@"invertedMetalBackgroundNologo"];
     SmileAuthenticator.sharedInstance.tintColor = [ForstaColors blackColor];
     SmileAuthenticator.sharedInstance.rootVC = self.window.rootViewController;
 }
