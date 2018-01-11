@@ -4474,6 +4474,9 @@
 						DevelopmentTeam = THHR8L4QV3;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -4485,6 +4488,9 @@
 					7DCFFD621F0EE4490003CD95 = {
 						DevelopmentTeam = THHR8L4QV3;
 						SystemCapabilities = {
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -4502,7 +4508,7 @@
 								enabled = 1;
 							};
 							com.apple.DataProtection = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.InAppPurchase = {
 								enabled = 0;
