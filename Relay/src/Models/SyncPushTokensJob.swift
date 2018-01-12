@@ -10,7 +10,7 @@ class SyncPushTokensJob : NSObject {
     let pushManager: PushManager
     let accountManager: AccountManager
     let preferences: PropertyListPreferences
-    var uploadOnlyIfStale = true
+    var uploadOnlyIfStale = false
 
     required init(pushManager: PushManager, accountManager: AccountManager, preferences: PropertyListPreferences) {
         self.pushManager = pushManager

@@ -93,14 +93,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     // Setting up environment
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
 
-    // Moved this to ensureRootViewController method since this was redundent.
-//    DDLogDebug(@"Init main window and make visible.");
-//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    // TODO: Generate an informational loading view to display here.
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
-//    self.window.rootViewController = [storyboard instantiateInitialViewController];
-//    [self.window makeKeyAndVisible];
-
     DDLogDebug(@"Navbar appearance setup.");
     // Navbar background color iOS10 bug workaround
     [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
@@ -114,12 +106,19 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     DDLogDebug(@"TSAccountManager isRegistered called.");
     UIApplicationState launchState = application.applicationState;
     if ([TSAccountManager isRegistered]) {
-        DDLogDebug(@"Pushmanager registers.");
-        [[PushManager sharedManager] registerPushKitNotificationFuture];
-
         DDLogDebug(@"TSAccountManager isRegistered TRUE.");
         [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
         
+        DDLogDebug(@"Begin push registration promise chain.");
+        OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
+        [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
+                                  accountManager:accountManager
+                                     preferences:[Environment preferences]].then(^{
+            DDLogDebug(@"%@ Successfully ran syncPushTokensJob.", self.tag);
+        }).catch(^(NSError *_Nonnull error) {
+            DDLogDebug(@"%@ Failed to run syncPushTokensJob with error: %@", self.tag, error);
+        });
+
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             if (launchState == UIApplicationStateInactive) {
                 DDLogWarn(@"The app was launched from inactive");
@@ -130,16 +129,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
             } else {
                 DDLogWarn(@"The app was launched in an unknown way");
             }
-            
-            OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
-            
-            [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
-                                      accountManager:accountManager
-                                         preferences:[Environment preferences]].then(^{
-                DDLogDebug(@"%@ Successfully ran syncPushTokensJob.", self.tag);
-            }).catch(^(NSError *_Nonnull error) {
-                DDLogDebug(@"%@ Failed to run syncPushTokensJob with error: %@", self.tag, error);
-            });
             
             [TSPreKeyManager refreshPreKeys];
             
@@ -405,18 +394,24 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 #pragma mark - Push Notifications Delegate Methods
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    DDLogDebug(@"Did receive incoming remote rush notification.");
     [[PushManager sharedManager] application:application didReceiveRemoteNotification:userInfo];
 }
+
 - (void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
-fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    DDLogDebug(@"Did receive incoming remote rush notification with completion handler.");
     [[PushManager sharedManager] application:application
                 didReceiveRemoteNotification:userInfo
                       fetchCompletionHandler:completionHandler];
 }
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
     [[PushManager sharedManager] application:application didReceiveLocalNotification:notification];
 }
 
