@@ -326,11 +326,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     TSThread *thread = [self threadForEnvelope:envelope dataMessage:dataMessage];
     
-    NSArray *jsonArray = [self arrayFromMessageBody:dataMessage.body];
-    NSDictionary *jsonPayload;
-    if (jsonArray.count > 0) {
-        jsonPayload = [jsonArray lastObject];
-    }
+    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     
     OWSAttachmentsProcessor *attachmentsProcessor =
@@ -433,7 +429,8 @@ NS_ASSUME_NONNULL_BEGIN
                                 dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        NSString *threadid = [self threadIDFromDataMessage:dataMessage];
+        NSDictionary *messagePayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
+        NSString *threadid = [messagePayload objectForKey:@"threadId"];
         TSThread *thread = [TSThread getOrCreateThreadWithID:threadid transaction:transaction];
         uint64_t timeStamp = endSessionEnvelope.timestamp;
         
@@ -490,12 +487,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
     //  Catch incoming messages and process the new way.
-    NSArray *jsonArray = [self arrayFromMessageBody:dataMessage.body];
-    __block NSDictionary *jsonPayload;
-    if (jsonArray.count > 0) {
-        DDLogDebug(@"JSON Payload received.");
-        jsonPayload = [jsonArray lastObject];
-    }
+    __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     if ([dataBlob allKeys].count == 0) {
@@ -546,7 +538,7 @@ NS_ASSUME_NONNULL_BEGIN
             return nil;
         }
     } else {
-        DDLogDebug(@"Unhandled thread type: %@", [jsonPayload objectForKey:@"threadType"]);
+        DDLogDebug(@"Unhandled message type: %@", [jsonPayload objectForKey:@"messageType"]);
         return nil;
     }
 }
@@ -604,7 +596,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (TSThread *)threadForEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
                     dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
-    NSString *threadId = [self threadIDFromDataMessage:dataMessage];
+    NSDictionary *messagePayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
+    NSString *threadId = [messagePayload objectForKey:@"threadId"];
     return [TSThread getOrCreateThreadWithID:threadId];
 }
 
@@ -897,45 +890,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
 }
-
-#pragma mark - JSON body parsing methods
--(NSString *)threadIDFromDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-{
-    NSArray *tmpArray = [self arrayFromMessageBody:dataMessage.body];
-    if (tmpArray.count == 0) {
-        return nil;
-    } else {
-        NSDictionary *tmpDict = [tmpArray lastObject];
-        return [tmpDict objectForKey:@"threadId"];
-    }
-}
-
--(nullable NSArray *)arrayFromMessageBody:(NSString *)body
-{
-    // Checks passed message body to see if it is JSON,
-    //    If it is, return the array of contents
-    //    else, return nil.
-    if (body.length == 0) {
-        return nil;
-    }
-    
-    NSError *error =  nil;
-    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
-    
-    if (data == nil) { // Not parseable.  Bounce out.
-        return nil;
-    }
-    
-    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    
-    if (error) {
-        DDLogError(@"JSON Parsing error: %@", error.description);
-        return nil;
-    } else {
-        return output;
-    }
-}
-
 
 #pragma mark - Logging
 

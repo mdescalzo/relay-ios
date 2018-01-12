@@ -1795,6 +1795,7 @@ typedef enum : NSUInteger {
                                                  attachmentIds:[NSMutableArray new]];
     }
     message.uniqueId = [[NSUUID UUID] UUIDString];
+    message.messageType = @"content";
     
     // Check to see if a model view is being presented and dismiss if necessary.
     UIViewController *vc = [self.navigationController presentedViewController];
