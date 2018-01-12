@@ -85,68 +85,15 @@
 
 #pragma mark Manage Incoming Push
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    //  NO RED PHONE
-//    if ([self isRedPhonePush:userInfo]) {
-//        ResponderSessionDescriptor *call;
-//        if (![self.notificationTracker shouldProcessNotification:userInfo]) {
-//            return;
-//        }
-//
-//        @try {
-//            call = [ResponderSessionDescriptor responderSessionDescriptorFromEncryptedRemoteNotification:userInfo];
-//            DDLogDebug(@"Received remote notification. Parsed session descriptor: %@.", call);
-//        } @catch (OperationFailed *ex) {
-//            DDLogError(@"Error parsing remote notification. Error: %@.", ex);
-//            return;
-//        }
-//
-//        if (!call) {
-//            DDLogError(@"Decryption of session descriptor failed");
-//            return;
-//        }
-//
-//        [Environment.phoneManager incomingCallWithSession:call];
-//
-//        if (![self applicationIsActive]) {
-//            UILocalNotification *notification = [[UILocalNotification alloc] init];
-//
-//            NSString *callerId   = call.initiatorNumber.toE164;
-//            NSString *displayName = [self.contactsManager nameStringForContactID:callerId];
-//            PropertyListPreferences *prefs = [Environment preferences];
-//
-//            notification.alertBody = @"☎️ ";
-//
-//            if ([prefs notificationPreviewType] == NotificationNoNameNoPreview) {
-//                notification.alertBody =
-//                    [notification.alertBody stringByAppendingString:NSLocalizedString(@"INCOMING_CALL", nil)];
-//            } else {
-//                notification.alertBody = [notification.alertBody
-//                    stringByAppendingString:[NSString stringWithFormat:NSLocalizedString(@"INCOMING_CALL_FROM", nil),
-//                                                                       displayName]];
-//            }
-//
-//            notification.category  = Signal_Call_Category;
-//            notification.soundName = @"r.caf";
-//
-//            [self presentNotification:notification];
-//            _lastCallNotification = notification;
-//
-//            if (_callBackgroundTask == UIBackgroundTaskInvalid) {
-//                _callBackgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-//                  [Environment.phoneManager backgroundTimeExpired];
-//                  [self closeVOIPBackgroundTask];
-//                }];
-//            }
-//        }
-//    } else {
-        if (![self applicationIsActive]) {
-            [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
-        }
-//    }
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    if (![self applicationIsActive]) {
+        [TSSocketManager becomeActiveFromBackgroundExpectMessage:YES];
+    }
 }
 
-- (UILocalNotification *)closeVOIPBackgroundTask {
+- (UILocalNotification *)closeVOIPBackgroundTask
+{
     [[UIApplication sharedApplication] endBackgroundTask:_callBackgroundTask];
     _callBackgroundTask = UIBackgroundTaskInvalid;
 
@@ -164,10 +111,9 @@
 
 - (void)application:(UIApplication *)application
     didReceiveRemoteNotification:(NSDictionary *)userInfo
-          fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-//    if ([self isRedPhonePush:userInfo]) {
-        [self application:application didReceiveRemoteNotification:userInfo];
-//    }
+          fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [self application:application didReceiveRemoteNotification:userInfo];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 20 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
       completionHandler(UIBackgroundFetchResultNewData);
@@ -281,12 +227,15 @@
 - (void)pushRegistry:(PKPushRegistry *)registry
     didUpdatePushCredentials:(PKPushCredentials *)credentials
                      forType:(NSString *)type {
+    DDLogDebug(@"PushKit Credentials updated. Token: %@", [credentials.token ows_tripToken]);
     [[PushManager sharedManager].pushKitNotificationFutureSource trySetResult:[credentials.token ows_tripToken]];
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry
     didReceiveIncomingPushWithPayload:(PKPushPayload *)payload
-                              forType:(NSString *)type {
+                              forType:(NSString *)type
+{
+    DDLogDebug(@"Did receive incoming pushkit notification for type: %@", type);
     [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:payload.dictionaryPayload];
 }
 
@@ -306,11 +255,11 @@
 }
 
 - (BOOL)supportsVOIPPush {
-//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_8_2_0)) {
-//        return YES;
-//    } else {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_8_2_0)) {
+        return YES;
+    } else {
         return NO;
-//    }
+    }
 }
 
 #pragma mark Register device for Push Notification locally
@@ -325,8 +274,8 @@
 
 - (void)requestPushTokenWithSuccess:(pushTokensSuccessBlock)success failure:(failedPushRegistrationBlock)failure
 {
-    // Forcing this to main_queue since Apple require push notification registration to be on the main
-    dispatch_async(dispatch_get_main_queue(), ^{
+//    // Forcing this to main_queue since Apple require push notification registration to be on the main
+//    dispatch_async(dispatch_get_main_queue(), ^{
         if (!self.wantRemoteNotifications) {
             DDLogWarn(@"%@ Using fake push tokens", self.tag);
             success(@"fakePushToken", @"fakeVoipToken");
@@ -351,7 +300,7 @@
         [requestPushTokenFuture catchDo:^(NSError *error) {
             failure(error);
         }];
-    });
+//    });
 }
 
 - (UIUserNotificationCategory *)fullNewMessageNotificationCategory {
