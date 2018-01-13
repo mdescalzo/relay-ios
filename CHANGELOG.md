@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.3.0]
+### Added
+- App-specific privacy PIN/TouchID support.
+### Fixed
+- Malformed attachment messages.  Caused them to be dumped by other clients.
+- Fixed PushKit notifications.  Will name receive messages reliably when app is in background or not running.
+- New users getting kicked back to first login view.
+### Updated
+- Improved html string parser for generated NSAttributedStrings
+
 ## [1.2.0]
 ### Added
 - Conversation pinning.
@@ -51,6 +61,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.3.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.0
 [1.2.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.2.0
 [1.1.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.1
 [1.1.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.0
