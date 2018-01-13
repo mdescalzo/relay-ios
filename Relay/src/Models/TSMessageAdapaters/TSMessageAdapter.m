@@ -98,7 +98,7 @@
     if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
         TSIncomingMessage *message = (TSIncomingMessage *)interaction;
         adapter.senderId           = message.authorId;
-        adapter.senderDisplayName = [contactsManager nameStringForContactID:message.authorId];
+        adapter.senderDisplayName = [contactsManager nameStringForContactId:message.authorId];
         adapter.messageType        = TSIncomingMessageAdapter;
     } else {
         adapter.senderId          = ME_MESSAGE_IDENTIFIER;

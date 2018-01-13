@@ -1036,7 +1036,7 @@ typedef enum : NSUInteger {
     } else if (message.messageType == TSIncomingMessageAdapter) {
         TSIncomingMessage *incomingMessage = (TSIncomingMessage *)message.interaction;
         if (!incomingMessage.hasAnnotation) {
-            NSString *_Nonnull name = [self.contactsManager nameStringForContactID:incomingMessage.authorId];
+            NSString *_Nonnull name = [self.contactsManager nameStringForContactId:incomingMessage.authorId];
             NSAttributedString *senderNameString = [[NSAttributedString alloc] initWithString:name];
             
             return senderNameString;
@@ -1541,7 +1541,7 @@ typedef enum : NSUInteger {
         }
         OWSFingerprint *fingerprint = (OWSFingerprint *)sender;
 
-        NSString *contactName = [self.contactsManager nameStringForContactID:fingerprint.theirStableId];
+        NSString *contactName = [self.contactsManager nameStringForContactId:fingerprint.theirStableId];
         [vc configureWithThread:self.thread fingerprint:fingerprint contactName:contactName];
     } else if ([segue.destinationViewController isKindOfClass:[ConversationSettingsViewController class]]) {
         ConversationSettingsViewController *controller

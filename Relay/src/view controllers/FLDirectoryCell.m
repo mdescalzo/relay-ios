@@ -35,7 +35,7 @@
     self.nameLabel.attributedText = [self attributedStringForContact:recipient];
     self.detailLabel.text = recipient.orgSlug;
     
-    UIImage *avatar = [Environment.getCurrent.contactsManager imageForIdentifier:recipient.uniqueId];
+    UIImage *avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
 
     if (avatar) {
         self.avatarImageView.image = avatar;
@@ -64,7 +64,7 @@
 //    if (aTag.avatar == nil) {
         if (aTag.recipientIds.count == 1) {
             SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:[aTag.recipientIds anyObject]];
-            avatar = [Environment.getCurrent.contactsManager imageForIdentifier:recipient.uniqueId];
+            avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
             if (avatar == nil) {
                 OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                        name:recipient.fullName
