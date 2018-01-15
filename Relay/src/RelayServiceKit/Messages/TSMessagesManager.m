@@ -467,7 +467,7 @@ NS_ASSUME_NONNULL_BEGIN
                                              durationSeconds:OWSDisappearingMessagesConfigurationDefaultExpirationDuration];
     }
     [disappearingMessagesConfiguration save];
-    NSString *name = [self.contactsManager nameStringForContactID:envelope.source];
+    NSString *name = [self.contactsManager nameStringForContactId:envelope.source];
     OWSDisappearingConfigurationUpdateInfoMessage *message =
     [[OWSDisappearingConfigurationUpdateInfoMessage alloc] initWithTimestamp:envelope.timestamp
                                                                       thread:thread
@@ -523,7 +523,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
         } else {
-            DDLogDebug(@"Unhandled control message.");
+            DDLogDebug(@"Unhandled control message of type: %@", controlMessageType);
         }
         return nil;
         
@@ -689,7 +689,7 @@ NS_ASSUME_NONNULL_BEGIN
         // TODO Delay notification by 100ms?
         // It's pretty annoying when you're phone keeps buzzing while you're having a conversation on Desktop.
 
-        NSString *senderName = [Environment.getCurrent.contactsManager nameStringForContactID:envelope.source];
+        NSString *senderName = [Environment.getCurrent.contactsManager nameStringForContactId:envelope.source];
         [[TextSecureKitEnv sharedEnv].notificationsManager notifyUserForIncomingMessage:incomingMessage
                                                                                    from:senderName
                                                                                inThread:thread];

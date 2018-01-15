@@ -442,6 +442,7 @@
 #pragma mark - Refresh methods
 +(void)storeLocalUserDataWithPayload:(NSDictionary *)payload
 {
+    // TODO: Move this to the account manager
     if (payload) {
         NSDictionary *userDict = [payload objectForKey:@"user"];
         NSString *userID = [userDict objectForKey:@"id"];
@@ -457,9 +458,7 @@
         
         [Environment.getCurrent.ccsmStorage setUserInfo:userDict];
         [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict];
-        //        [myself save];
         [TSAccountManager.sharedInstance myself];
-        //        [Environment.getCurrent.contactsManager allRecipients];
         
         [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
         

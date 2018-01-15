@@ -22,13 +22,16 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 @interface FLContactsManager()
 
 @property (strong) YapDatabase *database;
-@property (nonatomic, strong) NSString *dbPath;
+//@property (nonatomic, strong) NSString *dbPath;
 @property (nonatomic, strong) PropertyListPreferences *prefs;
 @property ObservableValueController *observableContactsController;
 @property TOCCancelTokenSource *life;
 @property(atomic, copy) NSDictionary *latestRecipientsById;
 @property (strong, nonatomic) NSMutableArray<SignalRecipient *> *activeRecipientsBacker;
 @property (strong, nonatomic) NSCompoundPredicate *visibleRecipientsPredicate;
+// TODO: Implement these
+//@property (strong) NSCache *recipientCache;
+//@property (strong) NSCache *tagCache;
 
 @end
 
@@ -48,9 +51,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
             return [self databasePassword];
         };
         
-        _database = [[YapDatabase alloc] initWithPath:self.dbPath
-                                              options:options];
+//        _database = [[YapDatabase alloc] initWithPath:self.dbPath
+//                                                                options:options];
+        _database = TSStorageManager.sharedManager.database;
         _backgroundConnection = [self.database newConnection];
+        _backgroundConnection.permittedTransactions = YDB_AnyAsyncTransaction;
         _mainConnection = [self.database newConnection];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -58,10 +63,10 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                                                      name:FLCCSMUsersUpdated
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(processTags)
+                                                 selector:@selector(processTagsBlob)
                                                      name:FLCCSMTagsUpdated
                                                    object:nil];
-
+        
     }
     return self;
 }
@@ -88,29 +93,20 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 #pragma mark - Tag management
--(void)processTags
+-(void)processTagsBlob
 {
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-//        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-//            // Look for badly formed tags and fix them
-//            [[FLTag allObjectsInCollection] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                FLTag *aTag = (FLTag *)obj;
-//                if (aTag.recipientIds.count == 0) {
-//                    DDLogDebug(@"Tag with no recipients found: %@", aTag.displaySlug);
-//                    NSDictionary *results = [FLTagMathService syncTagLookupWithString:[NSString stringWithFormat:@"<%@>", aTag.uniqueId]];
-//                    NSArray *uids = [results objectForKey:@"userids"];
-//                    if (uids.count > 0) {
-//                        DDLogDebug(@"Attempt to restore successful with %ld recipients.", aTag.recipientIds.count);
-//                        aTag.recipientIds = [NSCountedSet setWithArray:uids];
-//                        [aTag saveWithTransaction:transaction];
-//                    } else {
-//                        DDLogDebug(@"Attempt to restore failed.  Removing.");
-//                        [aTag removeWithTransaction:transaction];
-//                    }
-//                }
-//            }];
-//        }];
-//    });
+    __block NSDictionary *tagsBlob = [[Environment getCurrent].ccsmStorage getTags];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            for (NSDictionary *tagDict in [tagsBlob allValues]) {
+                FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
+                if (aTag.recipientIds.count == 0) {
+                    [aTag removeWithTransaction:transaction];
+                }
+            }
+        }];
+    });
 }
 
 #pragma mark - Recipient/Contact management
@@ -142,16 +138,16 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 
 #pragma mark - lazy instantiation
--(NSString *)dbPath
-{
-    if (_dbPath.length == 0) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSURL *fileURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        NSString *path = [fileURL path];
-        _dbPath = [path stringByAppendingFormat:@"/%@", databaseName];
-    }
-    return _dbPath;
-}
+//-(NSString *)dbPath
+//{
+//    if (_dbPath.length == 0) {
+//        NSFileManager *fileManager = [NSFileManager defaultManager];
+//        NSURL *fileURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+//        NSString *path = [fileURL path];
+//        _dbPath = [path stringByAppendingFormat:@"/%@", databaseName];
+//    }
+//    return _dbPath;
+//}
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -185,27 +181,20 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(void)refreshCCSMRecipients
 {
     [CCSMCommManager refreshCCSMData];
-    [self processUsersBlob];
 }
 
 -(void)processUsersBlob
 {
-    NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
+    __block NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
     
     if (usersBlob.count > 0) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-
-        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
-         {
-             for (NSDictionary *userDict in usersBlob.allValues) {
-                 [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
-//                 if (newRecipient.isActive) {
-//                     [newRecipient saveWithTransaction:transaction];
-//                 } else {
-//                     [newRecipient removeWithTransaction:transaction];
-//                 }
-             }
-         }];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
+             {
+                 for (NSDictionary *userDict in usersBlob.allValues) {
+                     [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
+                 }
+             }];
         });
     }
 }
@@ -358,9 +347,9 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     };
 }
 
-- (NSString *)nameStringForContactID:(NSString *)identifier
+-(NSString *_Nullable)nameStringForContactId:(NSString *_Nonnull)uid
 {
-    SignalRecipient *recipient = [self recipientWithUserID:identifier];
+    SignalRecipient *recipient = [self recipientWithUserID:uid];
     if (recipient.fullName) {
         return recipient.fullName;
     } else if (recipient.flTag.displaySlug){
@@ -371,7 +360,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     }
 }
 
--(UIImage *)imageForIdentifier:(NSString *)uid
+-(UIImage *_Nullable)imageForRecipientId:(NSString *_Nonnull)uid
 {
     __block UIImage *returnImage = nil;
     NSString *cacheKey = nil;

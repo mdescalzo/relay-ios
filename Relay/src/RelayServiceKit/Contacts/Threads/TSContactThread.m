@@ -83,7 +83,7 @@
 //
 //- (NSString *)name
 //{
-//    return [[TextSecureKitEnv sharedEnv].contactsManager nameStringForContactID:self.contactIdentifier];
+//    return [[TextSecureKitEnv sharedEnv].contactsManager nameStringForContactId:self.contactIdentifier];
 //}
 //
 //#if TARGET_OS_IPHONE
