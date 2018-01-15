@@ -19,8 +19,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *outputLabel;
 @property (weak, nonatomic) IBOutlet UIButton *crashButton;
 
-@property (nonatomic, strong) FLTagMathService *tagService;
-
 @end
 
 @implementation DeveloperPanelViewController
@@ -32,8 +30,6 @@
     self.outputLabel.text = [NSString stringWithFormat:@"UserID: %@", TSAccountManager.sharedInstance.myself.uniqueId];
     
     self.forstaURLLabel.text = FLHomeURL;
-    
-    [self tagService];
     
     [self updateView];
 }
@@ -60,7 +56,7 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.text.length >= 3) {
-        [FLTagMathService asyncTagLookupWithString:textField.text
+        [CCSMCommManager asyncTagLookupWithString:textField.text
                                      success:^(NSDictionary *results) {
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];
@@ -79,29 +75,6 @@
 -(IBAction)crashTheThings:(id)sender
 {
     [[Crashlytics sharedInstance] crash];
-}
-
-//-(void)successfulLookupWithResults:(NSDictionary *)results
-//{
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        self.outputLabel.text = [NSString stringWithFormat:@"Successful lookup:\n %@", results.description];
-//    });
-//}
-//
-//-(void)failedLookupWithError:(NSError *)error
-//{
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        self.outputLabel.text = [NSString stringWithFormat:@"Failed lookup.  Error code:%ld\n %@", error.code, error.localizedDescription];
-//    });
-//}
-
--(FLTagMathService *)tagService
-{
-    if (_tagService == nil) {
-        _tagService = [FLTagMathService new];
-//        _tagService.delegate = self;
-    }
-    return _tagService;
 }
 
 @end

@@ -19,6 +19,8 @@
 #import "TSStorageManager.h"
 #import "AFNetworking.h"
 
+#define FLTagMathPath @"/v1/directory/user/"
+
 @import Fabric;
 @import Crashlytics;
 
@@ -483,7 +485,7 @@
     
     [self updateAllTheThings:[NSString stringWithFormat:@"%@/v1/user/", FLHomeURL]
                   collection:users
-                 synchronous:YES
+                 synchronous:NO
                      success:^{
                          DDLogDebug(@"Refreshed all users.");
                          [[Environment getCurrent].ccsmStorage setUsers:[NSDictionary dictionaryWithDictionary:users]];
@@ -500,7 +502,7 @@
     
     [self updateAllTheThings:[NSString stringWithFormat:@"%@/v1/tag/", FLHomeURL]
                   collection:tags
-                 synchronous:YES
+                 synchronous:NO
                      success:^{
                          NSMutableDictionary *holdingDict = [NSMutableDictionary new];
                          for (NSString *key in [tags allKeys]) {
@@ -623,7 +625,7 @@
     
 }
 
-#pragma mark - Lookup methods
+#pragma mark - User/recipient Lookup methods
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId
 {
     __block SignalRecipient *recipient = nil;
@@ -727,40 +729,130 @@
                                        completionHandler:^(NSData * _Nullable data,
                                                            NSURLResponse * _Nullable response,
                                                            NSError * _Nullable connectionError) {
-             NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-             DDLogDebug(@"Requst Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
-             DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-             if (connectionError != nil)  // Failed connection
-             {
-                 failureBlock(connectionError);
-             }
-             else if (HTTPresponse.statusCode >= 200 && HTTPresponse.statusCode <= 204) // SUCCESS!
-             {
-                 NSDictionary *result = nil;
-                 if (data.length > 0 && connectionError == nil)
-                 {
-                     result = [NSJSONSerialization JSONObjectWithData:data
-                                                              options:0
-                                                                error:NULL];
-                     CCSMStorage *ccsmStore = [CCSMStorage new];
-                     NSString *userSlug = [result objectForKey:@"username"];
-                     NSDictionary *orgDict = [result objectForKey:@"org"];
-                     NSString *orgSlug = [orgDict objectForKey:@"slug"];
-                     [ccsmStore setOrgName:orgSlug];
-                     [ccsmStore setUserName:userSlug];
-                 }
-                 successBlock();
-             }
-             else  // Connection good, error from server
-             {
-                 NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                                      code:HTTPresponse.statusCode
-                                                  userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-                 failureBlock(error);
-             }
-         }] resume];
+                                           NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                           DDLogDebug(@"Requst Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                           DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                           if (connectionError != nil)  // Failed connection
+                                           {
+                                               failureBlock(connectionError);
+                                           }
+                                           else if (HTTPresponse.statusCode >= 200 && HTTPresponse.statusCode <= 204) // SUCCESS!
+                                           {
+                                               NSDictionary *result = nil;
+                                               if (data.length > 0 && connectionError == nil)
+                                               {
+                                                   result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                            options:0
+                                                                                              error:NULL];
+                                                   CCSMStorage *ccsmStore = [CCSMStorage new];
+                                                   NSString *userSlug = [result objectForKey:@"username"];
+                                                   NSDictionary *orgDict = [result objectForKey:@"org"];
+                                                   NSString *orgSlug = [orgDict objectForKey:@"slug"];
+                                                   [ccsmStore setOrgName:orgSlug];
+                                                   [ccsmStore setUserName:userSlug];
+                                               }
+                                               successBlock();
+                                           }
+                                           else  // Connection good, error from server
+                                           {
+                                               NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                    code:HTTPresponse.statusCode
+                                                                                userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                               failureBlock(error);
+                                           }
+                                       }] resume];
     }
 }
+
+// MARK: - Tag Math lookups
+
++(void)asyncTagLookupWithString:(NSString *_Nonnull)lookupString
+                        success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock
+                        failure:(void (^_Nonnull)(NSError *_Nonnull))failureBlock;
+{
+    NSMutableURLRequest *request = [self tagMathRequestForString:lookupString];
+    
+    [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                   completionHandler:^(NSData * _Nullable data,
+                                                       NSURLResponse * _Nullable response,
+                                                       NSError * _Nullable connectionError) {
+                                       NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                       DDLogDebug(@"TagMath Lookup async - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                       DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                       
+                                       if (connectionError != nil)  // Failed connection
+                                       {
+                                           DDLogDebug(@"Tag Math.  Error: %@", connectionError);
+                                           failureBlock(connectionError);
+                                       }
+                                       else if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                       {
+                                           NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                  options:0
+                                                                                                    error:NULL];
+                                           successBlock(result);
+                                       }
+                                       else  // Connection good, error from server
+                                       {
+                                           NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                code:HTTPresponse.statusCode
+                                                                            userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                           failureBlock(error);
+                                       }
+                                   }] resume];
+}
+
++(NSDictionary *_Nullable)syncTagLookupWithString:(NSString *_Nonnull)lookupString
+{
+    NSMutableURLRequest *request = [self tagMathRequestForString:lookupString];
+    
+    NSHTTPURLResponse *HTTPresponse;
+    NSError *connectionError;
+    NSData *data = [self sendSynchronousRequest:request
+                              returningResponse:&HTTPresponse
+                                          error:&connectionError];
+    
+    DDLogDebug(@"TagMath Lookup sync - Server response code: %ld", (long)HTTPresponse.statusCode);
+    DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+    if (connectionError != nil)  // Failed connection
+    {
+        DDLogDebug(@"Tag Math.  Error: %@", connectionError);
+        return nil;
+    }
+    else if (HTTPresponse.statusCode == 200) // SUCCESS!
+    {
+        return [NSJSONSerialization JSONObjectWithData:data
+                                               options:0
+                                                 error:NULL];
+    }
+    else  // Connection good, error from server
+    {
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:HTTPresponse.statusCode
+                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+        DDLogDebug(@"Tag Math.  Error: %@", error);
+        return nil;
+    }
+}
+
++(NSMutableURLRequest *)tagMathRequestForString:(NSString *)lookupString
+{
+    NSString *sessionToken = [Environment.getCurrent.ccsmStorage getSessionToken];
+    NSString *homeURL = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CCSM_Home_URL"];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?expression=%@", homeURL, FLTagMathPath, lookupString];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    
+    return request;
+}
+
+// MARK: - Helpers
 
 // Source: https://stackoverflow.com/questions/26784315/can-i-somehow-do-a-synchronous-http-request-via-nsurlsession-in-swift#34308158
 + (NSData *)sendSynchronousRequest:(NSURLRequest *)request

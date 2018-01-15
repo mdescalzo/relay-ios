@@ -11,7 +11,6 @@
 #import <25519/Randomness.h>
 #import "NSData+Base64.h"
 #import "Util.h"
-#import "FLTagMathService.h"
 
 static const NSString *const databaseName = @"ForstaContacts.sqlite";
 static NSString *keychainService          = @"TSKeyChainService";

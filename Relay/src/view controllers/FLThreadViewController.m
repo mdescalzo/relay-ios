@@ -58,7 +58,6 @@
 #import <JSQSystemSoundPlayer.h>
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
-#import "FLTagMathService.h"
 #import "FLControlMessage.h"
 #import "OWSDispatch.h"
 
@@ -76,7 +75,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @interface FLThreadViewController ()
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
-@property (nonatomic, strong) FLTagMathService *tagMathService;
 @property (strong, nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
 //@property (nonatomic, readonly) OWSMessageSender *messageSender;
@@ -796,7 +794,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     
     if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
         if (thread.universalExpression.length > 0) {
-            NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
+            NSDictionary *lookupDict = [CCSMCommManager syncTagLookupWithString:thread.universalExpression];
             if (lookupDict) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                     [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
@@ -955,14 +953,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         [_fabButton addTarget:self action:@selector(fabTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _fabButton;
-}
-
--(FLTagMathService *)tagMathService
-{
-    if (_tagMathService == nil) {
-        _tagMathService = [FLTagMathService new];
-    }
-    return _tagMathService;
 }
 
 -(NSSet *)taggedRecipientIDs

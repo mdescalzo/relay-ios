@@ -59,6 +59,14 @@
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock;
+
+// Tag Math lookups
++(void)asyncTagLookupWithString:(NSString *_Nonnull)lookupString
+                        success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock
+                        failure:(void (^_Nonnull)(NSError *_Nonnull))failureBlock;
+
++(NSDictionary *_Nullable)syncTagLookupWithString:(NSString *_Nonnull)lookupString;
+
 @end
 
 #endif /* CCSMCommunication_h */

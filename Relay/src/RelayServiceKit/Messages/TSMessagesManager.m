@@ -31,7 +31,6 @@
 #import <AxolotlKit/AxolotlExceptions.h>
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
-#import "FLTagMathService.h"
 #import "FLCCSMJSONService.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -523,7 +522,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
         } else {
-            DDLogDebug(@"Unhandled control message of type: %@", controlMessageType);
+            DDLogDebug(@"Unhandled control message.");
         }
         return nil;
         
@@ -799,7 +798,7 @@ NS_ASSUME_NONNULL_BEGIN
         // Handle change to participants
         NSString *expression = [threadUpdates objectForKey:@"expression"];
         if (![thread.universalExpression isEqualToString:expression]) {
-            NSDictionary *lookupResults = [FLTagMathService syncTagLookupWithString:expression];
+            NSDictionary *lookupResults = [CCSMCommManager syncTagLookupWithString:expression];
             if (lookupResults) {
                 NSCountedSet *newParticipants = [[NSCountedSet setWithArray:[lookupResults objectForKey:@"userids"]] copy];
                 NSCountedSet *leaving = [[NSCountedSet setWithArray:thread.participants] copy];
