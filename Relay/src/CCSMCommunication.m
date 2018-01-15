@@ -39,9 +39,9 @@
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/login/send/%@/%@/?format=json", FLHomeURL, orgName, userName];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10];
-    NSURLSession *loginSession = [NSURLSession sharedSession];
-    NSURLSessionDataTask *loginTask = [loginSession dataTaskWithRequest:request
-                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError)
+    NSURLSession *sharedSession = NSURLSession.sharedSession;
+    NSURLSessionDataTask *loginTask = [sharedSession dataTaskWithRequest:request
+                                                       completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError)
                                        {
                                            NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
                                            DDLogDebug(@"Request Login - Server response code: %ld", (long)HTTPresponse.statusCode);
@@ -51,7 +51,7 @@
                                            if (data) {  // Grab payload if its there
                                                result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
                                            }
-
+                                           
                                            if (HTTPresponse.statusCode == 200) // SUCCESS!
                                            {
                                                [Environment.getCurrent.ccsmStorage setOrgName:orgName];
@@ -84,8 +84,8 @@
                                            }
                                        }];
     
-    [loginSession flushWithCompletionHandler:^{
-        [loginSession resetWithCompletionHandler:^{
+    [sharedSession flushWithCompletionHandler:^{
+        [sharedSession resetWithCompletionHandler:^{
             [loginTask resume];
         }];
     }];
@@ -96,45 +96,56 @@
            success:(void (^)())successBlock
            failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *orgName = [[Environment getCurrent].ccsmStorage getOrgName];
-    NSString *userName = [[Environment getCurrent].ccsmStorage getUserName];
-    NSString * urlString = [NSString stringWithFormat:@"%@/v1/login/authtoken/", FLHomeURL];
+    // Make URL
+    NSString *orgName = [Environment.getCurrent.ccsmStorage getOrgName];
+    NSString *userName = [Environment.getCurrent.ccsmStorage getUserName];
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/login/authtoken/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    // Make Request
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     NSString *bodyString = [NSString stringWithFormat:@"authtoken=%@:%@:%@", orgName, userName, verificationCode];
     [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                               NSData *data, NSError *connectionError)
-     {
-         
-         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Verify Login - Server response code: %ld", (long)HTTPresponse.statusCode);
-         DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-         if (connectionError != nil)  // Failed connection
-         {
-             failureBlock(connectionError);
-         }
-         else if (HTTPresponse.statusCode == 200) // SUCCESS!
-         {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
-             [self storeLocalUserDataWithPayload:result];
-             
-             successBlock();
-         }
-         else  // Connection good, error from server
-         {
-             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                                  code:HTTPresponse.statusCode
-                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-             failureBlock(error);
-         }
-     }];
+    
+    // Make session/session task
+    NSURLSession *sharedSession = NSURLSession.sharedSession;
+    NSURLSessionTask *validationTask = [sharedSession dataTaskWithRequest:request
+                                                        completionHandler:^(NSData * _Nullable data,
+                                                                            NSURLResponse * _Nullable response,
+                                                                            NSError * _Nullable connectionError) {
+                                                            NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                                            DDLogDebug(@"Verify Login - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                                            DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                                            if (connectionError != nil)  // Failed connection
+                                                            {
+                                                                failureBlock(connectionError);
+                                                            }
+                                                            else if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                                            {
+                                                                NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                       options:0
+                                                                                                                         error:NULL];
+                                                                [self storeLocalUserDataWithPayload:result];
+                                                                
+                                                                successBlock();
+                                                            }
+                                                            else  // Connection good, error from server
+                                                            {
+                                                                NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                                     code:HTTPresponse.statusCode
+                                                                                                 userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                                                failureBlock(error);
+                                                            }
+                                                        }];
+    
+    [sharedSession flushWithCompletionHandler:^{
+        [sharedSession resetWithCompletionHandler:^{
+            [validationTask resume];
+        }];
+    }];
+    
 }
 
 
@@ -152,9 +163,10 @@
     
     NSHTTPURLResponse *HTTPresponse;
     NSError *connectionError;
-    NSData *data = [NSURLConnection sendSynchronousRequest:request
-                                         returningResponse:&HTTPresponse
-                                                     error:&connectionError];
+    
+    NSData *data = [self sendSynchronousRequest:request
+                              returningResponse:&HTTPresponse
+                                          error:&connectionError];
     
     DDLogDebug(@"Refresh Token - Server response code: %ld", (long)HTTPresponse.statusCode);
     DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
@@ -184,63 +196,64 @@
 +(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                                       failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
+    NSString *sessionToken = [Environment.getCurrent.ccsmStorage getSessionToken];
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     NSString *bodyString = [NSString stringWithFormat:@"token=%@", sessionToken];
     [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                               NSData *data, NSError *connectionError)
-     {
-         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Refresh Session Token - Server response code: %ld", (long)HTTPresponse.statusCode);
-         DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-         
-         NSDictionary *result = nil;
-         if (data) {
-             result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-         }
-         
-         if (connectionError != nil)  // Failed connection
-         {
-             failureBlock(connectionError);
-         }
-         else if (HTTPresponse.statusCode == 200) // SUCCESS!
-         {
-             [self storeLocalUserDataWithPayload:result];
-             
-             successBlock();
-         }
-         else  // Connection good, error from server
-         {
-             NSMutableString *errorMessage = [NSMutableString new];
-             if (result) {
-                 NSArray *errorMessages = [result objectForKey:@"non_field_errors"];
-                 for (NSString *message in errorMessages) {
-                     [errorMessage appendString:[NSString stringWithFormat:@"\n%@", message]];
-                 }
-             }
-             
-             NSError *error = nil;
-             if (errorMessage.length == 0) {
-                 error = [NSError errorWithDomain:NSURLErrorDomain
-                                             code:HTTPresponse.statusCode
-                                         userInfo:@{ NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode] }];
-             } else {
-                 error = [NSError errorWithDomain:NSURLErrorDomain
-                                             code:HTTPresponse.statusCode
-                                         userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
-             }
-             
-             failureBlock(error);
-         }
-         
-     }];
+    
+    [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                   completionHandler:^(NSData * _Nullable data,
+                                                       NSURLResponse * _Nullable response,
+                                                       NSError * _Nullable connectionError) {
+                                       NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                       DDLogDebug(@"Refresh Session Token - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                       DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                       
+                                       NSDictionary *result = nil;
+                                       if (data) {
+                                           result = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+                                       }
+                                       
+                                       if (connectionError != nil)  // Failed connection
+                                       {
+                                           failureBlock(connectionError);
+                                       }
+                                       else if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                       {
+                                           [self storeLocalUserDataWithPayload:result];
+                                           
+                                           successBlock();
+                                       }
+                                       else  // Connection good, error from server
+                                       {
+                                           NSMutableString *errorMessage = [NSMutableString new];
+                                           if (result) {
+                                               NSArray *errorMessages = [result objectForKey:@"non_field_errors"];
+                                               for (NSString *message in errorMessages) {
+                                                   [errorMessage appendString:[NSString stringWithFormat:@"\n%@", message]];
+                                               }
+                                           }
+                                           
+                                           NSError *error = nil;
+                                           if (errorMessage.length == 0) {
+                                               error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                           code:HTTPresponse.statusCode
+                                                                       userInfo:@{ NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode] }];
+                                           } else {
+                                               error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                           code:HTTPresponse.statusCode
+                                                                       userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
+                                           }
+                                           
+                                           failureBlock(error);
+                                       }
+                                       
+                                   }] resume];
 }
 
 +(void)updateAllTheThings:(NSString *)urlString
@@ -312,9 +325,10 @@
     
     NSHTTPURLResponse *HTTPresponse;
     NSError *connectionError;
-    NSData *data = [NSURLConnection sendSynchronousRequest:request
-                                         returningResponse:&HTTPresponse
-                                                     error:&connectionError];
+    
+    NSData *data = [self sendSynchronousRequest:(NSURLRequest *)request
+                              returningResponse:&HTTPresponse
+                                          error:&connectionError];
     
     DDLogDebug(@"Get Page - Server response code: %ld", (long)HTTPresponse.statusCode);
     DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
@@ -349,22 +363,21 @@
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                               NSData *data, NSError *connectionError)
-     {
-         if (data.length > 0 && connectionError == nil)
-         {
-             NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                      error:NULL];
-             successBlock(result);
-         }
-         else if (connectionError != nil) {
-             failureBlock(connectionError);
-         }
-     }];
+    
+    [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                   completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
+                                       
+                                       if (data.length > 0 && connectionError == nil)
+                                       {
+                                           NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                  options:0
+                                                                                                    error:NULL];
+                                           successBlock(result);
+                                       }
+                                       else if (connectionError != nil) {
+                                           failureBlock(connectionError);
+                                       }
+                                   }] resume];
 }
 
 
@@ -384,9 +397,9 @@
         
         NSHTTPURLResponse *HTTPresponse;
         NSError *connectionError;
-        NSData *data = [NSURLConnection sendSynchronousRequest:request
-                                             returningResponse:&HTTPresponse
-                                                         error:&connectionError];
+        NSData *data = [self sendSynchronousRequest:request
+                                  returningResponse:&HTTPresponse
+                                              error:&connectionError];
         
         if (connectionError != nil)  // Failed connection
         {
@@ -408,23 +421,21 @@
         }
         
     } else {
-        
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response,
-                                                   NSData *data, NSError *connectionError)
-         {
-             if (data.length > 0 && connectionError == nil)
-             {
-                 NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                        options:0
-                                                                          error:NULL];
-                 successBlock(result);
-             }
-             else if (connectionError != nil) {
-                 failureBlock(connectionError);
-             }
-         }];
+        [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                       completionHandler:^(NSData * _Nullable data,
+                                                           NSURLResponse * _Nullable response,
+                                                           NSError * _Nullable connectionError) {
+                                           if (data.length > 0 && connectionError == nil)
+                                           {
+                                               NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                      options:0
+                                                                                                        error:NULL];
+                                               successBlock(result);
+                                           }
+                                           else if (connectionError != nil) {
+                                               failureBlock(connectionError);
+                                           }
+                                       }] resume];
     }
 }
 
@@ -446,9 +457,9 @@
         
         [Environment.getCurrent.ccsmStorage setUserInfo:userDict];
         [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict];
-//        [myself save];
+        //        [myself save];
         [TSAccountManager.sharedInstance myself];
-//        [Environment.getCurrent.contactsManager allRecipients];
+        //        [Environment.getCurrent.contactsManager allRecipients];
         
         [CrashlyticsKit setUserName:[Environment.getCurrent.ccsmStorage getUserName]];
         
@@ -573,44 +584,43 @@
     NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDict options:0 error:nil];
     [request setHTTPBody:bodyData];
     
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                               NSData *data, NSError *connectionError)
-     {
-         NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-         DDLogDebug(@"Register with TSS - Server response code: %ld", (long)HTTPresponse.statusCode);
-         DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-         if (connectionError != nil)  // Failed connection
-         {
-             failureBlock(connectionError);
-         }
-         else if (HTTPresponse.statusCode == 200) // SUCCESS!
-         {
-             if (data.length > 0 && connectionError == nil)
-             {
-                 NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                        options:0
-                                                                          error:NULL];
-                 DDLogDebug(@"Results: %@", result);
-                 
-                 [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
-                 NSNumber *deviceID = [result objectForKey:@"deviceId"];
-                 [[TSStorageManager sharedManager] storeDeviceId:deviceID];
-                 [TSStorageManager storeServerToken:password signalingKey:signalingKey];
-                 [[TSStorageManager sharedManager] storePhoneNumber:userID];
-                 [TSSocketManager becomeActiveFromForeground];
-                 [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
-             }
-         }
-         else  // Connection good, error from server
-         {
-             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                                  code:HTTPresponse.statusCode
-                                              userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-             failureBlock(error);
-         }
-     }];
+    [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                   completionHandler:^(NSData * _Nullable data,
+                                                       NSURLResponse * _Nullable response,
+                                                       NSError * _Nullable connectionError) {
+                                       NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                       DDLogDebug(@"Register with TSS - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                       DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                       if (connectionError != nil)  // Failed connection
+                                       {
+                                           failureBlock(connectionError);
+                                       }
+                                       else if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                       {
+                                           if (data.length > 0 && connectionError == nil)
+                                           {
+                                               NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                      options:0
+                                                                                                        error:NULL];
+                                               DDLogDebug(@"Results: %@", result);
+                                               
+                                               [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
+                                               NSNumber *deviceID = [result objectForKey:@"deviceId"];
+                                               [[TSStorageManager sharedManager] storeDeviceId:deviceID];
+                                               [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+                                               [[TSStorageManager sharedManager] storePhoneNumber:userID];
+                                               [TSSocketManager becomeActiveFromForeground];
+                                               [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
+                                           }
+                                       }
+                                       else  // Connection good, error from server
+                                       {
+                                           NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                code:HTTPresponse.statusCode
+                                                                            userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                           failureBlock(error);
+                                       }
+                                   }] resume];
     
 }
 
@@ -629,7 +639,7 @@
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     __block SignalRecipient *recipient = nil;
-
+    
     if (userId) {
         NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, userId];
         [self getThing:url
@@ -714,12 +724,10 @@
         NSData *bodyData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:nil];
         [request setHTTPBody:bodyData];
         
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response,
-                                                   NSData *data, NSError *connectionError)
-         {
-             
+        [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                       completionHandler:^(NSData * _Nullable data,
+                                                           NSURLResponse * _Nullable response,
+                                                           NSError * _Nullable connectionError) {
              NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
              DDLogDebug(@"Requst Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
              DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
@@ -751,8 +759,38 @@
                                                   userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
                  failureBlock(error);
              }
-         }];
+         }] resume];
     }
+}
+
+// Source: https://stackoverflow.com/questions/26784315/can-i-somehow-do-a-synchronous-http-request-via-nsurlsession-in-swift#34308158
++ (NSData *)sendSynchronousRequest:(NSURLRequest *)request
+                 returningResponse:(__autoreleasing NSURLResponse **)responsePtr
+                             error:(__autoreleasing NSError **)errorPtr {
+    dispatch_semaphore_t    sem;
+    __block NSData *        result;
+    
+    result = nil;
+    
+    sem = dispatch_semaphore_create(0);
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request
+                                     completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                         if (errorPtr != NULL) {
+                                             *errorPtr = error;
+                                         }
+                                         if (responsePtr != NULL) {
+                                             *responsePtr = response;
+                                         }
+                                         if (error == nil) {
+                                             result = data;
+                                         }
+                                         dispatch_semaphore_signal(sem);
+                                     }] resume];
+    
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    
+    return result;
 }
 
 #pragma mark - Accessors
