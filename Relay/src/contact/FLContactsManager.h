@@ -12,7 +12,7 @@
 #import <Foundation/Foundation.h>
 #import "PhoneNumber.h"
 
-@interface FLContactsManager : NSObject <ContactsManagerProtocol>
+@interface FLContactsManager : NSObject // <ContactsManagerProtocol>
 
 @property (nonatomic, strong) YapDatabaseConnection * _Nonnull mainConnection;
 @property (strong) YapDatabaseConnection * _Nonnull backgroundConnection;
@@ -23,12 +23,13 @@
 
 + (NSComparator _Nonnull )recipientComparator;
 
--(void)setupDatabase;
 -(ObservableValue *_Nullable)getObservableContacts;
 - (void)doAfterEnvironmentInitSetup;
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
 -(void)refreshRecipients;
+-(UIImage *_Nullable)imageForRecipientId:(NSString *_Nonnull)uid;
+-(NSString *_Nullable)nameStringForContactId:(NSString *_Nonnull)uid;
 
 @end

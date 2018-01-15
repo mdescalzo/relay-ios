@@ -18,7 +18,6 @@
 #define kNumberOfSettings 5
 #endif
 
-#define kLoginInfoIndex 997
 #define kInvitationIndex 0
 #define kLinkedDevicesIndex 1
 #define kSettingsIndex 2
@@ -108,14 +107,6 @@ CGFloat const kRowHeight = 40;
         case kDeveloperConsoleIndex:
         {
             cell.textLabel.text = NSLocalizedString(@"Debug Dashboard", @"");
-        }
-            break;
-        case kLoginInfoIndex:
-        {
-            SignalRecipient *myself = TSAccountManager.sharedInstance.myself;
-            cell.textLabel.textColor = [ForstaColors mediumDarkBlue2];
-            cell.textLabel.adjustsFontSizeToFitWidth= YES;
-            cell.textLabel.text = [NSString stringWithFormat:@"%@@%@:%@", NSLocalizedString(@"Logged In As: ", @""), myself.flTag.slug, myself.orgSlug];
         }
             break;
         default:

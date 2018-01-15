@@ -244,7 +244,7 @@ static const NSString *FLExpressionKey = @"expression";
         if ([[self.participants lastObject] isEqualToString:myID]) {
             return NSLocalizedString(@"ME_STRING", @"");
         } else {
-            return [[TextSecureKitEnv sharedEnv].contactsManager nameStringForContactID:[self.participants lastObject]];
+            return [[TextSecureKitEnv sharedEnv].contactsManager nameStringForContactId:[self.participants lastObject]];
         }
     } else if (self.participants.count == 2 && [self.participants containsObject:myID]) {
         NSString *userID = nil;
@@ -253,7 +253,7 @@ static const NSString *FLExpressionKey = @"expression";
                 userID = uid;
             }
         }
-        return [[TextSecureKitEnv sharedEnv].contactsManager nameStringForContactID:userID];
+        return [[TextSecureKitEnv sharedEnv].contactsManager nameStringForContactId:userID];
     } else if (self.prettyExpression) {  // Conversation with "group"
         return self.prettyExpression;
     } else {
@@ -281,7 +281,7 @@ static const NSString *FLExpressionKey = @"expression";
                 break;
             case 1:
             {
-                return [Environment.getCurrent.contactsManager imageForIdentifier:self.participants.lastObject];
+                return [Environment.getCurrent.contactsManager imageForRecipientId:self.participants.lastObject];
             }
                 break;
             case 2:
@@ -292,7 +292,7 @@ static const NSString *FLExpressionKey = @"expression";
                         otherId = uid;
                     }
                 }
-                return [Environment.getCurrent.contactsManager imageForIdentifier:otherId];
+                return [Environment.getCurrent.contactsManager imageForRecipientId:otherId];
             }
                 break;
             default:

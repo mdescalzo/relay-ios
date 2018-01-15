@@ -124,7 +124,6 @@ NS_ASSUME_NONNULL_BEGIN
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
     recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
     recipient.isMonitor = ([(NSNumber *)[userDict objectForKey:@"is_monitor"] intValue] == 1 ? YES : NO);
-    recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
     
     NSDictionary *orgDict = [userDict objectForKey:@"org"];
     if (orgDict) {
@@ -144,6 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (recipient.flTag.orgSlug.length == 0) {
             recipient.flTag.orgSlug = recipient.orgSlug;
         }
+        [recipient.flTag saveWithTransaction:transaction];
     } else {
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
@@ -222,9 +222,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    if (self.flTag) {
-        [self.flTag saveWithTransaction:transaction];
-    }
+//    if (self.flTag) {
+//        [self.flTag saveWithTransaction:transaction];
+//    }
     [super saveWithTransaction:transaction];
 }
 
