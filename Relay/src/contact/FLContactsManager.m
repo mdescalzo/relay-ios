@@ -54,7 +54,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 //                                                                options:options];
         _database = TSStorageManager.sharedManager.database;
         _backgroundConnection = [self.database newConnection];
-        _backgroundConnection.permittedTransactions = YDB_AnyAsyncTransaction;
         _mainConnection = [self.database newConnection];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
