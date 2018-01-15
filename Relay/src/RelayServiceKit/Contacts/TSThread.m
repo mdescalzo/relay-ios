@@ -10,7 +10,6 @@
 #import "TSStorageManager.h"
 #import "TSAccountManager.h"
 #import "TextSecureKitEnv.h"
-#import "FLTagMathService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -335,7 +334,7 @@ static const NSString *FLExpressionKey = @"expression";
 -(void)updateWithExpression:(NSString *)expression transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     if (expression.length > 0) {
-        NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:expression];
+        NSDictionary *lookupDict = [CCSMCommManager syncTagLookupWithString:expression];
         if (lookupDict) {
             self.participants = [lookupDict objectForKey:@"userids"];
             self.prettyExpression = [lookupDict objectForKey:@"pretty"];

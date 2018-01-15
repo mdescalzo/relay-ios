@@ -11,7 +11,6 @@
 #import <25519/Randomness.h>
 #import "NSData+Base64.h"
 #import "Util.h"
-#import "FLTagMathService.h"
 
 static const NSString *const databaseName = @"ForstaContacts.sqlite";
 static NSString *keychainService          = @"TSKeyChainService";
@@ -55,7 +54,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 //                                                                options:options];
         _database = TSStorageManager.sharedManager.database;
         _backgroundConnection = [self.database newConnection];
-        _backgroundConnection.permittedTransactions = YDB_AnyAsyncTransaction;
         _mainConnection = [self.database newConnection];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
