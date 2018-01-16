@@ -370,13 +370,6 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
     }];
 }
 
--(void)refreshRecipients
-{
-    _allRecipients = nil;
-    [self allRecipients];
-}
-
-
 + (BOOL)name:(NSString *)nameString matchesQuery:(NSString *)queryString {
     NSCharacterSet *whitespaceSet = NSCharacterSet.whitespaceCharacterSet;
     NSArray *queryStrings         = [queryString componentsSeparatedByCharactersInSet:whitespaceSet];

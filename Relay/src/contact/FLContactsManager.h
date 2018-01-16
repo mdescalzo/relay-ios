@@ -29,7 +29,8 @@
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
 
--(void)refreshRecipients;
+-(void)refreshCCSMRecipients;
+
 -(UIImage *_Nullable)imageForRecipientId:(NSString *_Nonnull)uid;
 -(NSString *_Nullable)nameStringForContactId:(NSString *_Nonnull)uid;
 
