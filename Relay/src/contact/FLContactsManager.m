@@ -216,7 +216,6 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
     [aTag removeWithTransaction:transaction];
 }
 
-#pragma mark - lazy instantiation
 //-(NSString *)dbPath
 //{
 //    if (_dbPath.length == 0) {
@@ -259,6 +258,8 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 #pragma mark - Setup
 -(void)refreshCCSMRecipients
 {
+    [self.recipientCache removeAllObjects];
+    [self.tagCache removeAllObjects];
     [CCSMCommManager refreshCCSMData];
 }
 
@@ -266,6 +267,12 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
     if (recipients) {
         self.latestRecipientsById = [FLContactsManager keyRecipientsById:recipients];
     }
+}
+
+-(void)nukeAndPave
+{
+    [self.recipientCache removeAllObjects];
+    [self.tagCache removeAllObjects];
 }
 
 #pragma mark - Observables

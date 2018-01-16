@@ -43,4 +43,6 @@
 -(void)removeTag:(FLTag *_Nonnull)recipient;
 -(void)removeTag:(FLTag *_Nonnull)recipient withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
 
+-(void)nukeAndPave;
+
 @end
