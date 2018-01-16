@@ -72,7 +72,7 @@
                                                                                                    diameter:self.contentView.frame.size.height];
                 avatar = [avatarBuilder buildDefaultImage];
                 recipient.avatar = avatar;
-                [recipient save];
+                [Environment.getCurrent.contactsManager saveRecipient:recipient];
             }
         } else {
             OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:aTag.uniqueId

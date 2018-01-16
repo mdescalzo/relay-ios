@@ -805,8 +805,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [leaving minusSet:newParticipants];
                 for (NSString *uid in leaving) {
                     NSString *customMessage = nil;
-                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid withTransaction:transaction];
-                    [recipient saveWithTransaction:transaction];
+                    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
                     
                     if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
                         customMessage = NSLocalizedString(@"GROUP_YOU_LEFT", nil);
@@ -825,8 +824,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
                 for (NSString *uid in joining) {
                     NSString *customMessage = nil;
-                    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid withTransaction:transaction];
-                    [recipient saveWithTransaction:transaction];
+                    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
 
                     if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
                         customMessage = NSLocalizedString(@"GROUP_YOU_JOINED", nil);
