@@ -221,9 +221,34 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
 }
 
 #pragma mark - Accessors
-/** Checks for self.forstaPayload are implementation of the settings within the json payload
- *   moving away from signals
- */
+-(BOOL)isGiphy
+{
+    NSString *htmlString = [self htmlBodyStringFromPayload];
+    if ([htmlString containsString:@"f-type=\"giphy\""] && self.giphyURLString.length > 0) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+-(NSString *)giphyURLString
+{
+    if (_giphyURLString.length == 0) {
+        NSString *htmlString = [self htmlBodyStringFromPayload];
+
+        // SOURCE: https://stackoverflow.com/questions/6038061/regular-expression-to-find-urls-within-a-string
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\"(ftp:\\/\\/|www\\.|https?:\\/\\/){1}[a-zA-Z0-9u00a1-\\uffff0-]{2,}\\.[a-zA-Z0-9u00a1-\\uffff0-]{2,}(\\S*)\""
+                                                                               options:(NSRegularExpressionCaseInsensitive | NSRegularExpressionAnchorsMatchLines)
+                                                                                 error:nil];
+        NSArray *matches = [regex matchesInString:htmlString options:0 range:NSMakeRange(0, htmlString.length)];
+        for (NSTextCheckingResult *result in matches) {
+            _giphyURLString = [htmlString substringWithRange:result.range];
+            _giphyURLString = [_giphyURLString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
+        }
+    }
+    return _giphyURLString;
+}
+
 -(NSArray *)attachmentProperties
 {
     return [[self forstaPayload] objectForKey:@"attachments"];
