@@ -296,28 +296,28 @@ NS_ASSUME_NONNULL_BEGIN
                                         dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
     DDLogDebug(@"%@ Avatar update received!.  Unsupported until control message implementation.", self.tag);
-//    TSGroupThread *groupThread = [TSGroupThread getOrCreateThreadWithGroupIdData:dataMessage.group.id];
-//    OWSAttachmentsProcessor *attachmentsProcessor =
-//    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:@[ dataMessage.group.avatar ]
-//                                                    timestamp:envelope.timestamp
-//                                                        relay:envelope.relay
-//                                                       thread:groupThread
-//                                               networkManager:self.networkManager];
-//    
-//    if (!attachmentsProcessor.hasSupportedAttachments) {
-//        DDLogWarn(@"%@ received unsupported group avatar envelope", self.tag);
-//        return;
-//    }
-//    [attachmentsProcessor fetchAttachmentsForMessage:nil
-//                                             success:^(TSAttachmentStream *_Nonnull attachmentStream) {
-//                                                 [groupThread updateAvatarWithAttachmentStream:attachmentStream];
-//                                             }
-//                                             failure:^(NSError *_Nonnull error) {
-//                                                 DDLogError(@"%@ failed to fetch attachments for group avatar sent at: %llu. with error: %@",
-//                                                            self.tag,
-//                                                            envelope.timestamp,
-//                                                            error);
-//                                             }];
+    //    TSGroupThread *groupThread = [TSGroupThread getOrCreateThreadWithGroupIdData:dataMessage.group.id];
+    //    OWSAttachmentsProcessor *attachmentsProcessor =
+    //    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:@[ dataMessage.group.avatar ]
+    //                                                    timestamp:envelope.timestamp
+    //                                                        relay:envelope.relay
+    //                                                       thread:groupThread
+    //                                               networkManager:self.networkManager];
+    //
+    //    if (!attachmentsProcessor.hasSupportedAttachments) {
+    //        DDLogWarn(@"%@ received unsupported group avatar envelope", self.tag);
+    //        return;
+    //    }
+    //    [attachmentsProcessor fetchAttachmentsForMessage:nil
+    //                                             success:^(TSAttachmentStream *_Nonnull attachmentStream) {
+    //                                                 [groupThread updateAvatarWithAttachmentStream:attachmentStream];
+    //                                             }
+    //                                             failure:^(NSError *_Nonnull error) {
+    //                                                 DDLogError(@"%@ failed to fetch attachments for group avatar sent at: %llu. with error: %@",
+    //                                                            self.tag,
+    //                                                            envelope.timestamp,
+    //                                                            error);
+    //                                             }];
 }
 
 - (void)handleReceivedMediaWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
@@ -369,11 +369,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                networkManager:self.networkManager];
         
         if ([self isDataMessageGroupAvatarUpdate:syncMessage.sent.message]) {
-//            [recordJob runWithAttachmentHandler:^(TSAttachmentStream *_Nonnull attachmentStream) {
-//                TSGroupThread *groupThread =
-//                [TSGroupThread getOrCreateThreadWithGroupIdData:syncMessage.sent.message.group.id];
-//                [groupThread updateAvatarWithAttachmentStream:attachmentStream];
-//            }];
+            //            [recordJob runWithAttachmentHandler:^(TSAttachmentStream *_Nonnull attachmentStream) {
+            //                TSGroupThread *groupThread =
+            //                [TSGroupThread getOrCreateThreadWithGroupIdData:syncMessage.sent.message.group.id];
+            //                [groupThread updateAvatarWithAttachmentStream:attachmentStream];
+            //            }];
         } else {
             [recordJob runWithAttachmentHandler:^(TSAttachmentStream *_Nonnull attachmentStream) {
                 DDLogDebug(@"%@ successfully fetched transcript attachment: %@", self.tag, attachmentStream);
@@ -381,37 +381,37 @@ NS_ASSUME_NONNULL_BEGIN
         }
     } else if (syncMessage.hasRequest) {
         DDLogDebug(@"%@ Unhandled sync message received.  syncMessage.hasRequest.", self.tag);
-//        if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeContacts) {
-//            DDLogInfo(@"%@ Received request `Contacts` syncMessage.", self.tag);
-//            
-//            OWSSyncContactsMessage *syncContactsMessage =
-//            [[OWSSyncContactsMessage alloc] initWithContactsManager:self.contactsManager];
-//            
-//            [self.messageSender sendTemporaryAttachmentData:[syncContactsMessage buildPlainTextAttachmentData]
-//                                                contentType:OWSMimeTypeApplicationOctetStream
-//                                                  inMessage:syncContactsMessage
-//                                                    success:^{
-//                                                        DDLogInfo(@"%@ Successfully sent Contacts response syncMessage.", self.tag);
-//                                                    }
-//                                                    failure:^(NSError *error) {
-//                                                        DDLogError(@"%@ Failed to send Contacts response syncMessage with error: %@", self.tag, error);
-//                                                    }];
-//            
-//        } else if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeGroups) {
-//            DDLogInfo(@"%@ Received request `groups` syncMessage.", self.tag);
-//            
-//            OWSSyncGroupsMessage *syncGroupsMessage = [[OWSSyncGroupsMessage alloc] init];
-//            
-//            [self.messageSender sendTemporaryAttachmentData:[syncGroupsMessage buildPlainTextAttachmentData]
-//                                                contentType:OWSMimeTypeApplicationOctetStream
-//                                                  inMessage:syncGroupsMessage
-//                                                    success:^{
-//                                                        DDLogInfo(@"%@ Successfully sent Groups response syncMessage.", self.tag);
-//                                                    }
-//                                                    failure:^(NSError *error) {
-//                                                        DDLogError(@"%@ Failed to send Groups response syncMessage with error: %@", self.tag, error);
-//                                                    }];
-//        }
+        //        if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeContacts) {
+        //            DDLogInfo(@"%@ Received request `Contacts` syncMessage.", self.tag);
+        //
+        //            OWSSyncContactsMessage *syncContactsMessage =
+        //            [[OWSSyncContactsMessage alloc] initWithContactsManager:self.contactsManager];
+        //
+        //            [self.messageSender sendTemporaryAttachmentData:[syncContactsMessage buildPlainTextAttachmentData]
+        //                                                contentType:OWSMimeTypeApplicationOctetStream
+        //                                                  inMessage:syncContactsMessage
+        //                                                    success:^{
+        //                                                        DDLogInfo(@"%@ Successfully sent Contacts response syncMessage.", self.tag);
+        //                                                    }
+        //                                                    failure:^(NSError *error) {
+        //                                                        DDLogError(@"%@ Failed to send Contacts response syncMessage with error: %@", self.tag, error);
+        //                                                    }];
+        //
+        //        } else if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeGroups) {
+        //            DDLogInfo(@"%@ Received request `groups` syncMessage.", self.tag);
+        //
+        //            OWSSyncGroupsMessage *syncGroupsMessage = [[OWSSyncGroupsMessage alloc] init];
+        //
+        //            [self.messageSender sendTemporaryAttachmentData:[syncGroupsMessage buildPlainTextAttachmentData]
+        //                                                contentType:OWSMimeTypeApplicationOctetStream
+        //                                                  inMessage:syncGroupsMessage
+        //                                                    success:^{
+        //                                                        DDLogInfo(@"%@ Successfully sent Groups response syncMessage.", self.tag);
+        //                                                    }
+        //                                                    failure:^(NSError *error) {
+        //                                                        DDLogError(@"%@ Failed to send Groups response syncMessage with error: %@", self.tag, error);
+        //                                                    }];
+        //        }
     } else if (syncMessage.read.count > 0) {
         DDLogInfo(@"%@ Received %ld read receipt(s)", self.tag, (u_long)syncMessage.read.count);
         
@@ -496,8 +496,8 @@ NS_ASSUME_NONNULL_BEGIN
     // Process per messageType
     if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
         NSString *controlMessageType = [dataBlob objectForKey:@"control"];
-        DDLogDebug(@"Control message received: %@", controlMessageType);
-
+        DDLogInfo(@"Control message received: %@", controlMessageType);
+        
         // Conversation update
         if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
             [self handleThreadUpdateControlMessageWithEnvelope:envelope
@@ -666,7 +666,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  inThread:thread
                                                                                  authorId:envelope.source
                                                                               messageBody:@""];
-//            textMessage.forstaPayload = incomingMessage.forstaPayload;
+            //            textMessage.forstaPayload = incomingMessage.forstaPayload;
             textMessage.plainTextBody = incomingMessage.plainTextBody;
             textMessage.expiresInSeconds = dataMessage.expireTimer;
             [textMessage saveWithTransaction:transaction];
@@ -691,11 +691,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   contactsManager:self.contactsManager];
         
         // Update thread
-//        [thread touch];
+        //        [thread touch];
         
         // TODO Delay notification by 100ms?
         // It's pretty annoying when you're phone keeps buzzing while you're having a conversation on Desktop.
-
+        
         NSString *senderName = [Environment.getCurrent.contactsManager nameStringForContactId:envelope.source];
         [[TextSecureKitEnv sharedEnv].notificationsManager notifyUserForIncomingMessage:incomingMessage
                                                                                    from:senderName
@@ -713,28 +713,28 @@ NS_ASSUME_NONNULL_BEGIN
 {
     DDLogDebug(@"Received unhandled threadDelete control message.");
     // Remove the sender from the thread
-//    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-//
-//        SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source withTransaction:transaction];
-//        if (sender) {
-//            TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
-//            if (thread) {
-//                if (sender.flTag.uniqueId) {
-//                    [thread removeParticipants:[NSSet setWithObject:sender.flTag.uniqueId] transaction:transaction];
-//                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
-//                                                                                 inThread:thread
-//                                                                              messageType:TSInfoMessageTypeConversationUpdate
-//                                                                            customMessage:[NSString stringWithFormat:NSLocalizedString(@"GROUP_MEMBER_LEFT", @""), sender.fullName]];
-//                    [infoMessage saveWithTransaction:transaction];
-//                }
-//            }
-//        }
-//    }];
+    //    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    //
+    //        SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source withTransaction:transaction];
+    //        if (sender) {
+    //            TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
+    //            if (thread) {
+    //                if (sender.flTag.uniqueId) {
+    //                    [thread removeParticipants:[NSSet setWithObject:sender.flTag.uniqueId] transaction:transaction];
+    //                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
+    //                                                                                 inThread:thread
+    //                                                                              messageType:TSInfoMessageTypeConversationUpdate
+    //                                                                            customMessage:[NSString stringWithFormat:NSLocalizedString(@"GROUP_MEMBER_LEFT", @""), sender.fullName]];
+    //                    [infoMessage saveWithTransaction:transaction];
+    //                }
+    //            }
+    //        }
+    //    }];
 }
 
 -(void)handleThreadArchiveControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                    withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-                                      attachmentIds:(NSArray<NSString *> *)attachmentIds
+                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
@@ -770,17 +770,17 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     NSDictionary *threadUpdates = [dataBlob objectForKey:@"threadUpdates"];
-
+    
     __block NSString *threadID = [threadUpdates objectForKey:@"threadId"];
     if (threadID.length == 0) {
         threadID = [jsonPayload objectForKey:@"threadId"];
     }
     __block TSThread *thread = nil;
     __block SignalRecipient *sender = [Environment.getCurrent.contactsManager recipientWithUserID:envelope.source];
-
+    
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [TSThread getOrCreateThreadWithID:threadID transaction:transaction];
-
+        
         // Handle thread name change.
         NSString *threadTitle = [threadUpdates objectForKey:@"threadTitle"];
         if (![thread.name isEqualToString:threadTitle]) {
@@ -801,61 +801,65 @@ NS_ASSUME_NONNULL_BEGIN
                                                            messageType:TSInfoMessageTypeConversationUpdate];
             }
             [infoMessage saveWithTransaction:transaction];
+            [thread saveWithTransaction:transaction];
         }
-        
-        // Handle change to participants
-        NSString *expression = [threadUpdates objectForKey:@"expression"];
-        if (![thread.universalExpression isEqualToString:expression]) {
-            NSDictionary *lookupResults = [CCSMCommManager syncTagLookupWithString:expression];
-            if (lookupResults) {
-                NSCountedSet *newParticipants = [[NSCountedSet setWithArray:[lookupResults objectForKey:@"userids"]] copy];
-                NSCountedSet *leaving = [[NSCountedSet setWithArray:thread.participants] copy];
-                [leaving minusSet:newParticipants];
-                for (NSString *uid in leaving) {
-                    NSString *customMessage = nil;
-                    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
-                    
-                    if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
-                        customMessage = NSLocalizedString(@"GROUP_YOU_LEFT", nil);
-                    } else {
-                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
-                        customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
-                    }
-                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                 inThread:thread
-                                                                              messageType:TSInfoMessageTypeConversationUpdate
-                                                                            customMessage:customMessage];
-                    [infoMessage saveWithTransaction:transaction];
-                }
-                
-                NSCountedSet *joining = [newParticipants copy];
-                [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
-                for (NSString *uid in joining) {
-                    NSString *customMessage = nil;
-                    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
-
-                    if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
-                        customMessage = NSLocalizedString(@"GROUP_YOU_JOINED", nil);
-                    } else {
-                        NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
-                        customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
-                    }
-                    
-                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                 inThread:thread
-                                                                              messageType:TSInfoMessageTypeConversationUpdate
-                                                                            customMessage:customMessage];
-                    [infoMessage saveWithTransaction:transaction];
-                }
-             
-                // Update the local thread with the changes.
-                thread.participants = [lookupResults objectForKey:@"userids"];
-                thread.prettyExpression = [lookupResults objectForKey:@"pretty"];
-                thread.universalExpression = [lookupResults objectForKey:@"universal"];
-            }
-        }
-        [thread saveWithTransaction:transaction];
     }];
+    
+    // Handle change to participants
+    NSString *expression = [threadUpdates objectForKey:@"expression"];
+    if (![thread.universalExpression isEqualToString:expression]) {
+        [CCSMCommManager asyncTagLookupWithString:expression success:^(NSDictionary * _Nonnull lookupResults) {
+            if (lookupResults) {
+                [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    NSCountedSet *newParticipants = [[NSCountedSet setWithArray:[lookupResults objectForKey:@"userids"]] copy];
+                    NSCountedSet *leaving = [[NSCountedSet setWithArray:thread.participants] copy];
+                    [leaving minusSet:newParticipants];
+                    for (NSString *uid in leaving) {
+                        NSString *customMessage = nil;
+                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
+                        
+                        if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
+                            customMessage = NSLocalizedString(@"GROUP_YOU_LEFT", nil);
+                        } else {
+                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
+                            customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                        }
+                        [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                         inThread:thread
+                                                      messageType:TSInfoMessageTypeConversationUpdate
+                                                    customMessage:customMessage] saveWithTransaction:transaction];
+                    }
+                    
+                    NSCountedSet *joining = [newParticipants copy];
+                    [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
+                    for (NSString *uid in joining) {
+                        NSString *customMessage = nil;
+                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
+                        
+                        if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
+                            customMessage = NSLocalizedString(@"GROUP_YOU_JOINED", nil);
+                        } else {
+                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
+                            customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                        }
+                        
+                        [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                         inThread:thread
+                                                      messageType:TSInfoMessageTypeConversationUpdate
+                                                    customMessage:customMessage] saveWithTransaction:transaction];
+                    }
+                    
+                    // Update the local thread with the changes.
+                    thread.participants = [lookupResults objectForKey:@"userids"];
+                    thread.prettyExpression = [lookupResults objectForKey:@"pretty"];
+                    thread.universalExpression = [lookupResults objectForKey:@"universal"];
+                    [thread saveWithTransaction:transaction];
+                }];
+            }
+        } failure:^(NSError * _Nonnull error) {
+            DDLogError(@"%@: TagMath lookup failed on thread participation update.  Error: %@", self.tag, error.localizedDescription);
+        }];
+    }
     
     // Handle change to avatar
     //  Must be done outside the transaction block

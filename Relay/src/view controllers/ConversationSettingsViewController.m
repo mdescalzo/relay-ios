@@ -355,37 +355,36 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
 - (void)leaveConversation
 {
     // Throw a threadDelete control message and remove self
-    [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-   FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
-                                                                                           ofType:FLControlMessageThreadUpdateKey];
-    [Environment.getCurrent.messageSender sendMessage:message
-                                              success:^{
-                                                  DDLogInfo(@"%@ Successfully left group.", self.tag);
-                                                  [self.thread.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                                                      TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                                                      inThread:self.thread
-                                                                                                                   messageType:TSInfoMessageTypeConversationQuit];
-                                                      [leavingMessage saveWithTransaction:transaction];
-                                                  } completionBlock:^{
-                                                      [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
+    [self.thread.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
+    } completionBlock:^{
+        FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
+                                                                                   ofType:FLControlMessageThreadUpdateKey];
+        [Environment.getCurrent.messageSender sendMessage:message
+                                                  success:^{
+                                                      DDLogInfo(@"%@ Successfully left group.", self.tag);
+                                                      [self.thread.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                                                          TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                                                          inThread:self.thread
+                                                                                                                       messageType:TSInfoMessageTypeConversationQuit];
+                                                          [leavingMessage saveWithTransaction:transaction];
+                                                      } completionBlock:^{
+                                                          [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
+                                                      }];
+                                                  }
+                                                  failure:^(NSError *error) {
+                                                      DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
+                                                      NSString *alertString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"GROUP_REMOVING_FAILED", @""), error.localizedDescription];
+                                                      UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                     message:alertString
+                                                                                                              preferredStyle:UIAlertControllerStyleAlert];
+                                                      UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                                         style:UIAlertActionStyleDefault
+                                                                                                       handler:^(UIAlertAction *action) {}];
+                                                      [alert addAction:okAction];
+                                                      [self.navigationController presentViewController:alert animated:YES completion:nil];
                                                   }];
-                                                  
-//                                                  [self.thread.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//                                                      [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
-//                                                  }];
-                                              }
-                                              failure:^(NSError *error) {
-                                                  DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);
-                                                  NSString *alertString = [NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"GROUP_REMOVING_FAILED", @""), error.localizedDescription];
-                                                  UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                                                 message:alertString
-                                                                                                          preferredStyle:UIAlertControllerStyleAlert];
-                                                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                                                     style:UIAlertActionStyleDefault
-                                                                                                   handler:^(UIAlertAction *action) {}];
-                                                  [alert addAction:okAction];
-                                                  [self.navigationController presentViewController:alert animated:YES completion:nil];
-                                              }];
+    }];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

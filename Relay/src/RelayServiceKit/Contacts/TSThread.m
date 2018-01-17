@@ -183,7 +183,8 @@ static const NSString *FLExpressionKey = @"expression";
             }
         }
         NSString *newExpression = [NSString stringWithFormat:@"%@-(%@)", self.universalExpression, goingaway];
-        [self updateWithExpression:newExpression transaction:transaction];
+        self.universalExpression = newExpression;
+        [self updateWithExpression:self.universalExpression transaction:transaction];
     }
 }
 
@@ -383,17 +384,6 @@ static const NSString *FLExpressionKey = @"expression";
                                           } failure:^(NSError * _Nonnull error) {
                                               DDLogDebug(@"%@: TagMath query for expression failed.  Error: %@", self.tag, error.localizedDescription);
                                           }];
-        
-//        NSDictionary *lookupDict = [CCSMCommManager syncTagLookupWithString:expression];
-//        if (lookupDict) {
-//            self.participants = [lookupDict objectForKey:@"userids"];
-//            self.prettyExpression = [lookupDict objectForKey:@"pretty"];
-//            self.universalExpression = [lookupDict objectForKey:@"universal"];
-//            if ([lookupDict objectForKey:@"monitorids"]) {
-//                self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
-//            }
-//            [self saveWithTransaction:transaction];
-//        }
     }
 }
 
