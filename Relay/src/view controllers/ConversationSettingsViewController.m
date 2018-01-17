@@ -361,13 +361,18 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
     [Environment.getCurrent.messageSender sendMessage:message
                                               success:^{
                                                   DDLogInfo(@"%@ Successfully left group.", self.tag);
-                                                  [self.thread.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                                  [self.thread.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                                                       TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                                                                                       inThread:self.thread
                                                                                                                    messageType:TSInfoMessageTypeConversationQuit];
                                                       [leavingMessage saveWithTransaction:transaction];
-                                                      [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
+                                                  } completionBlock:^{
+                                                      [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
                                                   }];
+                                                  
+//                                                  [self.thread.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//                                                      [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
+//                                                  }];
                                               }
                                               failure:^(NSError *error) {
                                                   DDLogWarn(@"%@ Failed to leave group with error: %@", self.tag, error);

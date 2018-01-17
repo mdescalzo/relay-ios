@@ -636,9 +636,11 @@ NS_ASSUME_NONNULL_BEGIN
     __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     __block TSIncomingMessage *incomingMessage = nil;
     __block TSThread *thread = nil;
+    __block NSString *threadId = [jsonPayload objectForKey:@"threadId"];
     
+    // getOrCreate a thread and an incomingMessage
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        thread = [TSThread threadWithPayload:jsonPayload transaction:transaction];
+        thread = [TSThread getOrCreateThreadWithID:threadId transaction:transaction];
         
         // Check to see if we already have this message
         incomingMessage = [TSIncomingMessage fetchObjectWithUniqueID:[jsonPayload objectForKey:@"messageId"] transaction:transaction];
@@ -672,6 +674,12 @@ NS_ASSUME_NONNULL_BEGIN
         [incomingMessage saveWithTransaction:transaction];
     }];
     
+    // Ensure the thread is updated in background
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [thread updateWithPayload:jsonPayload];
+        [thread touch];
+    });
+    
     if (incomingMessage && thread) {
         // In case we already have a read receipt for this new message (happens sometimes).
         OWSReadReceiptsProcessor *readReceiptsProcessor =
@@ -683,7 +691,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   contactsManager:self.contactsManager];
         
         // Update thread
-        [thread touch];
+//        [thread touch];
         
         // TODO Delay notification by 100ms?
         // It's pretty annoying when you're phone keeps buzzing while you're having a conversation on Desktop.
