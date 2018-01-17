@@ -160,7 +160,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.refreshControl beginRefreshing];
         [Environment.getCurrent.contactsManager refreshCCSMRecipients];
-        [self.tableView reloadData];
+        [self refreshTableView];
         [self.refreshControl endRefreshing];
     });
 }
