@@ -57,7 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert(self.dataMessage.body, @"SyncDataMessage has no body!");
     if (_thread == nil) {
         if (self.jsonPayload) {
-            _thread = [TSThread threadWithPayload:self.jsonPayload];
+            _thread = [TSThread getOrCreateThreadWithID:[self.jsonPayload objectForKey:@"threadId"]];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [_thread updateWithPayload:self.jsonPayload];
+            });
         } else {
             _thread = nil;
         }

@@ -111,9 +111,9 @@
     
     FLTag *aTag = [self tagForIndexPath:indexPath];
     
-    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    [cell configureCellWithTag:aTag];
-    //    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [cell configureCellWithTag:aTag];
+    });
     
     if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -159,9 +159,8 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.refreshControl beginRefreshing];
-        [CCSMCommManager refreshCCSMData];
-        [Environment.getCurrent.contactsManager refreshRecipients];
-        [self.tableView reloadData];
+        [Environment.getCurrent.contactsManager refreshCCSMRecipients];
+        [self refreshTableView];
         [self.refreshControl endRefreshing];
     });
 }

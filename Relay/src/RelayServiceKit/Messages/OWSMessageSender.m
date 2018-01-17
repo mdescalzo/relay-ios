@@ -396,7 +396,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                        thread:(TSThread *)thread
 {
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [recipient removeWithTransaction:transaction];
+        [Environment.getCurrent.contactsManager removeRecipient:recipient withTransaction:transaction];
         [[TSInfoMessage userNotRegisteredMessageInThread:thread transaction:transaction]
          saveWithTransaction:transaction];
     }];
@@ -456,7 +456,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                      
                                      switch (statuscode) {
                                          case 404: {
-                                             [recipient remove];
+                                             [Environment.getCurrent.contactsManager removeRecipient:recipient];
                                              return failureHandler(OWSErrorMakeNoSuchSignalRecipientError());
                                          }
                                          case 409: {
@@ -562,7 +562,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     [self.networkManager makeRequest:request
                              success:^(NSURLSessionDataTask *task, id responseObject) {
                                  dispatch_async([OWSDispatch sendingQueue], ^{
-                                     [recipient save];
+//                                     [recipient save];
                                      [self handleMessageSentLocally:message];
                                      successHandler();
                                  });
@@ -633,7 +633,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     NSArray *extraDevices = [dictionary objectForKey:@"extraDevices"];
     NSArray *missingDevices = [dictionary objectForKey:@"missingDevices"];
     
-    if (extraDevices && extraDevices.count > 0) {
+    if (extraDevices.count > 0) {
         for (NSNumber *extraDeviceId in extraDevices) {
             [self.storageManager deleteSessionForContact:recipient.uniqueId deviceId:extraDeviceId.intValue];
         }
@@ -641,11 +641,11 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         [recipient removeDevices:[NSSet setWithArray:extraDevices]];
     }
     
-    if (missingDevices && missingDevices.count > 0) {
+    if (missingDevices.count > 0) {
         [recipient addDevices:[NSSet setWithArray:missingDevices]];
     }
     
-    [recipient save];
+    [Environment.getCurrent.contactsManager saveRecipient:recipient];
 }
 
 - (void)handleMessageSentLocally:(TSOutgoingMessage *)message

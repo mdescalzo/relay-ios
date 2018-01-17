@@ -215,7 +215,9 @@ static Environment *environment = nil;
     [SmileAuthenticator clearPassword];
     [[TSStorageManager sharedManager] wipeSignalStorage];
     [Environment.preferences clear];
+    [Environment.getCurrent.contactsManager nukeAndPave];
     [DebugLogger.sharedLogger wipeLogs];
+
     exit(0);
 }
 

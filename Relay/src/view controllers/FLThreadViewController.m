@@ -791,22 +791,26 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }];
     
     // "Heal" any unnamed conversations which may be in the database.
-    
-    if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
-        if (thread.universalExpression.length > 0) {
-            NSDictionary *lookupDict = [CCSMCommManager syncTagLookupWithString:thread.universalExpression];
-            if (lookupDict) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                        thread.participants = [lookupDict objectForKey:@"userids"];
-                        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-                        [thread saveWithTransaction:transaction];
-                    }];
-                });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
+            if (thread.universalExpression.length > 0) {
+                [CCSMCommManager asyncTagLookupWithString:thread.universalExpression
+                                                  success:^(NSDictionary * _Nonnull lookupDict) {
+                                                      if (lookupDict) {
+                                                          [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                                              thread.participants = [lookupDict objectForKey:@"userids"];
+                                                              thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                                                              [thread saveWithTransaction:transaction];
+                                                          }];
+                                                      }
+                                                  } failure:^(NSError * _Nonnull error) {
+                                                      DDLogError(@"%@: TagMath lookup failed for thread repair.  Error: %@", self.tag, error.localizedDescription);
+                                                  }];
             }
         }
-    }
-    
+    });
+
     return thread;
 }
 

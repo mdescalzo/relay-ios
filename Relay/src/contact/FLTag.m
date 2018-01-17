@@ -79,7 +79,7 @@
         aTag.orgSlug = [orgDict objectForKey:FLTagSlugKey];
         aTag.orgUrl = [orgDict objectForKey:FLTagURLKey];
     }
-    [aTag saveWithTransaction:transaction];
+    [Environment.getCurrent.contactsManager saveTag:aTag withTransaction:transaction];
 
     return aTag;
 }
@@ -98,7 +98,7 @@
     FLTag *aTag = [self fetchObjectWithUniqueID:tagId transaction:transaction];
     if (!aTag) {
         aTag = [[FLTag alloc] initWithUniqueId:tagId];
-        [aTag saveWithTransaction:transaction];
+        [Environment.getCurrent.contactsManager saveTag:aTag withTransaction:transaction];
     }
     
     return aTag;
