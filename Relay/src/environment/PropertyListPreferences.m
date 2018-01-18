@@ -98,7 +98,7 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
     id oldObject = [self.prefsCache objectForKey:key];
     if (![oldObject isEqual:value]) {
         [self.prefsCache setObject:value forKey:key];
-        dispatch_async([OWSDispatch storageQueue], ^{
+        dispatch_async([OWSDispatch serialQueue], ^{
             [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                 [transaction setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
             }];
