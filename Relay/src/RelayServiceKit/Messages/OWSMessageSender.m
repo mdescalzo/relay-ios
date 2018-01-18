@@ -209,7 +209,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     NSMutableArray<SignalRecipient *> *recipients = [NSMutableArray new];
     
     for (NSString *recipientId in identifiers) {
-        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:recipientId];
+        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:recipientId];
         
         if (recipient) {
             [recipients addObject:recipient];
@@ -415,7 +415,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     }
     remainingAttempts -= 1;
     
-    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:recipientId];
+    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:recipientId];
     NSMutableOrderedSet *devicesIds = nil;
     if (recipient.devices.count > 0) {
         devicesIds = recipient.devices;

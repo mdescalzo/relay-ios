@@ -373,24 +373,28 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     UIAlertController *validationAlert = [UIAlertController alertControllerWithTitle:nil
                                                                              message:alertMessage
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
-    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
-                                                        style:UIAlertActionStyleDestructive
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                          [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-                                                          FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
-                                                                                                                                     ofType:FLControlMessageThreadUpdateKey];
-                                                          [Environment.getCurrent.messageSender sendControlMessage:message
-                                                                                                      toRecipients:[NSCountedSet setWithArray:thread.participants]
-                                                                                                           success:^{
-                                                                                                               [self deleteThread:thread];
-                                                                                                           }
-                                                                                                           failure:^(NSError *error) {
-                                                                                                               DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
-                                                                                                               [self deleteThread:thread];
-                                                                                                           }];
-                                                      }]];
-    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
-                                                        style:UIAlertActionStyleCancel
+        [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                              [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                                                                  [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
+                                                                  
+                                                              } completionBlock:^{
+                                                                  FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
+                                                                                                                                             ofType:FLControlMessageThreadUpdateKey];
+                                                                  [Environment.getCurrent.messageSender sendControlMessage:message
+                                                                                                              toRecipients:[NSCountedSet setWithArray:thread.participants]
+                                                                                                                   success:^{
+                                                                                                                       [self deleteThread:thread];
+                                                                                                                   }
+                                                                                                                   failure:^(NSError *error) {
+                                                                                                                       DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
+                                                                                                                       [self deleteThread:thread];
+                                                                                                                   }];
+                                                              }];
+                                                          }]];
+        [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
+                                                            style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction * _Nonnull action) {
                                                           //
                                                       }]];
@@ -448,12 +452,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     });
 }
 
-//- (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing
-//{
-//
-//}
-
-
 - (NSNumber *)updateInboxCountLabel
 {
     return [NSNumber numberWithInt:0];
@@ -487,7 +485,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         } else {
             thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:0] + 1];
         }
-        [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [thread saveWithTransaction:transaction];
         }];
     }
@@ -765,7 +763,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         cell = [InboxTableViewCell inboxTableViewCell];
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async([OWSDispatch storageQueue], ^{
         [cell configureWithThread:thread contactsManager:self.contactsManager];
     });
     
@@ -791,8 +789,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }];
     
     // "Heal" any unnamed conversations which may be in the database.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
             if (thread.universalExpression.length > 0) {
                 [CCSMCommManager asyncTagLookupWithString:thread.universalExpression

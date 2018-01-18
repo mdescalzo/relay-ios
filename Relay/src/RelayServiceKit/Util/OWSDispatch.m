@@ -27,6 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
     return queue;
 }
 
++ (dispatch_queue_t)storageQueue
+{
+    static dispatch_once_t onceToken;
+    static dispatch_queue_t queue;
+    dispatch_once(&onceToken, ^{
+        queue = dispatch_queue_create("io.forsta.relay.storageQueue", DISPATCH_QUEUE_SERIAL);
+    });
+    return queue;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
