@@ -765,7 +765,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         cell = [InboxTableViewCell inboxTableViewCell];
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async([OWSDispatch storageQueue], ^{
         [cell configureWithThread:thread contactsManager:self.contactsManager];
     });
     
@@ -791,8 +791,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }];
     
     // "Heal" any unnamed conversations which may be in the database.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
             if (thread.universalExpression.length > 0) {
                 [CCSMCommManager asyncTagLookupWithString:thread.universalExpression

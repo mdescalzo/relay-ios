@@ -205,6 +205,7 @@ typedef enum : NSUInteger {
       [self updateRangeOptionsForPage:self.page];
       [self.collectionView reloadData];
     }];
+    [self.uiDatabaseConnection endLongLivedReadTransaction];
     [self updateLoadEarlierVisible];
 }
 
@@ -586,18 +587,18 @@ typedef enum : NSUInteger {
 
 #pragma mark - Calls
 
-- (SignalRecipient *)signalRecipient {
-    __block SignalRecipient *recipient;
-    [self.editingDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-      recipient = [SignalRecipient recipientWithTextSecureIdentifier:[self phoneNumberForThread].toE164
-                                                     withTransaction:transaction];
-    }];
-    return recipient;
-}
-
-- (BOOL)isTextSecureReachable {
-    return isGroupConversation || [self signalRecipient];
-}
+//- (SignalRecipient *)signalRecipient {
+//    __block SignalRecipient *recipient;
+//    [self.editingDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+//      recipient = [SignalRecipient recipientWithTextSecureIdentifier:[self phoneNumberForThread].toE164
+//                                                     withTransaction:transaction];
+//    }];
+//    return recipient;
+//}
+//
+//- (BOOL)isTextSecureReachable {
+//    return isGroupConversation || [self signalRecipient];
+//}
 
 - (PhoneNumber *)phoneNumberForThread {
     NSString *userid = nil;
@@ -606,7 +607,7 @@ typedef enum : NSUInteger {
             userid = uid;
         }
     }
-    SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
+    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:userid];
     return [PhoneNumber phoneNumberFromUserSpecifiedText:recipient.phoneNumber];
 }
 
@@ -634,7 +635,7 @@ typedef enum : NSUInteger {
                 userid = uid;
             }
         }
-        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
+        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:userid];
         if (recipient.phoneNumber) {
             return YES;
         } else {

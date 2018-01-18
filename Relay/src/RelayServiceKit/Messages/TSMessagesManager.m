@@ -153,7 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
                 }
                 [thread saveWithTransaction:transaction];
             } else {
-                SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source];
+                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:envelope.source];
                 DDLogDebug(@"Received malformed receipt from %@, uid: %@, device %d", recipient.fullName, envelope.source, envelope.sourceDevice);
             }
             [outgoingMessage saveWithTransaction:transaction];

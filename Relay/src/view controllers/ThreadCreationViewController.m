@@ -88,6 +88,7 @@
                                              selector:@selector(refreshTableView)
                                                  name:FLCCSMUsersUpdated
                                                object:nil];
+    // TODO: name:TSUIDatabaseConnectionDidUpdateNotification is incorrect.  Fixing it reveal much larger bug in the yapDatabaseModified: method.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(yapDatabaseModified:)
                                                  name:TSUIDatabaseConnectionDidUpdateNotification
@@ -167,13 +168,12 @@
 
 -(void)refreshTableView
 {
-    [self.uiDbConnection beginLongLivedReadTransaction];
-    [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        [self.tagMappings updateWithTransaction:transaction];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.uiDbConnection beginLongLivedReadTransaction];
+        [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            [self.tagMappings updateWithTransaction:transaction];
+            
             if ([self.tagMappings numberOfItemsInAllGroups] == 0) {
-                //            if (self.searchBar.text.length > 0 && self.searchResults.count == 0) {
                 self.searchInfoContainer.hidden = NO;
                 self.tableView.hidden = YES;
             } else {
@@ -181,9 +181,9 @@
                 self.tableView.hidden = NO;
             }
             [self.tableView reloadData];
-        });
-    }];
-    [self.uiDbConnection endLongLivedReadTransaction];
+        }];
+        [self.uiDbConnection endLongLivedReadTransaction];
+    });
 }
 
 //- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
@@ -306,7 +306,7 @@
     }
     
     [self.tableView endUpdates];
-    
+    [self.uiDbConnection endLongLivedReadTransaction];
 }
 
 #pragma mark - SearchBar delegate methods
@@ -388,12 +388,9 @@
                                               // take this opportunity to store any userids
                                               NSArray *userids = [results objectForKey:@"userids"];
                                               if (userids.count > 0) {
-                                                  [self.uiDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                                                  [self.searchDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                                                       for (NSString *uid in userids) {
-                                                          SignalRecipient *recipient = [SignalRecipient fetchObjectWithUniqueID:uid transaction:transaction];
-                                                          if (recipient == nil) {
-                                                              recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
-                                                          }
+                                                          [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
                                                       }
                                                   } completionBlock:^{
                                                       [self refreshTableView];

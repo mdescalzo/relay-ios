@@ -60,8 +60,8 @@
     
     
     // Get an avatar
-    UIImage *avatar = nil;
-//    if (aTag.avatar == nil) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImage *avatar = nil;
         if (aTag.recipientIds.count == 1) {
             SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:[aTag.recipientIds anyObject]];
             avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
@@ -81,8 +81,6 @@
                                                                                                diameter:self.contentView.frame.size.height];
             avatar = [avatarBuilder buildDefaultImage];
         }
-//    }
-    dispatch_async(dispatch_get_main_queue(), ^{
         self.nameLabel.text = description;
         self.detailLabel.text = orgSlug;
         self.avatarImageView.image = avatar;
