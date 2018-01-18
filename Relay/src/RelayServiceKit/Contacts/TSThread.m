@@ -144,8 +144,6 @@ static const NSString *FLExpressionKey = @"expression";
 
 - (void)removeWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    [super removeWithTransaction:transaction];
-    
     __block NSMutableArray<NSString *> *interactionIds = [[NSMutableArray alloc] init];
     [self enumerateInteractionsWithTransaction:transaction
                                     usingBlock:^(TSInteraction *interaction, YapDatabaseReadTransaction *trans) {
@@ -160,6 +158,7 @@ static const NSString *FLExpressionKey = @"expression";
         TSInteraction *interaction = [TSInteraction fetchObjectWithUniqueID:interactionId transaction:transaction];
         [interaction removeWithTransaction:transaction];
     }
+    [super removeWithTransaction:transaction];
 }
 
 

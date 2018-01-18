@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (dispatch_queue_t)sendingQueue;
 
-+ (dispatch_queue_t)storageQueue;
++ (dispatch_queue_t)serialQueue;
 
 @end
 
