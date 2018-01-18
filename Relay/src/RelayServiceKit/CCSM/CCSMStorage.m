@@ -12,26 +12,6 @@
 
 #import <Foundation/Foundation.h>
 
-//NSDictionary *extractTagsForUsers(NSMutableDictionary *users) {
-//    NSMutableDictionary *tags = [NSMutableDictionary new];
-//    for (id userId in users) {
-//        NSMutableDictionary *user = [users objectForKey:userId];
-//        for (id usertag in [user objectForKey:@"tags"]) {
-//            NSString *associationType = [usertag objectForKey:@"association_type"];
-//            if (![associationType isEqualToString:@"REPORTSTO"]) {
-//                NSMutableDictionary *tag = [usertag objectForKey:@"tag"];
-//                NSString *slug = [tag objectForKey:@"slug"];
-//                if ([tags objectForKey:slug] == nil) {
-//                    [tags setValue:[NSMutableDictionary new] forKey:slug];
-//                }
-//                [[tags objectForKey:slug] setValue:user forKey:userId];
-//            }
-//        }
-//    }
-//    
-//    return [NSDictionary dictionaryWithDictionary:tags];
-//}
-
 @interface CCSMStorage()
 
 @property (strong) YapDatabaseConnection *dbConnection;
@@ -77,7 +57,7 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 {
     ows_require(key != nil);
     
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction setObject:value forKey:key inCollection:CCSMStorageDatabaseCollection];
     }];
 }
@@ -148,8 +128,6 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 - (void)setUsers:(NSMutableDictionary *)value
 {
     [self setValueForKey:CCSMStorageKeyUsers toValue:value];
-//    NSDictionary * tags = [self extractTagsForUsers:value];
-//    [self setTags:tags];
 }
 
 - (nullable NSMutableDictionary *)getUsers
@@ -161,19 +139,6 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 - (void)setTags:(NSDictionary *)value
 {
     [self setValueForKey:CCSMStorageKeyTags toValue:value];
-    // Process the newly received blob
-    //    NSDictionary *tagBlob = [Environment.getCurrent.ccsmStorage getTags];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            [[value allValues] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                NSDictionary *tagDict = (NSDictionary *)obj;
-                FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
-                if (aTag.recipientIds.count == 0) {
-                    [aTag removeWithTransaction:transaction];
-                }
-            }];
-        }];
-    });
 }
 
 - (nullable NSDictionary *)getTags

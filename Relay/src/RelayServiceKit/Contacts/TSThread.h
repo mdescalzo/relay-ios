@@ -176,9 +176,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Get or create thread with thread forsta payload
  */
-+(instancetype)threadWithPayload:(NSDictionary *)payload;
-+(instancetype)threadWithPayload:(NSDictionary *)payload
-                     transaction:(YapDatabaseReadWriteTransaction *)transaction;
+//+(instancetype)threadWithPayload:(NSDictionary *)payload;
+//+(instancetype)threadWithPayload:(NSDictionary *)payload
+//                     transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 /**
  *  Remove participant from thread
@@ -195,7 +195,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Update thread with its expression
  */
 -(void)validate;
--(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+//-(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+
+-(void)updateWithPayload:(NSDictionary *)payload;
 
 @end
 

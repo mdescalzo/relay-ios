@@ -58,7 +58,6 @@
 #import <JSQSystemSoundPlayer.h>
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
-#import "FLTagMathService.h"
 #import "FLControlMessage.h"
 #import "OWSDispatch.h"
 
@@ -76,7 +75,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @interface FLThreadViewController ()
 
 @property (nonatomic, strong) CCSMStorage *ccsmStorage;
-@property (nonatomic, strong) FLTagMathService *tagMathService;
 @property (strong, nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) TSMessagesManager *messagesManager;
 //@property (nonatomic, readonly) OWSMessageSender *messageSender;
@@ -317,13 +315,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *deleteAction =
-    [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
-                                       title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
-                                     handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
-                                         [self tableViewCellTappedDelete:swipedIndexPath];
-                                     }];
-    
     UITableViewRowAction *archiveAction = nil;
     if (self.viewingThreadsIn == kInboxState) {
         UITableViewRowAction *pinAction = nil;
@@ -349,14 +340,23 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                              [self archiveIndexPath:tappedIndexPath];
                              [Environment.preferences setHasArchivedAMessage:YES];
                          }];
-        return @[ archiveAction, pinAction, deleteAction ];
+        archiveAction.backgroundColor = [ForstaColors darkGray];
+        return @[ archiveAction, pinAction ];
     } else {
+        UITableViewRowAction *deleteAction =
+        [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                           title:NSLocalizedString(@"TXT_DELETE_TITLE", nil)
+                                         handler:^(UITableViewRowAction *action, NSIndexPath *swipedIndexPath) {
+                                             [self tableViewCellTappedDelete:swipedIndexPath];
+                                         }];
+        
         archiveAction = [UITableViewRowAction
                          rowActionWithStyle:UITableViewRowActionStyleNormal
                          title:NSLocalizedString(@"UNARCHIVE_ACTION", @"Pressing this button moves an archived thread from the archive back to the inbox")
                          handler:^(UITableViewRowAction *_Nonnull action, NSIndexPath *_Nonnull tappedIndexPath) {
                              [self archiveIndexPath:tappedIndexPath];
                          }];
+        archiveAction.backgroundColor = [ForstaColors darkGray];
         return @[ archiveAction, deleteAction ];
     }
 }
@@ -369,39 +369,38 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)tableViewCellTappedDelete:(NSIndexPath *)indexPath
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-    __block TSThread *thread = [self threadForIndexPath:indexPath];
-    
-    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"DELETE_THREAD_VALIDATION_MESSAGE", nil), thread.displayName];
-    UIAlertController *validationAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:alertMessage
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
-                                                        style:UIAlertActionStyleDestructive
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                          [thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId]];
-                                                          FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
-                                                                                                                                     ofType:FLControlMessageThreadUpdateKey];
-                                                          [Environment.getCurrent.messageSender sendControlMessage:message
-                                                                                                      toRecipients:[NSCountedSet setWithArray:thread.participants]
-                                                                                                           success:^{
-                                                                                                               [self deleteThread:thread];
-                                                                                                           }
-                                                                                                           failure:^(NSError *error) {
-                                                                                                               DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
-                                                                                                               [self deleteThread:thread];
-                                                                                                           }];
-                                                      }]];
-    [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
-                                                        style:UIAlertActionStyleCancel
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                          //
-                                                      }]];
+        __block TSThread *thread = [self threadForIndexPath:indexPath];
+        
+        NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"DELETE_THREAD_VALIDATION_MESSAGE", nil), thread.displayName];
+        UIAlertController *validationAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:alertMessage
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+        [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                              FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
+                                                                                                                                         ofType:FLControlMessageThreadUpdateKey];
+                                                              [Environment.getCurrent.messageSender sendControlMessage:message
+                                                                                                          toRecipients:[NSCountedSet setWithArray:thread.participants]
+                                                                                                               success:^{
+                                                                                                                   [self deleteThread:thread];
+                                                                                                               }
+                                                                                                               failure:^(NSError *error) {
+                                                                                                                   DDLogDebug(@"Failed to delete thread.  Error: %@", error.localizedDescription);
+                                                                                                                   [self deleteThread:thread];
+                                                                                                               }];
+                                                          }]];
+        [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                              //
+                                                          }]];
         [self.navigationController presentViewController:validationAlert animated:YES completion:nil];
     });
 }
 
 - (void)deleteThread:(TSThread *)thread {
-    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [thread removeWithTransaction:transaction];
     }];
     
@@ -450,12 +449,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     });
 }
 
-//- (void)configureForThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing
-//{
-//
-//}
-
-
 - (NSNumber *)updateInboxCountLabel
 {
     return [NSNumber numberWithInt:0];
@@ -482,41 +475,46 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 #pragma mark - helpers
 -(void)togglePinningForThreadAtIndexPath:(NSIndexPath *)indexPath
 {
-    TSThread *thread = [self threadForIndexPath:indexPath];
-    if (thread) {
-        if (thread.pinPosition) {
-            thread.pinPosition = nil;
-        } else {
-            thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:0] + 1];
+    __block TSThread *thread = [self threadForIndexPath:indexPath];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (thread) {
+            if (thread.pinPosition) {
+                thread.pinPosition = nil;
+            } else {
+                thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:0] + 1];
+            }
+            [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                [thread saveWithTransaction:transaction];
+            }];
         }
-        [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-            [thread saveWithTransaction:transaction];
-        }];
-    }
+    });
 }
 
-- (void)archiveIndexPath:(NSIndexPath *)indexPath {
-    TSThread *thread = [self threadForIndexPath:indexPath];
+- (void)archiveIndexPath:(NSIndexPath *)indexPath
+{
+    __block TSThread *thread = [self threadForIndexPath:indexPath];
     
-    BOOL viewingThreadsIn = self.viewingThreadsIn;
-    [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        viewingThreadsIn == kInboxState ? [thread archiveThreadWithTransaction:transaction]
-        : [thread unarchiveThreadWithTransaction:transaction];
-    }];
-    
-    FLControlMessage *controlMessage = nil;
-    if (viewingThreadsIn == kInboxState) {
-        // TODO: Change to FLControlMessageThreadArchiveKey after other clients setup handling for it.
-        controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadCloseKey];
-    } else if (viewingThreadsIn == kArchiveState) {
-        controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadRestoreKey];
-    }
-    if (controlMessage) {
-        dispatch_async([OWSDispatch sendingQueue], ^{
-            [Environment.getCurrent.messageSender sendSyncTranscriptForMessage:controlMessage];
-        });
-    }
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        BOOL viewingThreadsIn = self.viewingThreadsIn;
+        [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            viewingThreadsIn == kInboxState ? [thread archiveThreadWithTransaction:transaction]
+            : [thread unarchiveThreadWithTransaction:transaction];
+        }];
+        
+        FLControlMessage *controlMessage = nil;
+        if (viewingThreadsIn == kInboxState) {
+            controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadArchiveKey];
+        } else if (viewingThreadsIn == kArchiveState) {
+            controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadRestoreKey];
+        }
+        if (controlMessage) {
+            dispatch_async([OWSDispatch sendingQueue], ^{
+                [Environment.getCurrent.messageSender sendSyncTranscriptForMessage:controlMessage];
+            });
+        }
+    });
     //    [self checkIfEmptyView];
 }
 
@@ -599,7 +597,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return _uiDatabaseConnection;
 }
 
-- (void)yapDatabaseModified:(NSNotification *)notification {
+- (void)yapDatabaseModified:(NSNotification *)notification
+{
     NSArray *notifications  = [self.uiDatabaseConnection beginLongLivedReadTransaction];
     NSArray *sectionChanges = nil;
     NSArray *rowChanges     = nil;
@@ -613,7 +612,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     // So we run it before the early return
     [self updateInboxCountLabel];
     
-    if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
+    if (sectionChanges.count == 0 && rowChanges.count == 0) {
         return;
     }
     
@@ -621,79 +620,91 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     
     // Wrapping the table update in order to attach a completion handler in order to
     //   scroll to bottom if necessary.
-    [CATransaction begin];
-    [CATransaction setCompletionBlock:^{
-        if (scrollToBottom) {
-            [self scrollTableViewToBottom];
-        }
-    }];
+    //    [CATransaction begin];
+    //    [CATransaction setCompletionBlock:^{
+    //        if (scrollToBottom) {
+    //            [self scrollTableViewToBottom];
+    //        }
+    //    }];
     
-    [self.tableView beginUpdates];
     
     for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
         switch (sectionChange.type) {
             case YapDatabaseViewChangeDelete: {
+                [self.tableView beginUpdates];
                 [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
                               withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
                 break;
             }
             case YapDatabaseViewChangeInsert: {
+                [self.tableView beginUpdates];
                 [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
                               withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
                 break;
             }
-            case YapDatabaseViewChangeUpdate:
-            case YapDatabaseViewChangeMove:
+            case YapDatabaseViewChangeUpdate: {
+                DDLogDebug(@"Received YapDatabaseViewChangeUpdate on section: %ld", sectionChange.index);
                 break;
+            }
+            case YapDatabaseViewChangeMove: {
+                DDLogDebug(@"Received YapDatabaseViewChangeMove on section: %ld", sectionChange.index);
+                break;
+            }
+            default: {
+                DDLogDebug(@"Received Unknown YapDatabaseViewChange on section: %ld", sectionChange.index);
+                break;
+            }
         }
     }
     
     for (YapDatabaseViewRowChange *rowChange in rowChanges) {
         switch (rowChange.type) {
             case YapDatabaseViewChangeDelete: {
+                [self.tableView beginUpdates];
                 [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
                 _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
-                //                [self.tableView endUpdates];
                 break;
             }
             case YapDatabaseViewChangeInsert: {
+                [self.tableView beginUpdates];
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
                 _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
                 scrollToBottom = YES;
-                //                [self.tableView endUpdates];
-                //                dispatch_async(dispatch_get_main_queue(), ^{
-                //                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                //                });
                 break;
             }
             case YapDatabaseViewChangeMove: {
+                [self.tableView beginUpdates];
                 [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
+                
                 scrollToBottom = YES;
-                //                [self.tableView endUpdates];
-                //                dispatch_async(dispatch_get_main_queue(), ^{
-                //                    [self.tableView scrollToRowAtIndexPath:rowChange.newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                //                });
                 break;
             }
             case YapDatabaseViewChangeUpdate: {
+                [self.tableView beginUpdates];
                 [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationNone];
-                //                [self.tableView endUpdates];
+                [self.tableView endUpdates];
                 break;
             }
             default: {
-                //                [self.tableView endUpdates];
+                DDLogDebug(@"Received Unknown YapDatabaseViewChange on row: %ld", rowChange.indexPath );
+                break;
             }
         }
     }
     
-    [self.tableView endUpdates];
-    [CATransaction commit];
+    //    [self.tableView endUpdates];
+    //    [CATransaction commit];
     
     //    [self checkIfEmptyView];
 }
@@ -767,7 +778,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         cell = [InboxTableViewCell inboxTableViewCell];
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async([OWSDispatch serialQueue], ^{
         [cell configureWithThread:thread contactsManager:self.contactsManager];
     });
     
@@ -792,22 +803,25 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                                                                                  withMappings:self.threadMappings];
     }];
     
-    // "Heal" any unnamed conversations which may be in the database.
-    
-    if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
-        if (thread.universalExpression.length > 0) {
-            NSDictionary *lookupDict = [FLTagMathService syncTagLookupWithString:thread.universalExpression];
-            if (lookupDict) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                        thread.participants = [lookupDict objectForKey:@"userids"];
-                        thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-                        [thread saveWithTransaction:transaction];
-                    }];
-                });
-            }
-        }
-    }
+    //    // "Heal" any unnamed conversations which may be in the database.
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    //        if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
+    //            if (thread.universalExpression.length > 0) {
+    //                [CCSMCommManager asyncTagLookupWithString:thread.universalExpression
+    //                                                  success:^(NSDictionary * _Nonnull lookupDict) {
+    //                                                      if (lookupDict) {
+    //                                                          [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    //                                                              thread.participants = [lookupDict objectForKey:@"userids"];
+    //                                                              thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+    //                                                              [thread saveWithTransaction:transaction];
+    //                                                          }];
+    //                                                      }
+    //                                                  } failure:^(NSError * _Nonnull error) {
+    //                                                      DDLogError(@"%@: TagMath lookup failed for thread repair.  Error: %@", self.tag, error.localizedDescription);
+    //                                                  }];
+    //            }
+    //        }
+    //    });
     
     return thread;
 }
@@ -934,7 +948,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         _fabButton.backgroundColor = [ForstaColors mediumDarkBlue2];
         [_fabButton setImage:[UIImage imageNamed:@"pencil-1"] forState:UIControlStateNormal];
         _fabButton.tintColor = [UIColor whiteColor];
-        //        [_fabButton setTitle:@"+" forState:UIControlStateNormal];
         _fabButton.titleLabel.font = [UIFont systemFontOfSize:30.0 weight:UIFontWeightBold];
         [_fabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         CGSize buttonSize = CGSizeMake(60.0, 60.0);
@@ -955,14 +968,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         [_fabButton addTarget:self action:@selector(fabTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _fabButton;
-}
-
--(FLTagMathService *)tagMathService
-{
-    if (_tagMathService == nil) {
-        _tagMathService = [FLTagMathService new];
-    }
-    return _tagMathService;
 }
 
 -(NSSet *)taggedRecipientIDs
@@ -1052,7 +1057,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         [self.threadMappings setIsReversed:YES forGroup:group];
     }
     
-    [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         [self.threadMappings updateWithTransaction:transaction];
         
         dispatch_async(dispatch_get_main_queue(), ^{

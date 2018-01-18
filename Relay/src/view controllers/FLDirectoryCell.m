@@ -35,7 +35,7 @@
     self.nameLabel.attributedText = [self attributedStringForContact:recipient];
     self.detailLabel.text = recipient.orgSlug;
     
-    UIImage *avatar = [Environment.getCurrent.contactsManager imageForIdentifier:recipient.uniqueId];
+    UIImage *avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
 
     if (avatar) {
         self.avatarImageView.image = avatar;
@@ -60,11 +60,11 @@
     
     
     // Get an avatar
-    UIImage *avatar = nil;
-//    if (aTag.avatar == nil) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImage *avatar = nil;
         if (aTag.recipientIds.count == 1) {
             SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:[aTag.recipientIds anyObject]];
-            avatar = [Environment.getCurrent.contactsManager imageForIdentifier:recipient.uniqueId];
+            avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
             if (avatar == nil) {
                 OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                        name:recipient.fullName
@@ -72,7 +72,7 @@
                                                                                                    diameter:self.contentView.frame.size.height];
                 avatar = [avatarBuilder buildDefaultImage];
                 recipient.avatar = avatar;
-                [recipient save];
+                [Environment.getCurrent.contactsManager saveRecipient:recipient];
             }
         } else {
             OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:aTag.uniqueId
@@ -81,8 +81,6 @@
                                                                                                diameter:self.contentView.frame.size.height];
             avatar = [avatarBuilder buildDefaultImage];
         }
-//    }
-    dispatch_async(dispatch_get_main_queue(), ^{
         self.nameLabel.text = description;
         self.detailLabel.text = orgSlug;
         self.avatarImageView.image = avatar;

@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
     if (!recipient.isActive) {
-        [recipient removeWithTransaction:transaction];
+        [Environment.getCurrent.contactsManager removeRecipient:recipient withTransaction:transaction];
         return nil;
     }
     
@@ -124,7 +124,6 @@ NS_ASSUME_NONNULL_BEGIN
     recipient.phoneNumber = [userDict objectForKey:@"phone"];
     recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
     recipient.isMonitor = ([(NSNumber *)[userDict objectForKey:@"is_monitor"] intValue] == 1 ? YES : NO);
-    recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
     
     NSDictionary *orgDict = [userDict objectForKey:@"org"];
     if (orgDict) {
@@ -144,6 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (recipient.flTag.orgSlug.length == 0) {
             recipient.flTag.orgSlug = recipient.orgSlug;
         }
+        [Environment.getCurrent.contactsManager saveTag:recipient.flTag withTransaction:transaction];
     } else {
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
@@ -223,7 +223,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     if (self.flTag) {
-        [self.flTag saveWithTransaction:transaction];
+        [Environment.getCurrent.contactsManager saveTag:self.flTag withTransaction:transaction];
     }
     [super saveWithTransaction:transaction];
 }
@@ -238,7 +238,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)removeWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     if (self.flTag) {
-        [self.flTag removeWithTransaction:transaction];
+        [Environment.getCurrent.contactsManager removeTag:self.flTag withTransaction:transaction];
     }
     [super removeWithTransaction:transaction];
 }

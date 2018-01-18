@@ -12,7 +12,6 @@
 #import "ThreadCreationViewController.h"
 #import "FLDirectoryCell.h"
 #import "Environment.h"
-#import "FLTagMathService.h"
 #import "TSAccountManager.h"
 #import "SlugOverLayView.h"
 #import "TSStorageManager.h"
@@ -54,23 +53,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    [self downSwipeRecognizer];
+    //    [self downSwipeRecognizer];
     self.slugViewHeight.constant = KMinInputHeight;
-//    self.slugContainerView.layoutManager.delegate = self;
+    //    self.slugContainerView.layoutManager.delegate = self;
     self.slugContainerView.textContainerInset = UIEdgeInsetsMake(8, 0, 8, KMinInputHeight);
     self.goButton.tintColor = [ForstaColors mediumLightGreen];
     
     self.searchBar.placeholder = NSLocalizedString(@"SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT", nil);
     
     self.searchInfoLabel.text = NSLocalizedString(@"SEARCH_HELP_STRING", @"Informational string for tag lookups.");
-
+    
     self.view.backgroundColor = [ForstaColors whiteColor];
     
     // Refresh control handling
     UIView *refreshView = [UIView new];  //[[UIView alloc] initWithFrame:CGRectMake(0.0f, 8.0f, 0.0f, 0.0f)];
     [self.tableView insertSubview:refreshView atIndex:0];
     self.refreshControl = [UIRefreshControl new];
-//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
+    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
     [self.refreshControl addTarget:self
                             action:@selector(refreshContentFromSource)
                   forControlEvents:UIControlEventValueChanged];
@@ -79,7 +78,7 @@
     self.uiDbConnection = [TSStorageManager.sharedManager.database newConnection];
     self.searchDbConnection = [TSStorageManager.sharedManager.database newConnection];
     [self.uiDbConnection beginLongLivedReadTransaction];
-
+    
     // Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshTableView)
@@ -89,6 +88,7 @@
                                              selector:@selector(refreshTableView)
                                                  name:FLCCSMUsersUpdated
                                                object:nil];
+    // TODO: name:TSUIDatabaseConnectionDidUpdateNotification is incorrect.  Fixing it reveal much larger bug in the yapDatabaseModified: method.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(yapDatabaseModified:)
                                                  name:TSUIDatabaseConnectionDidUpdateNotification
@@ -112,16 +112,16 @@
     
     FLTag *aTag = [self tagForIndexPath:indexPath];
     
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [cell configureCellWithTag:aTag];
-//    });
+    });
     
     if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-
+    
     return cell;
 }
 
@@ -131,10 +131,10 @@
     
     if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
         [self removeSlug:aTag.displaySlug];
-//        [self removeTagFromSelection:aTag];
+        //        [self removeTagFromSelection:aTag];
     } else {
         [self addSlug:aTag.displaySlug];
-//        [self addTagToSelection:aTag];
+        //        [self addTagToSelection:aTag];
     }
     self.searchBar.text = @"";
     [self refreshTableView];
@@ -148,7 +148,7 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return (NSInteger)[self.tagMappings numberOfSections];
-
+    
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -160,22 +160,20 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.refreshControl beginRefreshing];
-        [CCSMCommManager refreshCCSMData];
-        [Environment.getCurrent.contactsManager refreshRecipients];
-        [self.tableView reloadData];
+        [Environment.getCurrent.contactsManager refreshCCSMRecipients];
+        [self refreshTableView];
         [self.refreshControl endRefreshing];
     });
 }
 
 -(void)refreshTableView
 {
-    [self.uiDbConnection beginLongLivedReadTransaction];
-    [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        [self.tagMappings updateWithTransaction:transaction];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.uiDbConnection beginLongLivedReadTransaction];
+        [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            [self.tagMappings updateWithTransaction:transaction];
+            
             if ([self.tagMappings numberOfItemsInAllGroups] == 0) {
-//            if (self.searchBar.text.length > 0 && self.searchResults.count == 0) {
                 self.searchInfoContainer.hidden = NO;
                 self.tableView.hidden = YES;
             } else {
@@ -183,9 +181,9 @@
                 self.tableView.hidden = NO;
             }
             [self.tableView reloadData];
-        });
-    }];
-    [self.uiDbConnection endLongLivedReadTransaction];
+        }];
+        [self.uiDbConnection endLongLivedReadTransaction];
+    });
 }
 
 //- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
@@ -249,9 +247,9 @@
     NSArray *rowChanges     = nil;
     
     [[self.uiDbConnection ext:FLFilteredTagDatabaseViewExtensionName] getSectionChanges:&sectionChanges
-                                                                              rowChanges:&rowChanges
-                                                                        forNotifications:notifications
-                                                                            withMappings:self.tagMappings];
+                                                                             rowChanges:&rowChanges
+                                                                       forNotifications:notifications
+                                                                           withMappings:self.tagMappings];
     
     if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
         return;
@@ -296,7 +294,7 @@
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
             }
                 break;
-            
+                
             case YapDatabaseViewChangeUpdate: {
                 [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationNone];
@@ -308,7 +306,7 @@
     }
     
     [self.tableView endUpdates];
-    
+    [self.uiDbConnection endLongLivedReadTransaction];
 }
 
 #pragma mark - SearchBar delegate methods
@@ -336,86 +334,83 @@
         }
         
         // Do the lookup
-        [FLTagMathService asyncTagLookupWithString:searchText
-                                     success:^(NSDictionary *results) {
-                                         DDLogDebug(@"%@", results);
-                                         NSString *pretty = [results objectForKey:@"pretty"];
-                                         NSArray *warnings = [results objectForKey:@"warnings"];
-                                         
-                                         __block NSMutableArray *badStrings = [NSMutableArray new];
-                                         if (warnings.count > 0) {
-                                             for (NSDictionary *warning in warnings) {
-                                                 NSRange range = NSMakeRange((NSUInteger)[[warning objectForKey:@"position"] intValue]+1,
-                                                                              (NSUInteger)[[warning objectForKey:@"length"] intValue]-1);
-                                                 NSString *badString = [searchText substringWithRange:range];
-                                                 [badStrings addObject:badString];
-                                             }
-                                                 NSMutableString *badStuff = [NSMutableString new];
-                                                 for (NSString *string in badStrings) {
-                                                     [badStuff appendFormat:@"%@\n", string];
-                                                 }
-                                                 NSString *message = [NSString stringWithFormat:@"%@\n%@", NSLocalizedString(@"Tag not found for:", @"Alert message for no results from taglookup"), badStuff];
-                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                                                message:message
-                                                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
-                                                 UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",)
-                                                                                                    style:UIAlertActionStyleDefault
-                                                                                                  handler:^(UIAlertAction *action) { /* do nothing */}];
-                                                 [alert addAction:okButton];
-                                                 [self.navigationController presentViewController:alert animated:YES completion:nil];
-                                             });
-                                         }
-                                         if (pretty.length > 0) {
-                                             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-.:]+(\\b|$)"
-                                                                                                                    options:(NSRegularExpressionCaseInsensitive | NSRegularExpressionAnchorsMatchLines)
-                                                                                                                      error:nil];
-                                             NSArray *matches = [regex matchesInString:pretty options:0 range:NSMakeRange(0, pretty.length)];
-                                             for (NSTextCheckingResult *result in matches) {
-                                                 NSString *newSlug = [pretty substringWithRange:result.range];
-                                                 [self addSlug:newSlug];
-                                             }
-                                         }
-                                         
-                                         // Update the searchbar with remainder text
-                                         NSMutableString *badStuff = [NSMutableString new];
-                                         for (NSString *string in badStrings) {
-                                             [badStuff appendFormat:@"%@ ", string];
-                                         }
-                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                             self.searchBar.text = [NSString stringWithString:badStuff];
-                                             [self updateMappings];
-                                         });
-                                         
-                                         // take this opportunity to store any userids
-                                         NSArray *userids = [results objectForKey:@"userids"];
-                                         if (userids.count > 0) {
-                                             [self.uiDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                                                 for (NSString *uid in userids) {
-                                                     SignalRecipient *recipient = [SignalRecipient fetchObjectWithUniqueID:uid transaction:transaction];
-                                                     if (recipient == nil) {
-                                                         recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
-                                                     }
-                                                 }
-                                             } completionBlock:^{
-                                                 [self refreshTableView];
-                                             }];
-                                         }
-                                     }
-                                           failure:^(NSError *error) {
-                                         DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
-                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                             
-                                             UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                                            message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
-                                                                                                     preferredStyle:UIAlertControllerStyleActionSheet];
-                                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                                                style:UIAlertActionStyleDefault
-                                                                                              handler:^(UIAlertAction *action) {}];
-                                             [alert addAction:okAction];
-                                             [self.navigationController presentViewController:alert animated:YES completion:nil];
-                                         });
-                                     }];
+        [CCSMCommManager asyncTagLookupWithString:searchText
+                                          success:^(NSDictionary *results) {
+                                              DDLogDebug(@"%@", results);
+                                              NSString *pretty = [results objectForKey:@"pretty"];
+                                              NSArray *warnings = [results objectForKey:@"warnings"];
+                                              
+                                              __block NSMutableArray *badStrings = [NSMutableArray new];
+                                              if (warnings.count > 0) {
+                                                  for (NSDictionary *warning in warnings) {
+                                                      NSRange range = NSMakeRange((NSUInteger)[[warning objectForKey:@"position"] intValue]+1,
+                                                                                  (NSUInteger)[[warning objectForKey:@"length"] intValue]-1);
+                                                      NSString *badString = [searchText substringWithRange:range];
+                                                      [badStrings addObject:badString];
+                                                  }
+                                                  NSMutableString *badStuff = [NSMutableString new];
+                                                  for (NSString *string in badStrings) {
+                                                      [badStuff appendFormat:@"%@\n", string];
+                                                  }
+                                                  NSString *message = [NSString stringWithFormat:@"%@\n%@", NSLocalizedString(@"Tag not found for:", @"Alert message for no results from taglookup"), badStuff];
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                     message:message
+                                                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
+                                                      UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",)
+                                                                                                         style:UIAlertActionStyleDefault
+                                                                                                       handler:^(UIAlertAction *action) { /* do nothing */}];
+                                                      [alert addAction:okButton];
+                                                      [self.navigationController presentViewController:alert animated:YES completion:nil];
+                                                  });
+                                              }
+                                              if (pretty.length > 0) {
+                                                  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9-.:]+(\\b|$)"
+                                                                                                                         options:(NSRegularExpressionCaseInsensitive | NSRegularExpressionAnchorsMatchLines)
+                                                                                                                           error:nil];
+                                                  NSArray *matches = [regex matchesInString:pretty options:0 range:NSMakeRange(0, pretty.length)];
+                                                  for (NSTextCheckingResult *result in matches) {
+                                                      NSString *newSlug = [pretty substringWithRange:result.range];
+                                                      [self addSlug:newSlug];
+                                                  }
+                                              }
+                                              
+                                              // Update the searchbar with remainder text
+                                              NSMutableString *badStuff = [NSMutableString new];
+                                              for (NSString *string in badStrings) {
+                                                  [badStuff appendFormat:@"%@ ", string];
+                                              }
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  self.searchBar.text = [NSString stringWithString:badStuff];
+                                                  [self updateMappings];
+                                              });
+                                              
+                                              // take this opportunity to store any userids
+                                              NSArray *userids = [results objectForKey:@"userids"];
+                                              if (userids.count > 0) {
+                                                  [self.searchDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                                                      for (NSString *uid in userids) {
+                                                          [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
+                                                      }
+                                                  } completionBlock:^{
+                                                      [self refreshTableView];
+                                                  }];
+                                              }
+                                          }
+                                          failure:^(NSError *error) {
+                                              DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  
+                                                  UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                 message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
+                                                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+                                                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                     style:UIAlertActionStyleDefault
+                                                                                                   handler:^(UIAlertAction *action) {}];
+                                                  [alert addAction:okAction];
+                                                  [self.navigationController presentViewController:alert animated:YES completion:nil];
+                                              });
+                                          }];
     }
 }
 
@@ -454,25 +449,25 @@
                 [threadSlugs appendFormat:@" + %@", slug];
             }
         }
-        [FLTagMathService asyncTagLookupWithString:threadSlugs
-                                     success:^(NSDictionary *results) {
-                                         [self buildThreadWithResults:results];
-//                                         [self storeUsersInResults:results];
-                                     }
-                                     failure:^(NSError *error) {
-                                         DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
-                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                             
-                                             UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                                            message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
-                                                                                                     preferredStyle:UIAlertControllerStyleActionSheet];
-                                             UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                                                style:UIAlertActionStyleDefault
-                                                                                              handler:^(UIAlertAction *action) {}];
-                                             [alert addAction:okAction];
-                                             [self.navigationController presentViewController:alert animated:YES completion:nil];
-                                         });
-                                     }];
+        [CCSMCommManager asyncTagLookupWithString:threadSlugs
+                                          success:^(NSDictionary *results) {
+                                              [self buildThreadWithResults:results];
+                                              //                                         [self storeUsersInResults:results];
+                                          }
+                                          failure:^(NSError *error) {
+                                              DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  
+                                                  UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                 message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
+                                                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+                                                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                     style:UIAlertActionStyleDefault
+                                                                                                   handler:^(UIAlertAction *action) {}];
+                                                  [alert addAction:okAction];
+                                                  [self.navigationController presentViewController:alert animated:YES completion:nil];
+                                              });
+                                          }];
     }
 }
 
@@ -512,9 +507,9 @@
         FLTag *aTag = (FLTag *)object;
         if (filterString.length > 0) {
             return ([[aTag.displaySlug lowercaseString] containsString:filterString] ||
-                   [[aTag.slug lowercaseString] containsString:filterString] ||
-                   [[aTag.tagDescription lowercaseString] containsString:filterString] ||
-                   [[aTag.orgSlug lowercaseString] containsString:filterString]);
+                    [[aTag.slug lowercaseString] containsString:filterString] ||
+                    [[aTag.tagDescription lowercaseString] containsString:filterString] ||
+                    [[aTag.orgSlug lowercaseString] containsString:filterString]);
         } else {
             return YES;
         }
@@ -566,38 +561,38 @@
         // add self run again
         NSMutableString *pretty = [[results objectForKey:@"pretty"] mutableCopy];
         [pretty appendFormat:@" + @%@", TSAccountManager.sharedInstance.myself.flTag.slug];
-        [FLTagMathService asyncTagLookupWithString:pretty
-                                     success:^(NSDictionary *newResults){
-                                         [self buildThreadWithResults:newResults];
-                                     }
-                                     failure:^(NSError *error) {
-                                         DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
-                                         dispatch_async(dispatch_get_main_queue(), ^{
-
-                                         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                                                        message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
-                                                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
-                                         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                                            style:UIAlertActionStyleDefault
-                                                                                          handler:^(UIAlertAction *action) {}];
-                                         [alert addAction:okAction];
-                                         [self.navigationController presentViewController:alert animated:YES completion:nil];
-                                         });
-                                     }];
+        [CCSMCommManager asyncTagLookupWithString:pretty
+                                          success:^(NSDictionary *newResults){
+                                              [self buildThreadWithResults:newResults];
+                                          }
+                                          failure:^(NSError *error) {
+                                              DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  
+                                                  UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                 message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
+                                                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+                                                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                     style:UIAlertActionStyleDefault
+                                                                                                   handler:^(UIAlertAction *action) {}];
+                                                  [alert addAction:okAction];
+                                                  [self.navigationController presentViewController:alert animated:YES completion:nil];
+                                              });
+                                          }];
     } else {
         // build thread and go
         [self.navigationController dismissViewControllerAnimated:YES
-                                 completion:^() {
-                                     __block TSThread *thread = nil;
-                                     [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                                         thread = [TSThread getOrCreateThreadWithParticipants:userIds transaction:transaction];
-                                         thread.type = @"conversation";
-                                         thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
-                                         thread.universalExpression = [[results objectForKey:@"universal"] copy];
-                                         [thread saveWithTransaction:transaction];
-                                     }];
-                                      [Environment messageGroup:thread];
-                                 }];
+                                                      completion:^() {
+                                                          __block TSThread *thread = nil;
+                                                          [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                                                              thread = [TSThread getOrCreateThreadWithParticipants:userIds transaction:transaction];
+                                                              thread.type = @"conversation";
+                                                              thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
+                                                              thread.universalExpression = [[results objectForKey:@"universal"] copy];
+                                                              [thread saveWithTransaction:transaction];
+                                                          }];
+                                                          [Environment messageGroup:thread];
+                                                      }];
     }
 }
 
@@ -693,35 +688,35 @@
 -(void)refreshSlugView
 {
     
-        NSMutableString *tmpString = [NSMutableString new];
-        for (NSString *slug in self.validatedSlugs) {
-            if (tmpString.length == 0) {
-                [tmpString appendString:slug];
-            } else {
-                [tmpString appendString:[NSString stringWithFormat:@"      %@", slug]];
-            }
-        }
-        
-        //  Handle dynamic size
-        CGRect boundingRect = [tmpString boundingRectWithSize:CGSizeMake(350, CGFLOAT_MAX)
-                                                      options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                                   attributes:@{ NSFontAttributeName: self.slugContainerView.font }
-                                                      context:nil];
-        CGSize boundingSize = boundingRect.size;
-        CGFloat newHeight = KMinInputHeight;
-        if (boundingSize.height < KMinInputHeight) {
-            newHeight = KMinInputHeight;
-        } else if (boundingSize.height > kMaxInputHeight) {
-            newHeight = kMaxInputHeight;
+    NSMutableString *tmpString = [NSMutableString new];
+    for (NSString *slug in self.validatedSlugs) {
+        if (tmpString.length == 0) {
+            [tmpString appendString:slug];
         } else {
-            newHeight = boundingSize.height;
+            [tmpString appendString:[NSString stringWithFormat:@"      %@", slug]];
         }
-        
-        if (self.validatedSlugs.count > 0) {
-            newHeight += 20.0;
-        } else {
-            newHeight = 0.0;
-        }
+    }
+    
+    //  Handle dynamic size
+    CGRect boundingRect = [tmpString boundingRectWithSize:CGSizeMake(350, CGFLOAT_MAX)
+                                                  options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               attributes:@{ NSFontAttributeName: self.slugContainerView.font }
+                                                  context:nil];
+    CGSize boundingSize = boundingRect.size;
+    CGFloat newHeight = KMinInputHeight;
+    if (boundingSize.height < KMinInputHeight) {
+        newHeight = KMinInputHeight;
+    } else if (boundingSize.height > kMaxInputHeight) {
+        newHeight = kMaxInputHeight;
+    } else {
+        newHeight = boundingSize.height;
+    }
+    
+    if (self.validatedSlugs.count > 0) {
+        newHeight += 20.0;
+    } else {
+        newHeight = 0.0;
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.25 animations:^{

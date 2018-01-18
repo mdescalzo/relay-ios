@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
     static dispatch_once_t onceToken;
     static dispatch_queue_t queue;
     dispatch_once(&onceToken, ^{
-        queue = dispatch_queue_create("org.whispersystems.signal.attachments", NULL);
+        queue = dispatch_queue_create("io.forsta.relay.attachments", NULL);
     });
     return queue;
 }
@@ -22,7 +22,17 @@ NS_ASSUME_NONNULL_BEGIN
     static dispatch_once_t onceToken;
     static dispatch_queue_t queue;
     dispatch_once(&onceToken, ^{
-        queue = dispatch_queue_create("org.whispersystems.signal.sendQueue", NULL);
+        queue = dispatch_queue_create("io.forsta.relay.sendQueue", NULL);
+    });
+    return queue;
+}
+
++ (dispatch_queue_t)serialQueue
+{
+    static dispatch_once_t onceToken;
+    static dispatch_queue_t queue;
+    dispatch_once(&onceToken, ^{
+        queue = dispatch_queue_create("io.forsta.relay.serialQueue", DISPATCH_QUEUE_SERIAL);
     });
     return queue;
 }

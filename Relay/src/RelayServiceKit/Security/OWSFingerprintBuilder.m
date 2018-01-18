@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (OWSFingerprint *)fingerprintWithTheirSignalId:(NSString *)theirSignalId theirIdentityKey:(NSData *)theirIdentityKey
 {
-    NSString *theirName = [self.contactsManager nameStringForContactID:theirSignalId];
+    NSString *theirName = [self.contactsManager nameStringForContactId:theirSignalId];
 
     NSString *mySignalId = [self.storageManager localNumber];
     NSData *myIdentityKey = [self.storageManager identityKeyPair].publicKey;

@@ -31,9 +31,6 @@
 +(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                                        failure:(void (^)(NSError *error))failureBlock;
 
-+(void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
-                                      failure:(void (^)(NSError *))failureBlock;
-
 +(void)updateAllTheThings:(NSString *)urlString
                 collection:(NSMutableDictionary *)collection
                synchronous:(BOOL)sync
@@ -41,7 +38,6 @@
                    failure:(void (^)(NSError *error))failureBlock;
 
 +(void)getThing:(NSString *)urlString
-     synchronous:(BOOL)synchronous
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
 
@@ -49,16 +45,17 @@
                                success:(void (^)())successBlock
                                failure:(void (^)(NSError *error))failureBlock;
 
-//+(void)registerWithTSSViaCCSMForPhone:(NSString *)phone
-//                              Success:(void (^)())successBlock
-//                              failure:(void (^)(NSError *error))failureBlock;
-
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId;
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock;
+
+// Tag Math lookups
++(void)asyncTagLookupWithString:(NSString *_Nonnull)lookupString
+                        success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock
+                        failure:(void (^_Nonnull)(NSError *_Nonnull))failureBlock;
 @end
 
 #endif /* CCSMCommunication_h */
