@@ -81,7 +81,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 @property (nonatomic, readonly) FLMessageSender *messageSender;
 
 @property (nonatomic, strong) YapDatabaseViewMappings *threadMappings;
-@property (nonatomic, strong) YapDatabaseViewMappings *messageMappings;
 
 @property (nonatomic, strong) YapDatabaseConnection *editingDbConnection;
 @property (nonatomic, strong) YapDatabaseConnection *uiDatabaseConnection;
@@ -548,29 +547,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                      completion:^(BOOL finished) {
                          self.domainTableViewController.view.hidden = YES;
                      }];
-}
-
-#pragma mark - Message handling
-- (TSInteraction *)interactionAtIndexPath:(NSIndexPath *)indexPath {
-    __block TSInteraction *message = nil;
-    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        YapDatabaseViewTransaction *viewTransaction = [transaction ext:TSMessageDatabaseViewExtensionName];
-        NSParameterAssert(viewTransaction != nil);
-        NSParameterAssert(self.messageMappings != nil);
-        NSParameterAssert(indexPath != nil);
-        NSUInteger row                    = (NSUInteger)indexPath.row;
-        NSUInteger section                = (NSUInteger)indexPath.section;
-        NSUInteger numberOfItemsInSection __unused = [self.messageMappings numberOfItemsInSection:section];
-        NSAssert(row < numberOfItemsInSection,
-                 @"Cannot fetch message because row %d is >= numberOfItemsInSection %d",
-                 (int)row,
-                 (int)numberOfItemsInSection);
-        
-        message = [viewTransaction objectAtRow:row inSection:section withMappings:self.messageMappings];
-        NSParameterAssert(message != nil);
-    }];
-    
-    return message;
 }
 
 -(BOOL)isValidUserID:(NSString *)userid

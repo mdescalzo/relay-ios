@@ -22,6 +22,9 @@
 #import <YapDatabase/YapDatabaseFilteredView.h>
 #import <YapDatabase/YapDatabaseFilteredViewTransaction.h>
 
+#define kRecipientSectionIndex 0
+#define kTagSectionIndex 1
+
 @interface ThreadCreationViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, SlugOverLayViewDelegate, NSLayoutManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
@@ -110,31 +113,70 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"slugCell" forIndexPath:indexPath];
     
-    FLTag *aTag = [self tagForIndexPath:indexPath];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [cell configureCellWithTag:aTag];
-    });
-    
-    if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+    switch (indexPath.section) {
+        case kRecipientSectionIndex:
+        {
+            SignalRecipient *recipient = (SignalRecipient *) [self objectForIndexPath:indexPath];
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [cell configureCellWithContact:recipient];
+            });
+            
+            if ([self.validatedSlugs containsObject:recipient.flTag.displaySlug]) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+        }
+            break;
+        case kTagSectionIndex:
+        {
+            FLTag *aTag = (FLTag *)[self objectForIndexPath:indexPath];
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [cell configureCellWithTag:aTag];
+            });
+            
+            if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+        }
+            break;
+        default:
+            break;
     }
+
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FLTag *aTag = [self tagForIndexPath:indexPath];
+    NSString *tagSlug = nil;
     
-    if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
-        [self removeSlug:aTag.displaySlug];
-        //        [self removeTagFromSelection:aTag];
+    switch (indexPath.section) {
+        case kRecipientSectionIndex:
+        {
+            SignalRecipient *recipient = (SignalRecipient *)[self objectForIndexPath:indexPath];
+            tagSlug = recipient.flTag.displaySlug;
+        }
+            break;
+        case kTagSectionIndex:
+        {
+            FLTag *aTag = (FLTag *)[self objectForIndexPath:indexPath];
+            tagSlug = aTag.displaySlug;
+        }
+            break;
+        default:
+            break;
+    }
+    
+    if ([self.validatedSlugs containsObject:tagSlug]) {
+        [self removeSlug:tagSlug];
     } else {
-        [self addSlug:aTag.displaySlug];
-        //        [self addTagToSelection:aTag];
+        [self addSlug:tagSlug];
     }
     self.searchBar.text = @"";
     [self refreshTableView];
@@ -487,13 +529,13 @@
 }
 
 #pragma mark - worker methods
-- (FLTag *)tagForIndexPath:(NSIndexPath *)indexPath {
-    __block FLTag *aTag = nil;
+- (id)objectForIndexPath:(NSIndexPath *)indexPath {
+    __block id object = nil;
     [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        aTag = [[transaction extension:FLFilteredTagDatabaseViewExtensionName] objectAtIndexPath:indexPath
+        object = [[transaction extension:FLFilteredTagDatabaseViewExtensionName] objectAtIndexPath:indexPath
                                                                                     withMappings:self.tagMappings];
     }];
-    return aTag;
+    return object;
 }
 
 -(void)updateMappings
@@ -769,7 +811,7 @@
 -(YapDatabaseViewMappings *)tagMappings
 {
     if (_tagMappings == nil) {
-        _tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ FLActiveTagsGroup ]
+        _tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]
                                                                   view:FLFilteredTagDatabaseViewExtensionName];
         [_tagMappings setIsReversed:NO forGroup:FLActiveTagsGroup];
         [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {

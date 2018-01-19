@@ -20,6 +20,7 @@ NSString *TSInboxGroup   = @"TSInboxGroup";
 NSString *TSArchiveGroup = @"TSArchiveGroup";
 NSString *TSPinnedGroup  = @"TSPinnedGroup";
 NSString *FLActiveTagsGroup = @"FLActiveTagsGroup";
+NSString *FLVisibleRecipientGroup = @"FLVisibleRecipientGroup";
 //NSString *FLSearchTagsGroup = @"FLSearchTagsGroup";
 
 
@@ -79,8 +80,16 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     YapDatabaseViewGrouping *viewGrouping = [YapDatabaseViewGrouping
                                              withObjectBlock:^NSString *(YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
                                                  if ([object isKindOfClass:[FLTag class]]) {
-//                                                     FLTag *aTag = (FLTag *)object;
-                                                     return FLActiveTagsGroup;
+                                                     FLTag *aTag = (FLTag *)object;
+                                                     if (aTag.recipientIds.count > 1) {
+                                                         return FLActiveTagsGroup;
+                                                     }
+                                                 }
+                                                 if ([object isKindOfClass:[SignalRecipient class]]) {
+                                                     SignalRecipient *recipient = (SignalRecipient *)object;
+                                                     if (!recipient.isMonitor) {
+                                                         return FLVisibleRecipientGroup;
+                                                     }
                                                  }
                                                  return nil;
                                              }];
@@ -209,6 +218,34 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     }
     
     return YES;
+}
+
++(YapDatabaseViewSorting *)recipientSorting
+{
+    return [YapDatabaseViewSorting withObjectBlock:^NSComparisonResult(YapDatabaseReadTransaction * _Nonnull transaction,
+                                                                       NSString * _Nonnull group,
+                                                                       NSString * _Nonnull collection1,
+                                                                       NSString * _Nonnull key1,
+                                                                       id  _Nonnull object1,
+                                                                       NSString * _Nonnull collection2,
+                                                                       NSString * _Nonnull key2,
+                                                                       id  _Nonnull object2) {
+        if ([group isEqualToString:FLVisibleRecipientGroup]) {
+            if ([object1 isKindOfClass:[SignalRecipient class]] && [object2 isKindOfClass:[SignalRecipient class]]) {
+                SignalRecipient *recipient1 = (SignalRecipient *)object1;
+                SignalRecipient *recipient2 = (SignalRecipient *)object2;
+                
+                NSComparisonResult result = [recipient1.lastName compare:recipient2.lastName];
+                if (result == NSOrderedSame) {
+                    return [recipient1.firstName compare:recipient2.firstName];
+                } else {
+                    return result;
+                }
+                
+            }
+        }
+        return NSOrderedSame;
+    }];
 }
 
 +(YapDatabaseViewSorting *)tagSorting
