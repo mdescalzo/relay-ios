@@ -754,7 +754,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         cell = [InboxTableViewCell inboxTableViewCell];
     }
     
-    dispatch_async([OWSDispatch serialQueue], ^{
+//    dispatch_async([OWSDispatch serialQueue], ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [cell configureWithThread:thread contactsManager:self.contactsManager];
     });
     

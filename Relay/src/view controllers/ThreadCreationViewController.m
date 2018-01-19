@@ -21,6 +21,7 @@
 #import <YapDatabase/YapDatabaseViewConnection.h>
 #import <YapDatabase/YapDatabaseFilteredView.h>
 #import <YapDatabase/YapDatabaseFilteredViewTransaction.h>
+#import "OWSDispatch.h"
 
 #define kRecipientSectionIndex 0
 #define kTagSectionIndex 1
@@ -118,7 +119,7 @@
         {
             SignalRecipient *recipient = (SignalRecipient *) [self objectForIndexPath:indexPath];
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 [cell configureCellWithContact:recipient];
             });
             
@@ -133,7 +134,7 @@
         {
             FLTag *aTag = (FLTag *)[self objectForIndexPath:indexPath];
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 [cell configureCellWithTag:aTag];
             });
             
@@ -185,6 +186,19 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60.0f;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+#warning LOCALIZE THE RETURN VALUES BEFORE SHIPPING!
+    if ([self tableView:tableView numberOfRowsInSection:section] > 0) {
+        if (section == kRecipientSectionIndex) {
+            return @"Contacts";
+        } else if (section == kTagSectionIndex) {
+            return @"Tags";
+        }
+    }
+    return nil;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

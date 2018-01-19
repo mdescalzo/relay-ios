@@ -79,13 +79,12 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     
     YapDatabaseViewGrouping *viewGrouping = [YapDatabaseViewGrouping
                                              withObjectBlock:^NSString *(YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
-                                                 if ([object isKindOfClass:[FLTag class]]) {
+                                                 if ([collection isEqualToString:[FLTag collection]]) {
                                                      FLTag *aTag = (FLTag *)object;
                                                      if (aTag.recipientIds.count > 1) {
                                                          return FLActiveTagsGroup;
                                                      }
-                                                 }
-                                                 if ([object isKindOfClass:[SignalRecipient class]]) {
+                                                 } else if ([collection isEqualToString:[SignalRecipient collection]]) {
                                                      SignalRecipient *recipient = (SignalRecipient *)object;
                                                      if (!recipient.isMonitor) {
                                                          return FLVisibleRecipientGroup;
@@ -97,7 +96,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     
     YapDatabaseViewOptions *options = [[YapDatabaseViewOptions alloc] init];
     options.isPersistent = NO;
-    options.allowedCollections = [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObject:[FLTag collection]]];
+    options.allowedCollections = [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObjects:[SignalRecipient collection],[FLTag collection], nil]];
     
     YapDatabaseView *databaseView =
     [[YapDatabaseView alloc] initWithGrouping:viewGrouping
@@ -264,6 +263,19 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                 FLTag *aTag2 = (FLTag *)object2;
                 
                 return [aTag1.tagDescription compare:aTag2.tagDescription];
+            }
+        } else if ([group isEqualToString:FLVisibleRecipientGroup]) {
+            if ([object1 isKindOfClass:[SignalRecipient class]] && [object2 isKindOfClass:[SignalRecipient class]]) {
+                SignalRecipient *recipient1 = (SignalRecipient *)object1;
+                SignalRecipient *recipient2 = (SignalRecipient *)object2;
+                
+                NSComparisonResult result = [recipient1.lastName compare:recipient2.lastName];
+                if (result == NSOrderedSame) {
+                    return [recipient1.firstName compare:recipient2.firstName];
+                } else {
+                    return result;
+                }
+                
             }
         }
         return NSOrderedSame;

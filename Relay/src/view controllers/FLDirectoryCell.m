@@ -32,20 +32,23 @@
 
 -(void)configureCellWithContact:(SignalRecipient *)recipient
 {
-    self.nameLabel.attributedText = [self attributedStringForContact:recipient];
-    self.detailLabel.text = recipient.orgSlug;
-    
-    UIImage *avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
-
-    if (avatar) {
-        self.avatarImageView.image = avatar;
-    } else {
-        OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
-                                                                                               name:recipient.fullName
-                                                                                    contactsManager:[Environment getCurrent].contactsManager
-                                                                                           diameter:self.avatarImageView.frame.size.height];
-        self.avatarImageView.image = [avatarBuilder buildDefaultImage];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.nameLabel.attributedText = [self attributedStringForContact:recipient];
+        self.detailLabel.text = recipient.orgSlug;
+        
+        UIImage *avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
+        
+        if (avatar) {
+            self.avatarImageView.image = avatar;
+        } else {
+            OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
+                                                                                                   name:recipient.fullName
+                                                                                        contactsManager:[Environment getCurrent].contactsManager
+                                                                                               diameter:self.avatarImageView.frame.size.height];
+            self.avatarImageView.image = [avatarBuilder buildDefaultImage];
+        }
+    });
 }
 
 -(void)configureCellWithTag:(FLTag *)aTag
