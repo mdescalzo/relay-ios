@@ -1905,7 +1905,6 @@
 		7D6138B21F90161500E18D29 /* OWSRecordTranscriptJob.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSRecordTranscriptJob.m; sourceTree = "<group>"; };
 		7D6138B31F90161500E18D29 /* OWSSendReadReceiptsJob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSSendReadReceiptsJob.h; sourceTree = "<group>"; };
 		7D6138B41F90161500E18D29 /* OWSSendReadReceiptsJob.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSSendReadReceiptsJob.m; sourceTree = "<group>"; };
-		7D6138B51F90161500E18D29 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7D6138B81F90161500E18D29 /* OWSAttachmentsProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSAttachmentsProcessor.h; sourceTree = "<group>"; };
 		7D6138B91F90161500E18D29 /* OWSAttachmentsProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSAttachmentsProcessor.m; sourceTree = "<group>"; };
 		7D6138BA1F90161500E18D29 /* TSAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAttachment.h; sourceTree = "<group>"; };
@@ -2025,7 +2024,6 @@
 		7D6139331F90161500E18D29 /* TSSocketManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSSocketManager.m; sourceTree = "<group>"; };
 		7D6139351F90161500E18D29 /* ContactsManagerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsManagerProtocol.h; sourceTree = "<group>"; };
 		7D6139361F90161500E18D29 /* NotificationsProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationsProtocol.h; sourceTree = "<group>"; };
-		7D6139371F90161500E18D29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7D6139391F90161500E18D29 /* ECKeyPair+OWSPrivateKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+OWSPrivateKey.h"; sourceTree = "<group>"; };
 		7D61393A1F90161500E18D29 /* ECKeyPair+OWSPrivateKey.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+OWSPrivateKey.m"; sourceTree = "<group>"; };
 		7D61393B1F90161500E18D29 /* OWSFingerprint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSFingerprint.h; sourceTree = "<group>"; };
@@ -3280,8 +3278,6 @@
 			isa = PBXGroup;
 			children = (
 				7D7F360420191E7B00FC63C9 /* src */,
-				7D6138B51F90161500E18D29 /* LICENSE */,
-				7D6139371F90161500E18D29 /* README.md */,
 			);
 			path = RelayServiceKit;
 			sourceTree = "<group>";
@@ -3299,13 +3295,6 @@
 				7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */,
 			);
 			path = Account;
-			sourceTree = "<group>";
-		};
-		7D61387F1F90161500E18D29 /* CCSM */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CCSM;
 			sourceTree = "<group>";
 		};
 		7D6138861F90161500E18D29 /* Contacts */ = {
@@ -3704,7 +3693,6 @@
 			isa = PBXGroup;
 			children = (
 				7D6138761F90161500E18D29 /* Account */,
-				7D61387F1F90161500E18D29 /* CCSM */,
 				7D6138861F90161500E18D29 /* Contacts */,
 				7D61389A1F90161500E18D29 /* Devices */,
 				7D6138B61F90161500E18D29 /* Messages */,
@@ -4094,8 +4082,8 @@
 				7DD51C0C1FBE2A9F003DF7DB /* CHANGELOG.md */,
 				7DD51C081FBE2A70003DF7DB /* CONTRIBUTING.md */,
 				7DD51C071FBE2A70003DF7DB /* README.md */,
-				7D6138751F90161500E18D29 /* RelayServiceKit */,
 				D221A093169C9E5E00537ABF /* Relay */,
+				7D6138751F90161500E18D29 /* RelayServiceKit */,
 				D221A08C169C9E5E00537ABF /* Frameworks */,
 				D221A08A169C9E5E00537ABF /* Products */,
 				70B8009E190C529C0042E3F0 /* spandsp.xcodeproj */,
