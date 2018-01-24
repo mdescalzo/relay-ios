@@ -152,7 +152,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
      withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
-    if (recipient.uniqueId. length > 0) {
+    if (recipient.uniqueId.length > 0) {
         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
         [recipient saveWithTransaction:transaction];
     } else {
