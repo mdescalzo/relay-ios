@@ -152,8 +152,13 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
      withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
-    [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
-    [recipient saveWithTransaction:transaction];
+    if (recipient.uniqueId.length > 0) {
+        [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+        [recipient saveWithTransaction:transaction];
+    } else {
+        DDLogError(@"Attempt to save recipient without a UUID.  Recipient: %@", recipient);
+        [recipient removeWithTransaction:transaction];
+    }
 }
 
 -(void)removeRecipient:(SignalRecipient *_Nonnull)recipient
