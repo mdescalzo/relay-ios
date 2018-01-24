@@ -11,7 +11,6 @@
 
 @interface CCSMStorage : NSObject
 
-@property (strong) NSString *supermanId;
 @property (strong) NSString *textSecureURL;
 
 - (NSString *)getOrgName;
@@ -22,6 +21,7 @@
 
 - (NSString *)getSessionToken;
 - (void)setSessionToken:(NSString *)value;
+-(void)removeSessionToken;
 
 - (NSDictionary *)getUserInfo;
 - (void)setUserInfo:(NSDictionary *)value;
