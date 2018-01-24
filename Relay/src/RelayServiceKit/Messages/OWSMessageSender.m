@@ -416,89 +416,93 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     remainingAttempts -= 1;
     
     SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:recipientId];
-    NSMutableOrderedSet *devicesIds = nil;
-    if (recipient.devices.count > 0) {
-        devicesIds = recipient.devices;
-    } else {
-        devicesIds = [NSMutableOrderedSet orderedSetWithObject:[NSNumber numberWithInt:1]];
-    }
     
-    @try {
-        NSArray *messagesArray = [self deviceMessages:message forRecipient:recipient];
+    if (!recipient) {
+        DDLogError(@"Attempted Special send to nil recipient.");
+    } else {
+        NSMutableOrderedSet *devicesIds = nil;
+        if (recipient.devices.count > 0) {
+            devicesIds = recipient.devices;
+        } else {
+            devicesIds = [NSMutableOrderedSet orderedSetWithObject:[NSNumber numberWithInt:1]];
+        }
         
-        TSSubmitMessageRequest *request = [[TSSubmitMessageRequest alloc] initWithRecipient:recipientId
-                                                                                   messages:messagesArray
-                                                                                      relay:recipient.relay
-                                                                                  timeStamp:message.timestamp];
-        [self.networkManager makeRequest:request
-                                 success:^(NSURLSessionDataTask *task, id responseObject) {
-                                     DDLogDebug(@"Special send successful.");
-                                     successHandler();
-                                 }
-                                 failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                     NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-                                     long statuscode = response.statusCode;
-                                     NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-                                     
-                                     void (^retrySend)() = ^void() {
-                                         if (remainingAttempts <= 0) {
-                                             return failureHandler(error);
-                                         }
-                                         
-                                         dispatch_async([OWSDispatch sendingQueue], ^{
-                                             [self sendSpecialMessage:message
-                                                          recipientId:recipient.uniqueId
-                                                             attempts:remainingAttempts
-                                                              success:successHandler
-                                                              failure:failureHandler];
-                                         });
-                                     };
-                                     
-                                     switch (statuscode) {
-                                         case 404: {
-                                             [Environment.getCurrent.contactsManager removeRecipient:recipient];
-                                             return failureHandler(OWSErrorMakeNoSuchSignalRecipientError());
-                                         }
-                                         case 409: {
-                                             // Mismatched devices
-                                             DDLogWarn(@"%@ Mismatch Devices.", self.tag);
-                                             
-                                             NSError *err = nil;
-                                             NSDictionary *serializedResponse =
-                                             [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
-                                             if (err) {
-                                                 DDLogError(@"%@ Failed to serialize response of mismatched devices: %@", self.tag, err);
-                                                 return failureHandler(err);
-                                             }
-                                             
-                                             [self handleMismatchedDevices:serializedResponse recipient:recipient];
-                                             retrySend();
-                                             break;
-                                         }
-                                         case 410: {
-                                             // staledevices
-                                             DDLogWarn(@"Stale devices");
-                                             
-                                             if (!responseData) {
-                                                 DDLogWarn(@"Stale devices but server didn't specify devices in response.");
-                                                 return failureHandler(OWSErrorMakeUnableToProcessServerResponseError());
-                                             }
-                                             
-                                             [self handleStaleDevicesWithResponse:responseData recipientId:recipient.uniqueId];
-                                             retrySend();
-                                             break;
-                                         }
-                                         default:
-                                             retrySend();
-                                             break;
+        @try {
+            NSArray *messagesArray = [self deviceMessages:message forRecipient:recipient];
+            
+            TSSubmitMessageRequest *request = [[TSSubmitMessageRequest alloc] initWithRecipient:recipientId
+                                                                                       messages:messagesArray
+                                                                                          relay:recipient.relay
+                                                                                      timeStamp:message.timestamp];
+            [self.networkManager makeRequest:request
+                                     success:^(NSURLSessionDataTask *task, id responseObject) {
+                                         DDLogDebug(@"Special send successful.");
+                                         successHandler();
                                      }
-                                 }];
-        
+                                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                                         long statuscode = response.statusCode;
+                                         NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                                         
+                                         void (^retrySend)() = ^void() {
+                                             if (remainingAttempts <= 0) {
+                                                 return failureHandler(error);
+                                             }
+                                             
+                                             dispatch_async([OWSDispatch sendingQueue], ^{
+                                                 [self sendSpecialMessage:message
+                                                              recipientId:recipient.uniqueId
+                                                                 attempts:remainingAttempts
+                                                                  success:successHandler
+                                                                  failure:failureHandler];
+                                             });
+                                         };
+                                         
+                                         switch (statuscode) {
+                                             case 404: {
+                                                 [Environment.getCurrent.contactsManager removeRecipient:recipient];
+                                                 return failureHandler(OWSErrorMakeNoSuchSignalRecipientError());
+                                             }
+                                             case 409: {
+                                                 // Mismatched devices
+                                                 DDLogWarn(@"%@ Mismatch Devices.", self.tag);
+                                                 
+                                                 NSError *err = nil;
+                                                 NSDictionary *serializedResponse =
+                                                 [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
+                                                 if (err) {
+                                                     DDLogError(@"%@ Failed to serialize response of mismatched devices: %@", self.tag, err);
+                                                     return failureHandler(err);
+                                                 }
+                                                 
+                                                 [self handleMismatchedDevices:serializedResponse recipient:recipient];
+                                                 retrySend();
+                                                 break;
+                                             }
+                                             case 410: {
+                                                 // staledevices
+                                                 DDLogWarn(@"Stale devices");
+                                                 
+                                                 if (!responseData) {
+                                                     DDLogWarn(@"Stale devices but server didn't specify devices in response.");
+                                                     return failureHandler(OWSErrorMakeUnableToProcessServerResponseError());
+                                                 }
+                                                 
+                                                 [self handleStaleDevicesWithResponse:responseData recipientId:recipient.uniqueId];
+                                                 retrySend();
+                                                 break;
+                                             }
+                                             default:
+                                                 retrySend();
+                                                 break;
+                                         }
+                                     }];
+            
+        }
+        @catch (NSException *exception) {
+            DDLogDebug(@"Exception thrown by special sender: %@", exception.name);
+        }
     }
-    @catch (NSException *exception) {
-        DDLogDebug(@"Exception thrown by special sender: %@", exception.name);
-    }
-    //    }
 }
 
 
@@ -562,7 +566,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     [self.networkManager makeRequest:request
                              success:^(NSURLSessionDataTask *task, id responseObject) {
                                  dispatch_async([OWSDispatch sendingQueue], ^{
-//                                     [recipient save];
+                                     //                                     [recipient save];
                                      [self handleMessageSentLocally:message];
                                      successHandler();
                                  });
