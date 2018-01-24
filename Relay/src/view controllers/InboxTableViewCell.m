@@ -62,13 +62,19 @@ NS_ASSUME_NONNULL_BEGIN
     NSAttributedString *attributedDate = [self dateAttributedString:thread.lastMessageDate];
     NSUInteger unreadCount             = [[TSMessagesManager sharedManager] unreadMessagesInThread:thread];
     
+    __block UIImage *avatar = [thread image];
+
+    if (thread.hasUnreadMessages) {
+        [self updateCellForUnreadMessage];
+    } else {
+        [self updateCellForReadMessage];
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIImage *avatar = nil;
-        if ([thread image]) {
-            avatar = [thread image];
-        } else {
+        if (!avatar) {
             avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
         }
+
         self.nameLabel.text = name;
         self.snippetLabel.text = snippetText;
         self.timeLabel.attributedText = attributedDate;
@@ -77,30 +83,29 @@ NS_ASSUME_NONNULL_BEGIN
         
         self.separatorInset = UIEdgeInsetsMake(0, _contactPictureView.frame.size.width * 1.5f, 0, 0);
 
-        if (thread.hasUnreadMessages) {
-            [self updateCellForUnreadMessage];
-        } else {
-            [self updateCellForReadMessage];
-        }
         [self setUnreadMsgCount:unreadCount];
         self.hidden = NO;
     });
 }
 
 - (void)updateCellForUnreadMessage {
-    _nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
-    _nameLabel.textColor    = [UIColor ows_blackColor];
-    _snippetLabel.font      = [UIFont ows_mediumFontWithSize:12];
-    _snippetLabel.textColor = [UIColor ows_blackColor];
-    _timeLabel.textColor    = [UIColor ows_materialBlueColor];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
+        _nameLabel.textColor    = [UIColor ows_blackColor];
+        _snippetLabel.font      = [UIFont ows_mediumFontWithSize:12];
+        _snippetLabel.textColor = [UIColor ows_blackColor];
+        _timeLabel.textColor    = [UIColor ows_materialBlueColor];
+    });
 }
 
 - (void)updateCellForReadMessage {
-    _nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
-    _nameLabel.textColor    = [UIColor ows_blackColor];
-    _snippetLabel.font      = [UIFont ows_regularFontWithSize:12];
-    _snippetLabel.textColor = [UIColor lightGrayColor];
-    _timeLabel.textColor    = [UIColor ows_darkGrayColor];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
+        _nameLabel.textColor    = [UIColor ows_blackColor];
+        _snippetLabel.font      = [UIFont ows_regularFontWithSize:12];
+        _snippetLabel.textColor = [UIColor lightGrayColor];
+        _timeLabel.textColor    = [UIColor ows_darkGrayColor];
+    });
 }
 
 #pragma mark - Date formatting

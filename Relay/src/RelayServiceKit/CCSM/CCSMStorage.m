@@ -57,7 +57,7 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 {
     ows_require(key != nil);
     
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction setObject:value forKey:key inCollection:CCSMStorageDatabaseCollection];
     }];
 }

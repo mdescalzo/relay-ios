@@ -17,9 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
                                    lastName:(NSString *)lastName;
 
 + (instancetype)selfRecipient;
-+ (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier;
-+ (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier
-                                           withTransaction:(YapDatabaseReadTransaction *)transaction;
+//+ (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier;
+//+ (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier
+//                                           withTransaction:(YapDatabaseReadTransaction *)transaction;
 
 +(instancetype)getOrCreateRecipientWithId:(NSString *)identifier;
 +(instancetype)getOrCreateRecipientWithId:(NSString *)identifier

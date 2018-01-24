@@ -160,7 +160,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     // Get parts
     NSString *searchString = nil;
     for (NSString *userid in model.groupMemberIds) {
-        SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:userid];
+        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:userid];
         if (searchString.length == 0) {
             searchString =  [NSString stringWithFormat:@"@%@", recipient.flTag.slug];
         } else {
@@ -251,69 +251,82 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
             NSString *customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
             
-            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+            // Send control message
+            FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
+                                                                                       ofType:FLControlMessageThreadUpdateKey];
+            [Environment.getCurrent.messageSender sendControlMessage:message
+                                                        toRecipients:[NSCountedSet setWithArray:self.thread.participants]
+                                                             success:nil
+                                                             failure:nil];
+            
+            [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                                          inThread:self.thread
                                                                       messageType:TSInfoMessageTypeConversationUpdate
-                                                                    customMessage:customMessage];
-            [infoMessage save];
+                                                                    customMessage:customMessage] save];
         }
         
         // Handle participant change
-        NSCountedSet *participants = [NSCountedSet setWithArray:self.thread.participants];
-        NSCountedSet *newParticipants = nil;
+        __block NSCountedSet *participants = [NSCountedSet setWithArray:self.thread.participants];
+        __block NSCountedSet *newParticipants = nil;
         if (self.selectedTags.count > 0) {
             NSMutableString *lookupString = [self.thread.prettyExpression mutableCopy]; // [NSMutableString new];  <-- switch back to this to allow client to remove participants.
             for (FLTag *aTag in self.selectedTags) {
                 [lookupString appendString:[NSString stringWithFormat:@"@%@:%@ ", aTag.slug, aTag.orgSlug]];
             }
             if (lookupString.length > 0) {
-                NSDictionary *lookupDict = [CCSMCommManager syncTagLookupWithString:lookupString];
-                if (lookupDict) {
-                    newParticipants = [NSCountedSet setWithArray:[lookupDict objectForKey:@"userids"]];
-                    self.thread.participants = [lookupDict objectForKey:@"userids"];
-                    self.thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-                    self.thread.universalExpression = [lookupDict objectForKey:@"universal"];
-                    [self.thread save];
-                    
-                    [participants unionSet:newParticipants];
-                    
-                    // Post info message for membership changes
-                    if (![self.originalThreadParticipants isEqual:newParticipants]) {
-                        NSCountedSet *leaving = [self.originalThreadParticipants copy];
-                        [leaving minusSet:newParticipants];
-                        for (NSString *uid in leaving) {
-                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
-                            SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
-                            NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
-                            
-                            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                         inThread:self.thread
-                                                                                      messageType:TSInfoMessageTypeConversationUpdate
-                                                                                    customMessage:customMessage];
-                            [infoMessage save];
-                        }
+                [CCSMCommManager asyncTagLookupWithString:lookupString success:^(NSDictionary * _Nonnull lookupDict) {
+                    if (lookupDict) {
+                        newParticipants = [NSCountedSet setWithArray:[lookupDict objectForKey:@"userids"]];
+                        self.thread.participants = [lookupDict objectForKey:@"userids"];
+                        self.thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                        self.thread.universalExpression = [lookupDict objectForKey:@"universal"];
+                        [self.thread save];
                         
-                        NSCountedSet *joining = [newParticipants copy];
-                        [joining minusSet:self.originalThreadParticipants];
-                        for (NSString *uid in joining) {
-                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
-                            SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
-                            NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                        [participants unionSet:newParticipants];
+                        
+                        // Send control message
+                        FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
+                                                                                                   ofType:FLControlMessageThreadUpdateKey];
+                        [Environment.getCurrent.messageSender sendControlMessage:message
+                                                                    toRecipients:participants
+                                                                         success:nil
+                                                                         failure:nil];
+                        
+                        // Post info message for membership changes
+                        if (![self.originalThreadParticipants isEqual:newParticipants]) {
+                            NSCountedSet *leaving = [self.originalThreadParticipants copy];
+                            [leaving minusSet:newParticipants];
+                            for (NSString *uid in leaving) {
+                                NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
+                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid];
+                                NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                                
+                                [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                             inThread:self.thread
+                                                                                          messageType:TSInfoMessageTypeConversationUpdate
+                                                                                        customMessage:customMessage] save];
+                            }
                             
-                            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                         inThread:self.thread
-                                                                                      messageType:TSInfoMessageTypeConversationUpdate
-                                                                                    customMessage:customMessage];
-                            [infoMessage save];
+                            NSCountedSet *joining = [newParticipants copy];
+                            [joining minusSet:self.originalThreadParticipants];
+                            for (NSString *uid in joining) {
+                                NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
+                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid];
+                                NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
+                                
+                                [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                             inThread:self.thread
+                                                                                          messageType:TSInfoMessageTypeConversationUpdate
+                                                                                        customMessage:customMessage] save];
+                            }
                         }
                     }
-                }
+                    
+                } failure:^(NSError * _Nonnull error) {
+                    DDLogError(@"%@: Taglookup failed for conversation participant change.  Error: %@", self.tag, error.localizedDescription);
+                }];
             }
         }
-        
-        // Build control message
-        FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
-                                                                                   ofType:FLControlMessageThreadUpdateKey];
         
         // Thread image update handling
         if (self.groupImage && ![self.originalThreadAvatar isEqual:self.groupImage]) {
@@ -322,11 +335,14 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             
             NSString *messageFormat = NSLocalizedString(@"THREAD_IMAGE_CHANGED_MESSAGE", nil);
             NSString *customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
-            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
+            [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                                          inThread:self.thread
                                                                       messageType:TSInfoMessageTypeConversationUpdate
-                                                                    customMessage:customMessage];
-            [infoMessage save];
+                                                                    customMessage:customMessage] save];
+            
+            // Build control message
+            FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
+                                                                                       ofType:FLControlMessageThreadUpdateKey];
             
             NSData *imageData = UIImagePNGRepresentation(self.thread.image);
             [Environment.getCurrent.messageSender sendAttachmentData:imageData
@@ -339,13 +355,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                              failure:^(NSError *error) {
                                                                  DDLogError(@"Error sending avatar update control message: %@", error.localizedDescription);
                                                              }];
-        } else {
-            // Send the control message without attachment
-            [Environment.getCurrent.messageSender sendControlMessage:message
-                                                        toRecipients:participants
-                                                             success:nil
-                                                             failure:nil];
-        }
+        } 
     }
     [self.nameGroupTextField resignFirstResponder];
     [self performSegueWithIdentifier:kUnwindToMessagesViewSegue sender:self];
@@ -581,6 +591,18 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         [holdingArray addObject:[self.contacts objectAtIndex:(NSUInteger)indexPath.row]];
     }
     return [NSArray arrayWithArray:holdingArray];
+}
+
+#pragma mark - Logging
+
++ (NSString *)tag
+{
+    return [NSString stringWithFormat:@"[%@]", self.class];
+}
+
+- (NSString *)tag
+{
+    return self.class.tag;
 }
 
 @end

@@ -28,9 +28,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 @property(atomic, copy) NSDictionary *latestRecipientsById;
 @property (strong, nonatomic) NSMutableArray<SignalRecipient *> *activeRecipientsBacker;
 @property (strong, nonatomic) NSCompoundPredicate *visibleRecipientsPredicate;
-// TODO: Implement these
-//@property (strong) NSCache *recipientCache;
-//@property (strong) NSCache *tagCache;
+@property (strong) NSMutableDictionary *recipientCache;
+@property (strong) NSMutableDictionary *tagCache;
 
 @end
 
@@ -56,6 +55,25 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         _backgroundConnection = [self.database newConnection];
         _mainConnection = [self.database newConnection];
         
+        // Cache inits
+        _recipientCache = [NSMutableDictionary new];
+        _tagCache = [NSMutableDictionary new];
+        // Preload the caches
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            [_backgroundConnection asyncReadWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+                [SignalRecipient enumerateCollectionObjectsWithTransaction:transaction
+                                                                usingBlock:^(id object, BOOL *stop) {
+                                                                    SignalRecipient *recipient = (SignalRecipient *)object;
+                                                                    [_recipientCache setObject:recipient forKey:recipient.uniqueId];
+                                                                }];
+                [FLTag enumerateCollectionObjectsWithTransaction:transaction
+                                                                usingBlock:^(id object, BOOL *stop) {
+                                                                    FLTag *aTag = (FLTag *)object;
+                                                                    [_tagCache setObject:aTag forKey:aTag.uniqueId];
+                                                                }];
+            }];
+        });
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(processUsersBlob)
                                                      name:FLCCSMUsersUpdated
@@ -90,32 +108,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     return [dbPassword dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-#pragma mark - Tag management
--(void)processTagsBlob
-{
-    __block NSDictionary *tagsBlob = [[Environment getCurrent].ccsmStorage getTags];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            for (NSDictionary *tagDict in [tagsBlob allValues]) {
-                FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
-                if (aTag.recipientIds.count == 0) {
-                    [aTag removeWithTransaction:transaction];
-                }
-            }
-        }];
-    });
-}
 
 #pragma mark - Recipient/Contact management
 -(NSArray<SignalRecipient *> *)allRecipients
 {
-    // TODO: implement NSCache here?
-    //    if (_allRecipients == nil) {
-    //        _allRecipients = [SignalRecipient allObjectsInCollection];
-    //    }
-    //    return _allRecipients;
-    return [SignalRecipient allObjectsInCollection];
+    return [self.recipientCache allValues];
 }
 
 -(NSArray<SignalRecipient *> *)activeRecipients
@@ -127,15 +124,98 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     return filteredArray;
 }
 
--(void)saveContact:(SignalRecipient *_Nonnull)contact
+// MARK: - Recipient management
+-(void)processUsersBlob
 {
-    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [transaction setObject:contact forKey:contact.uniqueId inCollection:[SignalRecipient collection]];
+    __block NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
+    
+    if (usersBlob.count > 0) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
+             {
+                 for (NSDictionary *userDict in usersBlob.allValues) {
+                     SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
+                     [self saveRecipient:recipient withTransaction:transaction];
+                 }
+             }];
+        });
+    }
+}
+
+-(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
+{
+    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self saveRecipient:recipient withTransaction:transaction];
     }];
 }
 
+-(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
+     withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+{
+    [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+    [recipient saveWithTransaction:transaction];
+}
 
-#pragma mark - lazy instantiation
+-(void)removeRecipient:(SignalRecipient *_Nonnull)recipient
+{
+    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self removeRecipient:recipient withTransaction:transaction];
+    }];
+}
+
+-(void)removeRecipient:(SignalRecipient *_Nonnull)recipient
+       withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+{
+    [self.recipientCache removeObjectForKey:recipient.uniqueId];
+    [recipient removeWithTransaction:transaction];
+}
+
+// MARK: - Tag management
+-(void)processTagsBlob
+{
+    __block NSDictionary *tagsBlob = [[Environment getCurrent].ccsmStorage getTags];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            for (NSDictionary *tagDict in [tagsBlob allValues]) {
+                FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
+                if (aTag.recipientIds.count == 0) {
+                    [self removeTag:aTag withTransaction:transaction];
+                } else {
+                    [self saveTag:aTag withTransaction:transaction];
+                }
+            }
+        }];
+    });
+}
+
+-(void)saveTag:(FLTag *_Nonnull)aTag
+{
+    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self saveTag:aTag withTransaction:transaction];
+    }];
+}
+
+-(void)saveTag:(FLTag *_Nonnull)aTag
+withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+{
+    [self.tagCache setObject:aTag forKey:aTag.uniqueId];
+    [aTag saveWithTransaction:transaction];
+}
+-(void)removeTag:(FLTag *_Nonnull)aTag
+{
+    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self removeTag:aTag withTransaction:transaction];
+    }];
+}
+
+-(void)removeTag:(FLTag *_Nonnull)aTag
+ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+{
+    [self.tagCache removeObjectForKey:aTag.uniqueId];
+    [aTag removeWithTransaction:transaction];
+}
+
 //-(NSString *)dbPath
 //{
 //    if (_dbPath.length == 0) {
@@ -178,30 +258,21 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 #pragma mark - Setup
 -(void)refreshCCSMRecipients
 {
+    [self.recipientCache removeAllObjects];
+    [self.tagCache removeAllObjects];
     [CCSMCommManager refreshCCSMData];
 }
-
--(void)processUsersBlob
-{
-    __block NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
-    
-    if (usersBlob.count > 0) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
-             {
-                 for (NSDictionary *userDict in usersBlob.allValues) {
-                     [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
-                 }
-             }];
-        });
-    }
-}
-
 
 - (void)setupLatestRecipients:(NSArray *)recipients {
     if (recipients) {
         self.latestRecipientsById = [FLContactsManager keyRecipientsById:recipients];
     }
+}
+
+-(void)nukeAndPave
+{
+    [self.recipientCache removeAllObjects];
+    [self.tagCache removeAllObjects];
 }
 
 #pragma mark - Observables
@@ -211,55 +282,54 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 #pragma mark - Contact/Phone Number util
-
--(void)saveRecipient:(SignalRecipient *)recipient
-{
-    //    [self.allRecipientsBacker addObject:recipient];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-            [transaction setObject:recipient forKey:recipient.uniqueId inCollection:[SignalRecipient collection]];
-        }];
-    });
-}
-
 -(SignalRecipient *)recipientWithUserID:(NSString *)userID
 {
     // Check to see if we already have it locally
-    for (SignalRecipient *recipient in self.allRecipients) {
-        if ([recipient.uniqueId isEqualToString:userID]) {
-            return recipient;
-        }
-    }
-    
-    // If not, go get it, build it, and save it.
-    __block SignalRecipient *recipient = nil;
-    [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        if (!recipient) {
-            recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
-            if (recipient) {
-                [recipient saveWithTransaction:transaction];
+    __block SignalRecipient *recipient = [self.recipientCache objectForKey:userID];
+    if (recipient) {
+        return recipient;
+    } else {
+        
+        // If not, go get it, build it, and save it.
+        [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            // Check the db
+            recipient = [SignalRecipient fetchObjectWithUniqueID:userID transaction:transaction];
+            
+            // Go make it from CCSM
+            if (!recipient) {
+                recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
+                if (recipient) {
+                    [self saveRecipient:recipient withTransaction:transaction];
+                }
             }
-        }
-    }];
-    return recipient;
+        }];
+        return recipient;
+    }
 }
 
--(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+-(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID
+                                     transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
-    // Check to see if we already it locally
-    for (SignalRecipient *recipient in self.allRecipients) {
-        if ([recipient.uniqueId isEqualToString:userID]) {
-            return recipient;
-        }
-    }
-    
-    // If not, go get it, build it, and save it.
-    SignalRecipient *recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
+    // Check "cache"
+    SignalRecipient *recipient = [self.recipientCache objectForKey:userID];
     if (recipient) {
-        [recipient saveWithTransaction:transaction];
+        return recipient;
     }
     
-    return recipient;}
+    // Check db
+    recipient = [SignalRecipient fetchObjectWithUniqueID:userID transaction:transaction];
+    if (recipient) {
+        return recipient;
+    }
+    
+    // Go get it, build it, and save it.
+    recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
+    if (recipient) {
+        [self saveRecipient:recipient withTransaction:transaction];
+    }
+    
+    return recipient;
+}
 
 - (SignalRecipient *)latestRecipientForPhoneNumber:(PhoneNumber *)phoneNumber
 {
@@ -300,13 +370,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     }];
 }
 
--(void)refreshRecipients
-{
-    _allRecipients = nil;
-    [self allRecipients];
-}
-
-
 + (BOOL)name:(NSString *)nameString matchesQuery:(NSString *)queryString {
     NSCharacterSet *whitespaceSet = NSCharacterSet.whitespaceCharacterSet;
     NSArray *queryStrings         = [queryString componentsSeparatedByCharactersInSet:whitespaceSet];
@@ -323,12 +386,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 #pragma mark - Whisper User Management
-
-//- (NSArray *)getSignalUsersFromContactsArray:(NSArray *)contacts {
-//    return [[contacts filter:^int(Contact *contact) {
-//      return [contact isSignalContact];
-//    }] sortedArrayUsingComparator:[[self class] contactComparator]];
-//}
 
 + (NSComparator)recipientComparator {
     return ^NSComparisonResult(id obj1, id obj2) {

@@ -135,16 +135,15 @@ static const NSString *FLExpressionKey = @"expression";
     NSString *threadTitle = [payload objectForKey:FLThreadTitleKey];
     thread.name = ((threadTitle.length > 0) ? threadTitle : nil );
     thread.type = ((threadType.length > 0) ? threadType : nil );
-
-    [thread updateWithExpression:threadExpression transaction:transaction];
+    thread.universalExpression = threadExpression;
+    
+    [thread updateWithExpression:thread.universalExpression transaction:transaction];
 
     return thread;
 }
 
 - (void)removeWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    [super removeWithTransaction:transaction];
-    
     __block NSMutableArray<NSString *> *interactionIds = [[NSMutableArray alloc] init];
     [self enumerateInteractionsWithTransaction:transaction
                                     usingBlock:^(TSInteraction *interaction, YapDatabaseReadTransaction *trans) {
@@ -159,6 +158,7 @@ static const NSString *FLExpressionKey = @"expression";
         TSInteraction *interaction = [TSInteraction fetchObjectWithUniqueID:interactionId transaction:transaction];
         [interaction removeWithTransaction:transaction];
     }
+    [super removeWithTransaction:transaction];
 }
 
 
@@ -182,7 +182,8 @@ static const NSString *FLExpressionKey = @"expression";
             }
         }
         NSString *newExpression = [NSString stringWithFormat:@"%@-(%@)", self.universalExpression, goingaway];
-        [self updateWithExpression:newExpression transaction:transaction];
+        self.universalExpression = newExpression;
+        [self updateWithExpression:self.universalExpression transaction:transaction];
     }
 }
 
@@ -313,37 +314,75 @@ static const NSString *FLExpressionKey = @"expression";
     [attachmentStream remove];
 }
 
+-(void)updateWithPayload:(NSDictionary *)payload
+{
+    NSString *threadId = [payload objectForKey:FLThreadIDKey];
+    if (![payload objectForKey:FLThreadIDKey]) {
+        DDLogDebug(@"%@ - Attempted to retrieve thread with payload without a UID.", self.tag);
+        return;
+    }
+    NSString *threadExpression = [(NSDictionary *)[payload objectForKey:FLDistributionKey] objectForKey:FLExpressionKey];
+    NSString *threadType = [payload objectForKey:FLThreadTypeKey];
+    NSString *threadTitle = [payload objectForKey:FLThreadTitleKey];
+    self.name = ((threadTitle.length > 0) ? threadTitle : nil );
+    self.type = ((threadType.length > 0) ? threadType : nil );
+    self.universalExpression = threadExpression;
+    
+    [self updateWithExpression:self.universalExpression];
+}
+
 -(void)validate
 {
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [self validateWithTransaction:transaction];
-    }];
+    [self updateWithExpression:self.universalExpression];
+    
+//    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//        [self validateWithTransaction:transaction];
+//    }];
 }
--(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
-{
-    [self updateWithExpression:self.universalExpression transaction:transaction];
-}
+//-(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
+//{
+//    [self updateWithExpression:self.universalExpression transaction:transaction];
+//}
 
 -(void)updateWithExpression:(NSString *)expression
 {
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [self updateWithExpression:expression transaction:transaction];
-    }];
+    [CCSMCommManager asyncTagLookupWithString:expression
+                                      success:^(NSDictionary * _Nonnull lookupDict) {
+                                          if (lookupDict) {
+                                              self.participants = [lookupDict objectForKey:@"userids"];
+                                              self.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                                              self.universalExpression = [lookupDict objectForKey:@"universal"];
+                                              if ([lookupDict objectForKey:@"monitorids"]) {
+                                                  self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
+                                              }
+                                              [self save];
+                                          }
+                                      } failure:^(NSError * _Nonnull error) {
+                                          DDLogDebug(@"%@: TagMath query for expression failed.  Error: %@", self.tag, error.localizedDescription);
+                                      }];
+//    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//        [self updateWithExpression:expression transaction:transaction];
+//    }];
 }
 
 -(void)updateWithExpression:(NSString *)expression transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     if (expression.length > 0) {
-        NSDictionary *lookupDict = [CCSMCommManager syncTagLookupWithString:expression];
-        if (lookupDict) {
-            self.participants = [lookupDict objectForKey:@"userids"];
-            self.prettyExpression = [lookupDict objectForKey:@"pretty"];
-            self.universalExpression = [lookupDict objectForKey:@"universal"];
-            if ([lookupDict objectForKey:@"monitorids"]) {
-                self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
-            }
-            [self saveWithTransaction:transaction];
-        }
+        
+        [CCSMCommManager asyncTagLookupWithString:expression
+                                          success:^(NSDictionary * _Nonnull lookupDict) {
+                                              if (lookupDict) {
+                                                  self.participants = [lookupDict objectForKey:@"userids"];
+                                                  self.prettyExpression = [lookupDict objectForKey:@"pretty"];
+                                                  self.universalExpression = [lookupDict objectForKey:@"universal"];
+                                                  if ([lookupDict objectForKey:@"monitorids"]) {
+                                                      self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
+                                                  }
+                                                  [self saveWithTransaction:transaction];
+                                              }
+                                          } failure:^(NSError * _Nonnull error) {
+                                              DDLogDebug(@"%@: TagMath query for expression failed.  Error: %@", self.tag, error.localizedDescription);
+                                          }];
     }
 }
 
