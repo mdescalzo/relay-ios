@@ -491,9 +491,6 @@
 		7D6139A71F90172100E18D29 /* TSPreKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D61387C1F90161500E18D29 /* TSPreKeyManager.m */; };
 		7D6139A81F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */; };
 		7D6139A91F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */; };
-		7D6139AA1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
-		7D6139AB1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
-		7D6139AC1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
 		7D6139B31F90173A00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
 		7D6139B41F90173B00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
 		7D6139B51F90173B00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
@@ -847,6 +844,9 @@
 		7D7DBFCE1F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
 		7D7DBFCF1F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
 		7D7DBFD01F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
+		7D7F360120191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
+		7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
+		7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
 		7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
 		7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
@@ -1861,8 +1861,6 @@
 		7D61387C1F90161500E18D29 /* TSPreKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPreKeyManager.m; sourceTree = "<group>"; };
 		7D61387D1F90161500E18D29 /* TSPrivacyPreferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSPrivacyPreferences.h; sourceTree = "<group>"; };
 		7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPrivacyPreferences.m; sourceTree = "<group>"; };
-		7D6138801F90161500E18D29 /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCSMStorage.h; path = RelayServiceKit/CCSM/CCSMStorage.h; sourceTree = "<group>"; };
-		7D6138811F90161500E18D29 /* CCSMStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCSMStorage.m; path = RelayServiceKit/CCSM/CCSMStorage.m; sourceTree = "<group>"; };
 		7D6138871F90161500E18D29 /* Contact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		7D6138881F90161500E18D29 /* Contact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		7D6138891F90161500E18D29 /* ContactsUpdater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsUpdater.h; sourceTree = "<group>"; };
@@ -1907,7 +1905,6 @@
 		7D6138B21F90161500E18D29 /* OWSRecordTranscriptJob.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSRecordTranscriptJob.m; sourceTree = "<group>"; };
 		7D6138B31F90161500E18D29 /* OWSSendReadReceiptsJob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSSendReadReceiptsJob.h; sourceTree = "<group>"; };
 		7D6138B41F90161500E18D29 /* OWSSendReadReceiptsJob.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSSendReadReceiptsJob.m; sourceTree = "<group>"; };
-		7D6138B51F90161500E18D29 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7D6138B81F90161500E18D29 /* OWSAttachmentsProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSAttachmentsProcessor.h; sourceTree = "<group>"; };
 		7D6138B91F90161500E18D29 /* OWSAttachmentsProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSAttachmentsProcessor.m; sourceTree = "<group>"; };
 		7D6138BA1F90161500E18D29 /* TSAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAttachment.h; sourceTree = "<group>"; };
@@ -2027,7 +2024,6 @@
 		7D6139331F90161500E18D29 /* TSSocketManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSSocketManager.m; sourceTree = "<group>"; };
 		7D6139351F90161500E18D29 /* ContactsManagerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsManagerProtocol.h; sourceTree = "<group>"; };
 		7D6139361F90161500E18D29 /* NotificationsProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationsProtocol.h; sourceTree = "<group>"; };
-		7D6139371F90161500E18D29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7D6139391F90161500E18D29 /* ECKeyPair+OWSPrivateKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+OWSPrivateKey.h"; sourceTree = "<group>"; };
 		7D61393A1F90161500E18D29 /* ECKeyPair+OWSPrivateKey.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+OWSPrivateKey.m"; sourceTree = "<group>"; };
 		7D61393B1F90161500E18D29 /* OWSFingerprint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSFingerprint.h; sourceTree = "<group>"; };
@@ -2120,6 +2116,8 @@
 		7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactSelectionTableViewController.m; sourceTree = "<group>"; };
 		7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLControlMessage.m; sourceTree = "<group>"; };
 		7D7DBFCD1F97E24000860D35 /* FLControlMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLControlMessage.h; sourceTree = "<group>"; };
+		7D7F35FF20191E5F00FC63C9 /* CCSMStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSMStorage.h; sourceTree = "<group>"; };
+		7D7F360020191E5F00FC63C9 /* CCSMStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
 		7DA09F3C1FBE83AE00F2D859 /* FLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTag.h; path = Relay/src/contact/FLTag.h; sourceTree = SOURCE_ROOT; };
@@ -2691,7 +2689,6 @@
 				76EB048818170B33006006FC /* phone */,
 				76EB04B118170B33006006FC /* profiling */,
 				B60959791C2C0FA9004E8797 /* rating */,
-				7D6138751F90161500E18D29 /* RelayServiceKit */,
 				7D516F1A1EF318F000E7E15F /* Services */,
 				45CD81A41DBFF8CF004C9430 /* Storyboards */,
 				76EB04C818170B33006006FC /* util */,
@@ -3280,22 +3277,7 @@
 		7D6138751F90161500E18D29 /* RelayServiceKit */ = {
 			isa = PBXGroup;
 			children = (
-				7D6138761F90161500E18D29 /* Account */,
-				7D61387F1F90161500E18D29 /* CCSM */,
-				7D6138861F90161500E18D29 /* Contacts */,
-				7D61389A1F90161500E18D29 /* Devices */,
-				7D6138B51F90161500E18D29 /* LICENSE */,
-				7D6138B61F90161500E18D29 /* Messages */,
-				7D6138FE1F90161500E18D29 /* Network */,
-				7D6139341F90161500E18D29 /* Protocols */,
-				7D6139371F90161500E18D29 /* README.md */,
-				7D6139381F90161500E18D29 /* Security */,
-				7D6139491F90161500E18D29 /* Storage */,
-				7D6139651F90161500E18D29 /* TextSecureKitEnv.h */,
-				7D6139661F90161500E18D29 /* TextSecureKitEnv.m */,
-				7D6139671F90161500E18D29 /* TSConstants.h */,
-				7D6139681F90161500E18D29 /* TSPrefix.h */,
-				7D6139691F90161500E18D29 /* Util */,
+				7D7F360420191E7B00FC63C9 /* src */,
 			);
 			path = RelayServiceKit;
 			sourceTree = "<group>";
@@ -3313,13 +3295,6 @@
 				7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */,
 			);
 			path = Account;
-			sourceTree = "<group>";
-		};
-		7D61387F1F90161500E18D29 /* CCSM */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CCSM;
 			sourceTree = "<group>";
 		};
 		7D6138861F90161500E18D29 /* Contacts */ = {
@@ -3714,6 +3689,26 @@
 			name = ContactsPicker;
 			sourceTree = "<group>";
 		};
+		7D7F360420191E7B00FC63C9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7D6138761F90161500E18D29 /* Account */,
+				7D6138861F90161500E18D29 /* Contacts */,
+				7D61389A1F90161500E18D29 /* Devices */,
+				7D6138B61F90161500E18D29 /* Messages */,
+				7D6138FE1F90161500E18D29 /* Network */,
+				7D6139341F90161500E18D29 /* Protocols */,
+				7D6139381F90161500E18D29 /* Security */,
+				7D6139491F90161500E18D29 /* Storage */,
+				7D6139651F90161500E18D29 /* TextSecureKitEnv.h */,
+				7D6139661F90161500E18D29 /* TextSecureKitEnv.m */,
+				7D6139671F90161500E18D29 /* TSConstants.h */,
+				7D6139681F90161500E18D29 /* TSPrefix.h */,
+				7D6139691F90161500E18D29 /* Util */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -4088,6 +4083,7 @@
 				7DD51C081FBE2A70003DF7DB /* CONTRIBUTING.md */,
 				7DD51C071FBE2A70003DF7DB /* README.md */,
 				D221A093169C9E5E00537ABF /* Relay */,
+				7D6138751F90161500E18D29 /* RelayServiceKit */,
 				D221A08C169C9E5E00537ABF /* Frameworks */,
 				D221A08A169C9E5E00537ABF /* Products */,
 				70B8009E190C529C0042E3F0 /* spandsp.xcodeproj */,
@@ -4189,8 +4185,8 @@
 		DBE1798C1ED9FF8500327B2B /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
-				7D6138801F90161500E18D29 /* CCSMStorage.h */,
-				7D6138811F90161500E18D29 /* CCSMStorage.m */,
+				7D7F35FF20191E5F00FC63C9 /* CCSMStorage.h */,
+				7D7F360020191E5F00FC63C9 /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
 				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 			);
@@ -5239,6 +5235,7 @@
 				7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */,
 				7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */,
 				7D613A701F90181B00E18D29 /* OWSGetDevicesRequest.m in Sources */,
+				7D7F360120191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613A0F1F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D4A39F61F1693930023C29B /* Release.m in Sources */,
 				7D6139FD1F90179F00E18D29 /* TSAttachmentPointer.m in Sources */,
@@ -5426,7 +5423,6 @@
 				7D613A971F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D7DA5961F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */,
 				7D613A211F9017C900E18D29 /* TSInfoMessage.m in Sources */,
-				7D6139AC1F90173100E18D29 /* CCSMStorage.m in Sources */,
 				7D613A661F90181200E18D29 /* OWSDeleteDeviceRequest.m in Sources */,
 				7D4A3A6E1F1693930023C29B /* JSQMediaItem+OWS.m in Sources */,
 				7D4A3A6F1F1693930023C29B /* ZrtpHandshakeSocket.m in Sources */,
@@ -5586,6 +5582,7 @@
 				7DCFFD981F0EE4490003CD95 /* FunctionalUtil.m in Sources */,
 				7DCFFD991F0EE4490003CD95 /* SignalUtil.m in Sources */,
 				7DCFFD9A1F0EE4490003CD95 /* AnonymousAudioCallbackHandler.m in Sources */,
+				7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD41F90188B00E18D29 /* TSDatabaseView.m in Sources */,
 				7D613A071F9017AB00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				7DCFFD9B1F0EE4490003CD95 /* ConfirmAckPacket.m in Sources */,
@@ -5652,7 +5649,6 @@
 				7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */,
 				7D613A0A1F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D613A711F90181C00E18D29 /* OWSGetDevicesRequest.m in Sources */,
-				7D6139AB1F90173100E18D29 /* CCSMStorage.m in Sources */,
 				7DCFFDCE1F0EE4490003CD95 /* ContactTableViewCell.m in Sources */,
 				7D613A191F9017BE00E18D29 /* OWSEndSessionMessage.m in Sources */,
 				7D613B011F9018FE00E18D29 /* NSDate+millisecondTimeStamp.mm in Sources */,
@@ -5933,6 +5929,7 @@
 				76EB060A18170B33006006FC /* SignalUtil.m in Sources */,
 				E197B61718BBEC1A00F073E5 /* AnonymousAudioCallbackHandler.m in Sources */,
 				76EB05BC18170B33006006FC /* ConfirmAckPacket.m in Sources */,
+				7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD51F90188B00E18D29 /* TSDatabaseView.m in Sources */,
 				7D613A081F9017AC00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				76EB060C18170B33006006FC /* CategorizingLogger.m in Sources */,
@@ -5999,7 +5996,6 @@
 				DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */,
 				7D613A0B1F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D613A721F90181C00E18D29 /* OWSGetDevicesRequest.m in Sources */,
-				7D6139AA1F90173100E18D29 /* CCSMStorage.m in Sources */,
 				76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */,
 				7D613A1A1F9017BE00E18D29 /* OWSEndSessionMessage.m in Sources */,
 				7D613B031F90190000E18D29 /* NSDate+millisecondTimeStamp.mm in Sources */,
