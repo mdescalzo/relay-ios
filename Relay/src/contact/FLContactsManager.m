@@ -30,12 +30,9 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 @property(atomic, copy) NSDictionary *latestRecipientsById;
 @property (strong, nonatomic) NSMutableArray<SignalRecipient *> *activeRecipientsBacker;
 @property (strong, nonatomic) NSCompoundPredicate *visibleRecipientsPredicate;
-<<<<<<< HEAD
 @property (strong) CNContactStore *contactStore;
-=======
 @property (strong) NSMutableDictionary *recipientCache;
 @property (strong) NSMutableDictionary *tagCache;
->>>>>>> master
 
 @end
 
@@ -280,7 +277,6 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 }
 
 #pragma mark - Contact/Phone Number util
-<<<<<<< HEAD
 -(void)intersectLocalContacts
 {
     // Lookup compare locally stored contacts to those in Atlas for "public" only
@@ -388,8 +384,6 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
     });
 }
 
-=======
->>>>>>> master
 -(SignalRecipient *)recipientWithUserID:(NSString *)userID
 {
     // Check to see if we already have it locally
