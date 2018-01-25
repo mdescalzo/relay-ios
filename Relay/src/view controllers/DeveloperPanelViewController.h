@@ -6,8 +6,6 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-#import "FLTagMathService.h"
-
 @class UIKit;
 
 @interface DeveloperPanelViewController : UIViewController <UITextFieldDelegate>

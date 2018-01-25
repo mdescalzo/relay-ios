@@ -33,9 +33,9 @@ NSUInteger maximumValidationAttempts = 9999;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.ccsmStorage = [CCSMStorage new];
-//    self.ccsmCommManager = [CCSMCommManager new];
+    //    self.ccsmCommManager = [CCSMCommManager new];
     
-   // Allow for localized string on controls
+    // Allow for localized string on controls
     self.validationCodeTextField.placeholder = NSLocalizedString(@"Enter Validation Code", @"");
     self.validationButton.titleLabel.text = NSLocalizedString(@"Validate", @"");
     self.resendCodeButton.titleLabel.text = NSLocalizedString(@"Send New Code", @"");
@@ -51,7 +51,7 @@ NSUInteger maximumValidationAttempts = 9999;
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.hidden = NO;
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -60,7 +60,7 @@ NSUInteger maximumValidationAttempts = 9999;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-        [self.validationCodeTextField becomeFirstResponder];
+    [self.validationCodeTextField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,7 +77,7 @@ NSUInteger maximumValidationAttempts = 9999;
     if ([segue.identifier isEqualToString: @"mainSegue"]) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:FLAwaitingVerification];
         [[NSUserDefaults standardUserDefaults] synchronize];
-
+        
         SignalsNavigationController *snc = (SignalsNavigationController *)segue.destinationViewController;
         
         AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -104,7 +104,7 @@ NSUInteger maximumValidationAttempts = 9999;
         CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
         CGSize screenSize = UIScreen.mainScreen.bounds.size;
         
-        CGFloat controlsY = self.resendCodeButton.frame.origin.y + self.resendCodeButton.frame.size.height + 8.0;
+        CGFloat controlsY = self.resendCodeButton.frame.origin.y + self.resendCodeButton.frame.size.height + 8.0f;
         
         if ((screenSize.height - controlsY) < keyboardSize.height) {  // Keyboard will overlap
             
@@ -138,13 +138,13 @@ NSUInteger maximumValidationAttempts = 9999;
                                      screenFrame.size.width,
                                      screenFrame.size.height);
         
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [UIView animateWithDuration:0.25 animations:^{
-                    self.view.frame = newFrame;
-//                    self.view.frame = [UIScreen mainScreen].bounds ;
-                    
-                }];
-            });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.25 animations:^{
+                self.view.frame = newFrame;
+                //                    self.view.frame = [UIScreen mainScreen].bounds ;
+                
+            }];
+        });
     }
 }
 
@@ -157,15 +157,14 @@ NSUInteger maximumValidationAttempts = 9999;
 
 -(void)ccsmValidationSucceeded
 {
-    // refresh other stuff now that we have the user info...
-    [CCSMCommManager refreshCCSMData];
-    
     // TSS Registration handling
     // Check if registered and proceed to next storyboard accordingly
     if ([TSAccountManager isRegistered]) {
         // We are, move onto main
         [Environment.getCurrent.contactsManager intersectLocalContacts];
         [TSSocketManager becomeActiveFromForeground];
+        [CCSMCommManager refreshCCSMData];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.spinner stopAnimating];
             self.validationButton.enabled = YES;
@@ -175,31 +174,31 @@ NSUInteger maximumValidationAttempts = 9999;
     } else {
         // Not registered with TSS, ask CCSM to do it for us.
         [CCSMCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
-                                                      success:^{
-                                                          // TODO: Make call to AppDelegate instead of doing anything more than UI stuff here
-                                                          [Environment.getCurrent.contactsManager intersectLocalContacts];
-                                                          [TSSocketManager becomeActiveFromForeground];
-                                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                                              [self.spinner stopAnimating];
-                                                              self.validationButton.enabled = YES;
-                                                              self.validationButton.alpha = 1.0;
-                                                              [self performSegueWithIdentifier:@"mainSegue" sender:self];
-                                                          });
-                                                      }
-                                                      failure:^(NSError *error) {
-                                                          DDLogError(@"TSS Validation error: %@", error.description);
-                                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                                              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                                              message:error.description
-                                                                                                             delegate:nil
-                                                                                                    cancelButtonTitle:@"OK"
-                                                                                                    otherButtonTitles:nil];
-                                                              [alert show];
-                                                              [self.spinner stopAnimating];
-                                                              self.validationButton.enabled = YES;
-                                                              self.validationButton.alpha = 1.0;
-                                                          });
-                                                      }];
+                                                 success:^{
+                                                     [CCSMCommManager refreshCCSMData];
+                                                     [TSSocketManager becomeActiveFromForeground];
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         [self.spinner stopAnimating];
+                                                         self.validationButton.enabled = YES;
+                                                         self.validationButton.alpha = 1.0;
+                                                         [self performSegueWithIdentifier:@"mainSegue" sender:self];
+                                                     });
+                                                 }
+                                                 failure:^(NSError *error) {
+                                                     DDLogError(@"TSS Validation error: %@", error.description);
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         // TODO: More user-friendly alert here
+                                                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                         message:error.description
+                                                                                                        delegate:nil
+                                                                                               cancelButtonTitle:@"OK"
+                                                                                               otherButtonTitles:nil];
+                                                         [alert show];
+                                                         [self.spinner stopAnimating];
+                                                         self.validationButton.enabled = YES;
+                                                         self.validationButton.alpha = 1.0;
+                                                     });
+                                                 }];
     }
     
 }
@@ -232,28 +231,28 @@ NSUInteger maximumValidationAttempts = 9999;
         self.validationButton.enabled = NO;
         self.validationButton.alpha = 0.5;
     });
-
+    
     
     NSString *code = self.validationCodeTextField.text;
     [CCSMCommManager verifyLogin:code
-                              success:^{
-                                  [self ccsmValidationSucceeded];
-                              }
-                              failure:^(NSError *err){
-                                  [self ccsmValidationFailed];
-                              }];
+                         success:^{
+                             [self ccsmValidationSucceeded];
+                         }
+                         failure:^(NSError *err){
+                             [self ccsmValidationFailed];
+                         }];
 }
 
 -(IBAction)onResendCodeButtonTap:(id)sender
 {
     [CCSMCommManager requestLogin:[self.ccsmStorage getUserName]
-                               orgName:[self.ccsmStorage getOrgName]
-                               success:^{
-                                   DDLogDebug(@"Request for code resend succeeded.");
-                               }
-                               failure:^(NSError *err){
-                                   DDLogDebug(@"Request for code resend failed.  Error: %@", err.description);
-                               }];
+                          orgName:[self.ccsmStorage getOrgName]
+                          success:^{
+                              DDLogDebug(@"Request for code resend succeeded.");
+                          }
+                          failure:^(NSError *err){
+                              DDLogDebug(@"Request for code resend failed.  Error: %@", err.description);
+                          }];
 }
 
 -(IBAction)mainViewTapped:(id)sender

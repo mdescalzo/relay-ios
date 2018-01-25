@@ -93,14 +93,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     // Setting up environment
     [Environment setCurrent:[Release releaseEnvironmentWithLogging:logger]];
 
-    // Moved this to ensureRootViewController method since this was redundent.
-//    DDLogDebug(@"Init main window and make visible.");
-//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    // TODO: Generate an informational loading view to display here.
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLaunchScreen bundle:[NSBundle mainBundle]];
-//    self.window.rootViewController = [storyboard instantiateInitialViewController];
-//    [self.window makeKeyAndVisible];
-
     DDLogDebug(@"Navbar appearance setup.");
     // Navbar background color iOS10 bug workaround
     [UINavigationBar appearance].backgroundColor = [UIColor blackColor];
@@ -114,12 +106,19 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     DDLogDebug(@"TSAccountManager isRegistered called.");
     UIApplicationState launchState = application.applicationState;
     if ([TSAccountManager isRegistered]) {
-        DDLogDebug(@"Pushmanager registers.");
-        [[PushManager sharedManager] registerPushKitNotificationFuture];
-
         DDLogDebug(@"TSAccountManager isRegistered TRUE.");
         [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
         
+        DDLogDebug(@"Begin push registration promise chain.");
+        OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
+        [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
+                                  accountManager:accountManager
+                                     preferences:[Environment preferences]].then(^{
+            DDLogDebug(@"%@ Successfully ran syncPushTokensJob.", self.tag);
+        }).catch(^(NSError *_Nonnull error) {
+            DDLogDebug(@"%@ Failed to run syncPushTokensJob with error: %@", self.tag, error);
+        });
+
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             if (launchState == UIApplicationStateInactive) {
                 DDLogWarn(@"The app was launched from inactive");
@@ -130,16 +129,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
             } else {
                 DDLogWarn(@"The app was launched in an unknown way");
             }
-            
-            OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
-            
-            [OWSSyncPushTokensJob runWithPushManager:[PushManager sharedManager]
-                                      accountManager:accountManager
-                                         preferences:[Environment preferences]].then(^{
-                DDLogDebug(@"%@ Successfully ran syncPushTokensJob.", self.tag);
-            }).catch(^(NSError *_Nonnull error) {
-                DDLogDebug(@"%@ Failed to run syncPushTokensJob with error: %@", self.tag, error);
-            });
             
             [TSPreKeyManager refreshPreKeys];
             
@@ -261,8 +250,8 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                 [self removeScreenProtection];
             } else {
                 if (!SmileAuthenticator.sharedInstance.isShowingAuthVC) {
-                SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
-                [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
+                    SmileAuthenticator.sharedInstance.securityType = INPUT_TOUCHID;
+                    [SmileAuthenticator.sharedInstance presentAuthViewControllerAnimated:YES];
                 }
             }
         } else {
@@ -270,46 +259,47 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
         }
 
         [TSSocketManager becomeActiveFromForeground];
-        [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                [Environment.getCurrent.contactsManager intersectLocalContacts];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            [CCSMCommManager refreshSessionTokenAsynchronousSuccess:^{  // Refresh success
                 [self refreshUsersStore];
-            });
-        }
-                                                        failure:^(NSError *error){
-                                                            // Unable to refresh, login force login
-                                                            DDLogDebug(@"Token Refresh failed with error: %@", error.description);
-                                                            
-                                                            // Determine if this eror should kick the user out:
-                                                            if (error.code >= 400 && error.code <= 404) {
-                                                                //  Out they go...
-                                                                [TSSocketManager resignActivity];
-                                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
-                                                                                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-                                                                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                                                                       style:UIAlertActionStyleDefault
-                                                                                                                     handler:^(UIAlertAction *action) {
-                                                                                                                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
-                                                                                                                         self.window.rootViewController = [storyboard instantiateInitialViewController];
-                                                                                                                         [self.window makeKeyAndVisible];
-                                                                                                                     }];
-                                                                    [alert addAction:okAction];
-                                                                    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-                                                                });
-                                                            } else {
-                                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Server Connection Failed", @"")
-                                                                                                                                   message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
-                                                                                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-                                                                    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                                                                       style:UIAlertActionStyleDefault
-                                                                                                                     handler:^(UIAlertAction * action) {} ];
-                                                                    [alert addAction:okButton];
-                                                                    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-                                                                });
-                                                            }
-                                                        }];
+            }
+                                                            failure:^(NSError *error){
+                                                                // Unable to refresh, login force login
+                                                                DDLogDebug(@"Token Refresh failed with error: %@", error.description);
+                                                                
+                                                                // Determine if this eror should kick the user out:
+                                                                if (error.code >= 400 && error.code <= 404) {
+                                                                    //  Out they go...
+                                                                    [TSSocketManager resignActivity];
+                                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil                                                                                                                               message:NSLocalizedString(@"REFRESH_FAILURE_MESSAGE", nil)
+                                                                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+                                                                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                                                                           style:UIAlertActionStyleDefault
+                                                                                                                         handler:^(UIAlertAction *action) {
+                                                                                                                             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:AppDelegateStoryboardLogin bundle:[NSBundle mainBundle]];
+                                                                                                                             self.window.rootViewController = [storyboard instantiateInitialViewController];
+                                                                                                                             [self.window makeKeyAndVisible];
+                                                                                                                         }];
+                                                                        [alert addAction:okAction];
+                                                                        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                                                                    });
+                                                                } else {
+                                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Server Connection Failed", @"")
+                                                                                                                                       message:[NSString stringWithFormat:@"Error: %ld\n%@", (long)error.code, error.localizedDescription]
+                                                                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+                                                                        UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                                                           style:UIAlertActionStyleDefault
+                                                                                                                         handler:^(UIAlertAction * action) {} ];
+                                                                        [alert addAction:okButton];
+                                                                        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                                                                    });
+                                                                }
+                                                            }];
+        });
     }
 }
 
@@ -386,38 +376,40 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
 
 - (void)protectScreen
 {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-        if (!self.coverImageView.superview) {
-            [self.window.rootViewController.view addSubview:self.coverImageView];
-        }
-        self.coverImageView.alpha = 1.0;
-//    });
+    if (!self.coverImageView.superview) {
+        [self.window.rootViewController.view addSubview:self.coverImageView];
+    }
+    self.coverImageView.alpha = 1.0;
 }
 
 - (void)removeScreenProtection
 {
     if (self.coverImageView.superview) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-            self.coverImageView.alpha = 0.0;
-            [self.coverImageView removeFromSuperview];
-//        });
+        self.coverImageView.alpha = 0.0;
+        [self.coverImageView removeFromSuperview];
     }
 }
 
 #pragma mark - Push Notifications Delegate Methods
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    DDLogDebug(@"Did receive incoming remote rush notification.");
     [[PushManager sharedManager] application:application didReceiveRemoteNotification:userInfo];
 }
+
 - (void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
-fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    DDLogDebug(@"Did receive incoming remote rush notification with completion handler.");
     [[PushManager sharedManager] application:application
                 didReceiveRemoteNotification:userInfo
                       fetchCompletionHandler:completionHandler];
 }
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
     [[PushManager sharedManager] application:application didReceiveLocalNotification:notification];
 }
 
@@ -463,6 +455,9 @@ forLocalNotification:(UILocalNotification *)notification
     // Setup Authenticator
     SmileAuthenticator.sharedInstance.delegate = self;
     SmileAuthenticator.sharedInstance.passcodeDigit = Environment.preferences.PINLength;
+    SmileAuthenticator.sharedInstance.backgroundImage = [UIImage imageNamed:@"invertedMetalBackgroundNologo"];
+    SmileAuthenticator.sharedInstance.touchIDIconName = @"Touch_ID";
+    SmileAuthenticator.sharedInstance.appLogoName = @"Forsta_text_logo";
     SmileAuthenticator.sharedInstance.tintColor = [ForstaColors blackColor];
     SmileAuthenticator.sharedInstance.rootVC = self.window.rootViewController;
 }

@@ -12,7 +12,7 @@
 #import <Foundation/Foundation.h>
 #import "PhoneNumber.h"
 
-@interface FLContactsManager : NSObject <ContactsManagerProtocol>
+@interface FLContactsManager : NSObject // <ContactsManagerProtocol>
 
 @property (nonatomic, strong) YapDatabaseConnection * _Nonnull mainConnection;
 @property (strong) YapDatabaseConnection * _Nonnull backgroundConnection;
@@ -23,13 +23,32 @@
 
 + (NSComparator _Nonnull )recipientComparator;
 
--(void)setupDatabase;
 -(ObservableValue *_Nullable)getObservableContacts;
 - (void)doAfterEnvironmentInitSetup;
+
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
 -(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
+
+-(void)refreshCCSMRecipients;
+
+-(UIImage *_Nullable)imageForRecipientId:(NSString *_Nonnull)uid;
+-(NSString *_Nullable)nameStringForContactId:(NSString *_Nonnull)uid;
+
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient;
+<<<<<<< HEAD
 -(void)refreshRecipients;
 -(void)intersectLocalContacts;
+=======
+-(void)saveRecipient:(SignalRecipient *_Nonnull)recipient withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
+-(void)removeRecipient:(SignalRecipient *_Nonnull)recipient;
+-(void)removeRecipient:(SignalRecipient *_Nonnull)recipient withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
+
+-(void)saveTag:(FLTag *_Nonnull)recipient;
+-(void)saveTag:(FLTag *_Nonnull)recipient withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
+-(void)removeTag:(FLTag *_Nonnull)recipient;
+-(void)removeTag:(FLTag *_Nonnull)recipient withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
+
+-(void)nukeAndPave;
+>>>>>>> master
 
 @end

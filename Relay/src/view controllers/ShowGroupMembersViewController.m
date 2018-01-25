@@ -217,7 +217,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     if (_participants == nil) {
         NSMutableArray *holdingArray = [NSMutableArray new];
         for (NSString *uid in self.thread.participants) {
-            SignalRecipient *recipient = [SignalRecipient recipientWithTextSecureIdentifier:uid];
+            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid];
             if (recipient) {
                 [holdingArray addObject:recipient];
             }
