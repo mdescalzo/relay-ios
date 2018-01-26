@@ -848,6 +848,9 @@
 		7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
 		7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
+		7D9D0E2E200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
+		7D9D0E2F200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
+		7D9D0E30200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
 		7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
 		7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
 		7DA09F401FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
@@ -2120,6 +2123,8 @@
 		7D7F360020191E5F00FC63C9 /* CCSMStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
+		7D9D0E2C200E71FF00F60594 /* FLGiphyVideoAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLGiphyVideoAdapter.h; sourceTree = "<group>"; };
+		7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLGiphyVideoAdapter.m; sourceTree = "<group>"; };
 		7DA09F3C1FBE83AE00F2D859 /* FLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTag.h; path = Relay/src/contact/FLTag.h; sourceTree = SOURCE_ROOT; };
 		7DA09F3D1FBE83AF00F2D859 /* FLTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTag.m; path = Relay/src/contact/FLTag.m; sourceTree = SOURCE_ROOT; };
 		7DA801431F86C4040048950F /* Forsta-values.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Forsta-values.plist"; sourceTree = "<group>"; };
@@ -3762,6 +3767,8 @@
 		B62D53F41A23CC8B009AAF82 /* TSMessageAdapters */ = {
 			isa = PBXGroup;
 			children = (
+				7D9D0E2C200E71FF00F60594 /* FLGiphyVideoAdapter.h */,
+				7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */,
 				A5E9D4BA1A65FAD800E4481C /* TSVideoAttachmentAdapter.h */,
 				A5E9D4B91A65FAD800E4481C /* TSVideoAttachmentAdapter.m */,
 				B6A3EB491A423B3800B2236B /* TSPhotoAdapter.h */,
@@ -5348,6 +5355,7 @@
 				7D4A3A401F1693930023C29B /* PhoneManager.m in Sources */,
 				7D61398D1F90163000E18D29 /* UIImage+contentTypes.m in Sources */,
 				7D613AF71F9018EC00E18D29 /* NSData+Base64.m in Sources */,
+				7D9D0E2E200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AA31F90185000E18D29 /* TSSocketManager.m in Sources */,
 				7D4A3A411F1693930023C29B /* ConversationSettingsViewController.m in Sources */,
 				7D4A3A421F1693930023C29B /* EncodedAudioFrame.m in Sources */,
@@ -5694,6 +5702,7 @@
 				7D6139FE1F9017A000E18D29 /* TSAttachmentPointer.m in Sources */,
 				7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */,
 				7DCFFDEC1F0EE4490003CD95 /* CallController.m in Sources */,
+				7D9D0E2F200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AF81F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BB1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
@@ -6041,6 +6050,7 @@
 				7D6139FF1F9017A000E18D29 /* TSAttachmentPointer.m in Sources */,
 				76EB061818170B33006006FC /* AnonymousValueLogger.m in Sources */,
 				76EB05E618170B33006006FC /* CallController.m in Sources */,
+				7D9D0E30200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AF91F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				E16E5BEE18AAC40200B7C403 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BA1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
