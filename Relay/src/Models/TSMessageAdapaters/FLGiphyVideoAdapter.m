@@ -15,7 +15,8 @@
 #import "JSQMessagesMediaViewBubbleImageMasker.h"
 @import AVKit;
 
-#define kNumberOfLoops 5
+#define kMinimumNumberOfLoops 5
+#define kMaxRuntimeSeconds 10.0
 
 @interface FLGiphyVideoAdapter() <AVPlayerViewControllerDelegate>
 
@@ -24,7 +25,8 @@
 @property UIView *containerView;
 @property AVPlayerViewController *avController;
 @property AVPlayer *avPlayer;
-@property NSInteger loopCount;
+@property NSInteger loopCounter;
+@property NSInteger numberOfLoops;
 
 @end
 
@@ -32,11 +34,11 @@
 
 -(instancetype)initWithURLString:(NSString *)giphyURLString
 {
-//    if (self = [super initWithFileURL:[NSURL URLWithString:videoURL] isReadyToPlay:YES]) {
     if (self = [super init]) {
         _giphyURLString = giphyURLString;
         _readyToPlay = NO;
-        _loopCount = 0;
+        _loopCounter = 0;
+        _numberOfLoops = kMinimumNumberOfLoops;
     }
     return self;
 }
@@ -100,22 +102,59 @@
         self.avController.showsPlaybackControls = YES;
         self.avPlayer = [AVPlayer playerWithURL:[NSURL URLWithString:self.giphyURLString]];
         self.avController.player = self.avPlayer;
+        
+        // Use KVO to wait until the giphy is ready before attempting to read duration
+        NSKeyValueObservingOptions options = NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
+        [self.avController.player.currentItem addObserver:self forKeyPath:@"status"
+                                                  options:options
+                                                  context:nil];
+        
         self.avController.view.frame = self.containerView.bounds;
         self.avController.view.backgroundColor = [UIColor clearColor];
         [self.containerView addSubview:self.avController.view];
         [self.avController.player play];
     }
     return self.containerView;
-//    return self.avController.view;
 }
 
 - (CGSize)mediaViewDisplaySize
 {
-//    if (self.giphyView) {
-//        return self.giphyView.frame.size;
-//    } else {
-        return [super mediaViewDisplaySize];
-//    }
+    return [super mediaViewDisplaySize];
+}
+
+// MARK: - KVO
+// SOURCE: Apple's reference for AVPlayerItem
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"status"]) {
+        AVPlayerItemStatus status = AVPlayerItemStatusUnknown;
+        // Get the status change from the change dictionary
+        NSNumber *statusNumber = change[NSKeyValueChangeNewKey];
+        if ([statusNumber isKindOfClass:[NSNumber class]]) {
+            status = statusNumber.integerValue;
+        }
+        // Switch over the status
+        switch (status) {
+            case AVPlayerItemStatusReadyToPlay:
+                // Ready to Play
+            {
+                // Computer number of loops to accomodate very short giphys
+                CGFloat giphyDurationSeconds = CMTimeGetSeconds(self.avPlayer.currentItem.duration);
+                if ((kMaxRuntimeSeconds / giphyDurationSeconds) < kMinimumNumberOfLoops ) {
+                    self.numberOfLoops = kMinimumNumberOfLoops;
+                } else {
+                    self.numberOfLoops = (NSInteger)(kMaxRuntimeSeconds / giphyDurationSeconds);
+                }
+            }
+                break;
+            case AVPlayerItemStatusFailed:
+                // Failed. Examine AVPlayerItem.error
+                break;
+            case AVPlayerItemStatusUnknown:
+                // Not ready
+                break;
+        }
+    }
 }
 
 #pragma mark - NSCoding
@@ -139,20 +178,19 @@
 - (nonnull id)copyWithZone:(nullable NSZone *)zone
 {
     FLGiphyVideoAdapter *copy = [[FLGiphyVideoAdapter allocWithZone:zone] initWithURLString:self.giphyURLString];
-//                                                                                   incoming:!self.appliesMediaViewMaskAsOutgoing];
     copy.appliesMediaViewMaskAsOutgoing = self.appliesMediaViewMaskAsOutgoing;
     return copy;
 }
 
+// TODO: Add a play length check for short giphy's
 - (void)moviePlayerDidFinish:(NSNotification *)note {
     if (note.object == self.avPlayer.currentItem) {
         [self.avPlayer.currentItem seekToTime:kCMTimeZero];
-        self.loopCount++;
-
-        if (self.loopCount < kNumberOfLoops) {
+        self.loopCounter++;
+        if (self.loopCounter < self.numberOfLoops) {
             [self.avPlayer play];
         } else {
-            self.loopCount = 0;
+            self.loopCounter = 0;
             [self.avPlayer pause];
         }
     }
