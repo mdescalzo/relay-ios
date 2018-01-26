@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, TSGroupMetaMessage) {
 @property (nonatomic, readonly) BOOL isExpiringMessage;
 @property (nonatomic, readonly) BOOL shouldStartExpireTimer;
 @property BOOL hasAnnotation;
-@property BOOL giphy;
+@property (nonatomic, readonly) BOOL isGiphy;
 @property (nonatomic) NSString *giphyURLString;
 
 - (instancetype)initWithTimestamp:(uint64_t)timestamp;

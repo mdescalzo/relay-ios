@@ -9,11 +9,12 @@
 #import "OWSMessageEditing.h"
 #import <JSQMessagesViewController/JSQVideoMediaItem.h>
 
-@interface FLGiphyVideoAdapter : JSQVideoMediaItem <OWSMessageEditing>
+@interface FLGiphyVideoAdapter : JSQMediaItem <OWSMessageEditing>
 
-@property (nonatomic, strong) NSString *contentType;
+@property BOOL isOutgoing;
+@property BOOL readyToPlay;
 
--(instancetype)initWithURLString:(NSString *)videoURL incoming:(BOOL)incoming;
+-(instancetype)initWithURLString:(NSString *)giphyURLString;
 
 - (BOOL)isImage;
 - (BOOL)isAudio;

@@ -118,7 +118,11 @@
         }
 
         // giphy handling
-        
+        if (message.isGiphy) {
+            adapter.mediaItem = [[FLGiphyVideoAdapter alloc] initWithURLString:message.giphyURLString];
+//                                                                      incoming:[interaction isKindOfClass:[TSIncomingMessage class]]];
+            adapter.mediaItem.appliesMediaViewMaskAsOutgoing = [interaction isKindOfClass:[TSOutgoingMessage class]];
+        }
         
         if ([message hasAttachments]) {
             for (NSString *attachmentID in message.attachmentIds) {

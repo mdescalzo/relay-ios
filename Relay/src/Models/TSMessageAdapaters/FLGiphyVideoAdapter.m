@@ -8,19 +8,25 @@
 
 #import "FLGiphyVideoAdapter.h"
 #import "MIMETypeUtil.h"
+#import "JSQMessagesMediaViewBubbleImageMasker.h"
+@import WebKit;
 
-@interface FLGiphyVideoAdapter()
+@interface FLGiphyVideoAdapter() <WKUIDelegate, WKNavigationDelegate>
 
-@property (nonatomic) BOOL incoming;
-
+@property (nonatomic, strong) PropertyListPreferences *prefs;
+@property NSString *giphyURLString;
+@property WKWebView *giphyView;
+//@property UIView *containerView;
 @end
 
 @implementation FLGiphyVideoAdapter
 
--(instancetype)initWithURLString:(NSString *)videoURL incoming:(BOOL)incoming
+-(instancetype)initWithURLString:(NSString *)giphyURLString
 {
-    if (self = [super initWithFileURL:[NSURL URLWithString:videoURL] isReadyToPlay:YES]) {
-        
+//    if (self = [super initWithFileURL:[NSURL URLWithString:videoURL] isReadyToPlay:YES]) {
+    if (self = [super init]) {
+        _giphyURLString = giphyURLString;
+        _readyToPlay = NO;
     }
     return self;
 }
@@ -30,52 +36,159 @@
 }
 
 - (BOOL)isAudio {
-    return [MIMETypeUtil isSupportedAudioMIMEType:_contentType];
+    return NO;
 }
 
 
 - (BOOL)isVideo {
-    return [MIMETypeUtil isSupportedVideoMIMEType:_contentType];
+    return NO;
 }
 
 -(BOOL)isDocument {
     return NO;
 }
 
-- (BOOL)canPerformEditingAction:(nonnull SEL)action {
-    <#code#>
+- (BOOL)canPerformEditingAction:(nonnull SEL)action
+{
+    return (action == @selector(copy:));
 }
 
-- (void)performEditingAction:(nonnull SEL)action {
-    <#code#>
+- (void)performEditingAction:(nonnull SEL)action
+{
+    if (action == @selector(copy:)) {
+        UIPasteboard.generalPasteboard.string = self.giphyURLString;
+        return;
+    }
 }
 
-- (NSUInteger)mediaHash {
-    <#code#>
+- (NSUInteger)mediaHash
+{
+    return self.giphyURLString.hash;
 }
 
-- (UIView *)mediaPlaceholderView {
-    <#code#>
+- (UIView *)mediaPlaceholderView
+{
+    return [super mediaPlaceholderView];
 }
 
-- (UIView *)mediaView {
-    <#code#>
+- (UIView *)mediaView
+{
+//    return [super mediaView];
+//    if (!self.giphyView || [self.giphyView isLoading]) {
+//        return nil;
+//    }
+    
+//    self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)];
+    if (!self.giphyView) {
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    config.allowsInlineMediaPlayback = YES;
+    self.giphyView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)
+                                              configuration:config];
+    self.giphyView.UIDelegate = self;
+    self.giphyView.navigationDelegate = self;
+    self.giphyView.allowsBackForwardNavigationGestures = NO;
+ 
+    [self.giphyView loadHTMLString:self.giphyURLString baseURL:nil];
+    [self.giphyView sizeToFit];
+    self.giphyView.scrollView.scrollEnabled = NO;
+    self.giphyView.clipsToBounds = YES;
+    self.giphyView.userInteractionEnabled = NO;
+    
+//    [self.containerView addSubview:self.giphyView];
+    self.giphyView.backgroundColor = [self bubbleColor];
+     }
+    [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:self.giphyView
+                                                                isOutgoing:self.appliesMediaViewMaskAsOutgoing];
+   [self.giphyView sizeToFit];
+    return self.giphyView;
 }
 
-- (CGSize)mediaViewDisplaySize {
-    <#code#>
+- (CGSize)mediaViewDisplaySize
+{
+    if (self.giphyView) {
+        return self.giphyView.frame.size;
+    } else {
+        return [super mediaViewDisplaySize];
+    }
 }
 
-- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
-    <#code#>
+#pragma mark - NSCoding
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        self.giphyURLString = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(giphyURLString))];
+    }
+    return self;
 }
 
-- (nullable instancetype)initWithCoder:(nonnull NSCoder *)aDecoder {
-    <#code#>
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.giphyURLString forKey:NSStringFromSelector(@selector(giphyURLString))];
 }
 
-- (nonnull id)copyWithZone:(nullable NSZone *)zone {
-    <#code#>
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone
+{
+    FLGiphyVideoAdapter *copy = [[FLGiphyVideoAdapter allocWithZone:zone] initWithURLString:self.giphyURLString];
+//                                                                                   incoming:!self.appliesMediaViewMaskAsOutgoing];
+    copy.appliesMediaViewMaskAsOutgoing = self.appliesMediaViewMaskAsOutgoing;
+    return copy;
+}
+
+// MARK: - WebKitView delegate methods
+-(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [webView evaluateJavaScript:@"document.readyState"
+              completionHandler:^(id complete, NSError * _Nullable error) {
+                  if (complete) {
+                      [webView evaluateJavaScript:@"document.body.offsetHeight"
+                                completionHandler:^(NSNumber *height, NSError * _Nullable err) {
+//                                    CGRect aFrame = CGRectMake(0, 0, self.giphyView.frame.size.width, [height floatValue]);
+//                                    self.giphyView.frame = aFrame;
+                                    [webView evaluateJavaScript:@"document.body.offsetWidth"
+                                              completionHandler:^(NSNumber *width, NSError * _Nullable err2) {
+                                                  
+                                                  CGRect aFrame = CGRectMake(0, 0, [width floatValue], [height floatValue]);
+                                                  self.giphyView.frame = aFrame;
+                                                  [self.giphyView sizeToFit];
+                                                  [self.giphyView setNeedsDisplay];
+                                              }];
+                                }];
+                  }
+              }];
+//    webView.evaluateJavaScript("document.readyState", completionHandler: { (complete, error) in
+//        if complete != nil {
+//            self.webView.evaluateJavaScript("document.body.offsetHeight", completionHandler: { (height, error) in
+//                self.containerHeight.constant = height as! CGFloat
+//            })
+//        }
+//
+//    })
+//    self.giphyView.frame = CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height);
+//    DDLogDebug(@"Size of giphyView: %f, %f", self.giphyView.frame.size.width, self.giphyView
+//               .frame.size.height);
+}
+
+// MARK: - Helpers
+
+-(PropertyListPreferences *)prefs
+{
+    if (_prefs == nil) {
+        _prefs = Environment.preferences;
+    }
+    return _prefs;
+}
+
+-(UIColor *)bubbleColor {
+    if (self.isOutgoing) {
+        return [[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey];
+    } else {
+        return [[ForstaColors incomingBubbleColors] objectForKey:self.prefs.incomingBubbleColorKey];
+    }
+    
 }
 
 @end
