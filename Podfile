@@ -7,13 +7,13 @@ abstract_target 'Common' do
     pod 'Fabric', :inhibit_warnings => true
     pod 'Crashlytics', :inhibit_warnings => true
     pod 'OpenSSL',                     '~> 1.0.210', :inhibit_warnings => true
-    pod 'PastelogKit',                 '~> 1.3', :inhibit_warnings => true
+    pod 'PastelogKit',                 '~> 1.4', :inhibit_warnings => true
     pod 'FFCircularProgressView',      '~> 0.5', :inhibit_warnings => true
     pod 'SCWaveformView',              '~> 1.0', :inhibit_warnings => true
     pod 'ZXingObjC',                   '~> 3.2.2',  :inhibit_warnings => true
     pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: '7.3.4-attributedText', :inhibit_warnings => true
     pod '25519',                       '~> 2.0.2', :inhibit_warnings => true
-    pod 'CocoaLumberjack',             '~> 2.4.0', :inhibit_warnings => true
+    pod 'CocoaLumberjack',             '~> 3.4.1', :inhibit_warnings => true
     pod 'AFNetworking',                '~> 3.1.0', :inhibit_warnings => true
     pod 'AxolotlKit',                  '~>0.8', :inhibit_warnings => true
     pod 'Mantle',                      '~> 2.1.0', :inhibit_warnings => true
