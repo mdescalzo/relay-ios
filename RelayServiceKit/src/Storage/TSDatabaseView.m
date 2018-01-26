@@ -8,6 +8,8 @@
 
 #import "TSDatabaseView.h"
 
+#import <YapDatabase/YapDatabaseAutoView.h>
+#import <YapDatabase/YapDatabaseViewTypes.h>
 #import <YapDatabase/YapDatabaseView.h>
 #import <YapDatabase/YapDatabaseFilteredView.h>
 
@@ -63,7 +65,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObject:[TSInteraction collection]]];
     
     YapDatabaseView *view =
-    [[YapDatabaseView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"1" options:options];
+    [[YapDatabaseAutoView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"1" options:options];
     
     return
     [[TSStorageManager sharedManager].database registerExtension:view withName:TSUnreadDatabaseViewExtensionName];
@@ -91,7 +93,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     options.allowedCollections = [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObject:[FLTag collection]]];
     
     YapDatabaseView *databaseView =
-    [[YapDatabaseView alloc] initWithGrouping:viewGrouping
+    [[YapDatabaseAutoView alloc] initWithGrouping:viewGrouping
                                       sorting:viewSorting
                                    versionTag:@"1" options:options];
     
@@ -152,7 +154,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObject:[TSThread collection]]];
     
     YapDatabaseView *databaseView =
-    [[YapDatabaseView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"1" options:options];
+    [[YapDatabaseAutoView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"1" options:options];
     
     return [[TSStorageManager sharedManager]
             .database registerExtension:databaseView
@@ -181,7 +183,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObject:[TSInteraction collection]]];
     
     YapDatabaseView *view =
-    [[YapDatabaseView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"1" options:options];
+    [[YapDatabaseAutoView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"1" options:options];
     
     return
     [[TSStorageManager sharedManager].database registerExtension:view withName:TSMessageDatabaseViewExtensionName];
@@ -342,7 +344,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     options.allowedCollections = [[YapWhitelistBlacklist alloc] initWithWhitelist:deviceCollection];
     
     YapDatabaseView *view =
-    [[YapDatabaseView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"3" options:options];
+    [[YapDatabaseAutoView alloc] initWithGrouping:viewGrouping sorting:viewSorting versionTag:@"3" options:options];
     
     [[TSStorageManager sharedManager].database
      asyncRegisterExtension:view
