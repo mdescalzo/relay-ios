@@ -105,8 +105,7 @@
         adapter.senderDisplayName = NSLocalizedString(@"ME_STRING", @"");
         adapter.messageType       = TSOutgoingMessageAdapter;
     }
-    //    }
-    
+
     if ([interaction isKindOfClass:[TSIncomingMessage class]] ||
         [interaction isKindOfClass:[TSOutgoingMessage class]]) {
         TSMessage *message  = (TSMessage *)interaction;
@@ -116,6 +115,13 @@
         }
         if (message.attributedTextBody.string.length > 0) {
             adapter.attributedMessageBody = message.attributedTextBody;
+        }
+
+        // giphy handling
+        if (message.isGiphy) {
+            adapter.mediaItem = [[FLGiphyVideoAdapter alloc] initWithURLString:message.giphyURLString];
+//                                                                      incoming:[interaction isKindOfClass:[TSIncomingMessage class]]];
+            adapter.mediaItem.appliesMediaViewMaskAsOutgoing = [interaction isKindOfClass:[TSOutgoingMessage class]];
         }
         
         if ([message hasAttachments]) {

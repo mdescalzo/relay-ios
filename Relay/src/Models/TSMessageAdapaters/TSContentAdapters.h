@@ -14,5 +14,6 @@
 #import "TSPhotoAdapter.h"
 #import "TSVideoAttachmentAdapter.h"
 #import "FLDocumentAdapter.h"
+#import "FLGiphyVideoAdapter.h"
 
 #endif /* TSContentAdapters_h */

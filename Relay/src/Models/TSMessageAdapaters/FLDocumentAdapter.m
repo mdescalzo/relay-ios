@@ -197,6 +197,11 @@ static const CGFloat insetFactor = 0.45f;
             UIViewController *rootVC = window.rootViewController;
             [rootVC presentViewController:activityController animated:YES completion:nil];
         }
+        // TODO: Implement this:
+//    } else if (action == NSSelectorFromString(@"save:")) {
+//        UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
+//        return;
+
     } else {
         // Shouldn't get here, as only supported actions should be exposed via canPerformEditingAction
         DDLogError(@"'%@' action unsupported for %@: attachmentId=%@", actionString, self.class, self.attachmentId);
