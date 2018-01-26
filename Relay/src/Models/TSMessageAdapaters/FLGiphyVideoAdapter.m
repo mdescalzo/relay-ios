@@ -6,17 +6,26 @@
 //  Copyright © 2018 Forsta. All rights reserved.
 //
 
+//
+// SOURCE: https://stackoverflow.com/questions/5361145/looping-a-video-with-avfoundation-avplayer
+//
+
 #import "FLGiphyVideoAdapter.h"
 #import "MIMETypeUtil.h"
 #import "JSQMessagesMediaViewBubbleImageMasker.h"
-@import WebKit;
+@import AVKit;
 
-@interface FLGiphyVideoAdapter() <WKUIDelegate, WKNavigationDelegate>
+#define kNumberOfLoops 5
+
+@interface FLGiphyVideoAdapter() <AVPlayerViewControllerDelegate>
 
 @property (nonatomic, strong) PropertyListPreferences *prefs;
 @property NSString *giphyURLString;
-@property WKWebView *giphyView;
 @property UIView *containerView;
+@property AVPlayerViewController *avController;
+@property AVPlayer *avPlayer;
+@property NSInteger loopCount;
+
 @end
 
 @implementation FLGiphyVideoAdapter
@@ -27,6 +36,7 @@
     if (self = [super init]) {
         _giphyURLString = giphyURLString;
         _readyToPlay = NO;
+        _loopCount = 0;
     }
     return self;
 }
@@ -73,40 +83,30 @@
 
 - (UIView *)mediaView
 {
-//    return [super mediaView];
-//    if (!self.giphyView || [self.giphyView isLoading]) {
-//        return nil;
-//    }
-
-    if (!self.containerView ) {
+    if (!self.containerView) {
         self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)];
+        self.containerView.clipsToBounds = YES;
         self.containerView.backgroundColor = [self bubbleColor];
-        self.containerView.autoresizesSubviews = YES;
-        
-        if (!self.giphyView) {
-            WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-            config.allowsInlineMediaPlayback = YES;
-            self.giphyView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)
-                                                configuration:config];
-            self.giphyView.UIDelegate = self;
-            self.giphyView.navigationDelegate = self;
-            self.giphyView.allowsBackForwardNavigationGestures = NO;
-            
-            [self.giphyView loadHTMLString:self.giphyURLString baseURL:nil];
-            [self.giphyView sizeToFit];
-            self.giphyView.scrollView.scrollEnabled = NO;
-            self.giphyView.clipsToBounds = YES;
-            self.giphyView.userInteractionEnabled = NO;
-            self.giphyView.autoresizesSubviews = YES;
-            self.giphyView.translatesAutoresizingMaskIntoConstraints = YES;
-            self.giphyView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            
-            [self.containerView addSubview:self.giphyView];
-        }
+        [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:self.containerView
+                                                                    isOutgoing:self.appliesMediaViewMaskAsOutgoing];
     }
-    [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:self.containerView
-                                                                isOutgoing:self.appliesMediaViewMaskAsOutgoing];
+    if (!self.avController) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerDidFinish:)
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                                   object:self.avPlayer];
+        
+        self.avController = [[AVPlayerViewController alloc] init];
+        self.avController.showsPlaybackControls = YES;
+        self.avPlayer = [AVPlayer playerWithURL:[NSURL URLWithString:self.giphyURLString]];
+        self.avController.player = self.avPlayer;
+        self.avController.view.frame = self.containerView.bounds;
+        self.avController.view.backgroundColor = [UIColor clearColor];
+        [self.containerView addSubview:self.avController.view];
+        [self.avController.player play];
+    }
     return self.containerView;
+//    return self.avController.view;
 }
 
 - (CGSize)mediaViewDisplaySize
@@ -144,49 +144,23 @@
     return copy;
 }
 
-// MARK: - WebKitView delegate methods
--(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
-{
-    [webView evaluateJavaScript:@"document.readyState"
-              completionHandler:^(id complete, NSError * _Nullable error) {
-                  if (complete) {
-                      [webView evaluateJavaScript:@"document.body.offsetHeight"
-                                completionHandler:^(NSNumber *height, NSError * _Nullable err) {
-//                                    CGRect aFrame = CGRectMake(0, 0, self.giphyView.frame.size.width, [height floatValue]);
-//                                    self.giphyView.frame = aFrame;
-                                    [webView evaluateJavaScript:@"document.body.offsetWidth"
-                                              completionHandler:^(NSNumber *width, NSError * _Nullable err2) {
-                                                  CGFloat viewRatio = self.containerView.frame.size.width / self.containerView.frame.size.height;
-                                                  CGFloat giphyRatio = [width floatValue] / [height floatValue];
+- (void)moviePlayerDidFinish:(NSNotification *)note {
+    if (note.object == self.avPlayer.currentItem) {
+        [self.avPlayer.currentItem seekToTime:kCMTimeZero];
+        self.loopCount++;
 
-                                                  CGFloat finalWidth;
-                                                  CGFloat finalHeight;
-                                                  if (viewRatio > giphyRatio) {
-                                                      finalWidth = self.containerView.frame.size.width;
-                                                      finalHeight = finalWidth * self.containerView.frame.size.height / self.containerView.frame.size.width;
-                                                  } else {
-                                                      finalHeight = self.containerView.frame.size.height;
-                                                      finalWidth = finalHeight * self.containerView.frame.size.width / self.containerView.frame.size.height;
-                                                  }
-                                                  CGRect aFrame = CGRectMake(0, 0, finalWidth, finalHeight);
-                                                  self.giphyView.frame = aFrame;
-                                                  [self.giphyView setNeedsLayout];
-                                                  [self.containerView setNeedsLayout];
-                                               }];
-                                }];
-                  }
-              }];
-//    webView.evaluateJavaScript("document.readyState", completionHandler: { (complete, error) in
-//        if complete != nil {
-//            self.webView.evaluateJavaScript("document.body.offsetHeight", completionHandler: { (height, error) in
-//                self.containerHeight.constant = height as! CGFloat
-//            })
-//        }
-//
-//    })
-//    self.giphyView.frame = CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height);
-//    DDLogDebug(@"Size of giphyView: %f, %f", self.giphyView.frame.size.width, self.giphyView
-//               .frame.size.height);
+        if (self.loopCount < kNumberOfLoops) {
+            [self.avPlayer play];
+        } else {
+            self.loopCount = 0;
+            [self.avPlayer pause];
+        }
+    }
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 // MARK: - Helpers
