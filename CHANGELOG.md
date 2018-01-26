@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.3.1]
+### Fixed
+- More graceful handling of bad recipient data.  Prevents crash.
+### Update
+- Update to match protocol update on server side.
+
 ## [1.3.0]
 ### Added
 - App-specific privacy PIN/TouchID support.
@@ -61,6 +67,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.3.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.1
 [1.3.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.0
 [1.2.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.2.0
 [1.1.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.1.1
