@@ -16,7 +16,7 @@
 @property (nonatomic, strong) PropertyListPreferences *prefs;
 @property NSString *giphyURLString;
 @property WKWebView *giphyView;
-//@property UIView *containerView;
+@property UIView *containerView;
 @end
 
 @implementation FLGiphyVideoAdapter
@@ -77,39 +77,45 @@
 //    if (!self.giphyView || [self.giphyView isLoading]) {
 //        return nil;
 //    }
-    
-//    self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)];
-    if (!self.giphyView) {
-    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    config.allowsInlineMediaPlayback = YES;
-    self.giphyView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)
-                                              configuration:config];
-    self.giphyView.UIDelegate = self;
-    self.giphyView.navigationDelegate = self;
-    self.giphyView.allowsBackForwardNavigationGestures = NO;
- 
-    [self.giphyView loadHTMLString:self.giphyURLString baseURL:nil];
-    [self.giphyView sizeToFit];
-    self.giphyView.scrollView.scrollEnabled = NO;
-    self.giphyView.clipsToBounds = YES;
-    self.giphyView.userInteractionEnabled = NO;
-    
-//    [self.containerView addSubview:self.giphyView];
-    self.giphyView.backgroundColor = [self bubbleColor];
-     }
-    [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:self.giphyView
+
+    if (!self.containerView ) {
+        self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)];
+        self.containerView.backgroundColor = [self bubbleColor];
+        self.containerView.autoresizesSubviews = YES;
+        
+        if (!self.giphyView) {
+            WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+            config.allowsInlineMediaPlayback = YES;
+            self.giphyView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, self.mediaViewDisplaySize.width, self.mediaViewDisplaySize.height)
+                                                configuration:config];
+            self.giphyView.UIDelegate = self;
+            self.giphyView.navigationDelegate = self;
+            self.giphyView.allowsBackForwardNavigationGestures = NO;
+            
+            [self.giphyView loadHTMLString:self.giphyURLString baseURL:nil];
+            [self.giphyView sizeToFit];
+            self.giphyView.scrollView.scrollEnabled = NO;
+            self.giphyView.clipsToBounds = YES;
+            self.giphyView.userInteractionEnabled = NO;
+            self.giphyView.autoresizesSubviews = YES;
+            self.giphyView.translatesAutoresizingMaskIntoConstraints = YES;
+            self.giphyView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            
+            [self.containerView addSubview:self.giphyView];
+        }
+    }
+    [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:self.containerView
                                                                 isOutgoing:self.appliesMediaViewMaskAsOutgoing];
-   [self.giphyView sizeToFit];
-    return self.giphyView;
+    return self.containerView;
 }
 
 - (CGSize)mediaViewDisplaySize
 {
-    if (self.giphyView) {
-        return self.giphyView.frame.size;
-    } else {
+//    if (self.giphyView) {
+//        return self.giphyView.frame.size;
+//    } else {
         return [super mediaViewDisplaySize];
-    }
+//    }
 }
 
 #pragma mark - NSCoding
@@ -150,12 +156,23 @@
 //                                    self.giphyView.frame = aFrame;
                                     [webView evaluateJavaScript:@"document.body.offsetWidth"
                                               completionHandler:^(NSNumber *width, NSError * _Nullable err2) {
-                                                  
-                                                  CGRect aFrame = CGRectMake(0, 0, [width floatValue], [height floatValue]);
+                                                  CGFloat viewRatio = self.containerView.frame.size.width / self.containerView.frame.size.height;
+                                                  CGFloat giphyRatio = [width floatValue] / [height floatValue];
+
+                                                  CGFloat finalWidth;
+                                                  CGFloat finalHeight;
+                                                  if (viewRatio > giphyRatio) {
+                                                      finalWidth = self.containerView.frame.size.width;
+                                                      finalHeight = finalWidth * self.containerView.frame.size.height / self.containerView.frame.size.width;
+                                                  } else {
+                                                      finalHeight = self.containerView.frame.size.height;
+                                                      finalWidth = finalHeight * self.containerView.frame.size.width / self.containerView.frame.size.height;
+                                                  }
+                                                  CGRect aFrame = CGRectMake(0, 0, finalWidth, finalHeight);
                                                   self.giphyView.frame = aFrame;
-                                                  [self.giphyView sizeToFit];
-                                                  [self.giphyView setNeedsDisplay];
-                                              }];
+                                                  [self.giphyView setNeedsLayout];
+                                                  [self.containerView setNeedsLayout];
+                                               }];
                                 }];
                   }
               }];
