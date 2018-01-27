@@ -112,11 +112,11 @@
             self.avPlayerLooper = [AVPlayerLooper playerLooperWithPlayer:self.avPlayer
                                                             templateItem:playerItem];
         }
-        // Use KVO to wait until the giphy is ready before attempting to read duration
-        NSKeyValueObservingOptions options = NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
-        [self.avController.player.currentItem addObserver:self forKeyPath:@"status"
-                                                  options:options
-                                                  context:nil];
+//        // Use KVO to wait until the giphy is ready before attempting to read duration
+//        NSKeyValueObservingOptions options = NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
+//        [self.avController.player.currentItem addObserver:self forKeyPath:@"status"
+//                                                  options:options
+//                                                  context:nil];
 
         self.avController.view.frame = self.containerView.bounds;
         self.avController.view.backgroundColor = [UIColor clearColor];
@@ -133,41 +133,41 @@
     return [super mediaViewDisplaySize];
 }
 
-// MARK: - KVO
-// SOURCE: Apple's reference for AVPlayerItem
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"status"]) {
-        AVPlayerItemStatus status = AVPlayerItemStatusUnknown;
-        // Get the status change from the change dictionary
-        NSNumber *statusNumber = change[NSKeyValueChangeNewKey];
-        if ([statusNumber isKindOfClass:[NSNumber class]]) {
-            status = statusNumber.integerValue;
-        }
-        // Switch over the status
-        switch (status) {
-            case AVPlayerItemStatusReadyToPlay:
-                // Ready to Play
-            {
-//                [self.avPlayer play];
-//                // Computer number of loops to accomodate very short giphys
-//                CGFloat giphyDurationSeconds = CMTimeGetSeconds(self.avPlayer.currentItem.duration);
-//                if ((kMaxRuntimeSeconds / giphyDurationSeconds) < kMinimumNumberOfLoops ) {
-//                    self.numberOfLoops = kMinimumNumberOfLoops;
-//                } else {
-//                    self.numberOfLoops = (NSInteger)(kMaxRuntimeSeconds / giphyDurationSeconds);
-//                }
-            }
-                break;
-            case AVPlayerItemStatusFailed:
-                // Failed. Examine AVPlayerItem.error
-                break;
-            case AVPlayerItemStatusUnknown:
-                // Not ready
-                break;
-        }
-    }
-}
+//// MARK: - KVO
+//// SOURCE: Apple's reference for AVPlayerItem
+//-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+//{
+//    if ([keyPath isEqualToString:@"status"]) {
+//        AVPlayerItemStatus status = AVPlayerItemStatusUnknown;
+//        // Get the status change from the change dictionary
+//        NSNumber *statusNumber = change[NSKeyValueChangeNewKey];
+//        if ([statusNumber isKindOfClass:[NSNumber class]]) {
+//            status = statusNumber.integerValue;
+//        }
+//        // Switch over the status
+//        switch (status) {
+//            case AVPlayerItemStatusReadyToPlay:
+//                // Ready to Play
+//            {
+////                [self.avPlayer play];
+////                // Computer number of loops to accomodate very short giphys
+////                CGFloat giphyDurationSeconds = CMTimeGetSeconds(self.avPlayer.currentItem.duration);
+////                if ((kMaxRuntimeSeconds / giphyDurationSeconds) < kMinimumNumberOfLoops ) {
+////                    self.numberOfLoops = kMinimumNumberOfLoops;
+////                } else {
+////                    self.numberOfLoops = (NSInteger)(kMaxRuntimeSeconds / giphyDurationSeconds);
+////                }
+//            }
+//                break;
+//            case AVPlayerItemStatusFailed:
+//                // Failed. Examine AVPlayerItem.error
+//                break;
+//            case AVPlayerItemStatusUnknown:
+//                // Not ready
+//                break;
+//        }
+//    }
+//}
 
 #pragma mark - NSCoding
 
