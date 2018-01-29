@@ -277,10 +277,10 @@
 /* Conversation settings table section title */
 "GROUP_MANAGEMENT_SECTION" = "Conversation Management";
 
-/* Pinned conversation section heading */
+/* Thread section headings */
 "PINNED_CONVERSATION_SECTION" = "Pinned";
-
 "RECENT_CONVERSATION_SECTION" = "Recent";
+"ANNOUNCEMENTS_SECTION" = "Announcements";
 
 /* No comment provided by engineer. */
 "GROUP_MEMBER_JOINED" = " %@ joined the conversation. ";

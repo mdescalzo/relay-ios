@@ -528,12 +528,13 @@ NS_ASSUME_NONNULL_BEGIN
         
     } else if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {
         // Process per Thread type
-        if ([[jsonPayload objectForKey:@"threadType"] isEqualToString:@"conversation"]) {
-            return [self handleConversationThreadContentMessageWithEnvelope:envelope
-                                                            withDataMessage:dataMessage
-                                                              attachmentIds:attachmentIds];
+        if ([[jsonPayload objectForKey:@"threadType"] isEqualToString:@"conversation"] ||
+            [[jsonPayload objectForKey:@"threadType"] isEqualToString:@"announcement"]) {
+            return [self handleThreadContentMessageWithEnvelope:envelope
+                                                withDataMessage:dataMessage
+                                                  attachmentIds:attachmentIds];            
         } else {
-            DDLogDebug(@"Unhandled message type: %@", [jsonPayload objectForKey:@"messageType"]);
+            DDLogDebug(@"Unhandled thread type: %@", [jsonPayload objectForKey:@"threadType"]);
             return nil;
         }
     } else {
@@ -629,9 +630,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - message handlers by type
--(TSIncomingMessage *)handleConversationThreadContentMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                                         withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-                                                           attachmentIds:(NSArray<NSString *> *)attachmentIds
+-(TSIncomingMessage *)handleThreadContentMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
+                                             withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                               attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
     __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     __block TSIncomingMessage *incomingMessage = nil;

@@ -67,6 +67,10 @@
 #define kLogoButtonTag 1001
 #define kSettingsButtonTag 1002
 
+#define kAnnouncementsSectionIndex 0
+#define kPinnedSectionIndex 1
+#define kRecentSectionIndex 2
+
 NSString *kSelectedThreadIDKey = @"LastSelectedThreadID";
 NSString *kUserIDKey = @"id";
 NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
@@ -137,8 +141,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                       storageManager:[TSStorageManager sharedManager]
                                                      contactsManager:_contactsManager];
-    //                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
-    
+
     return self;
 }
 
@@ -154,8 +157,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
                                                       storageManager:[TSStorageManager sharedManager]
                                                      contactsManager:_contactsManager];
-    //                                                      contactsUpdater:[Environment getCurrent].contactsUpdater];
-    
     return self;
 }
 
@@ -318,20 +319,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     UITableViewRowAction *archiveAction = nil;
     if (self.viewingThreadsIn == kInboxState) {
         UITableViewRowAction *pinAction = nil;
-        if (indexPath.section == 0) {  //  Pinned conversation
-            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                           title:NSLocalizedString(@"UNPIN_ACTION", nil)
-                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
-                                                             [self togglePinningForThreadAtIndexPath:indexPath];
-                                                         }];
-        } else if (indexPath.section == 1) {  // Unpinned conversation
-            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                           title:NSLocalizedString(@"PIN_ACTION", nil)
-                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
-                                                             [self togglePinningForThreadAtIndexPath:indexPath];
-                                                         }];
-        }
-        pinAction.backgroundColor = [ForstaColors mediumGreen];
         
         archiveAction = [UITableViewRowAction
                          rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -341,7 +328,26 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                              [Environment.preferences setHasArchivedAMessage:YES];
                          }];
         archiveAction.backgroundColor = [ForstaColors darkGray];
-        return @[ archiveAction, pinAction ];
+        
+        if (indexPath.section == kAnnouncementsSectionIndex) {
+            return @[ archiveAction ];
+        } else if (indexPath.section == kPinnedSectionIndex) {  //  Pinned conversation
+            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                           title:NSLocalizedString(@"UNPIN_ACTION", nil)
+                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                             [self togglePinningForThreadAtIndexPath:indexPath];
+                                                         }];
+            pinAction.backgroundColor = [ForstaColors mediumGreen];
+            return @[ archiveAction, pinAction ];
+        } else if (indexPath.section == kRecentSectionIndex) {  // Unpinned conversation
+            pinAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                           title:NSLocalizedString(@"PIN_ACTION", nil)
+                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                             [self togglePinningForThreadAtIndexPath:indexPath];
+                                                         }];
+            pinAction.backgroundColor = [ForstaColors mediumGreen];
+            return @[ archiveAction, pinAction ];
+        }
     } else {
         UITableViewRowAction *deleteAction =
         [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
@@ -482,7 +488,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             if (thread.pinPosition) {
                 thread.pinPosition = nil;
             } else {
-                thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:0] + 1];
+                thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:kPinnedSectionIndex] + 1];
             }
             [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                 [thread saveWithTransaction:transaction];
@@ -743,10 +749,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger rows = [self tableView:tableView numberOfRowsInSection:section];
     if (rows > 0 && self.viewingThreadsIn == kInboxState) {
-        if (section == 0) {
+        if (section == kPinnedSectionIndex) {
             return NSLocalizedString(@"PINNED_CONVERSATION_SECTION", nil);
-        } else if (section == 1) {
+        } else if (section == kRecentSectionIndex) {
             return NSLocalizedString(@"RECENT_CONVERSATION_SECTION", nil);
+        } else if (section == kAnnouncementsSectionIndex) {
+            return NSLocalizedString(@"ANNOUNCEMENTS_SECTION", nil);
         }
     }
     return nil;
@@ -765,27 +773,27 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self messageCellForRowAtIndexPath:indexPath];
+    return [self cellForRowAtIndexPath:indexPath];
 }
 
--(UITableViewCell *)messageCellForRowAtIndexPath:(NSIndexPath *)indexPath
+-(UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     InboxTableViewCell *cell =
     [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InboxTableViewCell class])];
     TSThread *thread = [self threadForIndexPath:indexPath];
-    
+
     if (!cell) {
         cell = [InboxTableViewCell inboxTableViewCell];
     }
-    
+
     dispatch_async([OWSDispatch serialQueue], ^{
         [cell configureWithThread:thread contactsManager:self.contactsManager];
     });
-    
+
     if ((unsigned long)indexPath.row == [self.threadMappings numberOfItemsInSection:0] - 1) {
         cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
     }
-    
+
     return cell;
 }
 
@@ -834,9 +842,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)markAllRead
 {
-    for (NSInteger row=0; row < [self.tableView numberOfRowsInSection:0]; row++) {
-        TSThread *thread = [self threadForIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
-        [thread markAllAsRead];
+    for (NSInteger section=0 ; section < [self.tableView numberOfSections] ; section++) {
+        for (NSInteger row=0 ; row < [self.tableView numberOfRowsInSection:section] ; row++) {
+            TSThread *thread = [self threadForIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+            [thread markAllAsRead];
+        }
     }
     DDLogInfo(@"Marked all threads as read.");
 }
@@ -1042,7 +1052,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (IBAction)selectedInbox:(id)sender {
     self.viewingThreadsIn = kInboxState;
-    [self changeToGrouping:@[ TSPinnedGroup, TSInboxGroup ]];
+    [self changeToGrouping:@[ FLAnnouncementsGroup, TSPinnedGroup, TSInboxGroup ]];
 }
 
 - (IBAction)selectedArchive:(id)sender {
