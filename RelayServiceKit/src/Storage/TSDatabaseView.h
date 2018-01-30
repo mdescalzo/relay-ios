@@ -15,6 +15,7 @@ extern NSString *TSInboxGroup;
 extern NSString *TSArchiveGroup;
 extern NSString *TSPinnedGroup;
 extern NSString *FLActiveTagsGroup;
+extern NSString *FLAnnouncementsGroup;
 //extern NSString *FLSearchTagsGroup;
 
 extern NSString *TSSecondaryDevicesGroup;

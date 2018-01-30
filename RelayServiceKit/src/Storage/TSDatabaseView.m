@@ -19,6 +19,7 @@
 #import "TSThread.h"
 
 NSString *TSInboxGroup   = @"TSInboxGroup";
+NSString *FLAnnouncementsGroup = @"FLAnnouncementsGroup";
 NSString *TSArchiveGroup = @"TSArchiveGroup";
 NSString *TSPinnedGroup  = @"TSPinnedGroup";
 NSString *FLActiveTagsGroup = @"FLActiveTagsGroup";
@@ -135,7 +136,9 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                                      TSThread *thread = (TSThread *)object;
                                                      if (thread.archivalDate && ![self threadShouldBeInInbox:thread]) {
                                                          return TSArchiveGroup;
-                                                     } else {
+                                                     } else if (([thread.type isEqualToString:@"announcement"])) {
+                                                         return FLAnnouncementsGroup;
+                                                     } else if ([thread.type isEqualToString:@"conversation"]) {
                                                          if (thread.pinPosition) {
                                                              return TSPinnedGroup;
                                                          } else {

@@ -273,33 +273,37 @@ static const NSString *FLExpressionKey = @"expression";
     if (_imageBacker) {
         return _imageBacker;
     } else {
-        switch (self.participants.count) {
-            case 0:
-            {
-                return nil;
-            }
-                break;
-            case 1:
-            {
-                return [Environment.getCurrent.contactsManager imageForRecipientId:self.participants.lastObject];
-            }
-                break;
-            case 2:
-            {
-                NSString *otherId = nil;
-                for (NSString *uid in self.participants) {
-                    if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
-                        otherId = uid;
-                    }
+        if ([self.type isEqualToString:@"announcement"]) {
+            return [UIImage imageNamed:@"Announcement"];
+        } else {
+            switch (self.participants.count) {
+                case 0:
+                {
+                    return nil;
                 }
-                return [Environment.getCurrent.contactsManager imageForRecipientId:otherId];
+                    break;
+                case 1:
+                {
+                    return [Environment.getCurrent.contactsManager imageForRecipientId:self.participants.lastObject];
+                }
+                    break;
+                case 2:
+                {
+                    NSString *otherId = nil;
+                    for (NSString *uid in self.participants) {
+                        if (![uid isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
+                            otherId = uid;
+                        }
+                    }
+                    return [Environment.getCurrent.contactsManager imageForRecipientId:otherId];
+                }
+                    break;
+                default:
+                {
+                    return [UIImage imageNamed:@"empty-group-avatar-gray"];
+                }
+                    break;
             }
-                break;
-            default:
-            {
-                return [UIImage imageNamed:@"empty-group-avatar-gray"];
-            }
-                break;
         }
     }
 }
