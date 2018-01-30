@@ -15,8 +15,10 @@
 
 @interface FLAnnouncementViewController ()
 
+@property (weak, nonatomic) IBOutlet UIView *titleContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *announcementTitleLabel;
-//@property (weak, nonatomic) IBOutlet WKWebView *announcementBodyWebView;
+@property (weak, nonatomic) IBOutlet UIScrollView *bodyContainerScrollView;
+@property (weak, nonatomic) IBOutlet UIView *bodyContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *announcementBodyLabel;
 
 @property (strong, nonatomic) TSMessage *announcementMessage;
@@ -30,6 +32,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+//    [self.announcementTitleLabel inset
+    
+    self.bodyContainerView.layer.masksToBounds = NO;
+    self.bodyContainerView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.bodyContainerView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+    self.bodyContainerView.layer.shadowOpacity = 0.5f;
+    
+    self.titleContainerView.layer.masksToBounds = NO;
+    self.titleContainerView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.titleContainerView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+    self.titleContainerView.layer.shadowOpacity = 0.5f;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -54,8 +68,21 @@
         if (self.thread) {
             self.announcementTitleLabel.text = self.thread.displayName;
             self.announcementBodyLabel.attributedText = self.announcementMessage.attributedTextBody;
+            [self updateTheShadows];
         }
     });
+}
+
+-(void)updateTheShadows
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view bringSubviewToFront:self.titleContainerView];
+        UIBezierPath *bodyShadowPath = [UIBezierPath bezierPathWithRect:self.titleContainerView.bounds];
+        self.titleContainerView.layer.shadowPath = bodyShadowPath.CGPath;
+        UIBezierPath *titleShadowPath = [UIBezierPath bezierPathWithRect:self.titleContainerView.bounds];
+        self.titleContainerView.layer.shadowPath = titleShadowPath.CGPath;
+    });
+    
 }
 
 /*
