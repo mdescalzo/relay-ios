@@ -826,6 +826,9 @@
 		7D613B081F901BE000E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B091F901BE000E18D29 /* libSocketRocket.a */; };
 		7D613B0A1F901BF200E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B0B1F901BF200E18D29 /* libSocketRocket.a */; };
 		7D613B0C1F901BFE00E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B0D1F901BFE00E18D29 /* libSocketRocket.a */; };
+		7D6FB266201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
+		7D6FB267201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
+		7D6FB268201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
 		7D7DA5871F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
 		7D7DA5881F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
 		7D7DA5891F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
@@ -2107,6 +2110,8 @@
 		7D613B0B1F901BF200E18D29 /* libSocketRocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSocketRocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D613B0D1F901BFE00E18D29 /* libSocketRocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSocketRocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D6701E71F7D9C3500A2D0DF /* RelayDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayDev.entitlements; sourceTree = "<group>"; };
+		7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLAnnouncementViewController.h; sourceTree = "<group>"; };
+		7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLAnnouncementViewController.m; sourceTree = "<group>"; };
 		7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLDirectoryCell.m; path = "Relay/src/view controllers/FLDirectoryCell.m"; sourceTree = SOURCE_ROOT; };
 		7D7DA5861F2F8797007FE6E4 /* FLDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLDirectoryCell.h; path = "Relay/src/view controllers/FLDirectoryCell.h"; sourceTree = SOURCE_ROOT; };
 		7D7DA58A1F2FBA66007FE6E4 /* OWSAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSAvatarBuilder.h; sourceTree = "<group>"; };
@@ -3252,6 +3257,8 @@
 				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
 				7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */,
 				7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */,
+				7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */,
+				7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -5269,6 +5276,7 @@
 				7D613AA91F90185B00E18D29 /* OWSFingerprint.m in Sources */,
 				7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */,
 				7D613A0C1F9017B000E18D29 /* OWSSyncContactsMessage.m in Sources */,
+				7D6FB266201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */,
 				7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */,
 				7D613A691F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
@@ -5617,6 +5625,7 @@
 				7DCFFDAD1F0EE4490003CD95 /* OWSContactsSearcher.m in Sources */,
 				7DCFFDAE1F0EE4490003CD95 /* AnonymousOccurrenceLogger.m in Sources */,
 				7DCFFDAF1F0EE4490003CD95 /* OWSExpirationTimerView.m in Sources */,
+				7D6FB267201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				7DCFFDB01F0EE4490003CD95 /* NotificationsManager.m in Sources */,
 				7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */,
 				7D613A891F90183300E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
@@ -5965,6 +5974,7 @@
 				76EB061618170B33006006FC /* AnonymousOccurrenceLogger.m in Sources */,
 				450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B6258B331C29E2E60014138E /* NotificationsManager.m in Sources */,
+				7D6FB268201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				76EB063018170B33006006FC /* Conversions.m in Sources */,
 				76EB05FE18170B33006006FC /* InitiateSignal.pb.m in Sources */,
 				7D613A8A1F90183400E18D29 /* TSRegisterPrekeysRequest.m in Sources */,

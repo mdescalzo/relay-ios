@@ -60,6 +60,7 @@
 #import "SecurityUtils.h"
 #import "FLControlMessage.h"
 #import "OWSDispatch.h"
+#import "FLAnnouncementViewController.h"
 
 @import Photos;
 
@@ -431,6 +432,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         self.navigationItem.backBarButtonItem.title = @"";
         MessagesViewController *destination = (MessagesViewController *)segue.destinationViewController;
         [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
+    } else if ([[segue identifier] isEqualToString:@"announcementThreadSelectedSegue"]) {
+        FLAnnouncementViewController *vc = (FLAnnouncementViewController *)segue.destinationViewController;
+        vc.thread = [self threadForIndexPath:[self.tableView indexPathForSelectedRow]];
     }
 }
 
@@ -799,8 +803,21 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
-    
+    switch (indexPath.section) {
+        case kAnnouncementsSectionIndex:
+        {
+            [self performSegueWithIdentifier:@"announcementThreadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+        }
+            break;
+        case kPinnedSectionIndex:
+        case kRecentSectionIndex:
+        {
+            [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+        }
+            break;
+        default:
+            break;
+    }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
