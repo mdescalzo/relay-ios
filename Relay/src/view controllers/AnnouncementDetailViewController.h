@@ -8,10 +8,10 @@
 
 @import UIKit;
 
-@class TSIncomingMessage;
+@class TSMessage;
 
 @interface AnnouncementDetailViewController : UITableViewController
 
-@property (nonatomic, strong) TSIncomingMessage *message;
+@property (nonatomic, strong) TSMessage *message;
 
 @end

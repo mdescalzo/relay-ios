@@ -22,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView *bodyContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *announcementBodyLabel;
 
-@property (strong, nonatomic) TSIncomingMessage *announcementMessage;
+@property (strong, nonatomic) TSMessage *announcementMessage;
 @property (strong, nonatomic) NSString *htmlBodyString;
 @property (strong, nonatomic) YapDatabaseConnection *dbConnection;
 

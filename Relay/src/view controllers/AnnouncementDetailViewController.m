@@ -155,7 +155,12 @@
 -(SignalRecipient *)sender
 {
     if (_sender == nil) {
-        _sender = [Environment.getCurrent.contactsManager recipientWithUserID:self.message.authorId];
+        if ([self.message isKindOfClass:[TSIncomingMessage class]]) {
+            TSIncomingMessage *incMessage = (TSIncomingMessage *)self.message;
+            _sender = [Environment.getCurrent.contactsManager recipientWithUserID:incMessage.authorId];
+        } else {
+            _sender = TSAccountManager.sharedInstance.myself;
+        }
     }
     return _sender;
 }
