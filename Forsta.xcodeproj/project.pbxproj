@@ -829,6 +829,9 @@
 		7D6FB266201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
 		7D6FB267201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
 		7D6FB268201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
+		7D6FB26B2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */; };
+		7D6FB26C2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */; };
+		7D6FB26D2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */; };
 		7D7DA5871F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
 		7D7DA5881F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
 		7D7DA5891F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
@@ -2112,6 +2115,8 @@
 		7D6701E71F7D9C3500A2D0DF /* RelayDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayDev.entitlements; sourceTree = "<group>"; };
 		7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLAnnouncementViewController.h; sourceTree = "<group>"; };
 		7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLAnnouncementViewController.m; sourceTree = "<group>"; };
+		7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnnouncementDetailViewController.h; sourceTree = "<group>"; };
+		7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnnouncementDetailViewController.m; sourceTree = "<group>"; };
 		7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLDirectoryCell.m; path = "Relay/src/view controllers/FLDirectoryCell.m"; sourceTree = SOURCE_ROOT; };
 		7D7DA5861F2F8797007FE6E4 /* FLDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLDirectoryCell.h; path = "Relay/src/view controllers/FLDirectoryCell.h"; sourceTree = SOURCE_ROOT; };
 		7D7DA58A1F2FBA66007FE6E4 /* OWSAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSAvatarBuilder.h; sourceTree = "<group>"; };
@@ -3259,6 +3264,8 @@
 				7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */,
 				7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */,
 				7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */,
+				7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */,
+				7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -5205,6 +5212,7 @@
 				7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */,
 				7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */,
 				7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */,
+				7D6FB26B2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				7D6139EA1F90178700E18D29 /* OWSReadReceiptsMessage.m in Sources */,
 				7D4A39D81F1693930023C29B /* UIUtil.m in Sources */,
 				7D4A39D91F1693930023C29B /* TSAnimatedAdapter.m in Sources */,
@@ -5554,6 +5562,7 @@
 				7DCFFD7F1F0EE4490003CD95 /* UIUtil.m in Sources */,
 				7DCFFD801F0EE4490003CD95 /* TSAnimatedAdapter.m in Sources */,
 				7D613A641F90180E00E18D29 /* OWSUploadingService.m in Sources */,
+				7D6FB26C2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				7DCFFD811F0EE4490003CD95 /* ConfirmPacket.m in Sources */,
 				7DCFFD821F0EE4490003CD95 /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
 				7D613A6A1F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
@@ -5903,6 +5912,7 @@
 				4CE0E3771B954546007210CF /* TSAnimatedAdapter.m in Sources */,
 				76EB05BE18170B33006006FC /* ConfirmPacket.m in Sources */,
 				7D613A651F90180E00E18D29 /* OWSUploadingService.m in Sources */,
+				7D6FB26D2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				4531C9C41DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
 				4516E3FF1DD2193B00DC4206 /* OWS101ExistingUsersBlockOnIdentityChange.m in Sources */,
 				7D613A6C1F90181600E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,

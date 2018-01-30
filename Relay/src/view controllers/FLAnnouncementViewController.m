@@ -10,8 +10,9 @@
 
 #import "FLAnnouncementViewController.h"
 #import "TSThread.h"
-#import "TSMessage.h"
+#import "TSIncomingMessage.h"
 #import "TSDatabaseView.h"
+#import "AnnouncementDetailViewController.h"
 
 @interface FLAnnouncementViewController ()
 
@@ -21,9 +22,11 @@
 @property (weak, nonatomic) IBOutlet UIView *bodyContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *announcementBodyLabel;
 
-@property (strong, nonatomic) TSMessage *announcementMessage;
+@property (strong, nonatomic) TSIncomingMessage *announcementMessage;
 @property (strong, nonatomic) NSString *htmlBodyString;
 @property (strong, nonatomic) YapDatabaseConnection *dbConnection;
+
+@property (nonatomic, strong) UIButton *infoButton;
 
 @end
 
@@ -33,8 +36,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-//    [self.announcementTitleLabel inset
-    
+    UIBarButtonItem *infoItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObject:infoItem];
+
     self.bodyContainerView.layer.masksToBounds = NO;
     self.bodyContainerView.layer.shadowColor = [UIColor blackColor].CGColor;
     self.bodyContainerView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
@@ -85,15 +89,22 @@
     
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"showAnnouncementDetailSegue"]) {
+        AnnouncementDetailViewController *destination = (AnnouncementDetailViewController *)segue.destinationViewController;
+        destination.message = self.announcementMessage;
+    }
 }
-*/
+
+
+-(void)didTapInfoButton
+{
+    [self performSegueWithIdentifier:@"showAnnouncementDetailSegue" sender:self];
+}
 
 -(void)setThread:(TSThread *)thread
 {
@@ -111,6 +122,15 @@
         }];
         return (TSMessage *)last;
 
+}
+
+-(UIButton *)infoButton
+{
+    if (_infoButton == nil) {
+        _infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+        [_infoButton addTarget:self action:@selector(didTapInfoButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _infoButton;
 }
 
 -(YapDatabaseConnection *)dbConnection

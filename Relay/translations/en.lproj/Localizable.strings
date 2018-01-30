@@ -282,6 +282,11 @@
 "RECENT_CONVERSATION_SECTION" = "Recent";
 "ANNOUNCEMENTS_SECTION" = "Announcements";
 
+/* Announcements strings */
+"ANNOUNCEMENT_DETAIL_TITLE" = "Details";
+"ANNOUNCEMENT_FROM_SECTION" = "Announcement From:";
+"ANNOUNCEMENT_TO_SECTION" = "Recipients:";
+
 /* No comment provided by engineer. */
 "GROUP_MEMBER_JOINED" = " %@ joined the conversation. ";
 
