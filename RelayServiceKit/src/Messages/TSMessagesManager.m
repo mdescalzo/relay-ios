@@ -62,23 +62,19 @@ NS_ASSUME_NONNULL_BEGIN
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     TSStorageManager *storageManager = [TSStorageManager sharedManager];
     id<ContactsManagerProtocol> contactsManager = [TextSecureKitEnv sharedEnv].contactsManager;
-    //    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     OWSMessageSender *messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:storageManager
                                                                        contactsManager:contactsManager];
-    //                                                                       contactsUpdater:contactsUpdater];
     
     return [self initWithNetworkManager:networkManager
                          storageManager:storageManager
                         contactsManager:contactsManager
-            //                        contactsUpdater:contactsUpdater
-                          messageSender:messageSender];
+                           messageSender:messageSender];
 }
 
 - (instancetype)initWithNetworkManager:(TSNetworkManager *)networkManager
                         storageManager:(TSStorageManager *)storageManager
                        contactsManager:(id<ContactsManagerProtocol>)contactsManager
-//                       contactsUpdater:(ContactsUpdater *)contactsUpdater
                          messageSender:(OWSMessageSender *)messageSender
 {
     self = [super init];
@@ -90,7 +86,6 @@ NS_ASSUME_NONNULL_BEGIN
     _storageManager = storageManager;
     _networkManager = networkManager;
     _contactsManager = contactsManager;
-    //    _contactsUpdater = contactsUpdater;
     _messageSender = messageSender;
     
     _dbConnection = storageManager.newDatabaseConnection;
@@ -522,7 +517,12 @@ NS_ASSUME_NONNULL_BEGIN
                                                  attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
         } else {
+#ifdef DEBUG
+#warning REMOVE DETAILED DUMP BEFORE SHIPPING!
+            DDLogDebug(@"Unhandled control message of type: %@\nwith Payload: %@", controlMessageType, jsonPayload);
+#else
             DDLogDebug(@"Unhandled control message.");
+#endif
         }
         return nil;
         

@@ -539,8 +539,6 @@
                                                NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
                                                                                                       options:0
                                                                                                         error:NULL];
-                                               DDLogDebug(@"Results: %@", result);
-                                               
                                                [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
                                                NSNumber *deviceID = [result objectForKey:@"deviceId"];
                                                [[TSStorageManager sharedManager] storeDeviceId:deviceID];
