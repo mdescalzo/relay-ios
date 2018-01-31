@@ -182,6 +182,9 @@
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90181F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90191F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
+		7D4995992022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */; };
+		7D49959A2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */; };
+		7D49959B2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */; };
 		7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
@@ -1849,6 +1852,8 @@
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
 		7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
+		7D4995972022495F00E24D40 /* FLAutoDeviceProvisioningService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLAutoDeviceProvisioningService.h; sourceTree = "<group>"; };
+		7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLAutoDeviceProvisioningService.m; sourceTree = "<group>"; };
 		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
 		7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadCreationViewController.m; sourceTree = "<group>"; };
 		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
@@ -3380,6 +3385,8 @@
 				7D6138B21F90161500E18D29 /* OWSRecordTranscriptJob.m */,
 				7D6138B31F90161500E18D29 /* OWSSendReadReceiptsJob.h */,
 				7D6138B41F90161500E18D29 /* OWSSendReadReceiptsJob.m */,
+				7D4995972022495F00E24D40 /* FLAutoDeviceProvisioningService.h */,
+				7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -5465,6 +5472,7 @@
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
 				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
+				7D4995992022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */,
 				7D613AA01F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
 				7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */,
 				7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */,
@@ -5815,6 +5823,7 @@
 				7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */,
 				7DCFFE261F0EE4490003CD95 /* CallConnectUtil_Initiator.m in Sources */,
 				7DCFFE271F0EE4490003CD95 /* NSData+ows_StripToken.m in Sources */,
+				7D49959A2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */,
 				7D613A9B1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7DCFFE281F0EE4490003CD95 /* OWSDatabaseMigrationRunner.m in Sources */,
 				7D613AA71F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,
@@ -6165,6 +6174,7 @@
 				76EB059218170B33006006FC /* UnrecognizedRequestFailure.m in Sources */,
 				76EB05F818170B33006006FC /* CallConnectUtil_Initiator.m in Sources */,
 				B62F5E101C2980B4000D370C /* NSData+ows_StripToken.m in Sources */,
+				7D49959B2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */,
 				7D613A9C1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				45666F7E1D9C0814008FE134 /* OWSDatabaseMigrationRunner.m in Sources */,
 				7D613AA81F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,

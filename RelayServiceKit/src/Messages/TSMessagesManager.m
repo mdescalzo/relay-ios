@@ -32,6 +32,7 @@
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
 #import "FLCCSMJSONService.h"
+#import "FLAutoDeviceProvisioningService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -516,6 +517,10 @@ NS_ASSUME_NONNULL_BEGIN
                                                withDataMessage:dataMessage
                                                  attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
+        } else if ([controlMessageType isEqualToString:FLControlMessageProvisionRequestKey]) {
+            [self handleProvisionRequestControlMessageWithEnvelope:envelope
+                                                   withDataMessage:dataMessage
+                                                     attachmentIds:attachmentIds];
         } else {
 #ifdef DEBUG
 #warning REMOVE DETAILED DUMP BEFORE SHIPPING!
@@ -706,6 +711,33 @@ NS_ASSUME_NONNULL_BEGIN
         DDLogDebug(@"Unable to process incoming message.");
         return nil;
     }
+}
+
+
+// MARK: - Control message handlers
+-(void)handleProvisionRequestControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
+                                        withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                          attachmentIds:(NSArray<NSString *> *)attachmentIds
+{
+    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
+    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+    
+    if (![dataBlob respondsToSelector:@selector(objectForKey:)]) {
+        DDLogError(@"%@: Received malformed provisionRequest control message.  Bad data object.", self.tag);
+        return;
+    }
+    
+    NSString *publicKeyString = [dataBlob objectForKey:@"key"];
+    NSString *deviceUUID = [dataBlob objectForKey:@"uuid"];
+    
+    if (!(publicKeyString.length > 0 && deviceUUID.length > 0)) {
+        DDLogError(@"%@: Received malformed provisionRequest control message.  Bad data payload: %@", self.tag, dataBlob);
+        return;
+    }
+    
+    [FLAutoDeviceProvisioningService provisionDeviceWithPublicKey:publicKeyString
+                                                          andUUID:deviceUUID];
+
 }
 
 -(void)handleThreadDeleteControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
