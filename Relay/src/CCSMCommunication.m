@@ -150,51 +150,6 @@
     
 }
 
-
-//+(void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
-//                                     failure:(void (^)(NSError *error))failureBlock
-//{
-//    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-//    NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
-//    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    [request setHTTPMethod:@"POST"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//    NSString *bodyString = [NSString stringWithFormat:@"token=%@", sessionToken];
-//    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-//
-//    NSHTTPURLResponse *HTTPresponse;
-//    NSError *connectionError;
-//
-//    NSData *data = [self sendSynchronousRequest:request
-//                              returningResponse:&HTTPresponse
-//                                          error:&connectionError];
-//
-//    DDLogDebug(@"Refresh Token - Server response code: %ld", (long)HTTPresponse.statusCode);
-//    DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-//
-//    if (connectionError != nil)  // Failed connection
-//    {
-//        failureBlock(connectionError);
-//    }
-//    else if (HTTPresponse.statusCode == 200) // SUCCESS!
-//    {
-//        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-//                                                               options:0
-//                                                                 error:NULL];
-//        [self storeLocalUserDataWithPayload:result];
-//
-//        successBlock();
-//    }
-//    else  // Connection good, error from server
-//    {
-//        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-//                                             code:HTTPresponse.statusCode
-//                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-//        failureBlock(error);
-//    }
-//}
-
 +(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                                       failure:(void (^)(NSError *error))failureBlock
 {
@@ -285,57 +240,12 @@
           }];
 }
 
-//+(void)getPageSynchronous:(NSURL *)url
-//                  success:(void (^)(NSDictionary *result))successBlock
-//                  failure:(void (^)(NSError *error))failureBlock
-//{
-//    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    [request setHTTPMethod:@"GET"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
-//
-//
-//    NSHTTPURLResponse *HTTPresponse;
-//    NSError *connectionError;
-//
-//    NSData *data = [self sendSynchronousRequest:(NSURLRequest *)request
-//                              returningResponse:&HTTPresponse
-//                                          error:&connectionError];
-//
-//    DDLogDebug(@"Get Page - Server response code: %ld", (long)HTTPresponse.statusCode);
-//    DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-//
-//    if (connectionError != nil)  // Failed connection
-//    {
-//        failureBlock(connectionError);
-//    }
-//    else if (HTTPresponse.statusCode == 200) // SUCCESS!
-//    {
-//        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-//                                                               options:0
-//                                                                 error:NULL];
-//        successBlock(result);
-//    }
-//    else  // Connection good, error from server
-//    {
-//        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-//                                             code:HTTPresponse.statusCode
-//                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-//        failureBlock(error);
-//    }
-//}
-
-
 +(void)getPage:(NSURL *)url
        success:(void (^)(NSDictionary *result))successBlock
        failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[NSURLSession.sharedSession dataTaskWithRequest:request
                                    completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
@@ -359,11 +269,8 @@
         failure:(void (^)(NSError *error))failureBlock;
 {
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[NSURLSession.sharedSession dataTaskWithRequest:request
                                    completionHandler:^(NSData * _Nullable data,
@@ -494,14 +401,8 @@
 {
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/provision-proxy/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSString *authToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"PUT"];
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
-    [request setValue:[NSString stringWithFormat:@"JWT %@", authToken] forHTTPHeaderField:@"Authorization"];
     
     NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:52];
     NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
@@ -738,16 +639,22 @@
 
 +(NSMutableURLRequest *)tagMathRequestForString:(NSString *)lookupString
 {
-    NSString *sessionToken = [Environment.getCurrent.ccsmStorage getSessionToken];
     NSString *homeURL = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CCSM_Home_URL"];
-    
     NSString *urlString = [NSString stringWithFormat:@"%@%@?expression=%@", homeURL, FLTagMathPath, lookupString];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"GET"];
+    
+    return request;
+}
+
+// MARK: - Helper
++(NSMutableURLRequest *)authRequestWithURL:(NSURL *)url
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     return request;
