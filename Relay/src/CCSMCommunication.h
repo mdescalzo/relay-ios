@@ -52,6 +52,8 @@
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock;
 
++(void)sendDeviceProvisioningRequestWithPayload:(NSDictionary *_Nonnull)payload;
+
 // Tag Math lookups
 +(void)asyncTagLookupWithString:(NSString *_Nonnull)lookupString
                         success:(void (^_Nonnull)(NSDictionary *_Nonnull))successBlock

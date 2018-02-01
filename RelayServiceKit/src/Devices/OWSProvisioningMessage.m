@@ -52,8 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSData *plainTextProvisionMessage = [[messageBuilder build] data];
 
-    OWSProvisioningCipher *cipher = [[OWSProvisioningCipher alloc] initWithTheirPublicKey:self.theirPublicKey];
-    NSData *encryptedProvisionMessage = [cipher encrypt:plainTextProvisionMessage];
+    OWSProvisioningCipher *cipher = [[OWSProvisioningCipher alloc] init];
+    NSData *encryptedProvisionMessage = [cipher encrypt:plainTextProvisionMessage withTheirPublicKey:self.theirPublicKey];
 
     OWSProvisioningProtosProvisionEnvelopeBuilder *envelopeBuilder = [OWSProvisioningProtosProvisionEnvelopeBuilder new];
     // Note that this is a one-time-use *cipher* public key, not our Signal *identity* public key

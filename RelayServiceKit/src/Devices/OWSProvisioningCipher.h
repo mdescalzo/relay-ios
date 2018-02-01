@@ -6,8 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) NSData *ourPublicKey;
 
-- (instancetype)initWithTheirPublicKey:(NSData *)theirPublicKey;
-- (NSData *)encrypt:(NSData *)plainText;
+- (NSData *)encrypt:(nonnull NSData *)dataToEncrypt withTheirPublicKey:(nonnull NSData *)theirPublicKey;
+-(NSData *)decrypt:(nonnull NSData *)dataToDecrypt;
 
 @end
 

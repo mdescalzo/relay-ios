@@ -32,7 +32,7 @@
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
 #import "FLCCSMJSONService.h"
-#import "FLAutoDeviceProvisioningService.h"
+#import "FLDeviceProvisioningService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -719,6 +719,10 @@ NS_ASSUME_NONNULL_BEGIN
                                         withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                           attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
+    if (![envelope.source isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
+        DDLogError(@"%@: RECEIVED PROVISIONING REQUEST FROM STRANGER!  %@", self.tag, envelope.source);
+        return;
+    }
     NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     
@@ -735,8 +739,8 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    [FLAutoDeviceProvisioningService provisionDeviceWithPublicKey:publicKeyString
-                                                          andUUID:deviceUUID];
+    [FLDeviceProvisioningService.sharedInstance provisionOtherDeviceWithPublicKey:publicKeyString
+                                                                          andUUID:deviceUUID];
 
 }
 

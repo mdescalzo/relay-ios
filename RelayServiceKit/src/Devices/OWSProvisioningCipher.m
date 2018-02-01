@@ -9,21 +9,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OWSProvisioningCipher ()
 
-@property (nonatomic, readonly) NSData *theirPublicKey;
+//@property (nonatomic, readonly) NSData *theirPublicKey;
 @property (nonatomic, readonly) ECKeyPair *ourKeyPair;
 
 @end
 
 @implementation OWSProvisioningCipher
 
-- (instancetype)initWithTheirPublicKey:(NSData *)theirPublicKey
+- (instancetype)init;
 {
     self = [super init];
     if (!self) {
         return self;
     }
 
-    _theirPublicKey = theirPublicKey;
     _ourKeyPair = [Curve25519 generateKeyPair];
 
     return self;
@@ -34,10 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
     return self.ourKeyPair.publicKey;
 }
 
-- (NSData *)encrypt:(NSData *)dataToEncrypt
+- (NSData *)encrypt:(nonnull NSData *)dataToEncrypt withTheirPublicKey:(nonnull NSData *)theirPublicKey
 {
     NSData *sharedSecret =
-        [Curve25519 generateSharedSecretFromPublicKey:self.theirPublicKey andKeyPair:self.ourKeyPair];
+        [Curve25519 generateSharedSecretFromPublicKey:theirPublicKey andKeyPair:self.ourKeyPair];
 
     NSData *infoData = [@"TextSecure Provisioning Message" dataUsingEncoding:NSASCIIStringEncoding];
     NSData *nullSalt = [[NSMutableData dataWithLength:32] copy];
@@ -88,6 +87,12 @@ NS_ASSUME_NONNULL_BEGIN
 
     return [encryptedMessage copy];
 }
+
+-(NSData *)decrypt:(nonnull NSData *)dataToDecrypt
+{
+    
+}
+
 
 - (NSData *)macForMessage:(NSData *)message withKey:(NSData *)macKey
 {

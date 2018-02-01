@@ -28,11 +28,11 @@
 - (NSNumber *)deviceId
 {
     NSNumber *returnVal = [self objectForKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection];
-    if (!returnVal) {
-        return [NSNumber numberWithInt:1];
-    } else {
+//    if (!returnVal) {
+//        return [NSNumber numberWithInt:1];
+//    } else {
         return returnVal;
-    }
+//    }
 }
 
 +(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction

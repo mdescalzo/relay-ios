@@ -164,6 +164,9 @@
 		76EB064618170B33006006FC /* TimeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FA18170B33006006FC /* TimeUtil.m */; };
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
+		7D014C5420237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
+		7D014C5520237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
+		7D014C5620237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
 		7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
@@ -177,14 +180,17 @@
 		7D3A67771FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
 		7D3A67781FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
 		7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
+		7D3A88682023C45B008677DB /* OWSProvisioningProtos.proto in Resources */ = {isa = PBXBuildFile; fileRef = 7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */; };
+		7D3A88692023C45B008677DB /* OWSProvisioningProtos.proto in Resources */ = {isa = PBXBuildFile; fileRef = 7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */; };
+		7D3A886A2023C45B008677DB /* OWSProvisioningProtos.proto in Resources */ = {isa = PBXBuildFile; fileRef = 7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90181F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90191F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
-		7D4995992022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */; };
-		7D49959A2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */; };
-		7D49959B2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */; };
+		7D4995992022495F00E24D40 /* FLDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceProvisioningService.m */; };
+		7D49959A2022495F00E24D40 /* FLDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceProvisioningService.m */; };
+		7D49959B2022495F00E24D40 /* FLDeviceProvisioningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceProvisioningService.m */; };
 		7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
@@ -455,7 +461,6 @@
 		7D4A3ADC1F1693930023C29B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B67EBF5C19194AC60084CCFD /* Settings.bundle */; };
 		7D4A3ADD1F1693930023C29B /* outring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40B18A05754001A532A /* outring.mp3 */; };
 		7D4A3ADE1F1693930023C29B /* pause_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5C1A7049EC00ECA2BF /* pause_icon@2x.png */; };
-		7D4A3ADF1F1693930023C29B /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = B6C6AE531A305ED1006BAF8F /* redphone.cer */; };
 		7D4A3AE01F1693930023C29B /* r.caf in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40C18A05754001A532A /* r.caf */; };
 		7D4A3AE11F1693930023C29B /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
 		7D4A3AE21F1693930023C29B /* sonarping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40D18A05754001A532A /* sonarping.mp3 */; };
@@ -1139,7 +1144,6 @@
 		7DCFFE821F0EE4490003CD95 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B67EBF5C19194AC60084CCFD /* Settings.bundle */; };
 		7DCFFE831F0EE4490003CD95 /* outring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40B18A05754001A532A /* outring.mp3 */; };
 		7DCFFE841F0EE4490003CD95 /* pause_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5C1A7049EC00ECA2BF /* pause_icon@2x.png */; };
-		7DCFFE851F0EE4490003CD95 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = B6C6AE531A305ED1006BAF8F /* redphone.cer */; };
 		7DCFFE861F0EE4490003CD95 /* r.caf in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40C18A05754001A532A /* r.caf */; };
 		7DCFFE871F0EE4490003CD95 /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
 		7DCFFE881F0EE4490003CD95 /* sonarping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40D18A05754001A532A /* sonarping.mp3 */; };
@@ -1408,7 +1412,6 @@
 		B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B6B9ECFC198B31BA00C620D3 /* PushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B9ECFB198B31BA00C620D3 /* PushManager.m */; };
 		B6BADBE71B88D1AC0086A80D /* LockInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */; };
-		B6C6AE551A305ED1006BAF8F /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = B6C6AE531A305ED1006BAF8F /* redphone.cer */; };
 		B6C93C4E199567AD00EDF894 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C93C4D199567AD00EDF894 /* DebugLogger.m */; };
 		B6DA6B071B8A2F9A00CA6F98 /* AppStoreRating.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */; };
 		B6F509971AA53F760068F56A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
@@ -1838,6 +1841,7 @@
 		76EB04FD18170B33006006FC /* Zid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Zid.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
+		7D014C5320237D2D00292964 /* redphone.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = redphone.cer; sourceTree = "<group>"; };
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1847,13 +1851,14 @@
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
 		7D3A67751FE9BB1700C4096A /* FLPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPickerCell.h; sourceTree = "<group>"; };
 		7D3A67761FE9BB1800C4096A /* FLPickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLPickerCell.m; sourceTree = "<group>"; };
+		7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OWSProvisioningProtos.proto; sourceTree = "<group>"; };
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
 		7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
-		7D4995972022495F00E24D40 /* FLAutoDeviceProvisioningService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLAutoDeviceProvisioningService.h; sourceTree = "<group>"; };
-		7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLAutoDeviceProvisioningService.m; sourceTree = "<group>"; };
+		7D4995972022495F00E24D40 /* FLDeviceProvisioningService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceProvisioningService.h; sourceTree = "<group>"; };
+		7D4995982022495F00E24D40 /* FLDeviceProvisioningService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceProvisioningService.m; sourceTree = "<group>"; };
 		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
 		7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadCreationViewController.m; sourceTree = "<group>"; };
 		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
@@ -2314,7 +2319,6 @@
 		B6B9ECFB198B31BA00C620D3 /* PushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushManager.m; sourceTree = "<group>"; };
 		B6BADBE51B88D1AC0086A80D /* LockInteractionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockInteractionController.h; sourceTree = "<group>"; };
 		B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockInteractionController.m; sourceTree = "<group>"; };
-		B6C6AE531A305ED1006BAF8F /* redphone.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = redphone.cer; sourceTree = "<group>"; };
 		B6C93C4C199567AD00EDF894 /* DebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogger.h; sourceTree = "<group>"; };
 		B6C93C4D199567AD00EDF894 /* DebugLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogger.m; sourceTree = "<group>"; };
 		B6D3CBCE1C1376BE00C039DF /* TSContentAdapters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSContentAdapters.h; sourceTree = "<group>"; };
@@ -3258,6 +3262,14 @@
 			path = xibs;
 			sourceTree = "<group>";
 		};
+		7D3A88662023C45B008677DB /* protobuf */ = {
+			isa = PBXGroup;
+			children = (
+				7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */,
+			);
+			path = protobuf;
+			sourceTree = "<group>";
+		};
 		7D3B865B1EE2190700190FD5 /* ForstaMessages */ = {
 			isa = PBXGroup;
 			children = (
@@ -3301,6 +3313,7 @@
 		7D6138751F90161500E18D29 /* RelayServiceKit */ = {
 			isa = PBXGroup;
 			children = (
+				7D3A88662023C45B008677DB /* protobuf */,
 				7D7F360420191E7B00FC63C9 /* src */,
 			);
 			path = RelayServiceKit;
@@ -3385,8 +3398,8 @@
 				7D6138B21F90161500E18D29 /* OWSRecordTranscriptJob.m */,
 				7D6138B31F90161500E18D29 /* OWSSendReadReceiptsJob.h */,
 				7D6138B41F90161500E18D29 /* OWSSendReadReceiptsJob.m */,
-				7D4995972022495F00E24D40 /* FLAutoDeviceProvisioningService.h */,
-				7D4995982022495F00E24D40 /* FLAutoDeviceProvisioningService.m */,
+				7D4995972022495F00E24D40 /* FLDeviceProvisioningService.h */,
+				7D4995982022495F00E24D40 /* FLDeviceProvisioningService.m */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -4098,7 +4111,7 @@
 		B6C6AE521A305ED1006BAF8F /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
-				B6C6AE531A305ED1006BAF8F /* redphone.cer */,
+				7D014C5320237D2D00292964 /* redphone.cer */,
 			);
 			path = Certificates;
 			sourceTree = "<group>";
@@ -4650,6 +4663,7 @@
 				7D4A3ABA1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.xib in Resources */,
 				7D4A3ABB1F1693930023C29B /* audio_play_button.png in Resources */,
 				7D4A3ABC1F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.xib in Resources */,
+				7D014C5420237D2D00292964 /* redphone.cer in Resources */,
 				7D4A3ABD1F1693930023C29B /* OWSCallCollectionViewCell.xib in Resources */,
 				7DD51C091FBE2A70003DF7DB /* BUILDING.md in Resources */,
 				7D4A3ABE1F1693930023C29B /* mute_on@2x.png in Resources */,
@@ -4685,9 +4699,9 @@
 				7D4A3ADB1F1693930023C29B /* call@2x.png in Resources */,
 				7D613AB81F90186B00E18D29 /* textsecure.cer in Resources */,
 				7D4A3ADC1F1693930023C29B /* Settings.bundle in Resources */,
+				7D3A88682023C45B008677DB /* OWSProvisioningProtos.proto in Resources */,
 				7D4A3ADD1F1693930023C29B /* outring.mp3 in Resources */,
 				7D4A3ADE1F1693930023C29B /* pause_icon@2x.png in Resources */,
-				7D4A3ADF1F1693930023C29B /* redphone.cer in Resources */,
 				7D4A3AE01F1693930023C29B /* r.caf in Resources */,
 				7D4A3AE11F1693930023C29B /* qr@2x.png in Resources */,
 				7D4A3AE21F1693930023C29B /* sonarping.mp3 in Resources */,
@@ -4717,6 +4731,7 @@
 				7DCFFE681F0EE4490003CD95 /* Localizable.strings in Resources */,
 				7DCFFE691F0EE4490003CD95 /* play_button.png in Resources */,
 				7DCFFE6A1F0EE4490003CD95 /* Registration.storyboard in Resources */,
+				7D014C5520237D2D00292964 /* redphone.cer in Resources */,
 				7DCFFE6B1F0EE4490003CD95 /* endcall@2x.png in Resources */,
 				7DCFFE6C1F0EE4490003CD95 /* error_white@2x.png in Resources */,
 				7DCFFE6D1F0EE4490003CD95 /* savephoto@2x.png in Resources */,
@@ -4744,7 +4759,6 @@
 				7DCFFE821F0EE4490003CD95 /* Settings.bundle in Resources */,
 				7DCFFE831F0EE4490003CD95 /* outring.mp3 in Resources */,
 				7DCFFE841F0EE4490003CD95 /* pause_icon@2x.png in Resources */,
-				7DCFFE851F0EE4490003CD95 /* redphone.cer in Resources */,
 				7DCFFE861F0EE4490003CD95 /* r.caf in Resources */,
 				7DCFFE871F0EE4490003CD95 /* qr@2x.png in Resources */,
 				7DCFFE881F0EE4490003CD95 /* sonarping.mp3 in Resources */,
@@ -4752,6 +4766,7 @@
 				7DCFFE8A1F0EE4490003CD95 /* audio_play_button_blue.png in Resources */,
 				7DCFFE8B1F0EE4490003CD95 /* Login.storyboard in Resources */,
 				7DCFFE8C1F0EE4490003CD95 /* audio_pause_button@2x.png in Resources */,
+				7D3A88692023C45B008677DB /* OWSProvisioningProtos.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4774,6 +4789,7 @@
 				B6F509971AA53F760068F56A /* Localizable.strings in Resources */,
 				AD41D7B51A6F6F0600241130 /* play_button.png in Resources */,
 				45CD81A61DBFF8FC004C9430 /* Registration.storyboard in Resources */,
+				7D014C5620237D2D00292964 /* redphone.cer in Resources */,
 				B633C59D1A1D190B0059AC12 /* endcall@2x.png in Resources */,
 				FC5CDF391A3393DD00B47253 /* error_white@2x.png in Resources */,
 				B633C5D21A1D190B0059AC12 /* savephoto@2x.png in Resources */,
@@ -4801,7 +4817,6 @@
 				B67EBF5D19194AC60084CCFD /* Settings.bundle in Resources */,
 				E1370BE418A0686C00826894 /* outring.mp3 in Resources */,
 				B10C9B601A7049EC00ECA2BF /* pause_icon@2x.png in Resources */,
-				B6C6AE551A305ED1006BAF8F /* redphone.cer in Resources */,
 				E1370BE518A0686C00826894 /* r.caf in Resources */,
 				FC9120411A39EFB70074545C /* qr@2x.png in Resources */,
 				E1370BE618A0686C00826894 /* sonarping.mp3 in Resources */,
@@ -4809,6 +4824,7 @@
 				AD83FF471A73428300B5C81A /* audio_play_button_blue.png in Resources */,
 				7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */,
 				AD83FF451A73426500B5C81A /* audio_pause_button@2x.png in Resources */,
+				7D3A886A2023C45B008677DB /* OWSProvisioningProtos.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5472,7 +5488,7 @@
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
 				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
-				7D4995992022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */,
+				7D4995992022495F00E24D40 /* FLDeviceProvisioningService.m in Sources */,
 				7D613AA01F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
 				7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */,
 				7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */,
@@ -5823,7 +5839,7 @@
 				7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */,
 				7DCFFE261F0EE4490003CD95 /* CallConnectUtil_Initiator.m in Sources */,
 				7DCFFE271F0EE4490003CD95 /* NSData+ows_StripToken.m in Sources */,
-				7D49959A2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */,
+				7D49959A2022495F00E24D40 /* FLDeviceProvisioningService.m in Sources */,
 				7D613A9B1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7DCFFE281F0EE4490003CD95 /* OWSDatabaseMigrationRunner.m in Sources */,
 				7D613AA71F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,
@@ -6174,7 +6190,7 @@
 				76EB059218170B33006006FC /* UnrecognizedRequestFailure.m in Sources */,
 				76EB05F818170B33006006FC /* CallConnectUtil_Initiator.m in Sources */,
 				B62F5E101C2980B4000D370C /* NSData+ows_StripToken.m in Sources */,
-				7D49959B2022495F00E24D40 /* FLAutoDeviceProvisioningService.m in Sources */,
+				7D49959B2022495F00E24D40 /* FLDeviceProvisioningService.m in Sources */,
 				7D613A9C1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				45666F7E1D9C0814008FE134 /* OWSDatabaseMigrationRunner.m in Sources */,
 				7D613AA81F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,
