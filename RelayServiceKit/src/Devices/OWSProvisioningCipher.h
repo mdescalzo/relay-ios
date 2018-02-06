@@ -2,12 +2,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class OWSProvisioningProtosProvisionEnvelope;
+
 @interface OWSProvisioningCipher : NSObject
 
 @property (nonatomic, readonly) NSData *ourPublicKey;
 
 - (NSData *)encrypt:(nonnull NSData *)dataToEncrypt withTheirPublicKey:(nonnull NSData *)theirPublicKey;
--(NSData *)decrypt:(nonnull NSData *)dataToDecrypt;
+-(NSData *)decrypt:(nonnull OWSProvisioningProtosProvisionEnvelope *)envelopeProto;
 
 @end
 

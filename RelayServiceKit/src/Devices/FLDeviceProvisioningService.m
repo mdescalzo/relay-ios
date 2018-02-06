@@ -19,11 +19,12 @@
 #import "SubProtocol.pb.h"
 #import "OWSProvisioningCipher.h"
 #import "OWSProvisioningProtos.pb.h"
-
+#import "NSData+keyVersionByte.h"
 
 @interface FLDeviceProvisioningService() <SRWebSocketDelegate>
 
-@property SRWebSocket *provisioningSocket;
+@property (readonly) SRWebSocket *provisioningSocket;
+@property (readonly) OWSProvisioningCipher *cipher;
 
 @end
 
@@ -43,6 +44,9 @@
     if (self = [super init]) {
 //        NSString *provisioningPath = @"/v1/keepalive/provisioning";
 //        request.timeoutInterval = 15.0;
+        // TODO: Implement timeout.
+        _cipher = [[OWSProvisioningCipher alloc] init];
+
         _provisioningSocket = [[SRWebSocket alloc]initWithURL:[self provisioningURL]];
         _provisioningSocket.delegate = self;
     }
@@ -85,6 +89,11 @@
 //                                                       completion:nil];
                                   });
                               }];
+}
+
+-(void)processProvisioningMessage:(OWSProvisioningProtosProvisionMessage *)messageProto
+{
+    DDLogDebug(@"ProvisionMessage: %@", messageProto);
 }
 
 // MARK: - Helpers
@@ -137,8 +146,7 @@
 
     WebSocketMessage *message = [WebSocketMessage parseFromData:data];
     
-    OWSProvisioningCipher *cipher = [[OWSProvisioningCipher alloc] init];
-    NSData *ourPublicKeyData = cipher.ourPublicKey;
+    NSData *ourPublicKeyData = [self.cipher.ourPublicKey prependKeyType];
     NSString *ourPublicKeyString  = [ourPublicKeyData base64EncodedString];
     
     if (message.hasRequest) {
@@ -149,13 +157,20 @@
             [self sendWebSocketMessageAcknowledgement:request];
             
             NSDictionary *payload = @{ @"uuid" : proto.uuid,
-                                       @"key" : ourPublicKeyString
-                                       };
+                                       @"key" : ourPublicKeyString };
             
             [CCSMCommManager sendDeviceProvisioningRequestWithPayload:payload];
         } else if ([request.path isEqualToString:@"/v1/message"] && [request.verb isEqualToString:@"PUT"]) {
-            // TODO: Got a message envelope.  Process it.
+            OWSProvisioningProtosProvisionEnvelope *proto = [OWSProvisioningProtosProvisionEnvelope parseFromData:request.body];
+            [self sendWebSocketMessageAcknowledgement:request];
             [self.provisioningSocket close];
+            
+            // Decrypt the things
+            NSData *decryptedData = [self.cipher decrypt:proto];
+            NSString *plainText = [[NSString alloc] initWithData:decryptedData encoding:NSASCIIStringEncoding];
+            OWSProvisioningProtosProvisionMessage *messageProto = [OWSProvisioningProtosProvisionMessage parseFromData:decryptedData];
+            [self processProvisioningMessage:messageProto];
+            
        } else {
             DDLogInfo(@"Unhandled provisioning socket request message.");
         }
