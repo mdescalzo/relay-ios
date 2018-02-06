@@ -128,35 +128,11 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert(cipherKey.length == 32, @"Cipher Key must be 32 bytes");
     NSAssert(macKey.length == 32, @"Mac Key must be 32 bytes");
     
-//    [self verifyMac:ivAndCiphertext ourKey:mac macKey:macKey length:32];
+    [self verifyMac:mac fromMessage:ivAndCiphertext withMCCKey:macKey];
     
     NSData *returnData = [AES_CBC decryptCBCMode:ciphertext withKey:cipherKey withIV:iv];
     return returnData;
 
-//    size_t bufferSize = ciphertext.length + kCCBlockSizeAES128;
-//    void *buffer = malloc(bufferSize);
-//    size_t bytesDecrypted = 0;
-//
-//    CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt,
-//                                          kCCAlgorithmAES,
-//                                          kCCOptionPKCS7Padding,
-//                                          cipherKey.bytes,
-//                                          cipherKey.length,
-//                                          iv.bytes,
-//                                          ciphertext.bytes,
-//                                          ciphertext.length,
-//                                          buffer,
-//                                          bufferSize,
-//                                          &bytesDecrypted);
-//
-//    if (cryptStatus == kCCSuccess) {
-//        //the returned NSData takes ownership of the buffer and will free it on deallocation
-//        NSData *decryptedData = [NSData dataWithBytesNoCopy:buffer length:bytesDecrypted];
-//        return decryptedData;
-//    }
-//    free(buffer); //free the buffer;
-//
-//    return nil;
 }
 
 
@@ -168,19 +144,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [NSData dataWithBytes:hmacBytes length:CC_SHA256_DIGEST_LENGTH];
 }
 
-- (void)verifyMac:(NSData *)data ourKey:(NSData *)ourKey macKey:(NSData *)macKey length:(NSUInteger)length
+- (void)verifyMac:(NSData *)mac fromMessage:(NSData *)messageData withMCCKey:(NSData *)macKey
 {
-    NSData *calculatedMac = [Cryptography computeSHA256HMAC:data withHMACKey:macKey];
+    NSData *calculatedMAC = [self macForMessage:messageData withKey:macKey];
 
-//    NSData *data     = [self.serialized subdataWithRange:NSMakeRange(0, self.serialized.length - MAC_LENGTH)];
-//    NSData *theirMac = [self.serialized subdataWithRange:NSMakeRange(self.serialized.length - MAC_LENGTH, MAC_LENGTH)];
-//    NSData *ourMac   = [SerializationUtilities macWithVersion:messageVersion
-//                                                  identityKey:[senderIdentityKey prependKeyType]
-//                                          receiverIdentityKey:[receiverIdentityKey prependKeyType]
-//                                                       macKey:macKey
-//                                                   serialized:data];
-    
-    if (![calculatedMac isEqualToData:ourKey]) {
+    if (![calculatedMAC isEqualToData:mac]) {
         @throw [NSException exceptionWithName:InvalidMessageException reason:@"Bad Mac!" userInfo:@{}];
     }
 }

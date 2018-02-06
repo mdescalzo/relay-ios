@@ -94,6 +94,14 @@
 -(void)processProvisioningMessage:(OWSProvisioningProtosProvisionMessage *)messageProto
 {
     DDLogDebug(@"ProvisionMessage: %@", messageProto);
+    NSString *accountIdentifier = TSAccountManager.sharedInstance.myself.uniqueId;
+
+    // Validate other device is valid
+    if (![accountIdentifier isEqualToString:messageProto.number]) {
+        DDLogError(@"Security Violation: Foreign account sent us an identity key!");
+        // TODO: throw error or exception here.
+        return;
+    }
 }
 
 // MARK: - Helpers
