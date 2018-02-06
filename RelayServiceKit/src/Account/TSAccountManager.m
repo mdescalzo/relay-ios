@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
         @throw [NSException exceptionWithName:@"RegistrationFail" reason:@"Internal Corrupted State" userInfo:nil];
     }
 
-    [self.storageManager storePhoneNumber:phoneNumber];
+    [self.storageManager storeLocalNumber:phoneNumber];
 }
 
 + (nullable NSString *)localNumber

@@ -18,7 +18,7 @@
 #import "TSPreKeyManager.h"
 #import "TSStorageManager.h"
 #import "AFNetworking.h"
-#import "FLDeviceProvisioningService.h"
+#import "FLDeviceRegistrationService.h"
 
 #define FLTagMathPath @"/v1/directory/user/"
 
@@ -303,11 +303,11 @@
             [Environment.getCurrent.ccsmStorage setUsers:@{ }];
             [Environment.getCurrent.ccsmStorage setOrgInfo:@{ }];
             [Environment.getCurrent.ccsmStorage setTags:@{ }];
-            [TSStorageManager.sharedManager storePhoneNumber:userID];
+            [TSStorageManager.sharedManager storeLocalNumber:userID];
         }
         
         if (TSStorageManager.localNumber.length == 0) {
-            [TSStorageManager.sharedManager storePhoneNumber:userID];
+            [TSStorageManager.sharedManager storeLocalNumber:userID];
         }
         
         [Environment.getCurrent.ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
@@ -401,6 +401,48 @@
 }
 
 #pragma mark - CCSM proxied TextSecure registration
++(void)registerDeviceWithParameters:(NSDictionary *)parameters completion:(void (^)(NSDictionary *response, NSError *error))completionBlock
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/devices%@", FLHomeURL, [parameters objectForKey:@"urlParms"]];
+    NSString *authHeader = [NSString stringWithFormat:@"Basic %@:%@", [parameters objectForKey:@"username"], [parameters objectForKey:@"password"]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.HTTPMethod = ([parameters objectForKey:@"httpType"] ? [parameters objectForKey:@"httpType"] : @"PUT");
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:authHeader forHTTPHeaderField:@"Authorization"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:[parameters objectForKey:@"jsonBody"] options:0 error:nil];
+ 
+    [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                   completionHandler:^(NSData * _Nullable data,
+                                                       NSURLResponse * _Nullable response,
+                                                       NSError * _Nullable connectionError) {
+                                       NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                       DDLogDebug(@"Register device with TSS - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                       DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                       if (connectionError != nil)  // Failed connection
+                                       {
+                                           completionBlock(nil, connectionError);
+                                       }
+                                       else if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                       {
+                                           if (data.length > 0 && connectionError == nil)
+                                           {
+                                               NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                      options:0
+                                                                                                        error:NULL];
+                                               completionBlock(result, nil);
+                                           }
+                                       }
+                                       else  // Connection good, error from server
+                                       {
+                                           NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                code:HTTPresponse.statusCode
+                                                                            userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                           completionBlock(nil, error);
+                                       }
+                                   }] resume];
+}
+
 +(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
                                success:(void (^)())successBlock
                                failure:(void (^)(NSError *error))failureBlock
@@ -419,7 +461,7 @@
                    if (serverURL.length > 0) {
                        [[[CCSMStorage alloc] init] setTextSecureURL:serverURL];
 
-                       [FLDeviceProvisioningService.sharedInstance provisionThisDeviceWithCompletion:^(NSError *error) {
+                       [FLDeviceRegistrationService.sharedInstance provisionThisDeviceWithCompletion:^(NSError *error) {
                            // stuff
 #warning Do stuff here
                        }];
@@ -477,7 +519,7 @@
                                                               [[TSStorageManager sharedManager] storeDeviceId:deviceID];
                                                               [TSStorageManager storeServerToken:password signalingKey:signalingKey];
                                                               // TODO: validate against stored ID here since it should already be stored
-                                                              [[TSStorageManager sharedManager] storePhoneNumber:userID];
+                                                              [[TSStorageManager sharedManager] storeLocalNumber:userID];
                                                               [TSSocketManager becomeActiveFromForeground];
                                                               [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
                                                           }

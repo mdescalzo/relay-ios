@@ -32,7 +32,7 @@
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
 #import "FLCCSMJSONService.h"
-#import "FLDeviceProvisioningService.h"
+#import "FLDeviceRegistrationService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -739,7 +739,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    [FLDeviceProvisioningService.sharedInstance provisionOtherDeviceWithPublicKey:publicKeyString
+    [FLDeviceRegistrationService.sharedInstance provisionOtherDeviceWithPublicKey:publicKeyString
                                                                           andUUID:deviceUUID];
 
 }

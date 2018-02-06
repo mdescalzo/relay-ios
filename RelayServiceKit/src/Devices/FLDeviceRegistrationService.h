@@ -1,5 +1,5 @@
 //
-//  FLDeviceProvisioningService.h
+//  FLDeviceRegistrationService.h
 //  Forsta
 //
 //  Created by Mark Descalzo on 1/31/18.
@@ -10,7 +10,7 @@
 
 @import Foundation;
 
-@interface FLDeviceProvisioningService : NSObject
+@interface FLDeviceRegistrationService : NSObject
 
 +(instancetype _Nonnull)sharedInstance;
 

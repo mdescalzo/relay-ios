@@ -95,10 +95,10 @@
     return [[self sharedManager] stringForKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection];
 }
 
-- (void)storePhoneNumber:(NSString *)phoneNumber
+- (void)storeLocalNumber:(NSString *)localNumber
 {
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [transaction setObject:phoneNumber
+        [transaction setObject:localNumber
                         forKey:TSStorageRegisteredNumberKey
                   inCollection:TSStorageUserAccountCollection];
     }];

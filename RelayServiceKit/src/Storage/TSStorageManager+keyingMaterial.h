@@ -51,7 +51,7 @@
 + (void)storeServerToken:(NSString *)authToken signalingKey:(NSString *)signalingKey;
 +(void)removeServerTokenAndSignalingKey;
 
-- (void)storePhoneNumber:(NSString *)phoneNumber;
+- (void)storeLocalNumber:(NSString *)localNumber;
 - (void)storeDeviceId:(NSNumber *)deviceId;
 
 @end

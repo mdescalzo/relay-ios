@@ -37,9 +37,12 @@
                    success:(void (^)())successBlock
                    failure:(void (^)(NSError *error))failureBlock;
 
+
 +(void)getThing:(NSString *)urlString
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
+
++(void)registerDeviceWithParameters:(NSDictionary *)parameters completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
 
 +(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
                                success:(void (^)())successBlock

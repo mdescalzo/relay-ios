@@ -1,12 +1,12 @@
 //
-//  FLDeviceProvisioningService.m
+//  FLDeviceRegistrationService.m
 //  Forsta
 //
 //  Created by Mark Descalzo on 1/31/18.
 //  Copyright © 2018 Forsta. All rights reserved.
 //
 
-#import "FLDeviceProvisioningService.h"
+#import "FLDeviceRegistrationService.h"
 #import "TSAccountManager.h"
 #import "OWSDeviceProvisioner.h"
 #import "ECKeyPair+OWSPrivateKey.h"
@@ -20,18 +20,22 @@
 #import "OWSProvisioningCipher.h"
 #import "OWSProvisioningProtos.pb.h"
 #import "NSData+keyVersionByte.h"
+#import <25519/Curve25519.h>
+#import "SignalKeyingStorage.h"
+#import "SecurityUtils.h"
+#import "DeviceTypes.h"
 
-@interface FLDeviceProvisioningService() <SRWebSocketDelegate>
+@interface FLDeviceRegistrationService() <SRWebSocketDelegate>
 
 @property (readonly) SRWebSocket *provisioningSocket;
 @property (readonly) OWSProvisioningCipher *cipher;
 
 @end
 
-@implementation FLDeviceProvisioningService
+@implementation FLDeviceRegistrationService
 
 + (instancetype)sharedInstance {
-    static FLDeviceProvisioningService *sharedService = nil;
+    static FLDeviceRegistrationService *sharedService = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedService = [[self alloc] init];
@@ -42,11 +46,11 @@
 -(instancetype)init
 {
     if (self = [super init]) {
-//        NSString *provisioningPath = @"/v1/keepalive/provisioning";
-//        request.timeoutInterval = 15.0;
+        //        NSString *provisioningPath = @"/v1/keepalive/provisioning";
+        //        request.timeoutInterval = 15.0;
         // TODO: Implement timeout.
         _cipher = [[OWSProvisioningCipher alloc] init];
-
+        
         _provisioningSocket = [[SRWebSocket alloc]initWithURL:[self provisioningURL]];
         _provisioningSocket.delegate = self;
     }
@@ -56,6 +60,8 @@
 -(void)provisionThisDeviceWithCompletion:(void (^)(NSError *error))completionBlock
 {
     [self.provisioningSocket open];
+    
+    // TODO: implement wait semaphore and call completion block with timeout
 }
 
 -(void)provisionOtherDeviceWithPublicKey:(NSString *_Nonnull)keyString andUUID:(NSString *_Nonnull)uuidString
@@ -74,20 +80,20 @@
         DDLogInfo(@"Successfully provisioned device.");
         dispatch_async(dispatch_get_main_queue(), ^{
             // TODO: Notification UI here perhaps?
-//            [self.linkedDevicesTableViewController expectMoreDevices];
-//            [self.navigationController popToViewController:self.linkedDevicesTableViewController animated:YES];
+            //            [self.linkedDevicesTableViewController expectMoreDevices];
+            //            [self.navigationController popToViewController:self.linkedDevicesTableViewController animated:YES];
         });
     }
                               failure:^(NSError *error) {
                                   DDLogError(@"Failed to provision device with error: %@", error);
-                                  dispatch_async(dispatch_get_main_queue(), ^{
-//                                      [self presentViewController:[self retryAlertControllerWithError:error
-//                                                                                           retryBlock:^{
-//                                                                                               [self provisionWithParser:parser];
-//                                                                                           }]
-//                                                         animated:YES
-//                                                       completion:nil];
-                                  });
+                                  //                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                  //                                      [self presentViewController:[self retryAlertControllerWithError:error
+                                  //                                                                                           retryBlock:^{
+                                  //                                                                                               [self provisionWithParser:parser];
+                                  //                                                                                           }]
+                                  //                                                         animated:YES
+                                  //                                                       completion:nil];
+                                  //                                  });
                               }];
 }
 
@@ -95,13 +101,49 @@
 {
     DDLogDebug(@"ProvisionMessage: %@", messageProto);
     NSString *accountIdentifier = TSAccountManager.sharedInstance.myself.uniqueId;
-
+    
     // Validate other device is valid
     if (![accountIdentifier isEqualToString:messageProto.number]) {
         DDLogError(@"Security Violation: Foreign account sent us an identity key!");
         // TODO: throw error or exception here.
         return;
     }
+    
+    // PUT the things to TSS
+    NSString *name = [NSString stringWithFormat:@"%@ (%@)", [DeviceTypes deviceModelName], [[UIDevice currentDevice] name]];
+    ECKeyPair *keyPair = [Curve25519 generateKeyPairFromPrivateKey:messageProto.identityKeyPrivate];
+    NSNumber *registrationId = [NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]];
+    NSString *password = [SignalKeyingStorage serverAuthPassword];
+    NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:(32 + 20)];
+    NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
+    NSString *urlParms = [NSString stringWithFormat:@"/%@", messageProto.provisioningCode];
+    
+    NSDictionary *payload = @{ @"signalingKey": signalingKey,
+                               @"supportSms" : @NO,
+                               @"fetchesMessages" : @YES,
+                               @"registrationId" : registrationId,
+                               @"name" : name,
+                               };
+    NSDictionary *parameters = @{ @"httpType" : @"PUT",
+                                  @"urlParms" :  urlParms,
+                                  @"jsonBody" : payload,
+                                  @"username" : messageProto.number,
+                                  @"password" : password,
+                                  };
+    [CCSMCommManager registerDeviceWithParameters:parameters
+                                       completion:^(NSDictionary *response, NSError *error) {
+                                           // TODO: do things with the response.
+                                           if (!error) {
+                                               DDLogDebug(@"Device provision PUT response: %@", response);
+                                               NSNumber *deviceId = [response objectForKey:@"deviceId"];
+                                               [TSStorageManager.sharedManager setIdentityKey:keyPair];
+                                               [TSStorageManager.sharedManager storeDeviceId:deviceId];
+                                               [TSStorageManager.sharedManager storeLocalNumber:messageProto.number];
+                                               [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+                                           } else {
+                                               DDLogError(@"Device provison PUT failed with error: %@", error.description);
+                                           }
+                                       }];
 }
 
 // MARK: - Helpers
@@ -111,10 +153,10 @@
     NSString *socketString = [tssURLString stringByReplacingOccurrencesOfString:@"http"
                                                                      withString:@"ws"];
     NSString *urlString = [socketString stringByAppendingString:@"/v1/websocket/provisioning/"];
-//    getProvisioningWebSocketURL () {
-//        return this.url.replace('https://', 'wss://').replace('http://', 'ws://') +
-//        '/v1/websocket/provisioning/';
-//    }
+    //    getProvisioningWebSocketURL () {
+    //        return this.url.replace('https://', 'wss://').replace('http://', 'ws://') +
+    //        '/v1/websocket/provisioning/';
+    //    }
     NSURL *url = [NSURL URLWithString:urlString];
     
     return url;
@@ -151,7 +193,7 @@
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessageWithData:(NSData *)data
 {
     DDLogInfo(@"Provisioning socket received data message.");
-
+    
     WebSocketMessage *message = [WebSocketMessage parseFromData:data];
     
     NSData *ourPublicKeyData = [self.cipher.ourPublicKey prependKeyType];
@@ -159,7 +201,7 @@
     
     if (message.hasRequest) {
         WebSocketRequestMessage *request = message.request;
-
+        
         if ([request.path isEqualToString:@"/v1/address"] && [request.verb isEqualToString:@"PUT"]) {
             OWSProvisioningProtosProvisioningUuid *proto = [OWSProvisioningProtosProvisioningUuid parseFromData:request.body];
             [self sendWebSocketMessageAcknowledgement:request];
@@ -175,11 +217,10 @@
             
             // Decrypt the things
             NSData *decryptedData = [self.cipher decrypt:proto];
-            NSString *plainText = [[NSString alloc] initWithData:decryptedData encoding:NSASCIIStringEncoding];
             OWSProvisioningProtosProvisionMessage *messageProto = [OWSProvisioningProtosProvisionMessage parseFromData:decryptedData];
             [self processProvisioningMessage:messageProto];
             
-       } else {
+        } else {
             DDLogInfo(@"Unhandled provisioning socket request message.");
         }
     }

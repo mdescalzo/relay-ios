@@ -34,6 +34,13 @@
                   inCollection:TSStorageManagerIdentityKeyStoreCollection];
 }
 
+-(void)setIdentityKey:(ECKeyPair *)identityKeyPair
+{
+    [self setObject:identityKeyPair
+             forKey:TSStorageManagerIdentityKeyStoreIdentityKey
+       inCollection:TSStorageManagerIdentityKeyStoreCollection];
+}
+
 - (int)localRegistrationId {
     return (int)[TSAccountManager getOrGenerateRegistrationId];
 }
