@@ -2179,7 +2179,9 @@ typedef enum : NSUInteger {
 
 - (void)markAllMessagesAsRead
 {
-    [self.thread markAllAsRead];
+    [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self.thread markAllAsReadWithTransaction:transaction];
+    }];
     // In theory this should be unnecessary as read-status starts expiration
     // but in practice I've seen messages not have their timer started.
     [self.disappearingMessagesJob setExpirationsForThread:self.thread];

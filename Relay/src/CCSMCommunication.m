@@ -305,12 +305,9 @@
             [Environment.getCurrent.ccsmStorage setUsers:@{ }];
             [Environment.getCurrent.ccsmStorage setOrgInfo:@{ }];
             [Environment.getCurrent.ccsmStorage setTags:@{ }];
-            [TSStorageManager.sharedManager storeLocalNumber:userID];
         }
         
-        if (TSStorageManager.localNumber.length == 0) {
-            [TSStorageManager.sharedManager storeLocalNumber:userID];
-        }
+        [TSStorageManager.sharedManager storeLocalNumber:userID];
         
         [Environment.getCurrent.ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         

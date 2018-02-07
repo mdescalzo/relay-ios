@@ -719,13 +719,15 @@ NS_ASSUME_NONNULL_BEGIN
                                         withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                           attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
-    if (![envelope.source isEqualToString:TSAccountManager.sharedInstance.myself.uniqueId]) {
-        DDLogError(@"%@: RECEIVED PROVISIONING REQUEST FROM STRANGER!  %@", self.tag, envelope.source);
+
+    if (![envelope.source isEqualToString:FLSupermanID]) {
+        DDLogError(@"%@: RECEIVED PROVISIONING REQUEST FROM STRANGER: %@", self.tag, envelope.source);
         return;
     }
+    
     NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-    
+
     if (![dataBlob respondsToSelector:@selector(objectForKey:)]) {
         DDLogError(@"%@: Received malformed provisionRequest control message.  Bad data object.", self.tag);
         return;

@@ -61,10 +61,10 @@
             NSString *serverURL = [payload objectForKey:@"serverUrl"];
             [[[CCSMStorage alloc] init] setTextSecureURL:serverURL];
             NSArray *devices = [payload objectForKey:@"devices"];
-            
+            DDLogInfo(@"Provisioning found %ld other registered devices.", devices.count);
+
             // Found some, request provisioning
             if (devices.count > 0) {
-                DDLogInfo(@"Provisioning found %ld other registered devices.", devices.count);
                 [self provisionThisDeviceWithCompletion:^(NSError *deviceError) {
                         completionBlock(deviceError);
                 }];
