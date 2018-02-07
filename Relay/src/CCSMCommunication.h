@@ -42,11 +42,17 @@
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
 
-+(void)registerDeviceWithParameters:(NSDictionary *)parameters completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
++(void)checkAccountRegistrationWithCompletion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
 
-+(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
-                               success:(void (^)())successBlock
-                               failure:(void (^)(NSError *error))failureBlock;
++(void)registerDeviceWithParameters:(NSDictionary *)parameters
+                         completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
+
++(void)registerAccountWithParameters:(NSDictionary *)parameters
+                      completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
+
+//+(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
+//                               success:(void (^)())successBlock
+//                               failure:(void (^)(NSError *error))failureBlock;
 
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId;
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction;

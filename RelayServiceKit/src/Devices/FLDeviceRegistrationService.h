@@ -14,8 +14,7 @@
 
 +(instancetype _Nonnull)sharedInstance;
 
--(void)provisionThisDeviceWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock;
-
+-(void)registerWithTSSWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock;
 -(void)provisionOtherDeviceWithPublicKey:(NSString *_Nonnull)keyString andUUID:(NSString *_Nonnull)uuidString;
 
 @end

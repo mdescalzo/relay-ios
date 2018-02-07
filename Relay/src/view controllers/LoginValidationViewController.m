@@ -13,6 +13,7 @@
 #import "Environment.h"
 #import "SignalsNavigationController.h"
 #import "AppDelegate.h"
+#import "FLDeviceRegistrationService.h"
 
 NSUInteger maximumValidationAttempts = 9999;
 
@@ -173,32 +174,65 @@ NSUInteger maximumValidationAttempts = 9999;
         });
     } else {
         // This device not registered with TSS, ask CCSM to do it for us.  Check for others...
-        [CCSMCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
-                                                 success:^{
-                                                     [CCSMCommManager refreshCCSMData];
-                                                     [TSSocketManager becomeActiveFromForeground];
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         [self.spinner stopAnimating];
-                                                         self.validationButton.enabled = YES;
-                                                         self.validationButton.alpha = 1.0;
-                                                         [self performSegueWithIdentifier:@"mainSegue" sender:self];
-                                                     });
-                                                 }
-                                                 failure:^(NSError *error) {
-                                                     DDLogError(@"TSS Validation error: %@", error.description);
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         // TODO: More user-friendly alert here
-                                                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                                         message:error.description
-                                                                                                        delegate:nil
-                                                                                               cancelButtonTitle:@"OK"
-                                                                                               otherButtonTitles:nil];
-                                                         [alert show];
-                                                         [self.spinner stopAnimating];
-                                                         self.validationButton.enabled = YES;
-                                                         self.validationButton.alpha = 1.0;
-                                                     });
-                                                 }];
+        [FLDeviceRegistrationService.sharedInstance registerWithTSSWithCompletion:^(NSError * _Nullable error) {
+            if (error == nil) {
+                [CCSMCommManager refreshCCSMData];
+                [TSSocketManager becomeActiveFromForeground];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.spinner stopAnimating];
+                    self.validationButton.enabled = YES;
+                    self.validationButton.alpha = 1.0;
+                    [self performSegueWithIdentifier:@"mainSegue" sender:self];
+                });
+                
+            } else {
+                DDLogError(@"TSS Validation error: %@", error.description);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // TODO: More user-friendly alert here
+                    UIAlertController *alertController =
+                    [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
+                                                        message:NSLocalizedString(@"REGISTRATION_CONNECTION_FAILED", nil)
+                                                 preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                                          // Do nothin'
+                                                                      }]];
+                    [self.navigationController presentViewController:alertController animated:YES completion:^{
+                        [self.spinner stopAnimating];
+                        self.validationButton.enabled = YES;
+                        self.validationButton.alpha = 1.0;
+                    }];
+                });
+            }
+        }];
+        
+//        [CCSMCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
+//                                                 success:^{
+//                                                     [CCSMCommManager refreshCCSMData];
+//                                                     [TSSocketManager becomeActiveFromForeground];
+//                                                     dispatch_async(dispatch_get_main_queue(), ^{
+//                                                         [self.spinner stopAnimating];
+//                                                         self.validationButton.enabled = YES;
+//                                                         self.validationButton.alpha = 1.0;
+//                                                         [self performSegueWithIdentifier:@"mainSegue" sender:self];
+//                                                     });
+//                                                 }
+//                                                 failure:^(NSError *error) {
+//                                                     DDLogError(@"TSS Validation error: %@", error.description);
+//                                                     dispatch_async(dispatch_get_main_queue(), ^{
+//                                                         // TODO: More user-friendly alert here
+//                                                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                                                                         message:error.description
+//                                                                                                        delegate:nil
+//                                                                                               cancelButtonTitle:@"OK"
+//                                                                                               otherButtonTitles:nil];
+//                                                         [alert show];
+//                                                         [self.spinner stopAnimating];
+//                                                         self.validationButton.enabled = YES;
+//                                                         self.validationButton.alpha = 1.0;
+//                                                     });
+//                                                 }];
     }
     
 }

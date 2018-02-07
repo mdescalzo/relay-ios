@@ -24,10 +24,11 @@
 #import "SignalKeyingStorage.h"
 #import "SecurityUtils.h"
 #import "DeviceTypes.h"
+#import "TSPreKeyManager.h"
 
 @interface FLDeviceRegistrationService() <SRWebSocketDelegate>
 
-@property (readonly) SRWebSocket *provisioningSocket;
+@property (nonatomic, strong) SRWebSocket *provisioningSocket;
 @property (readonly) OWSProvisioningCipher *cipher;
 @property dispatch_semaphore_t provisioningSemaphore;
 
@@ -48,11 +49,64 @@
 {
     if (self = [super init]) {
         _cipher = [[OWSProvisioningCipher alloc] init];
-        _provisioningSocket = [[SRWebSocket alloc]initWithURL:[self provisioningURL]];
-        _provisioningSocket.delegate = self;
         _provisioningSemaphore = dispatch_semaphore_create(0);
     }
     return self;
+}
+
+-(void)registerWithTSSWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock
+{
+    [CCSMCommManager checkAccountRegistrationWithCompletion:^(NSDictionary *payload, NSError *checkError) {
+        if (checkError == nil) {
+            NSString *serverURL = [payload objectForKey:@"serverUrl"];
+            [[[CCSMStorage alloc] init] setTextSecureURL:serverURL];
+            NSArray *devices = [payload objectForKey:@"devices"];
+            
+            // Found some, request provisioning
+            if (devices.count > 0) {
+                DDLogInfo(@"Provisioning found %ld other registered devices.", devices.count);
+                [self provisionThisDeviceWithCompletion:^(NSError *deviceError) {
+                        completionBlock(deviceError);
+                }];
+            } else { // no other devices, register the account
+                [self registerAcountWithCompletion:^(NSError * _Nullable registerError) {
+                    completionBlock(registerError);
+                }];
+            }
+        }
+    }];
+}
+
+-(void)registerAcountWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock
+{
+    NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:(32 + 20)];
+    NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
+    
+    NSString *name = [NSString stringWithFormat:@"%@ (%@)", [DeviceTypes deviceModelName], [[UIDevice currentDevice] name]];
+    [SignalKeyingStorage generateServerAuthPassword];
+    NSString *password = [SignalKeyingStorage serverAuthPassword];
+    
+    NSDictionary *jsonBody = @{ @"signalingKey": signalingKey,
+                                @"supportSms" : @NO,
+                                @"fetchesMessages" : @YES,
+                                @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
+                                @"name" : name,
+                                @"password" : password
+                                };
+
+    NSDictionary *parameters = @{ @"jsonBody" : jsonBody };
+    
+    [CCSMCommManager registerAccountWithParameters:parameters
+                                        completion:^(NSDictionary *result, NSError *error) {
+                                            if (error == nil) {
+                                                NSNumber *deviceID = [result objectForKey:@"deviceId"];
+                                                [[TSStorageManager sharedManager] storeDeviceId:deviceID];
+                                                [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+                                                [TSPreKeyManager registerPreKeysWithSuccess:completionBlock failure:completionBlock];
+                                            } else {
+                                                completionBlock(error);
+                                            }
+                                        }];
 }
 
 -(void)provisionThisDeviceWithCompletion:(void (^)(NSError *error))completionBlock
@@ -61,13 +115,20 @@
     [self.provisioningSocket open];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//    // Wait 15 seconds then close the socket and call completion.
-//    dispatch_time_t waittime = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 15);
-//    dispatch_semaphore_wait(self.provisioningSemaphore, waittime);
-
-    dispatch_semaphore_wait(self.provisioningSemaphore, DISPATCH_TIME_FOREVER);
-    [self.provisioningSocket close];
-    completionBlock(nil);
+        
+        // Wait 15 seconds then close the socket and call completion.
+        dispatch_time_t waittime = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 15);
+       long result = dispatch_semaphore_wait(self.provisioningSemaphore, waittime);
+        
+//    dispatch_semaphore_wait(self.provisioningSemaphore, DISPATCH_TIME_FOREVER);
+        [self.provisioningSocket close];
+        if (result == 0) {  // Another device provisioned us!  We're good to go.
+            completionBlock(nil);
+        } else {  // Timed-out, proceed with Account registration instead.
+            [self registerAcountWithCompletion:^(NSError * _Nullable error) {
+                completionBlock(error);
+            }];
+        }
     });
 }
 
@@ -84,23 +145,15 @@
                                                                    theirEphemeralDeviceId:uuidString
                                                                         accountIdentifier:accountIdentifier];
     [provisioner provisionWithSuccess:^{
-        DDLogInfo(@"Successfully provisioned device.");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // TODO: Notification UI here perhaps?
-            //            [self.linkedDevicesTableViewController expectMoreDevices];
-            //            [self.navigationController popToViewController:self.linkedDevicesTableViewController animated:YES];
-        });
+        DDLogInfo(@"Successfully provisioned other device.");
+        // TODO: Notification UI here perhaps?
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//        });
     }
                               failure:^(NSError *error) {
-                                  DDLogError(@"Failed to provision device with error: %@", error);
-                                  //                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                  //                                      [self presentViewController:[self retryAlertControllerWithError:error
-                                  //                                                                                           retryBlock:^{
-                                  //                                                                                               [self provisionWithParser:parser];
-                                  //                                                                                           }]
-                                  //                                                         animated:YES
-                                  //                                                       completion:nil];
-                                  //                                  });
+                                  DDLogError(@"Failed to provision other device with error: %@", error);
+//                                  dispatch_async(dispatch_get_main_queue(), ^{
+//                                  });
                               }];
 }
 
@@ -147,9 +200,8 @@
                                                if (deviceId) {
                                                    [TSStorageManager.sharedManager setIdentityKey:keyPair];
                                                    [TSStorageManager.sharedManager storeDeviceId:deviceId];
-                                                   [TSStorageManager.sharedManager storeLocalNumber:messageProto.number];
                                                    [TSStorageManager storeServerToken:password signalingKey:signalingKey];
-                                                   completionBlock(nil);
+                                                   [TSPreKeyManager registerPreKeysWithSuccess:completionBlock failure:completionBlock];
                                                } else {
                                                    DDLogError(@"No device provided by TSS!");
                                                    // FIX: throw meaningful error here.
@@ -254,6 +306,16 @@
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(nullable NSString *)reason wasClean:(BOOL)wasClean
 {
     DDLogInfo(@"Provisioning socket closed. Reason: %@", reason);
+}
+
+// MARK: - Accessors
+-(SRWebSocket *)provisioningSocket
+{
+    if (_provisioningSocket == nil || _provisioningSocket.url == nil) {
+        _provisioningSocket = [[SRWebSocket alloc]initWithURL:[self provisioningURL]];
+        _provisioningSocket.delegate = self;
+    }
+    return _provisioningSocket;
 }
 
 @end
