@@ -65,10 +65,14 @@
 
             // Found some, request provisioning
             if (devices.count > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
+                                                                    object:@{ @"message": @"Other registered devices found." }];
                 [self provisionThisDeviceWithCompletion:^(NSError *deviceError) {
                         completionBlock(deviceError);
                 }];
             } else { // no other devices, register the account
+                [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
+                                                                    object:@{ @"message": @"Registering account..." }];
                 [self registerAcountWithCompletion:^(NSError * _Nullable registerError) {
                     completionBlock(registerError);
                 }];
@@ -123,8 +127,12 @@
 //    dispatch_semaphore_wait(self.provisioningSemaphore, DISPATCH_TIME_FOREVER);
         [self.provisioningSocket close];
         if (result == 0) {  // Another device provisioned us!  We're good to go.
+            [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
+                                                                object:@{ @"message": @"Device successfully provisioned!" }];
             completionBlock(nil);
         } else {  // Timed-out, proceed with Account registration instead.
+            [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
+                                                                object:@{ @"message": @"Registering account..." }];
             [self registerAcountWithCompletion:^(NSError * _Nullable error) {
                 completionBlock(error);
             }];
@@ -160,6 +168,8 @@
 -(void)processProvisioningMessage:(OWSProvisioningProtosProvisionMessage *)messageProto
                    withCompletion:(void (^)(NSError *error))completionBlock
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
+                                                        object:@{ @"message": @"Provisioning device." }];
     NSString *accountIdentifier = TSAccountManager.sharedInstance.myself.uniqueId;
     
     // Validate other device is valid
@@ -274,7 +284,8 @@
         if ([request.path isEqualToString:@"/v1/address"] && [request.verb isEqualToString:@"PUT"]) {
             OWSProvisioningProtosProvisioningUuid *proto = [OWSProvisioningProtosProvisioningUuid parseFromData:request.body];
             [self sendWebSocketMessageAcknowledgement:request];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
+                                                                object:@{ @"message": @"Requesting device provisioning.  Awaiting response..." }];
             NSDictionary *payload = @{ @"uuid" : proto.uuid,
                                        @"key" : ourPublicKeyString };
             
@@ -283,7 +294,8 @@
             OWSProvisioningProtosProvisionEnvelope *proto = [OWSProvisioningProtosProvisionEnvelope parseFromData:request.body];
             [self sendWebSocketMessageAcknowledgement:request];
             [self.provisioningSocket close];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
+                                                                object:@{ @"message": @"Provisioning response received." }];
             // Decrypt the things
             NSData *decryptedData = [self.cipher decrypt:proto];
             OWSProvisioningProtosProvisionMessage *messageProto = [OWSProvisioningProtosProvisionMessage parseFromData:decryptedData];
