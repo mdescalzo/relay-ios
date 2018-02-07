@@ -173,7 +173,6 @@ NSUInteger maximumValidationAttempts = 9999;
         });
     } else {
         // This device not registered with TSS, ask CCSM to do it for us.  Check for others...
-        
         [CCSMCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
                                                  success:^{
                                                      [CCSMCommManager refreshCCSMData];

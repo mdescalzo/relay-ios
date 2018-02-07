@@ -29,6 +29,7 @@
 
 @property (readonly) SRWebSocket *provisioningSocket;
 @property (readonly) OWSProvisioningCipher *cipher;
+@property dispatch_semaphore_t provisioningSemaphore;
 
 @end
 
@@ -46,22 +47,28 @@
 -(instancetype)init
 {
     if (self = [super init]) {
-        //        NSString *provisioningPath = @"/v1/keepalive/provisioning";
-        //        request.timeoutInterval = 15.0;
-        // TODO: Implement timeout.
         _cipher = [[OWSProvisioningCipher alloc] init];
-        
         _provisioningSocket = [[SRWebSocket alloc]initWithURL:[self provisioningURL]];
         _provisioningSocket.delegate = self;
+        _provisioningSemaphore = dispatch_semaphore_create(0);
     }
     return self;
 }
 
 -(void)provisionThisDeviceWithCompletion:(void (^)(NSError *error))completionBlock
 {
+    // Open the socket...
     [self.provisioningSocket open];
     
-    // TODO: implement wait semaphore and call completion block with timeout
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    // Wait 15 seconds then close the socket and call completion.
+//    dispatch_time_t waittime = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 15);
+//    dispatch_semaphore_wait(self.provisioningSemaphore, waittime);
+
+    dispatch_semaphore_wait(self.provisioningSemaphore, DISPATCH_TIME_FOREVER);
+    [self.provisioningSocket close];
+    completionBlock(nil);
+    });
 }
 
 -(void)provisionOtherDeviceWithPublicKey:(NSString *_Nonnull)keyString andUUID:(NSString *_Nonnull)uuidString
@@ -98,8 +105,8 @@
 }
 
 -(void)processProvisioningMessage:(OWSProvisioningProtosProvisionMessage *)messageProto
+                   withCompletion:(void (^)(NSError *error))completionBlock
 {
-    DDLogDebug(@"ProvisionMessage: %@", messageProto);
     NSString *accountIdentifier = TSAccountManager.sharedInstance.myself.uniqueId;
     
     // Validate other device is valid
@@ -111,11 +118,12 @@
     
     // PUT the things to TSS
     NSString *name = [NSString stringWithFormat:@"%@ (%@)", [DeviceTypes deviceModelName], [[UIDevice currentDevice] name]];
-    ECKeyPair *keyPair = [Curve25519 generateKeyPairFromPrivateKey:messageProto.identityKeyPrivate];
+    __block ECKeyPair *keyPair = [Curve25519 generateKeyPairWithPrivateKey:messageProto.identityKeyPrivate];
     NSNumber *registrationId = [NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]];
-    NSString *password = [SignalKeyingStorage serverAuthPassword];
-    NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:(32 + 20)];
-    NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
+    [SignalKeyingStorage generateServerAuthPassword];
+    __block NSString *password = [SignalKeyingStorage serverAuthPassword];
+    __block NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:(32 + 20)];
+    __block NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
     NSString *urlParms = [NSString stringWithFormat:@"/%@", messageProto.provisioningCode];
     
     NSDictionary *payload = @{ @"signalingKey": signalingKey,
@@ -123,6 +131,7 @@
                                @"fetchesMessages" : @YES,
                                @"registrationId" : registrationId,
                                @"name" : name,
+                               @"password" : password
                                };
     NSDictionary *parameters = @{ @"httpType" : @"PUT",
                                   @"urlParms" :  urlParms,
@@ -132,16 +141,24 @@
                                   };
     [CCSMCommManager registerDeviceWithParameters:parameters
                                        completion:^(NSDictionary *response, NSError *error) {
-                                           // TODO: do things with the response.
-                                           if (!error) {
+                                            if (!error) {
                                                DDLogDebug(@"Device provision PUT response: %@", response);
                                                NSNumber *deviceId = [response objectForKey:@"deviceId"];
-                                               [TSStorageManager.sharedManager setIdentityKey:keyPair];
-                                               [TSStorageManager.sharedManager storeDeviceId:deviceId];
-                                               [TSStorageManager.sharedManager storeLocalNumber:messageProto.number];
-                                               [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+                                               if (deviceId) {
+                                                   [TSStorageManager.sharedManager setIdentityKey:keyPair];
+                                                   [TSStorageManager.sharedManager storeDeviceId:deviceId];
+                                                   [TSStorageManager.sharedManager storeLocalNumber:messageProto.number];
+                                                   [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+                                                   completionBlock(nil);
+                                               } else {
+                                                   DDLogError(@"No device provided by TSS!");
+                                                   // FIX: throw meaningful error here.
+                                                   NSError *err = [NSError new];
+                                                   completionBlock(err);
+                                               }
                                            } else {
                                                DDLogError(@"Device provison PUT failed with error: %@", error.description);
+                                               completionBlock(error);
                                            }
                                        }];
 }
@@ -218,7 +235,9 @@
             // Decrypt the things
             NSData *decryptedData = [self.cipher decrypt:proto];
             OWSProvisioningProtosProvisionMessage *messageProto = [OWSProvisioningProtosProvisionMessage parseFromData:decryptedData];
-            [self processProvisioningMessage:messageProto];
+            [self processProvisioningMessage:messageProto withCompletion:^(NSError *error) {
+                dispatch_semaphore_signal(self.provisioningSemaphore);
+            }];
             
         } else {
             DDLogInfo(@"Unhandled provisioning socket request message.");
