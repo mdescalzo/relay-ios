@@ -593,6 +593,9 @@
 /* No comment provided by engineer. */
 "REGISTRATION_ERROR" = "Registration Error";
 
+/* Unable to register with TSS */
+"REGISTRATION_CONNECTION_FAILED" = "Unable to register your device at this time.  Please validate your connectivity and try again.";
+
 /* alert body during registration */
 "REGISTRATION_ERROR_BLANK_VERIFICATION_CODE" = "We can't activate your account until you verify the code we sent you.";
 

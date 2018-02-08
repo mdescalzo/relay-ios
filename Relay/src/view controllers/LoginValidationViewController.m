@@ -13,6 +13,7 @@
 #import "Environment.h"
 #import "SignalsNavigationController.h"
 #import "AppDelegate.h"
+#import "FLDeviceRegistrationService.h"
 
 NSUInteger maximumValidationAttempts = 9999;
 
@@ -20,6 +21,7 @@ NSUInteger maximumValidationAttempts = 9999;
 
 @property (strong) CCSMStorage *ccsmStorage;
 //@property (strong) CCSMCommManager *ccsmCommManager;
+@property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 
 @property (nonatomic, assign) BOOL keyboardShowing;
 
@@ -44,6 +46,7 @@ NSUInteger maximumValidationAttempts = 9999;
     // Setup tap recognizer for keyboard dismissal
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewTapped:)];
     [self.view addGestureRecognizer:tgr];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -53,14 +56,29 @@ NSUInteger maximumValidationAttempts = 9999;
     self.navigationController.navigationBar.hidden = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateInfoLabel:)
+                                                 name:FLRegistrationStatusUpdateNotification
+                                               object:nil];
+    // Ensure infoLabel is empty.
+    self.infoLabel.text = @"";
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self.validationCodeTextField becomeFirstResponder];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -96,7 +114,22 @@ NSUInteger maximumValidationAttempts = 9999;
 }
 
 
-#pragma mark - move controls up to accomodate keyboard.
+// MARK: - Notification handling
+
+-(void)updateInfoLabel:(NSNotification *)notification
+{
+    NSString *messageString = [(NSDictionary *)notification.object objectForKey:@"message"];
+    
+    if (messageString.length == 0) {
+        DDLogWarn(@"Empty registration status notification received.  Ignoring");
+        return;
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.infoLabel.text = messageString;
+        });
+    }
+}
+
 -(void)keyboardWillShow:(NSNotification *)notification
 {
     if (!self.keyboardShowing) {
@@ -149,7 +182,7 @@ NSUInteger maximumValidationAttempts = 9999;
 }
 
 
-#pragma mark -
+#pragma mark - Workers
 -(BOOL)attemptValidation
 {
     return YES;
@@ -166,39 +199,70 @@ NSUInteger maximumValidationAttempts = 9999;
         [CCSMCommManager refreshCCSMData];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            self.infoLabel.text = @"This device is already registered.";
             [self.spinner stopAnimating];
             self.validationButton.enabled = YES;
             self.validationButton.alpha = 1.0;
             [self performSegueWithIdentifier:@"mainSegue" sender:self];
         });
     } else {
-        // Not registered with TSS, ask CCSM to do it for us.
-        [CCSMCommManager registerWithTSSViaCCSMForUserID:[[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:@"id"]
-                                                 success:^{
-                                                     [CCSMCommManager refreshCCSMData];
-                                                     [TSSocketManager becomeActiveFromForeground];
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         [self.spinner stopAnimating];
-                                                         self.validationButton.enabled = YES;
-                                                         self.validationButton.alpha = 1.0;
-                                                         [self performSegueWithIdentifier:@"mainSegue" sender:self];
-                                                     });
-                                                 }
-                                                 failure:^(NSError *error) {
-                                                     DDLogError(@"TSS Validation error: %@", error.description);
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         // TODO: More user-friendly alert here
-                                                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                                         message:error.description
-                                                                                                        delegate:nil
-                                                                                               cancelButtonTitle:@"OK"
-                                                                                               otherButtonTitles:nil];
-                                                         [alert show];
-                                                         [self.spinner stopAnimating];
-                                                         self.validationButton.enabled = YES;
-                                                         self.validationButton.alpha = 1.0;
-                                                     });
-                                                 }];
+        [FLDeviceRegistrationService.sharedInstance registerWithTSSWithCompletion:^(NSError * _Nullable error) {
+            if (error == nil) {
+                [CCSMCommManager refreshCCSMData];
+                [TSSocketManager becomeActiveFromForeground];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.spinner stopAnimating];
+                    self.validationButton.enabled = YES;
+                    self.validationButton.alpha = 1.0;
+                    [self performSegueWithIdentifier:@"mainSegue" sender:self];
+                });
+                
+            } else {
+                if (error.domain == NSCocoaErrorDomain && error.code == NSUserActivityRemoteApplicationTimedOutError) {
+                    // Device provision timed out.
+                    DDLogInfo(@"Device Autoprovisioning timed out.");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSString *messageString = [NSString stringWithFormat:@"%@\n\nPlease make sure one of your other registered devices or web client sessions is active and try again.", error.localizedDescription];
+                        UIAlertController *alertController =
+                        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
+                                                            message:messageString
+                                                     preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                                              // Do nothin'
+                                                                          }]];
+                        [self.navigationController presentViewController:alertController animated:YES completion:^{
+                            self.infoLabel.text = @"";
+                            [self.spinner stopAnimating];
+                            self.validationButton.enabled = YES;
+                            self.validationButton.alpha = 1.0;
+                        }];
+                    });
+                } else {
+                    
+                    DDLogError(@"TSS Validation error: %@", error.description);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // TODO: More user-friendly alert here
+                        UIAlertController *alertController =
+                        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
+                                                            message:NSLocalizedString(@"REGISTRATION_CONNECTION_FAILED", nil)
+                                                     preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                                              // Do nothin'
+                                                                          }]];
+                        [self.navigationController presentViewController:alertController animated:YES completion:^{
+                            self.infoLabel.text = @"";
+                            [self.spinner stopAnimating];
+                            self.validationButton.enabled = YES;
+                            self.validationButton.alpha = 1.0;
+                        }];
+                    });
+                }
+            }
+        }];
     }
     
 }
@@ -209,16 +273,16 @@ NSUInteger maximumValidationAttempts = 9999;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Login Failed", @"")
                                                                        message:NSLocalizedString(@"Invalid credentials.  Please try again.", @"")
                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction *action) {
                                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                                 self.infoLabel.text = @"";
                                                                  [self.spinner stopAnimating];
                                                                  self.validationButton.enabled = YES;
                                                                  self.validationButton.alpha = 1.0;
                                                              });
-                                                         }];
-        [alert addAction:okButton];
+                                                         }]];
         [self presentViewController:alert animated:YES completion:nil];
     });
 }
@@ -227,6 +291,7 @@ NSUInteger maximumValidationAttempts = 9999;
 -(IBAction)onValidationButtonTap:(id)sender
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        self.infoLabel.text = NSLocalizedString(@"Validating code", @"Status message when starting code validation");
         [self.spinner startAnimating];
         self.validationButton.enabled = NO;
         self.validationButton.alpha = 0.5;

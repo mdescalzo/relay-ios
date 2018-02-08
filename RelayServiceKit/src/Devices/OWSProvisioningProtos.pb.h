@@ -8,6 +8,8 @@
 @class OWSProvisioningProtosProvisionEnvelopeBuilder;
 @class OWSProvisioningProtosProvisionMessage;
 @class OWSProvisioningProtosProvisionMessageBuilder;
+@class OWSProvisioningProtosProvisioningUuid;
+@class OWSProvisioningProtosProvisioningUuidBuilder;
 @class ObjectiveCFileOptions;
 @class ObjectiveCFileOptionsBuilder;
 @class PBDescriptorProto;
@@ -121,34 +123,94 @@
 - (OWSProvisioningProtosProvisionEnvelopeBuilder*) clearBody;
 @end
 
+#define ProvisioningUuid_uuid @"uuid"
+@interface OWSProvisioningProtosProvisioningUuid : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasUuid_:1;
+  NSString* uuid;
+}
+- (BOOL) hasUuid;
+@property (readonly, strong) NSString* uuid;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (OWSProvisioningProtosProvisioningUuidBuilder*) builder;
++ (OWSProvisioningProtosProvisioningUuidBuilder*) builder;
++ (OWSProvisioningProtosProvisioningUuidBuilder*) builderWithPrototype:(OWSProvisioningProtosProvisioningUuid*) prototype;
+- (OWSProvisioningProtosProvisioningUuidBuilder*) toBuilder;
+
++ (OWSProvisioningProtosProvisioningUuid*) parseFromData:(NSData*) data;
++ (OWSProvisioningProtosProvisioningUuid*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (OWSProvisioningProtosProvisioningUuid*) parseFromInputStream:(NSInputStream*) input;
++ (OWSProvisioningProtosProvisioningUuid*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (OWSProvisioningProtosProvisioningUuid*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (OWSProvisioningProtosProvisioningUuid*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface OWSProvisioningProtosProvisioningUuidBuilder : PBGeneratedMessageBuilder {
+@private
+  OWSProvisioningProtosProvisioningUuid* resultProvisioningUuid;
+}
+
+- (OWSProvisioningProtosProvisioningUuid*) defaultInstance;
+
+- (OWSProvisioningProtosProvisioningUuidBuilder*) clear;
+- (OWSProvisioningProtosProvisioningUuidBuilder*) clone;
+
+- (OWSProvisioningProtosProvisioningUuid*) build;
+- (OWSProvisioningProtosProvisioningUuid*) buildPartial;
+
+- (OWSProvisioningProtosProvisioningUuidBuilder*) mergeFrom:(OWSProvisioningProtosProvisioningUuid*) other;
+- (OWSProvisioningProtosProvisioningUuidBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (OWSProvisioningProtosProvisioningUuidBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasUuid;
+- (NSString*) uuid;
+- (OWSProvisioningProtosProvisioningUuidBuilder*) setUuid:(NSString*) value;
+- (OWSProvisioningProtosProvisioningUuidBuilder*) clearUuid;
+@end
+
 #define ProvisionMessage_identityKeyPublic @"identityKeyPublic"
 #define ProvisionMessage_identityKeyPrivate @"identityKeyPrivate"
 #define ProvisionMessage_number @"number"
 #define ProvisionMessage_provisioningCode @"provisioningCode"
 #define ProvisionMessage_userAgent @"userAgent"
+#define ProvisionMessage_profileKey @"profileKey"
+#define ProvisionMessage_readReceipts @"readReceipts"
 @interface OWSProvisioningProtosProvisionMessage : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasReadReceipts_:1;
   BOOL hasNumber_:1;
   BOOL hasProvisioningCode_:1;
   BOOL hasUserAgent_:1;
   BOOL hasIdentityKeyPublic_:1;
   BOOL hasIdentityKeyPrivate_:1;
+  BOOL hasProfileKey_:1;
+  BOOL readReceipts_:1;
   NSString* number;
   NSString* provisioningCode;
   NSString* userAgent;
   NSData* identityKeyPublic;
   NSData* identityKeyPrivate;
+  NSData* profileKey;
 }
 - (BOOL) hasIdentityKeyPublic;
 - (BOOL) hasIdentityKeyPrivate;
 - (BOOL) hasNumber;
 - (BOOL) hasProvisioningCode;
 - (BOOL) hasUserAgent;
+- (BOOL) hasProfileKey;
+- (BOOL) hasReadReceipts;
 @property (readonly, strong) NSData* identityKeyPublic;
 @property (readonly, strong) NSData* identityKeyPrivate;
 @property (readonly, strong) NSString* number;
 @property (readonly, strong) NSString* provisioningCode;
 @property (readonly, strong) NSString* userAgent;
+@property (readonly, strong) NSData* profileKey;
+- (BOOL) readReceipts;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -209,6 +271,16 @@
 - (NSString*) userAgent;
 - (OWSProvisioningProtosProvisionMessageBuilder*) setUserAgent:(NSString*) value;
 - (OWSProvisioningProtosProvisionMessageBuilder*) clearUserAgent;
+
+- (BOOL) hasProfileKey;
+- (NSData*) profileKey;
+- (OWSProvisioningProtosProvisionMessageBuilder*) setProfileKey:(NSData*) value;
+- (OWSProvisioningProtosProvisionMessageBuilder*) clearProfileKey;
+
+- (BOOL) hasReadReceipts;
+- (BOOL) readReceipts;
+- (OWSProvisioningProtosProvisionMessageBuilder*) setReadReceipts:(BOOL) value;
+- (OWSProvisioningProtosProvisionMessageBuilder*) clearReadReceipts;
 @end
 
 

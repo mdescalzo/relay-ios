@@ -59,8 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isRegistered {
     CCSMStorage *ccsmStore = [CCSMStorage new];
     NSString *sessionToken = [ccsmStore getSessionToken];
+    NSNumber *deviceId = [TSStorageManager deviceId];
     
-    return ([TSStorageManager localNumber] && sessionToken.length > 0) ? YES : NO;
+    return (TSAccountManager.sharedInstance.myself.uniqueId && deviceId && sessionToken.length > 0) ? YES : NO;
 }
 
 - (void)ifRegistered:(BOOL)isRegistered runAsync:(void (^)())block
@@ -77,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
         @throw [NSException exceptionWithName:@"RegistrationFail" reason:@"Internal Corrupted State" userInfo:nil];
     }
 
-    [self.storageManager storePhoneNumber:phoneNumber];
+    [self.storageManager storeLocalNumber:phoneNumber];
 }
 
 + (nullable NSString *)localNumber

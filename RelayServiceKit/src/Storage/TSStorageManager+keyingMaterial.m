@@ -28,11 +28,11 @@
 - (NSNumber *)deviceId
 {
     NSNumber *returnVal = [self objectForKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection];
-    if (!returnVal) {
-        return [NSNumber numberWithInt:1];
-    } else {
+//    if (!returnVal) {
+//        return [NSNumber numberWithInt:1];
+//    } else {
         return returnVal;
-    }
+//    }
 }
 
 +(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction
@@ -95,10 +95,10 @@
     return [[self sharedManager] stringForKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection];
 }
 
-- (void)storePhoneNumber:(NSString *)phoneNumber
+- (void)storeLocalNumber:(NSString *)localNumber
 {
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [transaction setObject:phoneNumber
+        [transaction setObject:localNumber
                         forKey:TSStorageRegisteredNumberKey
                   inCollection:TSStorageUserAccountCollection];
     }];

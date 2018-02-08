@@ -144,9 +144,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
 {
-    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        [self saveRecipient:recipient withTransaction:transaction];
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            [self saveRecipient:recipient withTransaction:transaction];
+        }];
+    });
 }
 
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient

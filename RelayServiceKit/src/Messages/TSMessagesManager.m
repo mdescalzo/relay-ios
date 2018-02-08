@@ -32,6 +32,7 @@
 #import <AxolotlKit/SessionCipher.h>
 #import "FLControlMessage.h"
 #import "FLCCSMJSONService.h"
+#import "FLDeviceRegistrationService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,23 +63,19 @@ NS_ASSUME_NONNULL_BEGIN
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     TSStorageManager *storageManager = [TSStorageManager sharedManager];
     id<ContactsManagerProtocol> contactsManager = [TextSecureKitEnv sharedEnv].contactsManager;
-    //    ContactsUpdater *contactsUpdater = [ContactsUpdater sharedUpdater];
     OWSMessageSender *messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:storageManager
                                                                        contactsManager:contactsManager];
-    //                                                                       contactsUpdater:contactsUpdater];
     
     return [self initWithNetworkManager:networkManager
                          storageManager:storageManager
                         contactsManager:contactsManager
-            //                        contactsUpdater:contactsUpdater
-                          messageSender:messageSender];
+                           messageSender:messageSender];
 }
 
 - (instancetype)initWithNetworkManager:(TSNetworkManager *)networkManager
                         storageManager:(TSStorageManager *)storageManager
                        contactsManager:(id<ContactsManagerProtocol>)contactsManager
-//                       contactsUpdater:(ContactsUpdater *)contactsUpdater
                          messageSender:(OWSMessageSender *)messageSender
 {
     self = [super init];
@@ -90,7 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
     _storageManager = storageManager;
     _networkManager = networkManager;
     _contactsManager = contactsManager;
-    //    _contactsUpdater = contactsUpdater;
     _messageSender = messageSender;
     
     _dbConnection = storageManager.newDatabaseConnection;
@@ -521,8 +517,17 @@ NS_ASSUME_NONNULL_BEGIN
                                                withDataMessage:dataMessage
                                                  attachmentIds:attachmentIds];
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
+        } else if ([controlMessageType isEqualToString:FLControlMessageProvisionRequestKey]) {
+            [self handleProvisionRequestControlMessageWithEnvelope:envelope
+                                                   withDataMessage:dataMessage
+                                                     attachmentIds:attachmentIds];
         } else {
+#ifdef DEBUG
+#warning REMOVE DETAILED DUMP BEFORE SHIPPING!
+            DDLogDebug(@"Unhandled control message of type: %@\nwith Payload: %@", controlMessageType, jsonPayload);
+#else
             DDLogDebug(@"Unhandled control message.");
+#endif
         }
         return nil;
         
@@ -706,6 +711,39 @@ NS_ASSUME_NONNULL_BEGIN
         DDLogDebug(@"Unable to process incoming message.");
         return nil;
     }
+}
+
+
+// MARK: - Control message handlers
+-(void)handleProvisionRequestControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
+                                        withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
+                                          attachmentIds:(NSArray<NSString *> *)attachmentIds
+{
+
+    if (![envelope.source isEqualToString:FLSupermanID]) {
+        DDLogError(@"%@: RECEIVED PROVISIONING REQUEST FROM STRANGER: %@", self.tag, envelope.source);
+        return;
+    }
+    
+    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
+    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+
+    if (![dataBlob respondsToSelector:@selector(objectForKey:)]) {
+        DDLogError(@"%@: Received malformed provisionRequest control message.  Bad data object.", self.tag);
+        return;
+    }
+    
+    NSString *publicKeyString = [dataBlob objectForKey:@"key"];
+    NSString *deviceUUID = [dataBlob objectForKey:@"uuid"];
+    
+    if (!(publicKeyString.length > 0 && deviceUUID.length > 0)) {
+        DDLogError(@"%@: Received malformed provisionRequest control message.  Bad data payload: %@", self.tag, dataBlob);
+        return;
+    }
+    
+    [FLDeviceRegistrationService.sharedInstance provisionOtherDeviceWithPublicKey:publicKeyString
+                                                                          andUUID:deviceUUID];
+
 }
 
 -(void)handleThreadDeleteControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope

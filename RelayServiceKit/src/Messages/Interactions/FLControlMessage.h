@@ -14,6 +14,7 @@
 #define FLControlMessageThreadRestoreKey @"threadRestore"
 #define FLControlMessageThreadDeleteKey @"threadDelete"
 #define FLControlMessageThreadSnoozeKey @"snooze"
+#define FLControlMessageProvisionRequestKey @"provisionRequest"
 
 @interface FLControlMessage : TSOutgoingMessage
 

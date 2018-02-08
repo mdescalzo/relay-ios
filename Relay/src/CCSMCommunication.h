@@ -37,13 +37,22 @@
                    success:(void (^)())successBlock
                    failure:(void (^)(NSError *error))failureBlock;
 
+
 +(void)getThing:(NSString *)urlString
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
 
-+(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
-                               success:(void (^)())successBlock
-                               failure:(void (^)(NSError *error))failureBlock;
++(void)checkAccountRegistrationWithCompletion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
+
++(void)registerDeviceWithParameters:(NSDictionary *)parameters
+                         completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
+
++(void)registerAccountWithParameters:(NSDictionary *)parameters
+                      completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
+
+//+(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
+//                               success:(void (^)())successBlock
+//                               failure:(void (^)(NSError *error))failureBlock;
 
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId;
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction;
@@ -51,6 +60,8 @@
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                   success:(void (^)())successBlock
                                   failure:(void (^)(NSError *error))failureBlock;
+
++(void)sendDeviceProvisioningRequestWithPayload:(NSDictionary *_Nonnull)payload;
 
 // Tag Math lookups
 +(void)asyncTagLookupWithString:(NSString *_Nonnull)lookupString

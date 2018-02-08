@@ -97,11 +97,16 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
     }
 
     NSString *tssAPI = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Server_API"];
+//    NSString *TSSUrlString = [[CCSMStorage new] textSecureURL];
+//    NSString *tssAPI = [TSSUrlString stringByReplacingOccurrencesOfString:@"http"
+//                                                                     withString:@"ws"];
+
     NSString *webSocketConnect =
         [tssAPI stringByAppendingString:[[self sharedManager] webSocketAuthenticationString]];
     NSURL *webSocketConnectURL   = [NSURL URLWithString:webSocketConnect];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:webSocketConnectURL];
 
+//    socket          = [[SRWebSocket alloc] initWithURLRequest:request];
     socket          = [[SRWebSocket alloc] initWithURLRequest:request securityPolicy:[OWSWebsocketSecurityPolicy sharedPolicy]];
     socket.delegate = [self sharedManager];
 

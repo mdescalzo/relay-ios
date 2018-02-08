@@ -141,7 +141,7 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
     DDLogDebug(@"[self verifyBackgroundBeforeKeysAvailableLaunch] called.");
     [self verifyBackgroundBeforeKeysAvailableLaunch];
     
-    DDLogDebug(@"Remote notification hanler.");
+    DDLogDebug(@"Remote notification handler.");
     // Accept push notification when app is not open
     NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {

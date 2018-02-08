@@ -14,5 +14,6 @@
 - (void)generateNewIdentityKey;
 - (NSData *)identityKeyForRecipientId:(NSString *)recipientId;
 - (void)removeIdentityKeyForRecipient:(NSString *)receipientId;
+-(void)setIdentityKey:(ECKeyPair *)identityKeyPair;
 
 @end
