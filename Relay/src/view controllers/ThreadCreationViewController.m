@@ -36,6 +36,7 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *slugViewHeight;
 @property (weak, nonatomic) IBOutlet UIView *searchInfoContainer;
 @property (weak, nonatomic) IBOutlet UILabel *searchInfoLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *visibilitySelector;
 
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeRecognizer;
 
@@ -66,6 +67,9 @@
     self.searchBar.placeholder = NSLocalizedString(@"SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT", nil);
     
     self.searchInfoLabel.text = NSLocalizedString(@"SEARCH_HELP_STRING", @"Informational string for tag lookups.");
+    
+    [self.visibilitySelector setTitle:NSLocalizedString(@"VISIBLE", nil) forSegmentAtIndex:0];
+    [self.visibilitySelector setTitle:NSLocalizedString(@"HIDDEN", nil) forSegmentAtIndex:1];
     
     self.view.backgroundColor = [ForstaColors whiteColor];
     

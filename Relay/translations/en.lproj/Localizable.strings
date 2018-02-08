@@ -940,6 +940,10 @@
 
 "DELETE_THREAD_VALIDATION_MESSAGE" = "Are you sure you wish to delete this consversation?\n\n%@";
 
+/* Contact selector tags */
+"VISIBLE" = "Visible";
+"HIDDEN" = "Hidden";
+
 /* Sample text */
 "SAMPLE" = "Forsta";
 
