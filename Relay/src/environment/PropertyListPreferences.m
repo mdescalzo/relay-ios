@@ -77,15 +77,17 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
 {
     ows_require(key != nil);
     
-    id object = [self.prefsCache objectForKey:key];
+    __block id object = [self.prefsCache objectForKey:key];
     
     if (object) {
         return object;
     } else {
-        object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
-        if (object) {
-            [self.prefsCache setObject:object forKey:key];
-        }
+        dispatch_async([OWSDispatch serialQueue], ^{
+            object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
+            if (object) {
+                [self.prefsCache setObject:object forKey:key];
+            }
+        });
         return object;
         
     }
@@ -99,9 +101,10 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
     if (![oldObject isEqual:value]) {
         [self.prefsCache setObject:value forKey:key];
         dispatch_async([OWSDispatch serialQueue], ^{
-            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                [transaction setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
-            }];
+            [TSStorageManager.sharedManager setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
+//            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+//                [transaction setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
+//            }];
         });
     }
 }

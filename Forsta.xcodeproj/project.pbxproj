@@ -180,9 +180,6 @@
 		7D3A67771FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
 		7D3A67781FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
 		7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
-		7D3A88682023C45B008677DB /* OWSProvisioningProtos.proto in Resources */ = {isa = PBXBuildFile; fileRef = 7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */; };
-		7D3A88692023C45B008677DB /* OWSProvisioningProtos.proto in Resources */ = {isa = PBXBuildFile; fileRef = 7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */; };
-		7D3A886A2023C45B008677DB /* OWSProvisioningProtos.proto in Resources */ = {isa = PBXBuildFile; fileRef = 7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
@@ -1851,7 +1848,6 @@
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
 		7D3A67751FE9BB1700C4096A /* FLPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPickerCell.h; sourceTree = "<group>"; };
 		7D3A67761FE9BB1800C4096A /* FLPickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLPickerCell.m; sourceTree = "<group>"; };
-		7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OWSProvisioningProtos.proto; sourceTree = "<group>"; };
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
@@ -3262,14 +3258,6 @@
 			path = xibs;
 			sourceTree = "<group>";
 		};
-		7D3A88662023C45B008677DB /* protobuf */ = {
-			isa = PBXGroup;
-			children = (
-				7D3A88672023C45B008677DB /* OWSProvisioningProtos.proto */,
-			);
-			path = protobuf;
-			sourceTree = "<group>";
-		};
 		7D3B865B1EE2190700190FD5 /* ForstaMessages */ = {
 			isa = PBXGroup;
 			children = (
@@ -3313,7 +3301,6 @@
 		7D6138751F90161500E18D29 /* RelayServiceKit */ = {
 			isa = PBXGroup;
 			children = (
-				7D3A88662023C45B008677DB /* protobuf */,
 				7D7F360420191E7B00FC63C9 /* src */,
 			);
 			path = RelayServiceKit;
@@ -4699,7 +4686,6 @@
 				7D4A3ADB1F1693930023C29B /* call@2x.png in Resources */,
 				7D613AB81F90186B00E18D29 /* textsecure.cer in Resources */,
 				7D4A3ADC1F1693930023C29B /* Settings.bundle in Resources */,
-				7D3A88682023C45B008677DB /* OWSProvisioningProtos.proto in Resources */,
 				7D4A3ADD1F1693930023C29B /* outring.mp3 in Resources */,
 				7D4A3ADE1F1693930023C29B /* pause_icon@2x.png in Resources */,
 				7D4A3AE01F1693930023C29B /* r.caf in Resources */,
@@ -4766,7 +4752,6 @@
 				7DCFFE8A1F0EE4490003CD95 /* audio_play_button_blue.png in Resources */,
 				7DCFFE8B1F0EE4490003CD95 /* Login.storyboard in Resources */,
 				7DCFFE8C1F0EE4490003CD95 /* audio_pause_button@2x.png in Resources */,
-				7D3A88692023C45B008677DB /* OWSProvisioningProtos.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4824,7 +4809,6 @@
 				AD83FF471A73428300B5C81A /* audio_play_button_blue.png in Resources */,
 				7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */,
 				AD83FF451A73426500B5C81A /* audio_pause_button@2x.png in Resources */,
-				7D3A886A2023C45B008677DB /* OWSProvisioningProtos.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

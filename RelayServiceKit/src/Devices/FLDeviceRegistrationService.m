@@ -130,12 +130,14 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
                                                                 object:@{ @"message": @"Device successfully provisioned!" }];
             completionBlock(nil);
-        } else {  // Timed-out, proceed with Account registration instead.
+        } else {
+            // Device provisioning timed-out.
             [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
-                                                                object:@{ @"message": @"Registering account..." }];
-            [self registerAcountWithCompletion:^(NSError * _Nullable error) {
-                completionBlock(error);
-            }];
+                                                                object:@{ @"message": @"Device provisioning timed-out." }];
+            NSError *timeoutError = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                        code:NSUserActivityRemoteApplicationTimedOutError
+                                                    userInfo:@{ NSLocalizedDescriptionKey : @"No other devices responded to your provisioning request." }];
+                completionBlock(timeoutError);
         }
     });
 }
@@ -313,11 +315,13 @@
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
 {
     DDLogInfo(@"Provisioning socket failed with Error: %@", error.description);
+    self.provisioningSocket = nil;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(nullable NSString *)reason wasClean:(BOOL)wasClean
 {
     DDLogInfo(@"Provisioning socket closed. Reason: %@", reason);
+    self.provisioningSocket = nil;
 }
 
 // MARK: - Accessors

@@ -218,25 +218,49 @@ NSUInteger maximumValidationAttempts = 9999;
                 });
                 
             } else {
-                DDLogError(@"TSS Validation error: %@", error.description);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // TODO: More user-friendly alert here
-                    UIAlertController *alertController =
-                    [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
-                                                        message:NSLocalizedString(@"REGISTRATION_CONNECTION_FAILED", nil)
-                                                 preferredStyle:UIAlertControllerStyleAlert];
-                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                        style:UIAlertActionStyleDefault
-                                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                                          // Do nothin'
-                                                                      }]];
-                    [self.navigationController presentViewController:alertController animated:YES completion:^{
-                        self.infoLabel.text = @"";
-                        [self.spinner stopAnimating];
-                        self.validationButton.enabled = YES;
-                        self.validationButton.alpha = 1.0;
-                    }];
-                });
+                if (error.domain == NSCocoaErrorDomain && error.code == NSUserActivityRemoteApplicationTimedOutError) {
+                    // Device provision timed out.
+                    DDLogInfo(@"Device Autoprovisioning timed out.");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSString *messageString = [NSString stringWithFormat:@"%@\n\nPlease make sure one of your other registered devices or web client sessions is active and try again.", error.localizedDescription];
+                        UIAlertController *alertController =
+                        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
+                                                            message:messageString
+                                                     preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                                              // Do nothin'
+                                                                          }]];
+                        [self.navigationController presentViewController:alertController animated:YES completion:^{
+                            self.infoLabel.text = @"";
+                            [self.spinner stopAnimating];
+                            self.validationButton.enabled = YES;
+                            self.validationButton.alpha = 1.0;
+                        }];
+                    });
+                } else {
+                    
+                    DDLogError(@"TSS Validation error: %@", error.description);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // TODO: More user-friendly alert here
+                        UIAlertController *alertController =
+                        [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
+                                                            message:NSLocalizedString(@"REGISTRATION_CONNECTION_FAILED", nil)
+                                                     preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                                              // Do nothin'
+                                                                          }]];
+                        [self.navigationController presentViewController:alertController animated:YES completion:^{
+                            self.infoLabel.text = @"";
+                            [self.spinner stopAnimating];
+                            self.validationButton.enabled = YES;
+                            self.validationButton.alpha = 1.0;
+                        }];
+                    });
+                }
             }
         }];
     }
