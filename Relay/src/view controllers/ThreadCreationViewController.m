@@ -95,9 +95,16 @@
     // TODO: name:TSUIDatabaseConnectionDidUpdateNotification is incorrect.  Fixing it reveal much larger bug in the yapDatabaseModified: method.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(yapDatabaseModified:)
-                                                 name:TSUIDatabaseConnectionDidUpdateNotification
+                                                 name:YapDatabaseModifiedNotification
                                                object:nil];
     [self updateGoButton];
+    [self updateMappings];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
     [self updateMappings];
 }
 
@@ -148,7 +155,7 @@
         default:
             break;
     }
-
+    
     
     return cell;
 }
@@ -297,7 +304,8 @@
  */
 
 #pragma mark - Database updates
-- (void)yapDatabaseModified:(NSNotification *)notification {
+- (void)yapDatabaseModified:(NSNotification *)notification
+{
     NSArray *notifications  = [self.uiDbConnection beginLongLivedReadTransaction];
     NSArray *sectionChanges = nil;
     NSArray *rowChanges     = nil;
@@ -308,6 +316,9 @@
                                                                            withMappings:self.tagMappings];
     
     if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
+        [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            [self.tagMappings updateWithTransaction:transaction];
+        }];
         return;
     }
     
@@ -362,7 +373,7 @@
     }
     
     [self.tableView endUpdates];
-    [self.uiDbConnection endLongLivedReadTransaction];
+//    [self.uiDbConnection endLongLivedReadTransaction];
 }
 
 #pragma mark - SearchBar delegate methods
@@ -547,7 +558,7 @@
     __block id object = nil;
     [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         object = [[transaction extension:FLFilteredTagDatabaseViewExtensionName] objectAtIndexPath:indexPath
-                                                                                    withMappings:self.tagMappings];
+                                                                                      withMappings:self.tagMappings];
     }];
     return object;
 }
@@ -560,12 +571,22 @@
                                                                                                   NSString * _Nonnull collection,
                                                                                                   NSString * _Nonnull key,
                                                                                                   id  _Nonnull object) {
-        FLTag *aTag = (FLTag *)object;
         if (filterString.length > 0) {
-            return ([[aTag.displaySlug lowercaseString] containsString:filterString] ||
-                    [[aTag.slug lowercaseString] containsString:filterString] ||
-                    [[aTag.tagDescription lowercaseString] containsString:filterString] ||
-                    [[aTag.orgSlug lowercaseString] containsString:filterString]);
+            if ([object isKindOfClass:[FLTag class]]) {
+                FLTag *aTag = (FLTag *)object;
+                return ([[aTag.displaySlug lowercaseString] containsString:filterString] ||
+                        [[aTag.slug lowercaseString] containsString:filterString] ||
+                        [[aTag.tagDescription lowercaseString] containsString:filterString] ||
+                        [[aTag.orgSlug lowercaseString] containsString:filterString]);
+            } else if ([object isKindOfClass:[SignalRecipient class]]) {
+                SignalRecipient *recipient = (SignalRecipient *)object;
+                return ([[recipient.fullName lowercaseString] containsString:filterString] ||
+                        [[recipient.flTag.displaySlug lowercaseString] containsString:filterString] ||
+                        [[recipient.orgSlug lowercaseString] containsString:filterString]);
+            } else {
+                // We don't know what it is so we don't want it.
+                return NO;
+            }
         } else {
             return YES;
         }
@@ -577,13 +598,19 @@
                                                                     versionTag:filterString];
         
     }];
-    
-    
+
+    self.tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]
+                                                              view:FLFilteredTagDatabaseViewExtensionName];
+    [self.tagMappings setIsReversed:NO forGroup:FLActiveTagsGroup];
+
     [self.uiDbConnection beginLongLivedReadTransaction];
-    [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction)  {
         [self.tagMappings updateWithTransaction:transaction];
+    } completionBlock:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     }];
-    [self.uiDbConnection endLongLivedReadTransaction];
 }
 
 -(void)updateGoButton
@@ -822,21 +849,21 @@
 }
 
 #pragma mark - Accessors
--(YapDatabaseViewMappings *)tagMappings
-{
-    if (_tagMappings == nil) {
-        _tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]
-                                                                  view:FLFilteredTagDatabaseViewExtensionName];
-        [_tagMappings setIsReversed:NO forGroup:FLActiveTagsGroup];
-        [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-            [_tagMappings updateWithTransaction:transaction];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        }];
-    }
-    return _tagMappings;
-}
+//-(YapDatabaseViewMappings *)tagMappings
+//{
+//    if (_tagMappings == nil) {
+//        _tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]
+//                                                                  view:FLFilteredTagDatabaseViewExtensionName];
+//        [_tagMappings setIsReversed:NO forGroup:FLActiveTagsGroup];
+//        [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+//            [_tagMappings updateWithTransaction:transaction];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.tableView reloadData];
+//            });
+//        }];
+//    }
+//    return _tagMappings;
+//}
 
 -(NSMutableArray *)validatedSlugs
 {
