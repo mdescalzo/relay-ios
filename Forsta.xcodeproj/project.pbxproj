@@ -164,6 +164,9 @@
 		76EB064618170B33006006FC /* TimeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FA18170B33006006FC /* TimeUtil.m */; };
 		76EB064818170B33006006FC /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB052F18170B33006006FC /* ContactTableViewCell.m */; };
+		7D014C5420237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
+		7D014C5520237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
+		7D014C5620237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
 		7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
@@ -182,6 +185,9 @@
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90181F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90191F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
+		7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
+		7D49959A2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
+		7D49959B2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
 		7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
@@ -452,7 +458,6 @@
 		7D4A3ADC1F1693930023C29B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B67EBF5C19194AC60084CCFD /* Settings.bundle */; };
 		7D4A3ADD1F1693930023C29B /* outring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40B18A05754001A532A /* outring.mp3 */; };
 		7D4A3ADE1F1693930023C29B /* pause_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5C1A7049EC00ECA2BF /* pause_icon@2x.png */; };
-		7D4A3ADF1F1693930023C29B /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = B6C6AE531A305ED1006BAF8F /* redphone.cer */; };
 		7D4A3AE01F1693930023C29B /* r.caf in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40C18A05754001A532A /* r.caf */; };
 		7D4A3AE11F1693930023C29B /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
 		7D4A3AE21F1693930023C29B /* sonarping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40D18A05754001A532A /* sonarping.mp3 */; };
@@ -491,9 +496,6 @@
 		7D6139A71F90172100E18D29 /* TSPreKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D61387C1F90161500E18D29 /* TSPreKeyManager.m */; };
 		7D6139A81F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */; };
 		7D6139A91F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */; };
-		7D6139AA1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
-		7D6139AB1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
-		7D6139AC1F90173100E18D29 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138811F90161500E18D29 /* CCSMStorage.m */; };
 		7D6139B31F90173A00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
 		7D6139B41F90173B00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
 		7D6139B51F90173B00E18D29 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6138881F90161500E18D29 /* Contact.m */; };
@@ -829,6 +831,12 @@
 		7D613B081F901BE000E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B091F901BE000E18D29 /* libSocketRocket.a */; };
 		7D613B0A1F901BF200E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B0B1F901BF200E18D29 /* libSocketRocket.a */; };
 		7D613B0C1F901BFE00E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B0D1F901BFE00E18D29 /* libSocketRocket.a */; };
+		7D6FB266201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
+		7D6FB267201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
+		7D6FB268201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
+		7D6FB26B2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */; };
+		7D6FB26C2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */; };
+		7D6FB26D2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */; };
 		7D7DA5871F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
 		7D7DA5881F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
 		7D7DA5891F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */; };
@@ -847,7 +855,13 @@
 		7D7DBFCE1F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
 		7D7DBFCF1F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
 		7D7DBFD01F97E24100860D35 /* FLControlMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */; };
+		7D7F360120191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
+		7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
+		7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
+		7D9D0E2E200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
+		7D9D0E2F200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
+		7D9D0E30200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
 		7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
 		7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
 		7DA09F401FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
@@ -1127,7 +1141,6 @@
 		7DCFFE821F0EE4490003CD95 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B67EBF5C19194AC60084CCFD /* Settings.bundle */; };
 		7DCFFE831F0EE4490003CD95 /* outring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40B18A05754001A532A /* outring.mp3 */; };
 		7DCFFE841F0EE4490003CD95 /* pause_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5C1A7049EC00ECA2BF /* pause_icon@2x.png */; };
-		7DCFFE851F0EE4490003CD95 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = B6C6AE531A305ED1006BAF8F /* redphone.cer */; };
 		7DCFFE861F0EE4490003CD95 /* r.caf in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40C18A05754001A532A /* r.caf */; };
 		7DCFFE871F0EE4490003CD95 /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
 		7DCFFE881F0EE4490003CD95 /* sonarping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40D18A05754001A532A /* sonarping.mp3 */; };
@@ -1396,7 +1409,6 @@
 		B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B6B9ECFC198B31BA00C620D3 /* PushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B9ECFB198B31BA00C620D3 /* PushManager.m */; };
 		B6BADBE71B88D1AC0086A80D /* LockInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */; };
-		B6C6AE551A305ED1006BAF8F /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = B6C6AE531A305ED1006BAF8F /* redphone.cer */; };
 		B6C93C4E199567AD00EDF894 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C93C4D199567AD00EDF894 /* DebugLogger.m */; };
 		B6DA6B071B8A2F9A00CA6F98 /* AppStoreRating.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */; };
 		B6F509971AA53F760068F56A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
@@ -1826,6 +1838,7 @@
 		76EB04FD18170B33006006FC /* Zid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Zid.m; sourceTree = "<group>"; };
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
+		7D014C5320237D2D00292964 /* redphone.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = redphone.cer; sourceTree = "<group>"; };
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1840,6 +1853,8 @@
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
 		7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
+		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
+		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
 		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
 		7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadCreationViewController.m; sourceTree = "<group>"; };
 		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
@@ -1861,8 +1876,6 @@
 		7D61387C1F90161500E18D29 /* TSPreKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPreKeyManager.m; sourceTree = "<group>"; };
 		7D61387D1F90161500E18D29 /* TSPrivacyPreferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSPrivacyPreferences.h; sourceTree = "<group>"; };
 		7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSPrivacyPreferences.m; sourceTree = "<group>"; };
-		7D6138801F90161500E18D29 /* CCSMStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCSMStorage.h; path = RelayServiceKit/CCSM/CCSMStorage.h; sourceTree = "<group>"; };
-		7D6138811F90161500E18D29 /* CCSMStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCSMStorage.m; path = RelayServiceKit/CCSM/CCSMStorage.m; sourceTree = "<group>"; };
 		7D6138871F90161500E18D29 /* Contact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		7D6138881F90161500E18D29 /* Contact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		7D6138891F90161500E18D29 /* ContactsUpdater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsUpdater.h; sourceTree = "<group>"; };
@@ -1907,7 +1920,6 @@
 		7D6138B21F90161500E18D29 /* OWSRecordTranscriptJob.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSRecordTranscriptJob.m; sourceTree = "<group>"; };
 		7D6138B31F90161500E18D29 /* OWSSendReadReceiptsJob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSSendReadReceiptsJob.h; sourceTree = "<group>"; };
 		7D6138B41F90161500E18D29 /* OWSSendReadReceiptsJob.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSSendReadReceiptsJob.m; sourceTree = "<group>"; };
-		7D6138B51F90161500E18D29 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7D6138B81F90161500E18D29 /* OWSAttachmentsProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSAttachmentsProcessor.h; sourceTree = "<group>"; };
 		7D6138B91F90161500E18D29 /* OWSAttachmentsProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWSAttachmentsProcessor.m; sourceTree = "<group>"; };
 		7D6138BA1F90161500E18D29 /* TSAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAttachment.h; sourceTree = "<group>"; };
@@ -2027,7 +2039,6 @@
 		7D6139331F90161500E18D29 /* TSSocketManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSSocketManager.m; sourceTree = "<group>"; };
 		7D6139351F90161500E18D29 /* ContactsManagerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactsManagerProtocol.h; sourceTree = "<group>"; };
 		7D6139361F90161500E18D29 /* NotificationsProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationsProtocol.h; sourceTree = "<group>"; };
-		7D6139371F90161500E18D29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7D6139391F90161500E18D29 /* ECKeyPair+OWSPrivateKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+OWSPrivateKey.h"; sourceTree = "<group>"; };
 		7D61393A1F90161500E18D29 /* ECKeyPair+OWSPrivateKey.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+OWSPrivateKey.m"; sourceTree = "<group>"; };
 		7D61393B1F90161500E18D29 /* OWSFingerprint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSFingerprint.h; sourceTree = "<group>"; };
@@ -2108,6 +2119,10 @@
 		7D613B0B1F901BF200E18D29 /* libSocketRocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSocketRocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D613B0D1F901BFE00E18D29 /* libSocketRocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSocketRocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D6701E71F7D9C3500A2D0DF /* RelayDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayDev.entitlements; sourceTree = "<group>"; };
+		7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLAnnouncementViewController.h; sourceTree = "<group>"; };
+		7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLAnnouncementViewController.m; sourceTree = "<group>"; };
+		7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnnouncementDetailViewController.h; sourceTree = "<group>"; };
+		7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnnouncementDetailViewController.m; sourceTree = "<group>"; };
 		7D7DA5851F2F8797007FE6E4 /* FLDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLDirectoryCell.m; path = "Relay/src/view controllers/FLDirectoryCell.m"; sourceTree = SOURCE_ROOT; };
 		7D7DA5861F2F8797007FE6E4 /* FLDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLDirectoryCell.h; path = "Relay/src/view controllers/FLDirectoryCell.h"; sourceTree = SOURCE_ROOT; };
 		7D7DA58A1F2FBA66007FE6E4 /* OWSAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSAvatarBuilder.h; sourceTree = "<group>"; };
@@ -2120,8 +2135,12 @@
 		7D7DA5B01F30CB32007FE6E4 /* FLContactSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactSelectionTableViewController.m; sourceTree = "<group>"; };
 		7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLControlMessage.m; sourceTree = "<group>"; };
 		7D7DBFCD1F97E24000860D35 /* FLControlMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLControlMessage.h; sourceTree = "<group>"; };
+		7D7F35FF20191E5F00FC63C9 /* CCSMStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSMStorage.h; sourceTree = "<group>"; };
+		7D7F360020191E5F00FC63C9 /* CCSMStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
+		7D9D0E2C200E71FF00F60594 /* FLGiphyVideoAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLGiphyVideoAdapter.h; sourceTree = "<group>"; };
+		7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLGiphyVideoAdapter.m; sourceTree = "<group>"; };
 		7DA09F3C1FBE83AE00F2D859 /* FLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTag.h; path = Relay/src/contact/FLTag.h; sourceTree = SOURCE_ROOT; };
 		7DA09F3D1FBE83AF00F2D859 /* FLTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTag.m; path = Relay/src/contact/FLTag.m; sourceTree = SOURCE_ROOT; };
 		7DA801431F86C4040048950F /* Forsta-values.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Forsta-values.plist"; sourceTree = "<group>"; };
@@ -2296,7 +2315,6 @@
 		B6B9ECFB198B31BA00C620D3 /* PushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushManager.m; sourceTree = "<group>"; };
 		B6BADBE51B88D1AC0086A80D /* LockInteractionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockInteractionController.h; sourceTree = "<group>"; };
 		B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockInteractionController.m; sourceTree = "<group>"; };
-		B6C6AE531A305ED1006BAF8F /* redphone.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = redphone.cer; sourceTree = "<group>"; };
 		B6C93C4C199567AD00EDF894 /* DebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogger.h; sourceTree = "<group>"; };
 		B6C93C4D199567AD00EDF894 /* DebugLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogger.m; sourceTree = "<group>"; };
 		B6D3CBCE1C1376BE00C039DF /* TSContentAdapters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSContentAdapters.h; sourceTree = "<group>"; };
@@ -2691,7 +2709,6 @@
 				76EB048818170B33006006FC /* phone */,
 				76EB04B118170B33006006FC /* profiling */,
 				B60959791C2C0FA9004E8797 /* rating */,
-				7D6138751F90161500E18D29 /* RelayServiceKit */,
 				7D516F1A1EF318F000E7E15F /* Services */,
 				45CD81A41DBFF8CF004C9430 /* Storyboards */,
 				76EB04C818170B33006006FC /* util */,
@@ -3250,6 +3267,10 @@
 				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
 				7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */,
 				7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */,
+				7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */,
+				7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */,
+				7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */,
+				7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -3280,22 +3301,7 @@
 		7D6138751F90161500E18D29 /* RelayServiceKit */ = {
 			isa = PBXGroup;
 			children = (
-				7D6138761F90161500E18D29 /* Account */,
-				7D61387F1F90161500E18D29 /* CCSM */,
-				7D6138861F90161500E18D29 /* Contacts */,
-				7D61389A1F90161500E18D29 /* Devices */,
-				7D6138B51F90161500E18D29 /* LICENSE */,
-				7D6138B61F90161500E18D29 /* Messages */,
-				7D6138FE1F90161500E18D29 /* Network */,
-				7D6139341F90161500E18D29 /* Protocols */,
-				7D6139371F90161500E18D29 /* README.md */,
-				7D6139381F90161500E18D29 /* Security */,
-				7D6139491F90161500E18D29 /* Storage */,
-				7D6139651F90161500E18D29 /* TextSecureKitEnv.h */,
-				7D6139661F90161500E18D29 /* TextSecureKitEnv.m */,
-				7D6139671F90161500E18D29 /* TSConstants.h */,
-				7D6139681F90161500E18D29 /* TSPrefix.h */,
-				7D6139691F90161500E18D29 /* Util */,
+				7D7F360420191E7B00FC63C9 /* src */,
 			);
 			path = RelayServiceKit;
 			sourceTree = "<group>";
@@ -3313,13 +3319,6 @@
 				7D61387E1F90161500E18D29 /* TSPrivacyPreferences.m */,
 			);
 			path = Account;
-			sourceTree = "<group>";
-		};
-		7D61387F1F90161500E18D29 /* CCSM */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CCSM;
 			sourceTree = "<group>";
 		};
 		7D6138861F90161500E18D29 /* Contacts */ = {
@@ -3386,6 +3385,8 @@
 				7D6138B21F90161500E18D29 /* OWSRecordTranscriptJob.m */,
 				7D6138B31F90161500E18D29 /* OWSSendReadReceiptsJob.h */,
 				7D6138B41F90161500E18D29 /* OWSSendReadReceiptsJob.m */,
+				7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */,
+				7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -3714,6 +3715,26 @@
 			name = ContactsPicker;
 			sourceTree = "<group>";
 		};
+		7D7F360420191E7B00FC63C9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7D6138761F90161500E18D29 /* Account */,
+				7D6138861F90161500E18D29 /* Contacts */,
+				7D61389A1F90161500E18D29 /* Devices */,
+				7D6138B61F90161500E18D29 /* Messages */,
+				7D6138FE1F90161500E18D29 /* Network */,
+				7D6139341F90161500E18D29 /* Protocols */,
+				7D6139381F90161500E18D29 /* Security */,
+				7D6139491F90161500E18D29 /* Storage */,
+				7D6139651F90161500E18D29 /* TextSecureKitEnv.h */,
+				7D6139661F90161500E18D29 /* TextSecureKitEnv.m */,
+				7D6139671F90161500E18D29 /* TSConstants.h */,
+				7D6139681F90161500E18D29 /* TSPrefix.h */,
+				7D6139691F90161500E18D29 /* Util */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -3767,6 +3788,8 @@
 		B62D53F41A23CC8B009AAF82 /* TSMessageAdapters */ = {
 			isa = PBXGroup;
 			children = (
+				7D9D0E2C200E71FF00F60594 /* FLGiphyVideoAdapter.h */,
+				7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */,
 				A5E9D4BA1A65FAD800E4481C /* TSVideoAttachmentAdapter.h */,
 				A5E9D4B91A65FAD800E4481C /* TSVideoAttachmentAdapter.m */,
 				B6A3EB491A423B3800B2236B /* TSPhotoAdapter.h */,
@@ -4075,7 +4098,7 @@
 		B6C6AE521A305ED1006BAF8F /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
-				B6C6AE531A305ED1006BAF8F /* redphone.cer */,
+				7D014C5320237D2D00292964 /* redphone.cer */,
 			);
 			path = Certificates;
 			sourceTree = "<group>";
@@ -4088,6 +4111,7 @@
 				7DD51C081FBE2A70003DF7DB /* CONTRIBUTING.md */,
 				7DD51C071FBE2A70003DF7DB /* README.md */,
 				D221A093169C9E5E00537ABF /* Relay */,
+				7D6138751F90161500E18D29 /* RelayServiceKit */,
 				D221A08C169C9E5E00537ABF /* Frameworks */,
 				D221A08A169C9E5E00537ABF /* Products */,
 				70B8009E190C529C0042E3F0 /* spandsp.xcodeproj */,
@@ -4189,8 +4213,8 @@
 		DBE1798C1ED9FF8500327B2B /* CCSM */ = {
 			isa = PBXGroup;
 			children = (
-				7D6138801F90161500E18D29 /* CCSMStorage.h */,
-				7D6138811F90161500E18D29 /* CCSMStorage.m */,
+				7D7F35FF20191E5F00FC63C9 /* CCSMStorage.h */,
+				7D7F360020191E5F00FC63C9 /* CCSMStorage.m */,
 				DBE179941EDF381400327B2B /* CCSMCommunication.h */,
 				DBE179921EDF37E900327B2B /* CCSMCommunication.m */,
 			);
@@ -4626,6 +4650,7 @@
 				7D4A3ABA1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.xib in Resources */,
 				7D4A3ABB1F1693930023C29B /* audio_play_button.png in Resources */,
 				7D4A3ABC1F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.xib in Resources */,
+				7D014C5420237D2D00292964 /* redphone.cer in Resources */,
 				7D4A3ABD1F1693930023C29B /* OWSCallCollectionViewCell.xib in Resources */,
 				7DD51C091FBE2A70003DF7DB /* BUILDING.md in Resources */,
 				7D4A3ABE1F1693930023C29B /* mute_on@2x.png in Resources */,
@@ -4663,7 +4688,6 @@
 				7D4A3ADC1F1693930023C29B /* Settings.bundle in Resources */,
 				7D4A3ADD1F1693930023C29B /* outring.mp3 in Resources */,
 				7D4A3ADE1F1693930023C29B /* pause_icon@2x.png in Resources */,
-				7D4A3ADF1F1693930023C29B /* redphone.cer in Resources */,
 				7D4A3AE01F1693930023C29B /* r.caf in Resources */,
 				7D4A3AE11F1693930023C29B /* qr@2x.png in Resources */,
 				7D4A3AE21F1693930023C29B /* sonarping.mp3 in Resources */,
@@ -4693,6 +4717,7 @@
 				7DCFFE681F0EE4490003CD95 /* Localizable.strings in Resources */,
 				7DCFFE691F0EE4490003CD95 /* play_button.png in Resources */,
 				7DCFFE6A1F0EE4490003CD95 /* Registration.storyboard in Resources */,
+				7D014C5520237D2D00292964 /* redphone.cer in Resources */,
 				7DCFFE6B1F0EE4490003CD95 /* endcall@2x.png in Resources */,
 				7DCFFE6C1F0EE4490003CD95 /* error_white@2x.png in Resources */,
 				7DCFFE6D1F0EE4490003CD95 /* savephoto@2x.png in Resources */,
@@ -4720,7 +4745,6 @@
 				7DCFFE821F0EE4490003CD95 /* Settings.bundle in Resources */,
 				7DCFFE831F0EE4490003CD95 /* outring.mp3 in Resources */,
 				7DCFFE841F0EE4490003CD95 /* pause_icon@2x.png in Resources */,
-				7DCFFE851F0EE4490003CD95 /* redphone.cer in Resources */,
 				7DCFFE861F0EE4490003CD95 /* r.caf in Resources */,
 				7DCFFE871F0EE4490003CD95 /* qr@2x.png in Resources */,
 				7DCFFE881F0EE4490003CD95 /* sonarping.mp3 in Resources */,
@@ -4750,6 +4774,7 @@
 				B6F509971AA53F760068F56A /* Localizable.strings in Resources */,
 				AD41D7B51A6F6F0600241130 /* play_button.png in Resources */,
 				45CD81A61DBFF8FC004C9430 /* Registration.storyboard in Resources */,
+				7D014C5620237D2D00292964 /* redphone.cer in Resources */,
 				B633C59D1A1D190B0059AC12 /* endcall@2x.png in Resources */,
 				FC5CDF391A3393DD00B47253 /* error_white@2x.png in Resources */,
 				B633C5D21A1D190B0059AC12 /* savephoto@2x.png in Resources */,
@@ -4777,7 +4802,6 @@
 				B67EBF5D19194AC60084CCFD /* Settings.bundle in Resources */,
 				E1370BE418A0686C00826894 /* outring.mp3 in Resources */,
 				B10C9B601A7049EC00ECA2BF /* pause_icon@2x.png in Resources */,
-				B6C6AE551A305ED1006BAF8F /* redphone.cer in Resources */,
 				E1370BE518A0686C00826894 /* r.caf in Resources */,
 				FC9120411A39EFB70074545C /* qr@2x.png in Resources */,
 				E1370BE618A0686C00826894 /* sonarping.mp3 in Resources */,
@@ -5195,6 +5219,7 @@
 				7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */,
 				7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */,
 				7D4A39D71F1693930023C29B /* VersionMigrations.m in Sources */,
+				7D6FB26B2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				7D6139EA1F90178700E18D29 /* OWSReadReceiptsMessage.m in Sources */,
 				7D4A39D81F1693930023C29B /* UIUtil.m in Sources */,
 				7D4A39D91F1693930023C29B /* TSAnimatedAdapter.m in Sources */,
@@ -5239,6 +5264,7 @@
 				7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */,
 				7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */,
 				7D613A701F90181B00E18D29 /* OWSGetDevicesRequest.m in Sources */,
+				7D7F360120191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613A0F1F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D4A39F61F1693930023C29B /* Release.m in Sources */,
 				7D6139FD1F90179F00E18D29 /* TSAttachmentPointer.m in Sources */,
@@ -5265,6 +5291,7 @@
 				7D613AA91F90185B00E18D29 /* OWSFingerprint.m in Sources */,
 				7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */,
 				7D613A0C1F9017B000E18D29 /* OWSSyncContactsMessage.m in Sources */,
+				7D6FB266201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */,
 				7D4A3A0D1F1693930023C29B /* InitiateSignal.pb.m in Sources */,
 				7D613A691F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
@@ -5351,6 +5378,7 @@
 				7D4A3A401F1693930023C29B /* PhoneManager.m in Sources */,
 				7D61398D1F90163000E18D29 /* UIImage+contentTypes.m in Sources */,
 				7D613AF71F9018EC00E18D29 /* NSData+Base64.m in Sources */,
+				7D9D0E2E200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AA31F90185000E18D29 /* TSSocketManager.m in Sources */,
 				7D4A3A411F1693930023C29B /* ConversationSettingsViewController.m in Sources */,
 				7D4A3A421F1693930023C29B /* EncodedAudioFrame.m in Sources */,
@@ -5426,7 +5454,6 @@
 				7D613A971F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D7DA5961F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */,
 				7D613A211F9017C900E18D29 /* TSInfoMessage.m in Sources */,
-				7D6139AC1F90173100E18D29 /* CCSMStorage.m in Sources */,
 				7D613A661F90181200E18D29 /* OWSDeleteDeviceRequest.m in Sources */,
 				7D4A3A6E1F1693930023C29B /* JSQMediaItem+OWS.m in Sources */,
 				7D4A3A6F1F1693930023C29B /* ZrtpHandshakeSocket.m in Sources */,
@@ -5445,6 +5472,7 @@
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
 				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
+				7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
 				7D613AA01F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
 				7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */,
 				7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */,
@@ -5542,6 +5570,7 @@
 				7DCFFD7F1F0EE4490003CD95 /* UIUtil.m in Sources */,
 				7DCFFD801F0EE4490003CD95 /* TSAnimatedAdapter.m in Sources */,
 				7D613A641F90180E00E18D29 /* OWSUploadingService.m in Sources */,
+				7D6FB26C2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				7DCFFD811F0EE4490003CD95 /* ConfirmPacket.m in Sources */,
 				7DCFFD821F0EE4490003CD95 /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
 				7D613A6A1F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
@@ -5586,6 +5615,7 @@
 				7DCFFD981F0EE4490003CD95 /* FunctionalUtil.m in Sources */,
 				7DCFFD991F0EE4490003CD95 /* SignalUtil.m in Sources */,
 				7DCFFD9A1F0EE4490003CD95 /* AnonymousAudioCallbackHandler.m in Sources */,
+				7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD41F90188B00E18D29 /* TSDatabaseView.m in Sources */,
 				7D613A071F9017AB00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				7DCFFD9B1F0EE4490003CD95 /* ConfirmAckPacket.m in Sources */,
@@ -5612,6 +5642,7 @@
 				7DCFFDAD1F0EE4490003CD95 /* OWSContactsSearcher.m in Sources */,
 				7DCFFDAE1F0EE4490003CD95 /* AnonymousOccurrenceLogger.m in Sources */,
 				7DCFFDAF1F0EE4490003CD95 /* OWSExpirationTimerView.m in Sources */,
+				7D6FB267201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				7DCFFDB01F0EE4490003CD95 /* NotificationsManager.m in Sources */,
 				7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */,
 				7D613A891F90183300E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
@@ -5652,7 +5683,6 @@
 				7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */,
 				7D613A0A1F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D613A711F90181C00E18D29 /* OWSGetDevicesRequest.m in Sources */,
-				7D6139AB1F90173100E18D29 /* CCSMStorage.m in Sources */,
 				7DCFFDCE1F0EE4490003CD95 /* ContactTableViewCell.m in Sources */,
 				7D613A191F9017BE00E18D29 /* OWSEndSessionMessage.m in Sources */,
 				7D613B011F9018FE00E18D29 /* NSDate+millisecondTimeStamp.mm in Sources */,
@@ -5698,6 +5728,7 @@
 				7D6139FE1F9017A000E18D29 /* TSAttachmentPointer.m in Sources */,
 				7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */,
 				7DCFFDEC1F0EE4490003CD95 /* CallController.m in Sources */,
+				7D9D0E2F200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AF81F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BB1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
@@ -5792,6 +5823,7 @@
 				7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */,
 				7DCFFE261F0EE4490003CD95 /* CallConnectUtil_Initiator.m in Sources */,
 				7DCFFE271F0EE4490003CD95 /* NSData+ows_StripToken.m in Sources */,
+				7D49959A2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
 				7D613A9B1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7DCFFE281F0EE4490003CD95 /* OWSDatabaseMigrationRunner.m in Sources */,
 				7D613AA71F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,
@@ -5889,6 +5921,7 @@
 				4CE0E3771B954546007210CF /* TSAnimatedAdapter.m in Sources */,
 				76EB05BE18170B33006006FC /* ConfirmPacket.m in Sources */,
 				7D613A651F90180E00E18D29 /* OWSUploadingService.m in Sources */,
+				7D6FB26D2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				4531C9C41DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
 				4516E3FF1DD2193B00DC4206 /* OWS101ExistingUsersBlockOnIdentityChange.m in Sources */,
 				7D613A6C1F90181600E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
@@ -5933,6 +5966,7 @@
 				76EB060A18170B33006006FC /* SignalUtil.m in Sources */,
 				E197B61718BBEC1A00F073E5 /* AnonymousAudioCallbackHandler.m in Sources */,
 				76EB05BC18170B33006006FC /* ConfirmAckPacket.m in Sources */,
+				7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD51F90188B00E18D29 /* TSDatabaseView.m in Sources */,
 				7D613A081F9017AC00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				76EB060C18170B33006006FC /* CategorizingLogger.m in Sources */,
@@ -5959,6 +5993,7 @@
 				76EB061618170B33006006FC /* AnonymousOccurrenceLogger.m in Sources */,
 				450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B6258B331C29E2E60014138E /* NotificationsManager.m in Sources */,
+				7D6FB268201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				76EB063018170B33006006FC /* Conversions.m in Sources */,
 				76EB05FE18170B33006006FC /* InitiateSignal.pb.m in Sources */,
 				7D613A8A1F90183400E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
@@ -5999,7 +6034,6 @@
 				DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */,
 				7D613A0B1F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D613A721F90181C00E18D29 /* OWSGetDevicesRequest.m in Sources */,
-				7D6139AA1F90173100E18D29 /* CCSMStorage.m in Sources */,
 				76EB068618170B34006006FC /* ContactTableViewCell.m in Sources */,
 				7D613A1A1F9017BE00E18D29 /* OWSEndSessionMessage.m in Sources */,
 				7D613B031F90190000E18D29 /* NSDate+millisecondTimeStamp.mm in Sources */,
@@ -6045,6 +6079,7 @@
 				7D6139FF1F9017A000E18D29 /* TSAttachmentPointer.m in Sources */,
 				76EB061818170B33006006FC /* AnonymousValueLogger.m in Sources */,
 				76EB05E618170B33006006FC /* CallController.m in Sources */,
+				7D9D0E30200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AF91F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				E16E5BEE18AAC40200B7C403 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BA1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
@@ -6139,6 +6174,7 @@
 				76EB059218170B33006006FC /* UnrecognizedRequestFailure.m in Sources */,
 				76EB05F818170B33006006FC /* CallConnectUtil_Initiator.m in Sources */,
 				B62F5E101C2980B4000D370C /* NSData+ows_StripToken.m in Sources */,
+				7D49959B2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
 				7D613A9C1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				45666F7E1D9C0814008FE134 /* OWSDatabaseMigrationRunner.m in Sources */,
 				7D613AA81F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,
@@ -6462,7 +6498,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 168;
+				CURRENT_PROJECT_VERSION = 171;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6531,7 +6567,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 168;
+				CURRENT_PROJECT_VERSION = 171;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6598,7 +6634,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 168;
+				CURRENT_PROJECT_VERSION = 171;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6666,7 +6702,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 168;
+				CURRENT_PROJECT_VERSION = 171;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6872,7 +6908,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 168;
+				CURRENT_PROJECT_VERSION = 171;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6938,7 +6974,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 168;
+				CURRENT_PROJECT_VERSION = 171;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7041,7 +7077,7 @@
 					"-ObjC",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.whispersystems.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.forsta.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SignalTests;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/test/SignalTests-Bridging-Header.h";
@@ -7099,7 +7135,7 @@
 					"-ObjC",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.whispersystems.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.forsta.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SignalTests;
 				PROVISIONING_PROFILE = "c15eac58-5aa7-4660-b874-b9f7ed3dab70";
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/test/SignalTests-Bridging-Header.h";

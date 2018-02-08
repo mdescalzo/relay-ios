@@ -18,6 +18,9 @@
 #import "TSPreKeyManager.h"
 #import "TSStorageManager.h"
 #import "AFNetworking.h"
+#import "FLDeviceRegistrationService.h"
+#import "HttpRequest.h"
+
 
 #define FLTagMathPath @"/v1/directory/user/"
 
@@ -150,51 +153,6 @@
     
 }
 
-
-//+(void)refreshSessionTokenSynchronousSuccess:(void (^)())successBlock
-//                                     failure:(void (^)(NSError *error))failureBlock
-//{
-//    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-//    NSString *urlString = [NSString stringWithFormat:@"%@/v1/api-token-refresh/", FLHomeURL];
-//    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    [request setHTTPMethod:@"POST"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//    NSString *bodyString = [NSString stringWithFormat:@"token=%@", sessionToken];
-//    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-//
-//    NSHTTPURLResponse *HTTPresponse;
-//    NSError *connectionError;
-//
-//    NSData *data = [self sendSynchronousRequest:request
-//                              returningResponse:&HTTPresponse
-//                                          error:&connectionError];
-//
-//    DDLogDebug(@"Refresh Token - Server response code: %ld", (long)HTTPresponse.statusCode);
-//    DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-//
-//    if (connectionError != nil)  // Failed connection
-//    {
-//        failureBlock(connectionError);
-//    }
-//    else if (HTTPresponse.statusCode == 200) // SUCCESS!
-//    {
-//        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-//                                                               options:0
-//                                                                 error:NULL];
-//        [self storeLocalUserDataWithPayload:result];
-//
-//        successBlock();
-//    }
-//    else  // Connection good, error from server
-//    {
-//        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-//                                             code:HTTPresponse.statusCode
-//                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-//        failureBlock(error);
-//    }
-//}
-
 +(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                                       failure:(void (^)(NSError *error))failureBlock
 {
@@ -285,57 +243,12 @@
           }];
 }
 
-//+(void)getPageSynchronous:(NSURL *)url
-//                  success:(void (^)(NSDictionary *result))successBlock
-//                  failure:(void (^)(NSError *error))failureBlock
-//{
-//    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    [request setHTTPMethod:@"GET"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
-//
-//
-//    NSHTTPURLResponse *HTTPresponse;
-//    NSError *connectionError;
-//
-//    NSData *data = [self sendSynchronousRequest:(NSURLRequest *)request
-//                              returningResponse:&HTTPresponse
-//                                          error:&connectionError];
-//
-//    DDLogDebug(@"Get Page - Server response code: %ld", (long)HTTPresponse.statusCode);
-//    DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-//
-//    if (connectionError != nil)  // Failed connection
-//    {
-//        failureBlock(connectionError);
-//    }
-//    else if (HTTPresponse.statusCode == 200) // SUCCESS!
-//    {
-//        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-//                                                               options:0
-//                                                                 error:NULL];
-//        successBlock(result);
-//    }
-//    else  // Connection good, error from server
-//    {
-//        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-//                                             code:HTTPresponse.statusCode
-//                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-//        failureBlock(error);
-//    }
-//}
-
-
 +(void)getPage:(NSURL *)url
        success:(void (^)(NSDictionary *result))successBlock
        failure:(void (^)(NSError *error))failureBlock
 {
-    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[NSURLSession.sharedSession dataTaskWithRequest:request
                                    completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
@@ -359,11 +272,8 @@
         failure:(void (^)(NSError *error))failureBlock;
 {
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[NSURLSession.sharedSession dataTaskWithRequest:request
                                    completionHandler:^(NSData * _Nullable data,
@@ -395,14 +305,16 @@
             [Environment.getCurrent.ccsmStorage setUsers:@{ }];
             [Environment.getCurrent.ccsmStorage setOrgInfo:@{ }];
             [Environment.getCurrent.ccsmStorage setTags:@{ }];
-            [TSStorageManager.sharedManager storePhoneNumber:userID];
         }
+        
+        [TSStorageManager.sharedManager storeLocalNumber:userID];
+        
         [Environment.getCurrent.ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
         [Environment.getCurrent.ccsmStorage setUserInfo:userDict];
         [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict];
         [TSAccountManager.sharedInstance myself];
-                
+        
         NSDictionary *orgDict = [userDict objectForKey:@"org"];
         [[Environment getCurrent].ccsmStorage setOrgInfo:orgDict];
         
@@ -468,8 +380,8 @@
                    NSDictionary *prefsDict = [org objectForKey:@"preferences"];
                    if (prefsDict) {
                        // Currently no prefs to process
+                       DDLogDebug(@"Successfully processed Org preferences.");
                    }
-                   DDLogDebug(@"Successfully process Org preferences.");
                }
                failure:^(NSError *err){
                    DDLogDebug(@"Failed to retrieve org info after login validation. Error: %@", err.description);
@@ -488,37 +400,97 @@
 }
 
 #pragma mark - CCSM proxied TextSecure registration
-+(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
-                               success:(void (^)())successBlock
-                               failure:(void (^)(NSError *error))failureBlock
++(void)registerDeviceWithParameters:(NSDictionary *)parameters
+                         completion:(void (^)(NSDictionary *response, NSError *error))completionBlock
+{
+    NSString *TSSUrlString = [[CCSMStorage new] textSecureURL];
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/devices%@", TSSUrlString, [parameters objectForKey:@"urlParms"]];
+    NSString *authHeader = [HttpRequest computeBasicAuthorizationTokenForLocalNumber:[parameters objectForKey:@"username"]
+                                                                         andPassword:[parameters objectForKey:@"password"]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.HTTPMethod = @"PUT";
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:authHeader forHTTPHeaderField:@"Authorization"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:[parameters objectForKey:@"jsonBody"] options:0 error:nil];
+    
+    [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                   completionHandler:^(NSData * _Nullable data,
+                                                       NSURLResponse * _Nullable response,
+                                                       NSError * _Nullable connectionError) {
+                                       NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                       DDLogDebug(@"Register device with TSS - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                       DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                       NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                              options:0
+                                                                                                error:NULL];
+                                       
+                                       if (connectionError != nil)  // Failed connection
+                                       {
+                                           completionBlock(result, connectionError);
+                                       }
+                                       else if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                       {
+                                           if (data.length > 0 && connectionError == nil)
+                                           {
+                                               completionBlock(result, nil);
+                                           }
+                                       }
+                                       else  // Connection good, error from server
+                                       {
+                                           NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                code:HTTPresponse.statusCode
+                                                                            userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                           completionBlock(result, error);
+                                       }
+                                   }] resume];
+}
+
++(void)checkAccountRegistrationWithCompletion:(void (^)(NSDictionary *response, NSError *error))completionBlock
+{
+    // Check for other devices...
+    NSString *tmpurlString = [NSString stringWithFormat:@"%@/v1/provision/account", FLHomeURL];
+    [self getThing:tmpurlString
+           success:^(NSDictionary *payload)
+     {
+         NSString *serverURL = [payload objectForKey:@"serverUrl"];
+         NSString *userId = [payload objectForKey:@"userId"];
+         if (![TSAccountManager.sharedInstance.myself.uniqueId isEqualToString:userId]) {
+             DDLogError(@"SECURITY VIOLATION! USERID MISMATCH! IDs: %@, %@", userId, TSAccountManager.sharedInstance.myself.uniqueId);
+             // TODO: Make a better error
+             NSError *err = [NSError new];
+             completionBlock(payload, err);
+         }
+         if (serverURL.length == 0) {
+             DDLogError(@"TSS Server address not provided!");
+             // TODO: Make a better error
+             NSError *err = [NSError new];
+             completionBlock(payload, err);
+         }
+         completionBlock(payload, nil);
+     } failure:^(NSError *error) {
+         completionBlock(nil, error);
+     }];
+}
+
++(void)registerAccountWithParameters:(NSDictionary *)parameters
+                      completion:(void (^)(NSDictionary *response, NSError *error))completionBlock
 {
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/provision-proxy/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSString *authToken = [[Environment getCurrent].ccsmStorage getSessionToken];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"PUT"];
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
-    [request setValue:[NSString stringWithFormat:@"JWT %@", authToken] forHTTPHeaderField:@"Authorization"];
+    NSDictionary *payload = [parameters objectForKey:@"jsonBody"];
+    if (!payload) {
+        DDLogError(@"Invalid parameters in for TSS account registration.");
+        // TODO: Make better error
+        NSError *err = [NSError new];
+        completionBlock(nil, err);
+        return;
+    }
     
-    NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:52];
-    NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
-    
-    NSString *name = [NSString stringWithFormat:@"%@ (%@)", [DeviceTypes deviceModelName], [[UIDevice currentDevice] name]];
-    [SignalKeyingStorage generateServerAuthPassword];
-    NSString *password = [SignalKeyingStorage serverAuthPassword];
-    
-    NSDictionary *bodyDict = @{ @"signalingKey": signalingKey,
-                                @"supportSms" : @NO,
-                                @"fetchesMessages" : @YES,
-                                @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
-                                @"name" : name,
-                                @"password" : password
-                                };
-    
-    NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDict options:0 error:nil];
+    NSData *bodyData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
     [request setHTTPBody:bodyData];
     
     [[NSURLSession.sharedSession dataTaskWithRequest:request
@@ -528,26 +500,18 @@
                                        NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
                                        DDLogDebug(@"Register with TSS - Server response code: %ld", (long)HTTPresponse.statusCode);
                                        DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                       NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                              options:0
+                                                                                                error:NULL];
                                        if (connectionError != nil)  // Failed connection
                                        {
-                                           failureBlock(connectionError);
+                                           completionBlock(result, connectionError);
                                        }
                                        else if (HTTPresponse.statusCode == 200) // SUCCESS!
                                        {
                                            if (data.length > 0 && connectionError == nil)
                                            {
-                                               NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                      options:0
-                                                                                                        error:NULL];
-                                               DDLogDebug(@"Results: %@", result);
-                                               
-                                               [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
-                                               NSNumber *deviceID = [result objectForKey:@"deviceId"];
-                                               [[TSStorageManager sharedManager] storeDeviceId:deviceID];
-                                               [TSStorageManager storeServerToken:password signalingKey:signalingKey];
-                                               [[TSStorageManager sharedManager] storePhoneNumber:userID];
-                                               [TSSocketManager becomeActiveFromForeground];
-                                               [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
+                                               completionBlock(result, nil);
                                            }
                                        }
                                        else  // Connection good, error from server
@@ -555,10 +519,160 @@
                                            NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                                                                 code:HTTPresponse.statusCode
                                                                             userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-                                           failureBlock(error);
+                                           completionBlock(result, error);
                                        }
                                    }] resume];
+}
+
+//+(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
+//                               success:(void (^)())successBlock
+//                               failure:(void (^)(NSError *error))failureBlock;
+//{
+//    // Check for other devices...
+//    NSString *tmpurlString = [NSString stringWithFormat:@"%@/v1/provision/account", FLHomeURL];
+//    [self getThing:tmpurlString
+//           success:^(NSDictionary *payload)
+//     {
+//         NSString *serverURL = [payload objectForKey:@"serverUrl"];
+//         NSString *userId = [payload objectForKey:@"userId"];
+//         if (![TSAccountManager.sharedInstance.myself.uniqueId isEqualToString:userId]) {
+//             DDLogError(@"SECURITY VIOLATION! PROVISION MESSAGE FROM INVALID USER!");
+//             NSError *err = [NSError new];
+//             failureBlock(err);
+//         }
+//         if (serverURL.length == 0) {
+//             DDLogError(@"TSS Server address not provided!");
+//             NSError *err = [NSError new];
+//             failureBlock(err);
+//         }
+//         [[[CCSMStorage alloc] init] setTextSecureURL:serverURL];
+//         NSArray *devices = [payload objectForKey:@"devices"];
+//         
+//         // Found some, request provisioning
+//         if (devices.count > 0) {
+//             //                   NSString *uid = [payload objectForKey:@"userId"];
+//             //                   NSString *selfId = TSAccountManager.sharedInstance.myself.uniqueId;
+//             
+//             [FLDeviceRegistrationService.sharedInstance provisionThisDeviceWithCompletion:^(NSError *error) {
+//                 [TSSocketManager becomeActiveFromForeground];
+//                 [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
+//             }];
+//         }
+//         // Didn't find any, register account.
+//         // TODO: REFACTOR THIS
+//         else {
+//             NSString *urlString = [NSString stringWithFormat:@"%@/v1/provision-proxy/", FLHomeURL];
+//             NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//             NSMutableURLRequest *request = [self authRequestWithURL:url];
+//             [request setHTTPMethod:@"PUT"];
+//             
+//             NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:(32 + 20)];
+//             NSString *signalingKey = [[NSData dataWithData:signalingKeyToken] base64EncodedString];
+//             
+//             NSString *name = [NSString stringWithFormat:@"%@ (%@)", [DeviceTypes deviceModelName], [[UIDevice currentDevice] name]];
+//             [SignalKeyingStorage generateServerAuthPassword];
+//             NSString *password = [SignalKeyingStorage serverAuthPassword];
+//             
+//             NSDictionary *bodyDict = @{ @"signalingKey": signalingKey,
+//                                         @"supportSms" : @NO,
+//                                         @"fetchesMessages" : @YES,
+//                                         @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
+//                                         @"name" : name,
+//                                         @"password" : password
+//                                         };
+//             
+//             NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDict options:0 error:nil];
+//             [request setHTTPBody:bodyData];
+//             
+//             [[NSURLSession.sharedSession dataTaskWithRequest:request
+//                                            completionHandler:^(NSData * _Nullable data,
+//                                                                NSURLResponse * _Nullable response,
+//                                                                NSError * _Nullable connectionError) {
+//                                                NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+//                                                DDLogDebug(@"Register with TSS - Server response code: %ld", (long)HTTPresponse.statusCode);
+//                                                DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+//                                                if (connectionError != nil)  // Failed connection
+//                                                {
+//                                                    failureBlock(connectionError);
+//                                                }
+//                                                else if (HTTPresponse.statusCode == 200) // SUCCESS!
+//                                                {
+//                                                    if (data.length > 0 && connectionError == nil)
+//                                                    {
+//                                                        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+//                                                                                                               options:0
+//                                                                                                                 error:NULL];
+//                                                        [Environment getCurrent].ccsmStorage.textSecureURL = [result objectForKey:@"serverUrl"];
+//                                                        NSNumber *deviceID = [result objectForKey:@"deviceId"];
+//                                                        [[TSStorageManager sharedManager] storeDeviceId:deviceID];
+//                                                        [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+//                                                        // TODO: validate against stored ID here since it should already be stored
+//                                                        [[TSStorageManager sharedManager] storeLocalNumber:userID];
+//                                                        [TSSocketManager becomeActiveFromForeground];
+//                                                        [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];
+//                                                    }
+//                                                }
+//                                                else  // Connection good, error from server
+//                                                {
+//                                                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+//                                                                                         code:HTTPresponse.statusCode
+//                                                                                     userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+//                                                    failureBlock(error);
+//                                                }
+//                                            }] resume];
+//         }
+//     } failure:^(NSError *error) {
+//         DDLogDebug(@"Failure is not an option. %@", error);
+//         failureBlock(error);
+//     }];
+//}
+
+
+#pragma mark - Device provisioning
++(void)sendDeviceProvisioningRequestWithPayload:(NSDictionary *_Nonnull)payload
+{
+    NSString *uuid = [payload objectForKey:@"uuid"];
+    NSString *key = [payload objectForKey:@"key"];
     
+    if (uuid.length == 0 || key.length == 0) {
+        DDLogError(@"Attempt to send provisioning request with malformed payload.");
+        return;
+    }
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/provision/request", FLHomeURL];
+    NSMutableURLRequest *request = [self authRequestWithURL:[NSURL URLWithString:urlString]];
+    request.HTTPMethod = @"POST";
+    NSData *bodyData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
+    request.HTTPBody = bodyData;
+    
+    [[NSURLSession.sharedSession dataTaskWithRequest:request
+                                   completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                       NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                       DDLogDebug(@"Device Provision Request - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                       DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                       if (error != nil)  // Failed connection
+                                       {
+                                           DDLogError(@"Device Provision Request failed with error: %@", error.localizedDescription);
+                                       }
+                                       else if (HTTPresponse.statusCode >= 200 && HTTPresponse.statusCode <= 204) // SUCCESS!
+                                       {
+                                           NSDictionary *result = nil;
+                                           if (data.length > 0 && error == nil)
+                                           {
+                                               result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                        options:0
+                                                                                          error:NULL];
+                                           }
+                                           DDLogInfo(@"Device Provision Request sucessully sent.  Response: %@", result);
+                                       }
+                                       else  // Connection good, error from server
+                                       {
+                                           NSError *rejectError = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                      code:HTTPresponse.statusCode
+                                                                                  userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                           DDLogError(@"Device Provision Request rejected with error: %@", rejectError);
+                                       }
+                                   }] resume];
 }
 
 #pragma mark - User/recipient Lookup methods
@@ -740,16 +854,22 @@
 
 +(NSMutableURLRequest *)tagMathRequestForString:(NSString *)lookupString
 {
-    NSString *sessionToken = [Environment.getCurrent.ccsmStorage getSessionToken];
     NSString *homeURL = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CCSM_Home_URL"];
-    
     NSString *urlString = [NSString stringWithFormat:@"%@%@?expression=%@", homeURL, FLTagMathPath, lookupString];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"GET"];
+    
+    return request;
+}
+
+// MARK: - Helper
++(NSMutableURLRequest *)authRequestWithURL:(NSURL *)url
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSString *sessionToken = [[Environment getCurrent].ccsmStorage getSessionToken];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [request addValue:[NSString stringWithFormat:@"JWT %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     return request;

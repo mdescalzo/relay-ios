@@ -144,16 +144,23 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
 {
-    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        [self saveRecipient:recipient withTransaction:transaction];
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            [self saveRecipient:recipient withTransaction:transaction];
+        }];
+    });
 }
 
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
      withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
-    [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
-    [recipient saveWithTransaction:transaction];
+    if (recipient.uniqueId.length > 0) {
+        [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+        [recipient saveWithTransaction:transaction];
+    } else {
+        DDLogError(@"Attempt to save recipient without a UUID.  Recipient: %@", recipient);
+        [recipient removeWithTransaction:transaction];
+    }
 }
 
 -(void)removeRecipient:(SignalRecipient *_Nonnull)recipient

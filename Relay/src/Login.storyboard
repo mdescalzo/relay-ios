@@ -364,7 +364,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Validation Code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sFx-a6-Obs">
-                                <rect key="frame" x="36" y="152" width="303" height="40"/>
+                                <rect key="frame" x="36" y="172" width="303" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="ajR-9A-RaZ"/>
                                 </constraints>
@@ -376,7 +376,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pzC-eI-juG">
-                                <rect key="frame" x="46" y="218" width="283" height="47"/>
+                                <rect key="frame" x="46" y="238" width="283" height="46"/>
                                 <color key="backgroundColor" red="0.16862745100000001" green="0.67450980390000004" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                 <state key="normal" title="Validate">
@@ -393,17 +393,17 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vL2-W5-Ado" userLabel="Line1">
-                                <rect key="frame" x="0.0" y="202" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="222" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.75559091570000003" green="0.75556838510000002" blue="0.75558114050000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="FNL-d5-72C"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eSA-GE-T4t">
-                                <rect key="frame" x="299" y="231" width="20" height="20"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eSA-GE-T4t">
+                                <rect key="frame" x="299" y="310" width="20" height="20"/>
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ic9-2W-eAg">
-                                <rect key="frame" x="132" y="281" width="111" height="30"/>
+                                <rect key="frame" x="132" y="300" width="111" height="30"/>
                                 <state key="normal" title="Send New Code">
                                     <color key="titleColor" red="0.16862745100000001" green="0.67450980390000004" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -411,18 +411,31 @@
                                     <action selector="onResendCodeButtonTap:" destination="7Uu-IH-pbe" eventType="touchUpInside" id="CcR-vS-mJh"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mEz-qA-Neu">
+                                <rect key="frame" x="16" y="150" width="343" height="21"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Vig-rx-W5k"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="pzC-eI-juG" firstAttribute="top" secondItem="vL2-W5-Ado" secondAttribute="bottom" constant="15" id="1Br-mH-HZp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="mEz-qA-Neu" secondAttribute="trailing" id="1Kk-jl-dxM"/>
                             <constraint firstItem="pzC-eI-juG" firstAttribute="trailing" secondItem="eSA-GE-T4t" secondAttribute="trailing" constant="10" id="2aU-d0-bTU"/>
+                            <constraint firstItem="mEz-qA-Neu" firstAttribute="leading" secondItem="zrz-CT-M7y" secondAttribute="leadingMargin" id="3Ar-Mj-0so"/>
                             <constraint firstItem="ic9-2W-eAg" firstAttribute="top" secondItem="pzC-eI-juG" secondAttribute="bottom" constant="16" id="7RK-f6-I10"/>
-                            <constraint firstItem="vL2-W5-Ado" firstAttribute="top" secondItem="Fbk-AC-mml" secondAttribute="bottom" constant="60" id="9kv-cK-p3c"/>
+                            <constraint firstItem="vL2-W5-Ado" firstAttribute="top" secondItem="Fbk-AC-mml" secondAttribute="bottom" constant="80" id="9kv-cK-p3c"/>
                             <constraint firstItem="pzC-eI-juG" firstAttribute="centerY" secondItem="eSA-GE-T4t" secondAttribute="centerY" id="Bqn-fw-VFj"/>
                             <constraint firstItem="ic9-2W-eAg" firstAttribute="centerX" secondItem="pzC-eI-juG" secondAttribute="centerX" id="Cbu-6K-KzK"/>
                             <constraint firstItem="Fbk-AC-mml" firstAttribute="top" secondItem="zrz-CT-M7y" secondAttribute="topMargin" id="DyM-LN-PRf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pzC-eI-juG" secondAttribute="trailing" constant="30" id="Gtf-5B-BnC"/>
                             <constraint firstAttribute="trailing" secondItem="Fbk-AC-mml" secondAttribute="trailing" constant="10" id="IGo-RH-78F"/>
+                            <constraint firstItem="mEz-qA-Neu" firstAttribute="top" secondItem="Fbk-AC-mml" secondAttribute="bottom" constant="8" symbolic="YES" id="OIr-fM-WlA"/>
                             <constraint firstItem="sFx-a6-Obs" firstAttribute="leading" secondItem="zrz-CT-M7y" secondAttribute="leadingMargin" constant="20" id="OXd-Pa-n9C"/>
                             <constraint firstAttribute="trailing" secondItem="vL2-W5-Ado" secondAttribute="trailing" id="Zs2-LX-Qh3"/>
                             <constraint firstItem="eSA-GE-T4t" firstAttribute="top" secondItem="vL2-W5-Ado" secondAttribute="bottom" constant="28" id="a5l-M5-Ihy"/>
@@ -434,6 +447,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="infoLabel" destination="mEz-qA-Neu" id="4si-HX-rG0"/>
                         <outlet property="resendCodeButton" destination="ic9-2W-eAg" id="f7a-ty-GZa"/>
                         <outlet property="spinner" destination="eSA-GE-T4t" id="phb-Tq-ZM0"/>
                         <outlet property="validationButton" destination="pzC-eI-juG" id="df0-Vn-b6A"/>
