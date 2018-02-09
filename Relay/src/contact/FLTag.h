@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIImage * _Nullable avatar;
 @property (nonatomic, strong) NSCountedSet<SignalRecipient *> * _Nullable recpients;
 @property (nonatomic, strong) NSCountedSet<NSString *> * _Nullable recipientIds;
+@property (nonatomic, strong) NSDate * _Nullable hiddenDate;
 
 +(instancetype _Nullable)getOrCreateTagWithDictionary:(NSDictionary *_Nonnull)tagDictionary;
 +(instancetype _Nullable)getOrCreateTagWithDictionary:(NSDictionary *_Nonnull)tagDictionary transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;

@@ -940,9 +940,15 @@
 
 "DELETE_THREAD_VALIDATION_MESSAGE" = "Are you sure you wish to delete this consversation?\n\n%@";
 
-/* Contact selector tags */
+/* Thread Creation View */
+"THREAD_SECTION_CONTACTS" = "Contacts";
+"THREAD_SECTION_TAGS" = "Tags";
+"THREAD_SECTION_HIDDEN" = "Hidden";
+"THREAD_SECTION_MONITORS" = "Monitors";
 "VISIBLE" = "Visible";
 "HIDDEN" = "Hidden";
+"HIDE" = "Hide";
+"UNHIDE" = "Unhide";
 
 /* Sample text */
 "SAMPLE" = "Forsta";

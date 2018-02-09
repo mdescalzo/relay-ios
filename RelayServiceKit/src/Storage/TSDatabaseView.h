@@ -17,6 +17,8 @@ extern NSString *TSPinnedGroup;
 extern NSString *FLActiveTagsGroup;
 extern NSString *FLVisibleRecipientGroup;
 extern NSString *FLAnnouncementsGroup;
+extern NSString *FLHiddenContactsGroup;
+extern NSString *FLMonitorGroup;
 //extern NSString *FLSearchTagsGroup;
 
 extern NSString *TSSecondaryDevicesGroup;

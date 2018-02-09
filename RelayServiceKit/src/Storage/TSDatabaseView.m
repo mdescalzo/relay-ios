@@ -24,6 +24,8 @@ NSString *TSArchiveGroup = @"TSArchiveGroup";
 NSString *TSPinnedGroup  = @"TSPinnedGroup";
 NSString *FLActiveTagsGroup = @"FLActiveTagsGroup";
 NSString *FLVisibleRecipientGroup = @"FLVisibleRecipientGroup";
+NSString *FLHiddenContactsGroup = @"FLHiddenContactsGroup";
+NSString *FLMonitorGroup = @"FLMonitorGroup";
 //NSString *FLSearchTagsGroup = @"FLSearchTagsGroup";
 
 
@@ -85,11 +87,19 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                                  if ([collection isEqualToString:[FLTag collection]]) {
                                                      FLTag *aTag = (FLTag *)object;
                                                      if (aTag.recipientIds.count > 1) {
-                                                         return FLActiveTagsGroup;
+                                                         if (aTag.hiddenDate) {
+                                                             return FLHiddenContactsGroup;
+                                                         } else {
+                                                             return FLActiveTagsGroup;
+                                                         }
                                                      }
                                                  } else if ([collection isEqualToString:[SignalRecipient collection]]) {
                                                      SignalRecipient *recipient = (SignalRecipient *)object;
-                                                     if (!recipient.isMonitor) {
+                                                     if (recipient.isMonitor) {
+                                                         return FLMonitorGroup;
+                                                     } else if (recipient.hiddenDate) {
+                                                         return FLHiddenContactsGroup;
+                                                     } else {
                                                          return FLVisibleRecipientGroup;
                                                      }
                                                  }

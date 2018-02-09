@@ -231,6 +231,9 @@
                                 <segment title="Visible"/>
                                 <segment title="Hidden"/>
                             </segments>
+                            <connections>
+                                <action selector="visibilitySelectorDidChange:" destination="yHf-6V-fDx" eventType="valueChanged" id="uK5-dj-auq"/>
+                            </connections>
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" image="cellBtnMoveToArchive--blue" id="4Op-Vs-twn">
                             <connections>

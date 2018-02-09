@@ -55,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *orgID;
 @property (nonatomic, strong) NSString *gravatarHash;
 @property (nonatomic, strong) UIImage *gravatarImage;
+@property (nonatomic, strong) NSDate *_Nullable hiddenDate;
 
 @property BOOL isMonitor;
 @property BOOL isActive;

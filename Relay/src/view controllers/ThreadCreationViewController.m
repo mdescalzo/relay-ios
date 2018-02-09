@@ -26,6 +26,12 @@
 #define kRecipientSectionIndex 0
 #define kTagSectionIndex 1
 
+#define kHiddenSectionIndex 0
+#define kMonitorSectionIndex 1
+
+#define kSelectorVisibleIndex 0
+#define kSelectorHiddenIndex 1
+
 @interface ThreadCreationViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, SlugOverLayViewDelegate, NSLayoutManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
@@ -68,8 +74,8 @@
     
     self.searchInfoLabel.text = NSLocalizedString(@"SEARCH_HELP_STRING", @"Informational string for tag lookups.");
     
-    [self.visibilitySelector setTitle:NSLocalizedString(@"VISIBLE", nil) forSegmentAtIndex:0];
-    [self.visibilitySelector setTitle:NSLocalizedString(@"HIDDEN", nil) forSegmentAtIndex:1];
+    [self.visibilitySelector setTitle:NSLocalizedString(@"VISIBLE", nil) forSegmentAtIndex:kSelectorVisibleIndex];
+    [self.visibilitySelector setTitle:NSLocalizedString(@"HIDDEN", nil) forSegmentAtIndex:kSelectorHiddenIndex];
     
     self.view.backgroundColor = [ForstaColors whiteColor];
     
@@ -125,41 +131,30 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"slugCell" forIndexPath:indexPath];
     
-    switch (indexPath.section) {
-        case kRecipientSectionIndex:
-        {
-            SignalRecipient *recipient = (SignalRecipient *) [self objectForIndexPath:indexPath];
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                [cell configureCellWithContact:recipient];
-            });
-            
-            if ([self.validatedSlugs containsObject:recipient.flTag.displaySlug]) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
+    __block id object = [self objectForIndexPath:indexPath];
+    if ([object isKindOfClass:[SignalRecipient class]]) {
+        SignalRecipient *recipient = (SignalRecipient *)object;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [cell configureCellWithContact:recipient];
+        });
+        if ([self.validatedSlugs containsObject:recipient.flTag.displaySlug]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
-            break;
-        case kTagSectionIndex:
-        {
-            FLTag *aTag = (FLTag *)[self objectForIndexPath:indexPath];
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                [cell configureCellWithTag:aTag];
-            });
-            
-            if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
+    } else if ([object isKindOfClass:[FLTag class]]) {
+        FLTag *aTag = (FLTag *)object;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [cell configureCellWithTag:aTag];
+        });
+        if ([self.validatedSlugs containsObject:aTag.displaySlug]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
-            break;
-        default:
-            break;
+    } else {
+        return [UITableViewCell new];
     }
-    
     
     return cell;
 }
@@ -168,28 +163,21 @@
 {
     NSString *tagSlug = nil;
     
-    switch (indexPath.section) {
-        case kRecipientSectionIndex:
-        {
-            SignalRecipient *recipient = (SignalRecipient *)[self objectForIndexPath:indexPath];
-            tagSlug = recipient.flTag.displaySlug;
-        }
-            break;
-        case kTagSectionIndex:
-        {
-            FLTag *aTag = (FLTag *)[self objectForIndexPath:indexPath];
-            tagSlug = aTag.displaySlug;
-        }
-            break;
-        default:
-            break;
+    id object = [self objectForIndexPath:indexPath];
+    if ([object isKindOfClass:[SignalRecipient class]]) {
+        SignalRecipient *recipient = (SignalRecipient *)object;
+        tagSlug = recipient.flTag.displaySlug;
+    } else if ([object isKindOfClass:[FLTag class]]) {
+        FLTag *aTag = (FLTag *)object;
+        tagSlug = aTag.displaySlug;
     }
-    
+
     if ([self.validatedSlugs containsObject:tagSlug]) {
         [self removeSlug:tagSlug];
     } else {
         [self addSlug:tagSlug];
     }
+    
     self.searchBar.text = @"";
     [self refreshTableView];
 }
@@ -201,12 +189,19 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-#warning LOCALIZE THE RETURN VALUES BEFORE SHIPPING!
     if ([self tableView:tableView numberOfRowsInSection:section] > 0) {
-        if (section == kRecipientSectionIndex) {
-            return @"Contacts";
-        } else if (section == kTagSectionIndex) {
-            return @"Tags";
+        if (self.visibilitySelector.selectedSegmentIndex == kSelectorVisibleIndex) {
+            if (section == kRecipientSectionIndex) {
+                return NSLocalizedString(@"THREAD_SECTION_CONTACTS", nil);
+            } else if (section == kTagSectionIndex) {
+                return NSLocalizedString(@"THREAD_SECTION_TAGS", nil);
+            }
+        } else if (self.visibilitySelector.selectedSegmentIndex == kSelectorHiddenIndex) {
+            if (section == kHiddenSectionIndex) {
+                return NSLocalizedString(@"THREAD_SECTION_HIDDEN", nil);
+            } else if (section == kMonitorSectionIndex) {
+                return NSLocalizedString(@"THREAD_SECTION_MONITORS", nil);
+            }
         }
     }
     return nil;
@@ -221,6 +216,64 @@
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return (NSInteger)[self.tagMappings numberOfItemsInSection:(NSUInteger)section];
+}
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (self.visibilitySelector.selectedSegmentIndex) {
+        case kSelectorVisibleIndex:
+        {
+            UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                                    title:NSLocalizedString(@"HIDE", nil)
+                                                                                  handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                                                      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                                                          id object = [self objectForIndexPath:tappedIndexPath];
+                                                                                          if ([object isKindOfClass:[SignalRecipient class]]) {
+                                                                                              SignalRecipient *recipient = (SignalRecipient *)object;
+                                                                                              recipient.hiddenDate = [NSDate date];
+                                                                                              [recipient save];
+                                                                                          } else if ([object isKindOfClass:[FLTag class]]) {
+                                                                                              FLTag *aTag = (FLTag *)object;
+                                                                                              aTag.hiddenDate = [NSDate date];
+                                                                                              [aTag save];
+                                                                                          }
+                                                                                      });
+                                                                                  }];
+            return @[ hideAction];
+            
+        }
+            break;
+        case kSelectorHiddenIndex:
+        {
+            if (indexPath.section == kMonitorSectionIndex) {
+                return @[];  // Monitors stay put.
+            } else {
+                UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                                        title:NSLocalizedString(@"UNHIDE", nil)
+                                                                                      handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                                                          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                                                              id object = [self objectForIndexPath:tappedIndexPath];
+                                                                                              if ([object isKindOfClass:[SignalRecipient class]]) {
+                                                                                                  SignalRecipient *recipient = (SignalRecipient *)object;
+                                                                                                  recipient.hiddenDate = nil;
+                                                                                                  [recipient save];
+                                                                                              } else if ([object isKindOfClass:[FLTag class]]) {
+                                                                                                  FLTag *aTag = (FLTag *)object;
+                                                                                                  aTag.hiddenDate = nil;
+                                                                                                  [aTag save];
+                                                                                              }
+                                                                                          });
+                                                                                      }];
+                return @[ unhideAction];
+            }
+        }
+            break;
+        default:
+        {
+            return @[];
+        }
+            break;
+    }
 }
 
 -(void)refreshContentFromSource
@@ -509,6 +562,11 @@
 }
 
 #pragma mark - UI actions
+- (IBAction)visibilitySelectorDidChange:(UISegmentedControl *)sender
+{
+    [self updateMappings];
+}
+
 -(IBAction)didPressGoButton:(id)sender
 {
     if (self.validatedSlugs.count > 0) {
@@ -569,6 +627,13 @@
 
 -(void)updateMappings
 {
+    NSArray *selectedGroups = nil;
+    if (self.visibilitySelector.selectedSegmentIndex == kSelectorVisibleIndex) {
+        selectedGroups = @[ FLVisibleRecipientGroup, FLActiveTagsGroup ];
+    } else if (self.visibilitySelector.selectedSegmentIndex == kSelectorHiddenIndex) {
+        selectedGroups = @[ FLHiddenContactsGroup, FLMonitorGroup ];
+    }
+    
     __block NSString *filterString = [self.searchBar.text lowercaseString];
     __block YapDatabaseViewFiltering *filtering = [YapDatabaseViewFiltering withObjectBlock:^BOOL(YapDatabaseReadTransaction * _Nonnull transaction,
                                                                                                   NSString * _Nonnull group,
@@ -603,9 +668,9 @@
         
     }];
 
-    self.tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]
+    self.tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:selectedGroups
                                                               view:FLFilteredTagDatabaseViewExtensionName];
-    [self.tagMappings setIsReversed:NO forGroup:FLActiveTagsGroup];
+//    [self.tagMappings setIsReversed:NO forGroup:FLActiveTagsGroup];
 
     [self.uiDbConnection beginLongLivedReadTransaction];
     [self.uiDbConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction)  {
