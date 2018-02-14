@@ -22,6 +22,9 @@
 //    self.avatarImageView.clipsToBounds = YES;
 //    self.avatarImageView.layer.masksToBounds = YES;
     self.avatarImageView.circle = YES;
+    
+    self.nameLabel.text = NSLocalizedString(@"LOADING", nil);
+    self.detailLabel.text = NSLocalizedString(@"LOADING", nil);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
