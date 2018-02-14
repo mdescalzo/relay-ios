@@ -407,16 +407,19 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(SignalRecipient *)recipientWithUserId:(NSString *)userId
 {
-    // Check to see if we already have it locally
+    // Check to see if we already have it cached
     __block SignalRecipient *recipient = [self.recipientCache objectForKey:userId];
     if (recipient) {
         return recipient;
     } else {
         
-        // If not, go get it, build it, and save it.
+        // If not, check the db
         [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
             // Check the db
             recipient = [SignalRecipient fetchObjectWithUniqueID:userId transaction:transaction];
+            if (recipient) {
+                [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+            }
         }];
         
         // Go make it from CCSM

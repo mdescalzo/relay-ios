@@ -65,12 +65,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    // Database connections setup
-    //    self.uiDbConnection = [TSStorageManager.sharedManager.database newConnection];
-    //    self.searchDbConnection = [TSStorageManager.sharedManager.database newConnection];
-    //    [self.uiDbConnection beginLongLivedReadTransaction];
-    //    [self updateMappings];
-    
     //    [self downSwipeRecognizer];
     self.slugViewHeight.constant = KMinInputHeight;
     //    self.slugContainerView.layoutManager.delegate = self;
@@ -90,7 +84,7 @@
     UIView *refreshView = [UIView new];
     [self.tableView insertSubview:refreshView atIndex:0];
     self.refreshControl = [UIRefreshControl new];
-    //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
+//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
     [self.refreshControl addTarget:self
                             action:@selector(refreshContentFromSource)
                   forControlEvents:UIControlEventValueChanged];
@@ -465,15 +459,18 @@
                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                   self.searchBar.text = [NSString stringWithString:badStuff];
                                                   [self updateFilteredMappingsForce:NO];
+                                                  [self refreshTableView];
                                               });
                                               
-//                                              // take this opportunity to store any userids
-//                                              NSArray *userids = [results objectForKey:@"userids"];
-//                                              if (userids.count > 0) {
-//                                                  for (NSString *uid in userids) {
-//                                                      [Environment.getCurrent.contactsManager updateRecipient:uid];
-//                                                  }
-//                                              }
+                                              // take this opportunity to store any userids
+                                              NSArray *userids = [results objectForKey:@"userids"];
+                                              if (userids.count > 0) {
+                                                  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                                                      for (NSString *uid in userids) {
+                                                          [Environment.getCurrent.contactsManager recipientWithUserId:uid];
+                                                      }
+                                                  });
+                                              }
                                           }
                                           failure:^(NSError *error) {
                                               DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
@@ -515,7 +512,7 @@
     }];
 }
 
-#pragma mark - UI actions
+#pragma mark - UI Actions
 - (IBAction)visibilitySelectorDidChange:(UISegmentedControl *)sender
 {
     if (self.visibilitySelector.selectedSegmentIndex == kSelectorVisibleIndex) {
@@ -655,13 +652,9 @@
 -(void)storeUsersInResults:(NSDictionary *)results
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-//        [self.searchDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
             NSArray *userIds = [[results objectForKey:@"userids"] copy];
             for (NSString *uid in userIds) {
                 [Environment.getCurrent.contactsManager recipientWithUserId:uid];
-                // do the lookup things
-//                [CCSMCommManager recipientFromCCSMWithID:uid transaction:transaction];
-                
             }
 //        }];
     });
@@ -698,22 +691,18 @@
         [self.navigationController dismissViewControllerAnimated:YES
                                                       completion:^() {
                                                           __block TSThread *thread = nil;
-//                                                          [self.searchDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-
                                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                                                               for (NSString *uid in thread.participants) {
                                                                   [Environment.getCurrent.contactsManager updateRecipient:uid];
                                                               }
                                                           });
-
+                                                          
                                                           thread = [TSThread getOrCreateThreadWithParticipants:userIds];// transaction:transaction];
-                                                              thread.type = @"conversation";
-                                                              thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
-                                                              thread.universalExpression = [[results objectForKey:@"universal"] copy];
-                                                          [thread save]; //WithTransaction:transaction];
-//                                                          } completionBlock:^{
-                                                              [Environment messageGroup:thread];
-//                                                          }];
+                                                          thread.type = @"conversation";
+                                                          thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
+                                                          thread.universalExpression = [[results objectForKey:@"universal"] copy];
+                                                          [thread save];
+                                                          [Environment messageGroup:thread];
                                                       }];
     }
 }
