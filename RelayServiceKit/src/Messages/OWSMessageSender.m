@@ -209,7 +209,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     NSMutableArray<SignalRecipient *> *recipients = [NSMutableArray new];
     
     for (NSString *recipientId in identifiers) {
-        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:recipientId];
+        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:recipientId];
         
         if (recipient) {
             [recipients addObject:recipient];
@@ -415,7 +415,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     }
     remainingAttempts -= 1;
     
-    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:recipientId];
+    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:recipientId];
     
     if (!recipient) {
         DDLogError(@"Attempted Special send to nil recipient.");
@@ -666,6 +666,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 - (void)handleMessageSentRemotely:(TSOutgoingMessage *)message sentAt:(uint64_t)sentAt
 {
     [self saveMessage:message withState:TSOutgoingMessageStateDelivered];
+    [message.thread touch];
     [self becomeConsistentWithDisappearingConfigurationForMessage:message];
     [self.disappearingMessagesJob setExpirationForMessage:message expirationStartedAt:sentAt];
 }

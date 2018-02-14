@@ -71,20 +71,29 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (!avatar) {
-            avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:self.contentView.frame.size.height];
-        }
 
         self.nameLabel.text = name;
         self.snippetLabel.text = snippetText;
         self.timeLabel.attributedText = attributedDate;
-        self.contactPictureView.image = avatar;
         self.contactPictureView.circle = YES;
         
         self.separatorInset = UIEdgeInsetsMake(0, _contactPictureView.frame.size.width * 1.5f, 0, 0);
 
         [self setUnreadMsgCount:unreadCount];
         self.hidden = NO;
+        
+        // Dance to deal with main thread issues
+        if (!avatar) {
+            __block CGFloat diameter = self.contentView.frame.size.height;
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                avatar = [OWSAvatarBuilder buildImageForThread:thread contactsManager:contactsManager diameter:diameter];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.contactPictureView.image = avatar;
+                });
+            });
+        } else {
+            self.contactPictureView.image = avatar;
+        }
     });
 }
 

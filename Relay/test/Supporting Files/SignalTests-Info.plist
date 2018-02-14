@@ -17,10 +17,6 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-<<<<<<< HEAD
-	<string>154</string>
-=======
-	<string>150</string>
->>>>>>> master
+	<string>172</string>
 </dict>
 </plist>

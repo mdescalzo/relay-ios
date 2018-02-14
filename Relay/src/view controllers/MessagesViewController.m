@@ -607,7 +607,7 @@ typedef enum : NSUInteger {
             userid = uid;
         }
     }
-    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:userid];
+    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
     return [PhoneNumber phoneNumberFromUserSpecifiedText:recipient.phoneNumber];
 }
 
@@ -635,7 +635,7 @@ typedef enum : NSUInteger {
                 userid = uid;
             }
         }
-        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:userid];
+        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
         if (recipient.phoneNumber) {
             return YES;
         } else {

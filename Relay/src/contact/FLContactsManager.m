@@ -10,6 +10,7 @@
 #import <SAMKeychain/SAMKeychain.h>
 #import <25519/Randomness.h>
 #import "NSData+Base64.h"
+#import "TSAccountManager.h"
 #import "Util.h"
 
 static const NSString *const databaseName = @"ForstaContacts.sqlite";
@@ -144,18 +145,19 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            [self saveRecipient:recipient withTransaction:transaction];
-        }];
-    });
+    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self saveRecipient:recipient withTransaction:transaction];
+    }];
 }
 
--(void)saveRecipient:(SignalRecipient *_Nonnull)recipient
-     withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+-(void)saveRecipient:(SignalRecipient *_Nonnull)recipient withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
     if (recipient.uniqueId.length > 0) {
         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+        if (recipient.flTag) {
+            [recipient.flTag saveWithTransaction:transaction];
+            [self.tagCache setObject:recipient.flTag forKey:recipient.flTag.uniqueId];
+        }
         [recipient saveWithTransaction:transaction];
     } else {
         DDLogError(@"Attempt to save recipient without a UUID.  Recipient: %@", recipient);
@@ -203,12 +205,12 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     }];
 }
 
--(void)saveTag:(FLTag *_Nonnull)aTag
-withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+-(void)saveTag:(FLTag *_Nonnull)aTag withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
-    [self.tagCache setObject:aTag forKey:aTag.uniqueId];
     [aTag saveWithTransaction:transaction];
+    [self.tagCache setObject:aTag forKey:aTag.uniqueId];
 }
+
 -(void)removeTag:(FLTag *_Nonnull)aTag
 {
     [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
@@ -216,8 +218,7 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
     }];
 }
 
--(void)removeTag:(FLTag *_Nonnull)aTag
- withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+-(void)removeTag:(FLTag *_Nonnull)aTag withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
     [self.tagCache removeObjectForKey:aTag.uniqueId];
     [aTag removeWithTransaction:transaction];
@@ -265,9 +266,19 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 #pragma mark - Setup
 -(void)refreshCCSMRecipients
 {
-    [self.recipientCache removeAllObjects];
-    [self.tagCache removeAllObjects];
-    [CCSMCommManager refreshCCSMData];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.recipientCache removeAllObjects];
+        [self.tagCache removeAllObjects];
+        [CCSMCommManager refreshCCSMData];
+        [self validateNonOrgRecipients];
+    });
+}
+
+-(void)validateNonOrgRecipients
+{
+    for (SignalRecipient *recipient in [SignalRecipient allObjectsInCollection]) {
+        [self updateRecipient:recipient.uniqueId];
+    }
 }
 
 - (void)setupLatestRecipients:(NSArray *)recipients {
@@ -289,52 +300,170 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 }
 
 #pragma mark - Contact/Phone Number util
--(SignalRecipient *)recipientWithUserID:(NSString *)userID
+-(SignalRecipient *)recipientFromDictionary:(NSDictionary *)userDict
 {
-    // Check to see if we already have it locally
-    __block SignalRecipient *recipient = [self.recipientCache objectForKey:userID];
+    __block SignalRecipient *recipient = nil;
+    [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        recipient = [self recipientFromDictionary:userDict transaction:transaction];
+    }];
+    return recipient;
+}
+
+-(SignalRecipient *)recipientFromDictionary:(NSDictionary *)userDict transaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    if (![userDict respondsToSelector:@selector(objectForKey:)]) {
+        DDLogDebug(@"Attempted to update SignalRecipient with bad dictionary: %@", userDict);
+        return nil;
+    }
+    NSString *uid = [userDict objectForKey:@"id"];
+    SignalRecipient *recipient = (SignalRecipient *)[transaction objectForKey:uid inCollection:[SignalRecipient collection]];
+    if (!recipient) {
+        recipient = [[SignalRecipient alloc] initWithUniqueId:uid];
+    }
+    
+    recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
+    if (!recipient.isActive) {
+        [Environment.getCurrent.contactsManager removeRecipient:recipient withTransaction:transaction];
+        return nil;
+    }
+    
+    recipient.firstName = [userDict objectForKey:@"first_name"];
+    recipient.lastName = [userDict objectForKey:@"last_name"];
+    recipient.email = [userDict objectForKey:@"email"];
+    recipient.phoneNumber = [userDict objectForKey:@"phone"];
+    recipient.gravatarHash = [userDict objectForKey:@"gravatar_hash"];
+    recipient.isMonitor = ([(NSNumber *)[userDict objectForKey:@"is_monitor"] intValue] == 1 ? YES : NO);
+    
+    NSDictionary *orgDict = [userDict objectForKey:@"org"];
+    if (orgDict) {
+        recipient.orgID = [orgDict objectForKey:@"id"];
+        recipient.orgSlug = [orgDict objectForKey:@"slug"];
+    } else {
+        DDLogDebug(@"Missing orgDictionary for Recipient: %@", self);
+    }
+    
+    NSDictionary *tagDict = [userDict objectForKey:@"tag"];
+    if (tagDict) {
+        recipient.flTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
+        recipient.flTag.recipientIds = [NSCountedSet setWithObject:recipient.uniqueId];
+        if (recipient.flTag.tagDescription.length == 0) {
+            recipient.flTag.tagDescription = recipient.fullName;
+        }
+        if (recipient.flTag.orgSlug.length == 0) {
+            recipient.flTag.orgSlug = recipient.orgSlug;
+        }
+        [Environment.getCurrent.contactsManager saveTag:recipient.flTag withTransaction:transaction];
+    } else {
+        DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
+    }
+
+    [self saveRecipient:recipient withTransaction:transaction];
+    
+    return recipient;
+}
+-(void)updateRecipient:(NSString *_Nonnull)userId
+{
+    [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self updateRecipient:userId withTransaction:transaction];
+    }];
+}
+
+-(void)updateRecipient:(NSString *_Nonnull)userId withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
+{
+        NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
+        if (recipientDict) {
+            SignalRecipient *recipient = [self recipientFromDictionary:recipientDict transaction:transaction];
+            [self saveRecipient:recipient withTransaction:transaction];
+        }
+}
+
+-(NSDictionary *)dictionaryForRecipientId:(NSString *)uid
+{
+    NSAssert(![NSThread isMainThread], @"Must NOT access recipientFromCCSMWithID on main thread!");
+    __block NSDictionary *result = nil;
+    
+    if (uid) {
+        __block dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+        
+        NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, uid];
+        [CCSMCommManager getThing:url
+               success:^(NSDictionary *payload) {
+                   if (((NSNumber *)[payload objectForKey:@"count"]).integerValue > 0) {
+                       NSArray *tmpArray = [payload objectForKey:@"results"];
+                       result = [tmpArray lastObject];
+                   }
+                   dispatch_semaphore_signal(sema);
+               }
+               failure:^(NSError *error) {
+                   DDLogDebug(@"CCSM User lookup failed or returned no results.");
+                   dispatch_semaphore_signal(sema);
+               }];
+        
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    }
+    return result;
+}
+
+
+-(SignalRecipient *)recipientWithUserId:(NSString *)userId
+{
+    // Check to see if we already have it cached
+    __block SignalRecipient *recipient = [self.recipientCache objectForKey:userId];
     if (recipient) {
         return recipient;
     } else {
         
-        // If not, go get it, build it, and save it.
-        [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        // If not, check the db
+        [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
             // Check the db
-            recipient = [SignalRecipient fetchObjectWithUniqueID:userID transaction:transaction];
-            
-            // Go make it from CCSM
-            if (!recipient) {
-                recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
-                if (recipient) {
-                    [self saveRecipient:recipient withTransaction:transaction];
-                }
+            recipient = [SignalRecipient fetchObjectWithUniqueID:userId transaction:transaction];
+            if (recipient) {
+                [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
             }
         }];
+        
+        // Go make it from CCSM
+        if (!recipient) {
+            NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
+            if (recipientDict) {
+                recipient = [self recipientFromDictionary:recipientDict];
+            }
+            if (recipient) {
+                [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                    [self saveRecipient:recipient withTransaction:transaction];
+                    [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+                }];
+            }
+        }
         return recipient;
     }
 }
 
--(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID
+-(SignalRecipient *_Nullable)recipientWithUserId:(NSString *_Nonnull)userId
                                      transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
     // Check "cache"
-    SignalRecipient *recipient = [self.recipientCache objectForKey:userID];
+    SignalRecipient *recipient = [self.recipientCache objectForKey:userId];
     if (recipient) {
         return recipient;
     }
     
     // Check db
-    recipient = [SignalRecipient fetchObjectWithUniqueID:userID transaction:transaction];
+    recipient = [SignalRecipient fetchObjectWithUniqueID:userId transaction:transaction];
     if (recipient) {
+        [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
         return recipient;
     }
     
     // Go get it, build it, and save it.
-    recipient = [CCSMCommManager recipientFromCCSMWithID:userID transaction:transaction];
+    NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
+    if (recipientDict) {
+        recipient = [self recipientFromDictionary:recipientDict];
+    }
     if (recipient) {
         [self saveRecipient:recipient withTransaction:transaction];
+        [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
     }
-    
     return recipient;
 }
 
@@ -411,7 +540,7 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 
 -(NSString *_Nullable)nameStringForContactId:(NSString *_Nonnull)uid
 {
-    SignalRecipient *recipient = [self recipientWithUserID:uid];
+    SignalRecipient *recipient = [self recipientWithUserId:uid];
     if (recipient.fullName) {
         return recipient.fullName;
     } else if (recipient.flTag.displaySlug){
@@ -434,14 +563,12 @@ withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
     returnImage = [self.avatarCache objectForKey:cacheKey];
     
     if (returnImage == nil) {
-        [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            SignalRecipient *recipient = [self recipientWithUserID:uid transaction:transaction];
+        SignalRecipient *recipient = [self recipientWithUserId:uid];
             if (self.prefs.useGravatars) {
                 returnImage = recipient.gravatarImage;
             } else {
                 returnImage = recipient.avatar;
             }
-        }];
     }
     if (returnImage) {
         [self.avatarCache setObject:returnImage forKey:cacheKey];

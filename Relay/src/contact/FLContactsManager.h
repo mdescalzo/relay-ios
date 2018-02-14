@@ -26,8 +26,11 @@
 -(ObservableValue *_Nullable)getObservableContacts;
 - (void)doAfterEnvironmentInitSetup;
 
--(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID;
--(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userID transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
+-(void)updateRecipient:(NSString *_Nonnull)userId;
+-(void)updateRecipient:(NSString *_Nonnull)userId withTransaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
+
+-(SignalRecipient *_Nullable)recipientWithUserId:(NSString *_Nonnull)userId;
+-(SignalRecipient *_Nullable)recipientWithUserId:(NSString *_Nonnull)userId transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction;
 
 -(void)refreshCCSMRecipients;
 

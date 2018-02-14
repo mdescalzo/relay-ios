@@ -44,44 +44,23 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-+(instancetype)getOrCreateRecipientWithIndentifier:(NSString *)identifier
++(instancetype)getOrCreateRecipientWithId:(NSString *)identifier
 {
     __block SignalRecipient *recipient = nil;
     [[SignalRecipient dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        recipient = [self getOrCreateRecipientWithIndentifier:identifier withTransaction:transaction];
+        recipient = [self getOrCreateRecipientWithId:identifier withTransaction:transaction];
     }];
     return recipient;
 }
 
-+(instancetype)getOrCreateRecipientWithIndentifier:(NSString *)identifier
-                                   withTransaction:(YapDatabaseReadWriteTransaction *)transaction
++(instancetype)getOrCreateRecipientWithId:(NSString *)identifier
+                          withTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    SignalRecipient *recipient = [SignalRecipient fetchObjectWithUniqueID:identifier transaction:transaction];
+    SignalRecipient *recipient = [self fetchObjectWithUniqueID:identifier transaction:transaction];
     if (!recipient) {
         recipient = [[SignalRecipient alloc] initWithUniqueId:identifier];
-        [recipient saveWithTransaction:transaction];
+//        [recipient saveWithTransaction:transaction];
     }
-    return recipient;
-}
-
-
-+ (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier
-                                           withTransaction:(YapDatabaseReadTransaction *)transaction
-{
-    return [self fetchObjectWithUniqueID:textSecureIdentifier transaction:transaction];
-}
-
-+ (nullable instancetype)recipientWithTextSecureIdentifier:(NSString *)textSecureIdentifier
-{
-    __block SignalRecipient *recipient;
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
-        recipient = [self recipientWithTextSecureIdentifier:textSecureIdentifier withTransaction:transaction];
-        
-        // If nothing local, look it up on CCSM:
-        if (recipient == nil) {
-            recipient = [CCSMCommManager recipientFromCCSMWithID:textSecureIdentifier transaction:transaction];
-        }
-    }];
     return recipient;
 }
 
@@ -110,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
     NSString *uid = [userDict objectForKey:@"id"];
-    SignalRecipient *recipient = [self getOrCreateRecipientWithIndentifier:uid withTransaction:transaction];
+    SignalRecipient *recipient = [self getOrCreateRecipientWithId:uid withTransaction:transaction];
     
     recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
     if (!recipient.isActive) {
@@ -147,8 +126,9 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
-    [recipient saveWithTransaction:transaction];
-    
+//    [recipient saveWithTransaction:transaction];
+    [Environment.getCurrent.contactsManager saveRecipient:recipient withTransaction:transaction];
+
     return recipient;
 }
 
@@ -213,20 +193,20 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - overrides
--(void)save
-{
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [self saveWithTransaction:transaction];
-    }];
-}
-
--(void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
-{
-    if (self.flTag) {
-        [Environment.getCurrent.contactsManager saveTag:self.flTag withTransaction:transaction];
-    }
-    [super saveWithTransaction:transaction];
-}
+//-(void)save
+//{
+//    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//        [self saveWithTransaction:transaction];
+//    }];
+//}
+//
+//-(void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
+//{
+//    if (self.flTag) {
+//        [Environment.getCurrent.contactsManager saveTag:self.flTag withTransaction:transaction];
+//    }
+//    [super saveWithTransaction:transaction];
+//}
 
 -(void)remove
 {
@@ -288,7 +268,7 @@ NS_ASSUME_NONNULL_BEGIN
     else if (self.firstName)
         return self.firstName;
     else
-        return nil;
+        return @"No Name";
 }
 
 -(BOOL)supportsVoice

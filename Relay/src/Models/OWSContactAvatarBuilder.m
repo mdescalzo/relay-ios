@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
             }
         }
     }
-    SignalRecipient *recipient = [contactsManager recipientWithUserID:contactId];
+    SignalRecipient *recipient = [contactsManager recipientWithUserId:contactId];
     
     return [self initWithContactId:contactId name:recipient.fullName contactsManager:contactsManager diameter:diameter];
 }

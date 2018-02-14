@@ -149,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
                     [thread saveWithTransaction:transaction];
                 }
             } else {
-                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:envelope.source];
+                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:envelope.source];
                 DDLogDebug(@"Received malformed receipt from %@, uid: %@, device %d", recipient.fullName, envelope.source, envelope.sourceDevice);
             }
             [outgoingMessage saveWithTransaction:transaction];
@@ -815,7 +815,7 @@ NS_ASSUME_NONNULL_BEGIN
         threadID = [jsonPayload objectForKey:@"threadId"];
     }
     __block TSThread *thread = nil;
-    __block SignalRecipient *sender = [Environment.getCurrent.contactsManager recipientWithUserID:envelope.source];
+    __block SignalRecipient *sender = [Environment.getCurrent.contactsManager recipientWithUserId:envelope.source];
     
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [TSThread getOrCreateThreadWithID:threadID transaction:transaction];
@@ -855,7 +855,7 @@ NS_ASSUME_NONNULL_BEGIN
                     [leaving minusSet:newParticipants];
                     for (NSString *uid in leaving) {
                         NSString *customMessage = nil;
-                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
+                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid transaction:transaction];
                         
                         if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
                             customMessage = NSLocalizedString(@"GROUP_YOU_LEFT", nil);
@@ -873,7 +873,7 @@ NS_ASSUME_NONNULL_BEGIN
                     [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
                     for (NSString *uid in joining) {
                         NSString *customMessage = nil;
-                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
+                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid transaction:transaction];
                         
                         if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
                             customMessage = NSLocalizedString(@"GROUP_YOU_JOINED", nil);

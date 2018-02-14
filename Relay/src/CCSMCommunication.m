@@ -676,6 +676,11 @@
 }
 
 #pragma mark - User/recipient Lookup methods
+//-(NSDictionary *)recipientDictionaryFromCCSMWithID:(NSString *)uid
+//{
+//
+//}
+
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId
 {
     __block SignalRecipient *recipient = nil;
@@ -689,9 +694,12 @@
 
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
+    NSAssert(![NSThread isMainThread], @"Must NOT access recipientFromCCSMWithID on main thread!");
     __block SignalRecipient *recipient = nil;
     
     if (userId) {
+        __block dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+
         NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, userId];
         [self getThing:url
                success:^(NSDictionary *payload) {
@@ -699,35 +707,18 @@
                        NSArray *tmpArray = [payload objectForKey:@"results"];
                        NSDictionary *results = [tmpArray lastObject];
                        recipient = [SignalRecipient getOrCreateRecipientWithUserDictionary:results transaction:transaction];
+                       dispatch_semaphore_signal(sema);
                    }
                }
                failure:^(NSError *error) {
                    DDLogDebug(@"CCSM User lookup failed or returned no results.");
+                   dispatch_semaphore_signal(sema);
                }];
+        
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
     }
     return recipient;
 }
-
-//+(void)asyncRecipientFromCCSMWithID:(NSString *)userId
-//                       success:(void (^)(SignalRecipient *recipient))successBlock
-//                       failure:(void (^)(NSError *error))failureBlock
-//{
-//    if (userId) {
-//        NSString *url = [NSString stringWithFormat:@"%@/v1/directory/user/?id=%@", FLHomeURL, userId];
-//        [self getThing:url
-//           synchronous:NO
-//               success:^(NSDictionary *result) {
-//                   NSArray *payload = [result objectForKey:@"results"];
-//                   NSDictionary *userDict = [payload lastObject];
-//                   SignalRecipient *recipient = [SignalRecipient recipientForUserDict:userDict];
-//                   successBlock(recipient);
-//               }
-//               failure:^(NSError *error) {
-//                   DDLogDebug(@"CCSM User lookup failed or returned no results.");
-//                   failureBlock(error);
-//               }];
-//    }
-//}
 
 #pragma mark - Public account creation
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict

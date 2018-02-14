@@ -160,7 +160,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     // Get parts
     NSString *searchString = nil;
     for (NSString *userid in model.groupMemberIds) {
-        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:userid];
+        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
         if (searchString.length == 0) {
             searchString =  [NSString stringWithFormat:@"@%@", recipient.flTag.slug];
         } else {
@@ -298,7 +298,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                             [leaving minusSet:newParticipants];
                             for (NSString *uid in leaving) {
                                 NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
-                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid];
+                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid];
                                 NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
                                 
                                 [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
@@ -311,7 +311,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                             [joining minusSet:self.originalThreadParticipants];
                             for (NSString *uid in joining) {
                                 NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
-                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid];
+                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid];
                                 NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
                                 
                                 [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]

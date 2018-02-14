@@ -14,14 +14,16 @@
 
 @interface CCSMStorage()
 
-@property (strong) YapDatabaseConnection *dbConnection;
+@property (strong) YapDatabaseConnection *readConnection;
+@property (strong) YapDatabaseConnection *writeConnection;
 
 @end
 
 @implementation CCSMStorage
 
 @synthesize textSecureURL = _textSecureURL;
-@synthesize dbConnection = _dbConnection;
+@synthesize readConnection = _readConnection;
+@synthesize writeConnection = _writeConnection;
 
 
 NSString *const CCSMStorageDatabaseCollection = @"CCSMInformation";
@@ -38,7 +40,8 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 -(instancetype)init
 {
     if (self = [super init]) {
-        _dbConnection = [TSStorageManager.sharedManager newDatabaseConnection];
+        _readConnection = [TSStorageManager.sharedManager newDatabaseConnection];
+        _writeConnection =  [TSStorageManager.sharedManager newDatabaseConnection];
     }
     return self;
 }
@@ -47,7 +50,7 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 {
 //    return [TSStorageManager.sharedManager objectForKey:key inCollection:CCSMStorageDatabaseCollection];
     __block id returnVal = nil;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [self.readConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         returnVal = [transaction objectForKey:key inCollection:CCSMStorageDatabaseCollection];
     }];
     return returnVal;
@@ -57,7 +60,7 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 {
     ows_require(key != nil);
     
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.writeConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction setObject:value forKey:key inCollection:CCSMStorageDatabaseCollection];
     }];
 }
@@ -92,7 +95,7 @@ NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 
 -(void)removeSessionToken
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.writeConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction objectForKey:CCSMStorageKeySessionToken inCollection:CCSMStorageDatabaseCollection];
     }];
 }

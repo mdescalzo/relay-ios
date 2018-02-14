@@ -23,6 +23,9 @@ NSString *FLAnnouncementsGroup = @"FLAnnouncementsGroup";
 NSString *TSArchiveGroup = @"TSArchiveGroup";
 NSString *TSPinnedGroup  = @"TSPinnedGroup";
 NSString *FLActiveTagsGroup = @"FLActiveTagsGroup";
+NSString *FLVisibleRecipientGroup = @"FLVisibleRecipientGroup";
+NSString *FLHiddenContactsGroup = @"FLHiddenContactsGroup";
+NSString *FLMonitorGroup = @"FLMonitorGroup";
 //NSString *FLSearchTagsGroup = @"FLSearchTagsGroup";
 
 
@@ -81,9 +84,24 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     
     YapDatabaseViewGrouping *viewGrouping = [YapDatabaseViewGrouping
                                              withObjectBlock:^NSString *(YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
-                                                 if ([object isKindOfClass:[FLTag class]]) {
-//                                                     FLTag *aTag = (FLTag *)object;
-                                                     return FLActiveTagsGroup;
+                                                 if ([collection isEqualToString:[FLTag collection]]) {
+                                                     FLTag *aTag = (FLTag *)object;
+                                                     if (aTag.recipientIds.count > 1) {
+                                                         if (aTag.hiddenDate) {
+                                                             return FLHiddenContactsGroup;
+                                                         } else {
+                                                             return FLActiveTagsGroup;
+                                                         }
+                                                     }
+                                                 } else if ([collection isEqualToString:[SignalRecipient collection]]) {
+                                                     SignalRecipient *recipient = (SignalRecipient *)object;
+                                                     if (recipient.isMonitor) {
+                                                         return FLMonitorGroup;
+                                                     } else if (recipient.hiddenDate) {
+                                                         return FLHiddenContactsGroup;
+                                                     } else {
+                                                         return FLVisibleRecipientGroup;
+                                                     }
                                                  }
                                                  return nil;
                                              }];
@@ -91,7 +109,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     
     YapDatabaseViewOptions *options = [[YapDatabaseViewOptions alloc] init];
     options.isPersistent = NO;
-    options.allowedCollections = [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObject:[FLTag collection]]];
+    options.allowedCollections = [[YapWhitelistBlacklist alloc] initWithWhitelist:[NSSet setWithObjects:[SignalRecipient collection],[FLTag collection], nil]];
     
     YapDatabaseView *databaseView =
     [[YapDatabaseAutoView alloc] initWithGrouping:viewGrouping
@@ -216,6 +234,34 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
     return YES;
 }
 
++(YapDatabaseViewSorting *)recipientSorting
+{
+    return [YapDatabaseViewSorting withObjectBlock:^NSComparisonResult(YapDatabaseReadTransaction * _Nonnull transaction,
+                                                                       NSString * _Nonnull group,
+                                                                       NSString * _Nonnull collection1,
+                                                                       NSString * _Nonnull key1,
+                                                                       id  _Nonnull object1,
+                                                                       NSString * _Nonnull collection2,
+                                                                       NSString * _Nonnull key2,
+                                                                       id  _Nonnull object2) {
+        if ([group isEqualToString:FLVisibleRecipientGroup]) {
+            if ([object1 isKindOfClass:[SignalRecipient class]] && [object2 isKindOfClass:[SignalRecipient class]]) {
+                SignalRecipient *recipient1 = (SignalRecipient *)object1;
+                SignalRecipient *recipient2 = (SignalRecipient *)object2;
+                
+                NSComparisonResult result = [recipient1.lastName compare:recipient2.lastName];
+                if (result == NSOrderedSame) {
+                    return [recipient1.firstName compare:recipient2.firstName];
+                } else {
+                    return result;
+                }
+                
+            }
+        }
+        return NSOrderedSame;
+    }];
+}
+
 +(YapDatabaseViewSorting *)tagSorting
 {
     return [YapDatabaseViewSorting withObjectBlock:^NSComparisonResult(YapDatabaseReadTransaction * _Nonnull transaction,
@@ -232,6 +278,19 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                 FLTag *aTag2 = (FLTag *)object2;
                 
                 return [aTag1.tagDescription compare:aTag2.tagDescription];
+            }
+        } else if ([group isEqualToString:FLVisibleRecipientGroup]) {
+            if ([object1 isKindOfClass:[SignalRecipient class]] && [object2 isKindOfClass:[SignalRecipient class]]) {
+                SignalRecipient *recipient1 = (SignalRecipient *)object1;
+                SignalRecipient *recipient2 = (SignalRecipient *)object2;
+                
+                NSComparisonResult result = [recipient1.lastName compare:recipient2.lastName];
+                if (result == NSOrderedSame) {
+                    return [recipient1.firstName compare:recipient2.firstName];
+                } else {
+                    return result;
+                }
+                
             }
         }
         return NSOrderedSame;

@@ -217,12 +217,24 @@
                             <constraint firstAttribute="trailing" secondItem="KwJ-W5-ybd" secondAttribute="trailing" id="y90-Qp-SY7"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="6m7-ne-Qh0">
+                    <navigationItem key="navigationItem" id="6m7-ne-Qh0" userLabel="Selector Item">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="wpp-nf-SJ0">
                             <connections>
                                 <action selector="didPressExitButton:" destination="yHf-6V-fDx" id="tx6-Q9-fRZ"/>
                             </connections>
                         </barButtonItem>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="F6E-L6-okB">
+                            <rect key="frame" x="129" y="7" width="117" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Visible"/>
+                                <segment title="Hidden"/>
+                            </segments>
+                            <connections>
+                                <action selector="visibilitySelectorDidChange:" destination="yHf-6V-fDx" eventType="valueChanged" id="uK5-dj-auq"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" image="cellBtnMoveToArchive--blue" id="4Op-Vs-twn">
                             <connections>
                                 <action selector="didPressGoButton:" destination="yHf-6V-fDx" id="NFY-md-USS"/>
@@ -239,6 +251,7 @@
                         <outlet property="slugViewHeight" destination="DIb-uZ-SuY" id="9p1-K9-pfQ"/>
                         <outlet property="tableView" destination="A70-yG-BT4" id="8Mu-s4-SY5"/>
                         <outlet property="view" destination="15x-QP-RNC" id="EIG-Ce-AVf"/>
+                        <outlet property="visibilitySelector" destination="F6E-L6-okB" id="Tfd-XE-OPw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7c-eM-XXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -254,11 +267,11 @@
                         <viewControllerLayoutGuide type="bottom" id="ro3-oL-btr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FVy-cI-iLb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSf-Qr-IRY" userLabel="Group Details">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="100"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name this group chat" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sNC-Vf-c1o">
                                         <rect key="frame" x="103.5" y="8" width="263.5" height="84"/>
@@ -307,7 +320,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="o27-I4-NuM">
-                                <rect key="frame" x="0.0" y="108" width="375" height="495"/>
+                                <rect key="frame" x="0.0" y="128" width="375" height="539"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="Fb7-QM-QUM" userLabel="Header View">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
@@ -608,7 +621,7 @@
             <objects>
                 <tableViewController title="Contact Information" id="HhI-2q-GmC" userLabel="Conversation Settings" customClass="ConversationSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="6PK-9u-6Oy">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" misplaced="YES" id="KMF-n1-Vvg" userLabel="Header">
@@ -1771,7 +1784,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="ShowGroupMembersViewController" id="rZ2-2k-Uyo" customClass="ShowGroupMembersViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wAS-RT-okf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -2146,6 +2159,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="yIB-5c-Gi5"/>
-        <segue reference="nsV-7A-EyB"/>
+        <segue reference="2qZ-xT-Qet"/>
     </inferredMetricsTieBreakers>
 </document>
