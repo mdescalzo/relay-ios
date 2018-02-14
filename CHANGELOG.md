@@ -7,7 +7,6 @@
 ### Added
 - Support for Announcement mesages.
 - Sections in ThreadCreationView consistent with web client.
-- Hide/unhide items in ThreadCreationView.
 - Support for provisioning control messages.  Allows multiple mobile devices for a single user.
 ### Update
 - Updated YapDatabase to 3.0.2.
