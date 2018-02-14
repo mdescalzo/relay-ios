@@ -247,6 +247,7 @@
                                                                                         }
                                                                                     });
                                                                                 }];
+            hideAction.backgroundColor = [ForstaColors darkGray];
             return @[ hideAction];
             
         }
@@ -272,6 +273,7 @@
                                                                                               }
                                                                                           });
                                                                                       }];
+                unhideAction.backgroundColor = [ForstaColors darkGray];
                 return @[ unhideAction];
             }
         }

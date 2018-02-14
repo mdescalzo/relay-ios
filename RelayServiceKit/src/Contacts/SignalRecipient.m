@@ -268,7 +268,7 @@ NS_ASSUME_NONNULL_BEGIN
     else if (self.firstName)
         return self.firstName;
     else
-        return nil;
+        return @"No Name";
 }
 
 -(BOOL)supportsVoice

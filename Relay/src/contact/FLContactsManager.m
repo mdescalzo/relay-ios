@@ -10,6 +10,7 @@
 #import <SAMKeychain/SAMKeychain.h>
 #import <25519/Randomness.h>
 #import "NSData+Base64.h"
+#import "TSAccountManager.h"
 #import "Util.h"
 
 static const NSString *const databaseName = @"ForstaContacts.sqlite";
@@ -265,9 +266,19 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 #pragma mark - Setup
 -(void)refreshCCSMRecipients
 {
-    [self.recipientCache removeAllObjects];
-    [self.tagCache removeAllObjects];
-    [CCSMCommManager refreshCCSMData];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [self.recipientCache removeAllObjects];
+        [self.tagCache removeAllObjects];
+        [CCSMCommManager refreshCCSMData];
+        [self validateNonOrgRecipients];
+    });
+}
+
+-(void)validateNonOrgRecipients
+{
+    for (SignalRecipient *recipient in [SignalRecipient allObjectsInCollection]) {
+        [self updateRecipient:recipient.uniqueId];
+    }
 }
 
 - (void)setupLatestRecipients:(NSArray *)recipients {
@@ -292,7 +303,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 -(SignalRecipient *)recipientFromDictionary:(NSDictionary *)userDict
 {
     __block SignalRecipient *recipient = nil;
-    [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         recipient = [self recipientFromDictionary:userDict transaction:transaction];
     }];
     return recipient;
@@ -346,7 +357,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
 
-    [Environment.getCurrent.contactsManager saveRecipient:recipient withTransaction:transaction];
+    [self saveRecipient:recipient withTransaction:transaction];
     
     return recipient;
 }
@@ -361,16 +372,13 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 {
         NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
         if (recipientDict) {
-            SignalRecipient *recipient = [self recipientFromDictionary:recipientDict];
+            SignalRecipient *recipient = [self recipientFromDictionary:recipientDict transaction:transaction];
             [self saveRecipient:recipient withTransaction:transaction];
         }
 }
 
 -(NSDictionary *)dictionaryForRecipientId:(NSString *)uid
 {
-    if ([NSThread isMainThread]) {
-        DDLogDebug(@"NAUGHTY!");
-    }
     NSAssert(![NSThread isMainThread], @"Must NOT access recipientFromCCSMWithID on main thread!");
     __block NSDictionary *result = nil;
     
@@ -418,7 +426,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                 recipient = [self recipientFromDictionary:recipientDict];
             }
             if (recipient) {
-                [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                     [self saveRecipient:recipient withTransaction:transaction];
                     [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
                 }];
@@ -428,7 +436,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     }
 }
 
--(SignalRecipient *_Nullable)recipientWithUserID:(NSString *_Nonnull)userId
+-(SignalRecipient *_Nullable)recipientWithUserId:(NSString *_Nonnull)userId
                                      transaction:(YapDatabaseReadWriteTransaction *_Nonnull)transaction
 {
     // Check "cache"
@@ -552,14 +560,12 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     returnImage = [self.avatarCache objectForKey:cacheKey];
     
     if (returnImage == nil) {
-//        [self.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        SignalRecipient *recipient = [self recipientWithUserId:uid];// transaction:transaction];
+        SignalRecipient *recipient = [self recipientWithUserId:uid];
             if (self.prefs.useGravatars) {
                 returnImage = recipient.gravatarImage;
             } else {
                 returnImage = recipient.avatar;
             }
-//        }];
     }
     if (returnImage) {
         [self.avatarCache setObject:returnImage forKey:cacheKey];

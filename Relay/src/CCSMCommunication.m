@@ -694,9 +694,6 @@
 
 +(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction
 {
-    if ([NSThread isMainThread]) {
-        DDLogDebug(@"NAUGHTY!");
-    }
     NSAssert(![NSThread isMainThread], @"Must NOT access recipientFromCCSMWithID on main thread!");
     __block SignalRecipient *recipient = nil;
     
