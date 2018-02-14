@@ -389,6 +389,8 @@
 /* No comment provided by engineer. */
 "LOADING_CONTACTS_LABEL_LINE1" = "Loading your contacts.";
 
+"LOADING" = "Loading...";
+
 /* No comment provided by engineer. */
 "LOADING_CONTACTS_LABEL_LINE2" = "Sit tight.";
 
