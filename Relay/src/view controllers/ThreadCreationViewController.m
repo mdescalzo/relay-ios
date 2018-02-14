@@ -290,17 +290,12 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.refreshControl beginRefreshing];
         [Environment.getCurrent.contactsManager refreshCCSMRecipients];
-        //        [self refreshTableView];
         [self.refreshControl endRefreshing];
     });
 }
 
 -(void)refreshTableView
 {
-    //    [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-    //        [self.tagMappings updateWithTransaction:transaction];
-    //    }];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.tagMappings numberOfItemsInAllGroups] == 0) {
             self.searchInfoContainer.hidden = NO;
@@ -627,8 +622,9 @@
     [self.searchDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [[transaction ext:FLFilteredTagDatabaseViewExtensionName] setFiltering:filtering
                                                                     versionTag:versionTag];
-        [self refreshTableView];
     }];
+    [self refreshTableView];
+
 }
 
 // Removing hide/unhide per request.
@@ -642,8 +638,8 @@
 
     [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction)  {
         [self.tagMappings updateWithTransaction:transaction];
-        [self refreshTableView];
     }];
+    [self refreshTableView];
 }
 
 -(void)updateGoButton
