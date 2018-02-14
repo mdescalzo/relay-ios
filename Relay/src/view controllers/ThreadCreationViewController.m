@@ -89,9 +89,13 @@
                             action:@selector(refreshContentFromSource)
                   forControlEvents:UIControlEventValueChanged];
     [refreshView addSubview:self.refreshControl];
-    
-    [self visibilitySelectorDidChange:self.visibilitySelector];
+
     [self updateGoButton];
+
+    // Removing hide/unhide per request.
+//    [self visibilitySelectorDidChange:self.visibilitySelector];
+    [self changeMappingsGroupsTo:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]];
+    self.visibilitySelector.hidden = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -220,65 +224,66 @@
     return (NSInteger)[self.tagMappings numberOfItemsInSection:(NSUInteger)section];
 }
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (self.visibilitySelector.selectedSegmentIndex) {
-        case kSelectorVisibleIndex:
-        {
-            UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                                  title:NSLocalizedString(@"HIDE", nil)
-                                                                                handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
-                                                                                    id object = [self objectForIndexPath:tappedIndexPath];
-                                                                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                                        if ([object isKindOfClass:[SignalRecipient class]]) {
-                                                                                            SignalRecipient *recipient = (SignalRecipient *)object;
-                                                                                            recipient.hiddenDate = [NSDate date];
-                                                                                            [recipient save];
-                                                                                        } else if ([object isKindOfClass:[FLTag class]]) {
-                                                                                            FLTag *aTag = (FLTag *)object;
-                                                                                            aTag.hiddenDate = [NSDate date];
-                                                                                            [aTag save];
-                                                                                        }
-                                                                                    });
-                                                                                }];
-            hideAction.backgroundColor = [ForstaColors darkGray];
-            return @[ hideAction];
-            
-        }
-            break;
-        case kSelectorHiddenIndex:
-        {
-            if (indexPath.section == kMonitorSectionIndex) {
-                return @[];  // Monitors stay put.
-            } else {
-                UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                                        title:NSLocalizedString(@"UNHIDE", nil)
-                                                                                      handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
-                                                                                          id object = [self objectForIndexPath:tappedIndexPath];
-                                                                                          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                                              if ([object isKindOfClass:[SignalRecipient class]]) {
-                                                                                                  SignalRecipient *recipient = (SignalRecipient *)object;
-                                                                                                  recipient.hiddenDate = nil;
-                                                                                                  [recipient save];
-                                                                                              } else if ([object isKindOfClass:[FLTag class]]) {
-                                                                                                  FLTag *aTag = (FLTag *)object;
-                                                                                                  aTag.hiddenDate = nil;
-                                                                                                  [aTag save];
-                                                                                              }
-                                                                                          });
-                                                                                      }];
-                unhideAction.backgroundColor = [ForstaColors darkGray];
-                return @[ unhideAction];
-            }
-        }
-            break;
-        default:
-        {
-            return @[];
-        }
-            break;
-    }
-}
+// Removing hide/unhide per request.
+//- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    switch (self.visibilitySelector.selectedSegmentIndex) {
+//        case kSelectorVisibleIndex:
+//        {
+//            UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+//                                                                                  title:NSLocalizedString(@"HIDE", nil)
+//                                                                                handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+//                                                                                    id object = [self objectForIndexPath:tappedIndexPath];
+//                                                                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                                                                                        if ([object isKindOfClass:[SignalRecipient class]]) {
+//                                                                                            SignalRecipient *recipient = (SignalRecipient *)object;
+//                                                                                            recipient.hiddenDate = [NSDate date];
+//                                                                                            [recipient save];
+//                                                                                        } else if ([object isKindOfClass:[FLTag class]]) {
+//                                                                                            FLTag *aTag = (FLTag *)object;
+//                                                                                            aTag.hiddenDate = [NSDate date];
+//                                                                                            [aTag save];
+//                                                                                        }
+//                                                                                    });
+//                                                                                }];
+//            hideAction.backgroundColor = [ForstaColors darkGray];
+//            return @[ hideAction];
+//
+//        }
+//            break;
+//        case kSelectorHiddenIndex:
+//        {
+//            if (indexPath.section == kMonitorSectionIndex) {
+//                return @[];  // Monitors stay put.
+//            } else {
+//                UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+//                                                                                        title:NSLocalizedString(@"UNHIDE", nil)
+//                                                                                      handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+//                                                                                          id object = [self objectForIndexPath:tappedIndexPath];
+//                                                                                          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                                                                                              if ([object isKindOfClass:[SignalRecipient class]]) {
+//                                                                                                  SignalRecipient *recipient = (SignalRecipient *)object;
+//                                                                                                  recipient.hiddenDate = nil;
+//                                                                                                  [recipient save];
+//                                                                                              } else if ([object isKindOfClass:[FLTag class]]) {
+//                                                                                                  FLTag *aTag = (FLTag *)object;
+//                                                                                                  aTag.hiddenDate = nil;
+//                                                                                                  [aTag save];
+//                                                                                              }
+//                                                                                          });
+//                                                                                      }];
+//                unhideAction.backgroundColor = [ForstaColors darkGray];
+//                return @[ unhideAction];
+//            }
+//        }
+//            break;
+//        default:
+//        {
+//            return @[];
+//        }
+//            break;
+//    }
+//}
 
 -(void)refreshContentFromSource
 {
@@ -513,12 +518,13 @@
 }
 
 #pragma mark - UI Actions
+// Removing hide/unhide per request.
 - (IBAction)visibilitySelectorDidChange:(UISegmentedControl *)sender
 {
     if (self.visibilitySelector.selectedSegmentIndex == kSelectorVisibleIndex) {
-        [self changeMappingsGroupsTo:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]];
+//        [self changeMappingsGroupsTo:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]];
     } else if (self.visibilitySelector.selectedSegmentIndex == kSelectorHiddenIndex) {
-        [self changeMappingsGroupsTo:@[ FLHiddenContactsGroup, FLMonitorGroup ]];
+//        [self changeMappingsGroupsTo:@[ FLHiddenContactsGroup, FLMonitorGroup ]];
     }
 }
 
@@ -625,6 +631,7 @@
     }];
 }
 
+// Removing hide/unhide per request.
 -(void)changeMappingsGroupsTo:(NSArray<NSString *> *)groups
 {
     self.tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:groups
@@ -632,7 +639,7 @@
     for (NSString *group in groups) {
         [self.tagMappings setIsReversed:YES forGroup:group];
     }
-    
+
     [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction)  {
         [self.tagMappings updateWithTransaction:transaction];
         [self refreshTableView];

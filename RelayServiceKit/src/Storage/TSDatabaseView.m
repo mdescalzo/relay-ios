@@ -97,8 +97,9 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                                      SignalRecipient *recipient = (SignalRecipient *)object;
                                                      if (recipient.isMonitor) {
                                                          return FLMonitorGroup;
-                                                     } else if (recipient.hiddenDate) {
-                                                         return FLHiddenContactsGroup;
+                                                         // Removing hide/unhide per request.
+//                                                     } else if (recipient.hiddenDate) {
+//                                                         return FLHiddenContactsGroup;
                                                      } else {
                                                          return FLVisibleRecipientGroup;
                                                      }
