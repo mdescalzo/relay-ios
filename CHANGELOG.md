@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.4.0]
+### Fixed
+- Crash when added to conversation with non-org user.
+- Fixed giphy display in conversations.
+### Added
+- Support for Announcement mesages.
+- Sections in ThreadCreationView consistent with web client.
+- Hide/unhide items in ThreadCreationView.
+- Support for provisioning control messages.  Allows multiple mobile devices for a single user.
+### Update
+- Updated YapDatabase to 3.0.2.
+
 ## [1.3.1]
 ### Fixed
 - More graceful handling of bad recipient data.  Prevents crash.
@@ -67,6 +79,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.0
 [1.3.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.1
 [1.3.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.0
 [1.2.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.2.0
