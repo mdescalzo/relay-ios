@@ -132,13 +132,12 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     
     if (usersBlob.count > 0) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction)
-             {
-                 for (NSDictionary *userDict in usersBlob.allValues) {
-                     SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
-                     [self saveRecipient:recipient withTransaction:transaction];
-                 }
-             }];
+            for (NSDictionary *userDict in usersBlob.allValues) {
+                [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
+                    [self saveRecipient:recipient withTransaction:transaction];
+                }];
+            }
         });
     }
 }
@@ -185,22 +184,22 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     __block NSDictionary *tagsBlob = [[Environment getCurrent].ccsmStorage getTags];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            for (NSDictionary *tagDict in [tagsBlob allValues]) {
+        for (NSDictionary *tagDict in [tagsBlob allValues]) {
+            [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                 FLTag *aTag = [FLTag getOrCreateTagWithDictionary:tagDict transaction:transaction];
                 if (aTag.recipientIds.count == 0) {
                     [self removeTag:aTag withTransaction:transaction];
                 } else {
                     [self saveTag:aTag withTransaction:transaction];
                 }
-            }
-        }];
+            }];
+        }
     });
 }
 
 -(void)saveTag:(FLTag *_Nonnull)aTag
 {
-    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self saveTag:aTag withTransaction:transaction];
     }];
 }
@@ -213,7 +212,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(void)removeTag:(FLTag *_Nonnull)aTag
 {
-    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self removeTag:aTag withTransaction:transaction];
     }];
 }
