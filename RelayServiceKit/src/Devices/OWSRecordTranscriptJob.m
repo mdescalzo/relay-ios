@@ -83,6 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
         }
     } else {
         TSThread *thread = transcript.thread;
+        [thread updateWithPayload:jsonPayload];
+        [thread touch];
         
         NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
         

@@ -49,7 +49,7 @@
             continue;
         }
 
-        SignalRecipient *contact = [manager recipientWithUserID:identifier];
+        SignalRecipient *contact = [manager recipientWithUserId:identifier];
         
         if (!contact) {
             continue;

@@ -184,7 +184,7 @@
 //    } else if ([identifier isEqualToString:Signal_CallBack_Identifier]) {
 //        NSString *contactId = notification.userInfo[Signal_Call_UserInfo_Key];
 //        PhoneNumber *number = [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
-//        SignalRecipient *contact = [self.contactsManager recipientWithUserID:contactId];
+//        SignalRecipient *contact = [self.contactsManager recipientWithUserId:contactId];
 //        [Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
     } else if ([identifier isEqualToString:Signal_Message_MarkAsRead_Identifier]) {
         [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];

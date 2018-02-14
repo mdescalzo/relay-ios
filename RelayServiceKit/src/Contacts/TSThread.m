@@ -36,6 +36,7 @@ static const NSString *FLExpressionKey = @"expression";
 @synthesize name = _name;
 @synthesize prettyExpression = _prettyExpression;
 @synthesize universalExpression = _universalExpression;
+@synthesize participants = _participants;
 
 + (NSString *)collection {
     return @"TSThread";
@@ -102,13 +103,7 @@ static const NSString *FLExpressionKey = @"expression";
         thread.participants = [participantIDs copy];
         [thread saveWithTransaction:transaction];
     }
-    
-    for (NSString *uid in thread.participants) {
-        SignalRecipient *recipient = [SignalRecipient fetchObjectWithUniqueID:uid transaction:transaction];
-        if (recipient == nil) {
-            recipient = [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
-        }
-    }
+        
     return thread;
 }
 
@@ -308,6 +303,24 @@ static const NSString *FLExpressionKey = @"expression";
     }
 }
 
+//-(void)setParticipants:(NSArray<NSString *> *)value
+//{
+//    if (![_participants isEqual:value]) {
+//        _participants = value;
+//        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//            for (NSString* uid in _participants) {
+//                [Environment.getCurrent.contactsManager updateRecipient:uid];
+//             }
+//        });
+//    }
+//}
+//
+//-(NSArray<NSString *> *)participants
+//{
+//    return _participants;
+//}
+
 - (void)updateImageWithAttachmentStream:(TSAttachmentStream *)attachmentStream
 {
     [self setImage:[attachmentStream image]];
@@ -321,7 +334,7 @@ static const NSString *FLExpressionKey = @"expression";
 -(void)updateWithPayload:(NSDictionary *)payload
 {
     NSString *threadId = [payload objectForKey:FLThreadIDKey];
-    if (![payload objectForKey:FLThreadIDKey]) {
+    if (!threadId) {
         DDLogDebug(@"%@ - Attempted to retrieve thread with payload without a UID.", self.tag);
         return;
     }

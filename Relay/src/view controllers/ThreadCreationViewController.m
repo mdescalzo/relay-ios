@@ -64,6 +64,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    // Database connections setup
+    //    self.uiDbConnection = [TSStorageManager.sharedManager.database newConnection];
+    //    self.searchDbConnection = [TSStorageManager.sharedManager.database newConnection];
+    //    [self.uiDbConnection beginLongLivedReadTransaction];
+    //    [self updateMappings];
+    
     //    [self downSwipeRecognizer];
     self.slugViewHeight.constant = KMinInputHeight;
     //    self.slugContainerView.layoutManager.delegate = self;
@@ -80,7 +87,7 @@
     self.view.backgroundColor = [ForstaColors whiteColor];
     
     // Refresh control handling
-    UIView *refreshView = [UIView new];  //[[UIView alloc] initWithFrame:CGRectMake(0.0f, 8.0f, 0.0f, 0.0f)];
+    UIView *refreshView = [UIView new];
     [self.tableView insertSubview:refreshView atIndex:0];
     self.refreshControl = [UIRefreshControl new];
     //    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"REFRESHING", nil)];
@@ -89,32 +96,34 @@
                   forControlEvents:UIControlEventValueChanged];
     [refreshView addSubview:self.refreshControl];
     
-    self.uiDbConnection = [TSStorageManager.sharedManager.database newConnection];
-    self.searchDbConnection = [TSStorageManager.sharedManager.database newConnection];
+    [self visibilitySelectorDidChange:self.visibilitySelector];
+    [self updateGoButton];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self refreshTableView];
+    
     [self.uiDbConnection beginLongLivedReadTransaction];
     
-    // Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshTableView)
-                                                 name:FLCCSMTagsUpdated
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshTableView)
-                                                 name:FLCCSMUsersUpdated
-                                               object:nil];
+    [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction)  {
+        [self.tagMappings updateWithTransaction:transaction];
+    }];
+    
+    //     Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(yapDatabaseModified:)
                                                  name:YapDatabaseModifiedNotification
                                                object:nil];
-    [self updateGoButton];
-    [self updateMappings];
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewDidDisappear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.uiDbConnection endLongLivedReadTransaction];
     
-    [self updateFilteredMappings];
+    [super viewDidDisappear:animated];
 }
 
 -(void)dealloc
@@ -225,8 +234,8 @@
             UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
                                                                                   title:NSLocalizedString(@"HIDE", nil)
                                                                                 handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                                                    id object = [self objectForIndexPath:tappedIndexPath];
                                                                                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                                        id object = [self objectForIndexPath:tappedIndexPath];
                                                                                         if ([object isKindOfClass:[SignalRecipient class]]) {
                                                                                             SignalRecipient *recipient = (SignalRecipient *)object;
                                                                                             recipient.hiddenDate = [NSDate date];
@@ -250,8 +259,8 @@
                 UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
                                                                                         title:NSLocalizedString(@"UNHIDE", nil)
                                                                                       handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull tappedIndexPath) {
+                                                                                          id object = [self objectForIndexPath:tappedIndexPath];
                                                                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                                              id object = [self objectForIndexPath:tappedIndexPath];
                                                                                               if ([object isKindOfClass:[SignalRecipient class]]) {
                                                                                                   SignalRecipient *recipient = (SignalRecipient *)object;
                                                                                                   recipient.hiddenDate = nil;
@@ -280,19 +289,17 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.refreshControl beginRefreshing];
         [Environment.getCurrent.contactsManager refreshCCSMRecipients];
-        [self refreshTableView];
+        //        [self refreshTableView];
         [self.refreshControl endRefreshing];
     });
 }
 
 -(void)refreshTableView
 {
-    //    [self.uiDbConnection beginLongLivedReadTransaction];
-    [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        [self.tagMappings updateWithTransaction:transaction];
-        
-        //        [self.uiDbConnection endLongLivedReadTransaction];
-    }];
+    //    [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    //        [self.tagMappings updateWithTransaction:transaction];
+    //    }];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.tagMappings numberOfItemsInAllGroups] == 0) {
             self.searchInfoContainer.hidden = NO;
@@ -319,6 +326,8 @@
 - (void)yapDatabaseModified:(NSNotification *)notification
 {
     NSArray *notifications  = [self.uiDbConnection beginLongLivedReadTransaction];
+    
+    
     NSArray *sectionChanges = nil;
     NSArray *rowChanges     = nil;
     
@@ -326,11 +335,7 @@
                                                                              rowChanges:&rowChanges
                                                                        forNotifications:notifications
                                                                            withMappings:self.tagMappings];
-    
     if ([sectionChanges count] == 0 && [rowChanges count] == 0) {
-        [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-            [self.tagMappings updateWithTransaction:transaction];
-        }];
         return;
     }
     
@@ -373,7 +378,6 @@
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
             }
                 break;
-                
             case YapDatabaseViewChangeUpdate: {
                 [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationNone];
@@ -390,7 +394,7 @@
 #pragma mark - SearchBar delegate methods
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self updateFilteredMappings];
+    [self updateFilteredMappingsForce:NO];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -413,7 +417,6 @@
         // Do the lookup
         [CCSMCommManager asyncTagLookupWithString:searchText
                                           success:^(NSDictionary *results) {
-                                              DDLogDebug(@"%@", results);
                                               NSString *pretty = [results objectForKey:@"pretty"];
                                               NSArray *warnings = [results objectForKey:@"warnings"];
                                               
@@ -459,20 +462,16 @@
                                               }
                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                   self.searchBar.text = [NSString stringWithString:badStuff];
-                                                  [self updateFilteredMappings];
+                                                  [self updateFilteredMappingsForce:NO];
                                               });
                                               
-                                              // take this opportunity to store any userids
-                                              NSArray *userids = [results objectForKey:@"userids"];
-                                              if (userids.count > 0) {
-                                                  [self.searchDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                                                      for (NSString *uid in userids) {
-                                                          [Environment.getCurrent.contactsManager recipientWithUserID:uid transaction:transaction];
-                                                      }
-                                                  } completionBlock:^{
-                                                      [self refreshTableView];
-                                                  }];
-                                              }
+//                                              // take this opportunity to store any userids
+//                                              NSArray *userids = [results objectForKey:@"userids"];
+//                                              if (userids.count > 0) {
+//                                                  for (NSString *uid in userids) {
+//                                                      [Environment.getCurrent.contactsManager updateRecipient:uid];
+//                                                  }
+//                                              }
                                           }
                                           failure:^(NSError *error) {
                                               DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
@@ -517,7 +516,11 @@
 #pragma mark - UI actions
 - (IBAction)visibilitySelectorDidChange:(UISegmentedControl *)sender
 {
-    [self updateMappings];
+    if (self.visibilitySelector.selectedSegmentIndex == kSelectorVisibleIndex) {
+        [self changeMappingsGroupsTo:@[ FLVisibleRecipientGroup, FLActiveTagsGroup ]];
+    } else if (self.visibilitySelector.selectedSegmentIndex == kSelectorHiddenIndex) {
+        [self changeMappingsGroupsTo:@[ FLHiddenContactsGroup, FLMonitorGroup ]];
+    }
 }
 
 -(IBAction)didPressGoButton:(id)sender
@@ -533,8 +536,8 @@
         }
         [CCSMCommManager asyncTagLookupWithString:threadSlugs
                                           success:^(NSDictionary *results) {
+                                              [self storeUsersInResults:results];
                                               [self buildThreadWithResults:results];
-                                              //                                         [self storeUsersInResults:results];
                                           }
                                           failure:^(NSError *error) {
                                               DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
@@ -578,7 +581,7 @@
     return object;
 }
 
--(void)updateFilteredMappings
+-(void)updateFilteredMappingsForce:(BOOL)forced
 {
     __block NSString *filterString = [self.searchBar.text lowercaseString];
     __block YapDatabaseViewFiltering *filtering = [YapDatabaseViewFiltering withObjectBlock:^BOOL(YapDatabaseReadTransaction * _Nonnull transaction,
@@ -586,6 +589,9 @@
                                                                                                   NSString * _Nonnull collection,
                                                                                                   NSString * _Nonnull key,
                                                                                                   id  _Nonnull object) {
+        if (!([object isKindOfClass:[SignalRecipient class]] || [object isKindOfClass:[FLTag class]])) {
+            return NO;
+        }
         if (filterString.length > 0) {
             if ([object isKindOfClass:[FLTag class]]) {
                 FLTag *aTag = (FLTag *)object;
@@ -607,30 +613,31 @@
         }
     }];
     
-    [self.searchDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [[transaction ext:FLFilteredTagDatabaseViewExtensionName] setFiltering:filtering
-                                                                    versionTag:filterString];
-    }];
-    [self refreshTableView];
-}
-
--(void)updateMappings
-{
-    NSArray *selectedGroups = nil;
-    if (self.visibilitySelector.selectedSegmentIndex == kSelectorVisibleIndex) {
-        selectedGroups = @[ FLVisibleRecipientGroup, FLActiveTagsGroup ];
-    } else if (self.visibilitySelector.selectedSegmentIndex == kSelectorHiddenIndex) {
-        selectedGroups = @[ FLHiddenContactsGroup, FLMonitorGroup ];
+    __block NSString *versionTag = filterString;
+    if (forced) {
+        versionTag = [NSString stringWithFormat:@"%u", arc4random()];
     }
     
-    self.tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:selectedGroups
-                                                                  view:FLFilteredTagDatabaseViewExtensionName];
     
-    [self.uiDbConnection beginLongLivedReadTransaction];
+    [self.searchDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [[transaction ext:FLFilteredTagDatabaseViewExtensionName] setFiltering:filtering
+                                                                    versionTag:versionTag];
+        [self refreshTableView];
+    }];
+}
+
+-(void)changeMappingsGroupsTo:(NSArray<NSString *> *)groups
+{
+    self.tagMappings = [[YapDatabaseViewMappings alloc] initWithGroups:groups
+                                                                  view:FLFilteredTagDatabaseViewExtensionName];
+    for (NSString *group in groups) {
+        [self.tagMappings setIsReversed:YES forGroup:group];
+    }
+    
     [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction)  {
         [self.tagMappings updateWithTransaction:transaction];
+        [self refreshTableView];
     }];
-    [self refreshTableView];
 }
 
 -(void)updateGoButton
@@ -646,13 +653,15 @@
 -(void)storeUsersInResults:(NSDictionary *)results
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self.searchDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+//        [self.searchDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
             NSArray *userIds = [[results objectForKey:@"userids"] copy];
             for (NSString *uid in userIds) {
+                [Environment.getCurrent.contactsManager recipientWithUserId:uid];
                 // do the lookup things
-                [CCSMCommManager recipientFromCCSMWithID:uid transaction:transaction];
+//                [CCSMCommManager recipientFromCCSMWithID:uid transaction:transaction];
+                
             }
-        }];
+//        }];
     });
 }
 
@@ -687,14 +696,22 @@
         [self.navigationController dismissViewControllerAnimated:YES
                                                       completion:^() {
                                                           __block TSThread *thread = nil;
-                                                          [[TSStorageManager.sharedManager newDatabaseConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                                                              thread = [TSThread getOrCreateThreadWithParticipants:userIds transaction:transaction];
+//                                                          [self.searchDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+
+                                                          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                                                              for (NSString *uid in thread.participants) {
+                                                                  [Environment.getCurrent.contactsManager updateRecipient:uid];
+                                                              }
+                                                          });
+
+                                                          thread = [TSThread getOrCreateThreadWithParticipants:userIds];// transaction:transaction];
                                                               thread.type = @"conversation";
                                                               thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
                                                               thread.universalExpression = [[results objectForKey:@"universal"] copy];
-                                                              [thread saveWithTransaction:transaction];
-                                                          }];
-                                                          [Environment messageGroup:thread];
+                                                          [thread save]; //WithTransaction:transaction];
+//                                                          } completionBlock:^{
+                                                              [Environment messageGroup:thread];
+//                                                          }];
                                                       }];
     }
 }
@@ -869,6 +886,29 @@
 }
 
 #pragma mark - Accessors
+- (YapDatabaseConnection *)uiDbConnection {
+    NSAssert([NSThread isMainThread], @"Must access uiDatabaseConnection on main thread!");
+    if (!_uiDbConnection) {
+        YapDatabase *database = TSStorageManager.sharedManager.database;
+        _uiDbConnection = [database newConnection];
+        [_uiDbConnection beginLongLivedReadTransaction];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(yapDatabaseModified:)
+                                                     name:YapDatabaseModifiedNotification
+                                                   object:database];
+    }
+    return _uiDbConnection;
+}
+
+-(YapDatabaseConnection *)searchDbConnection
+{
+    if (_searchDbConnection == nil) {
+        YapDatabase *database = TSStorageManager.sharedManager.database;
+        _searchDbConnection = [database newConnection];
+    }
+    return _searchDbConnection;
+}
+
 //-(YapDatabaseViewMappings *)tagMappings
 //{
 //    if (_tagMappings == nil) {

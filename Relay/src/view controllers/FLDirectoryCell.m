@@ -66,7 +66,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         UIImage *avatar = nil;
         if (aTag.recipientIds.count == 1) {
-            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserID:[aTag.recipientIds anyObject]];
+            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:[aTag.recipientIds anyObject]];
             avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
             if (avatar == nil) {
                 OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId

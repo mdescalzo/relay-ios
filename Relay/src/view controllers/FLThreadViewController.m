@@ -178,10 +178,10 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(yapDatabaseModified:)
-                                                 name:TSUIDatabaseConnectionDidUpdateNotification
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(yapDatabaseModified:)
+//                                                 name:TSUIDatabaseConnectionDidUpdateNotification
+//                                               object:nil];
     
     // TODO: Investigate this!
     [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
@@ -486,18 +486,16 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     __block TSThread *thread = [self threadForIndexPath:indexPath];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (thread) {
-            if (thread.pinPosition) {
-                thread.pinPosition = nil;
-            } else {
-                thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:kPinnedSectionIndex] + 1];
-            }
-            [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                [thread saveWithTransaction:transaction];
-            }];
+    if (thread) {
+        if (thread.pinPosition) {
+            thread.pinPosition = nil;
+        } else {
+            thread.pinPosition = [NSNumber numberWithInteger:[self.tableView numberOfRowsInSection:kPinnedSectionIndex] + 1];
         }
-    });
+        [self.editingDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [thread saveWithTransaction:transaction];
+        }];
+    }
 }
 
 - (void)archiveIndexPath:(NSIndexPath *)indexPath

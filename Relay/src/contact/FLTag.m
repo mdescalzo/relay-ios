@@ -98,7 +98,7 @@
     FLTag *aTag = [self fetchObjectWithUniqueID:tagId transaction:transaction];
     if (!aTag) {
         aTag = [[FLTag alloc] initWithUniqueId:tagId];
-        [Environment.getCurrent.contactsManager saveTag:aTag withTransaction:transaction];
+//        [Environment.getCurrent.contactsManager saveTag:aTag withTransaction:transaction];
     }
     
     return aTag;
