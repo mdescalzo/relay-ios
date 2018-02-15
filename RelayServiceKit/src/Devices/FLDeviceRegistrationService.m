@@ -12,7 +12,6 @@
 #import "ECKeyPair+OWSPrivateKey.h"
 #import "NSData+Base64.h"
 #import <AxolotlKit/NSData+keyVersionByte.h>
-#import "OWSWebsocketSecurityPolicy.h"
 #import "Cryptography.h"
 #import "SRWebSocket.h"
 #import "CCSMStorage.h"

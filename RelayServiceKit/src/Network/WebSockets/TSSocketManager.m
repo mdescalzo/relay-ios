@@ -14,7 +14,7 @@
 #import "TSSocketManager.h"
 #import "TSStorageManager+keyingMaterial.h"
 
-#import "OWSWebsocketSecurityPolicy.h"
+//#import "OWSWebsocketSecurityPolicy.h"
 #import "Cryptography.h"
 
 #define kWebSocketHeartBeat 30
@@ -96,18 +96,18 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
         }
     }
 
-    NSString *tssAPI = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Server_API"];
-//    NSString *TSSUrlString = [[CCSMStorage new] textSecureURL];
-//    NSString *tssAPI = [TSSUrlString stringByReplacingOccurrencesOfString:@"http"
-//                                                                     withString:@"ws"];
-
+    NSString *tssAPI = nil;
+    NSString *TSSUrlString = [[CCSMStorage new] textSecureURL];
+    if (TSSUrlString.length > 0) {
+        tssAPI = [TSSUrlString stringByAppendingString:@"/v1/websocket/"];
+    } else {
+        tssAPI = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Server_API"];
+    }
+    tssAPI = [tssAPI stringByReplacingOccurrencesOfString:@"http"
+                                                     withString:@"ws"];
     NSString *webSocketConnect =
         [tssAPI stringByAppendingString:[[self sharedManager] webSocketAuthenticationString]];
-    NSURL *webSocketConnectURL   = [NSURL URLWithString:webSocketConnect];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:webSocketConnectURL];
-
-//    socket          = [[SRWebSocket alloc] initWithURLRequest:request];
-    socket          = [[SRWebSocket alloc] initWithURLRequest:request securityPolicy:[OWSWebsocketSecurityPolicy sharedPolicy]];
+    socket          = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:webSocketConnect]];
     socket.delegate = [self sharedManager];
 
     [[self sharedManager] setWebsocket:socket];
