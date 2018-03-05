@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.4.1]
+### Fixed
+- Fix for conversations displaying as announcements from archive view.
+
 ## [1.4.0]
 ### Fixed
 - Crash when added to conversation with non-org user.
