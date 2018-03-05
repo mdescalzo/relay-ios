@@ -430,10 +430,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     else if ([[segue identifier] isEqualToString:@"threadSelectedSegue"]) {
         self.navigationItem.backBarButtonItem.title = @"";
         MessagesViewController *destination = (MessagesViewController *)segue.destinationViewController;
-        [destination configureForThread:[self threadForIndexPath:[self.tableView indexPathForSelectedRow]] keyboardOnViewAppearing:NO];
+        TSThread *thread = [self threadForIndexPath:[self.tableView indexPathForSelectedRow]];
+        [destination configureForThread:thread keyboardOnViewAppearing:NO];
     } else if ([[segue identifier] isEqualToString:@"announcementThreadSelectedSegue"]) {
         FLAnnouncementViewController *vc = (FLAnnouncementViewController *)segue.destinationViewController;
-        vc.thread = [self threadForIndexPath:[self.tableView indexPathForSelectedRow]];
+        TSThread *thread = [self threadForIndexPath:[self.tableView indexPathForSelectedRow]];
+        vc.thread = thread;
     }
 }
 
@@ -776,21 +778,17 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section) {
-        case kAnnouncementsSectionIndex:
-        {
-            [self performSegueWithIdentifier:@"announcementThreadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
-        }
-            break;
-        case kPinnedSectionIndex:
-        case kRecentSectionIndex:
-        {
-            [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
-        }
-            break;
-        default:
-            break;
+    TSThread *thread = [self threadForIndexPath:indexPath];
+
+    if ([thread.type isEqualToString:FLThreadTypeConversation]) {
+        [self performSegueWithIdentifier:@"threadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+
+    } else if ([thread.type isEqualToString:FLThreadTypeAnnouncement]) {
+        [self performSegueWithIdentifier:@"announcementThreadSelectedSegue" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+    } else {
+        DDLogWarn(@"Unknown thread type encountered: %@", thread.type);
     }
+
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -800,26 +798,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         thread = [[transaction extension:TSThreadDatabaseViewExtensionName] objectAtIndexPath:indexPath
                                                                                  withMappings:self.threadMappings];
     }];
-    
-    //    // "Heal" any unnamed conversations which may be in the database.
-    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-    //        if ([thread.displayName isEqualToString:NSLocalizedString(@"Unnamed converstaion", @"")]) {
-    //            if (thread.universalExpression.length > 0) {
-    //                [CCSMCommManager asyncTagLookupWithString:thread.universalExpression
-    //                                                  success:^(NSDictionary * _Nonnull lookupDict) {
-    //                                                      if (lookupDict) {
-    //                                                          [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-    //                                                              thread.participants = [lookupDict objectForKey:@"userids"];
-    //                                                              thread.prettyExpression = [lookupDict objectForKey:@"pretty"];
-    //                                                              [thread saveWithTransaction:transaction];
-    //                                                          }];
-    //                                                      }
-    //                                                  } failure:^(NSError * _Nonnull error) {
-    //                                                      DDLogError(@"%@: TagMath lookup failed for thread repair.  Error: %@", self.tag, error.localizedDescription);
-    //                                                  }];
-    //            }
-    //        }
-    //    });
     
     return thread;
 }

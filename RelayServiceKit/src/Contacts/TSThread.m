@@ -13,11 +13,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static const NSString *FLThreadTitleKey = @"threadTitle";
-static const NSString *FLThreadIDKey = @"threadId";
-static const NSString *FLThreadTypeKey = @"threadType";
-static const NSString *FLDistributionKey = @"distribution";
-static const NSString *FLExpressionKey = @"expression";
+const NSString *FLThreadTitleKey = @"threadTitle";
+const NSString *FLThreadIDKey = @"threadId";
+const NSString *FLThreadTypeKey = @"threadType";
+const NSString *FLDistributionKey = @"distribution";
+const NSString *FLExpressionKey = @"expression";
+const NSString *FLThreadTypeConversation = @"conversation";
+const NSString *FLThreadTypeAnnouncement = @"announcement";
+
 
 @interface TSThread ()
 
@@ -229,6 +232,14 @@ static const NSString *FLExpressionKey = @"expression";
         return @"";
 }
 
+-(NSArray <NSString *> *)participants
+{
+    if (_participants.count == 0 && self.universalExpression.length > 0) {
+        [self validate];
+    }
+    return _participants;
+}
+
 -(NSString *)displayName
 {
     NSString *myID = TSAccountManager.sharedInstance.myself.uniqueId;
@@ -351,15 +362,7 @@ static const NSString *FLExpressionKey = @"expression";
 -(void)validate
 {
     [self updateWithExpression:self.universalExpression];
-    
-//    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        [self validateWithTransaction:transaction];
-//    }];
 }
-//-(void)validateWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
-//{
-//    [self updateWithExpression:self.universalExpression transaction:transaction];
-//}
 
 -(void)updateWithExpression:(NSString *)expression
 {
