@@ -406,6 +406,9 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(SignalRecipient *)recipientWithUserId:(NSString *)userId
 {
+    if (userId.length == 0) {
+        return nil;
+    }
     // Check to see if we already have it cached
     __block SignalRecipient *recipient = [self.recipientCache objectForKey:userId];
     if (recipient) {

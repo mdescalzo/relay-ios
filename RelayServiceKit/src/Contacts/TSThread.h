@@ -18,6 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TSThread : TSYapDatabaseObject
 
+extern NSString *FLThreadTitleKey;
+extern NSString *FLThreadIDKey;
+extern NSString *FLThreadTypeKey;
+extern NSString *FLDistributionKey;
+extern NSString *FLExpressionKey;
+extern NSString *FLThreadTypeConversation;
+extern NSString *FLThreadTypeAnnouncement;
+
 /**
  *  Whether the object is a group thread or not.
  *
