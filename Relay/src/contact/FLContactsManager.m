@@ -135,7 +135,9 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
             for (NSDictionary *userDict in usersBlob.allValues) {
                 [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
-                    [self saveRecipient:recipient withTransaction:transaction];
+                    if (recipient) {
+                        [self saveRecipient:recipient withTransaction:transaction];
+                    }
                 }];
             }
         });

@@ -116,12 +116,12 @@
                                                object:nil];
 }
 
--(void)viewDidDisappear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.uiDbConnection endLongLivedReadTransaction];
     
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 
 -(void)dealloc
@@ -322,7 +322,6 @@
 - (void)yapDatabaseModified:(NSNotification *)notification
 {
     NSArray *notifications  = [self.uiDbConnection beginLongLivedReadTransaction];
-    
     
     NSArray *sectionChanges = nil;
     NSArray *rowChanges     = nil;
@@ -624,7 +623,6 @@
                                                                     versionTag:versionTag];
     }];
     [self refreshTableView];
-
 }
 
 // Removing hide/unhide per request.
@@ -637,7 +635,12 @@
     }
 
     [self.uiDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction)  {
+        @try {
         [self.tagMappings updateWithTransaction:transaction];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Exception: %@", exception);
+        }
     }];
     [self refreshTableView];
 }
@@ -886,10 +889,10 @@
         YapDatabase *database = TSStorageManager.sharedManager.database;
         _uiDbConnection = [database newConnection];
         [_uiDbConnection beginLongLivedReadTransaction];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(yapDatabaseModified:)
-                                                     name:YapDatabaseModifiedNotification
-                                                   object:database];
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(yapDatabaseModified:)
+//                                                     name:YapDatabaseModifiedNotification
+//                                                   object:database];
     }
     return _uiDbConnection;
 }
