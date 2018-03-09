@@ -3,6 +3,7 @@
 ## [1.4.1]
 ### Fixed
 - Fix for conversations displaying as announcements from archive view.
+- Crash due to improper notification handling the threadCreationView.
 
 ## [1.4.0]
 ### Fixed
@@ -82,6 +83,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.1
 [1.4.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.0
 [1.3.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.1
 [1.3.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.0
