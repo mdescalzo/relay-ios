@@ -119,7 +119,7 @@
 //                                                  context:nil];
 
         self.avController.view.frame = self.containerView.bounds;
-        self.avController.view.backgroundColor = [UIColor clearColor];
+        self.avController.view.backgroundColor = [ForstaColors clearColor];
         [self.containerView addSubview:self.avController.view];
         
         [self.avController.player play];
@@ -223,7 +223,7 @@
 }
 
 -(UIColor *)bubbleColor {
-    if (self.isOutgoing) {
+    if (self.appliesMediaViewMaskAsOutgoing) {
         return [[ForstaColors outgoingBubbleColors] objectForKey:self.prefs.outgoingBubbleColorKey];
     } else {
         return [[ForstaColors incomingBubbleColors] objectForKey:self.prefs.incomingBubbleColorKey];

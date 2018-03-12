@@ -60,13 +60,10 @@ static Environment *environment = nil;
       relayServerHostNameSuffix:(NSString *)relayServerHostNameSuffix
                     certificate:(Certificate *)certificate
  supportedKeyAgreementProtocols:(NSArray *)keyAgreementProtocolsInDescendingPriority
-//                   phoneManager:(PhoneManager *)phoneManager
-//              recentCallManager:(RecentCallManager *)recentCallManager
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
                    zrtpClientId:(NSData *)zrtpClientId
                   zrtpVersionId:(NSData *)zrtpVersionId
                 contactsManager:(FLContactsManager *)contactsManager
-//                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender
 {
@@ -101,29 +98,15 @@ static Environment *environment = nil;
     _certificate = certificate;
     _relayServerHostNameSuffix = relayServerHostNameSuffix;
     _keyAgreementProtocolsInDescendingPriority = keyAgreementProtocolsInDescendingPriority;
-//    _phoneManager = phoneManager;
-//    _recentCallManager = recentCallManager;
     _zrtpClientId = zrtpClientId;
     _zrtpVersionId = zrtpVersionId;
     _contactsManager = contactsManager;
-//    _contactsUpdater = contactsUpdater;
     _networkManager = networkManager;
     _messageSender = messageSender;
     _invitationService = [FLInvitationService new];
 
-//    if (recentCallManager != nil) {
-//        // recentCallManagers are nil in unit tests because they would require unnecessary allocations. Detailed
-//        // explanation: https://github.com/WhisperSystems/Signal-iOS/issues/62#issuecomment-51482195
-//
-//        [recentCallManager watchForCallsThrough:phoneManager untilCancelled:nil];
-//    }
-
     return self;
 }
-
-//+ (PhoneManager *)phoneManager {
-//    return Environment.getCurrent.phoneManager;
-//}
 
 + (id<Logging>)logging {
     // Many tests create objects that rely on Environment only for logging.
