@@ -11,7 +11,6 @@
 
 @interface FLGiphyVideoAdapter : JSQMediaItem <OWSMessageEditing>
 
-@property BOOL isOutgoing;
 @property BOOL readyToPlay;
 
 -(instancetype)initWithURLString:(NSString *)giphyURLString;

@@ -82,12 +82,12 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
     if (object) {
         return object;
     } else {
-        dispatch_async([OWSDispatch serialQueue], ^{
+//        dispatch_async([OWSDispatch serialQueue], ^{
             object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
             if (object) {
                 [self.prefsCache setObject:object forKey:key];
             }
-        });
+//        });
         return object;
         
     }
