@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.4.2]
+### Fixed
+- Incorrect bubble color for sent giphys
+- Removed async preferences lookup causing improper fallback to default settings.
+
 ## [1.4.1]
 ### Fixed
 - Fix for conversations displaying as announcements from archive view.
@@ -83,6 +88,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.2]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.2
 [1.4.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.1
 [1.4.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.0
 [1.3.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.3.1
