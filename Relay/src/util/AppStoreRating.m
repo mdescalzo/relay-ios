@@ -13,8 +13,8 @@
 
 + (void)setupRatingLibrary {
     iRate *rate                         = [iRate sharedInstance];
-    rate.appStoreID                     = 874139669;
-    rate.appStoreGenreID                = 6005;
+//    rate.appStoreID                     = 1196512277;
+//    rate.appStoreGenreID                = 6005;
     rate.daysUntilPrompt                = 15;
     rate.usesUntilPrompt                = 10;
     rate.remindPeriod                   = 20;

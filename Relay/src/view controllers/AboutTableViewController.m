@@ -157,7 +157,7 @@
 
         NSString *tweetString = [NSString stringWithFormat:NSLocalizedString(@"SETTINGS_INVITE_TWITTER_TEXT", @"")];
         [tweetSheet setInitialText:tweetString];
-        [tweetSheet addURL:[NSURL URLWithString:@"https://forsta.io/signal/install/"]];
+        [tweetSheet addURL:[NSURL URLWithString:@"https://forsta.io/downloads"]];
         tweetSheet.completionHandler = ^(SLComposeViewControllerResult result) {
         };
         [self presentViewController:tweetSheet animated:YES completion:[UIUtil modalCompletionBlock]];

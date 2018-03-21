@@ -26,6 +26,7 @@ abstract_target 'Common' do
     pod 'UIImageView+Extension',       '~> 0.2.5.1', :inhibit_warnings => true
     pod 'SmileTouchID', :inhibit_warnings => true
     pod 'NSAttributedString-DDHTML', git: 'git@github.com:ForstaLabs/NSAttributedString-DDHTML.git', branch: 'master', :inhibit_warnings => true
+    pod 'iRate', '~> 1.12'
     
     target 'Relay' do
     end

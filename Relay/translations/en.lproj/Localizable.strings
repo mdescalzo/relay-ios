@@ -551,13 +551,13 @@
 "QUESTIONMARK_PUNCTUATION" = "?";
 
 /* No comment provided by engineer. */
-"RATING_MSG" = "If you enjoy using Forsta to have private conversations, you can support our project by rating it. It won't take more than a minute, and will help others find some privacy.";
+"RATING_MSG" = "If you enjoy using Forsta Messenger to have private conversations, you can support our project by rating it. It won't take more than a minute, and will help others find some privacy.";
 
 /* No comment provided by engineer. */
-"RATING_RATE" = "Rate Forsta";
+"RATING_RATE" = "Rate Forsta Messenger";
 
 /* No comment provided by engineer. */
-"RATING_TITLE" = "Support Forsta!";
+"RATING_TITLE" = "Support Forsta Messenger!";
 
 /* No comment provided by engineer. */
 "REGISTER_CC_ERR_ALERT_VIEW_MESSAGE" = "Please enter a valid country code";
