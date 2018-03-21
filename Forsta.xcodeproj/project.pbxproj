@@ -360,7 +360,6 @@
 		7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
 		7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
-		7D4A3A771F1693930023C29B /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
 		7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
 		7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
@@ -1043,7 +1042,6 @@
 		7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
 		7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
-		7DCFFE1E1F0EE4490003CD95 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
 		7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
 		7DCFFE201F0EE4490003CD95 /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7DCFFE211F0EE4490003CD95 /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
@@ -1193,7 +1191,6 @@
 		B10C9B601A7049EC00ECA2BF /* pause_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5C1A7049EC00ECA2BF /* pause_icon@2x.png */; };
 		B10C9B611A7049EC00ECA2BF /* play_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5D1A7049EC00ECA2BF /* play_icon.png */; };
 		B10C9B621A7049EC00ECA2BF /* play_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5E1A7049EC00ECA2BF /* play_icon@2x.png */; };
-		B609597C1C2C0FC6004E8797 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B609597B1C2C0FC6004E8797 /* iRate.m */; };
 		B60C16651988999D00E97A6C /* VersionMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = B60C16641988999D00E97A6C /* VersionMigrations.m */; };
 		B60EDE041A05A01700D73516 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60EDE031A05A01700D73516 /* AudioToolbox.framework */; };
 		B6258B331C29E2E60014138E /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
@@ -2201,8 +2198,6 @@
 		B10C9B5E1A7049EC00ECA2BF /* play_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play_icon@2x.png"; sourceTree = "<group>"; };
 		B20485A9B4860E2BCDF77692 /* Pods-Common-RelayStage.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-RelayStage.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage.app store release.xcconfig"; sourceTree = "<group>"; };
 		B462E78DB73BA9EF43380A26 /* Pods-Common-RelayDev.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Common-RelayDev.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev.app store release.xcconfig"; sourceTree = "<group>"; };
-		B609597A1C2C0FC6004E8797 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRate.h; path = Libraries/iRate/iRate.h; sourceTree = SOURCE_ROOT; };
-		B609597B1C2C0FC6004E8797 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iRate.m; path = Libraries/iRate/iRate.m; sourceTree = SOURCE_ROOT; };
 		B60C16631988999D00E97A6C /* VersionMigrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionMigrations.h; sourceTree = "<group>"; };
 		B60C16641988999D00E97A6C /* VersionMigrations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionMigrations.m; sourceTree = "<group>"; };
 		B60EDE031A05A01700D73516 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -2708,7 +2703,6 @@
 				70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */,
 				76EB048818170B33006006FC /* phone */,
 				76EB04B118170B33006006FC /* profiling */,
-				B60959791C2C0FA9004E8797 /* rating */,
 				7D516F1A1EF318F000E7E15F /* Services */,
 				45CD81A41DBFF8CF004C9430 /* Storyboards */,
 				76EB04C818170B33006006FC /* util */,
@@ -3774,15 +3768,6 @@
 				B462E78DB73BA9EF43380A26 /* Pods-Common-RelayDev.app store release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		B60959791C2C0FA9004E8797 /* rating */ = {
-			isa = PBXGroup;
-			children = (
-				B609597A1C2C0FC6004E8797 /* iRate.h */,
-				B609597B1C2C0FC6004E8797 /* iRate.m */,
-			);
-			name = rating;
 			sourceTree = "<group>";
 		};
 		B62D53F41A23CC8B009AAF82 /* TSMessageAdapters */ = {
@@ -4862,6 +4847,7 @@
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
+				"${PODS_ROOT}/iRate/iRate/iRate.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -4876,6 +4862,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@3x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/iRate.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4963,6 +4950,7 @@
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
+				"${PODS_ROOT}/iRate/iRate/iRate.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -4977,6 +4965,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@3x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/iRate.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5088,6 +5077,7 @@
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
+				"${PODS_ROOT}/iRate/iRate/iRate.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -5102,6 +5092,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@3x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/iRate.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5192,6 +5183,7 @@
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@3x.png",
+				"${PODS_ROOT}/iRate/iRate/iRate.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -5206,6 +5198,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@3x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/iRate.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5507,7 +5500,6 @@
 				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
 				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
 				7D7DBFCE1F97E24100860D35 /* FLControlMessage.m in Sources */,
-				7D4A3A771F1693930023C29B /* iRate.m in Sources */,
 				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
 				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
@@ -5847,7 +5839,6 @@
 				7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */,
 				7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */,
 				7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */,
-				7DCFFE1E1F0EE4490003CD95 /* iRate.m in Sources */,
 				7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */,
 				7DCFFE201F0EE4490003CD95 /* FutureUtil.m in Sources */,
 				7D6139A21F90171C00E18D29 /* TSAccountManager.m in Sources */,
@@ -6198,7 +6189,6 @@
 				BFB074C919A5611000F2947C /* ObservableValue.m in Sources */,
 				B68EF9BA1C0B1EBD009C3DCD /* FLAnimatedImage.m in Sources */,
 				B68112EA1A4D9EC400BA82FF /* UIImage+normalizeImage.m in Sources */,
-				B609597C1C2C0FC6004E8797 /* iRate.m in Sources */,
 				76EB05C818170B33006006FC /* HelloPacket.m in Sources */,
 				BFB074C719A5611000F2947C /* FutureUtil.m in Sources */,
 				7D6139A31F90171D00E18D29 /* TSAccountManager.m in Sources */,
