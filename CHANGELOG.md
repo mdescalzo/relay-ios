@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.4.3]
+### Fixed
+- Broken ratings link
+- Broken downloads link
+### Updated
+- iRate pod
+
 ## [1.4.2]
 ### Fixed
 - Incorrect bubble color for sent giphys
@@ -88,6 +95,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.3]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.3
 [1.4.2]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.2
 [1.4.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.1
 [1.4.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.0
