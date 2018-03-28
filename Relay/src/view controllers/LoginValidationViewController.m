@@ -314,6 +314,9 @@ NSUInteger maximumValidationAttempts = 9999;
                           orgName:[self.ccsmStorage getOrgName]
                           success:^{
                               DDLogDebug(@"Request for code resend succeeded.");
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  self.validationCodeTextField.text = @"";
+                              });
                           }
                           failure:^(NSError *err){
                               DDLogDebug(@"Request for code resend failed.  Error: %@", err.description);

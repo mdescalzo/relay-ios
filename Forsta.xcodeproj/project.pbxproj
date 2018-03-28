@@ -55,7 +55,6 @@
 		45C681C81D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C681C31D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.xib */; };
 		45C681C91D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C681C31D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.xib */; };
 		45CB2FA81CB7146C00E1B343 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CB2FA71CB7146C00E1B343 /* Launch Screen.storyboard */; };
-		45CD81A61DBFF8FC004C9430 /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CD81A51DBFF8FC004C9430 /* Registration.storyboard */; };
 		45CD81EF1DC030E7004C9430 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81EE1DC030E7004C9430 /* AccountManager.swift */; };
 		45CD81F21DC03A22004C9430 /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
 		45D231771DC7E8F10034FA89 /* SessionResetJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D231761DC7E8F10034FA89 /* SessionResetJob.swift */; };
@@ -430,7 +429,6 @@
 		7D4A3AC01F1693930023C29B /* audio_pause_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3D1A73426500B5C81A /* audio_pause_button.png */; };
 		7D4A3AC11F1693930023C29B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
 		7D4A3AC21F1693930023C29B /* play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AD41D7B31A6F6F0600241130 /* play_button.png */; };
-		7D4A3AC31F1693930023C29B /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CD81A51DBFF8FC004C9430 /* Registration.storyboard */; };
 		7D4A3AC41F1693930023C29B /* endcall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C51B1A1D190B0059AC12 /* endcall@2x.png */; };
 		7D4A3AC51F1693930023C29B /* error_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF371A3393DD00B47253 /* error_white@2x.png */; };
 		7D4A3AC61F1693930023C29B /* savephoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5501A1D190B0059AC12 /* savephoto@2x.png */; };
@@ -1112,7 +1110,6 @@
 		7DCFFE671F0EE4490003CD95 /* audio_pause_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AD83FF3D1A73426500B5C81A /* audio_pause_button.png */; };
 		7DCFFE681F0EE4490003CD95 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
 		7DCFFE691F0EE4490003CD95 /* play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AD41D7B31A6F6F0600241130 /* play_button.png */; };
-		7DCFFE6A1F0EE4490003CD95 /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CD81A51DBFF8FC004C9430 /* Registration.storyboard */; };
 		7DCFFE6B1F0EE4490003CD95 /* endcall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C51B1A1D190B0059AC12 /* endcall@2x.png */; };
 		7DCFFE6C1F0EE4490003CD95 /* error_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF371A3393DD00B47253 /* error_white@2x.png */; };
 		7DCFFE6D1F0EE4490003CD95 /* savephoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5501A1D190B0059AC12 /* savephoto@2x.png */; };
@@ -1619,7 +1616,6 @@
 		45C681C21D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSDisplayedMessageCollectionViewCell.m; sourceTree = "<group>"; };
 		45C681C31D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OWSDisplayedMessageCollectionViewCell.xib; sourceTree = "<group>"; };
 		45CB2FA71CB7146C00E1B343 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "Relay/src/util/Launch Screen.storyboard"; sourceTree = SOURCE_ROOT; };
-		45CD81A51DBFF8FC004C9430 /* Registration.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Registration.storyboard; path = Storyboards/Registration.storyboard; sourceTree = "<group>"; };
 		45CD81EE1DC030E7004C9430 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		45CD81F01DC03A22004C9430 /* OWSLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSLogger.h; sourceTree = "<group>"; };
 		45CD81F11DC03A22004C9430 /* OWSLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSLogger.m; sourceTree = "<group>"; };
@@ -2641,7 +2637,6 @@
 			children = (
 				45CB2FA71CB7146C00E1B343 /* Launch Screen.storyboard */,
 				A5509EC91A69AB8B00ABA4BC /* Main.storyboard */,
-				45CD81A51DBFF8FC004C9430 /* Registration.storyboard */,
 				7DBA8D661ED9FA62009FCF65 /* Login.storyboard */,
 				7D3B86561EE2169000190FD5 /* Main_v2.storyboard */,
 			);
@@ -4643,7 +4638,6 @@
 				7D4A3AC01F1693930023C29B /* audio_pause_button.png in Resources */,
 				7D4A3AC11F1693930023C29B /* Localizable.strings in Resources */,
 				7D4A3AC21F1693930023C29B /* play_button.png in Resources */,
-				7D4A3AC31F1693930023C29B /* Registration.storyboard in Resources */,
 				7D4A3AC41F1693930023C29B /* endcall@2x.png in Resources */,
 				7D4A3AC51F1693930023C29B /* error_white@2x.png in Resources */,
 				7D4A3AC61F1693930023C29B /* savephoto@2x.png in Resources */,
@@ -4701,7 +4695,6 @@
 				7DCFFE671F0EE4490003CD95 /* audio_pause_button.png in Resources */,
 				7DCFFE681F0EE4490003CD95 /* Localizable.strings in Resources */,
 				7DCFFE691F0EE4490003CD95 /* play_button.png in Resources */,
-				7DCFFE6A1F0EE4490003CD95 /* Registration.storyboard in Resources */,
 				7D014C5520237D2D00292964 /* redphone.cer in Resources */,
 				7DCFFE6B1F0EE4490003CD95 /* endcall@2x.png in Resources */,
 				7DCFFE6C1F0EE4490003CD95 /* error_white@2x.png in Resources */,
@@ -4758,7 +4751,6 @@
 				AD83FF441A73426500B5C81A /* audio_pause_button.png in Resources */,
 				B6F509971AA53F760068F56A /* Localizable.strings in Resources */,
 				AD41D7B51A6F6F0600241130 /* play_button.png in Resources */,
-				45CD81A61DBFF8FC004C9430 /* Registration.storyboard in Resources */,
 				7D014C5620237D2D00292964 /* redphone.cer in Resources */,
 				B633C59D1A1D190B0059AC12 /* endcall@2x.png in Resources */,
 				FC5CDF391A3393DD00B47253 /* error_white@2x.png in Resources */,
@@ -6528,7 +6520,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 181;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6597,7 +6589,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 181;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6664,7 +6656,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 181;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6732,7 +6724,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 181;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6938,7 +6930,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 181;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7004,7 +6996,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 181;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

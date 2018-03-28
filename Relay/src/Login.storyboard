@@ -363,7 +363,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Validation Code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sFx-a6-Obs">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Validation Code" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sFx-a6-Obs">
                                 <rect key="frame" x="36" y="172" width="303" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="ajR-9A-RaZ"/>
@@ -452,7 +452,6 @@
                         <outlet property="spinner" destination="eSA-GE-T4t" id="phb-Tq-ZM0"/>
                         <outlet property="validationButton" destination="pzC-eI-juG" id="df0-Vn-b6A"/>
                         <outlet property="validationCodeTextField" destination="sFx-a6-Obs" id="3ro-VB-teY"/>
-                        <segue destination="IvH-DS-Gho" kind="presentation" identifier="registrationSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="0r4-Ct-1V6"/>
                         <segue destination="lHa-vW-cYk" kind="presentation" identifier="mainSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="b3e-xB-Db4"/>
                     </connections>
                 </viewController>
@@ -460,21 +459,13 @@
             </objects>
             <point key="canvasLocation" x="-236" y="209.14542728635683"/>
         </scene>
-        <!--Registration-->
-        <scene sceneID="7gF-pa-jUJ">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Registration" id="IvH-DS-Gho" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9FC-42-eZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="518" y="107"/>
-        </scene>
         <!--Main_v2-->
         <scene sceneID="30S-pw-aQx">
             <objects>
                 <viewControllerPlaceholder storyboardName="Main_v2" id="lHa-vW-cYk" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lxn-3l-bHY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="538" y="286"/>
+            <point key="canvasLocation" x="489" y="209"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Rua-rS-UBS">
@@ -506,6 +497,6 @@
         <image name="Forsta_logo_blk_horiz" width="1510" height="525"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="SKf-Xq-tav"/>
+        <segue reference="I53-1W-qQs"/>
     </inferredMetricsTieBreakers>
 </document>
