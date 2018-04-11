@@ -184,6 +184,9 @@
 		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90181F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D3D90191F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
+		7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
+		7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
+		7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
 		7D49959A2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
 		7D49959B2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
@@ -1846,6 +1849,7 @@
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
 		7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
+		7D4794B9207EA38C00029A70 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
 		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
 		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
@@ -2445,6 +2449,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */,
 				7D613B081F901BE000E18D29 /* libSocketRocket.a in Frameworks */,
 				7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */,
 				7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */,
@@ -2477,6 +2482,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */,
 				7D613B0A1F901BF200E18D29 /* libSocketRocket.a in Frameworks */,
 				7DCFFE441F0EE4490003CD95 /* PromiseKit.framework in Frameworks */,
 				7DCFFE451F0EE4490003CD95 /* Photos.framework in Frameworks */,
@@ -2509,6 +2515,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */,
 				7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */,
 				7D613B0C1F901BFE00E18D29 /* libSocketRocket.a in Frameworks */,
 				456C38961DC7B882007536A7 /* PromiseKit.framework in Frameworks */,
@@ -4114,6 +4121,7 @@
 		D221A08C169C9E5E00537ABF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D4794B9207EA38C00029A70 /* CoreText.framework */,
 				7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */,
 				7D613B0D1F901BFE00E18D29 /* libSocketRocket.a */,
 				7D613B0B1F901BF200E18D29 /* libSocketRocket.a */,
@@ -4369,7 +4377,6 @@
 				7D4A39C01F1693930023C29B /* Sources */,
 				7D4A3A9B1F1693930023C29B /* Frameworks */,
 				7D4A3AB51F1693930023C29B /* Resources */,
-				D12FC9EC4E7001CD1E0419A2 /* [CP] Embed Pods Frameworks */,
 				89BF8206C5A256227EB0EB8C /* [CP] Copy Pods Resources */,
 				7D4A3AE71F1693930023C29B /* [Carthage] Copy Frameworks */,
 				7D4A3AE81F1693930023C29B /* Fabric start */,
@@ -4393,7 +4400,6 @@
 				7DCFFD681F0EE4490003CD95 /* Sources */,
 				7DCFFE421F0EE4490003CD95 /* Frameworks */,
 				7DCFFE5C1F0EE4490003CD95 /* Resources */,
-				833D2BBCF87EAAE07502F1E3 /* [CP] Embed Pods Frameworks */,
 				697B8CE9DD615771382AAB55 /* [CP] Copy Pods Resources */,
 				7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */,
 				7DCFFE901F0EE4490003CD95 /* Fabric start */,
@@ -4417,7 +4423,6 @@
 				D221A085169C9E5E00537ABF /* Sources */,
 				D221A086169C9E5E00537ABF /* Frameworks */,
 				D221A087169C9E5E00537ABF /* Resources */,
-				59C9DBA462715B5C999FFB02 /* [CP] Embed Pods Frameworks */,
 				3465F381B1856CC06933B3A8 /* [CP] Copy Pods Resources */,
 				451DE9EE1DC1546A00810E42 /* [Carthage] Copy Frameworks */,
 				7DB8FEDD1F06E8160031BA89 /* Fabric start */,
@@ -4441,7 +4446,6 @@
 				D221A0A5169C9E5F00537ABF /* Sources */,
 				D221A0A6169C9E5F00537ABF /* Frameworks */,
 				D221A0A7169C9E5F00537ABF /* Resources */,
-				B4E9B04E862FB64FC9A8F79B /* [CP] Embed Pods Frameworks */,
 				F76686434770E2BBEBD9665A /* [CP] Copy Pods Resources */,
 				451DE9FB1DC18D4500810E42 /* [Carthage] Copy Frameworks */,
 			);
@@ -4828,6 +4832,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-resources.sh",
+				"${PODS_ROOT}/HTMLPurifier/Supporting Files/HTMLPurifierConfig.plist",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
@@ -4843,6 +4848,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HTMLPurifierConfig.plist",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesAssets.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesViewController.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesCollectionViewCellIncoming.nib",
@@ -4891,21 +4897,6 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		59C9DBA462715B5C999FFB02 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6565655F4068F9E5CDC5687F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4931,6 +4922,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-resources.sh",
+				"${PODS_ROOT}/HTMLPurifier/Supporting Files/HTMLPurifierConfig.plist",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
@@ -4946,6 +4938,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HTMLPurifierConfig.plist",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesAssets.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesViewController.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesCollectionViewCellIncoming.nib",
@@ -5036,21 +5029,6 @@
 			shellPath = /bin/sh;
 			shellScript = "APIKey=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricAPIKey`\nBuildSecret=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricBuildSecret`\n\"${PODS_ROOT}/Fabric/run\" ${APIKey} ${BuildSecret}";
 		};
-		833D2BBCF87EAAE07502F1E3 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		89BF8206C5A256227EB0EB8C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5058,6 +5036,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-resources.sh",
+				"${PODS_ROOT}/HTMLPurifier/Supporting Files/HTMLPurifierConfig.plist",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
@@ -5073,6 +5052,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HTMLPurifierConfig.plist",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesAssets.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesViewController.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesCollectionViewCellIncoming.nib",
@@ -5091,21 +5071,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B4E9B04E862FB64FC9A8F79B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		C56AFA6802F66B7A80DE8503 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5122,21 +5087,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D12FC9EC4E7001CD1E0419A2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E838343721E3E1A8F2C9B87B /* [CP] Check Pods Manifest.lock */ = {
@@ -5164,6 +5114,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-resources.sh",
+				"${PODS_ROOT}/HTMLPurifier/Supporting Files/HTMLPurifierConfig.plist",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Assets/JSQMessagesAssets.bundle",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib",
@@ -5179,6 +5130,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HTMLPurifierConfig.plist",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesAssets.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesViewController.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesCollectionViewCellIncoming.nib",
