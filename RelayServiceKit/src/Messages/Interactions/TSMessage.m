@@ -249,7 +249,6 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         }
     }
     return _giphyURLString;
-//    return [self htmlBodyStringFromPayload];
 }
 
 -(NSArray *)attachmentProperties
@@ -371,7 +370,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                                                                         italicFont:[UIFont ows_italicFontWithSize:FLMessageViewFontSize]];
             }
         }
-        // Couldn't part the html string so fall back to plain
+        // Couldn't parse the html string so fall back to plain
         if (_attributedTextBody.length == 0 && self.plainTextBody.length > 0) {
             _attributedTextBody = [NSAttributedString attributedStringFromHTML:self.plainTextBody
                                                                     normalFont:[UIFont ows_regularFontWithSize:FLMessageViewFontSize]
