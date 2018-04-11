@@ -83,9 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
             CGFloat horizontalInsetsTotal = horizontalContainerInsets + horizontalFrameInsets + spacingBetweenAvatarAndBubble;
             CGFloat maximumTextWidth = [self textBubbleWidthForLayout:layout] - avatarSize.width - layout.messageBubbleLeftRightMargin - horizontalInsetsTotal;
             
-            CGRect stringRect;
-            if ([messageData attributedText]) {
-                stringRect = [[messageData attributedText] boundingRectWithSize:CGSizeMake(maximumTextWidth, CGFLOAT_MAX)
+            CGRect stringRect = CGRectZero;
+            id messageText = messageData.attributedText;
+            if (messageText > 0 && [messageText isKindOfClass:[NSAttributedString class]]) {
+                stringRect = [messageData.attributedText boundingRectWithSize:CGSizeMake(maximumTextWidth, CGFLOAT_MAX)
                                                                         options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
                                                                         context:nil];
             } else {
