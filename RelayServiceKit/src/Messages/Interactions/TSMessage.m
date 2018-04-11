@@ -10,6 +10,7 @@
 #import <YapDatabase/YapDatabaseTransaction.h>
 #import "UIFont+OWS.h"
 #import "NSAttributedString+DDHTML.h"
+#import "HTMLPurifier.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -444,7 +445,8 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         NSArray *body = [data objectForKey:@"body"];
         for (NSDictionary *dict in body) {
             if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/html"]) {
-                returnString = (NSString *)[dict objectForKey:@"value"];
+                NSString *dirtyString = (NSString *)[dict objectForKey:@"value"];
+                returnString = [HTMLPurifier cleanHTML:dirtyString];
             }
         }
     }
