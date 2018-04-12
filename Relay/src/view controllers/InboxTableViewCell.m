@@ -202,54 +202,6 @@ NS_ASSUME_NONNULL_BEGIN
                      }];
 }
 
--(nullable NSArray *)arrayFromMessageBody:(NSString *)body
-{
-    // Checks passed message body to see if it is JSON,
-    //    If it is, return the array of contents
-    //    else, return nil.
-    NSError *error =  nil;
-    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
-    NSArray *output = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    
-    if (error) {
-        return nil;
-    } else {
-        return output;
-    }
-}
-
--(NSString *)plainBodyStringFromBlob:(NSArray *)blob
-{
-    if ([blob count] > 0) {
-        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
-        NSDictionary *data = [tmpDict objectForKey:@"data"];
-        NSArray *body = [data objectForKey:@"body"];
-        for (NSDictionary *dict in body) {
-            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/plain"]) {
-                return (NSString *)[dict objectForKey:@"value"];
-            }
-        }
-    }
-    return @"";
-}
-
--(NSString *)htmlBodyStringFromBlob:(NSArray *)blob
-{
-    if ([blob count] > 0) {
-        NSDictionary *tmpDict = (NSDictionary *)[blob lastObject];
-        NSDictionary *data = [tmpDict objectForKey:@"data"];
-        NSArray *body = [data objectForKey:@"body"];
-        for (NSDictionary *dict in body) {
-            if ([(NSString *)[dict objectForKey:@"type"] isEqualToString:@"text/html"]) {
-                return (NSString *)[dict objectForKey:@"value"];
-            }
-        }
-    }
-    return @"";
-}
-
-
-
 @end
 
 NS_ASSUME_NONNULL_END
