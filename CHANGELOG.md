@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.4.4]
+### Fixed
+- Intermittent crash on superscript/subscript tags
+### Added
+- Implemented HTMLPurifier
+
 ## [1.4.3]
 ### Fixed
 - Broken ratings link
