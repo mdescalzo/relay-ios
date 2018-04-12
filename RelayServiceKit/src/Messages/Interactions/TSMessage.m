@@ -352,7 +352,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
 
 -(nullable NSAttributedString *)attributedTextBody
 {
-    if (_attributedTextBody.length == 0) {
+//    if (_attributedTextBody.length == 0) {
         if (self.forstaPayload) {
             NSString *htmlString = [self htmlBodyStringFromPayload];
             
@@ -384,7 +384,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
                 _attributedTextBody = [_attributedTextBody attributedSubstringFromRange:NSMakeRange(0, _attributedTextBody.string.length-1)];
             }
         }
-    }
+//    }
     return _attributedTextBody;
 }
 
