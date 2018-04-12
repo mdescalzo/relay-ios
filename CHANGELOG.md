@@ -101,6 +101,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.4]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.4
 [1.4.3]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.3
 [1.4.2]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.2
 [1.4.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.1
