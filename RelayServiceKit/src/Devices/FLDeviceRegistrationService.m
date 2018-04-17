@@ -60,7 +60,7 @@
             NSString *serverURL = [payload objectForKey:@"serverUrl"];
             [[[CCSMStorage alloc] init] setTextSecureURL:serverURL];
             NSArray *devices = [payload objectForKey:@"devices"];
-            DDLogInfo(@"Provisioning found %ld other registered devices.", devices.count);
+            DDLogInfo(@"Provisioning found %d other registered devices.", (int)devices.count);
 
             // Found some, request provisioning
             if (devices.count > 0) {
@@ -123,7 +123,6 @@
         dispatch_time_t waittime = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 15);
        long result = dispatch_semaphore_wait(self.provisioningSemaphore, waittime);
         
-//    dispatch_semaphore_wait(self.provisioningSemaphore, DISPATCH_TIME_FOREVER);
         [self.provisioningSocket close];
         if (result == 0) {  // Another device provisioned us!  We're good to go.
             [[NSNotificationCenter defaultCenter] postNotificationName:FLRegistrationStatusUpdateNotification
@@ -233,10 +232,6 @@
     NSString *socketString = [tssURLString stringByReplacingOccurrencesOfString:@"http"
                                                                      withString:@"ws"];
     NSString *urlString = [socketString stringByAppendingString:@"/v1/websocket/provisioning/"];
-    //    getProvisioningWebSocketURL () {
-    //        return this.url.replace('https://', 'wss://').replace('http://', 'ws://') +
-    //        '/v1/websocket/provisioning/';
-    //    }
     NSURL *url = [NSURL URLWithString:urlString];
     
     return url;

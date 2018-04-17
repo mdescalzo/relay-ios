@@ -232,6 +232,11 @@ NSUInteger maximumValidationAttempts = 9999;
                                                                           handler:^(UIAlertAction * _Nonnull action) {
                                                                               // Do nothin'
                                                                           }]];
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"FORCE_PROVISION", nil)
+                                                                            style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                                              
+                                                                          }]];
                         [self.navigationController presentViewController:alertController animated:YES completion:^{
                             self.infoLabel.text = @"";
                             [self.spinner stopAnimating];
