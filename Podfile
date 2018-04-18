@@ -27,7 +27,6 @@ abstract_target 'Common' do
     pod 'SmileTouchID', :inhibit_warnings => true
     pod 'NSAttributedString-DDHTML', git: 'git@github.com:ForstaLabs/NSAttributedString-DDHTML.git', branch: 'master', :inhibit_warnings => true
     pod 'iRate', '~> 1.12'
-    pod 'HTMLPurifier', '~> 1.1.6'
     
     target 'Relay' do
     end
