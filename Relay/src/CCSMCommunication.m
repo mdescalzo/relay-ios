@@ -741,7 +741,7 @@
         
         if (![fileManager fileExistsAtPath: path])
         {
-            DDLogDebug(@"Tokens Not Found.");
+            DDLogError(@"Tokens Not Found.");
         }
         
         NSDictionary *tokenDict = [[NSDictionary alloc] initWithContentsOfFile:path];
