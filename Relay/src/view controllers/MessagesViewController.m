@@ -671,6 +671,7 @@ typedef enum : NSUInteger {
         message.plainTextBody = text;
         message.messageType = @"content";
         message.uniqueId = [[NSUUID UUID] UUIDString];
+        message.recipients = [self.thread.participants copy];
 
         [self.editingDatabaseConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [message saveWithTransaction:transaction];
@@ -1797,6 +1798,7 @@ typedef enum : NSUInteger {
     }
     message.uniqueId = [[NSUUID UUID] UUIDString];
     message.messageType = @"content";
+    message.recipients = [self.thread.participants copy];
     
     // Check to see if a model view is being presented and dismiss if necessary.
     UIViewController *vc = [self.navigationController presentedViewController];

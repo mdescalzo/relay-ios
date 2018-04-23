@@ -49,6 +49,16 @@ typedef NS_ENUM(NSInteger, TSOutgoingMessageState) {
 @property NSString *customMessage;
 @property (atomic, readonly) NSString *mostRecentFailureText;
 
+/**
+ * Collection of recipient UIDs
+ */
+@property (nonatomic) NSArray<NSString *> *recipients;
+
+/**
+ * Collection of UID/Date key pairs for receipts
+ */
+@property (nonatomic) NSMutableDictionary *receipts;
+
 - (void)setSendingError:(NSError *)error;
 
 /**

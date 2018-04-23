@@ -213,6 +213,15 @@ NS_ASSUME_NONNULL_BEGIN
     return _messageState;
 }
 
+
+-(NSMutableDictionary *)receipts
+{
+    if (_receipts == nil) {
+        _receipts = [NSMutableDictionary new];
+    }
+    return _receipts;
+}
+
 #pragma mark - Logging
 
 + (NSString *)tag

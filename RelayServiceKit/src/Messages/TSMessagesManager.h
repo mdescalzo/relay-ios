@@ -13,14 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 @class OWSSignalServiceProtosDataMessage;
 @class ContactsUpdater;
 @class OWSDisappearingMessagesJob;
-@class OWSMessageSender;
+@class FLMessageSender;
 @protocol ContactsManagerProtocol;
 
 @interface TSMessagesManager : NSObject
 
 @property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
 @property (nonatomic, readonly) TSStorageManager *storageManager;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) FLMessageSender *messageSender;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
                         storageManager:(TSStorageManager *)storageManager
                        contactsManager:(id<ContactsManagerProtocol>)contactsManager
 //                       contactsUpdater:(ContactsUpdater *)contactsUpdater
-                         messageSender:(OWSMessageSender *)messageSender NS_DESIGNATED_INITIALIZER;
+                         messageSender:(FLMessageSender *)messageSender NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)sharedManager;
 

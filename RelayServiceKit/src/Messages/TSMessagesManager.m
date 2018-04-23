@@ -11,7 +11,7 @@
 #import "OWSDisappearingMessagesConfiguration.h"
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSIncomingSentMessageTranscript.h"
-#import "OWSMessageSender.h"
+#import "FLMessageSender.h"
 #import "OWSReadReceiptsProcessor.h"
 #import "OWSRecordTranscriptJob.h"
 #import "OWSSyncContactsMessage.h"
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //@property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
 //@property (nonatomic, readonly) TSStorageManager *storageManager;
-//@property (nonatomic, readonly) OWSMessageSender *messageSender;
+//@property (nonatomic, readonly) FLMessageSender *messageSender;
 //@property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 
 @property NSUInteger preKeyRetries;
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
     TSStorageManager *storageManager = [TSStorageManager sharedManager];
     id<ContactsManagerProtocol> contactsManager = [TextSecureKitEnv sharedEnv].contactsManager;
-    OWSMessageSender *messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
+    FLMessageSender *messageSender = [[FLMessageSender alloc] initWithNetworkManager:networkManager
                                                                         storageManager:storageManager
                                                                        contactsManager:contactsManager];
     
@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithNetworkManager:(TSNetworkManager *)networkManager
                         storageManager:(TSStorageManager *)storageManager
                        contactsManager:(id<ContactsManagerProtocol>)contactsManager
-                         messageSender:(OWSMessageSender *)messageSender
+                         messageSender:(FLMessageSender *)messageSender
 {
     self = [super init];
     
@@ -139,6 +139,11 @@ NS_ASSUME_NONNULL_BEGIN
         if ([interaction isKindOfClass:[TSOutgoingMessage class]]) {
             TSOutgoingMessage *outgoingMessage = (TSOutgoingMessage *)interaction;
             outgoingMessage.messageState = TSOutgoingMessageStateDelivered;
+            
+            // Check for prior received receipt and add entry if none there
+            if (![outgoingMessage.receipts objectForKey:envelope.source]) {
+                [outgoingMessage.receipts setObject:[NSDate ows_dateWithMillisecondsSince1970:envelope.timestamp] forKey:envelope.source];
+            }
             
             // Hand thread changes made by myself on a different client
             if ([outgoingMessage respondsToSelector:@selector(forstaPayload)]) {
