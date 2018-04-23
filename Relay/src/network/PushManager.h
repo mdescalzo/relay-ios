@@ -14,22 +14,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class UILocalNotification;
 
-#define Signal_Thread_UserInfo_Key @"Signal_Thread_Id"
-#define Signal_Message_UserInfo_Key @"Signal_Message_Id"
+#define Forsta_Thread_UserInfo_Key @"Forsta_Thread_Id"
+#define Forsta_Message_UserInfo_Key @"Forsta_Message_Id"
 
-#define Signal_Call_UserInfo_Key @"Signal_Call_Id"
+#define Forsta_Call_UserInfo_Key @"Forsta_Call_Id"
 
-#define Signal_Call_Accept_Identifier @"Signal_Call_Accept"
-#define Signal_Call_Decline_Identifier @"Signal_Call_Decline"
+#define Forsta_Call_Accept_Identifier @"Forsta_Call_Accept"
+#define Forsta_Call_Decline_Identifier @"Forsta_Call_Decline"
 
-#define Signal_CallBack_Identifier @"Signal_CallBack"
+#define Forsta_CallBack_Identifier @"Forsta_CallBack"
 
-#define Signal_Call_Category @"Signal_IncomingCall"
-#define Signal_Full_New_Message_Category @"Signal_Full_New_Message"
-#define Signal_CallBack_Category @"Signal_CallBack"
+#define Forsta_Call_Category @"Forsta_IncomingCall"
+#define Forsta_Full_New_Message_Category @"Forsta_Full_New_Message"
+#define Forsta_CallBack_Category @"Forsta_CallBack"
 
-#define Signal_Message_Reply_Identifier @"Signal_New_Message_Reply"
-#define Signal_Message_MarkAsRead_Identifier @"Signal_Message_MarkAsRead"
+#define Forsta_Message_Reply_Identifier @"Forsta_New_Message_Reply"
+#define Forsta_Message_MarkAsRead_Identifier @"Forsta_Message_MarkAsRead"
 
 typedef void (^failedPushRegistrationBlock)(NSError *error);
 typedef void (^pushTokensSuccessBlock)(NSString *pushToken, NSString *voipToken);

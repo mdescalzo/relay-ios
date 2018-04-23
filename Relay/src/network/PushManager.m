@@ -121,7 +121,7 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    NSString *threadId = notification.userInfo[Signal_Thread_UserInfo_Key];
+    NSString *threadId = notification.userInfo[Forsta_Thread_UserInfo_Key];
     if (threadId && [TSThread fetchObjectWithUniqueID:threadId]) {
         [Environment messageThreadId:threadId];
     }
@@ -144,8 +144,8 @@
               withResponseInfo:(NSDictionary *)responseInfo
              completionHandler:(void (^)())completionHandler
 {
-    if ([identifier isEqualToString:Signal_Message_Reply_Identifier]) {
-        NSString *threadId = notification.userInfo[Signal_Thread_UserInfo_Key];
+    if ([identifier isEqualToString:Forsta_Message_Reply_Identifier]) {
+        NSString *threadId = notification.userInfo[Forsta_Thread_UserInfo_Key];
 
         if (threadId) {
             TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId];
@@ -156,7 +156,6 @@
             [self.messageSender sendMessage:message
                 success:^{
                     [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];
-//                    [[[[Environment getCurrent] signalsViewController] tableView] reloadData];
                     [[[[Environment getCurrent] forstaViewController] tableView] reloadData];
                 }
                 failure:^(NSError *error) {
@@ -166,37 +165,37 @@
                     UILocalNotification *failedSendNotif = [[UILocalNotification alloc] init];
                     failedSendNotif.alertBody =
                         [NSString stringWithFormat:NSLocalizedString(@"NOTIFICATION_SEND_FAILED", nil), thread.displayName];
-                    failedSendNotif.userInfo = @{ Signal_Thread_UserInfo_Key : thread.uniqueId };
+                    failedSendNotif.userInfo = @{ Forsta_Thread_UserInfo_Key : thread.uniqueId };
                     [self presentNotification:failedSendNotif];
                     completionHandler();
                 }];
         }
-//    } else if ([identifier isEqualToString:Signal_Call_Accept_Identifier]) {
+//    } else if ([identifier isEqualToString:Forsta_Call_Accept_Identifier]) {
 //        [Environment.phoneManager answerCall];
 //
 //        completionHandler();
-//    } else if ([identifier isEqualToString:Signal_Call_Decline_Identifier]) {
+//    } else if ([identifier isEqualToString:Forsta_Call_Decline_Identifier]) {
 //        [Environment.phoneManager hangupOrDenyCall];
 //
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 //          completionHandler();
 //        });
-//    } else if ([identifier isEqualToString:Signal_CallBack_Identifier]) {
-//        NSString *contactId = notification.userInfo[Signal_Call_UserInfo_Key];
+//    } else if ([identifier isEqualToString:Forsta_CallBack_Identifier]) {
+//        NSString *contactId = notification.userInfo[Forsta_Call_UserInfo_Key];
 //        PhoneNumber *number = [PhoneNumber tryParsePhoneNumberFromUserSpecifiedText:contactId];
 //        SignalRecipient *contact = [self.contactsManager recipientWithUserId:contactId];
 //        [Environment.phoneManager initiateOutgoingCallToContact:contact atRemoteNumber:number];
-    } else if ([identifier isEqualToString:Signal_Message_MarkAsRead_Identifier]) {
+    } else if ([identifier isEqualToString:Forsta_Message_MarkAsRead_Identifier]) {
         [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];
     } else {
-        NSString *threadId = notification.userInfo[Signal_Thread_UserInfo_Key];
+        NSString *threadId = notification.userInfo[Forsta_Thread_UserInfo_Key];
         [Environment messageThreadId:threadId];
         completionHandler();
     }
 }
 
 - (void)markAllInThreadAsRead:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
-    NSString *threadId = userInfo[Signal_Thread_UserInfo_Key];
+    NSString *threadId = userInfo[Forsta_Thread_UserInfo_Key];
 
     TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId];
     [[TSStorageManager sharedManager]
@@ -215,7 +214,7 @@
 //    NSDictionary *aps  = pushDict[@"aps"];
 //    NSString *category = aps[@"category"];
 //
-//    if ([category isEqualToString:Signal_Call_Category]) {
+//    if ([category isEqualToString:Forsta_Call_Category]) {
 //        return YES;
 //    } else {
 //        return NO;
@@ -305,14 +304,14 @@
 
 - (UIUserNotificationCategory *)fullNewMessageNotificationCategory {
     UIMutableUserNotificationAction *action_markRead = [UIMutableUserNotificationAction new];
-    action_markRead.identifier                       = Signal_Message_MarkAsRead_Identifier;
+    action_markRead.identifier                       = Forsta_Message_MarkAsRead_Identifier;
     action_markRead.title                            = NSLocalizedString(@"PUSH_MANAGER_MARKREAD", nil);
     action_markRead.destructive                      = NO;
     action_markRead.authenticationRequired           = NO;
     action_markRead.activationMode                   = UIUserNotificationActivationModeBackground;
 
     UIMutableUserNotificationAction *action_reply = [UIMutableUserNotificationAction new];
-    action_reply.identifier                       = Signal_Message_Reply_Identifier;
+    action_reply.identifier                       = Forsta_Message_Reply_Identifier;
     action_reply.title                            = NSLocalizedString(@"PUSH_MANAGER_REPLY", @"");
     action_reply.destructive                      = NO;
     action_reply.authenticationRequired           = NO; // Since YES is broken in iOS 9 GM
@@ -324,7 +323,7 @@
     }
 
     UIMutableUserNotificationCategory *messageCategory = [UIMutableUserNotificationCategory new];
-    messageCategory.identifier                         = Signal_Full_New_Message_Category;
+    messageCategory.identifier                         = Forsta_Full_New_Message_Category;
     [messageCategory setActions:@[ action_markRead, action_reply ] forContext:UIUserNotificationActionContextMinimal];
     [messageCategory setActions:@[] forContext:UIUserNotificationActionContextDefault];
 
@@ -333,21 +332,21 @@
 
 - (UIUserNotificationCategory *)userNotificationsCallCategory {
     UIMutableUserNotificationAction *action_accept = [UIMutableUserNotificationAction new];
-    action_accept.identifier                       = Signal_Call_Accept_Identifier;
+    action_accept.identifier                       = Forsta_Call_Accept_Identifier;
     action_accept.title                            = NSLocalizedString(@"ANSWER_CALL_BUTTON_TITLE", @"");
     action_accept.activationMode                   = UIUserNotificationActivationModeForeground;
     action_accept.destructive                      = NO;
     action_accept.authenticationRequired           = NO;
 
     UIMutableUserNotificationAction *action_decline = [UIMutableUserNotificationAction new];
-    action_decline.identifier                       = Signal_Call_Decline_Identifier;
+    action_decline.identifier                       = Forsta_Call_Decline_Identifier;
     action_decline.title                            = NSLocalizedString(@"REJECT_CALL_BUTTON_TITLE", @"");
     action_decline.activationMode                   = UIUserNotificationActivationModeBackground;
     action_decline.destructive                      = NO;
     action_decline.authenticationRequired           = NO;
 
     UIMutableUserNotificationCategory *callCategory = [UIMutableUserNotificationCategory new];
-    callCategory.identifier                         = Signal_Call_Category;
+    callCategory.identifier                         = Forsta_Call_Category;
     [callCategory setActions:@[ action_accept, action_decline ] forContext:UIUserNotificationActionContextMinimal];
     [callCategory setActions:@[ action_accept, action_decline ] forContext:UIUserNotificationActionContextDefault];
 
@@ -356,14 +355,14 @@
 
 - (UIUserNotificationCategory *)userNotificationsCallBackCategory {
     UIMutableUserNotificationAction *action_accept = [UIMutableUserNotificationAction new];
-    action_accept.identifier                       = Signal_CallBack_Identifier;
+    action_accept.identifier                       = Forsta_CallBack_Identifier;
     action_accept.title                            = NSLocalizedString(@"CALLBACK_BUTTON_TITLE", @"");
     action_accept.activationMode                   = UIUserNotificationActivationModeForeground;
     action_accept.destructive                      = NO;
     action_accept.authenticationRequired           = NO;
 
     UIMutableUserNotificationCategory *callCategory = [UIMutableUserNotificationCategory new];
-    callCategory.identifier                         = Signal_CallBack_Category;
+    callCategory.identifier                         = Forsta_CallBack_Category;
     [callCategory setActions:@[ action_accept ] forContext:UIUserNotificationActionContextMinimal];
     [callCategory setActions:@[ action_accept ] forContext:UIUserNotificationActionContextDefault];
 
@@ -418,7 +417,7 @@
 - (void)cancelNotificationsWithThreadId:(NSString *)threadId {
     NSMutableArray *toDelete = [NSMutableArray array];
     [self.currentNotifications enumerateObjectsUsingBlock:^(UILocalNotification *notif, NSUInteger idx, BOOL *stop) {
-      if ([notif.userInfo[Signal_Thread_UserInfo_Key] isEqualToString:threadId]) {
+      if ([notif.userInfo[Forsta_Thread_UserInfo_Key] isEqualToString:threadId]) {
           [[UIApplication sharedApplication] cancelLocalNotification:notif];
           [toDelete addObject:notif];
       }

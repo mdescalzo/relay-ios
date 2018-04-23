@@ -63,8 +63,8 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
 //            if ([[Environment preferences] notificationPreviewType] == NotificationNoNameNoPreview) {
 //                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"MISSED_CALL", nil)];
 //            } else {
-//                notification.userInfo = @{Signal_Call_UserInfo_Key : cThread.contactIdentifier};
-//                notification.category = Signal_CallBack_Category;
+//                notification.userInfo = @{Forsta_Call_UserInfo_Key : cThread.contactIdentifier};
+//                notification.category = Forsta_CallBack_Category;
 //                notification.alertBody =
 //                    [NSString stringWithFormat:NSLocalizedString(@"MSGVIEW_MISSED_CALL", nil), [thread name]];
 //            }
@@ -79,7 +79,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
 
     if (([UIApplication sharedApplication].applicationState != UIApplicationStateActive) && messageDescription) {
         UILocalNotification *notification = [[UILocalNotification alloc] init];
-        notification.userInfo             = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
+        notification.userInfo             = @{Forsta_Thread_UserInfo_Key : thread.uniqueId};
         if ([Environment.preferences soundInBackground] &&
             [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
             notification.soundName = @"NewMessage.aifc";
@@ -127,9 +127,9 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
         
         switch ([[Environment preferences] notificationPreviewType]) {
             case NotificationNamePreview:
-                notification.category = Signal_Full_New_Message_Category;
+                notification.category = Forsta_Full_New_Message_Category;
                 notification.userInfo =
-                @{Signal_Thread_UserInfo_Key : thread.uniqueId, Signal_Message_UserInfo_Key : message.uniqueId};
+                @{Forsta_Thread_UserInfo_Key : thread.uniqueId, Forsta_Message_UserInfo_Key : message.uniqueId};
                 if ([name isEqualToString:thread.displayName]) {
                     notification.alertBody = [NSString stringWithFormat:@"%@: %@", name, messageDescription];
                 } else {
@@ -137,7 +137,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
                 }
                 break;
             case NotificationNameNoPreview: {
-                notification.userInfo = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
+                notification.userInfo = @{Forsta_Thread_UserInfo_Key : thread.uniqueId};
                 notification.alertBody =
                 [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"APN_MESSAGE_FROM", nil), name];
                 break;
