@@ -183,6 +183,37 @@ NSUInteger maximumValidationAttempts = 9999;
 
 
 #pragma mark - Workers
+-(void)proceedToMain
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [TSSocketManager becomeActiveFromForeground];
+        [CCSMCommManager refreshCCSMData];
+    });
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self stopSpinner];
+        [self performSegueWithIdentifier:@"mainSegue" sender:self];
+    });
+}
+
+-(void)startSpinner
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner startAnimating];
+        self.validationButton.enabled = NO;
+        self.validationButton.alpha = 0.5;
+    });
+}
+
+-(void)stopSpinner
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner stopAnimating];
+        self.validationButton.enabled = YES;
+        self.validationButton.alpha = 1.0;
+    });
+}
+
 -(BOOL)attemptValidation
 {
     return YES;
@@ -194,29 +225,17 @@ NSUInteger maximumValidationAttempts = 9999;
     // Check if registered and proceed to next storyboard accordingly
     if ([TSAccountManager isRegistered]) {
         // We are, move onto main
-        
-        [TSSocketManager becomeActiveFromForeground];
-        [CCSMCommManager refreshCCSMData];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.infoLabel.text = @"This device is already registered.";
-            [self.spinner stopAnimating];
-            self.validationButton.enabled = YES;
-            self.validationButton.alpha = 1.0;
-            [self performSegueWithIdentifier:@"mainSegue" sender:self];
         });
+        
+        [self proceedToMain];
+        
     } else {
         [FLDeviceRegistrationService.sharedInstance registerWithTSSWithCompletion:^(NSError * _Nullable error) {
             if (error == nil) {
-                [CCSMCommManager refreshCCSMData];
-                [TSSocketManager becomeActiveFromForeground];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.spinner stopAnimating];
-                    self.validationButton.enabled = YES;
-                    self.validationButton.alpha = 1.0;
-                    [self performSegueWithIdentifier:@"mainSegue" sender:self];
-                });
-                
+                // Success!
+                [self proceedToMain];
             } else {
                 if (error.domain == NSCocoaErrorDomain && error.code == NSUserActivityRemoteApplicationTimedOutError) {
                     // Device provision timed out.
@@ -227,21 +246,61 @@ NSUInteger maximumValidationAttempts = 9999;
                         [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
                                                             message:messageString
                                                      preferredStyle:UIAlertControllerStyleAlert];
-                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                            style:UIAlertActionStyleDefault
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", nil)
+                                                                            style:UIAlertActionStyleCancel
                                                                           handler:^(UIAlertAction * _Nonnull action) {
                                                                               // Do nothin'
                                                                           }]];
-                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"FORCE_PROVISION", nil)
+                        
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"REGISTER_FAILED_TRY_AGAIN", nil)
                                                                             style:UIAlertActionStyleDefault
                                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                                              [self startSpinner];
+                                                                              NSString *code = self.validationCodeTextField.text;
+                                                                              [CCSMCommManager verifyLogin:code
+                                                                                                   success:^{
+                                                                                                       [self ccsmValidationSucceeded];
+                                                                                                   }
+                                                                                                   failure:^(NSError *err){
+                                                                                                       [self ccsmValidationFailed];
+                                                                                                   }];                                                                          }]];
+                        
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"REGISTER_FAILED_FORCE_REGISTRATION", nil)
+                                                                            style:UIAlertActionStyleDestructive
+                                                                          handler:^(UIAlertAction * _Nonnull action) {
                                                                               
+                                                                              UIAlertController *verificationAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                                                                                                         message:NSLocalizedString(@"REGISTER_FORCE_VALIDATION", nil)
+                                                                                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                                                                              [verificationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
+                                                                                                                                    style:UIAlertActionStyleDestructive
+                                                                                                                                  handler:^(UIAlertAction * _Nonnull yesAction) {
+                                                                                                                                      [self startSpinner];
+                                                                                                                                      [FLDeviceRegistrationService.sharedInstance forceRegistrationWithCompletion:^(NSError * _Nullable provErr) {
+                                                                                                                                          if (provErr == nil) {
+                                                                                                                                              DDLogInfo(@"Force registration successful.");
+                                                                                                                                              [self proceedToMain];
+                                                                                                                                          } else {
+                                                                                                                                              DDLogError(@"Force registration failed with error: %@", provErr.description);
+                                                                                                                                              SignalAlertView(nil, @"Forced provisioning failed.  Please try again.");
+                                                                                                                                          }
+                                                                                                                                      }];
+                                                                                                                                  }]];
+                                                                              [verificationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil)
+                                                                                                                                    style:UIAlertActionStyleDefault
+                                                                                                                                  handler:^(UIAlertAction * _Nonnull noAction) {
+                                                                                                                                      [self stopSpinner];
+                                                                                                                                      // User bailed.
+                                                                                                                                  }]];
+                                                                              [self.navigationController presentViewController:verificationAlert animated:YES completion:^{
+                                                                                  self.infoLabel.text = @"";
+                                                                                  [self stopSpinner];
+                                                                              }];
                                                                           }]];
+                        
                         [self.navigationController presentViewController:alertController animated:YES completion:^{
                             self.infoLabel.text = @"";
-                            [self.spinner stopAnimating];
-                            self.validationButton.enabled = YES;
-                            self.validationButton.alpha = 1.0;
+                            [self stopSpinner];
                         }];
                     });
                 } else {
@@ -260,9 +319,8 @@ NSUInteger maximumValidationAttempts = 9999;
                                                                           }]];
                         [self.navigationController presentViewController:alertController animated:YES completion:^{
                             self.infoLabel.text = @"";
-                            [self.spinner stopAnimating];
-                            self.validationButton.enabled = YES;
-                            self.validationButton.alpha = 1.0;
+                            [self stopSpinner];
+                            
                         }];
                     });
                 }
@@ -283,9 +341,7 @@ NSUInteger maximumValidationAttempts = 9999;
                                                          handler:^(UIAlertAction *action) {
                                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                                  self.infoLabel.text = @"";
-                                                                 [self.spinner stopAnimating];
-                                                                 self.validationButton.enabled = YES;
-                                                                 self.validationButton.alpha = 1.0;
+                                                                 [self stopSpinner];
                                                              });
                                                          }]];
         [self presentViewController:alert animated:YES completion:nil];
@@ -297,9 +353,7 @@ NSUInteger maximumValidationAttempts = 9999;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.infoLabel.text = NSLocalizedString(@"Validating code", @"Status message when starting code validation");
-        [self.spinner startAnimating];
-        self.validationButton.enabled = NO;
-        self.validationButton.alpha = 0.5;
+        [self startSpinner];
     });
     
     

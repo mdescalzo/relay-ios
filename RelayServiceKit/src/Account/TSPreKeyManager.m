@@ -43,7 +43,7 @@
             [storageManager storePreKeyRecords:preKeys];
             [storageManager storeSignedPreKey:signedPreKey.Id signedPreKeyRecord:signedPreKey];
 
-            success();
+            success(nil);
         }
         failure:^(NSURLSessionDataTask *task, NSError *error) {
             DDLogError(@"%@ Failed to register pre keys.", self.tag);

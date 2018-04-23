@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'RedPhone' target in the 'RedPhone' project
+// Prefix header for all source files
 //
 #import <UIKit/UIkit.h>
 #import <Foundation/Foundation.h>

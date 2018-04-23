@@ -83,8 +83,8 @@
 -(void)forceRegistrationWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock
 {
     DDLogDebug(@"Forced device registration initiated.");
-    [self registerAcountWithCompletion:^(NSError * _Nullable error) {
-        completionBlock(error);
+    [self registerAcountWithCompletion:^(NSError * _Nullable err) {
+        completionBlock(err);
     }];
 }
 
@@ -114,9 +114,8 @@
                                                 [[TSStorageManager sharedManager] storeDeviceId:deviceID];
                                                 [TSStorageManager storeServerToken:password signalingKey:signalingKey];
                                                 [TSPreKeyManager registerPreKeysWithSuccess:completionBlock failure:completionBlock];
-                                            } else {
-                                                completionBlock(error);
                                             }
+                                            completionBlock(error);
                                         }];
 }
 
