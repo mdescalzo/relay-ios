@@ -80,6 +80,14 @@
     }];
 }
 
+-(void)forceRegistrationWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock
+{
+    DDLogDebug(@"Forced device registration initiated.");
+    [self registerAcountWithCompletion:^(NSError * _Nullable error) {
+        completionBlock(error);
+    }];
+}
+
 -(void)registerAcountWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock
 {
     NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:(32 + 20)];
