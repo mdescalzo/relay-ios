@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Attachment" representedClassName="Attachment" parentEntity="RelayObject" syncable="YES" codeGenerationType="class">
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message" syncable="YES"/>
+    </entity>
+    <entity name="Contact" representedClassName="Contact" parentEntity="RelayObject" syncable="YES" codeGenerationType="class">
+        <relationship name="incomingMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IncomingMessage" inverseName="author" inverseEntity="IncomingMessage" syncable="YES"/>
+        <relationship name="threads" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Thread" inverseName="participants" inverseEntity="Thread" syncable="YES"/>
+    </entity>
+    <entity name="ControlMessage" representedClassName="ControlMessage" parentEntity="OutgoingMessage" syncable="YES" codeGenerationType="class">
+        <attribute name="controlMessageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="ErrorMessage" representedClassName="ErrorMessage" parentEntity="Message" syncable="YES" codeGenerationType="class">
+        <attribute name="errorType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="IncomingMessage" representedClassName="IncomingMessage" parentEntity="Message" syncable="YES" codeGenerationType="class">
+        <attribute name="read" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="receivedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="incomingMessages" inverseEntity="Contact" syncable="YES"/>
+    </entity>
+    <entity name="InfoMessage" representedClassName="InfoMessage" parentEntity="Message" syncable="YES" codeGenerationType="class">
+        <attribute name="customMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="infoMessageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="Interaction" representedClassName="Interaction" isAbstract="YES" parentEntity="RelayObject" syncable="YES" codeGenerationType="class">
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="thread" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Thread" inverseName="interactions" inverseEntity="Thread" syncable="YES"/>
+    </entity>
+    <entity name="Message" representedClassName="Message" isAbstract="YES" parentEntity="Interaction" syncable="YES" codeGenerationType="class">
+        <attribute name="attachmentProperties" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="expiresAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="expiresInSeconds" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="expireStartAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="expiringMessage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hasAnnotation" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="htmlTextBody" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="payload" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="plainTextBody" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="shouldStartExpireTimer" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>
+    </entity>
+    <entity name="OutgoingMessage" representedClassName="OutgoingMessage" parentEntity="Message" syncable="YES" codeGenerationType="class">
+        <attribute name="hasSyncedTranscript" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="messageState" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mostRecentFailureText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="shouldSyncTranscript" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="recipients" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Contact" syncable="YES"/>
+    </entity>
+    <entity name="RelayObject" representedClassName="RelayObject" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="uniqueId" optional="YES" attributeType="UUID" usesScalarValueType="NO" syncable="YES"/>
+    </entity>
+    <entity name="Thread" representedClassName="Thread" parentEntity="RelayObject" syncable="YES" codeGenerationType="class">
+        <attribute name="archivalDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="currentDraft" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasSafetyNumbers" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hasUnreadMessages" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="universalExpression" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Interaction" inverseName="thread" inverseEntity="Interaction" syncable="YES"/>
+        <relationship name="participants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Contact" inverseName="threads" inverseEntity="Contact" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Interaction" positionX="-396" positionY="-180" width="128" height="73"/>
+        <element name="Message" positionX="-389" positionY="-45" width="128" height="223"/>
+        <element name="OutgoingMessage" positionX="-551" positionY="98" width="128" height="118"/>
+        <element name="IncomingMessage" positionX="-623" positionY="-0" width="128" height="88"/>
+        <element name="InfoMessage" positionX="-632" positionY="-90" width="128" height="73"/>
+        <element name="ErrorMessage" positionX="-612" positionY="-180" width="128" height="58"/>
+        <element name="ControlMessage" positionX="-486" positionY="230" width="128" height="58"/>
+        <element name="Thread" positionX="-126" positionY="-124" width="128" height="178"/>
+        <element name="Contact" positionX="-801" positionY="-262" width="128" height="73"/>
+        <element name="RelayObject" positionX="-425" positionY="-324" width="128" height="60"/>
+        <element name="Attachment" positionX="-198" positionY="-247" width="128" height="58"/>
+    </elements>
+</model>

@@ -875,6 +875,13 @@
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
 		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
+		7DC5DA19208EB3660071E0AC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC5DA18208EB3660071E0AC /* CoreData.framework */; };
+		7DC5DA1A208EB3BB0071E0AC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC5DA18208EB3660071E0AC /* CoreData.framework */; };
+		7DC5DA1B208EB3C70071E0AC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC5DA18208EB3660071E0AC /* CoreData.framework */; };
+		7DC5DA24208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5DA22208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld */; };
+		7DC5DA25208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5DA22208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld */; };
+		7DC5DA26208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5DA22208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld */; };
+		7DC5DA27208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5DA22208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld */; };
 		7DCFF9711F0C700F0003CD95 /* forsta_splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFF9701F0C700F0003CD95 /* forsta_splash.png */; };
 		7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
 		7DCFFD6A1F0EE4490003CD95 /* RPAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B640BFA71C257843006038B3 /* RPAccountManager.m */; };
@@ -2148,6 +2155,8 @@
 		7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7DBA8D6E1ED9FD0D009FCF65 /* LoginValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginValidationViewController.h; sourceTree = "<group>"; };
 		7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginValidationViewController.m; sourceTree = "<group>"; };
+		7DC5DA18208EB3660071E0AC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		7DC5DA23208EB5CE0071E0AC /* RelayDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RelayDataModel.xcdatamodel; sourceTree = "<group>"; };
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
@@ -2449,6 +2458,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DC5DA19208EB3660071E0AC /* CoreData.framework in Frameworks */,
 				7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */,
 				7D613B081F901BE000E18D29 /* libSocketRocket.a in Frameworks */,
 				7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */,
@@ -2482,6 +2492,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DC5DA1A208EB3BB0071E0AC /* CoreData.framework in Frameworks */,
 				7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */,
 				7D613B0A1F901BF200E18D29 /* libSocketRocket.a in Frameworks */,
 				7DCFFE441F0EE4490003CD95 /* PromiseKit.framework in Frameworks */,
@@ -2515,6 +2526,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DC5DA1B208EB3C70071E0AC /* CoreData.framework in Frameworks */,
 				7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */,
 				7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */,
 				7D613B0C1F901BFE00E18D29 /* libSocketRocket.a in Frameworks */,
@@ -3727,6 +3739,7 @@
 				7D6139671F90161500E18D29 /* TSConstants.h */,
 				7D6139681F90161500E18D29 /* TSPrefix.h */,
 				7D6139691F90161500E18D29 /* Util */,
+				7DC5DA28208EB5D80071E0AC /* CoreData */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -3742,6 +3755,14 @@
 				7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		7DC5DA28208EB5D80071E0AC /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				7DC5DA22208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		7DCFFEC41F0FE2330003CD95 /* DeviceTypes */ = {
@@ -4121,6 +4142,7 @@
 		D221A08C169C9E5E00537ABF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7DC5DA18208EB3660071E0AC /* CoreData.framework */,
 				7D4794B9207EA38C00029A70 /* CoreText.framework */,
 				7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */,
 				7D613B0D1F901BFE00E18D29 /* libSocketRocket.a */,
@@ -5319,6 +5341,7 @@
 				7D4A3A2A1F1693930023C29B /* MessagesViewController.m in Sources */,
 				7D4A3A2B1F1693930023C29B /* OWSMessagesBubblesSizeCalculator.m in Sources */,
 				7D4A3A2C1F1693930023C29B /* FLAnimatedImageView.m in Sources */,
+				7DC5DA24208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */,
 				7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */,
 				7D613A9A1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7D613AD91F90189100E18D29 /* TSStorageManager+messageIDs.m in Sources */,
@@ -5669,6 +5692,7 @@
 				7D613A981F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D613ABC1F90187100E18D29 /* SecurityUtils.m in Sources */,
 				7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */,
+				7DC5DA25208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */,
 				7DCFFDD11F0EE4490003CD95 /* MessagesViewController.m in Sources */,
 				7DCFFDD21F0EE4490003CD95 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
 				7DCFFDD31F0EE4490003CD95 /* FLAnimatedImageView.m in Sources */,
@@ -6019,6 +6043,7 @@
 				7D613A991F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D613ABD1F90187100E18D29 /* SecurityUtils.m in Sources */,
 				7DA09F401FBE83AF00F2D859 /* FLTag.m in Sources */,
+				7DC5DA26208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */,
 				FCAC965119FF0A6E0046DFC5 /* MessagesViewController.m in Sources */,
 				453D28BA1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
 				B68EF9BB1C0B1EBD009C3DCD /* FLAnimatedImageView.m in Sources */,
@@ -6397,6 +6422,7 @@
 				B660F6DF1C29868000687D6E /* QueueTest.m in Sources */,
 				B660F6BB1C29868000687D6E /* OWSContactsManagerTest.m in Sources */,
 				B660F6CE1C29868000687D6E /* PhoneNumberTest.m in Sources */,
+				7DC5DA27208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld in Sources */,
 				B660F6C41C29868000687D6E /* HandshakePacketTest.m in Sources */,
 				B660F6CD1C29868000687D6E /* UdpSocketTest.m in Sources */,
 				B660F6DD1C29868000687D6E /* ObservableTest.m in Sources */,
@@ -7169,6 +7195,19 @@
 			defaultConfigurationName = "App Store Release";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7DC5DA22208EB5CE0071E0AC /* RelayDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7DC5DA23208EB5CE0071E0AC /* RelayDataModel.xcdatamodel */,
+			);
+			currentVersion = 7DC5DA23208EB5CE0071E0AC /* RelayDataModel.xcdatamodel */;
+			path = RelayDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D221A080169C9E5E00537ABF /* Project object */;
 }
