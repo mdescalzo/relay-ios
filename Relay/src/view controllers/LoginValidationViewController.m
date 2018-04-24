@@ -241,10 +241,9 @@ NSUInteger maximumValidationAttempts = 9999;
                     // Device provision timed out.
                     DDLogInfo(@"Device Autoprovisioning timed out.");
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        NSString *messageString = [NSString stringWithFormat:@"%@\n\nPlease make sure one of your other registered devices or web client sessions is active and try again.", error.localizedDescription];
                         UIAlertController *alertController =
                         [UIAlertController alertControllerWithTitle:NSLocalizedString(@"REGISTRATION_ERROR", nil)
-                                                            message:messageString
+                                                            message:NSLocalizedString(@"PROVISION_FAILURE_MESSAGE", nil)
                                                      preferredStyle:UIAlertControllerStyleAlert];
                         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", nil)
                                                                             style:UIAlertActionStyleCancel
@@ -252,7 +251,7 @@ NSUInteger maximumValidationAttempts = 9999;
                                                                               // Do nothin'
                                                                           }]];
                         
-                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"REGISTER_FAILED_TRY_AGAIN", nil)
+                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TRY_AGAIN", nil)
                                                                             style:UIAlertActionStyleDefault
                                                                           handler:^(UIAlertAction * _Nonnull action) {
                                                                               [self startSpinner];
@@ -263,7 +262,8 @@ NSUInteger maximumValidationAttempts = 9999;
                                                                                                    }
                                                                                                    failure:^(NSError *err){
                                                                                                        [self ccsmValidationFailed];
-                                                                                                   }];                                                                          }]];
+                                                                                                   }];
+                                                                          }]];
                         
                         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"REGISTER_FAILED_FORCE_REGISTRATION", nil)
                                                                             style:UIAlertActionStyleDestructive

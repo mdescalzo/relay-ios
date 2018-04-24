@@ -574,12 +574,14 @@
 /* No comment provided by engineer. */
 "REGISTER_CONTACTS_WELCOME" = "Welcome!";
 
+"PROVISION_FAILURE_MESSAGE" = "No other devices responded to your provisioning request.\n\nPlease make sure one of your other devices or web browser sessions is active and try again.";
+
 /* No comment provided by engineer. */
-"REGISTER_FAILED_TRY_AGAIN" = "Try again";
+"TRY_AGAIN" = "Try again";
 
-"REGISTER_FAILED_FORCE_REGISTRATION" = "Force Registration";
+"REGISTER_FAILED_FORCE_REGISTRATION" = "Force Provisioning";
 
-"REGISTER_FORCE_VALIDATION" = "Are you sure you want to force this device to register?  This will require all of your other devices and sessions to re-register.";
+"REGISTER_FORCE_VALIDATION" = "Are you sure you want to force this device to provision?  This will require all of your other devices and sessions to reprovision.";
 
 /* No comment provided by engineer. */
 "REGISTER_RATE_LIMITING_BODY" = "The server is currently rate-limiting signups, please try again later.";
