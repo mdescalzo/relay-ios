@@ -17,4 +17,8 @@
 -(void)registerWithTSSWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock;
 -(void)provisionOtherDeviceWithPublicKey:(NSString *_Nonnull)keyString andUUID:(NSString *_Nonnull)uuidString;
 
+// This will de-register all other devices associated with this account.  Use carefully.
+-(void)forceRegistrationWithCompletion:(void (^_Nullable)(NSError * _Nullable error))completionBlock;
+
+
 @end

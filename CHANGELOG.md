@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.4.5]
+### Fixed
+- Giphys failing to render (removed HTMLPurifier)
+- Fixed debug log submission
+## Added
+- Ability to force device provisioning
+
 ## [1.4.4]
 ### Fixed
 - Intermittent crash on superscript/subscript tags
@@ -101,6 +108,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.5]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.5
 [1.4.4]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.4
 [1.4.3]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.3
 [1.4.2]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.2
