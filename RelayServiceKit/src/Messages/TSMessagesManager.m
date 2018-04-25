@@ -267,7 +267,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if (dataMessage.hasGroup) {
         // Since no clients should be using this, this should never trip
-        DDLogDebug(@"%@ Old school group message received.", self.tag);
+        DDLogError(@"%@ Old school group message received.", self.tag);
     }
     if ((dataMessage.flags & OWSSignalServiceProtosDataMessageFlagsEndSession) != 0) {
         DDLogVerbose(@"%@ Received end session message", self.tag);
@@ -282,38 +282,9 @@ NS_ASSUME_NONNULL_BEGIN
         DDLogVerbose(@"%@ Received data message.", self.tag);
         [self handleReceivedTextMessageWithEnvelope:incomingEnvelope dataMessage:dataMessage];
         if ([self isDataMessageGroupAvatarUpdate:dataMessage]) {
-            DDLogVerbose(@"%@ Data message had group avatar attachment", self.tag);
-            [self handleReceivedGroupAvatarUpdateWithEnvelope:incomingEnvelope dataMessage:dataMessage];
+            DDLogError(@"%@ Data message had group avatar attachment, deprecated", self.tag);
         }
     }
-}
-
-- (void)handleReceivedGroupAvatarUpdateWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                        dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-{
-    DDLogDebug(@"%@ Avatar update received!.  Unsupported until control message implementation.", self.tag);
-    //    TSGroupThread *groupThread = [TSGroupThread getOrCreateThreadWithGroupIdData:dataMessage.group.id];
-    //    OWSAttachmentsProcessor *attachmentsProcessor =
-    //    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:@[ dataMessage.group.avatar ]
-    //                                                    timestamp:envelope.timestamp
-    //                                                        relay:envelope.relay
-    //                                                       thread:groupThread
-    //                                               networkManager:self.networkManager];
-    //
-    //    if (!attachmentsProcessor.hasSupportedAttachments) {
-    //        DDLogWarn(@"%@ received unsupported group avatar envelope", self.tag);
-    //        return;
-    //    }
-    //    [attachmentsProcessor fetchAttachmentsForMessage:nil
-    //                                             success:^(TSAttachmentStream *_Nonnull attachmentStream) {
-    //                                                 [groupThread updateAvatarWithAttachmentStream:attachmentStream];
-    //                                             }
-    //                                             failure:^(NSError *_Nonnull error) {
-    //                                                 DDLogError(@"%@ failed to fetch attachments for group avatar sent at: %llu. with error: %@",
-    //                                                            self.tag,
-    //                                                            envelope.timestamp,
-    //                                                            error);
-    //                                             }];
 }
 
 - (void)handleReceivedMediaWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
@@ -364,13 +335,59 @@ NS_ASSUME_NONNULL_BEGIN
                                                                 messageSender:self.messageSender
                                                                networkManager:self.networkManager];
         
-        if ([self isDataMessageGroupAvatarUpdate:syncMessage.sent.message]) {
-            //            [recordJob runWithAttachmentHandler:^(TSAttachmentStream *_Nonnull attachmentStream) {
-            //                TSGroupThread *groupThread =
-            //                [TSGroupThread getOrCreateThreadWithGroupIdData:syncMessage.sent.message.group.id];
-            //                [groupThread updateAvatarWithAttachmentStream:attachmentStream];
-            //            }];
+        // Intercept and attach forstaPayload
+        __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
+        __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+
+        // Check for control message
+        if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
+            NSString *controlType = [dataBlob objectForKey:@"control"];
+            
+            // Archive a thread
+            if ([controlType isEqualToString:FLControlMessageThreadArchiveKey] ||
+                [controlType isEqualToString:FLControlMessageThreadCloseKey]) {
+                [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+                    TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
+                    if (thread) {
+                        [thread archiveThreadWithTransaction:transaction
+                                               referenceDate:[NSDate ows_dateWithMillisecondsSince1970:transcript.timestamp]];
+                    }
+                }];
+            }
+            // Restore Archived thread
+            else if ([controlType isEqualToString:FLControlMessageThreadRestoreKey]) {
+                [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+                    TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
+                    if (thread) {
+                        [thread unarchiveThreadWithTransaction:transaction];
+                    }
+                }];
+            }
+            //  Message sync request
+            else if ([controlType isEqualToString:FLControlMessageSyncRequestKey]) {
+                // validate message isn't stale
+                
+                // check sync request type 'contentHistory' or 'deviceInfo'
+                NSString *syncType = [dataBlob objectForKey:@"type"];
+                
+                if ([syncType isEqualToString:@"contentHistory"]) {
+                    DDLogDebug(@"Received 'contentHistory' syncRequest.");
+                    
+                    //  Placeholder for future implementation?
+//                } else if ([syncType isEqualToString:@"deviceInfo"]) {
+                } else {
+                    DDLogDebug(@"Unhandled syncRequest of type: %@", syncType);
+                    return;
+                }
+            }
+            else {
+                DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
+                return;
+            }
         } else {
+        
             [recordJob runWithAttachmentHandler:^(TSAttachmentStream *_Nonnull attachmentStream) {
                 DDLogDebug(@"%@ successfully fetched transcript attachment: %@", self.tag, attachmentStream);
             }];
@@ -672,7 +689,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  inThread:thread
                                                                                  authorId:envelope.source
                                                                               messageBody:@""];
-            //            textMessage.forstaPayload = incomingMessage.forstaPayload;
             textMessage.plainTextBody = incomingMessage.plainTextBody;
             textMessage.expiresInSeconds = dataMessage.expireTimer;
             [textMessage saveWithTransaction:transaction];
@@ -695,9 +711,6 @@ NS_ASSUME_NONNULL_BEGIN
         
         [self.disappearingMessagesJob becomeConsistentWithConfigurationForMessage:incomingMessage
                                                                   contactsManager:self.contactsManager];
-        
-        // Update thread
-        //        [thread touch];
         
         // TODO Delay notification by 100ms?
         // It's pretty annoying when you're phone keeps buzzing while you're having a conversation on Desktop.
@@ -782,7 +795,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (thread) {
             [thread archiveThreadWithTransaction:transaction
                                    referenceDate:[NSDate ows_dateWithMillisecondsSince1970:envelope.timestamp]];
-            DDLogDebug(@"%@: Archived thread: %@", self.tag, thread);
+            DDLogDebug(@"%@: Archived thread: %@", self.tag, thread.uniqueId);
         }
     }];
 }
@@ -797,7 +810,7 @@ NS_ASSUME_NONNULL_BEGIN
         TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
         if (thread) {
             [thread unarchiveThreadWithTransaction:transaction];
-            DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread);
+            DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread.uniqueId);
         }
     }];
 }

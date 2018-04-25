@@ -48,40 +48,46 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Intercept and attach forstaPayload
     __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
-
-    // Check for control message
-    if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
-        __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-        NSString *controlType = [dataBlob objectForKey:@"control"];
-        
-          // Archive a thread
-        if ([controlType isEqualToString:FLControlMessageThreadArchiveKey] ||
-            [controlType isEqualToString:FLControlMessageThreadCloseKey]) {
-            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-                TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-                if (thread) {
-                    [thread archiveThreadWithTransaction:transaction
-                                           referenceDate:[NSDate ows_dateWithMillisecondsSince1970:transcript.timestamp]];
-                    DDLogDebug(@"%@: Archived thread: %@", self.tag, thread);
-                }
-            }];
-        }
-        // Restore Archived thread
-        else if ([controlType isEqualToString:FLControlMessageThreadRestoreKey]) {
-        [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-            NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-            TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-            if (thread) {
-                [thread unarchiveThreadWithTransaction:transaction];
-                DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread);
-            }
-        }];
-    }
-        else {
-            DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
-        }
-    } else {
+//
+//    // Check for control message
+//    if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
+//        __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+//        NSString *controlType = [dataBlob objectForKey:@"control"];
+//
+//        // Archive a thread
+//        if ([controlType isEqualToString:FLControlMessageThreadArchiveKey] ||
+//            [controlType isEqualToString:FLControlMessageThreadCloseKey]) {
+//            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//                NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+//                TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
+//                if (thread) {
+//                    [thread archiveThreadWithTransaction:transaction
+//                                           referenceDate:[NSDate ows_dateWithMillisecondsSince1970:transcript.timestamp]];
+//                    DDLogDebug(@"%@: Archived thread: %@", self.tag, thread);
+//                }
+//            }];
+//        }
+//        // Restore Archived thread
+//        else if ([controlType isEqualToString:FLControlMessageThreadRestoreKey]) {
+//            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+//                NSString *threadID = [jsonPayload objectForKey:@"threadId"];
+//                TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
+//                if (thread) {
+//                    [thread unarchiveThreadWithTransaction:transaction];
+//                    DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread);
+//                }
+//            }];
+//        }
+//        //  Message sync request
+//        else if ([controlType isEqualToString:FLControlMessageSyncRequestKey]) {
+//            // 1) validate message for this device checking payload.data.devices array content
+//            // 2) validate message isn't stale
+//            // 3) check sync request type 'contentHistory' or 'deviceInfo'
+//        }
+//        else {
+//            DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
+//        }
+//    } else {
         TSThread *thread = transcript.thread;
         [thread updateWithPayload:jsonPayload];
         [thread touch];
@@ -137,7 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
             textMessage.messageState = TSOutgoingMessageStateDelivered;
             [textMessage save];
         }
-    }
+//    }
 }
 
 #pragma mark - Logging
