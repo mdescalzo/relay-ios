@@ -337,10 +337,10 @@ NS_ASSUME_NONNULL_BEGIN
         
         // Intercept and attach forstaPayload
         __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
-        
+        __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+
         // Check for control message
         if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
-            __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
             NSString *controlType = [dataBlob objectForKey:@"control"];
             
             // Archive a thread
@@ -352,7 +352,6 @@ NS_ASSUME_NONNULL_BEGIN
                     if (thread) {
                         [thread archiveThreadWithTransaction:transaction
                                                referenceDate:[NSDate ows_dateWithMillisecondsSince1970:transcript.timestamp]];
-                        DDLogDebug(@"%@: Archived thread: %@", self.tag, thread);
                     }
                 }];
             }
@@ -363,19 +362,29 @@ NS_ASSUME_NONNULL_BEGIN
                     TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
                     if (thread) {
                         [thread unarchiveThreadWithTransaction:transaction];
-                        DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread);
                     }
                 }];
             }
             //  Message sync request
             else if ([controlType isEqualToString:FLControlMessageSyncRequestKey]) {
-                DDLogDebug(@"Received syncRequest control message.");
-                // 1) validate message for this device checking payload.data.devices array content
-                // 2) validate message isn't stale
-                // 3) check sync request type 'contentHistory' or 'deviceInfo'
+                // validate message isn't stale
+                
+                // check sync request type 'contentHistory' or 'deviceInfo'
+                NSString *syncType = [dataBlob objectForKey:@"type"];
+                
+                if ([syncType isEqualToString:@"contentHistory"]) {
+                    DDLogDebug(@"Received 'contentHistory' syncRequest.");
+                    
+                    //  Placeholder for future implementation?
+//                } else if ([syncType isEqualToString:@"deviceInfo"]) {
+                } else {
+                    DDLogDebug(@"Unhandled syncRequest of type: %@", syncType);
+                    return;
+                }
             }
             else {
                 DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
+                return;
             }
         } else {
         
@@ -680,7 +689,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  inThread:thread
                                                                                  authorId:envelope.source
                                                                               messageBody:@""];
-            //            textMessage.forstaPayload = incomingMessage.forstaPayload;
             textMessage.plainTextBody = incomingMessage.plainTextBody;
             textMessage.expiresInSeconds = dataMessage.expireTimer;
             [textMessage saveWithTransaction:transaction];
@@ -703,9 +711,6 @@ NS_ASSUME_NONNULL_BEGIN
         
         [self.disappearingMessagesJob becomeConsistentWithConfigurationForMessage:incomingMessage
                                                                   contactsManager:self.contactsManager];
-        
-        // Update thread
-        //        [thread touch];
         
         // TODO Delay notification by 100ms?
         // It's pretty annoying when you're phone keeps buzzing while you're having a conversation on Desktop.
@@ -790,7 +795,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (thread) {
             [thread archiveThreadWithTransaction:transaction
                                    referenceDate:[NSDate ows_dateWithMillisecondsSince1970:envelope.timestamp]];
-            DDLogDebug(@"%@: Archived thread: %@", self.tag, thread);
+            DDLogDebug(@"%@: Archived thread: %@", self.tag, thread.uniqueId);
         }
     }];
 }
@@ -805,7 +810,7 @@ NS_ASSUME_NONNULL_BEGIN
         TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
         if (thread) {
             [thread unarchiveThreadWithTransaction:transaction];
-            DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread);
+            DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread.uniqueId);
         }
     }];
 }
