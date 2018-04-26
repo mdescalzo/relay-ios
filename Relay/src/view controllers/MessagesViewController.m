@@ -205,7 +205,6 @@ typedef enum : NSUInteger {
       [self updateRangeOptionsForPage:self.page];
       [self.collectionView reloadData];
     }];
-    [self.uiDatabaseConnection endLongLivedReadTransaction];
     [self updateLoadEarlierVisible];
 }
 
@@ -373,6 +372,11 @@ typedef enum : NSUInteger {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.uiDatabaseConnection beginLongLivedReadTransaction];
+    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        [self.messageMappings updateWithTransaction:transaction];
+    }];
 
     [UIUtil applyForstaAppearence];
 
@@ -479,8 +483,10 @@ typedef enum : NSUInteger {
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+    [self.uiDatabaseConnection endLongLivedReadTransaction];
     self.inputToolbar.contentView.textView.editable = NO;
+
+    [super viewDidDisappear:animated];
 }
 
 #pragma mark - Initiliazers
