@@ -166,6 +166,12 @@
 		7D014C5420237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
 		7D014C5520237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
 		7D014C5620237D2D00292964 /* redphone.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7D014C5320237D2D00292964 /* redphone.cer */; };
+		7D0A5C5A2092664E00BA6179 /* new-message.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D0A5C582092664D00BA6179 /* new-message.wav */; };
+		7D0A5C5B2092664E00BA6179 /* new-message.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D0A5C582092664D00BA6179 /* new-message.wav */; };
+		7D0A5C5C2092664E00BA6179 /* new-message.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D0A5C582092664D00BA6179 /* new-message.wav */; };
+		7D0A5C5D2092664E00BA6179 /* new-notification.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D0A5C592092664D00BA6179 /* new-notification.wav */; };
+		7D0A5C5E2092664E00BA6179 /* new-notification.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D0A5C592092664D00BA6179 /* new-notification.wav */; };
+		7D0A5C5F2092664E00BA6179 /* new-notification.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7D0A5C592092664D00BA6179 /* new-notification.wav */; };
 		7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
@@ -451,7 +457,6 @@
 		7D4A3AD51F1693930023C29B /* failure.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40918A05754001A532A /* failure.mp3 */; };
 		7D4A3AD61F1693930023C29B /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D4A3AD71F1693930023C29B /* handshake.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40A18A05754001A532A /* handshake.mp3 */; };
-		7D4A3AD81F1693930023C29B /* NewMessage.aifc in Resources */ = {isa = PBXBuildFile; fileRef = B625CD551ABB589C00E8B23C /* NewMessage.aifc */; };
 		7D4A3AD91F1693930023C29B /* contact_default_feed.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C50B1A1D190B0059AC12 /* contact_default_feed.png */; };
 		7D4A3ADA1F1693930023C29B /* play_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5E1A7049EC00ECA2BF /* play_icon@2x.png */; };
 		7D4A3ADB1F1693930023C29B /* call@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5041A1D190B0059AC12 /* call@2x.png */; };
@@ -1132,7 +1137,6 @@
 		7DCFFE7B1F0EE4490003CD95 /* failure.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40918A05754001A532A /* failure.mp3 */; };
 		7DCFFE7C1F0EE4490003CD95 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7DCFFE7D1F0EE4490003CD95 /* handshake.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40A18A05754001A532A /* handshake.mp3 */; };
-		7DCFFE7E1F0EE4490003CD95 /* NewMessage.aifc in Resources */ = {isa = PBXBuildFile; fileRef = B625CD551ABB589C00E8B23C /* NewMessage.aifc */; };
 		7DCFFE7F1F0EE4490003CD95 /* contact_default_feed.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C50B1A1D190B0059AC12 /* contact_default_feed.png */; };
 		7DCFFE801F0EE4490003CD95 /* play_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C9B5E1A7049EC00ECA2BF /* play_icon@2x.png */; };
 		7DCFFE811F0EE4490003CD95 /* call@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5041A1D190B0059AC12 /* call@2x.png */; };
@@ -1194,7 +1198,6 @@
 		B60C16651988999D00E97A6C /* VersionMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = B60C16641988999D00E97A6C /* VersionMigrations.m */; };
 		B60EDE041A05A01700D73516 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60EDE031A05A01700D73516 /* AudioToolbox.framework */; };
 		B6258B331C29E2E60014138E /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
-		B625CD561ABB589C00E8B23C /* NewMessage.aifc in Resources */ = {isa = PBXBuildFile; fileRef = B625CD551ABB589C00E8B23C /* NewMessage.aifc */; };
 		B62D53F71A23CCAD009AAF82 /* TSMessageAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D53F61A23CCAD009AAF82 /* TSMessageAdapter.m */; };
 		B62F5E101C2980B4000D370C /* NSData+ows_StripToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B62F5E0F1C2980B4000D370C /* NSData+ows_StripToken.m */; };
 		B633C5861A1D190B0059AC12 /* call@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B633C5041A1D190B0059AC12 /* call@2x.png */; };
@@ -1835,6 +1838,8 @@
 		76EB052E18170B33006006FC /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		76EB052F18170B33006006FC /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
 		7D014C5320237D2D00292964 /* redphone.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = redphone.cer; sourceTree = "<group>"; };
+		7D0A5C582092664D00BA6179 /* new-message.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "new-message.wav"; sourceTree = "<group>"; };
+		7D0A5C592092664D00BA6179 /* new-notification.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "new-notification.wav"; sourceTree = "<group>"; };
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2203,7 +2208,6 @@
 		B60EDE031A05A01700D73516 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		B6258B311C29E2E60014138E /* NotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsManager.h; sourceTree = "<group>"; };
 		B6258B321C29E2E60014138E /* NotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsManager.m; sourceTree = "<group>"; };
-		B625CD551ABB589C00E8B23C /* NewMessage.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewMessage.aifc; sourceTree = "<group>"; };
 		B62D53F51A23CCAD009AAF82 /* TSMessageAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessageAdapter.h; sourceTree = "<group>"; };
 		B62D53F61A23CCAD009AAF82 /* TSMessageAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageAdapter.m; sourceTree = "<group>"; };
 		B62F5E0E1C2980B4000D370C /* NSData+ows_StripToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ows_StripToken.h"; sourceTree = "<group>"; };
@@ -4212,8 +4216,9 @@
 		E18AB40618A05754001A532A /* AudioFiles */ = {
 			isa = PBXGroup;
 			children = (
+				7D0A5C582092664D00BA6179 /* new-message.wav */,
+				7D0A5C592092664D00BA6179 /* new-notification.wav */,
 				70B8FEE11909FE360042E3F0 /* 171756__nenadsimic__picked-coin-echo-2.wav */,
-				B625CD551ABB589C00E8B23C /* NewMessage.aifc */,
 				E18AB40718A05754001A532A /* busy.mp3 */,
 				E18AB40818A05754001A532A /* completed.mp3 */,
 				E18AB40918A05754001A532A /* failure.mp3 */,
@@ -4663,7 +4668,6 @@
 				7D4A3AD51F1693930023C29B /* failure.mp3 in Resources */,
 				7D4A3AD61F1693930023C29B /* Main_v2.storyboard in Resources */,
 				7D4A3AD71F1693930023C29B /* handshake.mp3 in Resources */,
-				7D4A3AD81F1693930023C29B /* NewMessage.aifc in Resources */,
 				7D4A3AD91F1693930023C29B /* contact_default_feed.png in Resources */,
 				7D4A3ADA1F1693930023C29B /* play_icon@2x.png in Resources */,
 				7D4A3ADB1F1693930023C29B /* call@2x.png in Resources */,
@@ -4678,6 +4682,8 @@
 				7D4A3AE41F1693930023C29B /* audio_play_button_blue.png in Resources */,
 				7D4A3AE51F1693930023C29B /* Login.storyboard in Resources */,
 				7D4A3AE61F1693930023C29B /* audio_pause_button@2x.png in Resources */,
+				7D0A5C5A2092664E00BA6179 /* new-message.wav in Resources */,
+				7D0A5C5D2092664E00BA6179 /* new-notification.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4700,6 +4706,7 @@
 				7DCFFE681F0EE4490003CD95 /* Localizable.strings in Resources */,
 				7DCFFE691F0EE4490003CD95 /* play_button.png in Resources */,
 				7D014C5520237D2D00292964 /* redphone.cer in Resources */,
+				7D0A5C5B2092664E00BA6179 /* new-message.wav in Resources */,
 				7DCFFE6B1F0EE4490003CD95 /* endcall@2x.png in Resources */,
 				7DCFFE6C1F0EE4490003CD95 /* error_white@2x.png in Resources */,
 				7DCFFE6D1F0EE4490003CD95 /* savephoto@2x.png in Resources */,
@@ -4719,7 +4726,6 @@
 				7DCFFE7B1F0EE4490003CD95 /* failure.mp3 in Resources */,
 				7DCFFE7C1F0EE4490003CD95 /* Main_v2.storyboard in Resources */,
 				7DCFFE7D1F0EE4490003CD95 /* handshake.mp3 in Resources */,
-				7DCFFE7E1F0EE4490003CD95 /* NewMessage.aifc in Resources */,
 				7DCFFE7F1F0EE4490003CD95 /* contact_default_feed.png in Resources */,
 				7DCFFE801F0EE4490003CD95 /* play_icon@2x.png in Resources */,
 				7DCFFE811F0EE4490003CD95 /* call@2x.png in Resources */,
@@ -4729,6 +4735,7 @@
 				7DCFFE841F0EE4490003CD95 /* pause_icon@2x.png in Resources */,
 				7DCFFE861F0EE4490003CD95 /* r.caf in Resources */,
 				7DCFFE871F0EE4490003CD95 /* qr@2x.png in Resources */,
+				7D0A5C5E2092664E00BA6179 /* new-notification.wav in Resources */,
 				7DCFFE881F0EE4490003CD95 /* sonarping.mp3 in Resources */,
 				7DCFFE891F0EE4490003CD95 /* pause_icon.png in Resources */,
 				7DCFFE8A1F0EE4490003CD95 /* audio_play_button_blue.png in Resources */,
@@ -4756,6 +4763,7 @@
 				B6F509971AA53F760068F56A /* Localizable.strings in Resources */,
 				AD41D7B51A6F6F0600241130 /* play_button.png in Resources */,
 				7D014C5620237D2D00292964 /* redphone.cer in Resources */,
+				7D0A5C5C2092664E00BA6179 /* new-message.wav in Resources */,
 				B633C59D1A1D190B0059AC12 /* endcall@2x.png in Resources */,
 				FC5CDF391A3393DD00B47253 /* error_white@2x.png in Resources */,
 				B633C5D21A1D190B0059AC12 /* savephoto@2x.png in Resources */,
@@ -4775,7 +4783,6 @@
 				E1370BE218A0686C00826894 /* failure.mp3 in Resources */,
 				7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */,
 				E1370BE318A0686C00826894 /* handshake.mp3 in Resources */,
-				B625CD561ABB589C00E8B23C /* NewMessage.aifc in Resources */,
 				B633C58D1A1D190B0059AC12 /* contact_default_feed.png in Resources */,
 				B10C9B621A7049EC00ECA2BF /* play_icon@2x.png in Resources */,
 				B633C5861A1D190B0059AC12 /* call@2x.png in Resources */,
@@ -4785,6 +4792,7 @@
 				B10C9B601A7049EC00ECA2BF /* pause_icon@2x.png in Resources */,
 				E1370BE518A0686C00826894 /* r.caf in Resources */,
 				FC9120411A39EFB70074545C /* qr@2x.png in Resources */,
+				7D0A5C5F2092664E00BA6179 /* new-notification.wav in Resources */,
 				E1370BE618A0686C00826894 /* sonarping.mp3 in Resources */,
 				B10C9B5F1A7049EC00ECA2BF /* pause_icon.png in Resources */,
 				AD83FF471A73428300B5C81A /* audio_play_button_blue.png in Resources */,

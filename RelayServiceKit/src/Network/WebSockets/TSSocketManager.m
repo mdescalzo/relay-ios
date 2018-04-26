@@ -332,7 +332,7 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
 - (void)backgroundConnectTimedOut {
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.alertBody            = NSLocalizedString(@"APN_FETCHED_FAILED", nil);
-    notification.soundName            = @"NewMessage.aifc";
+    notification.soundName            = @"new-notification.wav";
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
