@@ -17,6 +17,7 @@
 #import "TSErrorMessage.h"
 #import "TSIncomingMessage.h"
 #import "TextSecureKitEnv.h"
+#import "JSQSystemSoundPlayer+JSQMessages.h"
 
 static const NSTimeInterval silenceWindow = 1.0;  // seconds
 
@@ -40,8 +41,8 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
 
     _contactsManager = [TextSecureKitEnv sharedEnv].contactsManager;
 
-    NSURL *newMessageURL = [[NSBundle mainBundle] URLForResource:@"NewMessage" withExtension:@"aifc"];
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)newMessageURL, &_newMessageSound);
+//    NSURL *newMessageURL = [[NSBundle mainBundle] URLForResource:@"new-message" withExtension:@"wav"];
+//    AudioServicesCreateSystemSoundID((__bridge CFURLRef)newMessageURL, &_newMessageSound);
 
     return self;
 }
@@ -82,7 +83,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
         notification.userInfo             = @{Signal_Thread_UserInfo_Key : thread.uniqueId};
         if ([Environment.preferences soundInBackground] &&
             [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
-            notification.soundName = @"NewMessage.aifc";
+            notification.soundName = @"new-notification.wav";
         } else {
             notification.soundName = nil;
         }
@@ -107,7 +108,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
         [[PushManager sharedManager] presentNotification:notification];
     } else {
         if ([Environment.preferences soundInForeground]) {
-            AudioServicesPlayAlertSound(_newMessageSound);
+            [JSQSystemSoundPlayer jsq_playMessageReceivedSound];
         }
     }
     self.lastNotificationDate = [NSDate date];
@@ -120,7 +121,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         if ([Environment.preferences soundInBackground] &&
             [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
-            notification.soundName = @"NewMessage.aifc";
+            notification.soundName = @"new-notification.wav";
         } else {
             notification.soundName = nil;
         }
@@ -158,7 +159,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
     } else {
         if ([Environment.preferences soundInForeground] &&
             [[NSDate date] timeIntervalSinceDate:self.lastNotificationDate ] > silenceWindow) {
-            AudioServicesPlayAlertSound(_newMessageSound);
+            [JSQSystemSoundPlayer jsq_playMessageReceivedSound];
         }
     }
     self.lastNotificationDate = [NSDate date];
