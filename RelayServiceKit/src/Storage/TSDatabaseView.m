@@ -15,6 +15,7 @@
 
 #import "OWSDevice.h"
 #import "TSIncomingMessage.h"
+#import "TSOutgoingMessage.h"
 #import "TSStorageManager.h"
 #import "TSThread.h"
 
@@ -192,6 +193,16 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                              withObjectBlock:^NSString *(
                                                                          YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
                                                  if ([object isKindOfClass:[TSInteraction class]]) {
+                                                     
+                                                     // TODO: Remove once upvotes are supported on iOS client
+                                                     if ([object isKindOfClass:[TSIncomingMessage class]] || [object isKindOfClass:[TSOutgoingMessage class]]) {
+                                                         TSMessage *message = (TSMessage *)object;
+                                                         if (message.plainTextBody.length == 0 && message.attributedTextBody.length == 0 && !message.hasAttachments && !message.isGiphy) {
+                                                             return nil;
+                                                         }
+                                                     }
+                                                     //////////
+                                                     
                                                      return ((TSInteraction *)object).uniqueThreadId;
                                                  }
                                                  return nil;
