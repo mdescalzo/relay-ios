@@ -30,7 +30,6 @@
 		45666F761D9BFE00008FE134 /* OWS100RemoveTSRecipientsMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F751D9BFE00008FE134 /* OWS100RemoveTSRecipientsMigration.m */; };
 		45666F7B1D9C0533008FE134 /* OWSDatabaseMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7A1D9C0533008FE134 /* OWSDatabaseMigration.m */; };
 		45666F7E1D9C0814008FE134 /* OWSDatabaseMigrationRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F7D1D9C0814008FE134 /* OWSDatabaseMigrationRunner.m */; };
-		456C38961DC7B882007536A7 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		45843D1F1D2236B30013E85A /* OWSContactsSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */; };
 		45843D201D2236B30013E85A /* OWSContactsSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 45843D1E1D2236B30013E85A /* OWSContactsSearcher.m */; };
 		45843D221D223BA10013E85A /* OWSContactsSearcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 45843D211D223BA10013E85A /* OWSContactsSearcherTest.m */; };
@@ -176,6 +175,9 @@
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */; };
+		7D21E03220976DE300EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
+		7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
+		7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D3366251F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3366261F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3366271F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
@@ -402,7 +404,6 @@
 		7D4A3A981F1693930023C29B /* Certificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048018170B33006006FC /* Certificate.m */; };
 		7D4A3A991F1693930023C29B /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
 		7D4A3A9A1F1693930023C29B /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
-		7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4520D8D41D417D8E00123472 /* Photos.framework */; };
 		7D4A3A9F1F1693930023C29B /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7D4A3AA01F1693930023C29B /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6FE7EB61ADD62FA00A6D22F /* PushKit.framework */; };
@@ -1082,7 +1083,6 @@
 		7DCFFE3F1F0EE4490003CD95 /* Certificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048018170B33006006FC /* Certificate.m */; };
 		7DCFFE401F0EE4490003CD95 /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
 		7DCFFE411F0EE4490003CD95 /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
-		7DCFFE441F0EE4490003CD95 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7DCFFE451F0EE4490003CD95 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4520D8D41D417D8E00123472 /* Photos.framework */; };
 		7DCFFE461F0EE4490003CD95 /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7DCFFE471F0EE4490003CD95 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6FE7EB61ADD62FA00A6D22F /* PushKit.framework */; };
@@ -2453,9 +2453,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D21E03220976DE300EDED0C /* PromiseKit.framework in Frameworks */,
 				7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */,
 				7D613B081F901BE000E18D29 /* libSocketRocket.a in Frameworks */,
-				7D4A3A9D1F1693930023C29B /* PromiseKit.framework in Frameworks */,
 				7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */,
 				7D4A3A9F1F1693930023C29B /* ContactsUI.framework in Frameworks */,
 				7D4A3AA01F1693930023C29B /* PushKit.framework in Frameworks */,
@@ -2486,9 +2486,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */,
 				7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */,
 				7D613B0A1F901BF200E18D29 /* libSocketRocket.a in Frameworks */,
-				7DCFFE441F0EE4490003CD95 /* PromiseKit.framework in Frameworks */,
 				7DCFFE451F0EE4490003CD95 /* Photos.framework in Frameworks */,
 				7DCFFE461F0EE4490003CD95 /* ContactsUI.framework in Frameworks */,
 				7DCFFE471F0EE4490003CD95 /* PushKit.framework in Frameworks */,
@@ -2519,10 +2519,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */,
 				7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */,
 				7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */,
 				7D613B0C1F901BFE00E18D29 /* libSocketRocket.a in Frameworks */,
-				456C38961DC7B882007536A7 /* PromiseKit.framework in Frameworks */,
 				4520D8D51D417D8E00123472 /* Photos.framework in Frameworks */,
 				B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */,
 				B6FE7EB71ADD62FA00A6D22F /* PushKit.framework in Frameworks */,
@@ -6472,7 +6472,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6541,7 +6541,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6608,7 +6608,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6676,7 +6676,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6882,7 +6882,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6948,7 +6948,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

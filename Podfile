@@ -11,7 +11,7 @@ abstract_target 'Common' do
     pod 'FFCircularProgressView',      '~> 0.5', :inhibit_warnings => true
     pod 'SCWaveformView',              '~> 1.0', :inhibit_warnings => true
     pod 'ZXingObjC',                   '~> 3.2.2',  :inhibit_warnings => true
-    pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: '7.3.4-attributedText', :inhibit_warnings => true
+    pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: 'forstaMaster', :inhibit_warnings => true
     pod '25519',                       git: 'git@github.com:ForstaLabs/25519.git', branch: 'keyPairFromPrivateKey', :inhibit_warnings => true
     pod 'CocoaLumberjack',             '> 3.0.0', :inhibit_warnings => true
     pod 'AFNetworking',                '~> 3.2.0', :inhibit_warnings => true
