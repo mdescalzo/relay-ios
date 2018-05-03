@@ -1,7 +1,6 @@
 #import "AppDelegate.h"
 #import "AppStoreRating.h"
 #import "CategorizingLogger.h"
-#import "CodeVerificationViewController.h"
 #import "DebugLogger.h"
 #import "Environment.h"
 #import "NotificationsManager.h"
@@ -29,14 +28,8 @@
 @import Crashlytics;
 
 NSString *const AppDelegateStoryboardMain = @"Main_v2";
-NSString *const AppDelegateStoryboardRegistration = @"Registration";
 NSString *const AppDelegateStoryboardLogin = @"Login";
 NSString *const AppDelegateStoryboardLaunchScreen = @"Launch Screen";
-
-
-static NSString *const kInitialViewControllerIdentifier = @"UserInitialViewController";
-static NSString *const kURLSchemeSGNLKey                = @"sgnl";
-static NSString *const kURLHostVerifyPrefix             = @"verify";
 
 @interface AppDelegate () <SmileAuthenticatorDelegate>
 
@@ -205,36 +198,6 @@ static NSString *const kURLHostVerifyPrefix             = @"verify";
 - (void)application:(UIApplication *)application
 didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
     [PushManager.sharedManager.userNotificationFutureSource trySetResult:notificationSettings];
-}
-
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    if ([url.scheme isEqualToString:kURLSchemeSGNLKey]) {
-        if ([url.host hasPrefix:kURLHostVerifyPrefix] && ![TSAccountManager isRegistered]) {
-            id signupController = [Environment getCurrent].signUpFlowNavigationController;
-            if ([signupController isKindOfClass:[UINavigationController class]]) {
-                UINavigationController *navController = (UINavigationController *)signupController;
-                UIViewController *controller          = [navController.childViewControllers lastObject];
-                if ([controller isKindOfClass:[CodeVerificationViewController class]]) {
-                    CodeVerificationViewController *cvvc = (CodeVerificationViewController *)controller;
-                    NSString *verificationCode           = [url.path substringFromIndex:1];
-                    
-                    cvvc.challengeTextField.text = verificationCode;
-                    [cvvc verifyChallengeAction:nil];
-                } else {
-                    DDLogWarn(@"Not the verification view controller we expected. Got %@ instead",
-                              NSStringFromClass(controller.class));
-                }
-            }
-        } else {
-            DDLogWarn(@"Application opened with an unknown URL action: %@", url.host);
-        }
-    } else {
-        DDLogWarn(@"Application opened with an unknown URL scheme: %@", url.scheme);
-    }
-    return NO;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

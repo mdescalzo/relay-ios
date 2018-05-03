@@ -243,7 +243,6 @@
 		7D4A39E91F1693930023C29B /* TSMessageAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D53F61A23CCAD009AAF82 /* TSMessageAdapter.m */; };
 		7D4A39EA1F1693930023C29B /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274EA1A5AFDDB00202277 /* AboutTableViewController.m */; };
 		7D4A39EB1F1693930023C29B /* StretchFactorController.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FE18BBEC1A00F073E5 /* StretchFactorController.m */; };
-		7D4A39EC1F1693930023C29B /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD257E1A154B2C00F4C644 /* RegistrationViewController.m */; };
 		7D4A39ED1F1693930023C29B /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
 		7D4A39EE1F1693930023C29B /* CyclicalBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04D118170B33006006FC /* CyclicalBuffer.m */; };
 		7D4A39EF1F1693930023C29B /* NumberUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04ED18170B33006006FC /* NumberUtil.m */; };
@@ -340,7 +339,6 @@
 		7D4A3A551F1693930023C29B /* HostNameEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042218170B33006006FC /* HostNameEndPoint.m */; };
 		7D4A3A561F1693930023C29B /* DH3KKeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */; };
 		7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */; };
-		7D4A3A581F1693930023C29B /* CodeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD25811A154B3800F4C644 /* CodeVerificationViewController.m */; };
 		7D4A3A591F1693930023C29B /* RPAPICall.m in Sources */ = {isa = PBXBuildFile; fileRef = B65EDA1119E1BE6400AAA7CB /* RPAPICall.m */; };
 		7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */; };
 		7D4A3A5B1F1693930023C29B /* StreamPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047D18170B33006006FC /* StreamPair.m */; };
@@ -374,7 +372,6 @@
 		7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
 		7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
-		7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B97CBFA618860EA3008E0DE9 /* CountryCodeViewController.m */; };
 		7D4A3A7D1F1693930023C29B /* SignalKeyingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B1013B196D213F007E3930 /* SignalKeyingStorage.m */; };
 		7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042718170B33006006FC /* UnrecognizedRequestFailure.m */; };
 		7D4A3A7F1F1693930023C29B /* CallConnectUtil_Initiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049E18170B33006006FC /* CallConnectUtil_Initiator.m */; };
@@ -922,7 +919,6 @@
 		7DCFFD901F0EE4490003CD95 /* TSMessageAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D53F61A23CCAD009AAF82 /* TSMessageAdapter.m */; };
 		7DCFFD911F0EE4490003CD95 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274EA1A5AFDDB00202277 /* AboutTableViewController.m */; };
 		7DCFFD921F0EE4490003CD95 /* StretchFactorController.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5FE18BBEC1A00F073E5 /* StretchFactorController.m */; };
-		7DCFFD931F0EE4490003CD95 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD257E1A154B2C00F4C644 /* RegistrationViewController.m */; };
 		7DCFFD941F0EE4490003CD95 /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
 		7DCFFD951F0EE4490003CD95 /* CyclicalBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04D118170B33006006FC /* CyclicalBuffer.m */; };
 		7DCFFD961F0EE4490003CD95 /* NumberUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04ED18170B33006006FC /* NumberUtil.m */; };
@@ -1019,7 +1015,6 @@
 		7DCFFDFC1F0EE4490003CD95 /* HostNameEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042218170B33006006FC /* HostNameEndPoint.m */; };
 		7DCFFDFD1F0EE4490003CD95 /* DH3KKeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */; };
 		7DCFFDFE1F0EE4490003CD95 /* EvpKeyAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */; };
-		7DCFFDFF1F0EE4490003CD95 /* CodeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD25811A154B3800F4C644 /* CodeVerificationViewController.m */; };
 		7DCFFE001F0EE4490003CD95 /* RPAPICall.m in Sources */ = {isa = PBXBuildFile; fileRef = B65EDA1119E1BE6400AAA7CB /* RPAPICall.m */; };
 		7DCFFE011F0EE4490003CD95 /* OWSDisplayedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */; };
 		7DCFFE021F0EE4490003CD95 /* StreamPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047D18170B33006006FC /* StreamPair.m */; };
@@ -1053,7 +1048,6 @@
 		7DCFFE201F0EE4490003CD95 /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7DCFFE211F0EE4490003CD95 /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
 		7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
-		7DCFFE231F0EE4490003CD95 /* CountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B97CBFA618860EA3008E0DE9 /* CountryCodeViewController.m */; };
 		7DCFFE241F0EE4490003CD95 /* SignalKeyingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B1013B196D213F007E3930 /* SignalKeyingStorage.m */; };
 		7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042718170B33006006FC /* UnrecognizedRequestFailure.m */; };
 		7DCFFE261F0EE4490003CD95 /* CallConnectUtil_Initiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049E18170B33006006FC /* CallConnectUtil_Initiator.m */; };
@@ -1162,6 +1156,9 @@
 		7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
 		7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
 		7DF27F5D1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */; };
+		7DF7E830209A5289001B8687 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */; };
+		7DF7E831209A5289001B8687 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */; };
+		7DF7E832209A5289001B8687 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */; };
 		7DFE7C531F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C541F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C551F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
@@ -1415,7 +1412,6 @@
 		B6FE7EB71ADD62FA00A6D22F /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6FE7EB61ADD62FA00A6D22F /* PushKit.framework */; };
 		B90418E6183E9DD40038554A /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
 		B97940271832BD2400BD66CB /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B97940261832BD2400BD66CB /* UIUtil.m */; };
-		B97CBFA818860EA3008E0DE9 /* CountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B97CBFA618860EA3008E0DE9 /* CountryCodeViewController.m */; };
 		B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EB5ABC1884C002007CBB57 /* MessageUI.framework */; };
 		BFB074C719A5611000F2947C /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		BFB074C919A5611000F2947C /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
@@ -1487,8 +1483,6 @@
 		FCFA64B41A24F3880007FB87 /* UIColor+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B31A24F3880007FB87 /* UIColor+OWS.m */; };
 		FCFA64B71A24F6730007FB87 /* UIFont+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B61A24F6730007FB87 /* UIFont+OWS.m */; };
 		FCFD256F1A151BCB00F4C644 /* ConversationUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD256E1A151BCB00F4C644 /* ConversationUpdateViewController.m */; };
-		FCFD257F1A154B2C00F4C644 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD257E1A154B2C00F4C644 /* RegistrationViewController.m */; };
-		FCFD25821A154B3800F4C644 /* CodeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD25811A154B3800F4C644 /* CodeVerificationViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2165,6 +2159,7 @@
 		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
 		7DF27F581FAB833A00900AF1 /* FLDocumentAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDocumentAdapter.h; sourceTree = "<group>"; };
 		7DF27F591FAB833A00900AF1 /* FLDocumentAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDocumentAdapter.m; sourceTree = "<group>"; };
+		7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		7DF8D5E31F7EA1DB00F76A60 /* RelayStage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayStage.entitlements; sourceTree = "<group>"; };
 		7DFE7C511F74398500905909 /* ForstaColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForstaColors.h; sourceTree = "<group>"; };
 		7DFE7C521F74398500905909 /* ForstaColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForstaColors.m; sourceTree = "<group>"; };
@@ -2325,8 +2320,6 @@
 		B90418E5183E9DD40038554A /* DateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtil.m; sourceTree = "<group>"; };
 		B97940251832BD2400BD66CB /* UIUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIUtil.h; sourceTree = "<group>"; };
 		B97940261832BD2400BD66CB /* UIUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIUtil.m; sourceTree = "<group>"; };
-		B97CBFA518860EA3008E0DE9 /* CountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryCodeViewController.h; sourceTree = "<group>"; };
-		B97CBFA618860EA3008E0DE9 /* CountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryCodeViewController.m; sourceTree = "<group>"; };
 		B9EB5ABC1884C002007CBB57 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		BFB074C319A5611000F2947C /* FutureUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FutureUtil.h; sourceTree = "<group>"; };
 		BFB074C419A5611000F2947C /* FutureUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FutureUtil.m; sourceTree = "<group>"; };
@@ -2442,10 +2435,6 @@
 		FCFA64B61A24F6730007FB87 /* UIFont+OWS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "UIFont+OWS.m"; path = "util/UIFont+OWS.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		FCFD256D1A151BCB00F4C644 /* ConversationUpdateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationUpdateViewController.h; sourceTree = "<group>"; };
 		FCFD256E1A151BCB00F4C644 /* ConversationUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ConversationUpdateViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		FCFD257D1A154B2C00F4C644 /* RegistrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationViewController.h; sourceTree = "<group>"; };
-		FCFD257E1A154B2C00F4C644 /* RegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationViewController.m; sourceTree = "<group>"; };
-		FCFD25801A154B3800F4C644 /* CodeVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeVerificationViewController.h; sourceTree = "<group>"; };
-		FCFD25811A154B3800F4C644 /* CodeVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeVerificationViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3199,7 +3188,6 @@
 				FC3196321A08142D0094C78E /* Legacy */,
 				7DBA8D681ED9FC49009FCF65 /* Login */,
 				FC3196311A08141D0094C78E /* Settings */,
-				FCFD25791A1543D500F4C644 /* Signup */,
 				B6BADBE51B88D1AC0086A80D /* LockInteractionController.h */,
 				B6BADBE61B88D1AC0086A80D /* LockInteractionController.m */,
 				458E382F1D6682450094BD24 /* OWSQRCodeScanningViewController.h */,
@@ -3744,6 +3732,7 @@
 				7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */,
 				7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */,
 				7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */,
+				7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -4358,19 +4347,6 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		FCFD25791A1543D500F4C644 /* Signup */ = {
-			isa = PBXGroup;
-			children = (
-				FCFD257D1A154B2C00F4C644 /* RegistrationViewController.h */,
-				FCFD257E1A154B2C00F4C644 /* RegistrationViewController.m */,
-				FCFD25801A154B3800F4C644 /* CodeVerificationViewController.h */,
-				FCFD25811A154B3800F4C644 /* CodeVerificationViewController.m */,
-				B97CBFA518860EA3008E0DE9 /* CountryCodeViewController.h */,
-				B97CBFA618860EA3008E0DE9 /* CountryCodeViewController.m */,
-			);
-			name = Signup;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -4847,6 +4823,7 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ReCaptcha/ReCaptcha.bundle",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
@@ -4862,6 +4839,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesLoadEarlierHeaderView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesToolbarContentView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesTypingIndicatorFooterView.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReCaptcha.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SAMKeychain.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
@@ -4935,6 +4913,7 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ReCaptcha/ReCaptcha.bundle",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
@@ -4950,6 +4929,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesLoadEarlierHeaderView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesToolbarContentView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesTypingIndicatorFooterView.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReCaptcha.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SAMKeychain.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
@@ -5047,6 +5027,7 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ReCaptcha/ReCaptcha.bundle",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
@@ -5062,6 +5043,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesLoadEarlierHeaderView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesToolbarContentView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesTypingIndicatorFooterView.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReCaptcha.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SAMKeychain.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
@@ -5123,6 +5105,7 @@
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib",
 				"${PODS_ROOT}/JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ReCaptcha/ReCaptcha.bundle",
 				"${PODS_ROOT}/SAMKeychain/Support/SAMKeychain.bundle",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/SmileSettingVC.storyboard",
 				"${PODS_ROOT}/SmileTouchID/SmileAuth/Assets/smile_Touch_ID@2x.png",
@@ -5138,6 +5121,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesLoadEarlierHeaderView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesToolbarContentView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/JSQMessagesTypingIndicatorFooterView.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReCaptcha.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SAMKeychain.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SmileSettingVC.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/smile_Touch_ID@2x.png",
@@ -5216,6 +5200,7 @@
 				7D4A39E41F1693930023C29B /* ZrtpInitiator.m in Sources */,
 				7D613AEB1F9018D800E18D29 /* OperationFailed.m in Sources */,
 				7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
+				7DF7E830209A5289001B8687 /* NewAccountViewController.swift in Sources */,
 				7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */,
 				7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */,
 				7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */,
@@ -5226,7 +5211,6 @@
 				7D6139951F90163700E18D29 /* OWSDispatch.m in Sources */,
 				7D613A5A1F90180600E18D29 /* OWSDeviceProvisioningCodeService.m in Sources */,
 				7D4A39EB1F1693930023C29B /* StretchFactorController.m in Sources */,
-				7D4A39EC1F1693930023C29B /* RegistrationViewController.m in Sources */,
 				7D613A511F9017F900E18D29 /* TSCall.m in Sources */,
 				7D4A39ED1F1693930023C29B /* EvpMessageDigest.m in Sources */,
 				7D4A39EE1F1693930023C29B /* CyclicalBuffer.m in Sources */,
@@ -5387,7 +5371,6 @@
 				7D4A3A561F1693930023C29B /* DH3KKeyAgreementParticipant.m in Sources */,
 				7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */,
 				7D613A331F9017DC00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
-				7D4A3A581F1693930023C29B /* CodeVerificationViewController.m in Sources */,
 				7D4A3A591F1693930023C29B /* RPAPICall.m in Sources */,
 				7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */,
 				7D4A3A5B1F1693930023C29B /* StreamPair.m in Sources */,
@@ -5451,7 +5434,6 @@
 				7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
 				7D613AA01F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
 				7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */,
-				7D4A3A7C1F1693930023C29B /* CountryCodeViewController.m in Sources */,
 				7D4A3A7D1F1693930023C29B /* SignalKeyingStorage.m in Sources */,
 				7D613A3F1F9017E800E18D29 /* OWSLegacyMessageServiceParams.m in Sources */,
 				7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */,
@@ -5566,6 +5548,7 @@
 				7DCFFD861F0EE4490003CD95 /* RPServerRequestsManager.m in Sources */,
 				7DCFFD871F0EE4490003CD95 /* UIViewController+CameraPermissions.m in Sources */,
 				7DCFFD881F0EE4490003CD95 /* HttpManager.m in Sources */,
+				7DF7E831209A5289001B8687 /* NewAccountViewController.swift in Sources */,
 				7DCFFD891F0EE4490003CD95 /* AccountManager.swift in Sources */,
 				7DCFFD8A1F0EE4490003CD95 /* CallState.m in Sources */,
 				7DCFFD8B1F0EE4490003CD95 /* ZrtpInitiator.m in Sources */,
@@ -5581,7 +5564,6 @@
 				7D6139D21F90176E00E18D29 /* OWSContactsOutputStream.m in Sources */,
 				7D613A041F9017A800E18D29 /* OWSIncomingSentMessageTranscript.m in Sources */,
 				7DCFFD921F0EE4490003CD95 /* StretchFactorController.m in Sources */,
-				7DCFFD931F0EE4490003CD95 /* RegistrationViewController.m in Sources */,
 				7DCFFD941F0EE4490003CD95 /* EvpMessageDigest.m in Sources */,
 				7DCFFD951F0EE4490003CD95 /* CyclicalBuffer.m in Sources */,
 				7DCFFD961F0EE4490003CD95 /* NumberUtil.m in Sources */,
@@ -5736,7 +5718,6 @@
 				7D613A341F9017DD00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
 				7DCFFDFE1F0EE4490003CD95 /* EvpKeyAgreement.m in Sources */,
 				7D613A8C1F90183600E18D29 /* TSRequest.m in Sources */,
-				7DCFFDFF1F0EE4490003CD95 /* CodeVerificationViewController.m in Sources */,
 				7D613A2E1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7DCFFE001F0EE4490003CD95 /* RPAPICall.m in Sources */,
 				7DCFFE011F0EE4490003CD95 /* OWSDisplayedMessage.m in Sources */,
@@ -5791,7 +5772,6 @@
 				7DCFFE211F0EE4490003CD95 /* PrivacySettingsTableViewController.m in Sources */,
 				7D613AA41F90185000E18D29 /* TSSocketManager.m in Sources */,
 				7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */,
-				7DCFFE231F0EE4490003CD95 /* CountryCodeViewController.m in Sources */,
 				7D7DBFCF1F97E24100860D35 /* FLControlMessage.m in Sources */,
 				7DCFFE241F0EE4490003CD95 /* SignalKeyingStorage.m in Sources */,
 				7D613AB31F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
@@ -5916,6 +5896,7 @@
 				EF764C351DB67CC5000D9A87 /* UIViewController+CameraPermissions.m in Sources */,
 				76EB059418170B33006006FC /* HttpManager.m in Sources */,
 				45CD81EF1DC030E7004C9430 /* AccountManager.swift in Sources */,
+				7DF7E832209A5289001B8687 /* NewAccountViewController.swift in Sources */,
 				76EB05EC18170B33006006FC /* CallState.m in Sources */,
 				76EB05D218170B33006006FC /* ZrtpInitiator.m in Sources */,
 				76EB05E018170B33006006FC /* NetworkStream.m in Sources */,
@@ -5930,7 +5911,6 @@
 				7D6139931F90163700E18D29 /* OWSDispatch.m in Sources */,
 				7D6139D31F90176F00E18D29 /* OWSContactsOutputStream.m in Sources */,
 				7D613A051F9017A900E18D29 /* OWSIncomingSentMessageTranscript.m in Sources */,
-				FCFD257F1A154B2C00F4C644 /* RegistrationViewController.m in Sources */,
 				701231B518ECAA4500D456C4 /* EvpMessageDigest.m in Sources */,
 				76EB062218170B33006006FC /* CyclicalBuffer.m in Sources */,
 				76EB063C18170B33006006FC /* NumberUtil.m in Sources */,
@@ -6086,7 +6066,6 @@
 				7D613A351F9017DD00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
 				E16E5BF018AAC40200B7C403 /* EvpKeyAgreement.m in Sources */,
 				7D613A8D1F90183600E18D29 /* TSRequest.m in Sources */,
-				FCFD25821A154B3800F4C644 /* CodeVerificationViewController.m in Sources */,
 				7D613A2F1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				B65EDA1219E1BE6400AAA7CB /* RPAPICall.m in Sources */,
 				453D28B71D32BA5F00D523F0 /* OWSDisplayedMessage.m in Sources */,
@@ -6141,7 +6120,6 @@
 				FCD274E21A5AFD8000202277 /* PrivacySettingsTableViewController.m in Sources */,
 				7D613AA51F90185000E18D29 /* TSSocketManager.m in Sources */,
 				76EB057218170B33006006FC /* RecentCall.m in Sources */,
-				B97CBFA818860EA3008E0DE9 /* CountryCodeViewController.m in Sources */,
 				7D7DBFD01F97E24100860D35 /* FLControlMessage.m in Sources */,
 				B6B1013C196D213F007E3930 /* SignalKeyingStorage.m in Sources */,
 				7D613AB41F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
@@ -6518,9 +6496,10 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
@@ -6589,6 +6568,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
