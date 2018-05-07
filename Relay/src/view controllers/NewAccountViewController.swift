@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import ReCaptcha
+import CocoaLumberjack
 
 class NewAccountViewController: UITableViewController, UITextFieldDelegate {
 
@@ -26,6 +28,10 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
                                                           self.emailTextField,
                                                           self.phoneNumberTextField ]
     
+    private var recaptcha: ReCaptcha!
+    
+    private let recaptchaWebViewTag = 123
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -34,6 +40,22 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
         self.phoneNumberTextField.placeholder = NSLocalizedString("Enter Phone Number", comment: "")
         self.emailTextField.placeholder = NSLocalizedString("Enter Email Address", comment: "")
         self.submitButton.setTitle(NSLocalizedString("Submit", comment: ""), for: .normal)
+        
+        do {
+            try self.recaptcha = ReCaptcha(apiKey: self.recaptchaSiteKey(), baseURL: self.recaptchaDomain(), endpoint: ReCaptcha.Endpoint.default)
+        } catch ReCaptchaError.apiKeyNotFound {
+            DDLogError("Recaptcha apiKeyNotFound")
+        } catch ReCaptchaError.baseURLNotFound {
+            DDLogError("Recaptcha baseURLNotFound")
+        } catch ReCaptchaError.htmlLoadError {
+            DDLogError("Recaptcha htmlLoadError")
+        } catch {
+            DDLogError("Recaptcha unknown")
+        }
+        self.recaptcha.configureWebView { webView in
+            webView.frame = self.view.bounds
+            webView.tag = self.recaptchaWebViewTag
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,6 +78,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func didPressSubmit(_ sender: UIButton) {
+        
         DispatchQueue.main.async {
             self.startSpinner()
             
@@ -72,28 +95,38 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
                 self.presentAlertWithMessage(message: "Please enter a valid email address")
                 self.stopSpinner()
             } else {
-                let payload = [ "first_name" : self.firstNameTextField.text!,
-                    "last_name" : self.lastNameTextField.text!,
-                    "phone" : String(format: "+1%@", self.simplePhoneNumber),
-                    "email" : self.emailTextField.text!]
-                
-                CCSMCommManager.requestAccountCreation(withUserDict: payload,
-                                                       success: {
-                                                            self.stopSpinner()
-                                                            self.performSegue(withIdentifier: "validationViewSegue",
-                                                                          sender: self)
-                },
-                                                       failure: { (NSError) in
-                                                            self.stopSpinner()
+                self.recaptcha.forceVisibleChallenge = true
+                self.recaptcha.validate(on: self.view,
+                                        completion: { (result: ReCaptchaResult) in
+                                            
+                                            var resultString: String?
+                                            do {
+                                                resultString = try result.dematerialize()
+                                            } catch {
+                                                DDLogDebug("Error retrieving token.")
+                                            }
+                                            DDLogDebug(resultString!)
+                                            
+                                            // remove the recaptcha webview
+                                            self.view.viewWithTag(self.recaptchaWebViewTag)?.removeFromSuperview()
                 })
+                //                let payload = [ "first_name" : self.firstNameTextField.text!,
+//                    "last_name" : self.lastNameTextField.text!,
+//                    "phone" : String(format: "+1%@", self.simplePhoneNumber),
+//                    "email" : self.emailTextField.text!]
+//
+//                CCSMCommManager.requestAccountCreation(withUserDict: payload,
+//                                                       success: {
+//                                                            self.stopSpinner()
+//                                                            self.performSegue(withIdentifier: "validationViewSegue",
+//                                                                          sender: self)
+//                },
+//                                                       failure: { (NSError) in
+//                                                            self.stopSpinner()
+//                })
             }
         }
     }
-
-@IBAction func mainViewTapped(_ sender: UITapGestureRecognizer) {
-        self.hideKeyboard()
-    }
-
     
     /*
     // MARK: - Navigation
@@ -146,6 +179,33 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
         let emailText = NSPredicate(format:"SELF MATCHES [c]%@",emailRegex)
         return (emailText.evaluate(with: strEmail))
     }
+    
+    // Retrieve reCaptcha key from plist
+    private func recaptchaSiteKey() -> String {
+        var forstaDict: NSDictionary?
+        if let path = Bundle.main.path(forResource: "Forsta-values", ofType: "plist") {
+            forstaDict = NSDictionary(contentsOfFile: path)
+        }
+        if let dict = forstaDict {
+            return dict.object(forKey: "RECAPTCHA_SITE_KEY") as! String
+        } else {
+            return ""
+        }
+    }
+    
+    // Retrieve reCaptcha domain from plist
+    private func recaptchaDomain() -> URL {
+        var forstaDict: NSDictionary?
+        if let path = Bundle.main.path(forResource: "Forsta-values", ofType: "plist") {
+            forstaDict = NSDictionary(contentsOfFile: path)
+        }
+        if let dict = forstaDict {
+            return URL(string: dict.object(forKey: "RECAPTHCA_DOMAIN") as! String)!
+        } else {
+            return URL(string:"")!
+        }
+    }
+
     
     // MARK: - UITextfield delegate methods
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

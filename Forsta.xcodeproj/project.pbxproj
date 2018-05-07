@@ -189,9 +189,6 @@
 		7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
-		7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
-		7D3D90181F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
-		7D3D90191F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */; };
 		7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
@@ -1846,8 +1843,6 @@
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
-		7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
-		7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
 		7D4794B9207EA38C00029A70 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
 		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
@@ -3730,8 +3725,6 @@
 				7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */,
 				7DBA8D6E1ED9FD0D009FCF65 /* LoginValidationViewController.h */,
 				7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */,
-				7D3D90151F85B59100EEFBB4 /* CreateAccountViewController.h */,
-				7D3D90161F85B59100EEFBB4 /* CreateAccountViewController.m */,
 				7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */,
 			);
 			name = Login;
@@ -5201,7 +5194,6 @@
 				7D613AEB1F9018D800E18D29 /* OperationFailed.m in Sources */,
 				7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				7DF7E830209A5289001B8687 /* NewAccountViewController.swift in Sources */,
-				7D3D90171F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */,
 				7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */,
 				7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */,
 				7D4A39E71F1693930023C29B /* PushManager.m in Sources */,
@@ -5553,7 +5545,6 @@
 				7DCFFD8A1F0EE4490003CD95 /* CallState.m in Sources */,
 				7DCFFD8B1F0EE4490003CD95 /* ZrtpInitiator.m in Sources */,
 				7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
-				7D3D90181F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */,
 				7DCFFD8C1F0EE4490003CD95 /* NetworkStream.m in Sources */,
 				7DCFFD8D1F0EE4490003CD95 /* UIFont+OWS.m in Sources */,
 				7DCFFD8E1F0EE4490003CD95 /* PushManager.m in Sources */,
@@ -5901,7 +5892,6 @@
 				76EB05D218170B33006006FC /* ZrtpInitiator.m in Sources */,
 				76EB05E018170B33006006FC /* NetworkStream.m in Sources */,
 				7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
-				7D3D90191F85B59100EEFBB4 /* CreateAccountViewController.m in Sources */,
 				FCFA64B71A24F6730007FB87 /* UIFont+OWS.m in Sources */,
 				B6B9ECFC198B31BA00C620D3 /* PushManager.m in Sources */,
 				76EB05D618170B33006006FC /* ZrtpResponder.m in Sources */,

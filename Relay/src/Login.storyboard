@@ -417,13 +417,8 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zWF-oh-3Np" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="lgY-uH-oi0">
-                    <connections>
-                        <action selector="mainViewTapped:" destination="Iur-Gf-eJN" id="OkD-eK-1dT"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1092" y="976"/>
+            <point key="canvasLocation" x="-1215" y="976"/>
         </scene>
         <!--Login Validation View Controller-->
         <scene sceneID="VUB-MF-PD5">
@@ -531,7 +526,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mdv-n9-h0K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-236" y="209.14542728635683"/>
+            <point key="canvasLocation" x="-257" y="208"/>
         </scene>
         <!--Main_v2-->
         <scene sceneID="30S-pw-aQx">

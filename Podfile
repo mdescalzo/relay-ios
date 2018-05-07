@@ -13,7 +13,7 @@ abstract_target 'Common' do
     pod 'ZXingObjC',                   '~> 3.2.2',  :inhibit_warnings => true
     pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: 'forstaMaster', :inhibit_warnings => true
     pod '25519',                       git: 'git@github.com:ForstaLabs/25519.git', branch: 'keyPairFromPrivateKey', :inhibit_warnings => true
-    pod 'CocoaLumberjack',             :inhibit_warnings => true
+    pod 'CocoaLumberjack/Swift',             :inhibit_warnings => true
     pod 'AFNetworking',                '~> 3.2.0', :inhibit_warnings => true
     pod 'AxolotlKit',                  '~>0.8', :inhibit_warnings => true
     pod 'Mantle',                      '~> 2.1.0', :inhibit_warnings => true
