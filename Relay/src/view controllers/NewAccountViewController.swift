@@ -184,8 +184,6 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
     private func setupReCaptcha() {
         self.recaptcha = try! ReCaptcha(apiKey: self.recaptchaSiteKey(), baseURL: self.recaptchaDomain(), endpoint: ReCaptcha.Endpoint.default)
         
-        self.recaptcha.forceVisibleChallenge = true
-        
         self.recaptcha.configureWebView { webView in
             webView.tag = self.recaptchaWebViewTag
             webView.backgroundColor = UIColor.clear
