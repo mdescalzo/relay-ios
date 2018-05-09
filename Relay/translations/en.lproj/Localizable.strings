@@ -637,6 +637,10 @@
 /* No comment provided by engineer. */
 "REREGISTER_FOR_PUSH" = "Re-register for push notifications";
 
+"REGISTER_USERNAME_ERROR" = "Username:  ";
+
+"REGISTER_CREATION_FAILURE" = "Account creation error";
+
 /* Generic text for button that retries whatever the last action was. */
 "RETRY_BUTTON_TEXT" = "Retry";
 

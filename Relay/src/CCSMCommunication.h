@@ -50,16 +50,9 @@
 +(void)registerAccountWithParameters:(NSDictionary *)parameters
                       completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
 
-//+(void)registerWithTSSViaCCSMForUserID:(NSString *)userID
-//                               success:(void (^)())successBlock
-//                               failure:(void (^)(NSError *error))failureBlock;
-
-//+(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId;
-//+(SignalRecipient *)recipientFromCCSMWithID:(NSString *)userId transaction:(YapDatabaseReadWriteTransaction *)transaction;
-
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
-                                  success:(void (^)())successBlock
-                                  failure:(void (^)(NSError *error))failureBlock;
+                                    token:(NSString *)token
+                               completion:(void (^)(BOOL success, NSError *error))completionBlock;
 
 +(void)sendDeviceProvisioningRequestWithPayload:(NSDictionary *_Nonnull)payload;
 
