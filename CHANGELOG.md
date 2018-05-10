@@ -1,5 +1,15 @@
 # Change Log
 
+
+## [1.4.6]
+### Fixed
+- Empty message bubbles from certain web client messages
+### Updated
+- JSQMessages pod updated
+- New notification sound
+### Added
+- Invisible Recaptcha robot checkout on new account creation
+
 ## [1.4.5]
 ### Fixed
 - Giphys failing to render (removed HTMLPurifier)
@@ -108,6 +118,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.6]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.6
 [1.4.5]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.5
 [1.4.4]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.4
 [1.4.3]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.3
