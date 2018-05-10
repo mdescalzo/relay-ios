@@ -19,3 +19,4 @@
 #import "TSStorageManager+SessionStore.h"
 #import "TSStorageManager+keyingMaterial.h"
 #import "TSThread.h"
+#import "CCSMCommunication.h"

@@ -722,49 +722,45 @@
 
 #pragma mark - Public account creation
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
-                                  success:(void (^)())successBlock
-                                  failure:(void (^)(NSError *error))failureBlock
+                                    token:(NSString *)token
+                               completion:(void (^)(BOOL success, NSError *error))completionBlock
 {
-    if ([userDict allKeys].count != 4 &&
-        ![[userDict allKeys] containsObject:@"first_name"] &&
-        ![[userDict allKeys] containsObject:@"last_name"] &&
-        ![[userDict allKeys] containsObject:@"phone"] &&
-        ![[userDict allKeys] containsObject:@"email"])
+    NSString *firstName = [userDict objectForKey:@"first_name"];
+    NSString *lastName = [userDict objectForKey:@"last_name"];
+    NSString *phone = [userDict objectForKey:@"phone"];
+    NSString *email = [userDict objectForKey:@"email"];
+
+    if (firstName.length == 0 ||
+        lastName.length == 0 ||
+        phone.length == 0 ||
+        email.length == 0)
     {
         // Bad payload, bounce
         NSError *error = [NSError errorWithDomain:@"CCSM.Invalid.input" code:9001 userInfo:nil];
-        failureBlock(error);
+        completionBlock(false, error);
     } else {
         
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"Forsta-values" ofType:@"plist"];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
+        // Build the v1/join payload
+        NSString *username = [NSString stringWithFormat:@"%@.%@", firstName.lowercaseString, lastName.lowercaseString];
+        NSString *fullname = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
         
-        if (![fileManager fileExistsAtPath: path])
-        {
-            DDLogError(@"Tokens Not Found.");
-        }
+        NSDictionary *payload = @{ @"username": username,
+                                   @"fullname": fullname,
+                                   @"phone": phone,
+                                   @"email": email,
+                                   @"captcha": token
+                                   };
         
-        NSDictionary *tokenDict = [[NSDictionary alloc] initWithContentsOfFile:path];
-        NSString *serviceToken = nil;
         
-#ifdef PRODUCTION
-        serviceToken = [tokenDict objectForKey:@"SERVICE_PROD_TOKEN"];
-#elif STAGE
-        serviceToken = [tokenDict objectForKey:@"SERVICE_STAGE_TOKEN"];
-#else
-        serviceToken = [tokenDict objectForKey:@"SERVICE_DEV_TOKEN"];
-#endif
-        
-        NSString *urlString = [NSString stringWithFormat:@"%@/v1/user/?login=true", FLHomeURL];
+        NSString *urlString = [NSString stringWithFormat:@"%@/v1/join/", FLHomeURL];
         NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
         [request setHTTPMethod:@"POST"];
         [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"https://app.forsta.io/join" forHTTPHeaderField:@"Referer"];
         
-        [request setValue:[NSString stringWithFormat:@"ServiceToken %@", serviceToken] forHTTPHeaderField:@"Authorization"];
-        
-        NSData *bodyData = [NSJSONSerialization dataWithJSONObject:userDict options:0 error:nil];
+        NSData *bodyData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
         [request setHTTPBody:bodyData];
         
         [[NSURLSession.sharedSession dataTaskWithRequest:request
@@ -772,35 +768,49 @@
                                                            NSURLResponse * _Nullable response,
                                                            NSError * _Nullable connectionError) {
                                            NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-                                           DDLogDebug(@"Requst Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                           DDLogDebug(@"Request Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
                                            DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                           
+                                           NSDictionary *result = nil;
+                                           if (data.length > 0) {
+                                               result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                        options:0
+                                                                                          error:NULL];
+                                           }
+                                           
                                            if (connectionError != nil)  // Failed connection
                                            {
-                                               failureBlock(connectionError);
+                                               completionBlock(false, connectionError);
                                            }
                                            else if (HTTPresponse.statusCode >= 200 && HTTPresponse.statusCode <= 204) // SUCCESS!
                                            {
-                                               NSDictionary *result = nil;
                                                if (data.length > 0 && connectionError == nil)
                                                {
-                                                   result = [NSJSONSerialization JSONObjectWithData:data
-                                                                                            options:0
-                                                                                              error:NULL];
                                                    CCSMStorage *ccsmStore = [CCSMStorage new];
-                                                   NSString *userSlug = [result objectForKey:@"username"];
-                                                   NSDictionary *orgDict = [result objectForKey:@"org"];
-                                                   NSString *orgSlug = [orgDict objectForKey:@"slug"];
+                                                   NSString *userSlug = [result objectForKey:@"nametag"];
+                                                   NSString *orgSlug = [result objectForKey:@"orgslug"];
                                                    [ccsmStore setOrgName:orgSlug];
                                                    [ccsmStore setUserName:userSlug];
                                                }
-                                               successBlock();
+                                               completionBlock(true, nil);
+                                           }
+                                           else if (HTTPresponse.statusCode == 400 && [result objectForKey:@"username"]) {
+                                               
+                                               NSMutableString *errorString = [NSLocalizedString(@"REGISTER_USERNAME_ERROR", nil) mutableCopy];
+                                               NSArray *array = (NSArray *)[result objectForKey:@"username"];
+                                               [errorString appendString:[array lastObject]];
+                                               
+                                               NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                    code:HTTPresponse.statusCode
+                                                                                userInfo:@{ NSLocalizedDescriptionKey: errorString }];
+                                               completionBlock(false, error);
                                            }
                                            else  // Connection good, error from server
                                            {
                                                NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                                                                     code:HTTPresponse.statusCode
                                                                                 userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-                                               failureBlock(error);
+                                               completionBlock(false, error);
                                            }
                                        }] resume];
     }
