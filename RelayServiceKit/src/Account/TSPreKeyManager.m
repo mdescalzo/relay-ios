@@ -19,36 +19,43 @@
 + (void)registerPreKeysWithSuccess:(void (^)())success failure:(void (^)(NSError *))failureBlock
 {
     TSStorageManager *storageManager = [TSStorageManager sharedManager];
-    ECKeyPair *identityKeyPair       = [storageManager identityKeyPair];
-
-    if (!identityKeyPair) {
-        [storageManager generateNewIdentityKey];
-        identityKeyPair = [storageManager identityKeyPair];
-    }
-
+    YapDatabaseConnection *dbConnection = [storageManager newDatabaseConnection];
+    
+    __block ECKeyPair *identityKeyPair = nil;
+    
+    [dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        
+        identityKeyPair = [storageManager identityKeyPair:transaction];
+        
+        if (!identityKeyPair) {
+            [storageManager generateNewIdentityKeyWithTransaction:transaction];
+            identityKeyPair = [storageManager identityKeyPair:transaction];
+        }
+    }];
+    
     PreKeyRecord *lastResortPreKey   = [storageManager getOrGenerateLastResortKey];
     SignedPreKeyRecord *signedPreKey = [storageManager generateRandomSignedRecord];
-
+    
     NSArray *preKeys = [storageManager generatePreKeyRecords];
-
+    
     TSRegisterPrekeysRequest *request =
-        [[TSRegisterPrekeysRequest alloc] initWithPrekeyArray:preKeys
-                                                  identityKey:[storageManager identityKeyPair].publicKey
-                                           signedPreKeyRecord:signedPreKey
-                                             preKeyLastResort:lastResortPreKey];
-
+    [[TSRegisterPrekeysRequest alloc] initWithPrekeyArray:preKeys
+                                              identityKey:identityKeyPair.publicKey
+                                       signedPreKeyRecord:signedPreKey
+                                         preKeyLastResort:lastResortPreKey];
+    
     [[TSNetworkManager sharedManager] makeRequest:request
-        success:^(NSURLSessionDataTask *task, id responseObject) {
-            DDLogInfo(@"%@ Successfully registered pre keys.", self.tag);
-            [storageManager storePreKeyRecords:preKeys];
-            [storageManager storeSignedPreKey:signedPreKey.Id signedPreKeyRecord:signedPreKey];
-
-            success(nil);
-        }
-        failure:^(NSURLSessionDataTask *task, NSError *error) {
-            DDLogError(@"%@ Failed to register pre keys.", self.tag);
-            failureBlock(error);
-        }];
+                                          success:^(NSURLSessionDataTask *task, id responseObject) {
+                                              DDLogInfo(@"%@ Successfully registered pre keys.", self.tag);
+                                              [storageManager storePreKeyRecords:preKeys];
+                                              [storageManager storeSignedPreKey:signedPreKey.Id signedPreKeyRecord:signedPreKey];
+                                              
+                                              success(nil);
+                                          }
+                                          failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                              DDLogError(@"%@ Failed to register pre keys.", self.tag);
+                                              failureBlock(error);
+                                          }];
 }
 
 + (void)refreshPreKeys {

@@ -1,7 +1,7 @@
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
 #import "OWSProvisioningCipher.h"
-#import <25519/Curve25519.h>
+#import <Curve25519Kit/Curve25519.h>
 #import <HKDFKit/HKDFKit.h>
 #import "Cryptography.h"
 #import "OWSProvisioningProtos.pb.h"

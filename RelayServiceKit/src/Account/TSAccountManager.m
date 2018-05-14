@@ -114,6 +114,23 @@ NS_ASSUME_NONNULL_BEGIN
     return registrationID;
 }
 
++ (uint32_t)getOrGenerateRegistrationIdWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
+    __block uint32_t registrationID = 0;
+    
+    registrationID = [[transaction objectForKey:TSStorageLocalRegistrationId
+                                   inCollection:TSStorageUserAccountCollection] unsignedIntValue];
+    
+    if (registrationID == 0) {
+        registrationID = (uint32_t)arc4random_uniform(16380) + 1;
+        
+        [transaction setObject:[NSNumber numberWithUnsignedInteger:registrationID]
+                        forKey:TSStorageLocalRegistrationId
+                  inCollection:TSStorageUserAccountCollection];
+    }
+    
+    return registrationID;
+}
+
 - (void)registerForPushNotificationsWithPushToken:(NSString *)pushToken
                                         voipToken:(NSString *)voipToken
                                           success:(void (^)())successHandler

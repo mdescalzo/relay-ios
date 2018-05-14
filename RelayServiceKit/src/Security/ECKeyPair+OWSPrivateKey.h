@@ -1,6 +1,6 @@
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
-#import <25519/Curve25519.h>
+#import <Curve25519Kit/Curve25519.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -56,7 +56,9 @@ NSString *TSInvalidRecipientKey = @"TSInvalidRecipientKey";
 
 - (void)acceptNewIdentityKey
 {
-    [[TSStorageManager sharedManager] saveRemoteIdentity:self.newIdentityKey recipientId:self.recipientId];
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [TSStorageManager.sharedManager saveRemoteIdentity:self.newIdentityKey recipientId:self.recipientId protocolContext:transaction];
+    }];
 }
 
 - (NSData *)newIdentityKey

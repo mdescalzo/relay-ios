@@ -92,7 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    [[TSStorageManager sharedManager] saveRemoteIdentity:newKey recipientId:self.envelope.source];
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [TSStorageManager.sharedManager saveRemoteIdentity:newKey recipientId:self.envelope.source protocolContext:transaction];
+    }];
 
     // Decrypt this and any old messages for the newly accepted key
     NSArray<TSInvalidIdentityKeyReceivingErrorMessage *> *messagesToDecrypt =
