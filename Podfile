@@ -12,10 +12,9 @@ abstract_target 'Common' do
     pod 'SCWaveformView',              '~> 1.0', :inhibit_warnings => true
     pod 'ZXingObjC',                   '~> 3.2.2',  :inhibit_warnings => true
     pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: 'forstaMaster', :inhibit_warnings => true
-    pod '25519',                       git: 'git@github.com:ForstaLabs/25519.git', branch: 'keyPairFromPrivateKey', :inhibit_warnings => true
     pod 'CocoaLumberjack/Swift',             :inhibit_warnings => true
     pod 'AFNetworking',                '~> 3.2.0', :inhibit_warnings => true
-    pod 'AxolotlKit',                  '~>0.8', :inhibit_warnings => true
+    pod 'AxolotlKit',                  git: 'https://github.com/signalapp/SignalProtocolKit.git'
     pod 'Mantle',                      '~> 2.1.0', :inhibit_warnings => true
     pod 'YapDatabase/SQLCipher', git: 'git@github.com:yapstudios/YapDatabase.git', branch: 'master', :inhibit_warnings => true
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :commit => '877ac7438be3ad0b45ef5ca3969574e4b97112bf', :inhibit_warnings => true
