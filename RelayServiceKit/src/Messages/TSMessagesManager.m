@@ -149,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
                     [thread saveWithTransaction:transaction];
                 }
             } else {
-                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:envelope.source];
+                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:envelope.source transaction:transaction];
                 DDLogDebug(@"Received malformed receipt from %@, uid: %@, device %d", recipient.fullName, envelope.source, envelope.sourceDevice);
             }
             [outgoingMessage saveWithTransaction:transaction];
@@ -696,6 +696,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  authorId:envelope.source
                                                                               messageBody:@""];
             textMessage.plainTextBody = incomingMessage.plainTextBody;
+            textMessage.attributedTextBody = incomingMessage.attributedTextBody;
             textMessage.expiresInSeconds = dataMessage.expireTimer;
             [textMessage saveWithTransaction:transaction];
         }
