@@ -237,7 +237,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         __block NSData *plaintextData;
         @try {
-            [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+            [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                 PreKeyWhisperMessage *message = [[PreKeyWhisperMessage alloc] initWithData:encryptedData];
                 SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
                                                                         preKeyStore:storageManager
