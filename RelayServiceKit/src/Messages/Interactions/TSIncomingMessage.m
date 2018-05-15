@@ -114,8 +114,6 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
 - (void)markAsReadLocallyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     [self markAsReadWithoutNotificationWithTransaction:transaction];
-    [[NSNotificationCenter defaultCenter] postNotificationName:TSIncomingMessageWasReadOnThisDeviceNotification
-                                                        object:self];
 }
 
 - (void)markAsReadLocally

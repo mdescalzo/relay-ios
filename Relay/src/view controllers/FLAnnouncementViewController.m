@@ -56,9 +56,9 @@
     
     [self configureWithThread];
     
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        [self.thread markAllAsReadWithTransaction:transaction];
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.thread markAllAsRead];
+    });
 }
 
 - (void)didReceiveMemoryWarning {
