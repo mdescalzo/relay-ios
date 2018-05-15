@@ -2,7 +2,6 @@
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
 #import "OWSMessageSender.h"
-//#import "ContactsUpdater.h"
 #import "NSData+messagePadding.h"
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSDispatch.h"
@@ -50,7 +49,6 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 @property (nonatomic, readonly) OWSUploadingService *uploadingService;
 @property (nonatomic, readonly) YapDatabaseConnection *dbConnection;
 @property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
-//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 @property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 
 @end
@@ -60,7 +58,6 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 - (instancetype)initWithNetworkManager:(TSNetworkManager *)networkManager
                         storageManager:(TSStorageManager *)storageManager
                        contactsManager:(id<ContactsManagerProtocol>)contactsManager
-//                       contactsUpdater:(ContactsUpdater *)contactsUpdater
 {
     self = [super init];
     if (!self) {
@@ -70,7 +67,6 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     _networkManager = networkManager;
     _storageManager = storageManager;
     _contactsManager = contactsManager;
-    //    _contactsUpdater = contactsUpdater;
     
     _uploadingService = [[OWSUploadingService alloc] initWithNetworkManager:networkManager];
     _dbConnection = storageManager.newDatabaseConnection;
@@ -638,10 +634,11 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     NSArray *missingDevices = [dictionary objectForKey:@"missingDevices"];
     
     if (extraDevices.count > 0) {
-        for (NSNumber *extraDeviceId in extraDevices) {
-            [self.storageManager deleteSessionForContact:recipient.uniqueId deviceId:extraDeviceId.intValue];
-        }
-        
+        [self.storageManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            for (NSNumber *extraDeviceId in extraDevices) {
+                [self.storageManager deleteSessionForContact:recipient.uniqueId deviceId:extraDeviceId.intValue protocolContext:transaction];
+            }
+        }];
         [recipient removeDevices:[NSSet setWithArray:extraDevices]];
     }
     
@@ -734,7 +731,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
             NSDictionary *messageDict = [self encryptedMessageWithPlaintext:plainText
                                                                 toRecipient:recipient.uniqueId
                                                                    deviceId:deviceNumber
-                                                              keyingStorage:[TSStorageManager sharedManager]
+                                                              keyingStorage:TSStorageManager.sharedManager
                                                                      legacy:isLegacyMessage];
             if (messageDict) {
                 [messagesArray addObject:messageDict];
@@ -761,7 +758,13 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                   keyingStorage:(TSStorageManager *)storage
                                          legacy:(BOOL)isLegacymessage
 {
-    if (![storage containsSession:identifier deviceId:[deviceNumber intValue]]) {
+    DDLogDebug(@"dbConnection: %@", self.dbConnection);
+    __block BOOL containsSessionId;
+    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        containsSessionId = [storage containsSession:identifier deviceId:[deviceNumber intValue] protocolContext:transaction];
+    }];
+    
+    if (!containsSessionId) {
         __block dispatch_semaphore_t sema = dispatch_semaphore_create(0);
         __block PreKeyBundle *bundle;
         __block NSException *exception;
@@ -797,7 +800,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                            reason:@"Can't get a prekey bundle from the server with required information"
                                          userInfo:nil];
         } else {
-            SessionBuilder *builder = [[SessionBuilder alloc] initWithSessionStore:storage
+            __block SessionBuilder *builder = [[SessionBuilder alloc] initWithSessionStore:storage
                                                                        preKeyStore:storage
                                                                  signedPreKeyStore:storage
                                                                   identityKeyStore:storage
@@ -806,7 +809,9 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
             @try {
                 // Mutating session state is not thread safe.
                 @synchronized(self) {
-                    [builder processPrekeyBundle:bundle];
+                    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+                        [builder processPrekeyBundle:bundle protocolContext:transaction];
+                    }];
                 }
             } @catch (NSException *exception) {
                 if ([exception.name isEqualToString:UntrustedIdentityKeyException]) {
@@ -828,31 +833,37 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                                                deviceId:[deviceNumber intValue]];
     
     // Mutating session state is not thread safe.
-    id<CipherMessage> encryptedMessage;
+    __block id<CipherMessage> encryptedMessage;
     @synchronized (self) {
-        encryptedMessage = [cipher encryptMessage:[plainText paddedMessageBody]];
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+            encryptedMessage = [cipher encryptMessage:[plainText paddedMessageBody] protocolContext:transaction];
+        }];
     }
     NSData *serializedMessage = encryptedMessage.serialized;
     TSWhisperMessageType messageType = [self messageTypeForCipherMessage:encryptedMessage];
     
-    OWSMessageServiceParams *messageParams;
     // DEPRECATED - Remove after all clients have been upgraded.
-    if (isLegacymessage) {
-        messageParams = [[OWSLegacyMessageServiceParams alloc] initWithType:messageType
-                                                                recipientId:identifier
-                                                                     device:[deviceNumber intValue]
-                                                                       body:serializedMessage
-                                                             registrationId:cipher.remoteRegistrationId];
-    } else {
-        messageParams = [[OWSMessageServiceParams alloc] initWithType:messageType
-                                                          recipientId:identifier
-                                                               device:[deviceNumber intValue]
-                                                              content:serializedMessage
-                                                       registrationId:cipher.remoteRegistrationId];
-    }
+    __block NSError *error;
     
-    NSError *error;
-    NSDictionary *jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:messageParams error:&error];
+    __block NSDictionary *jsonDict;
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        OWSMessageServiceParams *messageParams;
+        
+        if (isLegacymessage) {
+            messageParams = [[OWSLegacyMessageServiceParams alloc] initWithType:messageType
+                                                                    recipientId:identifier
+                                                                         device:[deviceNumber intValue]
+                                                                           body:serializedMessage
+                                                                 registrationId:[cipher remoteRegistrationId:transaction]];
+        } else {
+            messageParams = [[OWSMessageServiceParams alloc] initWithType:messageType
+                                                              recipientId:identifier
+                                                                   device:[deviceNumber intValue]
+                                                                  content:serializedMessage
+                                                           registrationId:[cipher remoteRegistrationId:transaction]];
+        }
+        jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:messageParams error:&error];
+    }];
     
     if (error) {
         DDLogError(@"Error while making JSON dictionary of message: %@", error.debugDescription);
@@ -915,10 +926,12 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
             return;
         }
         
-        for (NSUInteger i = 0; i < [devices count]; i++) {
-            int deviceNumber = [devices[i] intValue];
-            [[TSStorageManager sharedManager] deleteSessionForContact:identifier deviceId:deviceNumber];
-        }
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+            for (NSUInteger i = 0; i < [devices count]; i++) {
+                int deviceNumber = [devices[i] intValue];
+                [[TSStorageManager sharedManager] deleteSessionForContact:identifier deviceId:deviceNumber protocolContext:transaction];
+            }
+        }];
     });
 }
 
@@ -943,6 +956,15 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         [errorMessage saveWithTransaction:transaction];
     }];
 }
+
+//-(YapDatabaseConnection *)dbConnection
+//{
+//    if (_dbConnection == nil) {
+//        _dbConnection = self.storageManager.newDatabaseConnection;
+//    }
+//    return _dbConnection;
+//}
+
 
 #pragma mark - Logging
 

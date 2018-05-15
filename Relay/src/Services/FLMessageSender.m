@@ -18,19 +18,11 @@
 
 @interface FLMessageSender()
 
-@property (strong, readonly) YapDatabaseConnection *dbConnection;
+//@property (strong, readonly) YapDatabaseConnection *dbConnection;
 
 @end
 
 @implementation FLMessageSender
-
--(instancetype)init
-{
-    if (self = [super init]) {
-        _dbConnection = [TSStorageManager.sharedManager newDatabaseConnection];
-    }
-    return self;
-}
 
 -(void)sendControlMessage:(FLControlMessage *)message
              toRecipients:(NSCountedSet<NSString *> *)recipientIds

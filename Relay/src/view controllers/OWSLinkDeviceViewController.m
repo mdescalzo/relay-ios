@@ -126,8 +126,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)provisionWithParser:(OWSDeviceProvisioningURLParser *)parser
 {
-    NSData *myPublicKey = [[TSStorageManager sharedManager] identityKeyPair].publicKey;
-    NSData *myPrivateKey = [[TSStorageManager sharedManager] identityKeyPair].ows_privateKey;
+    __block NSData *myPublicKey = nil;
+    __block NSData *myPrivateKey = nil;
+    
+    [TSStorageManager.sharedManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        myPublicKey = [[TSStorageManager sharedManager] identityKeyPair:transaction].publicKey;
+        myPrivateKey = [[TSStorageManager sharedManager] identityKeyPair:transaction].ows_privateKey;
+    }];
     NSString *accountIdentifier = [TSStorageManager localNumber];
 
     OWSDeviceProvisioner *provisioner = [[OWSDeviceProvisioner alloc] initWithMyPublicKey:myPublicKey

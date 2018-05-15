@@ -12,6 +12,8 @@
 @interface TSStorageManager (IdentityKeyStore) <IdentityKeyStore>
 
 - (void)generateNewIdentityKey;
+-(void)generateNewIdentityKeyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+
 - (NSData *)identityKeyForRecipientId:(NSString *)recipientId;
 - (void)removeIdentityKeyForRecipient:(NSString *)receipientId;
 -(void)setIdentityKey:(ECKeyPair *)identityKeyPair;

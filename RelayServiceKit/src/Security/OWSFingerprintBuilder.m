@@ -6,7 +6,7 @@
 #import "OWSFingerprint.h"
 #import "TSStorageManager+IdentityKeyStore.h"
 #import "TSStorageManager+keyingMaterial.h"
-#import <25519/Curve25519.h>
+#import <Curve25519Kit/Curve25519.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,7 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *theirName = [self.contactsManager nameStringForContactId:theirSignalId];
 
     NSString *mySignalId = [self.storageManager localNumber];
-    NSData *myIdentityKey = [self.storageManager identityKeyPair].publicKey;
+    
+    __block ECKeyPair *myIdentityKeyPair = nil;
+    [self.storageManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        myIdentityKeyPair = [self.storageManager identityKeyPair:transaction];
+    }];
+    NSData *myIdentityKey = myIdentityKeyPair.publicKey;
 
     return [OWSFingerprint fingerprintWithMyStableId:mySignalId
                                        myIdentityKey:myIdentityKey

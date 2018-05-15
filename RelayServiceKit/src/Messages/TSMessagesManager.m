@@ -164,7 +164,11 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *recipientId = messageEnvelope.source;
         int deviceId = (int)messageEnvelope.sourceDevice;
         
-        if (![storageManager containsSession:recipientId deviceId:deviceId]) {
+        __block BOOL containsSessionId;
+        [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+            containsSessionId = [storageManager containsSession:recipientId deviceId:deviceId protocolContext:transaction];
+        }];
+        if (!containsSessionId) {
             [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                 TSErrorMessage *errorMessage =
                 [TSErrorMessage missingSessionWithEnvelope:messageEnvelope withTransaction:transaction];
@@ -180,17 +184,19 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         
-        NSData *plaintextData;
+        __block NSData *plaintextData;
         @try {
-            WhisperMessage *message = [[WhisperMessage alloc] initWithData:encryptedData];
-            SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
-                                                                    preKeyStore:storageManager
-                                                              signedPreKeyStore:storageManager
-                                                               identityKeyStore:storageManager
-                                                                    recipientId:recipientId
-                                                                       deviceId:deviceId];
-            
-            plaintextData = [[cipher decrypt:message] removePadding];
+            [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+                WhisperMessage *message = [[WhisperMessage alloc] initWithData:encryptedData];
+                SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
+                                                                        preKeyStore:storageManager
+                                                                  signedPreKeyStore:storageManager
+                                                                   identityKeyStore:storageManager
+                                                                        recipientId:recipientId
+                                                                           deviceId:deviceId];
+                
+                plaintextData = [[cipher decrypt:message protocolContext:transaction] removePadding];
+                                 }];
         } @catch (NSException *exception) {
             [self processException:exception envelope:messageEnvelope];
             return;
@@ -229,17 +235,18 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         
-        NSData *plaintextData;
+        __block NSData *plaintextData;
         @try {
-            PreKeyWhisperMessage *message = [[PreKeyWhisperMessage alloc] initWithData:encryptedData];
-            SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
-                                                                    preKeyStore:storageManager
-                                                              signedPreKeyStore:storageManager
-                                                               identityKeyStore:storageManager
-                                                                    recipientId:recipientId
-                                                                       deviceId:deviceId];
-            
-            plaintextData = [[cipher decrypt:message] removePadding];
+            [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+                PreKeyWhisperMessage *message = [[PreKeyWhisperMessage alloc] initWithData:encryptedData];
+                SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
+                                                                        preKeyStore:storageManager
+                                                                  signedPreKeyStore:storageManager
+                                                                   identityKeyStore:storageManager
+                                                                        recipientId:recipientId
+                                                                           deviceId:deviceId];
+                plaintextData = [[cipher decrypt:message protocolContext:transaction] removePadding];
+            }];
         } @catch (NSException *exception) {
             [self processException:exception envelope:preKeyEnvelope];
             return;
@@ -440,7 +447,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)handleEndSessionMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)endSessionEnvelope
                                 dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         NSDictionary *messagePayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
         NSString *threadid = [messagePayload objectForKey:@"threadId"];
         TSThread *thread = [TSThread getOrCreateThreadWithID:threadid transaction:transaction];
@@ -451,9 +458,9 @@ NS_ASSUME_NONNULL_BEGIN
                                              inThread:thread
                                           messageType:TSInfoMessageTypeSessionDidEnd] saveWithTransaction:transaction];
         }
+        
+        [[TSStorageManager sharedManager] deleteAllSessionsForContact:endSessionEnvelope.source protocolContext:transaction];
     }];
-    
-    [[TSStorageManager sharedManager] deleteAllSessionsForContact:endSessionEnvelope.source];
 }
 
 - (void)handleExpirationTimerUpdateMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
@@ -540,10 +547,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                      attachmentIds:attachmentIds];
         } else {
 #ifdef DEBUG
-#warning REMOVE DETAILED DUMP BEFORE SHIPPING!
             DDLogDebug(@"Unhandled control message of type: %@\nwith Payload: %@", controlMessageType, jsonPayload);
 #else
-            DDLogDebug(@"Unhandled control message.");
+            DDLogDebug(@"Unhandled control message of type: %@", controlMessageType);
 #endif
         }
         return nil;

@@ -11,7 +11,7 @@
 #import "ShowGroupMembersViewController.h"
 #import "UIFont+OWS.h"
 #import "UIUtil.h"
-#import <25519/Curve25519.h>
+#import <Curve25519Kit/Curve25519.h>
 #import "NSDate+millisecondTimeStamp.h"
 #import "OWSDisappearingConfigurationUpdateInfoMessage.h"
 #import "OWSDisappearingMessagesConfiguration.h"

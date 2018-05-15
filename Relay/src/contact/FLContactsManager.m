@@ -8,7 +8,7 @@
 
 #import "FLContactsManager.h"
 #import <SAMKeychain/SAMKeychain.h>
-#import <25519/Randomness.h>
+#import <Curve25519Kit/Randomness.h>
 #import "NSData+Base64.h"
 #import "TSAccountManager.h"
 #import "Util.h"

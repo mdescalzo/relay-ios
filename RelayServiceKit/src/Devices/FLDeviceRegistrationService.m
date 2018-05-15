@@ -19,7 +19,8 @@
 #import "OWSProvisioningCipher.h"
 #import "OWSProvisioningProtos.pb.h"
 #import "NSData+keyVersionByte.h"
-#import <25519/Curve25519.h>
+#import <Curve25519Kit/Curve25519.h>
+#import "Curve25519+keyPairFromPrivateKey.h"
 #import "SignalKeyingStorage.h"
 #import "SecurityUtils.h"
 #import "DeviceTypes.h"
@@ -150,9 +151,14 @@
 -(void)provisionOtherDeviceWithPublicKey:(NSString *_Nonnull)keyString andUUID:(NSString *_Nonnull)uuidString
 {
     NSData *theirPublicKey = [[NSData dataFromBase64String:keyString] removeKeyType];
-    NSData *myPublicKey = TSStorageManager.sharedManager.identityKeyPair.publicKey;
-    NSData *myPrivateKey = TSStorageManager.sharedManager.identityKeyPair.ows_privateKey;
     NSString *accountIdentifier = TSAccountManager.sharedInstance.myself.uniqueId;
+    __block NSData *myPublicKey = nil;
+    __block NSData *myPrivateKey = nil;
+
+    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        myPublicKey = [TSStorageManager.sharedManager identityKeyPair:transaction].publicKey;
+        myPrivateKey = [TSStorageManager.sharedManager identityKeyPair:transaction].ows_privateKey;
+    }];
     
     OWSDeviceProvisioner *provisioner = [[OWSDeviceProvisioner alloc] initWithMyPublicKey:myPublicKey
                                                                              myPrivateKey:myPrivateKey

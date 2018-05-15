@@ -52,6 +52,7 @@ static NSString *const TSRegistrationErrorUserInfoHTTPStatus = @"TSHTTPStatus";
  */
 
 + (uint32_t)getOrGenerateRegistrationId;
++ (uint32_t)getOrGenerateRegistrationIdWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 #pragma mark - Register with phone number
 

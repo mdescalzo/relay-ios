@@ -11,7 +11,7 @@
 #import "TSStorageManager+SignedPreKeyStore.h"
 #import "TSStorageManager+keyFromIntLong.h"
 
-#import <25519/Ed25519.h>
+#import <Curve25519Kit/Ed25519.h>
 #import <AxolotlKit/AxolotlExceptions.h>
 #import <AxolotlKit/NSData+keyVersionByte.h>
 
@@ -19,11 +19,22 @@
 
 - (SignedPreKeyRecord *)generateRandomSignedRecord {
     ECKeyPair *keyPair = [Curve25519 generateKeyPair];
+    
+    __block ECKeyPair *myIdentityKeyPair = nil;
+    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        myIdentityKeyPair = [self identityKeyPair:transaction];
+    }];
+    
     return [[SignedPreKeyRecord alloc]
          initWithId:rand()
             keyPair:keyPair
-          signature:[Ed25519 sign:keyPair.publicKey.prependKeyType withKeyPair:[self identityKeyPair]]
+          signature:[Ed25519 sign:keyPair.publicKey.prependKeyType withKeyPair:myIdentityKeyPair]
         generatedAt:[NSDate date]];
+}
+
+- (nullable SignedPreKeyRecord *)loadSignedPrekeyOrNil:(int)signedPreKeyId {
+    return [self signedPreKeyRecordForKey:[self keyFromInt:signedPreKeyId]
+                             inCollection:TSStorageManagerSignedPreKeyStoreCollection];
 }
 
 - (SignedPreKeyRecord *)loadSignedPrekey:(int)signedPreKeyId {
@@ -68,5 +79,8 @@
 - (void)removeSignedPreKey:(int)signedPrekeyId {
     [self removeObjectForKey:[self keyFromInt:signedPrekeyId] inCollection:TSStorageManagerSignedPreKeyStoreCollection];
 }
+
+
+
 
 @end

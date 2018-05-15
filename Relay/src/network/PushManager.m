@@ -70,7 +70,6 @@
     _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:networkManager
                                                        storageManager:storageManager
                                                       contactsManager:contactsManager];
-//                                                      contactsUpdater:contactsUpdater];
 
     _missingPermissionsAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ACTION_REQUIRED_TITLE", @"")
                                                               message:NSLocalizedString(@"PUSH_SETTINGS_MESSAGE", @"")
