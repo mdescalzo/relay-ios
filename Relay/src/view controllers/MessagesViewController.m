@@ -820,6 +820,10 @@ typedef enum : NSUInteger {
         DDLogError(@"%@ Unexpected cell type: %@", self.tag, cell);
         return cell;
     }
+    
+    cell.textView.selectable = NO;
+    cell.textView.userInteractionEnabled = NO;
+    
     [cell ows_didLoad];
     return cell;
 }
@@ -835,6 +839,10 @@ typedef enum : NSUInteger {
         DDLogError(@"%@ Unexpected cell type: %@", self.tag, cell);
         return cell;
     }
+    
+    cell.textView.selectable = NO;
+    cell.textView.userInteractionEnabled = NO;
+    
     [cell ows_didLoad];
 
     if (message.isMediaMessage) {
