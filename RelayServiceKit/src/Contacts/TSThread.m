@@ -375,14 +375,13 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
                                               if ([lookupDict objectForKey:@"monitorids"]) {
                                                   self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
                                               }
-                                              [self save];
                                           }
+                                          [self save];
+                                          
                                       } failure:^(NSError * _Nonnull error) {
                                           DDLogDebug(@"%@: TagMath query for expression failed.  Error: %@", self.tag, error.localizedDescription);
+                                          [self save];
                                       }];
-//    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-//        [self updateWithExpression:expression transaction:transaction];
-//    }];
 }
 
 -(void)updateWithExpression:(NSString *)expression transaction:(YapDatabaseReadWriteTransaction *)transaction
@@ -398,10 +397,11 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
                                                   if ([lookupDict objectForKey:@"monitorids"]) {
                                                       self.monitorIds = [NSCountedSet setWithArray:[lookupDict objectForKey:@"monitorids"]];
                                                   }
-                                                  [self saveWithTransaction:transaction];
                                               }
+                                              [self saveWithTransaction:transaction];
                                           } failure:^(NSError * _Nonnull error) {
                                               DDLogDebug(@"%@: TagMath query for expression failed.  Error: %@", self.tag, error.localizedDescription);
+                                              [self saveWithTransaction:transaction];
                                           }];
     }
 }
