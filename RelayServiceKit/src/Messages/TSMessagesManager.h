@@ -27,14 +27,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithNetworkManager:(TSNetworkManager *)networkManager
                         storageManager:(TSStorageManager *)storageManager
                        contactsManager:(id<ContactsManagerProtocol>)contactsManager
-//                       contactsUpdater:(ContactsUpdater *)contactsUpdater
                          messageSender:(OWSMessageSender *)messageSender NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)sharedManager;
 
 @property (nonatomic, readonly) YapDatabaseConnection *dbConnection;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
-//@property (nonatomic, readonly) ContactsUpdater *contactsUpdater;
 
 - (void)handleReceivedEnvelope:(OWSSignalServiceProtosEnvelope *)envelope;
 
