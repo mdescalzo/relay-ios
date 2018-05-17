@@ -4,9 +4,11 @@
 ## [1.4.6]
 ### Fixed
 - Empty message bubbles from certain web client messages
+- Resend of failed messages
 ### Updated
-- JSQMessages pod updated
+- JSQMessages pod
 - New notification sound
+- AxolotlKit pod
 ### Added
 - Invisible Recaptcha robot checkout on new account creation
 
