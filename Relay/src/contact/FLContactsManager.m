@@ -160,6 +160,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
             [self.tagCache setObject:recipient.flTag forKey:recipient.flTag.uniqueId];
         }
         [recipient saveWithTransaction:transaction];
+        [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+
     } else {
         DDLogError(@"Attempt to save recipient without a UUID.  Recipient: %@", recipient);
         [recipient removeWithTransaction:transaction];
@@ -427,18 +429,21 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         }];
         
         // Go make it from CCSM
-        if (!recipient) {
-            NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
-            if (recipientDict) {
-                recipient = [self recipientFromDictionary:recipientDict];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            if (!recipient) {
+                NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
+                if (recipientDict) {
+                    recipient = [self recipientFromDictionary:recipientDict];
+                }
+                if (recipient) {
+                    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                        [self saveRecipient:recipient withTransaction:transaction];
+                        [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
+                    }];
+                }
             }
-            if (recipient) {
-                [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                    [self saveRecipient:recipient withTransaction:transaction];
-                    [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
-                }];
-            }
-        }
+        });
+        
         return recipient;
     }
 }
