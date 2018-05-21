@@ -5,6 +5,8 @@
 ### Fixed
 - Empty message bubbles from certain web client messages
 - Resend of failed messages
+- User dropped from converstaion following certain control messages
+- Several deadlock bugs
 ### Updated
 - JSQMessages pod
 - New notification sound
