@@ -130,6 +130,8 @@
 /* Short name for edit menu item to save contents of media message. */
 "EDIT_ITEM_SAVE_ACTION" = "Save";
 
+"MESSAGE_INFO_MENUITEM" = "Info";
+
 /* No comment provided by engineer. */
 "EMPTY_ARCHIVE_FIRST_TEXT" = "Tap on the compose button.";
 
