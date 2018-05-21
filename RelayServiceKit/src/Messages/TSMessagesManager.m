@@ -212,6 +212,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [self handleIncomingEnvelope:messageEnvelope withDataMessage:content.dataMessage];
             }
         } else if (messageEnvelope.hasLegacyMessage) { // DEPRECATED - Remove after all clients have been upgraded.
+            DDLogDebug(@"Received Legacy Message.");
             OWSSignalServiceProtosDataMessage *dataMessage =
             [OWSSignalServiceProtosDataMessage parseFromData:plaintextData];
             [self handleIncomingEnvelope:messageEnvelope withDataMessage:dataMessage];
@@ -866,7 +867,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Handle change to participants
     NSString *expression = [threadUpdates objectForKey:@"expression"];
-    if (![thread.universalExpression isEqualToString:expression]) {
+    if (expression.length > 0 && ![thread.universalExpression isEqualToString:expression]) {
         [CCSMCommManager asyncTagLookupWithString:expression success:^(NSDictionary * _Nonnull lookupResults) {
             if (lookupResults) {
                 [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
