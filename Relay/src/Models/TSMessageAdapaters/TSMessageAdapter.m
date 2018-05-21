@@ -262,6 +262,12 @@
         return;
     }
     
+    // Info handler
+    if (action == @selector(info:)) {
+        [self.delegate infoSelectedForMessage:self.interaction];
+        return;
+    }
+    
     // Delegate other actions for media items
     if (self.isMediaMessage) {
         [self.mediaItem performEditingAction:action];

@@ -773,6 +773,9 @@ typedef enum : NSUInteger {
     id<OWSMessageData> message = [self messageAtIndexPath:indexPath];
     NSParameterAssert(message != nil);
 
+    TSMessageAdapter *messageAdapter = (TSMessageAdapter *)message;
+    messageAdapter.delegate = self;
+    
     JSQMessagesCollectionViewCell *cell;
     switch (message.messageType) {
         case TSCallAdapter: {
@@ -796,6 +799,8 @@ typedef enum : NSUInteger {
             cell = (JSQMessagesCollectionViewCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
         } break;
     }
+
+    
     cell.delegate = collectionView;
     
     // Document message catch:
@@ -2327,6 +2332,12 @@ typedef enum : NSUInteger {
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
     return @[];
+}
+
+// MARK: - TSMessageAdapter delgate methods
+-(void)infoSelectedForMessage:(TSInteraction *)interaction
+{
+    DDLogDebug(@"PING!");
 }
 
 #pragma mark - Accessors

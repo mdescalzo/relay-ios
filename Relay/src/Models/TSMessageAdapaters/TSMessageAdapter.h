@@ -18,10 +18,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define ME_MESSAGE_IDENTIFIER @"Me";
 
+@protocol TSMessageAdapterDelegate <NSObject>
+
+-(void)infoSelectedForMessage:(TSInteraction *)interaction;
+
+@end
+
 @interface TSMessageAdapter : NSObject <OWSMessageData>
 
 + (id<OWSMessageData>)messageViewDataWithInteraction:(TSInteraction *)interaction inThread:(TSThread *)thread contactsManager:(id<ContactsManagerProtocol>)contactsManager;
 
+@property (weak, nonatomic) id <TSMessageAdapterDelegate> delegate;
 @property (nonatomic) TSInteraction *interaction;
 @property (readonly) TSInfoMessageType infoMessageType;
 @property (nonatomic, readonly) CGFloat mediaViewAlpha;
