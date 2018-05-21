@@ -20,3 +20,6 @@
 #import "TSStorageManager+keyingMaterial.h"
 #import "TSThread.h"
 #import "CCSMCommunication.h"
+#import "TSIncomingMessage.h"
+#import "TSOutgoingMessage.h"
+#import "TSMessage.h"
