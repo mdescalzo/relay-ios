@@ -421,7 +421,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         
         // If not, check the db
         [self.mainConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-            // Check the db
             recipient = [SignalRecipient fetchObjectWithUniqueID:userId transaction:transaction];
             if (recipient) {
                 [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
@@ -429,8 +428,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         }];
         
         // Go make it from CCSM
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            if (!recipient) {
+        if (!recipient) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
                 if (recipientDict) {
                     recipient = [self recipientFromDictionary:recipientDict];
@@ -441,8 +440,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
                     }];
                 }
-            }
-        });
+            });
+        }
         
         return recipient;
     }
