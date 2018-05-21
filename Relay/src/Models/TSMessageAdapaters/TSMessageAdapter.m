@@ -235,6 +235,10 @@
         return YES;
     }
     
+    if (action == NSSelectorFromString(@"info:")) {
+        return YES;
+    }
+    
     // Delegate other actions for media items
     if (self.isMediaMessage) {
         return [self.mediaItem canPerformEditingAction:action];

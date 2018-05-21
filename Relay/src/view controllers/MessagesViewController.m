@@ -263,10 +263,17 @@ typedef enum : NSUInteger {
     [self initializeTextView];
 
     [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
+    
+    SEL infoSelector = NSSelectorFromString(@"info:");
+    [JSQMessagesCollectionViewCell registerMenuAction:infoSelector];
+    
     SEL saveSelector = NSSelectorFromString(@"save:");
     [JSQMessagesCollectionViewCell registerMenuAction:saveSelector];
+    
     [UIMenuController sharedMenuController].menuItems = @[ [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"EDIT_ITEM_SAVE_ACTION", @"Short name for edit menu item to save contents of media message.")
-                                                                                      action:saveSelector] ];
+                                                                                      action:saveSelector],
+                                                           [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"MESSAGE_INFO_MENUITEM", nil) action:infoSelector]
+                                                           ];
 
     [self initializeCollectionViewLayout];
     [self registerCustomMessageNibs];
