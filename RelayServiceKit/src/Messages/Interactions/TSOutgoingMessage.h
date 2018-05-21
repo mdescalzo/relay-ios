@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, TSOutgoingMessageState) {
 @property BOOL hasSyncedTranscript;
 @property NSString *customMessage;
 @property (atomic, readonly) NSString *mostRecentFailureText;
+@property (nonatomic) NSCountedSet <NSString *>* recipients;
 
 - (void)setSendingError:(NSError *)error;
 
