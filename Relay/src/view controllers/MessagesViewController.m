@@ -1580,6 +1580,9 @@ typedef enum : NSUInteger {
         ipvc.delegate = self;
         UIImage *image = (UIImage *)sender;
         ipvc.image = image;
+    } else if ([segue.identifier isEqualToString:@"showMessageDetailSegue"]) {
+        MessageDetailViewController *mdvc = (MessageDetailViewController *)segue.destinationViewController;
+        [mdvc configureWithMessage:(TSMessage *)sender];
     }
 
 }
@@ -2337,7 +2340,17 @@ typedef enum : NSUInteger {
 // MARK: - TSMessageAdapter delgate methods
 -(void)infoSelectedForMessage:(TSInteraction *)interaction
 {
-    DDLogDebug(@"PING!");
+    // validate the interaction is a TSMessage, if not return
+    if ([interaction isKindOfClass:[TSOutgoingMessage class]] ||
+        [interaction isKindOfClass:[TSIncomingMessage class]] ||
+        [interaction isKindOfClass:[TSErrorMessage class]] ||
+        [interaction isKindOfClass:[TSInfoMessage class]]) {
+
+        [self performSegueWithIdentifier:@"showMessageDetailSegue" sender:interaction];
+
+    } else {
+        DDLogDebug(@"%@: Info unavailable for interraction class: %@", self.tag, [interaction class]);
+    }
 }
 
 #pragma mark - Accessors

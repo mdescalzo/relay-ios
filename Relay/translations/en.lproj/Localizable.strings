@@ -967,6 +967,8 @@
 /* Sample text */
 "SAMPLE" = "Forsta";
 
+"MESSAGE_DETAIL" = "Message Details";
+
 /*
  SMILE Authentication localizations
  */
