@@ -968,6 +968,8 @@
 "SAMPLE" = "Forsta";
 
 "MESSAGE_DETAIL" = "Message Details";
+"SENDER_STRING" = "Sender";
+"RECIPIENTS_STRING" = "Recipients";
 
 /*
  SMILE Authentication localizations

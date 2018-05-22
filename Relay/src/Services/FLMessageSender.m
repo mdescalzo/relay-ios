@@ -75,6 +75,11 @@
         message.uniqueId = [[NSUUID UUID] UUIDString];
     }
     
+    // Save the current recipients with the message
+    NSMutableArray *participants = [message.thread.participants mutableCopy];
+    [participants removeObject:TSAccountManager.sharedInstance.myself.uniqueId];
+    message.recipients = [NSArray arrayWithArray:participants];
+    
     // Check to see if blob is already JSON
     // Convert message body to JSON blob if necessary
     NSString *messageBlob = nil;

@@ -23,3 +23,6 @@
 #import "TSIncomingMessage.h"
 #import "TSOutgoingMessage.h"
 #import "TSMessage.h"
+#import "FLContactsManager.h"
+#import "Environment.h"
+#import "TSMessageAdapter.h"
