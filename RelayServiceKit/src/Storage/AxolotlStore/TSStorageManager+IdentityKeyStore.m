@@ -121,7 +121,7 @@
     YapDatabaseReadTransaction *transaction = (YapDatabaseReadTransaction *)protocolContext;
 
     
-    NSData *existingKey = [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
+    NSData *existingKey = [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection withTransaction:transaction];
     
     if (!existingKey) {
         return YES;

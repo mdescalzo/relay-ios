@@ -13,8 +13,11 @@
 @implementation TSStorageManager (SessionStore)
 
 - (nonnull SessionRecord *)loadSession:(nonnull NSString *)contactIdentifier deviceId:(int)deviceId protocolContext:(nullable id)protocolContext {
+    NSAssert([protocolContext isKindOfClass:[YapDatabaseReadTransaction class]], @"protocolContext must be a YapDatabaseReadTransaction");
+    YapDatabaseReadTransaction *transaction = (YapDatabaseReadTransaction *)protocolContext;
+    
     NSDictionary *dictionary =
-        [self dictionaryForKey:contactIdentifier inCollection:TSStorageManagerSessionStoreCollection];
+    [self dictionaryForKey:contactIdentifier inCollection:TSStorageManagerSessionStoreCollection withTransaction:transaction];
 
     SessionRecord *record;
 
