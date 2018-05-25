@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CocoaLumberjack
 
 class NewConversationViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, SlugCellDelegate {
     
@@ -260,15 +261,35 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             
             CCSMCommManager.asyncTagLookup(with: pretty as String, success: { newResults in
                 self.buildThreadWith(results: newResults as NSDictionary)
-            }) { error in
-                self.navigationController?.dismiss(animated: true, completion: {
-                    DispatchQueue.global(qos: .background).async {
-                        
-                    }
-                })
-            }
+            }, failure: { error in
+                DDLogDebug(String(format: "Tag Lookup failed with error: %@", error.localizedDescription))
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: nil,
+                                                  message: NSLocalizedString("ERROR_DESCRIPTION_SERVER_FAILURE", comment: ""),
+                                                  preferredStyle: .actionSheet)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""),
+                                                  style: .default,
+                                                  handler: nil))
+                    self.navigationController?.present(alert, animated: true, completion: nil)
+                }
+            })
         } else {
             // build thread and go
+            self.navigationController?.dismiss(animated: true, completion: {
+                let thread = TSThread.getOrCreateThread(withParticipants: userIds as! [String])
+                thread.type = FLThreadTypeConversation
+                thread.prettyExpression = results.object(forKey: "pretty") as! String
+                thread.universalExpression = results.object(forKey: "universal") as! String
+                thread.save()
+                
+                // Spin off background process to pull in participants
+                DispatchQueue.global(qos: .background).async {
+                    for uid in userIds {
+                        Environment.getCurrent().contactsManager.updateRecipient(uid as! String)
+                    }
+                }
+                Environment.messageGroup(thread)
+            })
         }
     }
 

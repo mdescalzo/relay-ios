@@ -673,13 +673,13 @@
                                               [self buildThreadWithResults:newResults];
                                           }
                                           failure:^(NSError *error) {
-                                              DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
+                                                  DDLogDebug(@"Tag Lookup failed with error: %@", error.description);
                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                   
                                                   UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
                                                                                                                  message:NSLocalizedString(@"ERROR_DESCRIPTION_SERVER_FAILURE", nil)
                                                                                                           preferredStyle:UIAlertControllerStyleActionSheet];
-                                                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                  UIAlertAction *okAction = [UIAlertAction actionWithTitle:let
                                                                                                      style:UIAlertActionStyleDefault
                                                                                                    handler:^(UIAlertAction *action) {}];
                                                   [alert addAction:okAction];
