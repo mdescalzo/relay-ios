@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
+    if (self.customMessage.length == 0) {
     switch (_infoMessageType) {
         case TSInfoMessageTypeSessionDidEnd:
             return NSLocalizedString(@"SECURE_SESSION_RESET", nil);
@@ -65,6 +66,9 @@ NS_ASSUME_NONNULL_BEGIN
             return _customMessage != nil ? _customMessage : NSLocalizedString(@"GROUP_UPDATED", nil);
         default:
             break;
+    }
+    } else {
+        return self.customMessage;
     }
 
     return @"Unknown Info Message Type";
