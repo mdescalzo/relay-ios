@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.4.7]
+### Fixed
+- Deadlock bug in loadSession method
+- Deadlock bug in isTrustedIdentityKey method
 
 ## [1.4.6]
 ### Fixed
@@ -122,6 +126,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.7]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.7
 [1.4.6]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.6
 [1.4.5]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.5
 [1.4.4]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.4
