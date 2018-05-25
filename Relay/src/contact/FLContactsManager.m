@@ -355,7 +355,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         if (recipient.flTag.orgSlug.length == 0) {
             recipient.flTag.orgSlug = recipient.orgSlug;
         }
-        [Environment.getCurrent.contactsManager saveTag:recipient.flTag withTransaction:transaction];
+        [self saveTag:recipient.flTag withTransaction:transaction];
     } else {
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
@@ -433,12 +433,9 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                 NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
                 if (recipientDict) {
                     recipient = [self recipientFromDictionary:recipientDict];
-                }
-                if (recipient) {
-                    [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                        [self saveRecipient:recipient withTransaction:transaction];
+                    if (recipient) {
                         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
-                    }];
+                    }
                 }
             });
         }
@@ -466,7 +463,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     // Go get it, build it, and save it.
     NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
     if (recipientDict) {
-        recipient = [self recipientFromDictionary:recipientDict];
+        recipient = [self recipientFromDictionary:recipientDict transaction:transaction];
     }
     if (recipient) {
         [self saveRecipient:recipient withTransaction:transaction];
