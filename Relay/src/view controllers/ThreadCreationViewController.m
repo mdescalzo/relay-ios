@@ -13,7 +13,6 @@
 #import "FLDirectoryCell.h"
 #import "Environment.h"
 #import "TSAccountManager.h"
-#import "SlugOverLayView.h"
 #import "TSStorageManager.h"
 #import "TSDatabaseView.h"
 #import "TSThread.h"
@@ -32,19 +31,22 @@
 #define kSelectorVisibleIndex 0
 #define kSelectorHiddenIndex 1
 
-@interface ThreadCreationViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, SlugOverLayViewDelegate, NSLayoutManagerDelegate>
+@interface ThreadCreationViewController () <UISearchBarDelegate,
+                                            UITableViewDataSource,
+                                            UITableViewDelegate,
+                                            UICollectionViewDelegate,
+                                            UICollectionViewDataSource,
+                                            NSLayoutManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet UITextView *slugContainerView;
+@property (nonatomic, weak) IBOutlet UICollectionView *slugContainerView;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *exitButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *goButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *slugViewHeight;
 @property (weak, nonatomic) IBOutlet UIView *searchInfoContainer;
 @property (weak, nonatomic) IBOutlet UILabel *searchInfoLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *visibilitySelector;
-
-@property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeRecognizer;
 
 @property (nonatomic, strong) NSMutableArray<NSString *> *validatedSlugs;
 @property (nonatomic, strong) NSMutableArray<UIView *> *slugViews;
@@ -65,10 +67,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    //    [self downSwipeRecognizer];
     self.slugViewHeight.constant = KMinInputHeight;
     //    self.slugContainerView.layoutManager.delegate = self;
-    self.slugContainerView.textContainerInset = UIEdgeInsetsMake(8, 0, 8, KMinInputHeight);
+//    self.slugContainerView.textContainerInset = UIEdgeInsetsMake(8, 0, 8, KMinInputHeight);
     self.goButton.tintColor = [ForstaColors mediumLightGreen];
     
     self.searchBar.placeholder = NSLocalizedString(@"SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT", nil);
@@ -135,7 +136,7 @@
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"slugCell" forIndexPath:indexPath];
+    FLDirectoryCell *cell = (FLDirectoryCell *)[tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
     
     __block id object = [self objectForIndexPath:indexPath];
     if ([object isKindOfClass:[SignalRecipient class]]) {
@@ -563,13 +564,6 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:^{ }];
 }
 
--(void)didSwipeDown:(id)sender
-{
-    if ([self.searchBar isFirstResponder]) {
-        [self.searchBar resignFirstResponder];
-    }
-}
-
 #pragma mark - worker methods
 - (id)objectForIndexPath:(NSIndexPath *)indexPath {
     __block id object = nil;
@@ -733,7 +727,7 @@
         [self refreshTableView];
         [self refreshSlugView];
         [self updateGoButton];
-        [self.slugContainerView scrollRangeToVisible:NSMakeRange(self.slugContainerView.text.length-1, 1)];
+//        [self.slugContainerView scrollRangeToVisible:NSMakeRange(self.slugContainerView.text.length-1, 1)];
     });
 }
 
@@ -947,14 +941,22 @@
     return _slugViews;
 }
 
--(UISwipeGestureRecognizer *)downSwipeRecognizer
+
+
+// MARK: - CollectionView protocol methods
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (_downSwipeRecognizer == nil) {
-        _downSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipeDown:)];
-        _downSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.tableView addGestureRecognizer:_downSwipeRecognizer];
+    SlugCell *cell = (SlugCell *)[collectionView dequeueReusableCellWithReuseIdentifier:"SlugCell" forIndexPath:indexPath];
+    
+    
+    return cell;
+}
+
+- (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section { 
+    if (section == 0) {
+        return (NSInteger)self.validatedSlugs.count;
     }
-    return _downSwipeRecognizer;
+    return 0;
 }
 
 @end
