@@ -697,17 +697,18 @@
         [self.navigationController dismissViewControllerAnimated:YES
                                                       completion:^() {
                                                           __block TSThread *thread = nil;
-                                                          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                                                              for (NSString *uid in thread.participants) {
-                                                                  [Environment.getCurrent.contactsManager updateRecipient:uid];
-                                                              }
-                                                          });
-                                                          
                                                           thread = [TSThread getOrCreateThreadWithParticipants:userIds];// transaction:transaction];
                                                           thread.type = @"conversation";
                                                           thread.prettyExpression = [[results objectForKey:@"pretty"] copy];
                                                           thread.universalExpression = [[results objectForKey:@"universal"] copy];
                                                           [thread save];
+                                                          
+                                                          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                                                              for (NSString *uid in thread.participants) {
+                                                                  [Environment.getCurrent.contactsManager updateRecipient:uid];
+                                                              }
+                                                          });
+
                                                           [Environment messageGroup:thread];
                                                       }];
     }
