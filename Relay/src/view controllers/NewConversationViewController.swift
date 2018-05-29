@@ -11,6 +11,12 @@ import CocoaLumberjack
 
 class NewConversationViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, SlugCellDelegate {
     
+    
+    func deleteButtonTappedOnSlug(sender: Any) {
+        print("a thing")
+    }
+    
+    
     // Constants
     private let kMinInputHeight: CGFloat = 0.0
     private let kMaxInputHeight: CGFloat = 84.0
@@ -27,15 +33,16 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     // UI Elements
     @IBOutlet private weak var searchBar: UISearchBar?
     @IBOutlet private weak var contactTableView: UITableView?
-    @IBOutlet private weak var slugCollectionVew: UICollectionView?
+    @IBOutlet private weak var slugCollectionView: UICollectionView?
     @IBOutlet private weak var exitButton: UIBarButtonItem?
     @IBOutlet private weak var goButton: UIBarButtonItem?
     @IBOutlet private weak var slugViewHeightConstraint: NSLayoutConstraint?
     @IBOutlet private weak var searchInfoLabel: UILabel?
+    
     private lazy var refreshControl: UIRefreshControl = {
         let control = UIRefreshControl()
         control.addTarget(self, action: #selector(refreshContentFromSource), for: .valueChanged)
-        
+        return control
     }()
     
     private let uiDBConnection: YapDatabaseConnection = TSStorageManager.shared().database().newConnection()
@@ -44,7 +51,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     private var tagMappings: YapDatabaseViewMappings?
     
     // Properties
-    var selectedSlugs: NSMutableArray?
+    private var selectedSlugs: Array<String> = Array()
     
     
     override func viewDidLoad() {
@@ -63,9 +70,10 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         self.contactTableView?.insertSubview(refreshView, at: 0)
         refreshView.addSubview(self.refreshControl)
         
+        // Set the mappings
+        self.changeMappingsGroup(groups: [FLVisibleRecipientGroup, FLActiveTagsGroup ])
+        
         self.updateGoButton()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +104,28 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - CollectionView delegate/datasource methods
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return (self.selectedSlugs.count)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: SlugCell = self.slugCollectionView?.dequeueReusableCell(withReuseIdentifier: "SlugCell", for: indexPath) as! SlugCell
+        
+        cell.slug = self.selectedSlugs[indexPath.row]
+        cell.delegate = self
+        
+        return cell
+    }
+
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        <#code#>
+//    }
+    
     // MARK: - TableView delegate/datasource methods
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactCell", for: indexPath) as! FLDirectoryCell
@@ -108,7 +138,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             DispatchQueue.global(qos: .default).async {
                 cell.configureCell(withContact: recipient)
             }
-            if (self.selectedSlugs?.contains(recipient.flTag.displaySlug))! {
+            if (self.selectedSlugs.contains(recipient.flTag.displaySlug)) {
                 cell.accessoryType = .checkmark
             } else {
                 cell.accessoryType = .none
@@ -119,7 +149,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             DispatchQueue.global(qos: .default).async {
                 cell.configureCell(with: aTag)
             }
-            if (self.selectedSlugs?.contains(aTag.displaySlug))! {
+            if (self.selectedSlugs.contains(aTag.displaySlug)) {
                 cell.accessoryType = .checkmark
             } else {
                 cell.accessoryType = .none
@@ -132,21 +162,21 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var tagSlug: NSString
+        var tagSlug: String
         
         let aThing: NSObject = self.objectForIndexPath(indexPath: indexPath)
         
         if aThing.isKind(of: SignalRecipient.classForCoder()) {
             let recipient = aThing as! SignalRecipient
-            tagSlug = recipient.flTag.displaySlug as NSString
+            tagSlug = recipient.flTag.displaySlug
         } else if aThing.isKind(of: FLTag.classForCoder()) {
             let aTag = aThing as! FLTag
-            tagSlug = aTag.displaySlug as NSString
+            tagSlug = aTag.displaySlug
         } else {
             return
         }
         
-        if (self.selectedSlugs?.contains(tagSlug))! {
+        if (self.selectedSlugs.contains(tagSlug)) {
             self.removeSlug(slug: tagSlug)
         } else {
             self.addSlug(slug: tagSlug)
@@ -193,8 +223,8 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     internal func yapDatabaseModified(notification: Notification) {
         let notfications = self.uiDBConnection.beginLongLivedReadTransaction()
         
-        var sectionChanges: NSArray
-        var rowChanges: NSArray
+        var sectionChanges = NSArray()
+        var rowChanges = NSArray()
         
         let dbViewConnection: YapDatabaseViewConnection = self.uiDBConnection.ext(FLFilteredTagDatabaseViewExtensionName) as! YapDatabaseViewConnection
         dbViewConnection.getSectionChanges(&sectionChanges, rowChanges: &rowChanges, for: notfications, with: self.tagMappings!)
@@ -225,7 +255,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             switch change.type {
                 
             case .insert:
-                self.contactTableView?.insertRows(at: [ change.indexPath! ], with: .automatic)
+                self.contactTableView?.insertRows(at: [ change.newIndexPath! ], with: .automatic)
             case .delete:
                 self.contactTableView?.deleteRows(at: [ change.indexPath! ], with: .automatic)
             case .move:
@@ -238,6 +268,45 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         self.contactTableView?.endUpdates()
     }
     
+    // MARK: - UI Actions
+    @IBAction func didPressGoButton(sender: Any) {
+        var threadSlugs = String()
+        
+        for slug in self.selectedSlugs {
+            if threadSlugs.count == 0 {
+                threadSlugs.append(slug)
+            } else {
+                threadSlugs.append(" + \(slug)")
+            }
+        }
+        CCSMCommManager.asyncTagLookup(with: threadSlugs,
+                                       success: { results in
+                                        self.storeUsersIn(results: results as NSDictionary)
+                                        self.buildThreadWith(results: results as NSDictionary)
+        },
+                                       failure: { error in
+                                        DDLogDebug(String(format: "Tag Lookup failed with error: %@", error.localizedDescription))
+                                        DispatchQueue.main.async {
+                                            let alert = UIAlertController(title: nil,
+                                                                          message: NSLocalizedString("ERROR_DESCRIPTION_SERVER_FAILURE", comment: ""),
+                                                                          preferredStyle: .actionSheet)
+                                            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""),
+                                                                          style: .default,
+                                                                          handler: nil))
+                                            self.navigationController?.present(alert, animated: true, completion: nil)
+                                        }
+
+        })
+        
+    }
+
+    @IBAction func didPressExitButton(sender: Any) {
+        if (self.searchBar?.isFirstResponder)! {
+            self.searchBar?.resignFirstResponder()
+        }
+        self.navigationController?.dismiss(animated: true, completion: { })
+    }
+
     
     // MARK: - Thread creation methods
     private func storeUsersIn(results: NSDictionary) {
@@ -329,39 +398,41 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         self.updateContactsView()
     }
     
-    private func removeSlug(slug: NSString) {
+    private func removeSlug(slug: String) {
         var slugString = slug as String
         
         if !(slug.substring(to:  1) == "@") {
             slugString = String.init(format: "@%@", slug)
         }
         
-        self.selectedSlugs?.remove(slugString)
+        let index = self.selectedSlugs.index(of: slugString)
+        self.selectedSlugs.remove(at: index!)
         
         DispatchQueue.main.async {
             // Refresh collection view
-            self.slugCollectionVew?.reloadData()
-            
+            self.slugCollectionView?.reloadData()
+            self.updateGoButton()
         }
     }
     
-    private func addSlug(slug: NSString) {
+    private func addSlug(slug: String) {
         var slugString = slug as String
         
         if !(slug.substring(to:  1) == "@") {
             slugString = String.init(format: "@%@", slug)
         }
         
-        self.selectedSlugs?.add(slugString)
+        self.selectedSlugs.append(slugString)
         
         DispatchQueue.main.async {
             // Refresh collection view
-            self.slugCollectionVew?.reloadData()
+            self.slugCollectionView?.reloadData()
+            self.updateGoButton()
         }
     }
     
     private func objectForIndexPath(indexPath: IndexPath) -> NSObject {
-        var object: NSObject
+        var object = NSObject()
         
         self.uiDBConnection.read { transaction in
             let viewTransaction: YapDatabaseViewTransaction = transaction.ext(FLFilteredTagDatabaseViewExtensionName) as! YapDatabaseViewTransaction
@@ -380,7 +451,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     
     private func updateGoButton() {
         DispatchQueue.main.async {
-            if self.selectedSlugs?.count == 0 {
+            if self.selectedSlugs.count == 0 {
                 self.goButton?.isEnabled = false
             } else {
                 self.goButton?.isEnabled = true

@@ -35,6 +35,6 @@ class SlugCell: UICollectionViewCell {
     @IBOutlet weak private var deleteButton: UIButton!
     
     @IBAction func didTapDeleteButton(_ sender: Any) {
-        self.delegate?.deleteButtonTappedOnSlug(sender: self)
+        self.delegate?.deleteButtonTappedOnSlug(sender: slug as Any)
     }
 }

@@ -86,10 +86,10 @@
             </objects>
             <point key="canvasLocation" x="2583" y="990"/>
         </scene>
-        <!--Thread Creation View Controller-->
+        <!--New Conversation View Controller-->
         <scene sceneID="mrK-6p-UqG">
             <objects>
-                <viewController id="yHf-6V-fDx" customClass="ThreadCreationViewController" sceneMemberID="viewController">
+                <viewController id="yHf-6V-fDx" customClass="NewConversationViewController" customModule="Relay" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mfd-cA-QtS"/>
                         <viewControllerLayoutGuide type="bottom" id="1Jr-NZ-myo"/>
@@ -98,8 +98,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="A70-yG-BT4">
-                                <rect key="frame" x="0.0" y="184" width="375" height="419"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="A70-yG-BT4">
+                                <rect key="frame" x="0.0" y="239" width="375" height="364"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactCell" rowHeight="60" id="n3v-cK-qST" customClass="FLDirectoryCell">
@@ -155,9 +155,12 @@
                                     <outlet property="delegate" destination="yHf-6V-fDx" id="lYh-Xu-IDW"/>
                                 </connections>
                             </tableView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Taf-c9-PCC">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Taf-c9-PCC">
+                                <rect key="frame" x="0.0" y="55" width="375" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="Y3m-8H-cO5"/>
+                                </constraints>
                                 <collectionViewLayout key="collectionViewLayout" id="78Q-VH-xV1" customClass="SlugViewLayout" customModule="Relay" customModuleProvider="target"/>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SlugCell" id="tcG-da-nm8" customClass="SlugCell" customModule="Relay" customModuleProvider="target">
@@ -205,9 +208,13 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="yHf-6V-fDx" id="ClZ-3O-vdi"/>
+                                    <outlet property="delegate" destination="yHf-6V-fDx" id="Ihk-Pc-K6U"/>
+                                </connections>
                             </collectionView>
-                            <searchBar contentMode="redraw" ambiguous="YES" text="" translatesAutoresizingMaskIntoConstraints="NO" id="KwJ-W5-ybd">
-                                <rect key="frame" x="0.0" y="128" width="375" height="56"/>
+                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="KwJ-W5-ybd">
+                                <rect key="frame" x="0.0" y="183" width="375" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <scopeButtonTitles>
                                     <string>Title</string>
@@ -217,10 +224,10 @@
                                     <outlet property="delegate" destination="yHf-6V-fDx" id="jn1-Jq-3ht"/>
                                 </connections>
                             </searchBar>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vKS-ZC-ykg" userLabel="searchInfoContainer">
-                                <rect key="frame" x="0.0" y="184" width="375" height="34"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKS-ZC-ykg" userLabel="searchInfoContainer">
+                                <rect key="frame" x="0.0" y="239" width="375" height="34"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WXs-NV-JFe" userLabel="searchInfoLabel">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WXs-NV-JFe" userLabel="searchInfoLabel">
                                         <rect key="frame" x="8" y="8" width="359" height="18"/>
                                         <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -257,7 +264,7 @@
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="wpp-nf-SJ0">
                             <connections>
-                                <action selector="didPressExitButton:" destination="yHf-6V-fDx" id="tx6-Q9-fRZ"/>
+                                <action selector="didPressExitButtonWithSender:" destination="yHf-6V-fDx" id="bDo-9P-oIg"/>
                             </connections>
                         </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="F6E-L6-okB">
@@ -267,31 +274,26 @@
                                 <segment title="Visible"/>
                                 <segment title="Hidden"/>
                             </segments>
-                            <connections>
-                                <action selector="visibilitySelectorDidChange:" destination="yHf-6V-fDx" eventType="valueChanged" id="uK5-dj-auq"/>
-                            </connections>
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" image="cellBtnMoveToArchive--blue" id="4Op-Vs-twn">
                             <connections>
-                                <action selector="didPressGoButton:" destination="yHf-6V-fDx" id="NFY-md-USS"/>
+                                <action selector="didPressGoButtonWithSender:" destination="yHf-6V-fDx" id="soG-3n-kLI"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="contactTableView" destination="A70-yG-BT4" id="UYa-8d-QQn"/>
                         <outlet property="exitButton" destination="wpp-nf-SJ0" id="92r-5W-Wfz"/>
                         <outlet property="goButton" destination="4Op-Vs-twn" id="fei-Jg-ds7"/>
                         <outlet property="searchBar" destination="KwJ-W5-ybd" id="7Wk-UG-Esr"/>
-                        <outlet property="searchInfoContainer" destination="vKS-ZC-ykg" id="opO-D9-dO0"/>
                         <outlet property="searchInfoLabel" destination="WXs-NV-JFe" id="nuF-fw-i0I"/>
-                        <outlet property="slugContainerView" destination="Taf-c9-PCC" id="TTn-56-Oka"/>
-                        <outlet property="tableView" destination="A70-yG-BT4" id="8Mu-s4-SY5"/>
-                        <outlet property="view" destination="15x-QP-RNC" id="EIG-Ce-AVf"/>
-                        <outlet property="visibilitySelector" destination="F6E-L6-okB" id="Tfd-XE-OPw"/>
+                        <outlet property="slugCollectionView" destination="Taf-c9-PCC" id="IIJ-Wn-7jl"/>
+                        <outlet property="slugViewHeightConstraint" destination="Y3m-8H-cO5" id="WHR-zd-t8q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7c-eM-XXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5384.8000000000002" y="1590.8545727136434"/>
+            <point key="canvasLocation" x="5327" y="1571"/>
         </scene>
         <!--Conversation Update View Controller-->
         <scene sceneID="3Ad-6E-GZI">
