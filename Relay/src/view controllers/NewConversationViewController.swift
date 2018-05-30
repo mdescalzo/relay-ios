@@ -224,9 +224,9 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
             if section == kRecipientSectionIndex {
-                return NSLocalizedString("THREAD_SECTION_HIDDEN", comment: "")
+                return NSLocalizedString("THREAD_SECTION_CONTACTS", comment: "")
             } else if section == kTagSectionIndex {
-                return NSLocalizedString("THREAD_SECTION_MONITORS", comment: "")
+                return NSLocalizedString("THREAD_SECTION_TAGS", comment: "")
             }
         }
         return nil
