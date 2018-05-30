@@ -443,10 +443,11 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         // Verify myself is included
         if !(userIds.contains(TSAccountManager.sharedInstance().myself?.uniqueId as Any)) {
             // If not, add self and run again
-            let pretty: NSMutableString = results.object(forKey: "pretty") as! NSMutableString
-            pretty.appendFormat(" + @%@", (TSAccountManager.sharedInstance().myself?.flTag.slug)!)
+            var pretty = results.object(forKey: "pretty") as! String
+            let mySlug = TSAccountManager.sharedInstance().myself?.flTag.slug
+            pretty.append(" + @\(mySlug!)")
             
-            CCSMCommManager.asyncTagLookup(with: pretty as String, success: { newResults in
+            CCSMCommManager.asyncTagLookup(with: pretty, success: { newResults in
                 self.buildThreadWith(results: newResults as NSDictionary)
             }, failure: { error in
                 DDLogDebug(String(format: "Tag Lookup failed with error: %@", error.localizedDescription))
