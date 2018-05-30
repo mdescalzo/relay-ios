@@ -658,6 +658,7 @@
 
 /* No comment provided by engineer. */
 "SEARCH_BYNAMEORNUMBER_PLACEHOLDER_TEXT" = "Enter name or tag...";
+"TAG_NOT_FOUND_FOR" = "Tag not found for";
 
 "SEARCH_HELP_STRING" = "No results found.  Enter a name and organization to search outside of your organization.\n\n\tFormat:  \"user.name:organization\"";
 

@@ -9,17 +9,11 @@
 import UIKit
 import CocoaLumberjack
 
-class NewConversationViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, SlugCellDelegate {
-    
-    
-    func deleteButtonTappedOnSlug(sender: Any) {
-        print("a thing")
-    }
-    
+class NewConversationViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, SlugCellDelegate, SlugLayoutDelegate {
     
     // Constants
     private let kMinInputHeight: CGFloat = 0.0
-    private let kMaxInputHeight: CGFloat = 84.0
+    private let kMaxInputHeight: CGFloat = 106.0
     
     private let kRecipientSectionIndex: Int = 0
     private let kTagSectionIndex: Int = 1
@@ -29,6 +23,8 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     
     private let kSelectorVisibleIndex: Int = 0
     private let kSelectorHiddenIndex: Int = 1
+    
+    private let kSlugRowHeight: CGFloat = 30.0
     
     // UI Elements
     @IBOutlet private weak var searchBar: UISearchBar?
@@ -65,6 +61,11 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         
         self.view.backgroundColor = ForstaColors.white
         
+        // Slug view setup
+        if let layout = self.slugCollectionView?.collectionViewLayout as? SlugViewLayout {
+            layout.delegate = self
+        }
+        
         // Refresh control handling
         let refreshView = UIView()
         self.contactTableView?.insertSubview(refreshView, at: 0)
@@ -72,7 +73,6 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         
         // Set the mappings
         self.changeMappingsGroup(groups: [FLVisibleRecipientGroup, FLActiveTagsGroup ])
-        
         self.updateGoButton()
     }
     
@@ -115,7 +115,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: SlugCell = self.slugCollectionView?.dequeueReusableCell(withReuseIdentifier: "SlugCell", for: indexPath) as! SlugCell
-        
+        cell.slugLabel.font = UIFont.systemFont(ofSize: 15.0)
         cell.slug = self.selectedSlugs[indexPath.row]
         cell.delegate = self
         
@@ -125,6 +125,32 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        <#code#>
 //    }
+    
+    // MARK: - Slug cell delegate methods
+    func deleteButtonTappedOnSlug(sender: Any) {
+        let slug = sender as! String
+        
+        self.removeSlug(slug: slug)
+        self.contactTableView?.reloadData()
+    }
+    
+    // MARK: - SlugViewLayout delegate methods
+    func rowHeight() -> CGFloat {
+        return self.kSlugRowHeight
+    }
+    
+    func widthForSlug(at indexPath: IndexPath) -> CGFloat {
+        let slugString = self.selectedSlugs[indexPath.item]
+        let width = slugString.width(withConstrainedHeight: self.kSlugRowHeight, font: UIFont.systemFont(ofSize: 15.0))
+        
+        return width
+    }
+    
+    func lines() -> CGFloat {
+        return 2
+    }
+
+
     
     // MARK: - TableView delegate/datasource methods
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -307,6 +333,102 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         self.navigationController?.dismiss(animated: true, completion: { })
     }
 
+    // MARK: - SearchBar delegate method
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.updateFilteredMappings()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if (searchBar.text?.count)! > 0 {
+            // process the string before sending to tagMath
+            let originalString: String = searchBar.text!
+            var searchString: String = String()
+            for subString in originalString.components(separatedBy: .whitespacesAndNewlines) {
+                if ((subString.count > 0) && !(subString == "@")) {
+                    if (subString.substring(to: 1) == "@") {
+                        searchString.append("\(subString) ")
+                    } else {
+                        searchString.append("@\(subString) ")
+                    }
+                }
+            }
+ 
+            // Do the lookup
+            CCSMCommManager.asyncTagLookup(with: searchString,
+                                           success: { (results) in
+                                            let pretty = results["pretty"] as! String
+                                            let warnings = results["warnings"] as! Array<NSDictionary>
+                                            
+                                            var badStrings = String()
+                                            
+                                            for warning in warnings {
+                                                let position = warning["position"] as! Int
+                                                let length = warning["length"] as! Int
+                                                let range = Range(position ..< position+length)
+                                                let badString = searchString.substring(with: range)
+                                                badStrings.append("\(badString)\n")
+                                            }
+                                            if badStrings.count > 0 {
+                                                DispatchQueue.main.async {
+                                                    let message = "\(NSLocalizedString("TAG_NOT_FOUND_FOR", comment: "")):\n\(badStrings)"
+                                                    let alert = UIAlertController(title: "",
+                                                                                  message: message,
+                                                                                  preferredStyle: .actionSheet)
+                                                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { action in /* Do nothin' */ }))
+                                                    self.navigationController?.present(alert, animated: true, completion: nil)
+                                                }
+                                            }
+
+                                            if pretty.count > 0 {
+                                                do {
+                                                let regex = try NSRegularExpression(pattern: "@[a-zA-Z0-9-.:]+(\\b|$)",
+                                                                                    options: [.caseInsensitive, .anchorsMatchLines])
+                                                    
+                                                    let matches = regex.matches(in: pretty, options: [], range: NSRange(location: 0, length: pretty.count))
+                                                    for match in matches {
+                                                        let swiftRange: Range = match.range.toRange()!
+                                                        let newSlug = pretty.substring(with: swiftRange)
+                                                        self.addSlug(slug: newSlug)
+                                                    }
+                                                } catch {
+                                                    // Bad regex?
+                                                }
+                                            }
+
+                                            // Update the searchbar with remainder text
+                                            var badStuff = String()
+                                            for string in badStrings.components(separatedBy: .newlines) {
+                                                badStuff.append("\(string) ")
+                                            }
+                                            DispatchQueue.main.async {
+                                                searchBar.text = badStuff
+                                                self.updateFilteredMappings()
+                                            }
+                                            // take this opportunity to store any userids
+                                            var userids = results["userids"] as! Array<String>
+                                            if userids.count > 0 {
+                                                DispatchQueue.global(qos: .background).async {
+                                                    for uid in userids {
+                                                        Environment.getCurrent().contactsManager.recipient(withUserId: uid)
+                                                    }
+                                                }
+                                            }
+            },
+                                           failure:{ (error) in
+                                            DDLogDebug("Tag Lookup failed with error: \(error.localizedDescription)")
+                                            DispatchQueue.main.async {
+                                                let alert = UIAlertController(title: "",
+                                                                              message: NSLocalizedString("ERROR_DESCRIPTION_SERVER_FAILURE", comment: ""),
+                                                                              preferredStyle: .actionSheet)
+                                                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""),
+                                                                              style: .default,
+                                                                              handler: nil))
+                                                self.navigationController?.present(alert, animated: true, completion: nil)
+                                            }
+            })
+        }
+            
+    }
     
     // MARK: - Thread creation methods
     private func storeUsersIn(results: NSDictionary) {
@@ -412,6 +534,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             // Refresh collection view
             self.slugCollectionView?.reloadData()
             self.updateGoButton()
+            self.resizeSlugView()
         }
     }
     
@@ -428,6 +551,20 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             // Refresh collection view
             self.slugCollectionView?.reloadData()
             self.updateGoButton()
+            self.resizeSlugView()
+        }
+    }
+    
+    private func resizeSlugView() {
+        DispatchQueue.main.async {
+
+            UIView.animate(withDuration: 0.25, animations: {
+                if (self.slugCollectionView?.contentSize.height)! > self.kMaxInputHeight {
+                    self.slugViewHeightConstraint?.constant = self.kMaxInputHeight
+                } else {
+                    self.slugViewHeightConstraint?.constant = (self.slugCollectionView?.contentSize.height)!
+                }
+            })
         }
     }
     
@@ -488,8 +625,8 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     }
 }
 
-// Source: https://stackoverflow.com/questions/39677330/how-does-string-substring-work-in-swift
 extension String {
+    // Source: https://stackoverflow.com/questions/39677330/how-does-string-substring-work-in-swift
     func index(from: Int) -> Index {
         return self.index(startIndex, offsetBy: from)
     }
@@ -508,5 +645,20 @@ extension String {
         let startIndex = index(from: r.lowerBound)
         let endIndex = index(from: r.upperBound)
         return substring(with: startIndex..<endIndex)
+    }
+
+    // https://stackoverflow.com/questions/30450434/figure-out-size-of-uilabel-based-on-string-in-swift#30450559
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        
+        return ceil(boundingBox.height)
+    }
+    
+    func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        
+        return ceil(boundingBox.width)
     }
 }
