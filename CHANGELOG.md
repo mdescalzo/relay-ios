@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.4.8]
+### Updated
+- Converted NewThreadViewController to Swift
+- Converted adhoc slugView to a collectionView
+
 ## [1.4.7]
 ### Fixed
 - Deadlock bug in loadSession method
@@ -126,6 +131,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.4.8]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.8
 [1.4.7]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.7
 [1.4.6]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.6
 [1.4.5]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.5

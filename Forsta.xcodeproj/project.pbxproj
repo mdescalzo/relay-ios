@@ -181,9 +181,6 @@
 		7D21E03220976DE300EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
-		7D3366251F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
-		7D3366261F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
-		7D3366271F7B786E0094DAFA /* SlugOverLayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3366241F7B786E0094DAFA /* SlugOverLayView.m */; };
 		7D3A672E1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
 		7D3A672F1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
 		7D3A67301FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
@@ -198,9 +195,6 @@
 		7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
 		7D49959A2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
 		7D49959B2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
-		7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
-		7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
-		7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C11F1693930023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C21F1693930023C29B /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
@@ -1148,6 +1142,12 @@
 		7DD51C091FBE2A70003DF7DB /* BUILDING.md in Resources */ = {isa = PBXBuildFile; fileRef = 7DD51C061FBE2A6F003DF7DB /* BUILDING.md */; };
 		7DD51C0A1FBE2A70003DF7DB /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7DD51C071FBE2A70003DF7DB /* README.md */; };
 		7DD51C0B1FBE2A70003DF7DB /* CONTRIBUTING.md in Resources */ = {isa = PBXBuildFile; fileRef = 7DD51C081FBE2A70003DF7DB /* CONTRIBUTING.md */; };
+		7DD53DE320B7140200848437 /* SlugCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFF571E20B60599004F2DAD /* SlugCell.swift */; };
+		7DD53DE420B7140400848437 /* SlugCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFF571E20B60599004F2DAD /* SlugCell.swift */; };
+		7DD53DE520B7140500848437 /* SlugCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFF571E20B60599004F2DAD /* SlugCell.swift */; };
+		7DD53DE720B71FB700848437 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD53DE620B71FB700848437 /* NewConversationViewController.swift */; };
+		7DD53DE820B71FB700848437 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD53DE620B71FB700848437 /* NewConversationViewController.swift */; };
+		7DD53DE920B71FB700848437 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD53DE620B71FB700848437 /* NewConversationViewController.swift */; };
 		7DE5C0AF1F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B01F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
 		7DE5C0B11F4CF9D500DA4230 /* FLContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */; };
@@ -1162,6 +1162,9 @@
 		7DFE7C531F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C541F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
 		7DFE7C551F74398500905909 /* ForstaColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE7C521F74398500905909 /* ForstaColors.m */; };
+		7DFF570320B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFF570220B5D1E3004F2DAD /* SlugViewLayout.swift */; };
+		7DFF570420B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFF570220B5D1E3004F2DAD /* SlugViewLayout.swift */; };
+		7DFF570520B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFF570220B5D1E3004F2DAD /* SlugViewLayout.swift */; };
 		A10FDF79184FB4BB007FF963 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A123C14916F902EE000AE905 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
@@ -1839,8 +1842,6 @@
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7D3366231F7B786E0094DAFA /* SlugOverLayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlugOverLayView.h; sourceTree = "<group>"; };
-		7D3366241F7B786E0094DAFA /* SlugOverLayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlugOverLayView.m; sourceTree = "<group>"; };
 		7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppearanceSettingsViewController.h; sourceTree = "<group>"; };
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
 		7D3A67751FE9BB1700C4096A /* FLPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPickerCell.h; sourceTree = "<group>"; };
@@ -1851,8 +1852,6 @@
 		7D4794B9207EA38C00029A70 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
 		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
-		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
-		7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadCreationViewController.m; sourceTree = "<group>"; };
 		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
 		7D4A39B61F1693140023C29B /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7D4A39B81F16931F0023C29B /* RelayStage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayStage-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -2155,6 +2154,7 @@
 		7DD51C071FBE2A70003DF7DB /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7DD51C081FBE2A70003DF7DB /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		7DD51C0C1FBE2A9F003DF7DB /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		7DD53DE620B71FB700848437 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		7DE5C0AD1F4CF9D500DA4230 /* FLContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLContactsManager.h; sourceTree = "<group>"; };
 		7DE5C0AE1F4CF9D500DA4230 /* FLContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLContactsManager.m; sourceTree = "<group>"; };
 		7DF27F581FAB833A00900AF1 /* FLDocumentAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDocumentAdapter.h; sourceTree = "<group>"; };
@@ -2163,6 +2163,8 @@
 		7DF8D5E31F7EA1DB00F76A60 /* RelayStage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RelayStage.entitlements; sourceTree = "<group>"; };
 		7DFE7C511F74398500905909 /* ForstaColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForstaColors.h; sourceTree = "<group>"; };
 		7DFE7C521F74398500905909 /* ForstaColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForstaColors.m; sourceTree = "<group>"; };
+		7DFF570220B5D1E3004F2DAD /* SlugViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlugViewLayout.swift; sourceTree = "<group>"; };
+		7DFF571E20B60599004F2DAD /* SlugCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlugCell.swift; sourceTree = "<group>"; };
 		8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89AD8E9D7C03FA606826376F /* libPods-Common-RelayDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-RelayDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9096F8052B9DC1CE7F39015C /* libPods-Common-SignalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common-SignalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3231,8 +3233,8 @@
 				450873C91D9D86F4006B54F2 /* OWSExpirableMessageView.h */,
 				4531C9C21DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.h */,
 				4531C9C31DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m */,
-				7D3366231F7B786E0094DAFA /* SlugOverLayView.h */,
-				7D3366241F7B786E0094DAFA /* SlugOverLayView.m */,
+				7DFF570220B5D1E3004F2DAD /* SlugViewLayout.swift */,
+				7DFF571E20B60599004F2DAD /* SlugCell.swift */,
 			);
 			name = Views;
 			path = views;
@@ -3253,8 +3255,7 @@
 				7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */,
 				7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */,
 				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
-				7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */,
-				7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */,
+				7DD53DE620B71FB700848437 /* NewConversationViewController.swift */,
 				7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */,
 				7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */,
 				7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */,
@@ -5225,6 +5226,7 @@
 				7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */,
 				7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */,
 				7D613A701F90181B00E18D29 /* OWSGetDevicesRequest.m in Sources */,
+				7DD53DE720B71FB700848437 /* NewConversationViewController.swift in Sources */,
 				7D7F360120191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613A0F1F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D4A39F61F1693930023C29B /* Release.m in Sources */,
@@ -5267,12 +5269,12 @@
 				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
 				7D613A8E1F90183900E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
-				7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
 				7D6139C51F90175000E18D29 /* TSThread.m in Sources */,
 				7D613AC41F90187D00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
 				7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */,
 				7D4A3A191F1693930023C29B /* OWSScrubbingLogFormatter.m in Sources */,
+				7DD53DE320B7140200848437 /* SlugCell.swift in Sources */,
 				7D613A631F90180D00E18D29 /* OWSUploadingService.m in Sources */,
 				7D4A3A1A1F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				7D6139D11F90176E00E18D29 /* OWSContactsOutputStream.m in Sources */,
@@ -5380,11 +5382,11 @@
 				7D4A3A5E1F1693930023C29B /* PacketHandler.m in Sources */,
 				7D4A3A5F1F1693930023C29B /* AppAudioManager.m in Sources */,
 				7D613A2A1F9017D100E18D29 /* TSOutgoingMessage.m in Sources */,
-				7D3366251F7B786E0094DAFA /* SlugOverLayView.m in Sources */,
 				7D613A421F9017EB00E18D29 /* OWSMessageSender.m in Sources */,
 				7D613A571F9017FF00E18D29 /* TSMessagesManager.m in Sources */,
 				7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */,
 				7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */,
+				7DFF570320B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7D6139F71F90179900E18D29 /* OWSAttachmentsProcessor.m in Sources */,
 				7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */,
 				7D6139E31F90178000E18D29 /* OWSProvisioningProtos.pb.m in Sources */,
@@ -5573,6 +5575,7 @@
 				7DCFFD981F0EE4490003CD95 /* FunctionalUtil.m in Sources */,
 				7DCFFD991F0EE4490003CD95 /* SignalUtil.m in Sources */,
 				7DCFFD9A1F0EE4490003CD95 /* AnonymousAudioCallbackHandler.m in Sources */,
+				7DD53DE820B71FB700848437 /* NewConversationViewController.swift in Sources */,
 				7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD41F90188B00E18D29 /* TSDatabaseView.m in Sources */,
 				7D613A071F9017AB00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
@@ -5620,7 +5623,7 @@
 				7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */,
 				7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */,
 				7D613A5E1F90180800E18D29 /* OWSDeviceProvisioningService.m in Sources */,
-				7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
+				7DD53DE420B7140400848437 /* SlugCell.swift in Sources */,
 				7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */,
 				7D613A9E1F90184900E18D29 /* TSNetworkManager.m in Sources */,
 				7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */,
@@ -5727,12 +5730,12 @@
 				7D613A2B1F9017D100E18D29 /* TSOutgoingMessage.m in Sources */,
 				7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */,
 				7DCFFE061F0EE4490003CD95 /* AppAudioManager.m in Sources */,
-				7D3366261F7B786E0094DAFA /* SlugOverLayView.m in Sources */,
 				7DCFFE071F0EE4490003CD95 /* SignalsNavigationController.m in Sources */,
 				7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */,
 				7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */,
 				7D613A281F9017CF00E18D29 /* TSMessage.m in Sources */,
 				7DCFFE0A1F0EE4490003CD95 /* OWSLinkedDevicesTableViewController.m in Sources */,
+				7DFF570420B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7DCFFE0B1F0EE4490003CD95 /* HttpRequestUtil.m in Sources */,
 				7DCFFE0C1F0EE4490003CD95 /* SyncPushTokensJob.swift in Sources */,
 				7DCFFE0D1F0EE4490003CD95 /* MasterSecret.m in Sources */,
@@ -5921,6 +5924,7 @@
 				76EB060A18170B33006006FC /* SignalUtil.m in Sources */,
 				E197B61718BBEC1A00F073E5 /* AnonymousAudioCallbackHandler.m in Sources */,
 				76EB05BC18170B33006006FC /* ConfirmAckPacket.m in Sources */,
+				7DD53DE920B71FB700848437 /* NewConversationViewController.swift in Sources */,
 				7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD51F90188B00E18D29 /* TSDatabaseView.m in Sources */,
 				7D613A081F9017AC00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
@@ -5968,7 +5972,7 @@
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
 				76EB058218170B33006006FC /* Environment.m in Sources */,
 				7D613A5F1F90180900E18D29 /* OWSDeviceProvisioningService.m in Sources */,
-				7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
+				7DD53DE520B7140500848437 /* SlugCell.swift in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
 				7D613A9F1F90184900E18D29 /* TSNetworkManager.m in Sources */,
 				45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */,
@@ -6075,12 +6079,12 @@
 				7D613A2C1F9017D200E18D29 /* TSOutgoingMessage.m in Sources */,
 				76EB05A418170B33006006FC /* PacketHandler.m in Sources */,
 				E197B62118BBF12700F073E5 /* AppAudioManager.m in Sources */,
-				7D3366271F7B786E0094DAFA /* SlugOverLayView.m in Sources */,
 				FC4FA0261A1B9DC600DA100A /* SignalsNavigationController.m in Sources */,
 				76EB063818170B33006006FC /* DictionaryUtil.m in Sources */,
 				76EB05CE18170B33006006FC /* ZrtpHandshakeResult.m in Sources */,
 				7D613A291F9017CF00E18D29 /* TSMessage.m in Sources */,
 				45EB32CF1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m in Sources */,
+				7DFF570520B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				B63761EE19E1FBE8005735D1 /* HttpRequestUtil.m in Sources */,
 				451DE9FD1DC1A28200810E42 /* SyncPushTokensJob.swift in Sources */,
 				76EB05B618170B33006006FC /* MasterSecret.m in Sources */,
