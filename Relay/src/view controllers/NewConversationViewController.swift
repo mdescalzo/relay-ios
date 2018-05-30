@@ -511,8 +511,8 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             return false
         }
         self.searchDBConnection.readWrite { transaction in
-            let filteredView: YapDatabaseFilteredViewTransaction = transaction.ext(FLFilteredTagDatabaseViewExtensionName) as! YapDatabaseFilteredViewTransaction
-            filteredView.setFiltering(filtering, versionTag: filterString)
+            let filteredViewTransaction = transaction.ext(FLFilteredTagDatabaseViewExtensionName) as! YapDatabaseFilteredViewTransaction
+            filteredViewTransaction.setFiltering(filtering, versionTag: filterString)
         }
         self.updateContactsView()
     }
