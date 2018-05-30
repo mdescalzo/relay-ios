@@ -392,9 +392,10 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                        thread:(TSThread *)thread
 {
     [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        TSInfoMessage *infoMessage = [TSInfoMessage userNotRegisteredMessageInThread:thread transaction:transaction];
+        infoMessage.customMessage = [NSString stringWithFormat:@"%@: %@", infoMessage.description, recipient.fullName];
+        [infoMessage saveWithTransaction:transaction];
         [Environment.getCurrent.contactsManager removeRecipient:recipient withTransaction:transaction];
-        [[TSInfoMessage userNotRegisteredMessageInThread:thread transaction:transaction]
-         saveWithTransaction:transaction];
     }];
 }
 
