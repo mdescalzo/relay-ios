@@ -195,9 +195,6 @@
 		7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
 		7D49959A2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
 		7D49959B2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */; };
-		7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
-		7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
-		7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */; };
 		7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C11F1693930023C29B /* DeviceTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DCFFEC61F0FE2330003CD95 /* DeviceTypes.m */; };
 		7D4A39C21F1693930023C29B /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
@@ -1855,8 +1852,6 @@
 		7D4794B9207EA38C00029A70 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
 		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
-		7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadCreationViewController.h; sourceTree = "<group>"; };
-		7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadCreationViewController.m; sourceTree = "<group>"; };
 		7D4A39A81F168E5F0023C29B /* libPods-SignalTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SignalTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-SignalTests.a"; sourceTree = "<group>"; };
 		7D4A39B61F1693140023C29B /* Relay-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Relay-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7D4A39B81F16931F0023C29B /* RelayStage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RelayStage-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -3260,8 +3255,6 @@
 				7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */,
 				7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */,
 				7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */,
-				7D4A24941F79741400A0A422 /* ThreadCreationViewController.h */,
-				7D4A24951F79741400A0A422 /* ThreadCreationViewController.m */,
 				7DD53DE620B71FB700848437 /* NewConversationViewController.swift */,
 				7D6FB264201FC76000619C67 /* FLAnnouncementViewController.h */,
 				7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */,
@@ -5276,7 +5269,6 @@
 				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
 				7D613A8E1F90183900E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
-				7D4A24961F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
 				7D6139C51F90175000E18D29 /* TSThread.m in Sources */,
 				7D613AC41F90187D00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
@@ -5631,7 +5623,6 @@
 				7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */,
 				7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */,
 				7D613A5E1F90180800E18D29 /* OWSDeviceProvisioningService.m in Sources */,
-				7D4A24971F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7DD53DE420B7140400848437 /* SlugCell.swift in Sources */,
 				7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */,
 				7D613A9E1F90184900E18D29 /* TSNetworkManager.m in Sources */,
@@ -5981,7 +5972,6 @@
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
 				76EB058218170B33006006FC /* Environment.m in Sources */,
 				7D613A5F1F90180900E18D29 /* OWSDeviceProvisioningService.m in Sources */,
-				7D4A24981F79741400A0A422 /* ThreadCreationViewController.m in Sources */,
 				7DD53DE520B7140500848437 /* SlugCell.swift in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
 				7D613A9F1F90184900E18D29 /* TSNetworkManager.m in Sources */,
