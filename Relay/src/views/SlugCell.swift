@@ -18,7 +18,7 @@ class SlugCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        layer.cornerRadius = frame.size.height/8.0
+        layer.cornerRadius = frame.size.height/10.0
     }
 
     var slug: String? {

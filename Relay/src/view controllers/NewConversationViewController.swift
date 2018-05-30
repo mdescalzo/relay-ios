@@ -13,7 +13,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     
     // Constants
     private let kMinInputHeight: CGFloat = 0.0
-    private let kMaxInputHeight: CGFloat = 106.0
+    private let kMaxInputHeight: CGFloat = 126.0
     
     private let kRecipientSectionIndex: Int = 0
     private let kTagSectionIndex: Int = 1
@@ -121,10 +121,6 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         
         return cell
     }
-
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        <#code#>
-//    }
     
     // MARK: - Slug cell delegate methods
     func deleteButtonTappedOnSlug(sender: Any) {
@@ -405,7 +401,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
                                                 self.updateFilteredMappings()
                                             }
                                             // take this opportunity to store any userids
-                                            var userids = results["userids"] as! Array<String>
+                                            let userids = results["userids"] as! Array<String>
                                             if userids.count > 0 {
                                                 DispatchQueue.global(qos: .background).async {
                                                     for uid in userids {
@@ -534,7 +530,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             // Refresh collection view
             self.slugCollectionView?.reloadData()
             self.updateGoButton()
-            self.resizeSlugView()
+            self.resizeSlugView(scroll: false)
         }
     }
     
@@ -551,21 +547,29 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             // Refresh collection view
             self.slugCollectionView?.reloadData()
             self.updateGoButton()
-            self.resizeSlugView()
+            self.resizeSlugView(scroll: true)
         }
     }
     
-    private func resizeSlugView() {
-        DispatchQueue.main.async {
-
+    private func resizeSlugView(scroll: Bool) {
+        // Small delay to avoid race condition where we attempted to resize before the new size was calculated
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
             UIView.animate(withDuration: 0.25, animations: {
                 if (self.slugCollectionView?.contentSize.height)! > self.kMaxInputHeight {
                     self.slugViewHeightConstraint?.constant = self.kMaxInputHeight
                 } else {
                     self.slugViewHeightConstraint?.constant = (self.slugCollectionView?.contentSize.height)!
                 }
+
             })
-        }
+            if scroll {
+                let bottomOffset = CGPoint(x: 0, y: (self.slugCollectionView?.contentSize.height)! - (self.slugCollectionView?.bounds.size.height)!)
+                if bottomOffset != self.slugCollectionView?.contentOffset {
+                    self.slugCollectionView?.setContentOffset(bottomOffset, animated: false)
+                }
+            }
+
+        })
     }
     
     private func objectForIndexPath(indexPath: IndexPath) -> NSObject {
