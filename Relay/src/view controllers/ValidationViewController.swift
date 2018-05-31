@@ -18,11 +18,11 @@ class ValidationViewController: UITableViewController {
     @IBOutlet private weak var spinner: UIActivityIndicatorView!
     @IBOutlet private weak var resendCodeButton: UIButton!
     @IBOutlet private weak var infoLabel: UILabel!
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if passwoordAuth {
             self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_PASSWORD", comment: "")
             self.resendCodeButton.isEnabled = false
@@ -31,8 +31,8 @@ class ValidationViewController: UITableViewController {
             self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_VALIDATION_CODE", comment: "")
             self.resendCodeButton.isEnabled = true
             self.resendCodeButton.isHidden = false
-
-       }
+            
+        }
         self.submitButton.titleLabel?.text = NSLocalizedString("SUBMIT_BUTTON_LABEL", comment: "")
     }
     
@@ -52,63 +52,63 @@ class ValidationViewController: UITableViewController {
         NotificationCenter.default.removeObserver(self)
         super.viewDidDisappear(animated)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
+     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+     
+     // Configure the cell...
+     
+     return cell
+     }
+     */
+    
     /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
     /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
+    
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+    
     
     // MARK: - Navigation
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "mainSegue" {
-            let snc = segue.destination as! SignalsNavigationController
+            let snc = segue.destination as! NavigationController
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.window.rootViewController = snc
             
@@ -127,19 +127,19 @@ class ValidationViewController: UITableViewController {
             self.performSegue(withIdentifier: "mainSegue", sender: self)
         }
     }
-
+    
     
     
     // MARK: - Actions
     @IBAction func onValidationButtonTap(sender: Any) {
         if passwoordAuth {
-            
+            // TODO: Password auth submission
         } else {
             DispatchQueue.main.async {
                 self.infoLabel.text = NSLocalizedString("Validating code", comment: "")
                 self.startSpinner()
             }
-
+            
             CCSMCommManager.verifyLogin(self.validationCodeTextField.text,
                                         success: {
                                             self.ccsmValidationSucceeded()
@@ -148,12 +148,11 @@ class ValidationViewController: UITableViewController {
                                             DDLogInfo("SMS Validation failed with error: \(String(describing: error?.localizedDescription))")
                                             self.stopSpinner()
                                             self.ccsmValidationFailed()
-                                            
             })
         }
         
     }
-
+    
     @IBAction func onResendCodeButtonTap(sender: Any) {
         CCSMCommManager.requestLogin(CCSMStorage.sharedInstance().getUserName(),
                                      orgName: CCSMStorage.sharedInstance().getOrgName(),
@@ -248,7 +247,7 @@ class ValidationViewController: UITableViewController {
                                 self.stopSpinner()
                             })
                         }
-
+                        
                         
                     } else {
                         DDLogError("TSS Validation error: \(String(describing: error?.localizedDescription))");
@@ -288,7 +287,7 @@ class ValidationViewController: UITableViewController {
             }
         }
     }
-
+    
     
     // MARK: - Helper methods
     private func hideKeyboard() {

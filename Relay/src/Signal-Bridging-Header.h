@@ -33,6 +33,5 @@
 #import "FLDirectoryCell.h"
 #import "UIFont+OWS.h"
 #import "TSSocketManager.h"
-#import "SignalsNavigationController.h"
 #import "AppDelegate.h"
 #import "FLDeviceRegistrationService.h"

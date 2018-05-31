@@ -2145,10 +2145,10 @@
             </objects>
             <point key="canvasLocation" x="4553" y="1899"/>
         </scene>
-        <!--Signals Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="5H9-OH-ov6">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mnD-Gz-DnZ" customClass="SignalsNavigationController" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mnD-Gz-DnZ" customClass="NavigationController" customModule="Relay" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="8sx-Ab-cCq">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>

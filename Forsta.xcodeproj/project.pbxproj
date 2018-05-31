@@ -178,6 +178,9 @@
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */; };
+		7D1DBECA20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
+		7D1DBECB20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
+		7D1DBECC20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
 		7D21E03220976DE300EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
@@ -342,7 +345,6 @@
 		7D4A3A5D1F1693930023C29B /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
 		7D4A3A5E1F1693930023C29B /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
 		7D4A3A5F1F1693930023C29B /* AppAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62018BBF12700F073E5 /* AppAudioManager.m */; };
-		7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */; };
 		7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E918170B33006006FC /* DictionaryUtil.m */; };
 		7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
 		7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EB32CE1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m */; };
@@ -1016,7 +1018,6 @@
 		7DCFFE041F0EE4490003CD95 /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
 		7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
 		7DCFFE061F0EE4490003CD95 /* AppAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62018BBF12700F073E5 /* AppAudioManager.m */; };
-		7DCFFE071F0EE4490003CD95 /* SignalsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */; };
 		7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E918170B33006006FC /* DictionaryUtil.m */; };
 		7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
 		7DCFFE0A1F0EE4490003CD95 /* OWSLinkedDevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EB32CE1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m */; };
@@ -1471,7 +1472,6 @@
 		FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
 		FC3BD9881A30A790005B96BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3BD9871A30A790005B96BB /* Social.framework */; };
-		FC4FA0261A1B9DC600DA100A /* SignalsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */; };
 		FC5CDF391A3393DD00B47253 /* error_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF371A3393DD00B47253 /* error_white@2x.png */; };
 		FC5CDF3A1A3393DD00B47253 /* warning_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF381A3393DD00B47253 /* warning_white@2x.png */; };
 		FC9120411A39EFB70074545C /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
@@ -1842,6 +1842,7 @@
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D1DBEC920C0650200B39333 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppearanceSettingsViewController.h; sourceTree = "<group>"; };
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
 		7D3A67751FE9BB1700C4096A /* FLPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPickerCell.h; sourceTree = "<group>"; };
@@ -2410,8 +2411,6 @@
 		FC31962E1A0814130094C78E /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		FC31962F1A0814130094C78E /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		FC3BD9871A30A790005B96BB /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		FC4FA0241A1B9DC600DA100A /* SignalsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalsNavigationController.h; sourceTree = "<group>"; };
-		FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalsNavigationController.m; sourceTree = "<group>"; };
 		FC5CDF371A3393DD00B47253 /* error_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error_white@2x.png"; sourceTree = "<group>"; };
 		FC5CDF381A3393DD00B47253 /* warning_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "warning_white@2x.png"; sourceTree = "<group>"; };
 		FC91203F1A39EFB70074545C /* qr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr@2x.png"; sourceTree = "<group>"; };
@@ -3259,6 +3258,7 @@
 				7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */,
 				7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */,
 				7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */,
+				7D1DBEC920C0650200B39333 /* NavigationController.swift */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -4322,8 +4322,6 @@
 				A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */,
 				FCFD256D1A151BCB00F4C644 /* ConversationUpdateViewController.h */,
 				FCFD256E1A151BCB00F4C644 /* ConversationUpdateViewController.m */,
-				FC4FA0241A1B9DC600DA100A /* SignalsNavigationController.h */,
-				FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */,
 				452E3C8C1D935C77002A45B0 /* ConversationSettingsViewController.h */,
 				452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */,
 			);
@@ -5243,6 +5241,7 @@
 				7D6139921F90163400E18D29 /* OWSError.m in Sources */,
 				7D4A3A001F1693930023C29B /* StringUtil.m in Sources */,
 				7D613AC11F90187B00E18D29 /* TSStorageManager+keyFromIntLong.m in Sources */,
+				7D1DBECA20C0650200B39333 /* NavigationController.swift in Sources */,
 				7D4A3A011F1693930023C29B /* OWSStaleNotificationObserver.m in Sources */,
 				7D4A3A031F1693930023C29B /* OWSCall.m in Sources */,
 				7D4A3A041F1693930023C29B /* Queue.m in Sources */,
@@ -5382,7 +5381,6 @@
 				7D613A2A1F9017D100E18D29 /* TSOutgoingMessage.m in Sources */,
 				7D613A421F9017EB00E18D29 /* OWSMessageSender.m in Sources */,
 				7D613A571F9017FF00E18D29 /* TSMessagesManager.m in Sources */,
-				7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */,
 				7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */,
 				7DFF570320B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7D6139F71F90179900E18D29 /* OWSAttachmentsProcessor.m in Sources */,
@@ -5592,6 +5590,7 @@
 				7DCFFDA61F0EE4490003CD95 /* RtpPacket.m in Sources */,
 				7D6139BD1F90174300E18D29 /* PhoneNumber.m in Sources */,
 				7D6139911F90163400E18D29 /* OWSError.m in Sources */,
+				7D1DBECB20C0650200B39333 /* NavigationController.swift in Sources */,
 				7DCFFDA71F0EE4490003CD95 /* StringUtil.m in Sources */,
 				7DCFFDA81F0EE4490003CD95 /* OWSStaleNotificationObserver.m in Sources */,
 				7D6139DE1F90177C00E18D29 /* OWSProvisioningCipher.m in Sources */,
@@ -5728,7 +5727,6 @@
 				7D613A2B1F9017D100E18D29 /* TSOutgoingMessage.m in Sources */,
 				7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */,
 				7DCFFE061F0EE4490003CD95 /* AppAudioManager.m in Sources */,
-				7DCFFE071F0EE4490003CD95 /* SignalsNavigationController.m in Sources */,
 				7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */,
 				7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */,
 				7D613A281F9017CF00E18D29 /* TSMessage.m in Sources */,
@@ -5941,6 +5939,7 @@
 				76EB064218170B33006006FC /* StringUtil.m in Sources */,
 				7D6139BE1F90174300E18D29 /* PhoneNumber.m in Sources */,
 				7D6139901F90163300E18D29 /* OWSError.m in Sources */,
+				7D1DBECC20C0650200B39333 /* NavigationController.swift in Sources */,
 				45BFFFA81D898AF0004A12A7 /* OWSStaleNotificationObserver.m in Sources */,
 				45C681B71D305A580050903A /* OWSCall.m in Sources */,
 				7D6139DF1F90177C00E18D29 /* OWSProvisioningCipher.m in Sources */,
@@ -6077,7 +6076,6 @@
 				7D613A2C1F9017D200E18D29 /* TSOutgoingMessage.m in Sources */,
 				76EB05A418170B33006006FC /* PacketHandler.m in Sources */,
 				E197B62118BBF12700F073E5 /* AppAudioManager.m in Sources */,
-				FC4FA0261A1B9DC600DA100A /* SignalsNavigationController.m in Sources */,
 				76EB063818170B33006006FC /* DictionaryUtil.m in Sources */,
 				76EB05CE18170B33006006FC /* ZrtpHandshakeResult.m in Sources */,
 				7D613A291F9017CF00E18D29 /* TSMessage.m in Sources */,
