@@ -628,6 +628,8 @@
 /* No comment provided by engineer. */
 "REGISTRATION_VERIFY_DEVICE" = "Verify This Device";
 
+"ENTER_VALIDATION_CODE" = "Enter Validation Code";
+
 /* No comment provided by engineer. */
 "REJECT_CALL_BUTTON_TITLE" = "Reject";
 

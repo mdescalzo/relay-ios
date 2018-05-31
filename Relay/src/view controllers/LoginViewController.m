@@ -203,8 +203,6 @@
 -(void)connectionSucceeded
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:FLAwaitingVerification];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         self.loginButton.enabled = YES;
         self.loginButton.alpha = 1.0;
         [self.spinner stopAnimating];

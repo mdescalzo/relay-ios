@@ -13,6 +13,8 @@
 
 @property (strong) NSString *textSecureURL;
 
++ (instancetype)sharedInstance;
+
 - (NSString *)getOrgName;
 - (void)setOrgName:(NSString *)value;
 
