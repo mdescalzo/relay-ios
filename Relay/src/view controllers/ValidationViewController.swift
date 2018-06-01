@@ -140,7 +140,7 @@ class ValidationViewController: UITableViewController {
                 self.startSpinner()
             }
             
-            CCSMCommManager.verifyLogin(self.validationCodeTextField.text,
+            CCSMCommManager.verifyLogin(self.validationCodeTextField.text!,
                                         success: {
                                             self.ccsmValidationSucceeded()
             },
@@ -196,7 +196,7 @@ class ValidationViewController: UITableViewController {
                                                       style: .default,
                                                       handler: { action in
                                                         self.startSpinner()
-                                                        CCSMCommManager.verifyLogin(self.validationCodeTextField.text,
+                                                        CCSMCommManager.verifyLogin(self.validationCodeTextField.text!,
                                                                                     success: {
                                                                                         self.ccsmValidationSucceeded()
                                                         },
