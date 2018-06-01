@@ -31,13 +31,6 @@
 +(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
                                        failure:(void (^)(NSError *error))failureBlock;
 
-+(void)updateAllTheThings:(NSString *)urlString
-                collection:(NSMutableDictionary *)collection
-               synchronous:(BOOL)sync
-                   success:(void (^)())successBlock
-                   failure:(void (^)(NSError *error))failureBlock;
-
-
 +(void)getThing:(NSString *)urlString
          success:(void (^)(NSDictionary *))successBlock
          failure:(void (^)(NSError *error))failureBlock;
