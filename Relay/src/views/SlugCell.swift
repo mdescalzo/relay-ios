@@ -9,16 +9,18 @@
 import UIKit
 
 protocol SlugCellDelegate {
-    func deleteButtonTappedOnSlug(sender: Any)
+    func deleteButtonTappedOnSlug(sender: FLTag)
 }
 
 class SlugCell: UICollectionViewCell {
     
-    @objc
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        layer.cornerRadius = frame.size.height/10.0
+    var fltag: FLTag? {
+        didSet {
+            if let fltag = fltag {
+                slugLabel.text = fltag.tagDescription
+                slugLabel.sizeToFit()
+            }
+        }
     }
 
     var slug: String? {
@@ -35,7 +37,14 @@ class SlugCell: UICollectionViewCell {
     @IBOutlet weak var slugLabel: UILabel!
     @IBOutlet weak private var deleteButton: UIButton!
     
+    @objc
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        layer.cornerRadius = frame.size.height/10.0
+    }
+
     @IBAction func didTapDeleteButton(_ sender: Any) {
-        self.delegate?.deleteButtonTappedOnSlug(sender: slug as Any)
+        self.delegate?.deleteButtonTappedOnSlug(sender: fltag!)
     }
 }

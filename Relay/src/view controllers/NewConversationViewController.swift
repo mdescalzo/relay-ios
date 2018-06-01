@@ -47,7 +47,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     private var tagMappings: YapDatabaseViewMappings?
     
     // Properties
-    private var selectedSlugs: Array<String> = Array()
+    private var selectedSlugs: Array<FLTag> = Array()
     
     
     override func viewDidLoad() {
@@ -116,17 +116,16 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: SlugCell = self.slugCollectionView?.dequeueReusableCell(withReuseIdentifier: "SlugCell", for: indexPath) as! SlugCell
         cell.slugLabel.font = UIFont.systemFont(ofSize: 15.0)
-        cell.slug = self.selectedSlugs[indexPath.row]
+        cell.fltag = self.selectedSlugs[indexPath.row]
+//        cell.slug = self.selectedSlugs[indexPath.row]
         cell.delegate = self
         
         return cell
     }
     
     // MARK: - Slug cell delegate methods
-    func deleteButtonTappedOnSlug(sender: Any) {
-        let slug = sender as! String
-        
-        self.removeSlug(slug: slug)
+    func deleteButtonTappedOnSlug(sender: FLTag) {
+        self.removeSlug(fltag: sender)
         self.contactTableView?.reloadData()
     }
     
@@ -136,10 +135,10 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     }
     
     func widthForSlug(at indexPath: IndexPath) -> CGFloat {
-        let slugString = self.selectedSlugs[indexPath.item]
-        let width = slugString.width(withConstrainedHeight: self.kSlugRowHeight, font: UIFont.systemFont(ofSize: 15.0))
+        let slugString = self.selectedSlugs[indexPath.item].tagDescription
+        let width = slugString?.width(withConstrainedHeight: self.kSlugRowHeight, font: UIFont.systemFont(ofSize: 15.0))
         
-        return width
+        return width!
     }
     
     func lines() -> CGFloat {
@@ -160,7 +159,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             DispatchQueue.global(qos: .default).async {
                 cell.configureCell(withContact: recipient)
             }
-            if (self.selectedSlugs.contains(recipient.flTag.displaySlug)) {
+            if (self.selectedSlugs.contains(recipient.flTag)) {
                 cell.accessoryType = .checkmark
             } else {
                 cell.accessoryType = .none
@@ -171,7 +170,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             DispatchQueue.global(qos: .default).async {
                 cell.configureCell(with: aTag)
             }
-            if (self.selectedSlugs.contains(aTag.displaySlug)) {
+            if (self.selectedSlugs.contains(aTag)) {
                 cell.accessoryType = .checkmark
             } else {
                 cell.accessoryType = .none
@@ -184,24 +183,24 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var tagSlug: String
+        var fltag: FLTag
         
         let aThing: NSObject = self.objectForIndexPath(indexPath: indexPath)
         
         if aThing.isKind(of: SignalRecipient.classForCoder()) {
             let recipient = aThing as! SignalRecipient
-            tagSlug = recipient.flTag.displaySlug
+            fltag = recipient.flTag
         } else if aThing.isKind(of: FLTag.classForCoder()) {
             let aTag = aThing as! FLTag
-            tagSlug = aTag.displaySlug
+            fltag = aTag
         } else {
             return
         }
         
-        if (self.selectedSlugs.contains(tagSlug)) {
-            self.removeSlug(slug: tagSlug)
+        if (self.selectedSlugs.contains(fltag)) {
+            self.removeSlug(fltag: fltag)
         } else {
-            self.addSlug(slug: tagSlug)
+            self.addSlug(fltag: fltag)
         }
         
         self.contactTableView?.reloadRows(at: [indexPath], with: .automatic)
@@ -294,11 +293,11 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     @IBAction func didPressGoButton(sender: Any) {
         var threadSlugs = String()
         
-        for slug in self.selectedSlugs {
+        for fltag in self.selectedSlugs {
             if threadSlugs.count == 0 {
-                threadSlugs.append(slug)
+                threadSlugs.append(fltag.displaySlug)
             } else {
-                threadSlugs.append(" + \(slug)")
+                threadSlugs.append(" + \(fltag.displaySlug)")
             }
         }
         CCSMCommManager.asyncTagLookup(with: threadSlugs,
@@ -352,8 +351,9 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             // Do the lookup
             CCSMCommManager.asyncTagLookup(with: searchString,
                                            success: { (results) in
-                                            let pretty = results["pretty"] as! String
+//                                            let pretty = results["pretty"] as! String
                                             let warnings = results["warnings"] as! Array<NSDictionary>
+                                            let tagIds = results["includedTagids"] as! Array<String>
                                             
                                             var badStrings = String()
                                             
@@ -375,20 +375,16 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
                                                 }
                                             }
 
-                                            if pretty.count > 0 {
-                                                do {
-                                                let regex = try NSRegularExpression(pattern: "@[a-zA-Z0-9-.:]+(\\b|$)",
-                                                                                    options: [.caseInsensitive, .anchorsMatchLines])
-                                                    
-                                                    let matches = regex.matches(in: pretty, options: [], range: NSRange(location: 0, length: pretty.count))
-                                                    for match in matches {
-                                                        let swiftRange: Range = match.range.toRange()!
-                                                        let newSlug = pretty.substring(with: swiftRange)
-                                                        self.addSlug(slug: newSlug)
-                                                    }
-                                                } catch {
-                                                    // Bad regex?
-                                                }
+                                            for tid in tagIds {
+                                                let url = "\(FLHomeURL)/v1/tag/\(tid)/"
+                                                CCSMCommManager.getThing(url,
+                                                                         success: { payload in
+                                                                            let fltag = FLTag.getOrCreateTag(with: payload!)
+                                                                            self.addSlug(fltag: fltag!)
+                                                },
+                                                                         failure: { error in
+                                                                            DDLogError("Tag lookup failed with error: \(String(describing: error?.localizedDescription))")
+                                                })
                                             }
 
                                             // Update the searchbar with remainder text
@@ -517,14 +513,14 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         self.updateContactsView()
     }
     
-    private func removeSlug(slug: String) {
-        var slugString = slug as String
+    private func removeSlug(fltag: FLTag) {
+//        var slugString = fltag.tagDescription
         
-        if !(slug.substring(to:  1) == "@") {
-            slugString = String.init(format: "@%@", slug)
-        }
+//        if !(slug.substring(to:  1) == "@") {
+//            slugString = String.init(format: "@%@", slug)
+//        }
         
-        let index = self.selectedSlugs.index(of: slugString)
+        let index = self.selectedSlugs.index(of: fltag)
         self.selectedSlugs.remove(at: index!)
         
         DispatchQueue.main.async {
@@ -535,14 +531,14 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         }
     }
     
-    private func addSlug(slug: String) {
-        var slugString = slug as String
+    private func addSlug(fltag: FLTag) {
+//        var slugString = fltag.tagDescription
+
+//        if !(slug.substring(to:  1) == "@") {
+//            slugString = String.init(format: "@%@", slug)
+//        }
         
-        if !(slug.substring(to:  1) == "@") {
-            slugString = String.init(format: "@%@", slug)
-        }
-        
-        self.selectedSlugs.append(slugString)
+        self.selectedSlugs.append(fltag)
         
         DispatchQueue.main.async {
             // Refresh collection view
