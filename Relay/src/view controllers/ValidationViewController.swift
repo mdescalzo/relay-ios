@@ -25,10 +25,14 @@ class ValidationViewController: UITableViewController {
         
         if passwoordAuth {
             self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_PASSWORD", comment: "")
+            self.validationCodeTextField.keyboardType = .default
+            self.validationCodeTextField.isSecureTextEntry = true
             self.resendCodeButton.isEnabled = false
             self.resendCodeButton.isHidden = true
         } else {
             self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_VALIDATION_CODE", comment: "")
+            self.validationCodeTextField.isSecureTextEntry = false
+            self.validationCodeTextField.keyboardType = .numberPad
             self.resendCodeButton.isEnabled = true
             self.resendCodeButton.isHidden = false
             
@@ -122,35 +126,44 @@ class ValidationViewController: UITableViewController {
             TSSocketManager.becomeActiveFromForeground()
             CCSMCommManager.refreshCCSMData()
         }
-        DispatchQueue.main.async {
-            self.stopSpinner()
-            self.performSegue(withIdentifier: "mainSegue", sender: self)
-        }
+        self.performSegue(withIdentifier: "mainSegue", sender: self)
     }
     
     
     
     // MARK: - Actions
     @IBAction func onValidationButtonTap(sender: Any) {
-        if passwoordAuth {
-            // TODO: Password auth submission
-        } else {
-            DispatchQueue.main.async {
-                self.infoLabel.text = NSLocalizedString("Validating code", comment: "")
-                self.startSpinner()
-            }
-            
-            CCSMCommManager.verifyLogin(self.validationCodeTextField.text!,
-                                        success: {
-                                            self.ccsmValidationSucceeded()
-            },
-                                        failure: { error in
-                                            DDLogInfo("SMS Validation failed with error: \(String(describing: error?.localizedDescription))")
-                                            self.stopSpinner()
-                                            self.ccsmValidationFailed()
-            })
+        self.startSpinner()
+
+        DispatchQueue.main.async {
+            self.infoLabel.text = NSLocalizedString("Validating...", comment: "")
         }
         
+        // Password Auth required
+        if passwoordAuth {
+            let orgName = CCSMStorage.sharedInstance().getOrgName()
+            let userName = CCSMStorage.sharedInstance().getUserName()
+            CCSMCommManager.authenticate(withPayload: [ "tag_glod": orgName!, "password": userName! ]) { (success, error) in
+                self.stopSpinner()
+                if success {
+                    self.ccsmValidationSucceeded()
+                } else {
+                    DDLogInfo("Password Validation failed with error: \(String(describing: error?.localizedDescription))")
+                    self.ccsmValidationFailed()
+                }
+            }
+        } else {
+            // SMS Auth required
+            CCSMCommManager.verifySMSCode(self.validationCodeTextField.text!) { (success, error) in
+                self.stopSpinner()
+                if success {
+                    self.ccsmValidationSucceeded()
+                } else {
+                    DDLogInfo("SMS Validation failed with error: \(String(describing: error?.localizedDescription))")
+                    self.ccsmValidationFailed()
+                }
+            }
+        }
     }
     
     @IBAction func onResendCodeButtonTap(sender: Any) {
@@ -195,17 +208,7 @@ class ValidationViewController: UITableViewController {
                         alert.addAction(UIAlertAction(title: NSLocalizedString("TRY_AGAIN", comment: ""),
                                                       style: .default,
                                                       handler: { action in
-                                                        self.startSpinner()
-                                                        CCSMCommManager.verifyLogin(self.validationCodeTextField.text!,
-                                                                                    success: {
-                                                                                        self.ccsmValidationSucceeded()
-                                                        },
-                                                                                    failure: { error in
-                                                                                        DDLogInfo("SMS Validation failed with error: \(String(describing: error?.localizedDescription))")
-                                                                                        self.stopSpinner()
-                                                                                        self.ccsmValidationFailed()
-                                                                                        
-                                                        })
+                                                        self.onValidationButtonTap(sender: self)
                         }))
                         alert.addAction(UIAlertAction(title: NSLocalizedString("REGISTER_FAILED_FORCE_REGISTRATION", comment: ""),
                                                       style: .destructive,
@@ -290,10 +293,6 @@ class ValidationViewController: UITableViewController {
     
     
     // MARK: - Helper methods
-    private func hideKeyboard() {
-        self.validationCodeTextField.resignFirstResponder()
-    }
-    
     private func startSpinner() {
         DispatchQueue.main.async {
             self.spinner.startAnimating()

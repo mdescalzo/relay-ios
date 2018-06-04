@@ -243,7 +243,7 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
     return [NSString
         stringWithFormat:@"?login=%@.%d&password=%@",
             [[TSStorageManager localNumber] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"],
-            [[TSStorageManager deviceId] integerValue],
+            [[TSStorageManager deviceId] intValue],
             [TSStorageManager serverAuthToken]];
 }
 

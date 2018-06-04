@@ -41,16 +41,11 @@ class NewLoginViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super .viewDidAppear(animated)
+        super.viewDidAppear(animated)
         
-        self.usernameTextField.resignFirstResponder()
-        self.organizationTextField.resignFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.usernameTextField.resignFirstResponder()
-        self.organizationTextField.resignFirstResponder()
-        self.stopSpinner()
         NotificationCenter.default.removeObserver(self)
         
         super.viewWillDisappear(animated)
@@ -76,11 +71,15 @@ class NewLoginViewController: UITableViewController {
     }
     
     private func proceedWithSMSAuth() {
-        self.performSegue(withIdentifier: "smsAuthSegue", sender: self)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "smsAuthSegue", sender: self)
+        }
     }
     
     private func proceedWithPasswordAuth() {
-        self.performSegue(withIdentifier: "passwordAuthSegue", sender: self)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "passwordAuthSegue", sender: self)
+        }
     }
     
     // MARK: - Actions
