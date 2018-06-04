@@ -493,6 +493,14 @@
 /* No comment provided by engineer. */
 "OK" = "Ok";
 
+"SUBMIT" = "Submit";
+
+"CREATE_ACCOUNT_BUTTON" = "Create Account";
+"ENTER_USERNAME_LABEL" = "Enter Username";
+"ENTER_ORGANIZATION_LABEL" = "Enter Organization";
+
+"USERNAME_ORG_ERROR" = "Please enter a valid organization/username.";
+
 /* Button text which opens the settings app */
 "OPEN_SETTINGS_BUTTON" = "Settings";
 

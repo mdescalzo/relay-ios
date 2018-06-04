@@ -181,6 +181,9 @@
 		7D1DBECA20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
 		7D1DBECB20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
 		7D1DBECC20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
+		7D1DBECE20C1A39B00B39333 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* NewLoginViewController.swift */; };
+		7D1DBECF20C1A39B00B39333 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* NewLoginViewController.swift */; };
+		7D1DBED020C1A39B00B39333 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* NewLoginViewController.swift */; };
 		7D21E03220976DE300EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
@@ -1843,6 +1846,7 @@
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D1DBEC920C0650200B39333 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		7D1DBECD20C1A39B00B39333 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppearanceSettingsViewController.h; sourceTree = "<group>"; };
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
 		7D3A67751FE9BB1700C4096A /* FLPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPickerCell.h; sourceTree = "<group>"; };
@@ -3732,6 +3736,7 @@
 				7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */,
 				7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */,
 				7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */,
+				7D1DBECD20C1A39B00B39333 /* NewLoginViewController.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -5371,6 +5376,7 @@
 				7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */,
 				7D613A331F9017DC00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
 				7D4A3A591F1693930023C29B /* RPAPICall.m in Sources */,
+				7D1DBECE20C1A39B00B39333 /* NewLoginViewController.swift in Sources */,
 				7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */,
 				7D4A3A5B1F1693930023C29B /* StreamPair.m in Sources */,
 				7D613A761F90182100E18D29 /* TSAttachmentRequest.m in Sources */,
@@ -5720,6 +5726,7 @@
 				7D613A8C1F90183600E18D29 /* TSRequest.m in Sources */,
 				7D613A2E1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7DCFFE001F0EE4490003CD95 /* RPAPICall.m in Sources */,
+				7D1DBECF20C1A39B00B39333 /* NewLoginViewController.swift in Sources */,
 				7DCFFE011F0EE4490003CD95 /* OWSDisplayedMessage.m in Sources */,
 				7DCFFE021F0EE4490003CD95 /* StreamPair.m in Sources */,
 				7DCFFE031F0EE4490003CD95 /* TimeUtil.m in Sources */,
@@ -6069,6 +6076,7 @@
 				7D613A8D1F90183600E18D29 /* TSRequest.m in Sources */,
 				7D613A2F1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				B65EDA1219E1BE6400AAA7CB /* RPAPICall.m in Sources */,
+				7D1DBED020C1A39B00B39333 /* NewLoginViewController.swift in Sources */,
 				453D28B71D32BA5F00D523F0 /* OWSDisplayedMessage.m in Sources */,
 				76EB05DC18170B33006006FC /* StreamPair.m in Sources */,
 				76EB064618170B33006006FC /* TimeUtil.m in Sources */,
