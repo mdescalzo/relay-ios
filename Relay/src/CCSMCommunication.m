@@ -114,10 +114,12 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+
     
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
-                                                       options:NSJSONWritingPrettyPrinted
+                                                       options:0
                                                          error:&error];
     if (error) {
         DDLogError(@"Auth payload conversion to data obejct failed for: %@", payload);
@@ -135,15 +137,15 @@
                                                             NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
                                                             DDLogDebug(@"Verify Login - Server response code: %ld", (long)HTTPresponse.statusCode);
                                                             DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                                            NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                   options:0
+                                                                                                                     error:NULL];
                                                             if (connectionError != nil)  // Failed connection
                                                             {
                                                                 completionBlock(NO, connectionError);
                                                             }
                                                             else if (HTTPresponse.statusCode == 200) // SUCCESS!
                                                             {
-                                                                NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                                       options:0
-                                                                                                                         error:NULL];
                                                                 [self storeLocalUserDataWithPayload:result];
                                                                 
                                                                 completionBlock(YES, nil);
@@ -154,61 +156,6 @@
                                                                                                      code:HTTPresponse.statusCode
                                                                                                  userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
                                                                 completionBlock(NO, serverError);
-                                                            }
-                                                        }];
-    
-    [sharedSession flushWithCompletionHandler:^{
-        [sharedSession resetWithCompletionHandler:^{
-            [validationTask resume];
-        }];
-    }];
-    
-}
-
-+(void)verifySMSCode:(NSString *)verificationCode
-          completion:(void (^)(BOOL success, NSError *error))completionBlock;
-{
-    // Make URL
-    NSString *orgName = [Environment.getCurrent.ccsmStorage getOrgName];
-    NSString *userName = [Environment.getCurrent.ccsmStorage getUserName];
-    NSString *urlString = [NSString stringWithFormat:@"%@/v1/login/authtoken/", FLHomeURL];
-    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    // Make Request
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSString *bodyString = [NSString stringWithFormat:@"authtoken=%@:%@:%@", orgName, userName, verificationCode];
-    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    // Make session/session task
-    NSURLSession *sharedSession = NSURLSession.sharedSession;
-    NSURLSessionTask *validationTask = [sharedSession dataTaskWithRequest:request
-                                                        completionHandler:^(NSData * _Nullable data,
-                                                                            NSURLResponse * _Nullable response,
-                                                                            NSError * _Nullable connectionError) {
-                                                            NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
-                                                            DDLogDebug(@"Verify Login - Server response code: %ld", (long)HTTPresponse.statusCode);
-                                                            DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-                                                            if (connectionError != nil)  // Failed connection
-                                                            {
-                                                                completionBlock(NO, connectionError);
-                                                            }
-                                                            else if (HTTPresponse.statusCode == 200) // SUCCESS!
-                                                            {
-                                                                NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                                       options:0
-                                                                                                                         error:NULL];
-                                                                [self storeLocalUserDataWithPayload:result];
-                                                                
-                                                                completionBlock(YES, nil);
-                                                            }
-                                                            else  // Connection good, error from server
-                                                            {
-                                                                NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                                                                                     code:HTTPresponse.statusCode
-                                                                                                 userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-                                                                completionBlock(NO, error);
                                                             }
                                                         }];
     

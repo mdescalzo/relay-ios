@@ -52,6 +52,11 @@ class ValidationViewController: UITableViewController {
         self.infoLabel.text = ""
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.validationCodeTextField.resignFirstResponder()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
         super.viewDidDisappear(animated)
@@ -112,12 +117,14 @@ class ValidationViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "mainSegue" {
-            let snc = segue.destination as! NavigationController
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window.rootViewController = snc
-            
-            // TODO: Validate this step is necessary
-            appDelegate.applicationDidBecomeActive(UIApplication.shared)
+            DispatchQueue.main.async {
+                let snc = segue.destination as! NavigationController
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window.rootViewController = snc
+                
+                // TODO: Validate this step is necessary
+                appDelegate.applicationDidBecomeActive(UIApplication.shared)
+            }
         }
     }
     
@@ -139,22 +146,27 @@ class ValidationViewController: UITableViewController {
             self.infoLabel.text = NSLocalizedString("Validating...", comment: "")
         }
         
+        let orgName = CCSMStorage.sharedInstance().getOrgName()!
+        let userName = CCSMStorage.sharedInstance().getUserName()!
         // Password Auth required
         if passwoordAuth {
-            let orgName = CCSMStorage.sharedInstance().getOrgName()
-            let userName = CCSMStorage.sharedInstance().getUserName()
-            CCSMCommManager.authenticate(withPayload: [ "tag_glod": orgName!, "password": userName! ]) { (success, error) in
-                self.stopSpinner()
-                if success {
-                    self.ccsmValidationSucceeded()
-                } else {
-                    DDLogInfo("Password Validation failed with error: \(String(describing: error?.localizedDescription))")
-                    self.ccsmValidationFailed()
-                }
+            CCSMCommManager.authenticate(withPayload: [ "tag_slug": "@\(userName):\(orgName)",
+                                                        "password": self.validationCodeTextField.text! ]) { (success, error) in
+                                                            self.stopSpinner()
+                                                            DispatchQueue.main.async {
+                                                                self.infoLabel.text = NSLocalizedString("", comment: "")
+                                                            }
+                                                            
+                                                            if success {
+                                                                self.ccsmValidationSucceeded()
+                                                            } else {
+                                                                DDLogInfo("Password Validation failed with error: \(String(describing: error?.localizedDescription))")
+                                                                self.ccsmValidationFailed()
+                                                            }
             }
         } else {
             // SMS Auth required
-            CCSMCommManager.verifySMSCode(self.validationCodeTextField.text!) { (success, error) in
+            CCSMCommManager.authenticate(withPayload: [ "authtoken": "\(orgName):\(userName):\(self.validationCodeTextField.text!)" ]) { (success, error) in
                 self.stopSpinner()
                 if success {
                     self.ccsmValidationSucceeded()

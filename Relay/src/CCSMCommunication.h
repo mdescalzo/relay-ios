@@ -24,9 +24,6 @@
              success:(void (^)())successBlock
              failure:(void (^)(NSError *error))failureBlock ;
 
-+(void)verifySMSCode:(NSString *)verificationCode
-        completion:(void (^)(BOOL success, NSError *error))completionBlock;
-
 +(void)authenticateWithPayload:(NSDictionary *)payload
                     completion:(void (^)(BOOL success, NSError *error))completionBlock;
 
