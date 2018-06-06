@@ -15,7 +15,12 @@
 -(void)generateNewIdentityKeyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 - (NSData *)identityKeyForRecipientId:(NSString *)recipientId;
+- (NSData *)identityKeyForRecipientId:(NSString *)recipientId withTransaction:(YapDatabaseReadTransaction *)transaction;
+
 - (void)removeIdentityKeyForRecipient:(NSString *)receipientId;
+- (void)removeIdentityKeyForRecipient:(NSString *)receipientId withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+
 -(void)setIdentityKey:(ECKeyPair *)identityKeyPair;
+-(void)setIdentityKey:(ECKeyPair *)identityKeyPair withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 @end

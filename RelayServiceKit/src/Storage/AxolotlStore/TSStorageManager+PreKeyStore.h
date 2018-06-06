@@ -12,7 +12,12 @@
 @interface TSStorageManager (PreKeyStore) <PreKeyStore>
 
 - (NSArray *)generatePreKeyRecords;
+- (NSArray *)generatePreKeyRecordsWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+
 - (PreKeyRecord *)getOrGenerateLastResortKey;
+- (PreKeyRecord *)getOrGenerateLastResortKeyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+
 - (void)storePreKeyRecords:(NSArray *)preKeyRecords;
+- (void)storePreKeyRecords:(NSArray *)preKeyRecords withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 @end

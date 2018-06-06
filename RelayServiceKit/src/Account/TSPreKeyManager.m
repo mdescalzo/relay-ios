@@ -22,21 +22,22 @@
     YapDatabaseConnection *dbConnection = [storageManager newDatabaseConnection];
     
     __block ECKeyPair *identityKeyPair = nil;
+    __block PreKeyRecord *lastResortPreKey = nil;
+    __block SignedPreKeyRecord *signedPreKey = nil;
+    __block NSArray *preKeys = nil;
+
     
     [dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        
         identityKeyPair = [storageManager identityKeyPair:transaction];
-        
         if (!identityKeyPair) {
             [storageManager generateNewIdentityKeyWithTransaction:transaction];
             identityKeyPair = [storageManager identityKeyPair:transaction];
         }
+        lastResortPreKey   = [storageManager getOrGenerateLastResortKeyWithTransaction:transaction];
+        signedPreKey = [storageManager generateRandomSignedRecord];
+        preKeys = [storageManager generatePreKeyRecordsWithTransaction:transaction];
     }];
-    
-    PreKeyRecord *lastResortPreKey   = [storageManager getOrGenerateLastResortKey];
-    SignedPreKeyRecord *signedPreKey = [storageManager generateRandomSignedRecord];
-    
-    NSArray *preKeys = [storageManager generatePreKeyRecords];
+
     
     TSRegisterPrekeysRequest *request =
     [[TSRegisterPrekeysRequest alloc] initWithPrekeyArray:preKeys

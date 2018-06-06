@@ -316,7 +316,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 }
 
 - (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
-    return [transaction objectForKey:key inCollection:collection];
+    return [self objectForKey:key inCollection:collection withTransaction:transaction];
 }
 
 - (NSString *)stringForKey:(NSString *)key inCollection:(NSString *)collection {
@@ -328,6 +328,12 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 - (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection {
     NSNumber *boolNum = [self objectForKey:key inCollection:collection];
 
+    return [boolNum boolValue];
+}
+
+- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
+    NSNumber *boolNum = [self objectForKey:key inCollection:collection withTransaction:transaction];
+    
     return [boolNum boolValue];
 }
 
@@ -360,15 +366,33 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
     return preKeyRecord;
 }
 
+- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
+    PreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection withTransaction:transaction];
+    
+    return preKeyRecord;
+}
+
 - (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection {
     SignedPreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection];
 
     return preKeyRecord;
 }
 
+- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
+    SignedPreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection withTransaction:transaction];
+    
+    return preKeyRecord;
+}
+
 - (int)intForKey:(NSString *)key inCollection:(NSString *)collection {
     int integer = [[self objectForKey:key inCollection:collection] intValue];
 
+    return integer;
+}
+
+-(int)intForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction
+{
+    int integer = [[self objectForKey:key inCollection:collection withTransaction:transaction] intValue];
     return integer;
 }
 

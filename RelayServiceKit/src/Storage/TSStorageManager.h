@@ -42,7 +42,9 @@ extern NSString *const TSUIDatabaseConnectionDidUpdateNotification;
 
 
 - (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection;
+- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
 - (int)intForKey:(NSString *)key inCollection:(NSString *)collection;
+-(int)intForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
 - (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection;
 - (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 - (id)objectForKey:(NSString *)key inCollection:(NSString *)collection;
@@ -54,8 +56,10 @@ extern NSString *const TSUIDatabaseConnectionDidUpdateNotification;
 - (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
 - (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection;
 - (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
-- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
+//- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
+- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
+//- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
+- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
 - (void)purgeCollection:(NSString *)collection;
 - (void)purgeCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 

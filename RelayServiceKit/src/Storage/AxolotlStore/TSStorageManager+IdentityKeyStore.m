@@ -35,6 +35,11 @@
     return [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
 }
 
+- (NSData *)identityKeyForRecipientId:(NSString *)recipientId withTransaction:(YapDatabaseReadTransaction *)transaction {
+    return [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection withTransaction:transaction];
+}
+
+
 
 - (ECKeyPair *)identityKeyPair {
     return [self keyPairForKey:TSStorageManagerIdentityKeyStoreIdentityKey
@@ -71,9 +76,14 @@
 }
 
 
-- (void)saveRemoteIdentity:(NSData *)identityKey recipientId:(NSString *)recipientId {
-    [self setObject:identityKey forKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
+//- (void)saveRemoteIdentity:(NSData *)identityKey recipientId:(NSString *)recipientId {
+//    [self setObject:identityKey forKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
+//}
+
+- (void)saveRemoteIdentity:(NSData *)identityKey recipientId:(NSString *)recipientId withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
+    [self setObject:identityKey forKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection withTransaction:transaction];
 }
+
 
 - (BOOL)saveRemoteIdentity:(nonnull NSData *)identityKey recipientId:(nonnull NSString *)recipientId protocolContext:(nullable id)protocolContext {
     NSAssert([protocolContext isKindOfClass:[YapDatabaseReadWriteTransaction class]], @"protocolContext must be a YapDatabaseReadWriteTransaction.");
@@ -117,8 +127,8 @@
                    direction:(TSMessageDirection)direction
              protocolContext:(nullable id)protocolContext {
     
-    NSAssert([protocolContext isKindOfClass:[YapDatabaseReadTransaction class]], @"protocolContext must be a YapDatabaseTransaction.");
-    YapDatabaseReadTransaction *transaction = (YapDatabaseReadTransaction *)protocolContext;
+    NSAssert([protocolContext isKindOfClass:[YapDatabaseReadWriteTransaction class]], @"protocolContext must be a YapDatabaseReadWriteTransaction.");
+    YapDatabaseReadWriteTransaction *transaction = (YapDatabaseReadWriteTransaction *)protocolContext;
 
     
     NSData *existingKey = [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection withTransaction:transaction];
@@ -135,16 +145,19 @@
         return NO;
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         DDLogInfo(@"Updating identity key for recipient:%@", recipientId);
-        //    [self createIdentityChangeInfoMessageForRecipientId:recipientId];
-        [self saveRemoteIdentity:identityKey recipientId:recipientId];
-    });
+//    [self createIdentityChangeInfoMessageForRecipientId:recipientId];
+        [self saveRemoteIdentity:identityKey recipientId:recipientId withTransaction:transaction];
+
     return YES;
 }
 
 - (void)removeIdentityKeyForRecipient:(NSString *)receipientId {
     [self removeObjectForKey:receipientId inCollection:TSStorageManagerTrustedKeysCollection];
+}
+
+- (void)removeIdentityKeyForRecipient:(NSString *)receipientId withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
+    [self removeObjectForKey:receipientId inCollection:TSStorageManagerTrustedKeysCollection withTransaction:transaction];
 }
 
 - (void)createIdentityChangeInfoMessageForRecipientId:(NSString *)recipientId
@@ -168,11 +181,6 @@
                                           inThread:thread
                                  failedMessageType:TSErrorMessageNonBlockingIdentityChange] saveWithTransaction:transaction];
     }];
-    
-//    TSContactThread *contactThread = [TSContactThread getOrCreateThreadWithContactId:recipientId];
-//    [[[TSErrorMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                                      inThread:contactThread
-//                             failedMessageType:TSErrorMessageNonBlockingIdentityChange] save];
 }
 
 @end

@@ -15,5 +15,7 @@
 @interface TSStorageManager (SignedPreKeyStore) <SignedPreKeyStore>
 
 - (SignedPreKeyRecord *)generateRandomSignedRecord;
+- (SignedPreKeyRecord *)generateRandomSignedRecordWithTransaction:(YapDatabaseReadTransaction *)transaction;
+
 
 @end
