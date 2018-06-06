@@ -23,21 +23,7 @@ class ValidationViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if passwoordAuth {
-            self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_PASSWORD", comment: "")
-            self.validationCodeTextField.keyboardType = .default
-            self.validationCodeTextField.isSecureTextEntry = true
-            self.resendCodeButton.isEnabled = false
-            self.resendCodeButton.isHidden = true
-        } else {
-            self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_VALIDATION_CODE", comment: "")
-            self.validationCodeTextField.isSecureTextEntry = false
-            self.validationCodeTextField.keyboardType = .numberPad
-            self.resendCodeButton.isEnabled = true
-            self.resendCodeButton.isHidden = false
-            
-        }
-        self.submitButton.titleLabel?.text = NSLocalizedString("SUBMIT_BUTTON_LABEL", comment: "")
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +36,24 @@ class ValidationViewController: UITableViewController {
                                                name: NSNotification.Name(rawValue: FLRegistrationStatusUpdateNotification),
                                                object: nil)
         self.infoLabel.text = ""
+        
+        if passwoordAuth {
+            self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_PASSWORD", comment: "")
+            self.validationCodeTextField.keyboardType = .default
+            self.validationCodeTextField.isSecureTextEntry = true
+            self.resendCodeButton.setTitle(NSLocalizedString("FORGOT_PASSWORD", comment: ""), for: .normal)
+            self.resendCodeButton.isEnabled = true
+            self.resendCodeButton.isHidden = false
+        } else {
+            self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_VALIDATION_CODE", comment: "")
+            self.validationCodeTextField.isSecureTextEntry = false
+            self.validationCodeTextField.keyboardType = .numberPad
+            self.resendCodeButton.setTitle(NSLocalizedString("RESEND_CODE", comment: ""), for: .normal)
+            self.resendCodeButton.isEnabled = true
+            self.resendCodeButton.isHidden = false
+            
+        }
+        self.submitButton.titleLabel?.text = NSLocalizedString("SUBMIT_BUTTON_LABEL", comment: "")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,52 +70,6 @@ class ValidationViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-     
-     // Configure the cell...
-     
-     return cell
-     }
-     */
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
     
     // MARK: - Navigation
     
@@ -179,17 +137,39 @@ class ValidationViewController: UITableViewController {
     }
     
     @IBAction func onResendCodeButtonTap(sender: Any) {
-        CCSMCommManager.requestLogin(CCSMStorage.sharedInstance().getUserName(),
-                                     orgName: CCSMStorage.sharedInstance().getOrgName(),
-                                     success: {
-                                        DDLogInfo("Request for code resend succeeded.")
-                                        DispatchQueue.main.async {
-                                            self.validationCodeTextField.text = ""
-                                        }
-        },
-                                     failure: { error in
-                                        DDLogDebug("Request for code resend failed.  Error: \(String(describing: error?.localizedDescription))");
-        })
+        if passwoordAuth {
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: NSLocalizedString("RESETTING_PASSWORD", comment: ""), message: NSLocalizedString("ARE_YOU_SURE", comment: ""), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("NO", comment: ""), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: ""), style: .destructive, handler: { (action) in
+                    
+                    CCSMCommManager.requestPasswordReset(forUser: CCSMStorage.sharedInstance().getUserName(),
+                                                         org: CCSMStorage.sharedInstance().getOrgName(),
+                                                         completion: { (success, error) in
+                                                            if success {
+                                                                DDLogInfo("Password reset request successful sent.")
+                                                                self.presentAlertWithMessage(message: "Password reset request successful.\nPlease check your email or SMS for instructions.")
+                                                            } else {
+                                                                DDLogDebug("Password reset request failed with error:\(String(describing: error?.localizedDescription))")
+                                                                self.presentAlertWithMessage(message: "Password reset request failed.\n\(String(describing: error?.localizedDescription))")
+                                                            }
+                    })
+                }))
+                self.navigationController?.present(alert, animated: true, completion: nil)
+            }
+        } else {
+            CCSMCommManager.requestLogin(CCSMStorage.sharedInstance().getUserName(),
+                                         orgName: CCSMStorage.sharedInstance().getOrgName(),
+                                         success: {
+                                            DDLogInfo("Request for code resend succeeded.")
+                                            DispatchQueue.main.async {
+                                                self.validationCodeTextField.text = ""
+                                            }
+            },
+                                         failure: { error in
+                                            DDLogDebug("Request for code resend failed.  Error: \(String(describing: error?.localizedDescription))");
+            })
+        }
     }
     
     // MARK: - Comms

@@ -100,7 +100,69 @@
             [loginTask resume];
         }];
     }];
+}
+
++(void)requestPasswordResetForUser:(NSString *)userName
+                               org:(NSString *)orgName
+                        completion:(void (^)(BOOL success, NSError *error))completionBlock
+{
+    // Make URL
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/password/reset/", FLHomeURL];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
+    // Make Request
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    NSDictionary *payload = @{ @"tag_slug": [NSString stringWithFormat:@"@%@:%@", userName, orgName] };
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
+                                                       options:0
+                                                         error:&error];
+    if (error) {
+        DDLogError(@"Auth payload conversion to data obejct failed for: %@", payload);
+        completionBlock(NO, error);
+        return;
+    }
+    [request setHTTPBody:jsonData];
+    
+    // Make session/session task
+    NSURLSession *sharedSession = NSURLSession.sharedSession;
+    NSURLSessionTask *validationTask = [sharedSession dataTaskWithRequest:request
+                                                        completionHandler:^(NSData * _Nullable data,
+                                                                            NSURLResponse * _Nullable response,
+                                                                            NSError * _Nullable connectionError) {
+                                                            NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                                                            DDLogDebug(@"Verify Login - Server response code: %ld", (long)HTTPresponse.statusCode);
+                                                            DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+                                                            NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                   options:0
+                                                                                                                     error:NULL];
+                                                            if (connectionError != nil)  // Failed connection
+                                                            {
+                                                                completionBlock(NO, connectionError);
+                                                            }
+                                                            else if (HTTPresponse.statusCode == 200) // SUCCESS!
+                                                            {
+                                                                
+                                                                completionBlock(YES, nil);
+                                                            }
+                                                            else  // Connection good, error from server
+                                                            {
+                                                                NSError *serverError = [NSError errorWithDomain:NSURLErrorDomain
+                                                                                                           code:HTTPresponse.statusCode
+                                                                                                       userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                                                                completionBlock(NO, serverError);
+                                                            }
+                                                        }];
+    
+    [sharedSession flushWithCompletionHandler:^{
+        [sharedSession resetWithCompletionHandler:^{
+            [validationTask resume];
+        }];
+    }];
 }
 
 +(void)authenticateWithPayload:(NSDictionary *)payload

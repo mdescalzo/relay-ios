@@ -103,7 +103,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
                                                         "email" : self.emailTextField.text! ]
                                         
                                         CCSMCommManager.requestAccountCreation(withUserDict: payload,
-                                                                               token: token,
+                                                                               token: token!,
                                                                                completion: { (success, error) in
                                                                                 
                                                                                 self.stopSpinner()

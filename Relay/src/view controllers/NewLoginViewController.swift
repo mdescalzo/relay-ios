@@ -87,8 +87,8 @@ class NewLoginViewController: UITableViewController {
         if self.isValidOrg(org: self.organizationTextField.text!) && self.isValidUsername(username: self.usernameTextField.text!) {
             self.startSpinner()
             
-            CCSMCommManager.requestLogin(self.usernameTextField.text,
-                                         orgName: self.organizationTextField.text,
+            CCSMCommManager.requestLogin(self.usernameTextField.text!,
+                                         orgName: self.organizationTextField.text!,
                                          success: {
                                             self.stopSpinner()
                                             self.proceedWithSMSAuth()

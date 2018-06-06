@@ -637,8 +637,12 @@
 "REGISTRATION_VERIFY_DEVICE" = "Verify This Device";
 
 "ENTER_VALIDATION_CODE" = "Enter Validation Code";
+"RESEND_CODE" = "Send New Code";
 
 "ENTER_PASSWORD" = "Enter Password";
+"FORGOT_PASSWORD" = "Forgot Password";
+"ARE_YOU_SURE" = "Are you sure?";
+"RESETTING_PASSWORD" = "Resetting password";
 
 /* No comment provided by engineer. */
 "REJECT_CALL_BUTTON_TITLE" = "Reject";
