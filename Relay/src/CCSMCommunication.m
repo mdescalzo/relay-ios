@@ -116,7 +116,7 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
-    NSDictionary *payload = @{ @"tag_slug": [NSString stringWithFormat:@"@%@:%@", userName, orgName] };
+    NSDictionary *payload = @{ @"fq_tag": [NSString stringWithFormat:@"@%@:%@", userName, orgName] };
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
                                                        options:0

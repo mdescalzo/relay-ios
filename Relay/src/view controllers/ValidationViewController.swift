@@ -108,7 +108,7 @@ class ValidationViewController: UITableViewController {
         let userName = CCSMStorage.sharedInstance().getUserName()!
         // Password Auth required
         if passwoordAuth {
-            CCSMCommManager.authenticate(withPayload: [ "tag_slug": "@\(userName):\(orgName)",
+            CCSMCommManager.authenticate(withPayload: [ "fq_tag": "@\(userName):\(orgName)",
                                                         "password": self.validationCodeTextField.text! ]) { (success, error) in
                                                             self.stopSpinner()
                                                             DispatchQueue.main.async {
