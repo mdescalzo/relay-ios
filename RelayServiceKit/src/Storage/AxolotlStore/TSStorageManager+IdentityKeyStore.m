@@ -64,6 +64,14 @@
        inCollection:TSStorageManagerIdentityKeyStoreCollection];
 }
 
+-(void)setIdentityKey:(ECKeyPair *)identityKeyPair withTransaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    [self setObject:identityKeyPair
+             forKey:TSStorageManagerIdentityKeyStoreIdentityKey
+       inCollection:TSStorageManagerIdentityKeyStoreCollection withTransaction:transaction];
+}
+
+
 - (int)localRegistrationId {
     return (int)[TSAccountManager getOrGenerateRegistrationId];
 }
@@ -76,9 +84,9 @@
 }
 
 
-//- (void)saveRemoteIdentity:(NSData *)identityKey recipientId:(NSString *)recipientId {
-//    [self setObject:identityKey forKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
-//}
+- (void)saveRemoteIdentity:(NSData *)identityKey recipientId:(NSString *)recipientId {
+    [self setObject:identityKey forKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
+}
 
 - (void)saveRemoteIdentity:(NSData *)identityKey recipientId:(NSString *)recipientId withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     [self setObject:identityKey forKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection withTransaction:transaction];
@@ -101,26 +109,26 @@
 }
 
 
-//- (BOOL)isTrustedIdentityKey:(NSData *)identityKey recipientId:(NSString *)recipientId {
-//    NSData *existingKey = [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
-//
-//    if (!existingKey) {
-//        return YES;
-//    }
-//
-//    if ([existingKey isEqualToData:identityKey]) {
-//        return YES;
-//    }
-//
-//    if (self.privacyPreferences.shouldBlockOnIdentityChange) {
-//        return NO;
-//    }
-//
-//    DDLogInfo(@"Updating identity key for recipient:%@", recipientId);
-////    [self createIdentityChangeInfoMessageForRecipientId:recipientId];
-//    [self saveRemoteIdentity:identityKey recipientId:recipientId];
-//    return YES;
-//}
+- (BOOL)isTrustedIdentityKey:(NSData *)identityKey recipientId:(NSString *)recipientId {
+    NSData *existingKey = [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection];
+
+    if (!existingKey) {
+        return YES;
+    }
+
+    if ([existingKey isEqualToData:identityKey]) {
+        return YES;
+    }
+
+    if (self.privacyPreferences.shouldBlockOnIdentityChange) {
+        return NO;
+    }
+
+    DDLogInfo(@"Updating identity key for recipient:%@", recipientId);
+//    [self createIdentityChangeInfoMessageForRecipientId:recipientId];
+    [self saveRemoteIdentity:identityKey recipientId:recipientId];
+    return YES;
+}
 
 - (BOOL)isTrustedIdentityKey:(nonnull NSData *)identityKey
                  recipientId:(nonnull NSString *)recipientId
