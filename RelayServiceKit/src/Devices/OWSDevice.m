@@ -109,12 +109,12 @@ static MTLValueTransformer *_millisecondTimestampToDateTransformer;
 
 - (BOOL)isCurrentDevice
 {
-    return self.deviceId == [TSStorageManager.sharedManager.deviceId integerValue];
+    return self.deviceId == [[TSStorageManager.sharedManager deviceIdWithProtocolContext:nil] integerValue];
 }
 
 - (NSString *)displayName
 {
-    if (self.deviceId == [TSStorageManager.sharedManager.deviceId integerValue]) {
+    if (self.deviceId == [[TSStorageManager.sharedManager deviceIdWithProtocolContext:nil] integerValue]) {
         return @"This Device";
     }
     

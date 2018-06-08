@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
         myPublicKey = [[TSStorageManager sharedManager] identityKeyPair:transaction].publicKey;
         myPrivateKey = [[TSStorageManager sharedManager] identityKeyPair:transaction].ows_privateKey;
     }];
-    NSString *accountIdentifier = [TSStorageManager localNumber];
+    NSString *accountIdentifier = [TSStorageManager localNumberWithProtocolContext:nil];
 
     OWSDeviceProvisioner *provisioner = [[OWSDeviceProvisioner alloc] initWithMyPublicKey:myPublicKey
                                                                              myPrivateKey:myPrivateKey

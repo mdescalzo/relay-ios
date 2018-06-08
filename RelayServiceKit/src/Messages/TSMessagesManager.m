@@ -238,7 +238,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         __block NSData *plaintextData;
         @try {
-            [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+//            [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                 PreKeyWhisperMessage *message = [[PreKeyWhisperMessage alloc] initWithData:encryptedData];
                 SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
                                                                         preKeyStore:storageManager
@@ -246,8 +246,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                    identityKeyStore:storageManager
                                                                         recipientId:recipientId
                                                                            deviceId:deviceId];
-                plaintextData = [[cipher decrypt:message protocolContext:transaction] removePadding];
-            }];
+                plaintextData = [[cipher decrypt:message protocolContext:nil] removePadding];
+//            }];
         } @catch (NSException *exception) {
             [self processException:exception envelope:preKeyEnvelope];
             return;

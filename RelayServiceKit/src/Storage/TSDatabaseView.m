@@ -381,7 +381,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                                                   NSString *_Nonnull collection,
                                                                   NSString *_Nonnull key,
                                                                   id _Nonnull object) {
-        NSInteger currentDeviceId = [[TSStorageManager deviceIdWithTransaction:transaction] integerValue];
+        NSInteger currentDeviceId = [[TSStorageManager deviceIdWithProtocolContext:nil] integerValue];
         if ([object isKindOfClass:[OWSDevice class]]) {
             OWSDevice *device = (OWSDevice *)object;
             if (!(device.deviceId == currentDeviceId)) {

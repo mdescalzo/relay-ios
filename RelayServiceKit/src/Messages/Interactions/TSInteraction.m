@@ -82,7 +82,7 @@
 
 - (void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     if (!self.uniqueId) {
-        self.uniqueId = [TSStorageManager getAndIncrementMessageIdWithTransaction:transaction];
+        self.uniqueId = [TSStorageManager getAndIncrementMessageIdWithProtocolContext:transaction];
     }
 
     [super saveWithTransaction:transaction];

@@ -91,8 +91,8 @@ typedef void (^failureBlock)(NSURLSessionDataTask *task, NSError *error);
     } else {
         if (![request isKindOfClass:[TSRequestVerificationCodeRequest class]]) {
             [self.operationManager.requestSerializer
-                setAuthorizationHeaderFieldWithUsername:[NSString stringWithFormat:@"%@.%@", TSAccountManager.sharedInstance.myself.uniqueId, [TSStorageManager deviceId]]
-                                               password:[TSStorageManager serverAuthToken]];
+                setAuthorizationHeaderFieldWithUsername:[NSString stringWithFormat:@"%@.%@", TSAccountManager.sharedInstance.myself.uniqueId, [TSStorageManager deviceIdWithProtocolContext:nil]]
+                                               password:[TSStorageManager serverAuthTokenWithProtocolContext:nil]];
         }
 
         if ([request.HTTPMethod isEqualToString:@"GET"]) {

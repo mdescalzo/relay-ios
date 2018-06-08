@@ -28,14 +28,14 @@
 
     
     [dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        identityKeyPair = [storageManager identityKeyPair:transaction];
+        identityKeyPair = [storageManager identityKeyPair:transaction ];
         if (!identityKeyPair) {
-            [storageManager generateNewIdentityKeyWithTransaction:transaction];
+            [storageManager generateNewIdentityKeyWithProtocolContext:transaction];
             identityKeyPair = [storageManager identityKeyPair:transaction];
         }
-        lastResortPreKey   = [storageManager getOrGenerateLastResortKeyWithTransaction:transaction];
-        signedPreKey = [storageManager generateRandomSignedRecord];
-        preKeys = [storageManager generatePreKeyRecordsWithTransaction:transaction];
+        lastResortPreKey   = [storageManager getOrGenerateLastResortKeyWithProtocolContext:transaction];
+        signedPreKey = [storageManager generateRandomSignedRecordWithProtocolContext:transaction];
+        preKeys = [storageManager generatePreKeyRecordsWithProtocolContext:transaction];
     }];
 
     
@@ -48,7 +48,7 @@
     [[TSNetworkManager sharedManager] makeRequest:request
                                           success:^(NSURLSessionDataTask *task, id responseObject) {
                                               DDLogInfo(@"%@ Successfully registered pre keys.", self.tag);
-                                              [storageManager storePreKeyRecords:preKeys];
+                                              [storageManager storePreKeyRecords:preKeys withProtocolContext:nil];
                                               [storageManager storeSignedPreKey:signedPreKey.Id signedPreKeyRecord:signedPreKey];
                                               
                                               success(nil);

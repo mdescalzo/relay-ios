@@ -83,7 +83,7 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
         return object;
     } else {
 //        dispatch_async([OWSDispatch serialQueue], ^{
-            object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
+            object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection withProtocolContext:nil];
             if (object) {
                 [self.prefsCache setObject:object forKey:key];
             }
@@ -101,7 +101,7 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
     if (![oldObject isEqual:value]) {
         [self.prefsCache setObject:value forKey:key];
         dispatch_async([OWSDispatch serialQueue], ^{
-            [TSStorageManager.sharedManager setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
+            [TSStorageManager.sharedManager setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection withProtocolContext:nil];
 //            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
 //                [transaction setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
 //            }];

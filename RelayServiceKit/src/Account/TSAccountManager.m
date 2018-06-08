@@ -59,14 +59,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isRegistered {
     CCSMStorage *ccsmStore = [CCSMStorage new];
     NSString *sessionToken = [ccsmStore getSessionToken];
-    NSNumber *deviceId = [TSStorageManager deviceId];
+    NSNumber *deviceId = [TSStorageManager deviceIdWithProtocolContext:nil];
     
     return (TSAccountManager.sharedInstance.myself.uniqueId && deviceId && sessionToken.length > 0) ? YES : NO;
 }
 
 - (void)ifRegistered:(BOOL)isRegistered runAsync:(void (^)())block
 {
-    [self.storageManager ifLocalNumberPresent:isRegistered runAsync:block];
+    [self.storageManager ifLocalNumberPresent:isRegistered withProtocolContext:nil runAsync:block];
 }
 
 - (void)didRegister
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
         @throw [NSException exceptionWithName:@"RegistrationFail" reason:@"Internal Corrupted State" userInfo:nil];
     }
 
-    [self.storageManager storeLocalNumber:phoneNumber];
+    [self.storageManager storeLocalNumber:phoneNumber withProtocolContext:nil];
 }
 
 + (nullable NSString *)localNumber
@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
         return awaitingVerif;
     }
 
-    return [TSStorageManager localNumber];
+    return [TSStorageManager localNumberWithProtocolContext:nil];
 }
 
 +(uint32_t)getOrGenerateRegistrationIdWithProtocolContext:(nullable id)protocolContext
@@ -204,7 +204,7 @@ NS_ASSUME_NONNULL_BEGIN
             switch (statuscode) {
                 case 200:
                 case 204: {
-                    [TSStorageManager storeServerToken:authToken signalingKey:signalingKey];
+                    [TSStorageManager storeServerToken:authToken signalingKey:signalingKey withProtocolContext:nil];
                     [self didRegister];
                     [TSSocketManager becomeActiveFromForeground];
                     [TSPreKeyManager registerPreKeysWithSuccess:successBlock failure:failureBlock];

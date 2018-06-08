@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (OWSFingerprint *)fingerprintWithTheirSignalId:(NSString *)theirSignalId
 {
-    NSData *_Nullable theirIdentityKey = [self.storageManager identityKeyForRecipientId:theirSignalId];
+    NSData *_Nullable theirIdentityKey = [self.storageManager identityKeyForRecipientId:theirSignalId withProtocolContext:nil];
 
     return [self fingerprintWithTheirSignalId:theirSignalId theirIdentityKey:theirIdentityKey];
 }
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSString *theirName = [self.contactsManager nameStringForContactId:theirSignalId];
 
-    NSString *mySignalId = [self.storageManager localNumber];
+    NSString *mySignalId = [self.storageManager localNumberWithProtocolContext:nil];
     
     __block ECKeyPair *myIdentityKeyPair = nil;
     [self.storageManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {

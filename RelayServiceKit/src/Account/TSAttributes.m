@@ -14,8 +14,8 @@
 @implementation TSAttributes
 
 + (NSDictionary *)attributesFromStorageWithVoiceSupport {
-    return [self attributesWithSignalingKey:[TSStorageManager signalingKey]
-                            serverAuthToken:[TSStorageManager serverAuthToken]];
+    return [self attributesWithSignalingKey:[TSStorageManager signalingKeyWithProtocolContext:nil]
+                            serverAuthToken:[TSStorageManager serverAuthTokenWithProtocolContext:nil]];
 }
 
 + (NSDictionary *)attributesWithSignalingKey:(NSString *)signalingKey
@@ -25,7 +25,7 @@
         @"signalingKey" : signalingKey,
         @"AuthKey" : authToken,
         @"voice" : [NSNumber numberWithBool:YES], // all Signal-iOS clients support voice
-        @"registrationId" : [NSString stringWithFormat:@"%i", [TSAccountManager getOrGenerateRegistrationId]]
+        @"registrationId" : [NSString stringWithFormat:@"%i", [TSAccountManager getOrGenerateRegistrationIdWithProtocolContext:nil]]
     };
 }
 

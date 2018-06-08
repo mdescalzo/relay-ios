@@ -40,7 +40,7 @@
 #pragma clang diagnostic pop
 
 - (void)makeAuthenticatedRequest {
-    [self.parameters addEntriesFromDictionary:@{ @"Authorization" : [TSStorageManager serverAuthToken] }];
+    [self.parameters addEntriesFromDictionary:@{ @"Authorization" : [TSStorageManager serverAuthTokenWithProtocolContext:nil] }];
 }
 
 - (BOOL)usingExternalServer {

@@ -344,7 +344,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     
     for (SignalRecipient *rec in recipients) {
         // we don't need to send the message to ourselves, but otherwise we send
-        if (![[rec uniqueId] isEqualToString:[TSStorageManager localNumber]]) {
+        if (![[rec uniqueId] isEqualToString:[TSStorageManager localNumberWithProtocolContext:nil]]) {
             [futures addObject:[self sendMessageFuture:message recipient:rec thread:thread]];
         }
     }

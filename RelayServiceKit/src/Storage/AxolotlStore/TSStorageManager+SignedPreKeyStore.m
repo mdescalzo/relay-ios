@@ -46,24 +46,17 @@
 }
 
 - (nullable SignedPreKeyRecord *)loadSignedPrekeyOrNil:(int)signedPreKeyId {
-    __block SignedPreKeyRecord *record = nil;
-    [TSStorageManager.sharedManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        record = [self signedPreKeyRecordForKey:[self keyFromInt:signedPreKeyId]
+    SignedPreKeyRecord *record = [self signedPreKeyRecordForKey:[self keyFromInt:signedPreKeyId]
                                    inCollection:TSStorageManagerSignedPreKeyStoreCollection
-                            withProtocolContext:transaction];
-    }];
+                            withProtocolContext:nil];
     return record;
 }
 
 - (SignedPreKeyRecord *)loadSignedPrekey:(int)signedPreKeyId
 {
-    __block SignedPreKeyRecord *preKeyRecord = nil;
-    
-    [TSStorageManager.sharedManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        preKeyRecord = [self signedPreKeyRecordForKey:[self keyFromInt:signedPreKeyId]
-                                         inCollection:TSStorageManagerSignedPreKeyStoreCollection
-                                  withProtocolContext:transaction];
-    }];
+    SignedPreKeyRecord *preKeyRecord = [self signedPreKeyRecordForKey:[self keyFromInt:signedPreKeyId]
+                                                         inCollection:TSStorageManagerSignedPreKeyStoreCollection
+                                                  withProtocolContext:nil];
     
     if (!preKeyRecord) {
         @throw

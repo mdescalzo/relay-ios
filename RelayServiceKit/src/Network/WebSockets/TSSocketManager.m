@@ -166,7 +166,7 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
 
     if ([message.path isEqualToString:@"/api/v1/message"] && [message.verb isEqualToString:@"PUT"]) {
         NSData *decryptedPayload =
-            [Cryptography decryptAppleMessagePayload:message.body withSignalingKey:TSStorageManager.signalingKey];
+            [Cryptography decryptAppleMessagePayload:message.body withSignalingKey:[TSStorageManager signalingKeyWithProtocolContext:nil]];
 
         if (!decryptedPayload) {
             DDLogWarn(@"Failed to decrypt incoming payload or bad HMAC");
@@ -242,9 +242,9 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
 - (NSString *)webSocketAuthenticationString {
     return [NSString
         stringWithFormat:@"?login=%@.%d&password=%@",
-            [[TSStorageManager localNumber] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"],
-            [[TSStorageManager deviceId] integerValue],
-            [TSStorageManager serverAuthToken]];
+            [[TSStorageManager localNumberWithProtocolContext:nil] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"],
+            [[TSStorageManager deviceIdWithProtocolContext:nil] intValue],
+            [TSStorageManager serverAuthTokenWithProtocolContext:nil]];
 }
 
 - (void)scheduleRetry {
