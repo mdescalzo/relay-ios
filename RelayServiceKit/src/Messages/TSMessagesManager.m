@@ -165,9 +165,7 @@ NS_ASSUME_NONNULL_BEGIN
         int deviceId = (int)messageEnvelope.sourceDevice;
         
         __block BOOL containsSessionId;
-        [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-            containsSessionId = [storageManager containsSession:recipientId deviceId:deviceId protocolContext:transaction];
-        }];
+        containsSessionId = [storageManager containsSession:recipientId deviceId:deviceId protocolContext:nil];
         if (!containsSessionId) {
             [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                 TSErrorMessage *errorMessage =
@@ -186,7 +184,6 @@ NS_ASSUME_NONNULL_BEGIN
         
         __block NSData *plaintextData;
         @try {
-            [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
                 WhisperMessage *message = [[WhisperMessage alloc] initWithData:encryptedData];
                 SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
                                                                         preKeyStore:storageManager
@@ -195,8 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                         recipientId:recipientId
                                                                            deviceId:deviceId];
                 
-                plaintextData = [[cipher decrypt:message protocolContext:transaction] removePadding];
-                                 }];
+                plaintextData = [[cipher decrypt:message protocolContext:nil] removePadding];
         } @catch (NSException *exception) {
             [self processException:exception envelope:messageEnvelope];
             return;
@@ -238,16 +234,14 @@ NS_ASSUME_NONNULL_BEGIN
         
         __block NSData *plaintextData;
         @try {
-//            [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-                PreKeyWhisperMessage *message = [[PreKeyWhisperMessage alloc] initWithData:encryptedData];
-                SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
-                                                                        preKeyStore:storageManager
-                                                                  signedPreKeyStore:storageManager
-                                                                   identityKeyStore:storageManager
-                                                                        recipientId:recipientId
-                                                                           deviceId:deviceId];
-                plaintextData = [[cipher decrypt:message protocolContext:nil] removePadding];
-//            }];
+            PreKeyWhisperMessage *message = [[PreKeyWhisperMessage alloc] initWithData:encryptedData];
+            SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:storageManager
+                                                                    preKeyStore:storageManager
+                                                              signedPreKeyStore:storageManager
+                                                               identityKeyStore:storageManager
+                                                                    recipientId:recipientId
+                                                                       deviceId:deviceId];
+            plaintextData = [[cipher decrypt:message protocolContext:nil] removePadding];
         } @catch (NSException *exception) {
             [self processException:exception envelope:preKeyEnvelope];
             return;

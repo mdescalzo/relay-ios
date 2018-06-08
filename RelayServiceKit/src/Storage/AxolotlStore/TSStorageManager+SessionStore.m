@@ -47,21 +47,31 @@
     return subDevicesSessions;
 }
 
-- (void)storeSession:(nonnull NSString *)contactIdentifier deviceId:(int)deviceId session:(nonnull SessionRecord *)session protocolContext:(nullable id)protocolContext
+- (void)storeSession:(nonnull NSString *)contactIdentifier
+            deviceId:(int)deviceId
+             session:(nonnull SessionRecord *)session
+     protocolContext:(nullable id)protocolContext
 {
+    [session markAsUnFresh];
+    
     NSMutableDictionary *dictionary =
     [[self dictionaryForKey:contactIdentifier inCollection:TSStorageManagerSessionStoreCollection withProtocolContext:protocolContext] mutableCopy];
     
     if (!dictionary) {
-        dictionary = [NSMutableDictionary dictionary];
+        dictionary = [NSMutableDictionary new];
     }
     
     [dictionary setObject:session forKey:[self keyForInt:deviceId]];
     
-    [self setObject:dictionary forKey:contactIdentifier inCollection:TSStorageManagerSessionStoreCollection withProtocolContext:protocolContext];
+    [self setObject:[NSDictionary dictionaryWithDictionary:dictionary]
+             forKey:contactIdentifier
+       inCollection:TSStorageManagerSessionStoreCollection
+withProtocolContext:protocolContext];
 }
 
-- (BOOL)containsSession:(NSString *)contactIdentifier deviceId:(int)deviceId protocolContext:(id)protocolContext
+- (BOOL)containsSession:(NSString *)contactIdentifier
+               deviceId:(int)deviceId
+        protocolContext:(id)protocolContext
 {
     return [self loadSession:contactIdentifier deviceId:deviceId protocolContext:protocolContext].sessionState.hasSenderChain;
 }
