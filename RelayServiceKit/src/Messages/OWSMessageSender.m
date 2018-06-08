@@ -1,4 +1,4 @@
-//  Created by Michael Kirk on 10/7/16.
+    //  Created by Michael Kirk on 10/7/16.
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
 #import "OWSMessageSender.h"
@@ -810,9 +810,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
             @try {
                 // Mutating session state is not thread safe.
                 @synchronized(self) {
-                    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-                        [builder processPrekeyBundle:bundle protocolContext:transaction];
-                    }];
+                    [builder processPrekeyBundle:bundle protocolContext:nil];
                 }
             } @catch (NSException *exception) {
                 if ([exception.name isEqualToString:UntrustedIdentityKeyException]) {
