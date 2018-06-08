@@ -335,7 +335,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 
 - (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
 {
-    NSDictionary *dictionary = [self objectForKey:key inCollection:collection withTransaction:protocolContext];
+    NSDictionary *dictionary = [self objectForKey:key inCollection:collection withProtocolContext:protocolContext];
     return dictionary;
 }
 

@@ -96,6 +96,10 @@ withProtocolContext:protocolContext];
                    direction:(TSMessageDirection)direction
              protocolContext:(nullable id)protocolContext
 {
+    if (identityKey.length == 0) {
+        return NO;
+    }
+    
     NSData *existingKey = [self dataForKey:recipientId inCollection:TSStorageManagerTrustedKeysCollection withProtocolContext:protocolContext];
     
     if (!existingKey) {

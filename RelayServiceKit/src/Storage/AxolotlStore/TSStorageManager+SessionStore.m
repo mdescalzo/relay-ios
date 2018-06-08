@@ -14,6 +14,10 @@
 
 - (nonnull SessionRecord *)loadSession:(nonnull NSString *)contactIdentifier deviceId:(int)deviceId protocolContext:(nullable id)protocolContext
 {
+    __block NSArray *array = nil;
+    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        array = [transaction allKeysInCollection:TSStorageManagerSessionStoreCollection];
+    }];
     NSDictionary *dictionary =
     [self dictionaryForKey:contactIdentifier inCollection:TSStorageManagerSessionStoreCollection withProtocolContext:protocolContext];
 
