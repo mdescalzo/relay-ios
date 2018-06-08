@@ -10,6 +10,6 @@
 
 @interface TSStorageManager (messageIDs)
 
-+ (NSString *)getAndIncrementMessageIdWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
++ (NSString *)getAndIncrementMessageIdWithProtocolContext:(nullable id)protocolContext;
 
 @end

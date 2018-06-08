@@ -11,13 +11,15 @@
 
 @interface TSStorageManager (PreKeyStore) <PreKeyStore>
 
-- (NSArray *)generatePreKeyRecords;
-- (NSArray *)generatePreKeyRecordsWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (NSArray *)generatePreKeyRecordsWithProtocolContext:(nullable id)protocolContext;
 
-- (PreKeyRecord *)getOrGenerateLastResortKey;
-- (PreKeyRecord *)getOrGenerateLastResortKeyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (PreKeyRecord *)getOrGenerateLastResortKeyWithProtocolContext:(nullable id)protocolContext;
 
-- (void)storePreKeyRecords:(NSArray *)preKeyRecords;
-- (void)storePreKeyRecords:(NSArray *)preKeyRecords withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (void)storePreKeyRecords:(NSArray *)preKeyRecords withProtocolContext:(nullable id)protocolContext;
+
+- (PreKeyRecord *)loadPreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext;
+- (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *)record withProtocolContext:(nullable id)protocolContext;
+- (BOOL)containsPreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext;
+- (void)removePreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext;
 
 @end

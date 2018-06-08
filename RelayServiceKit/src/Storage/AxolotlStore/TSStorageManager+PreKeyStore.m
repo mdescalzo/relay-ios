@@ -17,33 +17,23 @@
 
 @implementation TSStorageManager (PreKeyStore)
 
-- (PreKeyRecord *)getOrGenerateLastResortKey {
-    if ([self containsPreKey:MAX_VALUE_LASTRESORT]) {
-        return [self loadPreKey:MAX_VALUE_LASTRESORT];
-    } else {
-        PreKeyRecord *lastResort =
-            [[PreKeyRecord alloc] initWithId:MAX_VALUE_LASTRESORT keyPair:[Curve25519 generateKeyPair]];
-        [self storePreKey:MAX_VALUE_LASTRESORT preKeyRecord:lastResort];
-        return lastResort;
-    }
-}
-
-- (PreKeyRecord *)getOrGenerateLastResortKeyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    if ([self containsPreKey:MAX_VALUE_LASTRESORT withTransaction:transaction]) {
+- (PreKeyRecord *)getOrGenerateLastResortKeyWithProtocolContext:(id)protocolContext
+{
+    if ([self containsPreKey:MAX_VALUE_LASTRESORT withProtocolContext:protocolContext]) {
         return [self loadPreKey:MAX_VALUE_LASTRESORT];
     } else {
         PreKeyRecord *lastResort =
         [[PreKeyRecord alloc] initWithId:MAX_VALUE_LASTRESORT keyPair:[Curve25519 generateKeyPair]];
-        [self storePreKey:MAX_VALUE_LASTRESORT preKeyRecord:lastResort withTransaction:transaction];
+        [self storePreKey:MAX_VALUE_LASTRESORT preKeyRecord:lastResort withProtocolContext:protocolContext];
         return lastResort;
     }
 }
 
-- (NSArray *)generatePreKeyRecords {
+- (NSArray *)generatePreKeyRecordsWithProtocolContext:(id)protocolContext {
     NSMutableArray *preKeyRecords = [NSMutableArray array];
 
     @synchronized(self) {
-        int preKeyId = [self nextPreKeyId];
+        int preKeyId = [self nextPreKeyIdWithProtocolContext:protocolContext];
         for (int i = 0; i < BATCH_SIZE; i++) {
             ECKeyPair *keyPair   = [Curve25519 generateKeyPair];
             PreKeyRecord *record = [[PreKeyRecord alloc] initWithId:preKeyId keyPair:keyPair];
@@ -52,58 +42,37 @@
             preKeyId++;
         }
 
-        [self setInt:preKeyId forKey:TSNextPrekeyIdKey inCollection:TSStorageInternalSettingsCollection];
+        [self setInt:preKeyId forKey:TSNextPrekeyIdKey inCollection:TSStorageInternalSettingsCollection withProtocolContext:protocolContext];
     }
     return preKeyRecords;
 }
 
-- (NSArray *)generatePreKeyRecordsWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    NSMutableArray *preKeyRecords = [NSMutableArray array];
+- (void)storePreKeyRecords:(NSArray *)preKeyRecords withProtocolContext:(nullable id)protocolContext {
+    for (PreKeyRecord *record in preKeyRecords) {
+        [self setObject:record forKey:[self keyFromInt:record.Id] inCollection:TSStorageManagerPreKeyStoreCollection withProtocolContext:protocolContext];
+    }
+}
+
+- (int)nextPreKeyIdWithProtocolContext:(nullable id)protocolContext  {
+    int lastPreKeyId = [self intForKey:TSNextPrekeyIdKey inCollection:TSStorageInternalSettingsCollection withProtocolContext:protocolContext];
     
-    @synchronized(self) {
-        int preKeyId = [self nextPreKeyIdWithTransaction:transaction];
-        for (int i = 0; i < BATCH_SIZE; i++) {
-            ECKeyPair *keyPair   = [Curve25519 generateKeyPair];
-            PreKeyRecord *record = [[PreKeyRecord alloc] initWithId:preKeyId keyPair:keyPair];
-            
-            [preKeyRecords addObject:record];
-            preKeyId++;
-        }
-        
-        [self setInt:preKeyId forKey:TSNextPrekeyIdKey inCollection:TSStorageInternalSettingsCollection withTransaction:transaction];
+    while (lastPreKeyId < 1 || (lastPreKeyId > (MAX_VALUE_LASTRESORT - BATCH_SIZE))) {
+        lastPreKeyId = rand();
     }
-    return preKeyRecords;
+    
+    return lastPreKeyId;
 }
 
-- (void)storePreKeyRecords:(NSArray *)preKeyRecords {
-    for (PreKeyRecord *record in preKeyRecords) {
-        [self setObject:record forKey:[self keyFromInt:record.Id] inCollection:TSStorageManagerPreKeyStoreCollection];
-    }
-}
-
-- (void)storePreKeyRecords:(NSArray *)preKeyRecords withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    for (PreKeyRecord *record in preKeyRecords) {
-        [self setObject:record forKey:[self keyFromInt:record.Id] inCollection:TSStorageManagerPreKeyStoreCollection withTransaction:transaction];
-    }
-}
-
+// FIXME: Axolotl method
 - (PreKeyRecord *)loadPreKey:(int)preKeyId {
-    PreKeyRecord *preKeyRecord =
-        [self preKeyRecordForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection];
-
-    if (!preKeyRecord) {
-        @throw
-            [NSException exceptionWithName:InvalidKeyIdException reason:@"No key found matching key id" userInfo:@{}];
-    } else {
-        return preKeyRecord;
-    }
+    DDLogWarn(@"Called Axolotl method \"- (PreKeyRecord *)loadPreKey:(int)preKeyId\"");
+    return  [self loadPreKey:preKeyId withProtocolContext:nil];
 }
 
-- (PreKeyRecord *)loadPreKey:(int)preKeyId withTransaction:(YapDatabaseReadTransaction *)transaction {
+-(PreKeyRecord *)loadPreKey:(int)preKeyId withProtocolContext:(id)protocolContext
+{
     PreKeyRecord *preKeyRecord =
-    [self preKeyRecordForKey:[self keyFromInt:preKeyId]
-                inCollection:TSStorageManagerPreKeyStoreCollection
-             withTransaction:transaction];
+    [self preKeyRecordForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withProtocolContext:protocolContext];
     
     if (!preKeyRecord) {
         @throw
@@ -113,55 +82,36 @@
     }
 }
 
+// FIXME: Axolotl method
 - (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *)record {
-    [self setObject:record forKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection];
+    DDLogWarn(@"Called Axolotl method \"- (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *)record\"");
+    [self storePreKey:preKeyId preKeyRecord:record withProtocolContext:nil];
 }
 
-- (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *)record withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    [self setObject:record forKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withTransaction:transaction];
+- (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *)record withProtocolContext:(nullable id)protocolContext{
+    [self setObject:record forKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withProtocolContext:protocolContext];
 }
 
 
+// FIXME: Axolotl method
 - (BOOL)containsPreKey:(int)preKeyId {
-    __block PreKeyRecord *preKeyRecord = nil;
-    [TSStorageManager.sharedManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        [self preKeyRecordForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withTransaction:transaction];
-    }];
+    DDLogWarn(@"Called Axolotl method \"- (BOOL)containsPreKey:(int)preKeyId\"");
+    return [self containsPreKey:preKeyId withProtocolContext:nil];
+}
+
+- (BOOL)containsPreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext{
+    PreKeyRecord *preKeyRecord = [self preKeyRecordForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withProtocolContext:protocolContext];
     return (preKeyRecord != nil);
 }
 
--(BOOL)containsPreKey:(int)preKeyId withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    PreKeyRecord *preKeyRecord =
-    [self preKeyRecordForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withTransaction:transaction];
-    return (preKeyRecord != nil);
-}
-
+// FIXME: Axolotl method
 - (void)removePreKey:(int)preKeyId {
-    [self removeObjectForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection];
+    DDLogWarn(@"Called Axolotl method \"- (void)removePreKey:(int)preKeyId\"");
+    [self removePreKey:preKeyId withProtocolContext:nil];
 }
 
-- (void)removePreKey:(int)preKeyId withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    [self removeObjectForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withTransaction:transaction];
-}
-
-- (int)nextPreKeyId {
-    int lastPreKeyId = [self intForKey:TSNextPrekeyIdKey inCollection:TSStorageInternalSettingsCollection];
-
-    while (lastPreKeyId < 1 || (lastPreKeyId > (MAX_VALUE_LASTRESORT - BATCH_SIZE))) {
-        lastPreKeyId = rand();
-    }
-
-    return lastPreKeyId;
-}
-
-- (int)nextPreKeyIdWithTransaction:(YapDatabaseReadTransaction *)transaction {
-    int lastPreKeyId = [self intForKey:TSNextPrekeyIdKey inCollection:TSStorageInternalSettingsCollection withTransaction:transaction];
-
-    while (lastPreKeyId < 1 || (lastPreKeyId > (MAX_VALUE_LASTRESORT - BATCH_SIZE))) {
-        lastPreKeyId = rand();
-    }
-
-    return lastPreKeyId;
+- (void)removePreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext{
+    [self removeObjectForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withProtocolContext:protocolContext];
 }
 
 @end

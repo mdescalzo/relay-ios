@@ -92,40 +92,21 @@ NS_ASSUME_NONNULL_BEGIN
     return [TSStorageManager localNumber];
 }
 
-+ (uint32_t)getOrGenerateRegistrationId {
-    YapDatabaseConnection *dbConn   = [[TSStorageManager sharedManager] newDatabaseConnection];
-    __block uint32_t registrationID = 0;
-
-    [dbConn readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-      registrationID = [[transaction objectForKey:TSStorageLocalRegistrationId
-                                     inCollection:TSStorageUserAccountCollection] unsignedIntValue];
-    }];
-
-    if (registrationID == 0) {
-        registrationID = (uint32_t)arc4random_uniform(16380) + 1;
-
-        [dbConn readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-          [transaction setObject:[NSNumber numberWithUnsignedInteger:registrationID]
-                          forKey:TSStorageLocalRegistrationId
-                    inCollection:TSStorageUserAccountCollection];
-        }];
-    }
-
-    return registrationID;
-}
-
-+ (uint32_t)getOrGenerateRegistrationIdWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    __block uint32_t registrationID = 0;
++(uint32_t)getOrGenerateRegistrationIdWithProtocolContext:(nullable id)protocolContext
+{
+    uint32_t registrationID = 0;
     
-    registrationID = [[transaction objectForKey:TSStorageLocalRegistrationId
-                                   inCollection:TSStorageUserAccountCollection] unsignedIntValue];
+    registrationID = [[TSStorageManager.sharedManager objectForKey:TSStorageLocalRegistrationId
+                                                      inCollection:TSStorageUserAccountCollection
+                                               withProtocolContext:protocolContext] unsignedIntValue];
     
     if (registrationID == 0) {
         registrationID = (uint32_t)arc4random_uniform(16380) + 1;
         
-        [transaction setObject:[NSNumber numberWithUnsignedInteger:registrationID]
+        [TSStorageManager.sharedManager setObject:[NSNumber numberWithUnsignedInteger:registrationID]
                         forKey:TSStorageLocalRegistrationId
-                  inCollection:TSStorageUserAccountCollection];
+                  inCollection:TSStorageUserAccountCollection
+         withProtocolContext:protocolContext];
     }
     
     return registrationID;

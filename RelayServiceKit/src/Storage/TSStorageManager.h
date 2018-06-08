@@ -23,45 +23,31 @@ extern NSString *const TSUIDatabaseConnectionDidUpdateNotification;
 + (instancetype)sharedManager;
 - (void)setupDatabase;
 
-- (void)deleteThreadsAndMessages;
-- (void)deleteThreadsAndMessagesWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (void)deleteThreadsAndMessagesWithProtocolContext:(nullable id)protocolContext;
 
 - (BOOL)databasePasswordAccessible;
 
 - (void)wipeSignalStorage;
-- (void)wipeSignalStorageWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 - (YapDatabase *)database;
 - (YapDatabaseConnection *)newDatabaseConnection;
 
 
-- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection;
-- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
-- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection;
-- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
 
 
-- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection;
-- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (int)intForKey:(NSString *)key inCollection:(NSString *)collection;
--(int)intForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection;
-- (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
-- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection;
-- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection;
-- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (NSString *)stringForKey:(NSString *)key inCollection:(NSString *)collection;
-- (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection;
-- (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection;
-- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
-- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
-- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (void)purgeCollection:(NSString *)collection;
-- (void)purgeCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (int)intForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (NSString *)stringForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (void)purgeCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
 
 @property (nonatomic, readonly) YapDatabaseConnection *dbConnection;
 @property (nonatomic ,readonly) YapDatabaseConnection *messagesConnection;

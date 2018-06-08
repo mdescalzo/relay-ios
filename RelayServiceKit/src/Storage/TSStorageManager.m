@@ -52,7 +52,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-
+    
 }
 
 @end
@@ -88,20 +88,20 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 - (instancetype)initDefault
 {
     self = [super init];
-
+    
     YapDatabaseOptions *options = [[YapDatabaseOptions alloc] init];
     options.corruptAction       = YapDatabaseCorruptAction_Fail;
     options.cipherKeyBlock      = ^{
-      return [self databasePassword];
+        return [self databasePassword];
     };
-
+    
     _database = [[YapDatabase alloc] initWithPath:[self dbPath]
                                        serializer:NULL
                                      deserializer:[[self class] logOnFailureDeserializer]
                                           options:options];
     _dbConnection = self.newDatabaseConnection;
     _messagesConnection = self.newDatabaseConnection;
-
+    
     return self;
 }
 
@@ -111,12 +111,12 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 + (YapDatabaseDeserializer)logOnFailureDeserializer
 {
     OWSUnarchiverDelegate *unarchiverDelegate = [OWSUnarchiverDelegate new];
-
+    
     return ^id(NSString __unused *collection, NSString __unused *key, NSData *data) {
         if (!data || data.length <= 0) {
             return nil;
         }
-
+        
         @try {
             NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
             unarchiver.delegate = unarchiverDelegate;
@@ -124,11 +124,11 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
         } @catch (NSException *exception) {
             // Sync log in case we bail.
             DDLogError(@"%@ Unarchiving key:%@ from collection:%@ and data %@ failed with error: %@",
-                self.tag,
-                key,
-                collection,
-                data,
-                exception.reason);
+                       self.tag,
+                       key,
+                       collection,
+                       data,
+                       exception.reason);
             DDLogError(@"%@ Raising exception.", self.tag);
             @throw exception;
         }
@@ -144,7 +144,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
     [TSDatabaseView registerTagDatabaseView];
     [TSDatabaseView registerFilteredTagDatabaseView];
     [self.database registerExtension:[TSDatabaseSecondaryIndexes registerTimeStampIndex] withName:@"idx"];
-
+    
     // Register extensions which aren't essential for rendering threads async
     [TSDatabaseView asyncRegisterSecondaryDevicesDatabaseView];
     [OWSReadReceipt asyncRegisterIndexOnSenderIdAndTimestampWithDatabase:self.database];
@@ -163,16 +163,16 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
     if (![NSFileManager.defaultManager fileExistsAtPath:path]) {
         return;
     }
-
+    
     NSError *error;
     NSDictionary *fileProtection = @{NSFileProtectionKey : NSFileProtectionCompleteUntilFirstUserAuthentication};
     [[NSFileManager defaultManager] setAttributes:fileProtection ofItemAtPath:path error:&error];
-
+    
     NSDictionary *resourcesAttrs = @{ NSURLIsExcludedFromBackupKey : @YES };
-
+    
     NSURL *ressourceURL = [NSURL fileURLWithPath:path];
     BOOL success        = [ressourceURL setResourceValues:resourcesAttrs error:&error];
-
+    
     if (error || !success) {
         DDLogError(@"Error while removing files from backup: %@", error.description);
         return;
@@ -198,26 +198,26 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 
 - (NSString *)dbPath {
     NSString *databasePath;
-
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
 #if TARGET_OS_IPHONE
     NSURL *fileURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     NSString *path = [fileURL path];
     databasePath   = [path stringByAppendingFormat:@"/%@", databaseName];
 #elif TARGET_OS_MAC
-
+    
     NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
     NSArray *urlPaths  = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
-
+    
     NSURL *appDirectory = [[urlPaths objectAtIndex:0] URLByAppendingPathComponent:bundleID isDirectory:YES];
-
+    
     if (![fileManager fileExistsAtPath:[appDirectory path]]) {
         [fileManager createDirectoryAtURL:appDirectory withIntermediateDirectories:NO attributes:nil error:nil];
     }
-
+    
     databasePath = [appDirectory.filePathURL.absoluteString stringByAppendingFormat:@"/%@", databaseName];
 #endif
-
+    
     return databasePath;
 }
 
@@ -226,15 +226,15 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
     [SAMKeychain setAccessibilityType:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly];
     NSError *error;
     NSString *dbPassword = [SAMKeychain passwordForService:keychainService account:keychainDBPassAccount error:&error];
-
+    
     if (dbPassword && !error) {
         return YES;
     }
-
+    
     if (error) {
         DDLogWarn(@"Database password couldn't be accessed: %@", error.localizedDescription);
     }
-
+    
     return NO;
 }
 
@@ -242,7 +242,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 {
     [SAMKeychain setAccessibilityType:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly];
     NSString *dbPassword = [SAMKeychain passwordForService:keychainService account:keychainDBPassAccount];
-
+    
     if (!dbPassword) {
         dbPassword = [[Randomness generateRandomBytes:30] base64EncodedString];
         NSError *error;
@@ -255,164 +255,151 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
             DDLogError(@"Succesfully set new DB password. First launch?");
         }
     }
-
+    
     return [dbPassword dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 #pragma mark convenience methods
 
-- (void)purgeCollection:(NSString *)collection {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+- (void)purgeCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    if (protocolContext == nil) {
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [self purgeCollection:collection withTransaction:transaction];
+        }];
+    } else {
+        NSAssert([protocolContext class] == [YapDatabaseReadWriteTransaction class], @"protocolContext must be a YapDatabaseReadWriteTransaction");
+        YapDatabaseReadWriteTransaction *transaction = (YapDatabaseReadWriteTransaction *)protocolContext;
         [self purgeCollection:collection withTransaction:transaction];
-    }];
+    }
 }
 
 -(void)purgeCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     [transaction removeAllObjectsInCollection:collection];
 }
 
-- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    if (protocolContext == nil) {
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [self setObject:object forKey:key inCollection:collection withTransaction:transaction];
+        }];
+    } else {
+        NSAssert([protocolContext class] == [YapDatabaseReadWriteTransaction class], @"protocolContext must be a YapDatabaseReadWriteTransaction");
+        YapDatabaseReadWriteTransaction *transaction = (YapDatabaseReadWriteTransaction *)protocolContext;
         [self setObject:object forKey:key inCollection:collection withTransaction:transaction];
-    }];
+    }
 }
 
 -(void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     [transaction setObject:object forKey:key inCollection:collection];
 }
 
-- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    if (protocolContext == nil) {
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [self removeObjectForKey:string inCollection:collection withTransaction:transaction];
+        }];
+    } else {
+        NSAssert([protocolContext class] == [YapDatabaseReadWriteTransaction class], @"protocolContext must be a YapDatabaseReadWriteTransaction");
+        YapDatabaseReadWriteTransaction *transaction = (YapDatabaseReadWriteTransaction *)protocolContext;
         [self removeObjectForKey:string inCollection:collection withTransaction:transaction];
-    }];
+    }
 }
 
 -(void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     [transaction removeObjectForKey:string inCollection:collection];
 }
 
-- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection {
+- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
     __block NSString *object;
-
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    
+    if (protocolContext == nil) {
+        [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            object = [self objectForKey:key inCollection:collection withTransaction:transaction];
+        }];
+    } else {
+        NSAssert([protocolContext class] == [YapDatabaseReadWriteTransaction class], @"protocolContext must be a YapDatabaseReadWriteTransaction");
+        YapDatabaseReadWriteTransaction *transaction = (YapDatabaseReadWriteTransaction *)protocolContext;
         object = [self objectForKey:key inCollection:collection withTransaction:transaction];
-    }];
-
+    }
     return object;
 }
 
-- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
+- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction
+{
     return [transaction objectForKey:key inCollection:collection];
 }
 
-- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection {
-    __block NSDictionary *object;
-
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        object = [self dictionaryForKey:key inCollection:collection withTransaction:transaction];
-    }];
-
-    return object;
+- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    NSDictionary *dictionary = [self objectForKey:key inCollection:collection withTransaction:protocolContext];
+    return dictionary;
 }
 
-- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
-    return [self objectForKey:key inCollection:collection withTransaction:transaction];
-}
-
-- (NSString *)stringForKey:(NSString *)key inCollection:(NSString *)collection {
-    NSString *string = [self objectForKey:key inCollection:collection];
-
+- (NSString *)stringForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    NSString *string = [self objectForKey:key inCollection:collection withProtocolContext:protocolContext];
     return string;
 }
 
-- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection {
-    NSNumber *boolNum = [self objectForKey:key inCollection:collection];
-
+- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    NSNumber *boolNum = [self objectForKey:key inCollection:collection withProtocolContext:protocolContext];
     return [boolNum boolValue];
 }
 
-- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
-    NSNumber *boolNum = [self objectForKey:key inCollection:collection withTransaction:transaction];
-    
-    return [boolNum boolValue];
-}
-
-- (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection {
-    __block NSData *data =  nil;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        data = [self dataForKey:key inCollection:collection withTransaction:transaction];
-    }];
+-(NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    NSData *data = [self objectForKey:key inCollection:collection withProtocolContext:protocolContext];
     return data;
 }
 
--(NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
-    NSData *data = [self objectForKey:key inCollection:collection withTransaction:transaction];
-    return data;
-}
-
-- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection {
-    ECKeyPair *keyPair = [self objectForKey:key inCollection:collection];
-
+- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    ECKeyPair *keyPair = [self objectForKey:key inCollection:collection withProtocolContext:protocolContext];
     return keyPair;
 }
 
-- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
-    return [self objectForKey:key inCollection:collection withTransaction:transaction];
-}
-
-- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection {
-    PreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection];
-
-    return preKeyRecord;
-}
-
-- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
-    PreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection withTransaction:transaction];
-    
-    return preKeyRecord;
-}
-
-- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection {
-    SignedPreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection];
-
-    return preKeyRecord;
-}
-
-- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction {
-    SignedPreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection withTransaction:transaction];
-    
-    return preKeyRecord;
-}
-
-- (int)intForKey:(NSString *)key inCollection:(NSString *)collection {
-    int integer = [[self objectForKey:key inCollection:collection] intValue];
-
-    return integer;
-}
-
--(int)intForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction
+- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
 {
-    int integer = [[self objectForKey:key inCollection:collection withTransaction:transaction] intValue];
+    PreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection withProtocolContext:protocolContext];
+    return preKeyRecord;
+}
+
+- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    SignedPreKeyRecord *preKeyRecord = [self objectForKey:key inCollection:collection withProtocolContext:protocolContext];
+    return preKeyRecord;
+}
+
+- (int)intForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    int integer = [[self objectForKey:key inCollection:collection withProtocolContext:protocolContext] intValue];
     return integer;
 }
 
-- (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        [self setInt:integer forKey:key inCollection:collection withTransaction:transaction];
-    }];
+-(void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
+{
+    [self setObject:[NSNumber numberWithInt:integer] forKey:key inCollection:collection withProtocolContext:protocolContext];
 }
 
--(void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction {
-    [self setObject:[NSNumber numberWithInt:integer] forKey:key inCollection:collection withTransaction:transaction];
-}
-
-- (void)deleteThreadsAndMessages {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+- (void)deleteThreadsAndMessagesWithProtocolContext:(nullable id)protocolContext {
+    if (protocolContext == nil) {
+        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [self deleteThreadsAndMessagesWithTransaction:transaction];
+        }];
+    } else {
+        NSAssert([protocolContext class] == [YapDatabaseReadWriteTransaction class], @"protocolContext must be a YapDatabaseReadWriteTransaction");
+        YapDatabaseReadWriteTransaction *transaction = (YapDatabaseReadWriteTransaction *)protocolContext;
         [self deleteThreadsAndMessagesWithTransaction:transaction];
-    }];
+    }
 }
 
--(void)deleteThreadsAndMessagesWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
+-(void)deleteThreadsAndMessagesWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
+{
     [transaction removeAllObjectsInCollection:[TSThread collection]];
     [transaction removeAllObjectsInCollection:[SignalRecipient collection]];
     [transaction removeAllObjectsInCollection:[TSInteraction collection]];
@@ -421,23 +408,6 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 }
 
 - (void)wipeSignalStorage {
-    self.database = nil;
-    NSError *error;
-
-    [SAMKeychain deletePasswordForService:keychainService account:keychainDBPassAccount];
-    [[NSFileManager defaultManager] removeItemAtPath:[self dbPath] error:&error];
-
-
-    if (error) {
-        DDLogError(@"Failed to delete database: %@", error.description);
-    }
-
-    [TSAttachmentStream deleteAttachments];
-
-    [[self init] setupDatabase];
-}
-
--(void)wipeSignalStorageWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     self.database = nil;
     NSError *error;
     

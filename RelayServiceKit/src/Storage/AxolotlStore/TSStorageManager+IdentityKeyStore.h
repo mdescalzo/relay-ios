@@ -11,16 +11,12 @@
 
 @interface TSStorageManager (IdentityKeyStore) <IdentityKeyStore>
 
-- (void)generateNewIdentityKey;
--(void)generateNewIdentityKeyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+-(void)generateNewIdentityKeyWithProtocolContext:(nullable id)protocolContext;
 
-- (NSData *)identityKeyForRecipientId:(NSString *)recipientId;
-- (NSData *)identityKeyForRecipientId:(NSString *)recipientId withTransaction:(YapDatabaseReadTransaction *)transaction;
+-(NSData *)identityKeyForRecipientId:(NSString *)recipientId withProtocolContext:(nullable id)protocolContext;
 
-- (void)removeIdentityKeyForRecipient:(NSString *)receipientId;
-- (void)removeIdentityKeyForRecipient:(NSString *)receipientId withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+-(void)removeIdentityKeyForRecipient:(NSString *)receipientId withProtocolContext:(nullable id)protocolContext;
 
--(void)setIdentityKey:(ECKeyPair *)identityKeyPair;
--(void)setIdentityKey:(ECKeyPair *)identityKeyPair withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+-(void)setIdentityKey:(ECKeyPair *)identityKeyPair withProtocolContext:(nullable id)protocolContext;
 
 @end
