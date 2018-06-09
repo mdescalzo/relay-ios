@@ -104,7 +104,7 @@ NSString *const OWSReadReceiptColumnSenderId = @"senderId";
         stringWithFormat:@"WHERE %@ = ? AND %@ = ?", OWSReadReceiptColumnSenderId, OWSReadReceiptColumnTimestamp];
     YapDatabaseQuery *query = [YapDatabaseQuery queryWithFormat:queryFormat, senderId, @(timestamp)];
 
-    [[self dbConnection] readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
+    [[self writeDbConnection] readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
         [[transaction ext:OWSReadReceiptIndexOnSenderIdAndTimestamp]
             enumerateKeysAndObjectsMatchingQuery:query
                                       usingBlock:^(NSString *collection, NSString *key, id object, BOOL *stop) {

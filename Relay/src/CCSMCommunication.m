@@ -577,7 +577,7 @@
 {
     __block SignalRecipient *recipient = nil;
     
-    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         recipient = [self recipientFromCCSMWithID:userId transaction:transaction];
     }];
     

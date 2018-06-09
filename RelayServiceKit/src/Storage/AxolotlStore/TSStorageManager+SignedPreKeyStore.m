@@ -83,7 +83,7 @@
 
 - (void)storeSignedPreKey:(int)signedPreKeyId signedPreKeyRecord:(SignedPreKeyRecord *)signedPreKeyRecord
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self setObject:signedPreKeyRecord
                  forKey:[self keyFromInt:signedPreKeyId]
            inCollection:TSStorageManagerSignedPreKeyStoreCollection
@@ -93,7 +93,7 @@
 
 - (BOOL)containsSignedPreKey:(int)signedPreKeyId {
     __block PreKeyRecord *preKeyRecord = nil;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+    [self.readDbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
         preKeyRecord = [self signedPreKeyRecordForKey:[self keyFromInt:signedPreKeyId]
                                          inCollection:TSStorageManagerSignedPreKeyStoreCollection
                                   withProtocolContext:transaction];
@@ -103,7 +103,7 @@
 
 - (void)removeSignedPreKey:(int)signedPrekeyId
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self removeObjectForKey:[self keyFromInt:signedPrekeyId]
                     inCollection:TSStorageManagerSignedPreKeyStoreCollection
              withProtocolContext:transaction];

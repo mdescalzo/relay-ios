@@ -55,8 +55,8 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                                                          YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
                                                  if ([object isKindOfClass:[TSIncomingMessage class]]) {
                                                      TSIncomingMessage *message = (TSIncomingMessage *)object;
-                                                     if (message.read == NO) {
-                                                         return message.uniqueThreadId;
+                                                     if (message.read == NO && [message.messageType isEqualToString:@"content"]) {
+                                                         return message.thread.uniqueId;
                                                      }
                                                  }
                                                  return nil;

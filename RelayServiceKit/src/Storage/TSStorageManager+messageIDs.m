@@ -17,7 +17,7 @@
 {
     __block NSString *messageId = nil;
     if (protocolContext == nil) {
-        [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
             messageId = [self getAndIncrementMessageIdWithTransaction:transaction];
         }];
     } else {

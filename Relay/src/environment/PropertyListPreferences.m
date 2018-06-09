@@ -54,7 +54,7 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
     if (self = [super init]) {
         _prefsCache = [NSCache new];
         // Preload the cache
-        [TSStorageManager.sharedManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+        [TSStorageManager.sharedManager.readDbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
             [transaction enumerateKeysAndObjectsInCollection:PropertyListPreferencesSignalDatabaseCollection
                                                   usingBlock:^(NSString * _Nonnull key, id  _Nonnull object, BOOL * _Nonnull stop) {
                                                       [_prefsCache setObject:object forKey:key];
@@ -102,7 +102,7 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
         [self.prefsCache setObject:value forKey:key];
         dispatch_async([OWSDispatch serialQueue], ^{
             [TSStorageManager.sharedManager setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection withProtocolContext:nil];
-//            [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+//            [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
 //                [transaction setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
 //            }];
         });

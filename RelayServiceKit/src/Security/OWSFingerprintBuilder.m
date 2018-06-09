@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *mySignalId = [self.storageManager localNumberWithProtocolContext:nil];
     
     __block ECKeyPair *myIdentityKeyPair = nil;
-    [self.storageManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
+    [self.storageManager.readDbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
         myIdentityKeyPair = [self.storageManager identityKeyPair:transaction];
     }];
     NSData *myIdentityKey = myIdentityKeyPair.publicKey;

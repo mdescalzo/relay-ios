@@ -61,7 +61,7 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 +(instancetype)getOrCreateThreadWithID:(NSString *_Nonnull)threadID
 {
     __block TSThread *thread;
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [self getOrCreateThreadWithID:threadID transaction:transaction];
     }];
     
@@ -82,7 +82,7 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 +(instancetype)getOrCreateThreadWithParticipants:(NSArray <NSString *> *)participantIDs
 {
     __block TSThread *thread = nil;
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [self getOrCreateThreadWithParticipants:participantIDs transaction:transaction];
     }];
 
@@ -113,7 +113,7 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 +(instancetype)threadWithPayload:(NSDictionary *)payload
 {
     __block TSThread *thread = nil;
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         thread = [self threadWithPayload:payload transaction:transaction];
     }];
     return thread;
@@ -163,7 +163,7 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 #pragma mark - participants
 -(void)removeParticipants:(NSSet *)objects
 {
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self removeParticipants:objects transaction:transaction];
     }];
 }
@@ -442,7 +442,7 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
  */
 - (void)enumerateInteractionsUsingBlock:(void (^)(TSInteraction *interaction))block
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self enumerateInteractionsWithTransaction:transaction
                                         usingBlock:^(TSInteraction *interaction, YapDatabaseReadTransaction *trans) {
                                             block(interaction);
@@ -481,7 +481,7 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 - (NSUInteger)numberOfInteractions
 {
     __block NSUInteger count;
-    [[self dbConnection] readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
+    [[self readDbConnection] readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
         YapDatabaseViewTransaction *interactionsByThread = [transaction ext:TSMessageDatabaseViewExtensionName];
         count = [interactionsByThread numberOfItemsInGroup:self.uniqueId];
     }];
@@ -519,7 +519,7 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 - (NSArray<TSIncomingMessage *> *)unreadMessages
 {
     __block NSArray<TSIncomingMessage *> *messages;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
+    [self.readDbConnection readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
         messages = [self unreadMessagesWithTransaction:transaction];
     }];
     
@@ -535,14 +535,17 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 
 - (void)markAllAsRead
 {
-    for (TSIncomingMessage *message in [self unreadMessages]) {
-        [message markAsReadLocally];
-    }
+    [self.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self markAllAsReadWithTransaction:transaction];
+    }];
+//    for (TSIncomingMessage *message in [self unreadMessages]) {
+//        [message markAsReadLocally];
+//    }
 }
 
 - (TSInteraction *) lastInteraction {
     __block TSInteraction *last;
-    [TSStorageManager.sharedManager.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction){
+    [TSStorageManager.sharedManager.readDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction){
         last = [[transaction ext:TSMessageDatabaseViewExtensionName] lastObjectInGroup:self.uniqueId];
     }];
     return (TSInteraction *)last;
@@ -605,18 +608,18 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
 #pragma mark Drafts
 
 - (NSString *)currentDraftWithTransaction:(YapDatabaseReadTransaction *)transaction {
-    TSThread *thread = [TSThread fetchObjectWithUniqueID:self.uniqueId transaction:transaction];
-    if (thread.messageDraft) {
-        return thread.messageDraft;
+//    TSThread *thread = [TSThread fetchObjectWithUniqueID:self.uniqueId transaction:transaction];
+    if (self.messageDraft) {
+        return self.messageDraft;
     } else {
         return @"";
     }
 }
 
 - (void)setDraft:(NSString *)draftString transaction:(YapDatabaseReadWriteTransaction *)transaction {
-    TSThread *thread    = [TSThread fetchObjectWithUniqueID:self.uniqueId transaction:transaction];
-    thread.messageDraft = draftString;
-    [thread saveWithTransaction:transaction];
+//    TSThread *thread    = [TSThread fetchObjectWithUniqueID:self.uniqueId transaction:transaction];
+    self.messageDraft = draftString;
+    [self saveWithTransaction:transaction];
 }
 
 

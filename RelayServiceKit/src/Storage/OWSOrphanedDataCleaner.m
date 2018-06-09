@@ -32,7 +32,7 @@
 - (NSArray<NSString *> *)orphanedInteractionIds
 {
     NSMutableArray *interactionIds = [NSMutableArray new];
-    [[TSInteraction dbConnection] readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
+    [[TSInteraction readDbConnection] readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
         [TSInteraction enumerateCollectionObjectsWithTransaction:transaction
                                                       usingBlock:^(TSInteraction *interaction, BOOL *stop) {
                                                           TSThread *thread = [TSThread

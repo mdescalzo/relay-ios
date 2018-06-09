@@ -99,7 +99,8 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
                                        serializer:NULL
                                      deserializer:[[self class] logOnFailureDeserializer]
                                           options:options];
-    _dbConnection = self.newDatabaseConnection;
+    _readDbConnection = self.newDatabaseConnection;
+    _writeDbConnection = self.newDatabaseConnection;
     _messagesConnection = self.newDatabaseConnection;
     
     return self;
@@ -264,7 +265,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 - (void)purgeCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
 {
     if (protocolContext == nil) {
-        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [self purgeCollection:collection withTransaction:transaction];
         }];
     } else {
@@ -281,7 +282,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 - (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
 {
     if (protocolContext == nil) {
-        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [self setObject:object forKey:key inCollection:collection withTransaction:transaction];
         }];
     } else {
@@ -298,7 +299,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 - (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext
 {
     if (protocolContext == nil) {
-        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [self removeObjectForKey:string inCollection:collection withTransaction:transaction];
         }];
     } else {
@@ -317,7 +318,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
     __block NSString *object;
     
     if (protocolContext == nil) {
-        [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+        [self.readDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
             object = [self objectForKey:key inCollection:collection withTransaction:transaction];
         }];
     } else {
@@ -388,7 +389,7 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
 
 - (void)deleteThreadsAndMessagesWithProtocolContext:(nullable id)protocolContext {
     if (protocolContext == nil) {
-        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [self deleteThreadsAndMessagesWithTransaction:transaction];
         }];
     } else {

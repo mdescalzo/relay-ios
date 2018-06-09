@@ -155,7 +155,7 @@
     __block NSData *myPublicKey = nil;
     __block NSData *myPrivateKey = nil;
 
-    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         myPublicKey = [TSStorageManager.sharedManager identityKeyPair:transaction].publicKey;
         myPrivateKey = [TSStorageManager.sharedManager identityKeyPair:transaction].ows_privateKey;
     }];

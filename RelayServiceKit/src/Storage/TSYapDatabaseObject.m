@@ -31,7 +31,7 @@
 
 - (void)save
 {
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self saveWithTransaction:transaction];
     }];
 }
@@ -43,7 +43,7 @@
 
 - (void)touch
 {
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self touchWithTransaction:transaction];
     }];
 }
@@ -55,15 +55,21 @@
 
 - (void)remove
 {
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self removeWithTransaction:transaction];
     }];
 }
 
-- (YapDatabaseConnection *)dbConnection
+- (YapDatabaseConnection *)readDbConnection
 {
-    return [[self class] dbConnection];
+    return [[self class] readDbConnection];
 }
+
+- (YapDatabaseConnection *)writeDbConnection
+{
+    return [[self class] writeDbConnection];
+}
+
 
 - (TSStorageManager *)storageManager
 {
@@ -72,10 +78,16 @@
 
 #pragma mark Class Methods
 
-+ (YapDatabaseConnection *)dbConnection
++ (YapDatabaseConnection *)readDbConnection
 {
-    return [self storageManager].dbConnection;
+    return [self storageManager].readDbConnection;
 }
+
++ (YapDatabaseConnection *)writeDbConnection
+{
+    return [self storageManager].writeDbConnection;
+}
+
 
 + (TSStorageManager *)storageManager
 {
@@ -90,7 +102,7 @@
 + (NSUInteger)numberOfKeysInCollection
 {
     __block NSUInteger count;
-    [[self dbConnection] readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [[self readDbConnection] readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         count = [self numberOfKeysInCollectionWithTransaction:transaction];
     }];
     return count;
@@ -112,7 +124,7 @@
 
 + (void)enumerateCollectionObjectsUsingBlock:(void (^)(id object, BOOL *stop))block
 {
-    [[self dbConnection] readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [[self readDbConnection] readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         [self enumerateCollectionObjectsWithTransaction:transaction usingBlock:block];
     }];
 }
@@ -131,7 +143,7 @@
 
 + (void)removeAllObjectsInCollection
 {
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction removeAllObjectsInCollection:[self collection]];
     }];
 }
@@ -144,7 +156,7 @@
 + (instancetype)fetchObjectWithUniqueID:(NSString *)uniqueID
 {
     __block id object;
-    [[self dbConnection] readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [[self readDbConnection] readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         object = [transaction objectForKey:uniqueID inCollection:[self collection]];
     }];
     return object;

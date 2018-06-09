@@ -835,27 +835,29 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     TSWhisperMessageType messageType = [self messageTypeForCipherMessage:encryptedMessage];
     
     // DEPRECATED - Remove after all clients have been upgraded.
-    __block NSError *error;
-    
-    __block NSDictionary *jsonDict;
+    __block int registrationId;
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        OWSMessageServiceParams *messageParams;
-        
-        if (isLegacymessage) {
-            messageParams = [[OWSLegacyMessageServiceParams alloc] initWithType:messageType
-                                                                    recipientId:identifier
-                                                                         device:[deviceNumber intValue]
-                                                                           body:serializedMessage
-                                                                 registrationId:[cipher remoteRegistrationId:transaction]];
-        } else {
-            messageParams = [[OWSMessageServiceParams alloc] initWithType:messageType
-                                                              recipientId:identifier
-                                                                   device:[deviceNumber intValue]
-                                                                  content:serializedMessage
-                                                           registrationId:[cipher remoteRegistrationId:transaction]];
-        }
-        jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:messageParams error:&error];
+        registrationId = [cipher remoteRegistrationId:transaction];
     }];
+
+    OWSMessageServiceParams *messageParams;
+    
+    if (isLegacymessage) {
+        messageParams = [[OWSLegacyMessageServiceParams alloc] initWithType:messageType
+                                                                recipientId:identifier
+                                                                     device:[deviceNumber intValue]
+                                                                       body:serializedMessage
+                                                             registrationId:registrationId];
+    } else {
+        messageParams = [[OWSMessageServiceParams alloc] initWithType:messageType
+                                                          recipientId:identifier
+                                                               device:[deviceNumber intValue]
+                                                              content:serializedMessage
+                                                       registrationId:registrationId];
+    }
+    
+    NSError *error;
+    NSDictionary *jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:messageParams error:&error];
     
     if (error) {
         DDLogError(@"Error while making JSON dictionary of message: %@", error.debugDescription);

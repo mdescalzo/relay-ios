@@ -16,11 +16,11 @@
 @class SignedPreKeyRecord;
 @class TSPrivacyPreferences;
 
-extern NSString *const TSUIDatabaseConnectionDidUpdateNotification;
+extern NSString *_Nonnull const TSUIDatabaseConnectionDidUpdateNotification;
 
 @interface TSStorageManager : NSObject
 
-+ (instancetype)sharedManager;
++ (instancetype _Nonnull )sharedManager;
 - (void)setupDatabase;
 
 - (void)deleteThreadsAndMessagesWithProtocolContext:(nullable id)protocolContext;
@@ -29,28 +29,29 @@ extern NSString *const TSUIDatabaseConnectionDidUpdateNotification;
 
 - (void)wipeSignalStorage;
 
-- (YapDatabase *)database;
-- (YapDatabaseConnection *)newDatabaseConnection;
+- (YapDatabase *_Nonnull)database;
+- (YapDatabaseConnection *_Nonnull)newDatabaseConnection;
 
 
-- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (void)setObject:(nullable id)object forKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (void)removeObjectForKey:(NSString *_Nonnull)string inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
 
 
-- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (int)intForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (NSString *)stringForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
-- (void)purgeCollection:(NSString *)collection withProtocolContext:(nullable id)protocolContext;
+- (BOOL)boolForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (int)intForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (void)setInt:(int)integer forKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable id)objectForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable NSDictionary *)dictionaryForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable NSString *)stringForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable NSData *)dataForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable ECKeyPair *)keyPairForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable PreKeyRecord *)preKeyRecordForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (void)purgeCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
 
-@property (nonatomic, readonly) YapDatabaseConnection *dbConnection;
-@property (nonatomic ,readonly) YapDatabaseConnection *messagesConnection;
-@property (nonatomic, readonly) TSPrivacyPreferences *privacyPreferences;
+@property (readonly) YapDatabaseConnection * _Nonnull writeDbConnection;
+@property (readonly) YapDatabaseConnection * _Nonnull readDbConnection;
+@property (readonly) YapDatabaseConnection * _Nonnull messagesConnection;
+@property (nonatomic, readonly) TSPrivacyPreferences * _Nonnull privacyPreferences;
 
 @end

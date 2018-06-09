@@ -27,7 +27,7 @@ class SessionResetJob: NSObject {
         let endSessionMessage = EndSessionMessage(timestamp:NSDate.ows_millisecondTimeStamp(), in: thread)
         self.messageSender.send(endSessionMessage, success: {
             let dbConnection = TSStorageManager.shared().newDatabaseConnection()
-            dbConnection?.readWrite { (transaction) in
+            dbConnection.readWrite { (transaction) in
             Logger.info("\(self.TAG) successfully sent EndSession<essage.")
 
             Logger.info("\(self.TAG) deleting sessions for recipient: \(self.recipientId)")

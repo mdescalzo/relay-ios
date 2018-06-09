@@ -348,7 +348,7 @@ NS_ASSUME_NONNULL_BEGIN
             // Archive a thread
             if ([controlType isEqualToString:FLControlMessageThreadArchiveKey] ||
                 [controlType isEqualToString:FLControlMessageThreadCloseKey]) {
-                [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     NSString *threadID = [jsonPayload objectForKey:@"threadId"];
                     TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
                     if (thread) {
@@ -359,7 +359,7 @@ NS_ASSUME_NONNULL_BEGIN
             }
             // Restore Archived thread
             else if ([controlType isEqualToString:FLControlMessageThreadRestoreKey]) {
-                [TSStorageManager.sharedManager.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     NSString *threadID = [jsonPayload objectForKey:@"threadId"];
                     TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
                     if (thread) {

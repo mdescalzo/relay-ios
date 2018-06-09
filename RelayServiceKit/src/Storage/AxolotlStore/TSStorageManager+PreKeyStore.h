@@ -11,14 +11,14 @@
 
 @interface TSStorageManager (PreKeyStore) <PreKeyStore>
 
-- (NSArray *)generatePreKeyRecordsWithProtocolContext:(nullable id)protocolContext;
+- (NSArray *_Nonnull)generatePreKeyRecordsWithProtocolContext:(nullable id)protocolContext;
 
-- (PreKeyRecord *)getOrGenerateLastResortKeyWithProtocolContext:(nullable id)protocolContext;
+- (PreKeyRecord *_Nonnull)getOrGenerateLastResortKeyWithProtocolContext:(nullable id)protocolContext;
 
-- (void)storePreKeyRecords:(NSArray *)preKeyRecords withProtocolContext:(nullable id)protocolContext;
+- (void)storePreKeyRecords:(NSArray *_Nonnull)preKeyRecords withProtocolContext:(nullable id)protocolContext;
 
-- (PreKeyRecord *)loadPreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext;
-- (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *)record withProtocolContext:(nullable id)protocolContext;
+- (PreKeyRecord *_Nullable)loadPreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext;
+- (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *_Nonnull)record withProtocolContext:(nullable id)protocolContext;
 - (BOOL)containsPreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext;
 - (void)removePreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext;
 
