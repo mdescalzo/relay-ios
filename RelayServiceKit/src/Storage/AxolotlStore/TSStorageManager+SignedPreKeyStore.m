@@ -68,17 +68,15 @@
 
 - (NSArray *)loadSignedPreKeys
 {
-    NSMutableArray *signedPreKeyRecords = [NSMutableArray array];
+    NSMutableArray *signedPreKeyRecords = [NSMutableArray new];
     
-    YapDatabaseConnection *conn = [self newDatabaseConnection];
-    
-    [conn readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [self.readDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         [transaction enumerateRowsInCollection:TSStorageManagerSignedPreKeyStoreCollection
                                     usingBlock:^(NSString *key, id object, id metadata, BOOL *stop) {
                                         [signedPreKeyRecords addObject:object];
                                     }];
     }];
-    return signedPreKeyRecords;
+    return [NSArray arrayWithArray:signedPreKeyRecords];
 }
 
 - (void)storeSignedPreKey:(int)signedPreKeyId signedPreKeyRecord:(SignedPreKeyRecord *)signedPreKeyRecord
