@@ -199,7 +199,7 @@
 
     TSThread *thread = [TSThread fetchObjectWithUniqueID:threadId];
     [[TSStorageManager sharedManager]
-            .dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
+            .writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
       [thread markAllAsReadWithTransaction:transaction];
     }
         completionBlock:^{

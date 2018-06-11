@@ -16,51 +16,42 @@
 @class SignedPreKeyRecord;
 @class TSPrivacyPreferences;
 
-extern NSString *const TSUIDatabaseConnectionDidUpdateNotification;
+extern NSString *_Nonnull const TSUIDatabaseConnectionDidUpdateNotification;
 
 @interface TSStorageManager : NSObject
 
-+ (instancetype)sharedManager;
++ (instancetype _Nonnull )sharedManager;
 - (void)setupDatabase;
 
-- (void)deleteThreadsAndMessages;
-- (void)deleteThreadsAndMessagesWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (void)deleteThreadsAndMessagesWithProtocolContext:(nullable id)protocolContext;
 
 - (BOOL)databasePasswordAccessible;
 
 - (void)wipeSignalStorage;
-- (void)wipeSignalStorageWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
-- (YapDatabase *)database;
-- (YapDatabaseConnection *)newDatabaseConnection;
-
-
-- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection;
-- (void)setObject:(id)object forKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
-- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection;
-- (void)removeObjectForKey:(NSString *)string inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (YapDatabase *_Nonnull)database;
+- (YapDatabaseConnection *_Nonnull)newDatabaseConnection;
 
 
-- (BOOL)boolForKey:(NSString *)key inCollection:(NSString *)collection;
-- (int)intForKey:(NSString *)key inCollection:(NSString *)collection;
-- (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection;
-- (void)setInt:(int)integer forKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
-- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection;
-- (id)objectForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection;
-- (NSDictionary *)dictionaryForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (NSString *)stringForKey:(NSString *)key inCollection:(NSString *)collection;
-- (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection;
-- (NSData *)dataForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection;
-- (ECKeyPair *)keyPairForKey:(NSString *)key inCollection:(NSString *)collection withTransaction:(YapDatabaseReadTransaction *)transaction;
-- (PreKeyRecord *)preKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
-- (SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *)key inCollection:(NSString *)collection;
-- (void)purgeCollection:(NSString *)collection;
-- (void)purgeCollection:(NSString *)collection withTransaction:(YapDatabaseReadWriteTransaction *)transaction;
+- (void)setObject:(nullable id)object forKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (void)removeObjectForKey:(NSString *_Nonnull)string inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
 
-@property (nonatomic, readonly) YapDatabaseConnection *dbConnection;
-@property (nonatomic ,readonly) YapDatabaseConnection *messagesConnection;
-@property (nonatomic, readonly) TSPrivacyPreferences *privacyPreferences;
+
+- (BOOL)boolForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (int)intForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (void)setInt:(int)integer forKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable id)objectForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable NSDictionary *)dictionaryForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable NSString *)stringForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable NSData *)dataForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable ECKeyPair *)keyPairForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable PreKeyRecord *)preKeyRecordForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (nullable SignedPreKeyRecord *)signedPreKeyRecordForKey:(NSString *_Nonnull)key inCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+- (void)purgeCollection:(NSString *_Nonnull)collection withProtocolContext:(nullable id)protocolContext;
+
+@property (readonly) YapDatabaseConnection * _Nonnull writeDbConnection;
+@property (readonly) YapDatabaseConnection * _Nonnull readDbConnection;
+@property (readonly) YapDatabaseConnection * _Nonnull messagesConnection;
+@property (nonatomic, readonly) TSPrivacyPreferences * _Nonnull privacyPreferences;
 
 @end

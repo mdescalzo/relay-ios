@@ -72,7 +72,7 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
 + (nullable instancetype)findMessageWithAuthorId:(NSString *)authorId timestamp:(uint64_t)timestamp
 {
     __block TSIncomingMessage *foundMessage;
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         // In theory we could build a new secondaryIndex for (authorId,timestamp), but in practice there should
         // be *very* few (millisecond) timestamps with multiple authors.
         [TSDatabaseSecondaryIndexes
@@ -106,7 +106,7 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
 
 - (void)markAsReadFromReadReceipt
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self markAsReadWithoutNotificationWithTransaction:transaction];
     }];
 }
@@ -118,7 +118,7 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
 
 - (void)markAsReadLocally
 {
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self markAsReadWithoutNotificationWithTransaction:transaction];
     } completionBlock:^{
         // Notification must happen outside of the transaction, else we'll likely crash when the notification receiver
@@ -132,7 +132,8 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
 {
     _read = YES;
     [self saveWithTransaction:transaction];
-    [transaction touchObjectForKey:self.uniqueThreadId inCollection:[TSThread collection]];
+    [self.thread touchWithTransaction:transaction];
+//    [transaction touchObjectForKey:self.thread.uniqueId inCollection:[TSThread collection]];
 }
 
 @end

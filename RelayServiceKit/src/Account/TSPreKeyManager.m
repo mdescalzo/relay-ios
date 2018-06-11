@@ -22,21 +22,22 @@
     YapDatabaseConnection *dbConnection = [storageManager newDatabaseConnection];
     
     __block ECKeyPair *identityKeyPair = nil;
+    __block PreKeyRecord *lastResortPreKey = nil;
+    __block SignedPreKeyRecord *signedPreKey = nil;
+    __block NSArray *preKeys = nil;
+
     
     [dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-        
-        identityKeyPair = [storageManager identityKeyPair:transaction];
-        
+        identityKeyPair = [storageManager identityKeyPair:transaction ];
         if (!identityKeyPair) {
-            [storageManager generateNewIdentityKeyWithTransaction:transaction];
+            [storageManager generateNewIdentityKeyWithProtocolContext:transaction];
             identityKeyPair = [storageManager identityKeyPair:transaction];
         }
+        lastResortPreKey   = [storageManager getOrGenerateLastResortKeyWithProtocolContext:transaction];
+        signedPreKey = [storageManager generateRandomSignedRecordWithProtocolContext:transaction];
+        preKeys = [storageManager generatePreKeyRecordsWithProtocolContext:transaction];
     }];
-    
-    PreKeyRecord *lastResortPreKey   = [storageManager getOrGenerateLastResortKey];
-    SignedPreKeyRecord *signedPreKey = [storageManager generateRandomSignedRecord];
-    
-    NSArray *preKeys = [storageManager generatePreKeyRecords];
+
     
     TSRegisterPrekeysRequest *request =
     [[TSRegisterPrekeysRequest alloc] initWithPrekeyArray:preKeys
@@ -47,7 +48,7 @@
     [[TSNetworkManager sharedManager] makeRequest:request
                                           success:^(NSURLSessionDataTask *task, id responseObject) {
                                               DDLogInfo(@"%@ Successfully registered pre keys.", self.tag);
-                                              [storageManager storePreKeyRecords:preKeys];
+                                              [storageManager storePreKeyRecords:preKeys withProtocolContext:nil];
                                               [storageManager storeSignedPreKey:signedPreKey.Id signedPreKeyRecord:signedPreKey];
                                               
                                               success(nil);

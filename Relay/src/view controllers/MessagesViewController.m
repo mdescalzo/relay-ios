@@ -2193,7 +2193,7 @@ typedef enum : NSUInteger {
 
 - (void)markAllMessagesAsRead
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self.thread markAllAsRead];
         // In theory this should be unnecessary as read-status starts expiration
         // but in practice I've seen messages not have their timer started.

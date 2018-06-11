@@ -10,66 +10,45 @@
 
 @implementation TSStorageManager (keyingMaterial)
 
-+ (NSString *)localNumber
++ (NSString *)localNumberWithProtocolContext:(id)protocolContext
 {
-    return [[self sharedManager] localNumber];
+    return [[self sharedManager] localNumberWithProtocolContext:protocolContext];
 }
 
-- (NSString *)localNumber
+- (NSString *)localNumberWithProtocolContext:(id)protocolContext
 {
-    return [self stringForKey:TSStorageRegisteredNumberKey inCollection:TSStorageUserAccountCollection];
+    return [self stringForKey:TSStorageRegisteredNumberKey inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
-+ (NSNumber *)deviceId
++ (NSNumber *)deviceIdWithProtocolContext:(id)protocolContext
 {
-    return [[self sharedManager] deviceId];
+    return [[self sharedManager] deviceIdWithProtocolContext:protocolContext];
 }
 
-- (NSNumber *)deviceId
+- (NSNumber *)deviceIdWithProtocolContext:(id)protocolContext
 {
-    NSNumber *returnVal = [self objectForKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection];
-//    if (!returnVal) {
-//        return [NSNumber numberWithInt:1];
-//    } else {
-        return returnVal;
-//    }
-}
-
-+(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction
-{
-    return [[self sharedManager] deviceIdWithTransaction:transaction];
-}
-
--(NSNumber *)deviceIdWithTransaction:(YapDatabaseReadTransaction *)transaction
-{
-    NSNumber *returnVal = [transaction objectForKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection];
-    if (!returnVal) {
-        return [NSNumber numberWithInt:1];
-    } else {
-        return returnVal;
-    }
+    NSNumber *number = [self objectForKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
+        return number;
 }
 
 
-+ (void)removeLocalNumber;
++ (void)removeLocalNumberWithProtocolContext:(id)protocolContext;
 {
-    [[self sharedManager] removeLocalNumber];
+    [[self sharedManager] removeLocalNumberWithProtocolContext:protocolContext];
 }
 
-- (void)removeLocalNumber;
+- (void)removeLocalNumberWithProtocolContext:(id)protocolContext;
 {
-    [self removeObjectForKey:TSStorageRegisteredNumberKey inCollection:TSStorageUserAccountCollection];
+    [self removeObjectForKey:TSStorageRegisteredNumberKey inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
-- (void)ifLocalNumberPresent:(BOOL)runIfPresent runAsync:(void (^)())block;
+- (void)ifLocalNumberPresent:(BOOL)runIfPresent withProtocolContext:(nullable id)protocolContext runAsync:(void (^)())block
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        __block BOOL isPresent;
-        [self.newDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *_Nonnull transaction) {
-            isPresent = [[transaction objectForKey:TSStorageRegisteredNumberKey
-                                      inCollection:TSStorageUserAccountCollection] boolValue];
-        }];
-
+        BOOL isPresent = [[self objectForKey:TSStorageRegisteredNumberKey
+                                inCollection:TSStorageUserAccountCollection
+                         withProtocolContext:protocolContext] boolValue];
+        
         if (isPresent == runIfPresent) {
             if (runIfPresent) {
                 DDLogDebug(@"%@ Running existing-user block", self.logTag);
@@ -87,52 +66,36 @@
     });
 }
 
-+ (NSString *)signalingKey {
-    return [[self sharedManager] stringForKey:TSStorageServerSignalingKey inCollection:TSStorageUserAccountCollection];
++ (NSString *)signalingKeyWithProtocolContext:(id)protocolContext {
+    return [[self sharedManager] stringForKey:TSStorageServerSignalingKey inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
-+ (NSString *)serverAuthToken {
-    return [[self sharedManager] stringForKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection];
++ (NSString *)serverAuthTokenWithProtocolContext:(id)protocolContext {
+    return [[self sharedManager] stringForKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
-- (void)storeLocalNumber:(NSString *)localNumber
+- (void)storeLocalNumber:(NSString *)localNumber withProtocolContext:(nullable id)protocolContext
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [transaction setObject:localNumber
-                        forKey:TSStorageRegisteredNumberKey
-                  inCollection:TSStorageUserAccountCollection];
-    }];
+    [self setObject:localNumber forKey:TSStorageRegisteredNumberKey inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
-- (void)storeDeviceId:(NSNumber *)deviceId
+- (void)storeDeviceId:(NSNumber *)deviceId withProtocolContext:(nullable id)protocolContext
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [transaction setObject:deviceId
-                        forKey:TSStorageRegisteredDeviceIDKey
-                  inCollection:TSStorageUserAccountCollection];
-    }];
+    [self setObject:deviceId forKey:TSStorageRegisteredDeviceIDKey inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
-+(void)removeServerTokenAndSignalingKey
++(void)removeServerTokenAndSignalingKeyWithProtocolContext:(id)protocolContext
 {
-    YapDatabaseConnection *dbConn = [[self sharedManager] dbConnection];
-    
-    [dbConn readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        [transaction removeObjectForKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection];
-        [transaction removeObjectForKey:TSStorageServerSignalingKey inCollection:TSStorageUserAccountCollection];
-    }];
+    [[self sharedManager] removeObjectForKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
+    [[self sharedManager] removeObjectForKey:TSStorageServerSignalingKey inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
-+ (void)storeServerToken:(NSString *)authToken signalingKey:(NSString *)signalingKey {
-    YapDatabaseConnection *dbConn = [[self sharedManager] dbConnection];
-
-    [dbConn readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-      [transaction setObject:authToken forKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection];
-      [transaction setObject:signalingKey
++ (void)storeServerToken:(NSString *)authToken signalingKey:(NSString *)signalingKey withProtocolContext:(nullable id)protocolContext
+{
+      [[self sharedManager] setObject:authToken forKey:TSStorageServerAuthToken inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
+      [[self sharedManager] setObject:signalingKey
                       forKey:TSStorageServerSignalingKey
-                inCollection:TSStorageUserAccountCollection];
-
-    }];
+                inCollection:TSStorageUserAccountCollection withProtocolContext:protocolContext];
 }
 
 #pragma mark - Logging

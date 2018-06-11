@@ -323,7 +323,7 @@ typedef NS_ENUM(NSInteger, PrivacySettingsPINSectionIndex) {
                     [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON", @"")
                                                                    style:UIAlertActionStyleDestructive
                                                                  handler:^(UIAlertAction * _Nonnull action) {
-                                                                     [[TSStorageManager sharedManager] deleteThreadsAndMessages];
+                                                                     [[TSStorageManager sharedManager] deleteThreadsAndMessagesWithProtocolContext:nil];
                                                                  }]];
                     [alertSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TXT_CANCEL_TITLE", @"")
                                                                    style:UIAlertActionStyleCancel

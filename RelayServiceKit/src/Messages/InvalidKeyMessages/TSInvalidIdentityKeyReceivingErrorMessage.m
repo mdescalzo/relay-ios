@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [TSStorageManager.sharedManager saveRemoteIdentity:newKey recipientId:self.envelope.source protocolContext:transaction];
     }];
 

@@ -205,7 +205,7 @@ static Environment *environment = nil;
 }
 
 + (void)wipeCommDatabase {
-    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [transaction removeAllObjectsInCollection:[TSThread collection]];
         [transaction removeAllObjectsInCollection:[SignalRecipient collection]];
     }];

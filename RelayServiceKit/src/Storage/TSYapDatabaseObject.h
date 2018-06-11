@@ -59,8 +59,10 @@
 /**
  * @return A shared database connection.
  */
-- (YapDatabaseConnection *)dbConnection;
-+ (YapDatabaseConnection *)dbConnection;
+- (YapDatabaseConnection *)readDbConnection;
++ (YapDatabaseConnection *)readDbConnection;
+- (YapDatabaseConnection *)writeDbConnection;
++ (YapDatabaseConnection *)writeDbConnection;
 
 - (TSStorageManager *)storageManager;
 + (TSStorageManager *)storageManager;

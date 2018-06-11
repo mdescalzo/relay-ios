@@ -13,7 +13,7 @@
 +(instancetype)getContactWithUserID:(NSString *)userID
 {
     __block Contact *contact;
-    [[self dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[self writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         contact = [self getContactWithUserID:userID transaction:transaction];
     }];
     
