@@ -1,5 +1,5 @@
 //
-//  NewLoginViewController.swift
+//  LoginViewController.swift
 //  Forsta
 //
 //  Created by Mark Descalzo on 6/1/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewLoginViewController: UITableViewController {
+class LoginViewController: UITableViewController {
 
     @IBOutlet private weak var usernameTextField: UITextField!
     @IBOutlet private weak var organizationTextField: UITextField!

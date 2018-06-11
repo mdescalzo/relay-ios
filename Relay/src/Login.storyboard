@@ -247,10 +247,10 @@
             </objects>
             <point key="canvasLocation" x="-1215" y="976"/>
         </scene>
-        <!--New Login View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="xP5-Li-5vF">
             <objects>
-                <tableViewController id="wV2-px-y1G" customClass="NewLoginViewController" customModule="Relay" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="wV2-px-y1G" customClass="LoginViewController" customModule="Relay" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="gQV-Nm-KHG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
