@@ -376,14 +376,15 @@
         NSDictionary *userDict = [payload objectForKey:@"user"];
         NSString *userID = [userDict objectForKey:@"id"];
         // Check to see if user changed.  If so, wiped the database.
-        if (TSStorageManager.localNumber.length > 0 && ![TSStorageManager.localNumber isEqualToString:userID]) {
+        if ([TSStorageManager localNumberWithProtocolContext:nil].length > 0 &&
+            ![[TSStorageManager localNumberWithProtocolContext:nil] isEqualToString:userID]) {
             [Environment wipeCommDatabase];
             [Environment.getCurrent.ccsmStorage setUsers:@{ }];
             [Environment.getCurrent.ccsmStorage setOrgInfo:@{ }];
             [Environment.getCurrent.ccsmStorage setTags:@{ }];
         }
         
-        [TSStorageManager.sharedManager storeLocalNumber:userID];
+        [TSStorageManager.sharedManager storeLocalNumber:userID withProtocolContext:nil];
         
         [Environment.getCurrent.ccsmStorage setSessionToken:[payload objectForKey:@"token"]];
         
@@ -652,7 +653,7 @@
 {
     __block SignalRecipient *recipient = nil;
     
-    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         recipient = [self recipientFromCCSMWithID:userId transaction:transaction];
     }];
     

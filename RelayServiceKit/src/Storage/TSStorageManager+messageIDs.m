@@ -13,6 +13,21 @@
 
 @implementation TSStorageManager (messageIDs)
 
++(NSString *)getAndIncrementMessageIdWithProtocolContext:(id)protocolContext
+{
+    __block NSString *messageId = nil;
+    if (protocolContext == nil) {
+        [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            messageId = [self getAndIncrementMessageIdWithTransaction:transaction];
+        }];
+    } else {
+        NSAssert([protocolContext class] == [YapDatabaseReadWriteTransaction class], @"protocolContext must be a YapDatabaseReadWriteTransaction");
+        YapDatabaseReadWriteTransaction *transaction = (YapDatabaseReadWriteTransaction *)protocolContext;
+        messageId = [self getAndIncrementMessageIdWithTransaction:transaction];
+    }
+    return messageId;
+}
+
 + (NSString *)getAndIncrementMessageIdWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     NSString *messageId = [transaction objectForKey:TSMessagesLatestId inCollection:TSStorageParametersCollection];
     if (!messageId) {

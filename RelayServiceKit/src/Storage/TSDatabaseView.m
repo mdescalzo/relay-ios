@@ -55,8 +55,8 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                                                          YapDatabaseReadTransaction *transaction, NSString *collection, NSString *key, id object) {
                                                  if ([object isKindOfClass:[TSIncomingMessage class]]) {
                                                      TSIncomingMessage *message = (TSIncomingMessage *)object;
-                                                     if (message.read == NO) {
-                                                         return message.uniqueThreadId;
+                                                     if (message.read == NO && [message.messageType isEqualToString:@"content"]) {
+                                                         return message.thread.uniqueId;
                                                      }
                                                  }
                                                  return nil;
@@ -381,7 +381,7 @@ NSString *FLTagFullTextSearch = @"FLTagFullTextSearch";
                                                                   NSString *_Nonnull collection,
                                                                   NSString *_Nonnull key,
                                                                   id _Nonnull object) {
-        NSInteger currentDeviceId = [[TSStorageManager deviceIdWithTransaction:transaction] integerValue];
+        NSInteger currentDeviceId = [[TSStorageManager deviceIdWithProtocolContext:nil] integerValue];
         if ([object isKindOfClass:[OWSDevice class]]) {
             OWSDevice *device = (OWSDevice *)object;
             if (!(device.deviceId == currentDeviceId)) {

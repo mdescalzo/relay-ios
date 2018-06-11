@@ -238,7 +238,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                        thread:thread
                      attempts:OWSMessageSenderRetryAttempts
                       success:successHandler
-                      failure:failureHandler];            
+                      failure:failureHandler];
         } else {
             // Message send.
             
@@ -344,7 +344,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     
     for (SignalRecipient *rec in recipients) {
         // we don't need to send the message to ourselves, but otherwise we send
-        if (![[rec uniqueId] isEqualToString:[TSStorageManager localNumber]]) {
+        if (![[rec uniqueId] isEqualToString:[TSStorageManager localNumberWithProtocolContext:nil]]) {
             [futures addObject:[self sendMessageFuture:message recipient:rec thread:thread]];
         }
     }
@@ -635,11 +635,9 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     NSArray *missingDevices = [dictionary objectForKey:@"missingDevices"];
     
     if (extraDevices.count > 0) {
-        [self.storageManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-            for (NSNumber *extraDeviceId in extraDevices) {
-                [self.storageManager deleteSessionForContact:recipient.uniqueId deviceId:extraDeviceId.intValue protocolContext:transaction];
-            }
-        }];
+        for (NSNumber *extraDeviceId in extraDevices) {
+            [self.storageManager deleteSessionForContact:recipient.uniqueId deviceId:extraDeviceId.intValue protocolContext:nil];
+        }
         [recipient removeDevices:[NSSet setWithArray:extraDevices]];
     }
     
@@ -760,10 +758,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                          legacy:(BOOL)isLegacymessage
 {
     DDLogDebug(@"dbConnection: %@", self.dbConnection);
-    __block BOOL containsSessionId;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        containsSessionId = [storage containsSession:identifier deviceId:[deviceNumber intValue] protocolContext:transaction];
-    }];
+    BOOL containsSessionId = [storage containsSession:identifier deviceId:[deviceNumber intValue] protocolContext:nil];
     
     if (!containsSessionId) {
         __block dispatch_semaphore_t sema = dispatch_semaphore_create(0);
@@ -802,17 +797,15 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                          userInfo:nil];
         } else {
             __block SessionBuilder *builder = [[SessionBuilder alloc] initWithSessionStore:storage
-                                                                       preKeyStore:storage
-                                                                 signedPreKeyStore:storage
-                                                                  identityKeyStore:storage
-                                                                       recipientId:identifier
-                                                                          deviceId:[deviceNumber intValue]];
+                                                                               preKeyStore:storage
+                                                                         signedPreKeyStore:storage
+                                                                          identityKeyStore:storage
+                                                                               recipientId:identifier
+                                                                                  deviceId:[deviceNumber intValue]];
             @try {
                 // Mutating session state is not thread safe.
                 @synchronized(self) {
-                    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-                        [builder processPrekeyBundle:bundle protocolContext:transaction];
-                    }];
+                    [builder processPrekeyBundle:bundle protocolContext:nil];
                 }
             } @catch (NSException *exception) {
                 if ([exception.name isEqualToString:UntrustedIdentityKeyException]) {
@@ -836,35 +829,35 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     // Mutating session state is not thread safe.
     __block id<CipherMessage> encryptedMessage;
     @synchronized (self) {
-        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-            encryptedMessage = [cipher encryptMessage:[plainText paddedMessageBody] protocolContext:transaction];
-        }];
+        encryptedMessage = [cipher encryptMessage:[plainText paddedMessageBody] protocolContext:nil];
     }
     NSData *serializedMessage = encryptedMessage.serialized;
     TSWhisperMessageType messageType = [self messageTypeForCipherMessage:encryptedMessage];
     
     // DEPRECATED - Remove after all clients have been upgraded.
-    __block NSError *error;
-    
-    __block NSDictionary *jsonDict;
+    __block int registrationId;
     [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-        OWSMessageServiceParams *messageParams;
-        
-        if (isLegacymessage) {
-            messageParams = [[OWSLegacyMessageServiceParams alloc] initWithType:messageType
-                                                                    recipientId:identifier
-                                                                         device:[deviceNumber intValue]
-                                                                           body:serializedMessage
-                                                                 registrationId:[cipher remoteRegistrationId:transaction]];
-        } else {
-            messageParams = [[OWSMessageServiceParams alloc] initWithType:messageType
-                                                              recipientId:identifier
-                                                                   device:[deviceNumber intValue]
-                                                                  content:serializedMessage
-                                                           registrationId:[cipher remoteRegistrationId:transaction]];
-        }
-        jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:messageParams error:&error];
+        registrationId = [cipher remoteRegistrationId:transaction];
     }];
+
+    OWSMessageServiceParams *messageParams;
+    
+    if (isLegacymessage) {
+        messageParams = [[OWSLegacyMessageServiceParams alloc] initWithType:messageType
+                                                                recipientId:identifier
+                                                                     device:[deviceNumber intValue]
+                                                                       body:serializedMessage
+                                                             registrationId:registrationId];
+    } else {
+        messageParams = [[OWSMessageServiceParams alloc] initWithType:messageType
+                                                          recipientId:identifier
+                                                               device:[deviceNumber intValue]
+                                                              content:serializedMessage
+                                                       registrationId:registrationId];
+    }
+    
+    NSError *error;
+    NSDictionary *jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:messageParams error:&error];
     
     if (error) {
         DDLogError(@"Error while making JSON dictionary of message: %@", error.debugDescription);
@@ -927,12 +920,10 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
             return;
         }
         
-        [self.dbConnection readWriteWithBlock:^(YapDatabaseReadTransaction * _Nonnull transaction) {
-            for (NSUInteger i = 0; i < [devices count]; i++) {
-                int deviceNumber = [devices[i] intValue];
-                [[TSStorageManager sharedManager] deleteSessionForContact:identifier deviceId:deviceNumber protocolContext:transaction];
-            }
-        }];
+        for (NSUInteger i = 0; i < [devices count]; i++) {
+            int deviceNumber = [devices[i] intValue];
+            [[TSStorageManager sharedManager] deleteSessionForContact:identifier deviceId:deviceNumber protocolContext:nil];
+        }
     });
 }
 

@@ -58,7 +58,7 @@
 #pragma mark Keychain wrapper methods
 
 + (void)storeData:(NSData *)data forKey:(NSString *)key {
-    [TSStorageManager.sharedManager setObject:data forKey:key inCollection:SignalKeyingCollection];
+    [TSStorageManager.sharedManager setObject:data forKey:key inCollection:SignalKeyingCollection withProtocolContext:nil];
 }
 
 + (NSData *)dataForKey:(NSString *)key andVerifyLength:(uint)length {
@@ -72,15 +72,15 @@
 }
 
 + (NSData *)dataForKey:(NSString *)key {
-    return [TSStorageManager.sharedManager dataForKey:key inCollection:SignalKeyingCollection];
+    return [TSStorageManager.sharedManager dataForKey:key inCollection:SignalKeyingCollection withProtocolContext:nil];
 }
 
 + (NSString *)stringForKey:(NSString *)key {
-    return [TSStorageManager.sharedManager stringForKey:key inCollection:SignalKeyingCollection];
+    return [TSStorageManager.sharedManager stringForKey:key inCollection:SignalKeyingCollection withProtocolContext:nil];
 }
 
 + (void)storeString:(NSString *)string forKey:(NSString *)key {
-    [TSStorageManager.sharedManager setObject:string forKey:key inCollection:SignalKeyingCollection];
+    [TSStorageManager.sharedManager setObject:string forKey:key inCollection:SignalKeyingCollection withProtocolContext:nil];
 }
 
 @end

@@ -101,7 +101,7 @@
     NSDictionary *jsonBody = @{ @"signalingKey": signalingKey,
                                 @"supportSms" : @NO,
                                 @"fetchesMessages" : @YES,
-                                @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]],
+                                @"registrationId" :[NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationIdWithProtocolContext:nil]],
                                 @"name" : name,
                                 @"password" : password
                                 };
@@ -112,8 +112,8 @@
                                         completion:^(NSDictionary *result, NSError *error) {
                                             if (error == nil) {
                                                 NSNumber *deviceID = [result objectForKey:@"deviceId"];
-                                                [[TSStorageManager sharedManager] storeDeviceId:deviceID];
-                                                [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+                                                [[TSStorageManager sharedManager] storeDeviceId:deviceID withProtocolContext:nil];
+                                                [TSStorageManager storeServerToken:password signalingKey:signalingKey withProtocolContext:nil];
                                                 [TSPreKeyManager registerPreKeysWithSuccess:completionBlock failure:completionBlock];
                                             }
                                             completionBlock(error);
@@ -155,7 +155,7 @@
     __block NSData *myPublicKey = nil;
     __block NSData *myPrivateKey = nil;
 
-    [TSStorageManager.sharedManager.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         myPublicKey = [TSStorageManager.sharedManager identityKeyPair:transaction].publicKey;
         myPrivateKey = [TSStorageManager.sharedManager identityKeyPair:transaction].ows_privateKey;
     }];
@@ -195,7 +195,7 @@
     // PUT the things to TSS
     NSString *name = [NSString stringWithFormat:@"%@ (%@)", [DeviceTypes deviceModelName], [[UIDevice currentDevice] name]];
     __block ECKeyPair *keyPair = [Curve25519 generateKeyPairWithPrivateKey:messageProto.identityKeyPrivate];
-    NSNumber *registrationId = [NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationId]];
+    NSNumber *registrationId = [NSNumber numberWithUnsignedInteger:[TSAccountManager getOrGenerateRegistrationIdWithProtocolContext:nil]];
     [SignalKeyingStorage generateServerAuthPassword];
     __block NSString *password = [SignalKeyingStorage serverAuthPassword];
     __block NSData *signalingKeyToken = [SecurityUtils generateRandomBytes:(32 + 20)];
@@ -221,9 +221,9 @@
                                                DDLogDebug(@"Device provision PUT response: %@", response);
                                                NSNumber *deviceId = [response objectForKey:@"deviceId"];
                                                if (deviceId) {
-                                                   [TSStorageManager.sharedManager setIdentityKey:keyPair];
-                                                   [TSStorageManager.sharedManager storeDeviceId:deviceId];
-                                                   [TSStorageManager storeServerToken:password signalingKey:signalingKey];
+                                                   [TSStorageManager.sharedManager setIdentityKey:keyPair withProtocolContext:nil];
+                                                   [TSStorageManager.sharedManager storeDeviceId:deviceId withProtocolContext:nil];
+                                                   [TSStorageManager storeServerToken:password signalingKey:signalingKey withProtocolContext:nil];
                                                    [TSPreKeyManager registerPreKeysWithSuccess:completionBlock failure:completionBlock];
                                                } else {
                                                    DDLogError(@"No device provided by TSS!");

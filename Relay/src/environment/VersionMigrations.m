@@ -199,7 +199,7 @@
         if ([fm removeItemAtPath:bloomFilterPath error:&deleteError]) {
             DDLogInfo(@"Successfully removed bloom filter cache.");
             [[TSStorageManager sharedManager]
-             .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
+             .writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
                  [transaction removeAllObjectsInCollection:@"TSRecipient"];
              }];
             DDLogInfo(@"Removed all TSRecipient records - will be replaced by SignalRecipients at next address sync.");

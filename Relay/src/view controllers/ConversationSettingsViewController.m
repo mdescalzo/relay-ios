@@ -355,7 +355,7 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
 - (void)leaveConversation
 {
     // Throw a threadDelete control message and remove self
-    [self.thread.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.thread.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
     } completionBlock:^{
         FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
@@ -363,7 +363,7 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
         [Environment.getCurrent.messageSender sendMessage:message
                                                   success:^{
                                                       DDLogInfo(@"%@ Successfully left group.", self.tag);
-                                                      [self.thread.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+                                                      [self.thread.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
                                                           TSInfoMessage *leavingMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
                                                                                                                           inThread:self.thread
                                                                                                                        messageType:TSInfoMessageTypeConversationQuit];

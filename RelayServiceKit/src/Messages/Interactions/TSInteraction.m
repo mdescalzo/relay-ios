@@ -45,14 +45,15 @@
 
     _timestamp = timestamp;
     _uniqueThreadId = thread.uniqueId;
+    _thread = thread;
 
     return self;
 }
 
-- (TSThread *)thread
-{
-    return [TSThread fetchObjectWithUniqueID:self.uniqueThreadId];
-}
+//- (TSThread *)thread
+//{
+//    return [TSThread fetchObjectWithUniqueID:self.uniqueThreadId];
+//}
 
 #pragma mark Date operations
 
@@ -82,15 +83,11 @@
 
 - (void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction {
     if (!self.uniqueId) {
-        self.uniqueId = [TSStorageManager getAndIncrementMessageIdWithTransaction:transaction];
+        self.uniqueId = [TSStorageManager getAndIncrementMessageIdWithProtocolContext:transaction];
     }
 
     [super saveWithTransaction:transaction];
-
-    TSThread *fetchedThread = [TSThread fetchObjectWithUniqueID:self.uniqueThreadId transaction:transaction];
-
-
-    [fetchedThread updateWithLastMessage:self transaction:transaction];
+    [self.thread updateWithLastMessage:self transaction:transaction];
 }
 
 @end

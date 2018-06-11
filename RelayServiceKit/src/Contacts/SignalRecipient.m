@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)getOrCreateRecipientWithId:(NSString *)identifier
 {
     __block SignalRecipient *recipient = nil;
-    [[SignalRecipient dbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [[SignalRecipient writeDbConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         recipient = [self getOrCreateRecipientWithId:identifier withTransaction:transaction];
     }];
     return recipient;
@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)getOrCreateRecipientWithUserDictionary:(NSDictionary *)userDict
 {
     __block SignalRecipient *recipient = nil;
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         recipient = [self getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
     }];
     return recipient;
@@ -210,7 +210,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)remove
 {
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         [self removeWithTransaction:transaction];
     }];
 }
