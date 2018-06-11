@@ -18,7 +18,7 @@
  *  @return signaling key
  */
 
-+ (NSString *)signalingKeyWithProtocolContext:(nullable id)protocolContext;
++ (nullable NSString *)signalingKeyWithProtocolContext:(nullable id)protocolContext;
 
 /**
  *  The server auth token allows the TextSecure client to connect to the server
@@ -26,30 +26,30 @@
  *  @return server authentication token
  */
 
-+ (NSString *)serverAuthTokenWithProtocolContext:(nullable id)protocolContext;
++ (nullable NSString *)serverAuthTokenWithProtocolContext:(nullable id)protocolContext;
 
 /**
  *  Registered phone number
  *
  *  @return E164 string of the registered phone number
  */
-- (NSString *)localNumberWithProtocolContext:(nullable id)protocolContext;
-+ (NSString *)localNumberWithProtocolContext:(nullable id)protocolContext;
+- (nullable NSString *)localNumberWithProtocolContext:(nullable id)protocolContext;
++ (nullable NSString *)localNumberWithProtocolContext:(nullable id)protocolContext;
 - (void)removeLocalNumberWithProtocolContext:(nullable id)protocolContext;
 + (void)removeLocalNumberWithProtocolContext:(nullable id)protocolContext;
 
 /**
  * Registered device ID
  */
-+ (NSNumber *)deviceIdWithProtocolContext:(nullable id)protocolContext;
-- (NSNumber *)deviceIdWithProtocolContext:(nullable id)protocolContext;
++ (nullable NSNumber *)deviceIdWithProtocolContext:(nullable id)protocolContext;
+- (nullable NSNumber *)deviceIdWithProtocolContext:(nullable id)protocolContext;
 
-- (void)ifLocalNumberPresent:(BOOL)isPresent withProtocolContext:(nullable id)protocolContext runAsync:(void (^)())block;
+- (void)ifLocalNumberPresent:(BOOL)isPresent withProtocolContext:(nullable id)protocolContext runAsync:(void (^_Nonnull)())block;
 
-+ (void)storeServerToken:(NSString *)authToken signalingKey:(NSString *)signalingKey withProtocolContext:(nullable id)protocolContext;
++ (void)storeServerToken:(NSString *_Nonnull)authToken signalingKey:(NSString *_Nonnull)signalingKey withProtocolContext:(nullable id)protocolContext;
 +(void)removeServerTokenAndSignalingKeyWithProtocolContext:(nullable id)protocolContext;
 
-- (void)storeLocalNumber:(NSString *)localNumber withProtocolContext:(nullable id)protocolContext;
-- (void)storeDeviceId:(NSNumber *)deviceId withProtocolContext:(nullable id)protocolContext;
+- (void)storeLocalNumber:(NSString *_Nonnull)localNumber withProtocolContext:(nullable id)protocolContext;
+- (void)storeDeviceId:(NSNumber *_Nonnull)deviceId withProtocolContext:(nullable id)protocolContext;
 
 @end
