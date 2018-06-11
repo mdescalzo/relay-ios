@@ -75,6 +75,9 @@ class ValidationViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "mainSegue" {
+            // Save the passwordAuth property
+            Environment.preferences().passwordAuth = self.passwoordAuth;
+            
             DispatchQueue.main.async {
                 let snc = segue.destination as! NavigationController
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
