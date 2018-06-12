@@ -79,11 +79,12 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.updateContactsView()
-        
         self.uiDBConnection.beginLongLivedReadTransaction()
-        self.uiDBConnection.read { transaction in
-            self.tagMappings?.update(with: transaction)
+        DispatchQueue.main.async {
+            self.uiDBConnection.read { transaction in
+                self.tagMappings?.update(with: transaction)
+            }
+            self.updateFilteredMappings()
         }
         
         NotificationCenter.default.addObserver(self,
@@ -94,7 +95,6 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
-        self.uiDBConnection.endLongLivedReadTransaction()
         
         super.viewWillDisappear(animated)
     }
