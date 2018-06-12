@@ -37,7 +37,6 @@ NSString *const AppDelegateStoryboardLaunchScreen = @"Launch Screen";
 @property (nonatomic, strong) OWSIncomingMessageReadObserver *incomingMessageReadObserver;
 @property (nonatomic, strong) OWSStaleNotificationObserver *staleNotificationObserver;
 @property (nonatomic, assign) BOOL hasRootViewController;
-@property (nonatomic, assign) BOOL awaitingVerification;
 
 @property (nonatomic, strong) UIImageView *coverImageView;
 
@@ -547,11 +546,6 @@ forLocalNotification:(UILocalNotification *)notification
 - (NSString *)tag
 {
     return self.class.tag;
-}
-
--(BOOL)awaitingVerification
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:FLAwaitingVerification];
 }
 
 @end

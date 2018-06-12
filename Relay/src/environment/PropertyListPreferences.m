@@ -23,6 +23,7 @@ NSString *const PropertyListPreferencesKeyLastRecordedPushToken = @"LastRecorded
 NSString *const PropertyListPreferencesKeyLastRecordedVoipToken = @"LastRecordedVoipToken";
 NSString *const PropertyListPreferencesKeyUseGravatars = @"UseGravatars";
 NSString *const PropertyListPreferencesKeyRequirePINAccess = @"RequirePINAccess";
+NSString *const PropertyListPreferencesKeyPasswordAuth = @"PasswordAuth";
 NSString *const PropertyListPreferencesKeyPINLength = @"PINLength";
 NSString *const PropertyListPreferencesKeyOutgoingBubbleColorKey = @"OutgoingBubbleColorKey";
 NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBubbleColorKey";
@@ -82,12 +83,10 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
     if (object) {
         return object;
     } else {
-//        dispatch_async([OWSDispatch serialQueue], ^{
-            object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection withProtocolContext:nil];
-            if (object) {
-                [self.prefsCache setObject:object forKey:key];
-            }
-//        });
+        object = [TSStorageManager.sharedManager objectForKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection withProtocolContext:nil];
+        if (object) {
+            [self.prefsCache setObject:object forKey:key];
+        }
         return object;
         
     }
@@ -100,12 +99,7 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
     id oldObject = [self.prefsCache objectForKey:key];
     if (![oldObject isEqual:value]) {
         [self.prefsCache setObject:value forKey:key];
-        dispatch_async([OWSDispatch serialQueue], ^{
-            [TSStorageManager.sharedManager setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection withProtocolContext:nil];
-//            [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-//                [transaction setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection];
-//            }];
-        });
+        [TSStorageManager.sharedManager setObject:value forKey:key inCollection:PropertyListPreferencesSignalDatabaseCollection withProtocolContext:nil];
     }
 }
 
@@ -338,6 +332,16 @@ NSString *const PropertyListPreferencesKeyIncomingBubbleColorKey = @"IncomingBub
 -(BOOL)requirePINAccess
 {
     return [[self tryGetValueForKey:PropertyListPreferencesKeyRequirePINAccess] boolValue];
+}
+
+-(void)setPasswordAuth:(BOOL)value
+{
+    [self setValueForKey:PropertyListPreferencesKeyPasswordAuth toValue:@(value)];
+}
+
+-(BOOL)passwordAuth
+{
+    return [[self tryGetValueForKey:PropertyListPreferencesKeyPasswordAuth] boolValue];
 }
 
 -(void)setPINLength:(NSInteger)value

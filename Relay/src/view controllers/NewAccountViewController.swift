@@ -39,7 +39,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
         self.lastNameTextField.placeholder = NSLocalizedString("Enter Last Name", comment: "")
         self.phoneNumberTextField.placeholder = NSLocalizedString("Enter Phone Number", comment: "")
         self.emailTextField.placeholder = NSLocalizedString("Enter Email Address", comment: "")
-        self.submitButton.setTitle(NSLocalizedString("Submit", comment: ""), for: .normal)
+        self.submitButton.setTitle(NSLocalizedString("SUBMIT", comment: ""), for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,7 +103,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
                                                         "email" : self.emailTextField.text! ]
                                         
                                         CCSMCommManager.requestAccountCreation(withUserDict: payload,
-                                                                               token: token,
+                                                                               token: token!,
                                                                                completion: { (success, error) in
                                                                                 
                                                                                 self.stopSpinner()

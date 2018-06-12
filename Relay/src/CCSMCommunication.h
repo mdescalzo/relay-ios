@@ -19,40 +19,36 @@
 //+(void)refreshCCSMUsers;
 //+(void)refreshCCSMTags;
 
-+(void)requestLogin:(NSString *)userName
-             orgName:(NSString *)orgName
-             success:(void (^)())successBlock
-             failure:(void (^)(NSError *error))failureBlock ;
++(void)requestLogin:(NSString *_Nonnull)userName
+             orgName:(NSString *_Nonnull)orgName
+            success:(void (^_Nullable)())successBlock
+            failure:(void (^_Nullable)(NSError * _Nullable error))failureBlock ;
 
-+(void)verifyLogin:(NSString *)verificationCode
-            success:(void (^)())successBlock
-            failure:(void (^)(NSError *error))failureBlock;
++(void)authenticateWithPayload:(NSDictionary *_Nonnull)payload
+                    completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock;
 
-+(void)refreshSessionTokenAsynchronousSuccess:(void (^)())successBlock
-                                       failure:(void (^)(NSError *error))failureBlock;
++(void)refreshSessionTokenAsynchronousSuccess:(void (^_Nullable)())successBlock
+                                      failure:(void (^_Nullable)(NSError * _Nullable error))failureBlock;
 
-+(void)updateAllTheThings:(NSString *)urlString
-                collection:(NSMutableDictionary *)collection
-               synchronous:(BOOL)sync
-                   success:(void (^)())successBlock
-                   failure:(void (^)(NSError *error))failureBlock;
++(void)requestPasswordResetForUser:(NSString *_Nonnull)userName
+                               org:(NSString *_Nonnull)orgName
+                        completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock;
 
++(void)getThing:(NSString *_Nonnull)urlString
+        success:(void (^_Nullable)(NSDictionary *_Nullable))successBlock
+        failure:(void (^_Nullable)(NSError * _Nullable error))failureBlock;
 
-+(void)getThing:(NSString *)urlString
-         success:(void (^)(NSDictionary *))successBlock
-         failure:(void (^)(NSError *error))failureBlock;
++(void)checkAccountRegistrationWithCompletion:(void (^_Nullable)(NSDictionary * _Nullable response, NSError * _Nullable error))completionBlock;
 
-+(void)checkAccountRegistrationWithCompletion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
++(void)registerDeviceWithParameters:(NSDictionary *_Nonnull)parameters
+                         completion:(void (^_Nullable)(NSDictionary * _Nullable response, NSError * _Nullable error))completionBlock;
 
-+(void)registerDeviceWithParameters:(NSDictionary *)parameters
-                         completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
++(void)registerAccountWithParameters:(NSDictionary *_Nonnull)parameters
+                          completion:(void (^_Nullable)(NSDictionary * _Nullable response, NSError * _Nullable error))completionBlock;
 
-+(void)registerAccountWithParameters:(NSDictionary *)parameters
-                      completion:(void (^)(NSDictionary *response, NSError *error))completionBlock;
-
-+(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
-                                    token:(NSString *)token
-                               completion:(void (^)(BOOL success, NSError *error))completionBlock;
++(void)requestAccountCreationWithUserDict:(NSDictionary *_Nonnull)userDict
+                                    token:(NSString *_Nonnull)token
+                               completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock;
 
 +(void)sendDeviceProvisioningRequestWithPayload:(NSDictionary *_Nonnull)payload;
 

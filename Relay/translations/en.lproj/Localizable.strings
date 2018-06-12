@@ -493,6 +493,14 @@
 /* No comment provided by engineer. */
 "OK" = "Ok";
 
+"SUBMIT" = "Submit";
+
+"CREATE_ACCOUNT_BUTTON" = "Create Account";
+"ENTER_USERNAME_LABEL" = "Enter Username";
+"ENTER_ORGANIZATION_LABEL" = "Enter Organization";
+
+"USERNAME_ORG_ERROR" = "Please enter a valid organization/username.";
+
 /* Button text which opens the settings app */
 "OPEN_SETTINGS_BUTTON" = "Settings";
 
@@ -627,6 +635,14 @@
 
 /* No comment provided by engineer. */
 "REGISTRATION_VERIFY_DEVICE" = "Verify This Device";
+
+"ENTER_VALIDATION_CODE" = "Enter Validation Code";
+"RESEND_CODE" = "Send New Code";
+
+"ENTER_PASSWORD" = "Enter Password";
+"FORGOT_PASSWORD" = "Forgot Password";
+"ARE_YOU_SURE" = "Are you sure?";
+"RESETTING_PASSWORD" = "Resetting password";
 
 /* No comment provided by engineer. */
 "REJECT_CALL_BUTTON_TITLE" = "Reject";

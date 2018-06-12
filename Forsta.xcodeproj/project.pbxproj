@@ -178,6 +178,12 @@
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */; };
+		7D1DBECA20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
+		7D1DBECB20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
+		7D1DBECC20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
+		7D1DBECE20C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
+		7D1DBECF20C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
+		7D1DBED020C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
 		7D21E03220976DE300EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
@@ -189,6 +195,9 @@
 		7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A67761FE9BB1800C4096A /* FLPickerCell.m */; };
 		7D3B86571EE2169000190FD5 /* Main_v2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3B86561EE2169000190FD5 /* Main_v2.storyboard */; };
 		7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
+		7D3DA2FA20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
+		7D3DA2FB20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
+		7D3DA2FC20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
 		7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
@@ -309,7 +318,6 @@
 		7D4A3A3B1F1693930023C29B /* AudioPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5E918BBEC1A00F073E5 /* AudioPacker.m */; };
 		7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F618BBEC1A00F073E5 /* AudioStretcher.m */; };
 		7D4A3A3D1F1693930023C29B /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
-		7D4A3A3E1F1693930023C29B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7D4A3A3F1F1693930023C29B /* SpeexCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B60B18BBEC1A00F073E5 /* SpeexCodec.m */; };
 		7D4A3A401F1693930023C29B /* PhoneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049518170B33006006FC /* PhoneManager.m */; };
 		7D4A3A411F1693930023C29B /* ConversationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */; };
@@ -317,7 +325,6 @@
 		7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
 		7D4A3A451F1693930023C29B /* CallController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048B18170B33006006FC /* CallController.m */; };
 		7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
-		7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
 		7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04CA18170B33006006FC /* ArrayUtil.m */; };
 		7D4A3A4B1F1693930023C29B /* AdvancedSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */; };
@@ -340,7 +347,6 @@
 		7D4A3A5D1F1693930023C29B /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
 		7D4A3A5E1F1693930023C29B /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
 		7D4A3A5F1F1693930023C29B /* AppAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62018BBF12700F073E5 /* AppAudioManager.m */; };
-		7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */; };
 		7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E918170B33006006FC /* DictionaryUtil.m */; };
 		7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
 		7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EB32CE1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m */; };
@@ -870,8 +876,6 @@
 		7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DB55A9C1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
-		7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
-		7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
 		7DCFF9711F0C700F0003CD95 /* forsta_splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFF9701F0C700F0003CD95 /* forsta_splash.png */; };
 		7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
 		7DCFFD6A1F0EE4490003CD95 /* RPAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B640BFA71C257843006038B3 /* RPAccountManager.m */; };
@@ -985,7 +989,6 @@
 		7DCFFDE21F0EE4490003CD95 /* AudioPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5E918BBEC1A00F073E5 /* AudioPacker.m */; };
 		7DCFFDE31F0EE4490003CD95 /* AudioStretcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B5F618BBEC1A00F073E5 /* AudioStretcher.m */; };
 		7DCFFDE41F0EE4490003CD95 /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
-		7DCFFDE51F0EE4490003CD95 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */; };
 		7DCFFDE61F0EE4490003CD95 /* SpeexCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B60B18BBEC1A00F073E5 /* SpeexCodec.m */; };
 		7DCFFDE71F0EE4490003CD95 /* PhoneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB049518170B33006006FC /* PhoneManager.m */; };
 		7DCFFDE81F0EE4490003CD95 /* ConversationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */; };
@@ -993,7 +996,6 @@
 		7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
 		7DCFFDEC1F0EE4490003CD95 /* CallController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048B18170B33006006FC /* CallController.m */; };
 		7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
-		7DCFFDEF1F0EE4490003CD95 /* LoginValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */; };
 		7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04CA18170B33006006FC /* ArrayUtil.m */; };
 		7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */; };
@@ -1016,7 +1018,6 @@
 		7DCFFE041F0EE4490003CD95 /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
 		7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
 		7DCFFE061F0EE4490003CD95 /* AppAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E197B62018BBF12700F073E5 /* AppAudioManager.m */; };
-		7DCFFE071F0EE4490003CD95 /* SignalsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */; };
 		7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E918170B33006006FC /* DictionaryUtil.m */; };
 		7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
 		7DCFFE0A1F0EE4490003CD95 /* OWSLinkedDevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EB32CE1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m */; };
@@ -1471,7 +1472,6 @@
 		FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
 		FC3BD9881A30A790005B96BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3BD9871A30A790005B96BB /* Social.framework */; };
-		FC4FA0261A1B9DC600DA100A /* SignalsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */; };
 		FC5CDF391A3393DD00B47253 /* error_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF371A3393DD00B47253 /* error_white@2x.png */; };
 		FC5CDF3A1A3393DD00B47253 /* warning_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC5CDF381A3393DD00B47253 /* warning_white@2x.png */; };
 		FC9120411A39EFB70074545C /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC91203F1A39EFB70074545C /* qr@2x.png */; };
@@ -1842,6 +1842,8 @@
 		7D0E3C1F1F71A9F500EBC5FE /* ImagePreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePreviewViewController.h; sourceTree = "<group>"; };
 		7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagePreviewViewController.m; sourceTree = "<group>"; };
 		7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblibPhoneNumber-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D1DBEC920C0650200B39333 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppearanceSettingsViewController.h; sourceTree = "<group>"; };
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
 		7D3A67751FE9BB1700C4096A /* FLPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPickerCell.h; sourceTree = "<group>"; };
@@ -1849,6 +1851,7 @@
 		7D3B86561EE2169000190FD5 /* Main_v2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_v2.storyboard; sourceTree = "<group>"; };
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
+		7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationViewController.swift; sourceTree = "<group>"; };
 		7D4794B9207EA38C00029A70 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
 		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
@@ -2142,10 +2145,6 @@
 		7DB55A981F2A7F10001D3058 /* FLInvitationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLInvitationService.h; sourceTree = "<group>"; };
 		7DB55A991F2A7F10001D3058 /* FLInvitationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLInvitationService.m; sourceTree = "<group>"; };
 		7DBA8D661ED9FA62009FCF65 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
-		7DBA8D6A1ED9FCEB009FCF65 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		7DBA8D6E1ED9FD0D009FCF65 /* LoginValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginValidationViewController.h; sourceTree = "<group>"; };
-		7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginValidationViewController.m; sourceTree = "<group>"; };
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
@@ -2411,8 +2410,6 @@
 		FC31962E1A0814130094C78E /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		FC31962F1A0814130094C78E /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		FC3BD9871A30A790005B96BB /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		FC4FA0241A1B9DC600DA100A /* SignalsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalsNavigationController.h; sourceTree = "<group>"; };
-		FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalsNavigationController.m; sourceTree = "<group>"; };
 		FC5CDF371A3393DD00B47253 /* error_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error_white@2x.png"; sourceTree = "<group>"; };
 		FC5CDF381A3393DD00B47253 /* warning_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "warning_white@2x.png"; sourceTree = "<group>"; };
 		FC91203F1A39EFB70074545C /* qr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr@2x.png"; sourceTree = "<group>"; };
@@ -3260,6 +3257,7 @@
 				7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */,
 				7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */,
 				7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */,
+				7D1DBEC920C0650200B39333 /* NavigationController.swift */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -3729,11 +3727,9 @@
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				7DBA8D6A1ED9FCEB009FCF65 /* LoginViewController.h */,
-				7DBA8D6B1ED9FCEB009FCF65 /* LoginViewController.m */,
-				7DBA8D6E1ED9FD0D009FCF65 /* LoginValidationViewController.h */,
-				7DBA8D6F1ED9FD0D009FCF65 /* LoginValidationViewController.m */,
 				7DF7E82F209A5289001B8687 /* NewAccountViewController.swift */,
+				7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */,
+				7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -4324,8 +4320,6 @@
 				A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */,
 				FCFD256D1A151BCB00F4C644 /* ConversationUpdateViewController.h */,
 				FCFD256E1A151BCB00F4C644 /* ConversationUpdateViewController.m */,
-				FC4FA0241A1B9DC600DA100A /* SignalsNavigationController.h */,
-				FC4FA0251A1B9DC600DA100A /* SignalsNavigationController.m */,
 				452E3C8C1D935C77002A45B0 /* ConversationSettingsViewController.h */,
 				452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */,
 			);
@@ -5158,6 +5152,7 @@
 				7D613AEF1F9018DD00E18D29 /* SecurityFailure.m in Sources */,
 				7D613A541F9017FC00E18D29 /* TSGroupModel.m in Sources */,
 				7D4A39C51F1693930023C29B /* CallConnectUtil.m in Sources */,
+				7D3DA2FA20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */,
 				7D613A601F90180B00E18D29 /* OWSDevicesService.m in Sources */,
 				7D4A39C61F1693930023C29B /* LoggingUtil.m in Sources */,
 				7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */,
@@ -5244,6 +5239,7 @@
 				7D6139921F90163400E18D29 /* OWSError.m in Sources */,
 				7D4A3A001F1693930023C29B /* StringUtil.m in Sources */,
 				7D613AC11F90187B00E18D29 /* TSStorageManager+keyFromIntLong.m in Sources */,
+				7D1DBECA20C0650200B39333 /* NavigationController.swift in Sources */,
 				7D4A3A011F1693930023C29B /* OWSStaleNotificationObserver.m in Sources */,
 				7D4A3A031F1693930023C29B /* OWSCall.m in Sources */,
 				7D4A3A041F1693930023C29B /* Queue.m in Sources */,
@@ -5335,7 +5331,6 @@
 				7D4A3A3C1F1693930023C29B /* AudioStretcher.m in Sources */,
 				7D613A3C1F9017E400E18D29 /* OWSIncomingMessageReadObserver.m in Sources */,
 				7D4A3A3D1F1693930023C29B /* IpEndPoint.m in Sources */,
-				7D4A3A3E1F1693930023C29B /* LoginViewController.m in Sources */,
 				7D4A3A3F1F1693930023C29B /* SpeexCodec.m in Sources */,
 				7D6139BC1F90174300E18D29 /* PhoneNumber.m in Sources */,
 				7D4A3A401F1693930023C29B /* PhoneManager.m in Sources */,
@@ -5349,7 +5344,6 @@
 				7D4A3A451F1693930023C29B /* CallController.m in Sources */,
 				7D613ABE1F90187700E18D29 /* TSStorageManager+IdentityKeyStore.m in Sources */,
 				7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */,
-				7D4A3A481F1693930023C29B /* LoginValidationViewController.m in Sources */,
 				7D613AD01F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
 				7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */,
@@ -5374,6 +5368,7 @@
 				7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */,
 				7D613A331F9017DC00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
 				7D4A3A591F1693930023C29B /* RPAPICall.m in Sources */,
+				7D1DBECE20C1A39B00B39333 /* LoginViewController.swift in Sources */,
 				7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */,
 				7D4A3A5B1F1693930023C29B /* StreamPair.m in Sources */,
 				7D613A761F90182100E18D29 /* TSAttachmentRequest.m in Sources */,
@@ -5384,7 +5379,6 @@
 				7D613A2A1F9017D100E18D29 /* TSOutgoingMessage.m in Sources */,
 				7D613A421F9017EB00E18D29 /* OWSMessageSender.m in Sources */,
 				7D613A571F9017FF00E18D29 /* TSMessagesManager.m in Sources */,
-				7D4A3A601F1693930023C29B /* SignalsNavigationController.m in Sources */,
 				7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */,
 				7DFF570320B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7D6139F71F90179900E18D29 /* OWSAttachmentsProcessor.m in Sources */,
@@ -5507,6 +5501,7 @@
 				7DCFFD6E1F0EE4490003CD95 /* DecayingSampleEstimator.m in Sources */,
 				7D613A521F9017FA00E18D29 /* TSCall.m in Sources */,
 				7DCFFD6F1F0EE4490003CD95 /* CommitPacket.m in Sources */,
+				7D3DA2FB20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */,
 				7DCFFD701F0EE4490003CD95 /* InitiatorSessionDescriptor.m in Sources */,
 				7D613A251F9017CC00E18D29 /* TSInteraction.m in Sources */,
 				7DCFFD721F0EE4490003CD95 /* CallConnectUtil_Server.m in Sources */,
@@ -5593,6 +5588,7 @@
 				7DCFFDA61F0EE4490003CD95 /* RtpPacket.m in Sources */,
 				7D6139BD1F90174300E18D29 /* PhoneNumber.m in Sources */,
 				7D6139911F90163400E18D29 /* OWSError.m in Sources */,
+				7D1DBECB20C0650200B39333 /* NavigationController.swift in Sources */,
 				7DCFFDA71F0EE4490003CD95 /* StringUtil.m in Sources */,
 				7DCFFDA81F0EE4490003CD95 /* OWSStaleNotificationObserver.m in Sources */,
 				7D6139DE1F90177C00E18D29 /* OWSProvisioningCipher.m in Sources */,
@@ -5679,7 +5675,6 @@
 				7DCFFDE31F0EE4490003CD95 /* AudioStretcher.m in Sources */,
 				7DCFFDE41F0EE4490003CD95 /* IpEndPoint.m in Sources */,
 				7D613A671F90181300E18D29 /* OWSDeleteDeviceRequest.m in Sources */,
-				7DCFFDE51F0EE4490003CD95 /* LoginViewController.m in Sources */,
 				7DCFFDE61F0EE4490003CD95 /* SpeexCodec.m in Sources */,
 				7DCFFDE71F0EE4490003CD95 /* PhoneManager.m in Sources */,
 				7D61398E1F90163000E18D29 /* UIImage+contentTypes.m in Sources */,
@@ -5693,7 +5688,6 @@
 				7D613AF81F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BB1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
-				7DCFFDEF1F0EE4490003CD95 /* LoginValidationViewController.m in Sources */,
 				7D6139E11F90177E00E18D29 /* OWSProvisioningMessage.m in Sources */,
 				7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */,
 				7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */,
@@ -5723,6 +5717,7 @@
 				7D613A8C1F90183600E18D29 /* TSRequest.m in Sources */,
 				7D613A2E1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7DCFFE001F0EE4490003CD95 /* RPAPICall.m in Sources */,
+				7D1DBECF20C1A39B00B39333 /* LoginViewController.swift in Sources */,
 				7DCFFE011F0EE4490003CD95 /* OWSDisplayedMessage.m in Sources */,
 				7DCFFE021F0EE4490003CD95 /* StreamPair.m in Sources */,
 				7DCFFE031F0EE4490003CD95 /* TimeUtil.m in Sources */,
@@ -5730,7 +5725,6 @@
 				7D613A2B1F9017D100E18D29 /* TSOutgoingMessage.m in Sources */,
 				7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */,
 				7DCFFE061F0EE4490003CD95 /* AppAudioManager.m in Sources */,
-				7DCFFE071F0EE4490003CD95 /* SignalsNavigationController.m in Sources */,
 				7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */,
 				7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */,
 				7D613A281F9017CF00E18D29 /* TSMessage.m in Sources */,
@@ -5856,6 +5850,7 @@
 				76EB05BA18170B33006006FC /* CommitPacket.m in Sources */,
 				7D613A531F9017FA00E18D29 /* TSCall.m in Sources */,
 				76EB060218170B33006006FC /* InitiatorSessionDescriptor.m in Sources */,
+				7D3DA2FC20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */,
 				76EB05FC18170B33006006FC /* CallConnectUtil_Server.m in Sources */,
 				7D613A261F9017CC00E18D29 /* TSInteraction.m in Sources */,
 				B6DA6B071B8A2F9A00CA6F98 /* AppStoreRating.m in Sources */,
@@ -5942,6 +5937,7 @@
 				76EB064218170B33006006FC /* StringUtil.m in Sources */,
 				7D6139BE1F90174300E18D29 /* PhoneNumber.m in Sources */,
 				7D6139901F90163300E18D29 /* OWSError.m in Sources */,
+				7D1DBECC20C0650200B39333 /* NavigationController.swift in Sources */,
 				45BFFFA81D898AF0004A12A7 /* OWSStaleNotificationObserver.m in Sources */,
 				45C681B71D305A580050903A /* OWSCall.m in Sources */,
 				7D6139DF1F90177C00E18D29 /* OWSProvisioningCipher.m in Sources */,
@@ -6028,7 +6024,6 @@
 				E197B61218BBEC1A00F073E5 /* AudioStretcher.m in Sources */,
 				76EB05A218170B33006006FC /* IpEndPoint.m in Sources */,
 				7D613A681F90181300E18D29 /* OWSDeleteDeviceRequest.m in Sources */,
-				7DBA8D6C1ED9FCEB009FCF65 /* LoginViewController.m in Sources */,
 				E197B61A18BBEC1A00F073E5 /* SpeexCodec.m in Sources */,
 				76EB05F018170B33006006FC /* PhoneManager.m in Sources */,
 				7D61398F1F90163100E18D29 /* UIImage+contentTypes.m in Sources */,
@@ -6042,7 +6037,6 @@
 				7D613AF91F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				E16E5BEE18AAC40200B7C403 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BA1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
-				7DBA8D701ED9FD0D009FCF65 /* LoginValidationViewController.m in Sources */,
 				7D6139E21F90177F00E18D29 /* OWSProvisioningMessage.m in Sources */,
 				76EB057418170B33006006FC /* RecentCallManager.m in Sources */,
 				76EB061C18170B33006006FC /* ArrayUtil.m in Sources */,
@@ -6072,6 +6066,7 @@
 				7D613A8D1F90183600E18D29 /* TSRequest.m in Sources */,
 				7D613A2F1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				B65EDA1219E1BE6400AAA7CB /* RPAPICall.m in Sources */,
+				7D1DBED020C1A39B00B39333 /* LoginViewController.swift in Sources */,
 				453D28B71D32BA5F00D523F0 /* OWSDisplayedMessage.m in Sources */,
 				76EB05DC18170B33006006FC /* StreamPair.m in Sources */,
 				76EB064618170B33006006FC /* TimeUtil.m in Sources */,
@@ -6079,7 +6074,6 @@
 				7D613A2C1F9017D200E18D29 /* TSOutgoingMessage.m in Sources */,
 				76EB05A418170B33006006FC /* PacketHandler.m in Sources */,
 				E197B62118BBF12700F073E5 /* AppAudioManager.m in Sources */,
-				FC4FA0261A1B9DC600DA100A /* SignalsNavigationController.m in Sources */,
 				76EB063818170B33006006FC /* DictionaryUtil.m in Sources */,
 				76EB05CE18170B33006006FC /* ZrtpHandshakeResult.m in Sources */,
 				7D613A291F9017CF00E18D29 /* TSMessage.m in Sources */,
@@ -6454,7 +6448,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6524,7 +6518,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6592,7 +6586,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6660,7 +6654,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6866,7 +6860,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6932,7 +6926,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 212;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

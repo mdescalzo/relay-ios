@@ -37,6 +37,17 @@ NSString *const CCSMStorageKeyUsers = @"Users";
 NSString *const CCSMStorageKeyTags = @"Tags";
 NSString *const CCSMStorageKeyTSServerURL = @"TSServerURL";
 
++ (instancetype)sharedInstance
+{
+    static dispatch_once_t onceToken;
+    static id sharedInstance = nil;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
+}
+
 -(instancetype)init
 {
     if (self = [super init]) {
