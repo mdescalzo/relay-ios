@@ -98,11 +98,7 @@ class LoginViewController: UITableViewController {
                                             if (error?.localizedDescription.contains("password auth required"))! {
                                                 self.proceedWithPasswordAuth()
                                             } else {
-                                                let alert = UIAlertController(title: NSLocalizedString("Login Failed", comment: ""),
-                                                                              message: error?.localizedDescription,
-                                                                              preferredStyle: .alert)
-                                                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
-                                                self.present(alert, animated: true, completion: nil)
+                                                self.presentInfoAlert(message: (error?.localizedDescription)!)
                                             }
             })
         } else {
