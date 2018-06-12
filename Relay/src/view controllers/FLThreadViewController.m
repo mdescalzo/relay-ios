@@ -170,11 +170,6 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(yapDatabaseModified:)
-//                                                 name:TSUIDatabaseConnectionDidUpdateNotification
-//                                               object:nil];
-    
     // TODO: Investigate this!
     [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
         [self.tableView reloadData];
@@ -210,15 +205,26 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    // Fend off crashes from prior improper registration
+    [NSNotificationCenter.defaultCenter removeObserver:self];
+
     [super viewWillAppear:animated];
     
     [UIUtil applyForstaAppearence];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                             selector:@selector(yapDatabaseModified:)
+                                                 name:YapDatabaseModifiedNotification
+                                               object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                             selector:@selector(yapDatabaseModified:)
+                                                 name:YapDatabaseModifiedExternallyNotification
+                                               object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self
                                              selector:@selector(markAllRead)
                                                  name:FLMarkAllReadNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [NSNotificationCenter.defaultCenter addObserver:self
                                              selector:@selector(reloadTableView)
                                                  name:FLSettingsUpdatedNotification
                                                object:nil];
@@ -226,12 +232,8 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    //    [[NSNotificationCenter defaultCenter] removeObserver:self
-    //                                                    name:FLUserSelectedFromPopoverDirectoryNotification
-    //                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:FLMarkAllReadNotification
-                                                  object:nil];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
+    
     [super viewDidDisappear:animated];
 }
 
@@ -567,10 +569,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         YapDatabase *database = TSStorageManager.sharedManager.database;
         _uiDatabaseConnection = [database newConnection];
         [_uiDatabaseConnection beginLongLivedReadTransaction];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(yapDatabaseModified:)
-                                                     name:YapDatabaseModifiedNotification
-                                                   object:database];
     }
     return _uiDatabaseConnection;
 }
@@ -606,32 +604,29 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     //    }];
     
     
+    [self.tableView beginUpdates];
     for (YapDatabaseViewSectionChange *sectionChange in sectionChanges) {
         switch (sectionChange.type) {
             case YapDatabaseViewChangeDelete: {
-                [self.tableView beginUpdates];
                 [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
                               withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
                 break;
             }
             case YapDatabaseViewChangeInsert: {
-                [self.tableView beginUpdates];
                 [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionChange.index]
                               withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
                 break;
             }
             case YapDatabaseViewChangeUpdate: {
-                DDLogDebug(@"Received YapDatabaseViewChangeUpdate on section: %ld", sectionChange.index);
+                DDLogDebug(@"Received YapDatabaseViewChangeUpdate on section: %lu", (unsigned long)sectionChange.index);
                 break;
             }
             case YapDatabaseViewChangeMove: {
-                DDLogDebug(@"Received YapDatabaseViewChangeMove on section: %ld", sectionChange.index);
+                DDLogDebug(@"Received YapDatabaseViewChangeMove on section: %lu", (unsigned long)sectionChange.index);
                 break;
             }
             default: {
-                DDLogDebug(@"Received Unknown YapDatabaseViewChange on section: %ld", sectionChange.index);
+                DDLogDebug(@"Received Unknown YapDatabaseViewChange on section: %lu", (unsigned long)sectionChange.index);
                 break;
             }
         }
@@ -640,48 +635,38 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     for (YapDatabaseViewRowChange *rowChange in rowChanges) {
         switch (rowChange.type) {
             case YapDatabaseViewChangeDelete: {
-                [self.tableView beginUpdates];
                 [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
                 _inboxCount += (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
                 break;
             }
             case YapDatabaseViewChangeInsert: {
-                [self.tableView beginUpdates];
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
                 _inboxCount -= (self.viewingThreadsIn == kArchiveState) ? 1 : 0;
                 scrollToBottom = YES;
                 break;
             }
             case YapDatabaseViewChangeMove: {
-                [self.tableView beginUpdates];
                 [self.tableView deleteRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self.tableView insertRowsAtIndexPaths:@[ rowChange.newIndexPath ]
                                       withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
-                
                 scrollToBottom = YES;
                 break;
             }
             case YapDatabaseViewChangeUpdate: {
-                [self.tableView beginUpdates];
                 [self.tableView reloadRowsAtIndexPaths:@[ rowChange.indexPath ]
                                       withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
                 break;
             }
             default: {
-                DDLogDebug(@"Received Unknown YapDatabaseViewChange on row: %ld", rowChange.indexPath );
+                DDLogDebug(@"Received Unknown YapDatabaseViewChange on row: %@", rowChange.indexPath );
                 break;
             }
         }
     }
-    
-    //    [self.tableView endUpdates];
+    [self.tableView endUpdates];
     //    [CATransaction commit];
     
     //    [self checkIfEmptyView];

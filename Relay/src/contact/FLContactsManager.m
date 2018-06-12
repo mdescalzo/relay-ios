@@ -133,7 +133,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     if (usersBlob.count > 0) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             for (NSDictionary *userDict in usersBlob.allValues) {
-                [self.backgroundConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                [self.backgroundConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     SignalRecipient *recipient = [SignalRecipient getOrCreateRecipientWithUserDictionary:userDict transaction:transaction];
                     if (recipient) {
                         [self saveRecipient:recipient withTransaction:transaction];
@@ -376,7 +376,6 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
         if (recipientDict) {
             SignalRecipient *recipient = [self recipientFromDictionary:recipientDict transaction:transaction];
-            [self saveRecipient:recipient withTransaction:transaction];
         }
 }
 

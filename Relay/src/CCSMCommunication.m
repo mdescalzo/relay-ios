@@ -347,25 +347,29 @@
         success:(void (^)(NSDictionary *))successBlock
         failure:(void (^)(NSError *error))failureBlock;
 {
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:config];
+    
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [self authRequestWithURL:url];
     [request setHTTPMethod:@"GET"];
     
-    [[NSURLSession.sharedSession dataTaskWithRequest:request
-                                   completionHandler:^(NSData * _Nullable data,
-                                                       NSURLResponse * _Nullable response,
-                                                       NSError * _Nullable connectionError) {
-                                       if (data.length > 0 && connectionError == nil)
-                                       {
-                                           NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                  options:0
-                                                                                                    error:NULL];
-                                           successBlock(result);
-                                       }
-                                       else if (connectionError != nil) {
-                                           failureBlock(connectionError);
-                                       }
-                                   }] resume];
+    NSURLSessionDataTask *task = [manager dataTaskWithRequest:request
+                                               uploadProgress:nil
+                                             downloadProgress:nil
+                                            completionHandler:^(NSURLResponse * _Nonnull response, id _Nullable responseObject, NSError * _Nullable connectionError) {
+                                                if (connectionError == nil) {
+                                                    NSDictionary *result = nil;
+                                                    if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                                                        result = responseObject;
+                                                    }
+                                                    successBlock(result);
+                                                } else {
+                                                    failureBlock(connectionError);
+                                                }
+
+                                            }];
+    [task resume];
 }
 
 #pragma mark - Refresh methods
