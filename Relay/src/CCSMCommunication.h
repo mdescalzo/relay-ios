@@ -9,15 +9,13 @@
 #ifndef CCSMCommunication_h
 #define CCSMCommunication_h
 
-//#import <Foundation/Foundation.h>
+@import Foundation;
 
 @class SignalRecipient;
 
 @interface CCSMCommManager : NSObject
 
 +(void)refreshCCSMData;
-//+(void)refreshCCSMUsers;
-//+(void)refreshCCSMTags;
 
 +(void)requestLogin:(NSString *_Nonnull)userName
              orgName:(NSString *_Nonnull)orgName
@@ -49,6 +47,14 @@
 +(void)requestAccountCreationWithUserDict:(NSDictionary *_Nonnull)userDict
                                     token:(NSString *_Nonnull)token
                                completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock;
+
++(void)requestPasswordAccountCreationWithFullName:(NSString *_Nonnull)fullName
+                                         tagSlugh:(NSString *_Nonnull)tagSlug
+                                         password:(NSString *_Nonnull)password
+                                            email:(NSString *_Nonnull)emailAddress
+                                            phone:(NSString *_Nullable)phoneNumber
+                                            token:(NSString *_Nonnull)token
+                                       completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock;
 
 +(void)sendDeviceProvisioningRequestWithPayload:(NSDictionary *_Nonnull)payload;
 
