@@ -375,7 +375,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 {
         NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
         if (recipientDict) {
-            SignalRecipient *recipient = [self recipientFromDictionary:recipientDict transaction:transaction];
+            [self recipientFromDictionary:recipientDict transaction:transaction];
         }
 }
 

@@ -388,7 +388,9 @@ typedef enum : NSUInteger {
     [self toggleObservers:YES];
 
     // Triggering modified notification renders "call notification" when leaving full screen call view
-    [self.thread touch];
+    [self.editingDatabaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        [self.thread touchWithTransaction:transaction];
+    }];
 
     // restart any animations that were stopped e.g. while inspecting the contact info screens.
     [self startExpirationTimerAnimations];
