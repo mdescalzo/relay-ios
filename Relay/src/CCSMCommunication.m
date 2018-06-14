@@ -694,12 +694,12 @@
 
 #pragma mark - Public account creation
 +(void)requestPasswordAccountCreationWithFullName:(NSString *_Nonnull)fullName
-                                         tagSlugh:(NSString *_Nonnull)tagSlug
+                                         tagSlug:(NSString *_Nonnull)tagSlug
                                          password:(NSString *_Nonnull)password
                                             email:(NSString *_Nonnull)emailAddress
                                             phone:(NSString *_Nullable)phoneNumber
                                             token:(NSString *_Nonnull)token
-                                       completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock
+                                       completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error, NSDictionary *_Nullable payload))completionBlock
 {
     // Build the payload
     NSDictionary *payload = @{ @"fullname" : fullName,
@@ -737,14 +737,15 @@
                     NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
                     DDLogDebug(@"Request Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
                     DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
-                    
+
+                    NSDictionary *result = nil;
+                    if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                        result = responseObject;
+                    }
+
                     if (connectionError != nil) {
-                        completionBlock(NO, connectionError);
+                        completionBlock(NO, connectionError, result);
                     } else if (HTTPresponse.statusCode >= 200 && HTTPresponse.statusCode <= 204) { // SUCCESS!
-                        NSDictionary *result = nil;
-                        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                            result = responseObject;
-                        }
                         
                         NSString *userSlug = [result objectForKey:@"nametag"];
                         NSString *orgSlug = [result objectForKey:@"orgslug"];
@@ -754,12 +755,12 @@
                         [CCSMStorage.sharedInstance setSessionToken:sessionToken];
                         Environment.preferences.passwordAuth = YES;
                         
-                        completionBlock(YES, nil);
+                        completionBlock(YES, nil, result);
                     } else { // Connection good, error from server 
                         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                                              code:HTTPresponse.statusCode
                                                          userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
-                        completionBlock(false, error);
+                        completionBlock(false, error, result);
                     }
                     
 

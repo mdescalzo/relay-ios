@@ -9,8 +9,6 @@
 #ifndef CCSMCommunication_h
 #define CCSMCommunication_h
 
-@import Foundation;
-
 @class SignalRecipient;
 
 @interface CCSMCommManager : NSObject
@@ -49,12 +47,12 @@
                                completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock;
 
 +(void)requestPasswordAccountCreationWithFullName:(NSString *_Nonnull)fullName
-                                         tagSlugh:(NSString *_Nonnull)tagSlug
+                                         tagSlug:(NSString *_Nonnull)tagSlug
                                          password:(NSString *_Nonnull)password
                                             email:(NSString *_Nonnull)emailAddress
                                             phone:(NSString *_Nullable)phoneNumber
                                             token:(NSString *_Nonnull)token
-                                       completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error))completionBlock;
+                                       completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error, NSDictionary *_Nullable payload))completionBlock;
 
 +(void)sendDeviceProvisioningRequestWithPayload:(NSDictionary *_Nonnull)payload;
 

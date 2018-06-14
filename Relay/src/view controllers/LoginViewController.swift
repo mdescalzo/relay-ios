@@ -29,7 +29,7 @@ class LoginViewController: UITableViewController {
         
         // Localize the things
         self.usernameTextField.placeholder = NSLocalizedString("ENTER_USERNAME_LABEL", comment: "")
-        self.organizationTextField.placeholder = NSLocalizedString("Enter Organization", comment: "")
+        self.organizationTextField.placeholder = NSLocalizedString("Enter Organization (Optional)", comment: "")
         self.loginButton.titleLabel?.text = NSLocalizedString("SUBMIT", comment: "")
         self.loginButton.titleLabel?.text = NSLocalizedString("CREATE_ACCOUNT_BUTTON", comment: "")
     }
