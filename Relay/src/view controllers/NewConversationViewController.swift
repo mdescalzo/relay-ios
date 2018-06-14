@@ -445,6 +445,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             // If not, add self and run again
             var pretty = results.object(forKey: "pretty") as! String
             let mySlug = TSAccountManager.sharedInstance().myself?.flTag.slug
+            let myself = TSAccountManager.sharedInstance().myself
             pretty.append(" + @\(mySlug!)")
             
             CCSMCommManager.asyncTagLookup(with: pretty, success: { newResults in

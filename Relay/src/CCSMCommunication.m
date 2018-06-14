@@ -693,6 +693,80 @@
 }
 
 #pragma mark - Public account creation
++(void)requestPasswordAccountCreationWithFullName:(NSString *_Nonnull)fullName
+                                         tagSlug:(NSString *_Nonnull)tagSlug
+                                         password:(NSString *_Nonnull)password
+                                            email:(NSString *_Nonnull)emailAddress
+                                            phone:(NSString *_Nullable)phoneNumber
+                                            token:(NSString *_Nonnull)token
+                                       completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error, NSDictionary *_Nullable payload))completionBlock
+{
+    // Build the payload
+    NSDictionary *payload = @{ @"fullname" : fullName,
+                               @"tag_slug" :tagSlug,
+                               @"email" : emailAddress,
+                               @"password" : password,
+                               @"captcha" : token
+                               };
+    if (phoneNumber.length > 0) {
+        NSMutableDictionary *tmp = [payload mutableCopy];
+        [tmp setObject:phoneNumber forKey:@"phone"];
+        payload = [NSDictionary dictionaryWithDictionary:tmp];
+    }
+
+    // URL...
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/join/", FLHomeURL];
+    NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+    // Build request...
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"https://app.forsta.io/join" forHTTPHeaderField:@"Referer"];
+    NSData *bodyData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
+    [request setHTTPBody:bodyData];
+    
+    // Do the deed...
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:config];
+
+    [[manager dataTaskWithRequest:request
+                  uploadProgress:nil
+                downloadProgress:nil
+                completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable connectionError) {
+                    NSHTTPURLResponse *HTTPresponse = (NSHTTPURLResponse *)response;
+                    DDLogDebug(@"Request Account Creation - Server response code: %ld", (long)HTTPresponse.statusCode);
+                    DDLogDebug(@"%@",[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]);
+
+                    NSDictionary *result = nil;
+                    if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                        result = responseObject;
+                    }
+
+                    if (connectionError != nil) {
+                        completionBlock(NO, connectionError, result);
+                    } else if (HTTPresponse.statusCode >= 200 && HTTPresponse.statusCode <= 204) { // SUCCESS!
+                        
+                        NSString *userSlug = [result objectForKey:@"nametag"];
+                        NSString *orgSlug = [result objectForKey:@"orgslug"];
+                        NSString *sessionToken = [result objectForKey:@"jwt"];
+                        [CCSMStorage.sharedInstance setOrgName:orgSlug];
+                        [CCSMStorage.sharedInstance setUserName:userSlug];
+                        [CCSMStorage.sharedInstance setSessionToken:sessionToken];
+                        Environment.preferences.passwordAuth = YES;
+                        
+                        completionBlock(YES, nil, result);
+                    } else { // Connection good, error from server 
+                        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                             code:HTTPresponse.statusCode
+                                                         userInfo:@{NSLocalizedDescriptionKey:[NSHTTPURLResponse localizedStringForStatusCode:HTTPresponse.statusCode]}];
+                        completionBlock(false, error, result);
+                    }
+                    
+
+                }] resume];
+}
+
 +(void)requestAccountCreationWithUserDict:(NSDictionary *)userDict
                                     token:(NSString *)token
                                completion:(void (^)(BOOL success, NSError *error))completionBlock
