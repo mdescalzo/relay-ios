@@ -87,8 +87,13 @@ class LoginViewController: UITableViewController {
         if self.isValidOrg(org: self.organizationTextField.text!) && self.isValidUsername(username: self.usernameTextField.text!) {
             self.startSpinner()
             
+            var org = self.organizationTextField.text
+            if org?.count == 0 {
+                org = "forsta"
+            }
+            
             CCSMCommManager.requestLogin(self.usernameTextField.text!,
-                                         orgName: self.organizationTextField.text!,
+                                         orgName: org!,
                                          success: {
                                             self.stopSpinner()
                                             self.proceedWithSMSAuth()
@@ -109,7 +114,8 @@ class LoginViewController: UITableViewController {
     // MARK: - Helpers
     private func isValidOrg(org: String) -> Bool {
         // TODO: Someday apply regex here for more thorough validation
-        return (org.count > 0)
+//        return (org.count > 0)
+        return true
     }
     
     private func isValidUsername(username: String) -> Bool {
