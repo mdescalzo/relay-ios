@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.5.0]
+### Updated
+- StorageManager: separated read and read/write operations onto their own connections
+- StorageManager: removed redundent methods, added optional context property to interface
+- New account creation switch to password authenticated accounts
+### Fixed
+- Fixed crash caused by inproper notification handling between new conversation and main thread views
+### Added
+- Support for password authenticated accounts
+
 ## [1.4.8]
 ### Updated
 - Converted NewThreadViewController to Swift
@@ -131,6 +141,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.5.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.0
 [1.4.8]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.8
 [1.4.7]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.7
 [1.4.6]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.6
