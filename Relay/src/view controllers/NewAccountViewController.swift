@@ -42,7 +42,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
         
         self.nameTextField.placeholder = NSLocalizedString("Enter Name", comment: "")
         self.usernameTextField.placeholder = NSLocalizedString("Enter Username", comment: "")
-        self.mobileNumberTextField.placeholder = NSLocalizedString("Enter Phone Number", comment: "")
+        self.mobileNumberTextField.placeholder = NSLocalizedString("Enter Phone Number (Optional)", comment: "")
         self.emailTextField.placeholder = NSLocalizedString("Enter Email Address", comment: "")
         self.password1TextField.placeholder = NSLocalizedString("Enter Password", comment: "")
         self.password2TextField.placeholder = NSLocalizedString("Confirm Password", comment: "")
@@ -75,7 +75,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func didPressSubmit(_ sender: UIButton) {
         
         self.startSpinner()
-        self.infoLabel.text = NSLocalizedString("Creating new account...", comment: "")
+        self.updateInfoLabel(text: NSLocalizedString("Creating new account...", comment: ""))
         self.setupReCaptcha()
         
         // Make the recaptcha call...
@@ -105,12 +105,10 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
                                                                                     self.stopSpinner()
                                                                                     
                                                                                     if success {
-                                                                                        DispatchQueue.main.async {
-                                                                                            self.infoLabel.text = NSLocalizedString("Account creation successful!", comment: "")
-                                                                                            self.accountCreationSucceeded()
-                                                                                        }
+                                                                                        self.updateInfoLabel(text: NSLocalizedString("Account creation successful!", comment: ""))
+                                                                                        self.accountCreationSucceeded()
                                                                                     } else {
-                                                                                        self.infoLabel.text = ""
+                                                                                        self.updateInfoLabel(text: "")
                                                                                         let dictionary = payload! as NSDictionary
                                                                                         
                                                                                         var title: String = ""
@@ -175,7 +173,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
     }
     
     
-     // MARK: - Navigation
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "mainSegue" {
             // Save the passwordAuth property
@@ -191,7 +189,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
             }
         }
     }
-
+    
     private func proceedToMain() {
         DispatchQueue.global(qos: .default).async {
             TSSocketManager.becomeActiveFromForeground()
@@ -199,7 +197,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
         }
         self.performSegue(withIdentifier: "mainSegue", sender: self)
     }
-
+    
     
     // MARK: - Helper methods
     private func accountCreationSucceeded() {
@@ -208,18 +206,17 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
         let orgName = CCSMStorage.sharedInstance().getOrgName()!
         let userName = CCSMStorage.sharedInstance().getUserName()!
         
-        self.infoLabel.text = NSLocalizedString("Authenticating...", comment: "")
-
+        self.updateInfoLabel(text: NSLocalizedString("Authenticating...", comment: ""))
+        
         CCSMCommManager.authenticate(withPayload: [ "fq_tag": "@\(userName):\(orgName)",
             "password": self.password1TextField.text! ]) { (success, error) in
                 self.stopSpinner()
-                DispatchQueue.main.async {
-                    self.infoLabel.text = NSLocalizedString("", comment: "")
-                }
+                self.updateInfoLabel(text: NSLocalizedString("", comment: ""))
                 
                 if success {
-                    self.infoLabel.text = NSLocalizedString("Registering device.", comment: "")
-
+                    
+                    self.updateInfoLabel(text: NSLocalizedString("Registering device.", comment: ""))
+                    
                     FLDeviceRegistrationService.sharedInstance().registerWithTSS { error in
                         if error == nil {
                             // Success!
@@ -235,7 +232,7 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
                                                               style: .default,
                                                               handler: nil))
                                 self.navigationController?.present(alert, animated: true, completion: {
-                                    self.infoLabel.text = ""
+                                    self.updateInfoLabel(text: "")
                                     self.stopSpinner()
                                 })
                             }
@@ -246,8 +243,14 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
                     self.presentAlertWithMessage(title: "Authentication failed.", message: String(describing: error?.localizedDescription))
                 }
         }
-
-
+        
+        
+    }
+    
+    private func updateInfoLabel(text: String?) {
+        DispatchQueue.main.async {
+            self.infoLabel.text = text
+        }
     }
     
     private func updateSubmitButton() {
@@ -258,11 +261,15 @@ class NewAccountViewController: UITableViewController, UITextFieldDelegate {
             (self.password1TextField.text?.count)! > 7 &&
             self.password1TextField.text == self.password2TextField.text)
         {
-            self.submitButton.isEnabled = true
-            self.submitButton.alpha = 1.0
+            DispatchQueue.main.async {
+                self.submitButton.isEnabled = true
+                self.submitButton.alpha = 1.0
+            }
         } else {
-            self.submitButton.isEnabled = false
-            self.submitButton.alpha = 0.5
+            DispatchQueue.main.async {
+                self.submitButton.isEnabled = false
+                self.submitButton.alpha = 0.5
+            }
         }
     }
     
