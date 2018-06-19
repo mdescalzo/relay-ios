@@ -1,3 +1,0 @@
-[submodule "Carthage"]
-	path = Carthage
-	url = https://github.com/WhisperSystems/Signal-Carthage.git

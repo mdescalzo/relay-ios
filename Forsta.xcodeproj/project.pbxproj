@@ -4356,6 +4356,7 @@
 				89BF8206C5A256227EB0EB8C /* [CP] Copy Pods Resources */,
 				7D4A3AE71F1693930023C29B /* [Carthage] Copy Frameworks */,
 				7D4A3AE81F1693930023C29B /* Fabric start */,
+				58766D6CEE4F36608EB55840 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4379,6 +4380,7 @@
 				697B8CE9DD615771382AAB55 /* [CP] Copy Pods Resources */,
 				7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */,
 				7DCFFE901F0EE4490003CD95 /* Fabric start */,
+				92C51D95D2D8C41C93B7888C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4402,6 +4404,7 @@
 				3465F381B1856CC06933B3A8 /* [CP] Copy Pods Resources */,
 				451DE9EE1DC1546A00810E42 /* [Carthage] Copy Frameworks */,
 				7DB8FEDD1F06E8160031BA89 /* Fabric start */,
+				43762FE289E951A82FDF9984 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4424,6 +4427,7 @@
 				D221A0A7169C9E5F00537ABF /* Resources */,
 				F76686434770E2BBEBD9665A /* [CP] Copy Pods Resources */,
 				451DE9FB1DC18D4500810E42 /* [Carthage] Copy Frameworks */,
+				0D33BDB535741DCDEEA7D019 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4786,6 +4790,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0D33BDB535741DCDEEA7D019 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-frameworks.sh",
+				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-SignalTests/Pods-Common-SignalTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1460156AE01E0DB0949D61FE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4846,6 +4868,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		43762FE289E951A82FDF9984 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-frameworks.sh",
+				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		451DE9EE1DC1546A00810E42 /* [Carthage] Copy Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4875,6 +4915,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+		58766D6CEE4F36608EB55840 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-frameworks.sh",
+				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		6565655F4068F9E5CDC5687F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5048,6 +5106,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayDev/Pods-Common-RelayDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		92C51D95D2D8C41C93B7888C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-frameworks.sh",
+				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-RelayStage/Pods-Common-RelayStage-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C56AFA6802F66B7A80DE8503 /* [CP] Check Pods Manifest.lock */ = {
