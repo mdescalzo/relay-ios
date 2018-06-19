@@ -32,7 +32,7 @@
 #import "TSDatabaseView.h"
 #import "TSStorageManager.h"
 #import "UIUtil.h"
-#import "VersionMigrations.h"
+//#import "VersionMigrations.h"
 #import "TSAttachmentPointer.h"
 #import "TSCall.h"
 #import "TSContentAdapters.h"
