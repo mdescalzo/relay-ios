@@ -386,7 +386,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 
 -(NSDictionary *)dictionaryForRecipientId:(NSString *)uid
 {
-    NSAssert(![NSThread isMainThread], @"Must NOT access recipientFromCCSMWithID on main thread!");
+    NSAssert(![NSThread isMainThread], @"Must NOT access dictionaryForRecipientId on main thread!");
     __block NSDictionary *result = nil;
     
     if (uid) {

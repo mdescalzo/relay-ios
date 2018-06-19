@@ -14,7 +14,7 @@
 
 @interface TSStorageManager (SignedPreKeyStore) <SignedPreKeyStore>
 
-- (SignedPreKeyRecord *)generateRandomSignedRecordWithProtocolContext:(nullable id)protocolContext;
+- (SignedPreKeyRecord *_Nonnull)generateRandomSignedRecordWithProtocolContext:(nullable id)protocolContext;
 
 
 @end

@@ -76,7 +76,7 @@
     
     if (!preKeyRecord) {
         @throw
-        [NSException exceptionWithName:InvalidKeyIdException reason:@"No key found matching key id" userInfo:@{}];
+        [NSException exceptionWithName:InvalidKeyIdException reason:[NSString stringWithFormat:@"No prekey found matching key id: %d", preKeyId] userInfo:@{}];
     } else {
         return preKeyRecord;
     }
@@ -90,6 +90,7 @@
 
 - (void)storePreKey:(int)preKeyId preKeyRecord:(PreKeyRecord *)record withProtocolContext:(nullable id)protocolContext{
     [self setObject:record forKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withProtocolContext:protocolContext];
+    DDLogDebug(@"Stored prekey id: %d", preKeyId);
 }
 
 
@@ -112,6 +113,7 @@
 
 - (void)removePreKey:(int)preKeyId withProtocolContext:(nullable id)protocolContext{
     [self removeObjectForKey:[self keyFromInt:preKeyId] inCollection:TSStorageManagerPreKeyStoreCollection withProtocolContext:protocolContext];
+    DDLogDebug(@"Removed prekey id: %d", preKeyId);
 }
 
 @end
