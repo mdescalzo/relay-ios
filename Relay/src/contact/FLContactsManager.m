@@ -156,8 +156,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     if (recipient.uniqueId.length > 0) {
         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
         if (recipient.flTag) {
-            [recipient.flTag saveWithTransaction:transaction];
-            [self.tagCache setObject:recipient.flTag forKey:recipient.flTag.uniqueId];
+            [self saveTag:recipient.flTag withTransaction:transaction];
         }
         [recipient saveWithTransaction:transaction];
         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
@@ -326,7 +325,8 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     
     recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
     if (!recipient.isActive) {
-        [Environment.getCurrent.contactsManager removeRecipient:recipient withTransaction:transaction];
+        DDLogInfo(@"Removing inactive user: %@", uid);
+        [self removeRecipient:recipient withTransaction:transaction];
         return nil;
     }
     
@@ -355,12 +355,17 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         if (recipient.flTag.orgSlug.length == 0) {
             recipient.flTag.orgSlug = recipient.orgSlug;
         }
-        [self saveTag:recipient.flTag withTransaction:transaction];
+        if (recipient.flTag == nil) {
+            DDLogError(@"Attempt to create recipient with a nil tag!  Recipient: %@", recipient);
+            [self removeRecipient:recipient withTransaction:transaction];
+            return nil;
+        } else {
+            [self saveRecipient:recipient withTransaction:transaction];
+        }
     } else {
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
 
-    [self saveRecipient:recipient withTransaction:transaction];
     
     return recipient;
 }
