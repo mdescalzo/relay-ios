@@ -6,7 +6,8 @@ abstract_target 'Common' do
     
     pod 'Fabric', :inhibit_warnings => true
     pod 'Crashlytics', :inhibit_warnings => true
-    pod 'OpenSSL',                     '~> 1.0.210', :inhibit_warnings => true
+#    pod 'OpenSSL',                     '~> 1.0.210', :inhibit_warnings => true
+    pod 'GRKOpenSSLFramework' 
     pod 'PastelogKit',                 git: 'git@github.com:ForstaLabs/PastelogKit.git', branch: 'gitHubAuthToken'# , :inhibit_warnings => true
     pod 'FFCircularProgressView',      '~> 0.5', :inhibit_warnings => true
     pod 'SCWaveformView',              '~> 1.0', :inhibit_warnings => true
