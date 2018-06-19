@@ -156,8 +156,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     if (recipient.uniqueId.length > 0) {
         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
         if (recipient.flTag) {
-            [recipient.flTag saveWithTransaction:transaction];
-            [self.tagCache setObject:recipient.flTag forKey:recipient.flTag.uniqueId];
+            [self saveTag:recipient.flTag withTransaction:transaction];
         }
         [recipient saveWithTransaction:transaction];
         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
