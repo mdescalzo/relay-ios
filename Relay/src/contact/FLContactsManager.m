@@ -355,7 +355,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
         if (recipient.flTag.orgSlug.length == 0) {
             recipient.flTag.orgSlug = recipient.orgSlug;
         }
-        [self saveTag:recipient.flTag withTransaction:transaction];
+        if (recipient.flTag == nil) {
+            DDLogError(@"Recipient created with a nil tag!  Recipient: %@", recipient);
+        } else {
+            [self saveTag:recipient.flTag withTransaction:transaction];
+        }
     } else {
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
