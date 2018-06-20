@@ -17,7 +17,7 @@ abstract_target 'Common' do
     pod 'AFNetworking',                '~> 3.2.0', :inhibit_warnings => true
     pod 'AxolotlKit',                  git: 'https://github.com/signalapp/SignalProtocolKit.git'
     pod 'Mantle',                      '~> 2.1.0', :inhibit_warnings => true
-    pod 'YapDatabase/SQLCipher', git: 'git@github.com:yapstudios/YapDatabase.git', branch: 'master', :inhibit_warnings => true
+    pod 'YapDatabase/SQLCipher',       '~> 3.1', :inhibit_warnings => true
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :commit => '877ac7438be3ad0b45ef5ca3969574e4b97112bf', :inhibit_warnings => true
     pod 'libPhoneNumber-iOS',          '~> 0.9.12', :inhibit_warnings => true
     pod 'SAMKeychain',                 '~> 1.5.2', :inhibit_warnings => true

@@ -32,7 +32,7 @@
 //            generatedAt:[NSDate date]];
 //}
 
--(SignedPreKeyRecord *)generateRandomSignedRecordWithProtocolContext:(id)protocolContext
+- (SignedPreKeyRecord *_Nonnull)generateRandomSignedRecordWithProtocolContext:(nullable id)protocolContext
 {
     ECKeyPair *keyPair = [Curve25519 generateKeyPair];
     
@@ -60,7 +60,7 @@
     
     if (!preKeyRecord) {
         @throw
-        [NSException exceptionWithName:InvalidKeyIdException reason:@"No key found matching key id" userInfo:@{}];
+        [NSException exceptionWithName:InvalidKeyIdException reason:[NSString stringWithFormat:@"No signed prekey found matching key id: %d", signedPreKeyId] userInfo:@{}];
     } else {
         return preKeyRecord;
     }
@@ -87,6 +87,7 @@
            inCollection:TSStorageManagerSignedPreKeyStoreCollection
     withProtocolContext:transaction];
     }];
+    DDLogDebug(@"Stored signed prekey id: %d", signedPreKeyId);
 }
 
 - (BOOL)containsSignedPreKey:(int)signedPreKeyId {
@@ -106,6 +107,8 @@
                     inCollection:TSStorageManagerSignedPreKeyStoreCollection
              withProtocolContext:transaction];
     }];
+    DDLogDebug(@"Removed signed prekey id: %d", signedPrekeyId);
+
 }
 
 @end
