@@ -787,12 +787,22 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(void)markAllRead
 {
-    for (NSInteger section=0 ; section < [self.tableView numberOfSections] ; section++) {
-        for (NSInteger row=0 ; row < [self.tableView numberOfRowsInSection:section] ; row++) {
-            TSThread *thread = [self threadForIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
-            [thread markAllAsRead];
+    [self.editingDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+        __block NSMutableArray *unreadMessages = [NSMutableArray new];
+        [transaction enumerateKeysAndObjectsInCollection:[TSIncomingMessage collection] usingBlock:^(NSString * _Nonnull key, id  _Nonnull object, BOOL * _Nonnull stop) {
+            if ([object isKindOfClass:[TSIncomingMessage class]]) {
+                TSIncomingMessage *message = (TSIncomingMessage *)object;
+                if (!message.read) {
+                    [unreadMessages addObject:message];
+                }
+            }
+        }];
+        if (unreadMessages.count > 0) {
+            for (TSIncomingMessage *message in unreadMessages) {
+                [message markAsReadLocallyWithTransaction:transaction];
+            }
         }
-    }
+    }];
     DDLogInfo(@"Marked all threads as read.");
 }
 
