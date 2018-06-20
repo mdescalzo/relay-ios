@@ -106,6 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
         textMessage.attributedTextBody = outgoingMessage.attributedTextBody;
         textMessage.expiresInSeconds = outgoingMessage.expiresInSeconds;
         textMessage.messageState = TSOutgoingMessageStateDelivered;
+        textMessage.messageType = @"content";
         [textMessage save];
     }
     [outgoingMessage save];

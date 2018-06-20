@@ -693,6 +693,7 @@ NS_ASSUME_NONNULL_BEGIN
             textMessage.plainTextBody = incomingMessage.plainTextBody;
             textMessage.attributedTextBody = incomingMessage.attributedTextBody;
             textMessage.expiresInSeconds = dataMessage.expireTimer;
+            textMessage.messageType = @"content";
             [textMessage saveWithTransaction:transaction];
         }
         [incomingMessage saveWithTransaction:transaction];
