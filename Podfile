@@ -27,6 +27,7 @@ abstract_target 'Common' do
     pod 'NSAttributedString-DDHTML', git: 'git@github.com:ForstaLabs/NSAttributedString-DDHTML.git', branch: 'master', :inhibit_warnings => true
     pod 'iRate', '~> 1.12', :inhibit_warnings => true
     pod 'ReCaptcha'
+    pod 'GoogleWebRTC'
     
     target 'Relay' do
     end
