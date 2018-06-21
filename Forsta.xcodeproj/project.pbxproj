@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0984B6938D240B5E264F7A64 /* Pods_Common_Relay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47DA84917CBFE0A0C40800ED /* Pods_Common_Relay.framework */; };
 		341BB7491DB727EE001E2975 /* JSQMediaItem+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */; };
 		450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
@@ -59,7 +58,6 @@
 		45F2B1971D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1951D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib */; };
 		45F2B1981D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1961D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib */; };
 		4CE0E3771B954546007210CF /* TSAnimatedAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */; };
-		64197E45ED086B7920E46CF3 /* Pods_Common_RelayStage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD827C939D562611F503B331 /* Pods_Common_RelayStage.framework */; };
 		701231B518ECAA4500D456C4 /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
 		70377AAB1918450100CAF501 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70377AAA1918450100CAF501 /* MobileCoreServices.framework */; };
 		7038632718F70C0700D4A43F /* CryptoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632418F70C0700D4A43F /* CryptoTools.m */; };
@@ -68,7 +66,6 @@
 		70B800AF190C548D0042E3F0 /* libspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B800AC190C54790042E3F0 /* libspeex.a */; };
 		70B8FEE21909FE360042E3F0 /* 171756__nenadsimic__picked-coin-echo-2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 70B8FEE11909FE360042E3F0 /* 171756__nenadsimic__picked-coin-echo-2.wav */; };
 		70BAFD5D190584BE00FA5E0B /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
-		768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 768A1A2A17FC9CD300E00ED8 /* libz.dylib */; };
 		76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		76EB054018170B33006006FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB03C318170B33006006FC /* AppDelegate.m */; };
 		76EB057218170B33006006FC /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
@@ -174,16 +171,15 @@
 		7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
 		7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0E3C201F71A9F500EBC5FE /* ImagePreviewViewController.m */; };
-		7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D15D1071FDB03D600C2F39E /* liblibPhoneNumber-iOS.a */; };
 		7D1DBECA20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
 		7D1DBECB20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
 		7D1DBECC20C0650200B39333 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBEC920C0650200B39333 /* NavigationController.swift */; };
 		7D1DBECE20C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
 		7D1DBECF20C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
 		7D1DBED020C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
-		7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
-		7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DE9F11DC1585F00810E42 /* PromiseKit.framework */; };
 		7D301E9A20DC43DE00B928E5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D301E9920DC43DD00B928E5 /* libz.tbd */; };
+		7D301E9D20DC463800B928E5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D301E9920DC43DD00B928E5 /* libz.tbd */; };
+		7D301E9E20DC467C00B928E5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D301E9920DC43DD00B928E5 /* libz.tbd */; };
 		7D3A672E1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
 		7D3A672F1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
 		7D3A67301FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */; };
@@ -822,8 +818,6 @@
 		7D613B001F9018FE00E18D29 /* NSDate+millisecondTimeStamp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139811F90161500E18D29 /* NSDate+millisecondTimeStamp.mm */; };
 		7D613B011F9018FE00E18D29 /* NSDate+millisecondTimeStamp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139811F90161500E18D29 /* NSDate+millisecondTimeStamp.mm */; };
 		7D613B031F90190000E18D29 /* NSDate+millisecondTimeStamp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139811F90161500E18D29 /* NSDate+millisecondTimeStamp.mm */; };
-		7D613B0A1F901BF200E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B0B1F901BF200E18D29 /* libSocketRocket.a */; };
-		7D613B0C1F901BFE00E18D29 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D613B0D1F901BFE00E18D29 /* libSocketRocket.a */; };
 		7D6FB266201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
 		7D6FB267201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
 		7D6FB268201FC76000619C67 /* FLAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6FB265201FC76000619C67 /* FLAnnouncementViewController.m */; };
@@ -1067,7 +1061,6 @@
 		7DCFFE4C1F0EE4490003CD95 /* libspandsp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B800A3190C529C0042E3F0 /* libspandsp.a */; };
 		7DCFFE4D1F0EE4490003CD95 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EB5ABC1884C002007CBB57 /* MessageUI.framework */; };
 		7DCFFE4E1F0EE4490003CD95 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
-		7DCFFE4F1F0EE4490003CD95 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 768A1A2A17FC9CD300E00ED8 /* libz.dylib */; };
 		7DCFFE501F0EE4490003CD95 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		7DCFFE511F0EE4490003CD95 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
 		7DCFFE521F0EE4490003CD95 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4D17A0652C000A904E /* AddressBook.framework */; };
@@ -2443,9 +2436,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D21E03320976DF800EDED0C /* PromiseKit.framework in Frameworks */,
+				7D301E9D20DC463800B928E5 /* libz.tbd in Frameworks */,
 				7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */,
-				7D613B0A1F901BF200E18D29 /* libSocketRocket.a in Frameworks */,
 				7DCFFE451F0EE4490003CD95 /* Photos.framework in Frameworks */,
 				7DCFFE461F0EE4490003CD95 /* ContactsUI.framework in Frameworks */,
 				7DCFFE471F0EE4490003CD95 /* PushKit.framework in Frameworks */,
@@ -2456,7 +2448,6 @@
 				7DCFFE4C1F0EE4490003CD95 /* libspandsp.a in Frameworks */,
 				7DCFFE4D1F0EE4490003CD95 /* MessageUI.framework in Frameworks */,
 				7DCFFE4E1F0EE4490003CD95 /* MediaPlayer.framework in Frameworks */,
-				7DCFFE4F1F0EE4490003CD95 /* libz.dylib in Frameworks */,
 				7DCFFE501F0EE4490003CD95 /* QuartzCore.framework in Frameworks */,
 				7DCFFE511F0EE4490003CD95 /* Security.framework in Frameworks */,
 				7DCFFE521F0EE4490003CD95 /* AddressBook.framework in Frameworks */,
@@ -2468,7 +2459,6 @@
 				7DCFFE581F0EE4490003CD95 /* Foundation.framework in Frameworks */,
 				7DCFFE591F0EE4490003CD95 /* AVFoundation.framework in Frameworks */,
 				7DCFFE5A1F0EE4490003CD95 /* AudioToolbox.framework in Frameworks */,
-				64197E45ED086B7920E46CF3 /* Pods_Common_RelayStage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2476,10 +2466,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D21E03420976E0800EDED0C /* PromiseKit.framework in Frameworks */,
+				7D301E9E20DC467C00B928E5 /* libz.tbd in Frameworks */,
 				7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */,
-				7D15D1061FDB03D600C2F39E /* liblibPhoneNumber-iOS.a in Frameworks */,
-				7D613B0C1F901BFE00E18D29 /* libSocketRocket.a in Frameworks */,
 				4520D8D51D417D8E00123472 /* Photos.framework in Frameworks */,
 				B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */,
 				B6FE7EB71ADD62FA00A6D22F /* PushKit.framework in Frameworks */,
@@ -2490,7 +2478,6 @@
 				70B800A6190C53180042E3F0 /* libspandsp.a in Frameworks */,
 				B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */,
 				76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */,
-				768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */,
 				A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */,
 				A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */,
 				A1C32D5117A06544000A904E /* AddressBook.framework in Frameworks */,
@@ -2502,7 +2489,6 @@
 				D221A090169C9E5E00537ABF /* Foundation.framework in Frameworks */,
 				D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */,
 				D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */,
-				0984B6938D240B5E264F7A64 /* Pods_Common_Relay.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4327,7 +4313,6 @@
 				7DCFFD681F0EE4490003CD95 /* Sources */,
 				7DCFFE421F0EE4490003CD95 /* Frameworks */,
 				7DCFFE5C1F0EE4490003CD95 /* Resources */,
-				7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */,
 				7DCFFE901F0EE4490003CD95 /* Fabric start */,
 				92C51D95D2D8C41C93B7888C /* [CP] Embed Pods Frameworks */,
 			);
@@ -4350,7 +4335,6 @@
 				D221A085169C9E5E00537ABF /* Sources */,
 				D221A086169C9E5E00537ABF /* Frameworks */,
 				D221A087169C9E5E00537ABF /* Resources */,
-				451DE9EE1DC1546A00810E42 /* [Carthage] Copy Frameworks */,
 				7DB8FEDD1F06E8160031BA89 /* Fabric start */,
 				43762FE289E951A82FDF9984 /* [CP] Embed Pods Frameworks */,
 			);
@@ -4895,21 +4879,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Common-Relay/Pods-Common-Relay-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		451DE9EE1DC1546A00810E42 /* [Carthage] Copy Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
-			);
-			name = "[Carthage] Copy Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
 		451DE9FB1DC18D4500810E42 /* [Carthage] Copy Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5040,21 +5009,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "APIKey=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricAPIKey`\nBuildSecret=`defaults read ${PROJECT_DIR}/Relay/Forsta-values FabricBuildSecret`\n\"${PODS_ROOT}/Fabric/run\" ${APIKey} ${BuildSecret}";
-		};
-		7DCFFE8F1F0EE4490003CD95 /* [Carthage] Copy Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
-			);
-			name = "[Carthage] Copy Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		7DCFFE901F0EE4490003CD95 /* Fabric start */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6598,7 +6552,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
@@ -6664,9 +6618,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "Relay/src/Signal-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Relay-Swift.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_AFTER_BUILD = YES;
