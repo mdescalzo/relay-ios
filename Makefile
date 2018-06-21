@@ -18,7 +18,6 @@ dependencies:
 	cd $(WORKING_DIR) && \
 		git submodule update --init
 		pod install
-		carthage build --platform iOS
 
 build: dependencies
 	cd $(WORKING_DIR) && \
@@ -32,7 +31,6 @@ test: optional_early_start_simulator
 
 clean:
 	cd $(WORKING_DIR) && \
-		rm -fr Carthage/Build && \
 		$(XCODE_BUILD) \
 			clean | xcpretty
 

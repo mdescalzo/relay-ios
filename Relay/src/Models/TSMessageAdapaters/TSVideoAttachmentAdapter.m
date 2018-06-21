@@ -7,10 +7,11 @@
 #import "TSMessagesManager.h"
 #import "TSStorageManager+keyingMaterial.h"
 #import "JSQMediaItem+OWS.h"
-#import <FFCircularProgressView.h>
+#import <FFCircularProgressView/FFCircularProgressView.h>
 #import <JSQMessagesViewController/JSQMessagesMediaViewBubbleImageMasker.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import <SCWaveformView.h>
+#import <SCWaveformView/SCWaveformView.h>
+
 #define AUDIO_BAR_HEIGHT 36
 
 @interface TSVideoAttachmentAdapter ()

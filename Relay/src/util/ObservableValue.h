@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "CollapsingFutures.h"
+#import <TwistedOakCollapsingFutures/CollapsingFutures.h>
 #import "Queue.h"
 
 typedef void (^LatestValueCallback)(id latestValue);

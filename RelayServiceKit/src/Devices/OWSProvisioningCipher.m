@@ -10,6 +10,7 @@
 #import "AES-CBC.h"
 #import "AxolotlExceptions.h"
 
+#import <CommonCrypto/CommonCrypto.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

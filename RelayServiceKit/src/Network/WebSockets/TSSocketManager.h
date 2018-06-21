@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SRWebSocket.h"
+#import <SocketRocket/SocketRocket.h>
 
 typedef enum : NSUInteger {
     kSocketStatusOpen,
