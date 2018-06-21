@@ -24,12 +24,7 @@
 #import "CCSMStorage.h"
 #import "ForstaColors.h"
 #import "Environment.h"
-#import "YapDatabase.h"
 #import "TSDatabaseView.h"
-#import <YapDatabase/YapDatabaseViewChange.h>
-#import <YapDatabase/YapDatabaseViewConnection.h>
-#import <YapDatabase/YapDatabaseFilteredView.h>
-#import <YapDatabase/YapDatabaseFilteredViewTransaction.h>
 #import "FLDirectoryCell.h"
 #import "UIFont+OWS.h"
 #import "TSSocketManager.h"

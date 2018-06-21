@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "CollapsingFutures.h"
+#import <TwistedOakCollapsingFutures/CollapsingFutures.h>
 #import "StreamPair.h"
 
 /// Describes a location to which you can connect and communicate.

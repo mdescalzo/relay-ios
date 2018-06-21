@@ -52,9 +52,10 @@
 #import "TSInvalidIdentityKeySendingErrorMessage.h"
 #import "TSMessagesManager.h"
 #import "TSNetworkManager.h"
+#import <YapDatabase/YapDatabase.h>
 #import <YapDatabase/YapDatabaseViewChange.h>
 #import <YapDatabase/YapDatabaseViewConnection.h>
-#import <JSQSystemSoundPlayer.h>
+#import <JSQSystemSoundPlayer/JSQSystemSoundPlayer.h>
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
 #import "FLControlMessage.h"

@@ -47,7 +47,7 @@
 #import <JSQMessagesViewController/JSQMessagesTimestampFormatter.h>
 #import <JSQMessagesViewController/JSQSystemSoundPlayer+JSQMessages.h>
 #import <JSQMessagesViewController/UIColor+JSQMessages.h>
-#import <JSQSystemSoundPlayer.h>
+#import <JSQSystemSoundPlayer/JSQSystemSoundPlayer.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "MimeTypeUtil.h"
 #import "OWSAttachmentsProcessor.h"

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 //
 
-#import <CollapsingFutures.h>
+#import <TwistedOakCollapsingFutures/CollapsingFutures.h>
 #import <PushKit/PushKit.h>
 #import <UIKit/UIApplication.h>
 

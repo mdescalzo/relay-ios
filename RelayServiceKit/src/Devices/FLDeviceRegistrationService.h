@@ -6,7 +6,7 @@
 //  Copyright © 2018 Forsta. All rights reserved.
 //
 
-#import "SRWebSocket.h"
+#import <SocketRocket/SocketRocket.h>
 
 @import Foundation;
 
