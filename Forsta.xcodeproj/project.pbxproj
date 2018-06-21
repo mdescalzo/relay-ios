@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13880E44B9EF0A044B0816D3 /* Pods_Common_RelayStage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD827C939D562611F503B331 /* Pods_Common_RelayStage.framework */; };
 		341BB7491DB727EE001E2975 /* JSQMediaItem+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */; };
 		450873C31D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
@@ -57,6 +58,7 @@
 		45F2B1941D9C9F48000D2C69 /* OWSOutgoingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F2B1931D9C9F48000D2C69 /* OWSOutgoingMessageCollectionViewCell.m */; };
 		45F2B1971D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1951D9CA207000D2C69 /* OWSIncomingMessageCollectionViewCell.xib */; };
 		45F2B1981D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F2B1961D9CA207000D2C69 /* OWSOutgoingMessageCollectionViewCell.xib */; };
+		4AD5EC737E0DA81A5921C070 /* Pods_Common_Relay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47DA84917CBFE0A0C40800ED /* Pods_Common_Relay.framework */; };
 		4CE0E3771B954546007210CF /* TSAnimatedAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */; };
 		701231B518ECAA4500D456C4 /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
 		70377AAB1918450100CAF501 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70377AAA1918450100CAF501 /* MobileCoreServices.framework */; };
@@ -1443,6 +1445,7 @@
 		E1CD329618BCFF9900B1A496 /* SoundInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CD329518BCFF9900B1A496 /* SoundInstance.m */; };
 		EF764C351DB67CC5000D9A87 /* UIViewController+CameraPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */; };
 		F44C8FB073F65C830B188C53 /* libPods-SignalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */; };
+		FB239C30C82B63759248ECBF /* Pods_Common_RelayDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D3625E7F213FC5E74DF218 /* Pods_Common_RelayDev.framework */; };
 		FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
 		FC3BD9881A30A790005B96BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3BD9871A30A790005B96BB /* Social.framework */; };
@@ -2429,6 +2432,7 @@
 				7D4A3AB11F1693930023C29B /* Foundation.framework in Frameworks */,
 				7D4A3AB21F1693930023C29B /* AVFoundation.framework in Frameworks */,
 				7D4A3AB31F1693930023C29B /* AudioToolbox.framework in Frameworks */,
+				FB239C30C82B63759248ECBF /* Pods_Common_RelayDev.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2459,6 +2463,7 @@
 				7DCFFE581F0EE4490003CD95 /* Foundation.framework in Frameworks */,
 				7DCFFE591F0EE4490003CD95 /* AVFoundation.framework in Frameworks */,
 				7DCFFE5A1F0EE4490003CD95 /* AudioToolbox.framework in Frameworks */,
+				13880E44B9EF0A044B0816D3 /* Pods_Common_RelayStage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2489,6 +2494,7 @@
 				D221A090169C9E5E00537ABF /* Foundation.framework in Frameworks */,
 				D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */,
 				D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */,
+				4AD5EC737E0DA81A5921C070 /* Pods_Common_Relay.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
