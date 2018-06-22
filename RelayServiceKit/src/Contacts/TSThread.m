@@ -240,6 +240,13 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
     return _participants;
 }
 
+-(void)setParticipants:(NSArray<NSString *> *)value
+{
+    if (![value isEqual:_participants]) {
+        _participants = [value copy];
+    }
+}
+
 -(NSString *)displayName
 {
     NSString *myID = TSAccountManager.sharedInstance.myself.uniqueId;
