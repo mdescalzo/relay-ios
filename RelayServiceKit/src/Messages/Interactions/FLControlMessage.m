@@ -14,10 +14,10 @@
 -(instancetype _Nonnull)initControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *)controlType;
 {
     if (self = (FLControlMessage *)[super initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                   inThread:thread messageBody:nil
+                                                   inThread:thread
+                                                messageBody:nil
                                               attachmentIds:[NSMutableArray new]]) {;
         self.messageType = @"control";
-        self.uniqueId = [[NSUUID UUID] UUIDString];
         _controlMessageType = controlType;
         self.body = [FLCCSMJSONService blobFromMessage:self];
     }
