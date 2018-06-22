@@ -4,8 +4,6 @@
 
 #import "OWSContactAvatarBuilder.h"
 #import "FLContactsManager.h"
-#import "TSContactThread.h"
-#import "TSGroupThread.h"
 #import "TSThread.h"
 #import "UIColor+OWS.h"
 #import "UIFont+OWS.h"

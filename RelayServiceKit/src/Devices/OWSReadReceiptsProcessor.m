@@ -4,7 +4,6 @@
 #import "OWSDisappearingMessagesJob.h"
 #import "OWSReadReceipt.h"
 #import "OWSSignalServiceProtos.pb.h"
-#import "TSContactThread.h"
 #import "TSIncomingMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN

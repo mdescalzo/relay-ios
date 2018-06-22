@@ -19,7 +19,6 @@
 #import "OWSFingerprintBuilder.h"
 #import "FLMessageSender.h"
 #import "OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.h"
-#import "TSGroupThread.h"
 #import "TSOutgoingMessage.h"
 #import "TSStorageManager.h"
 #import "TSAccountManager.h"

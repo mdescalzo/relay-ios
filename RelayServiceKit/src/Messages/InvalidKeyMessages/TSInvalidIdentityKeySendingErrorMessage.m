@@ -5,7 +5,6 @@
 #import "OWSFingerprint.h"
 #import "PreKeyBundle+jsonDict.h"
 #import "SignalRecipient.h"
-#import "TSContactThread.h"
 #import "TSErrorMessage_privateConstructor.h"
 #import "TSOutgoingMessage.h"
 #import "TSStorageManager+IdentityKeyStore.h"

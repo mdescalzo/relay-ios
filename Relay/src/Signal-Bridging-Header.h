@@ -13,7 +13,6 @@
 #import "OWSError.h"
 #import "OWSMessageSender.h"
 #import "TSAccountManager.h"
-#import "TSContactThread.h"
 #import "TSErrorMessage.h"
 #import "TSInfoMessage.h"
 #import "TSStorageManager+IdentityKeyStore.h"
