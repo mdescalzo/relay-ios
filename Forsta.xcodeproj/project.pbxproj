@@ -182,6 +182,12 @@
 		7D1DBECE20C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
 		7D1DBECF20C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
 		7D1DBED020C1A39B00B39333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */; };
+		7D2E00D820DD96FF005C587C /* IncomingControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E00D720DD96FF005C587C /* IncomingControlMessage.swift */; };
+		7D2E00D920DD96FF005C587C /* IncomingControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E00D720DD96FF005C587C /* IncomingControlMessage.swift */; };
+		7D2E00DA20DD96FF005C587C /* IncomingControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E00D720DD96FF005C587C /* IncomingControlMessage.swift */; };
+		7D2E00DC20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E00DB20DDA21B005C587C /* OutgoingControlMessage.swift */; };
+		7D2E00DD20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E00DB20DDA21B005C587C /* OutgoingControlMessage.swift */; };
+		7D2E00DE20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2E00DB20DDA21B005C587C /* OutgoingControlMessage.swift */; };
 		7D301E9A20DC43DE00B928E5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D301E9920DC43DD00B928E5 /* libz.tbd */; };
 		7D301E9D20DC463800B928E5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D301E9920DC43DD00B928E5 /* libz.tbd */; };
 		7D301E9E20DC467C00B928E5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D301E9920DC43DD00B928E5 /* libz.tbd */; };
@@ -1812,6 +1818,8 @@
 		7D1B5A2E20DD46BA002D57A9 /* ControlMessageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlMessageManager.swift; sourceTree = "<group>"; };
 		7D1DBEC920C0650200B39333 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		7D1DBECD20C1A39B00B39333 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		7D2E00D720DD96FF005C587C /* IncomingControlMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingControlMessage.swift; sourceTree = "<group>"; };
+		7D2E00DB20DDA21B005C587C /* OutgoingControlMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingControlMessage.swift; sourceTree = "<group>"; };
 		7D301E9920DC43DD00B928E5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		7D3A672C1FE8708900C4096A /* AppearanceSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppearanceSettingsViewController.h; sourceTree = "<group>"; };
 		7D3A672D1FE8708900C4096A /* AppearanceSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppearanceSettingsViewController.m; sourceTree = "<group>"; };
@@ -3374,6 +3382,8 @@
 		7D6138CB1F90161500E18D29 /* Interactions */ = {
 			isa = PBXGroup;
 			children = (
+				7D2E00D720DD96FF005C587C /* IncomingControlMessage.swift */,
+				7D2E00DB20DDA21B005C587C /* OutgoingControlMessage.swift */,
 				7D7DBFCD1F97E24000860D35 /* FLControlMessage.h */,
 				7D7DBFCC1F97E24000860D35 /* FLControlMessage.m */,
 				7D6138CC1F90161500E18D29 /* OWSDisappearingConfigurationUpdateInfoMessage.h */,
@@ -5198,6 +5208,7 @@
 				7D613A511F9017F900E18D29 /* TSCall.m in Sources */,
 				7D4A39ED1F1693930023C29B /* EvpMessageDigest.m in Sources */,
 				7D4A39EE1F1693930023C29B /* CyclicalBuffer.m in Sources */,
+				7D2E00D820DD96FF005C587C /* IncomingControlMessage.swift in Sources */,
 				7D4A39EF1F1693930023C29B /* NumberUtil.m in Sources */,
 				7D4A39F01F1693930023C29B /* TSPhotoAdapter.m in Sources */,
 				7D613AB21F90186200E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
@@ -5410,6 +5421,7 @@
 				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
 				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
 				7D7DBFCE1F97E24100860D35 /* FLControlMessage.m in Sources */,
+				7D2E00DC20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */,
 				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
 				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
@@ -5541,6 +5553,7 @@
 				7DCFFD901F0EE4490003CD95 /* TSMessageAdapter.m in Sources */,
 				7DCFFD911F0EE4490003CD95 /* AboutTableViewController.m in Sources */,
 				7D6139941F90163700E18D29 /* OWSDispatch.m in Sources */,
+				7D2E00D920DD96FF005C587C /* IncomingControlMessage.swift in Sources */,
 				7D6139D21F90176E00E18D29 /* OWSContactsOutputStream.m in Sources */,
 				7D613A041F9017A800E18D29 /* OWSIncomingSentMessageTranscript.m in Sources */,
 				7DCFFD921F0EE4490003CD95 /* StretchFactorController.m in Sources */,
@@ -5753,6 +5766,7 @@
 				7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */,
 				7D7DBFCF1F97E24100860D35 /* FLControlMessage.m in Sources */,
 				7DCFFE241F0EE4490003CD95 /* SignalKeyingStorage.m in Sources */,
+				7D2E00DD20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */,
 				7D613AB31F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
 				7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */,
 				7DCFFE261F0EE4490003CD95 /* CallConnectUtil_Initiator.m in Sources */,
@@ -5884,6 +5898,7 @@
 				FCD274EB1A5AFDDB00202277 /* AboutTableViewController.m in Sources */,
 				E197B61618BBEC1A00F073E5 /* StretchFactorController.m in Sources */,
 				7D6139931F90163700E18D29 /* OWSDispatch.m in Sources */,
+				7D2E00DA20DD96FF005C587C /* IncomingControlMessage.swift in Sources */,
 				7D6139D31F90176F00E18D29 /* OWSContactsOutputStream.m in Sources */,
 				7D613A051F9017A900E18D29 /* OWSIncomingSentMessageTranscript.m in Sources */,
 				701231B518ECAA4500D456C4 /* EvpMessageDigest.m in Sources */,
@@ -6096,6 +6111,7 @@
 				76EB057218170B33006006FC /* RecentCall.m in Sources */,
 				7D7DBFD01F97E24100860D35 /* FLControlMessage.m in Sources */,
 				B6B1013C196D213F007E3930 /* SignalKeyingStorage.m in Sources */,
+				7D2E00DE20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */,
 				7D613AB41F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
 				76EB059218170B33006006FC /* UnrecognizedRequestFailure.m in Sources */,
 				76EB05F818170B33006006FC /* CallConnectUtil_Initiator.m in Sources */,
