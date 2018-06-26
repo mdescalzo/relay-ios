@@ -9,11 +9,18 @@
 import UIKit
 import CocoaLumberjack
 
+enum AuthType: Int {
+    case sms = 1
+    case password = 2
+    case totp = 3
+}
+
 class ValidationViewController: UITableViewController {
     
-    var passwoordAuth: Bool = false
+    var authType: AuthType = .sms
     
-    @IBOutlet private weak var validationCodeTextField: UITextField!
+    @IBOutlet private weak var validationCode1TextField: UITextField!
+    @IBOutlet private weak var validationCode2TextField: UITextField!
     @IBOutlet private weak var submitButton: UIButton!
     @IBOutlet private weak var spinner: UIActivityIndicatorView!
     @IBOutlet private weak var resendCodeButton: UIButton!
@@ -32,33 +39,27 @@ class ValidationViewController: UITableViewController {
         self.navigationController?.navigationBar.isHidden = false
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateInfoLabel),
+                                               selector: #selector(updateInfoLabelWithNotification),
                                                name: NSNotification.Name(rawValue: FLRegistrationStatusUpdateNotification),
                                                object: nil)
         self.infoLabel.text = ""
         
-        if passwoordAuth {
-            self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_PASSWORD", comment: "")
-            self.validationCodeTextField.keyboardType = .default
-            self.validationCodeTextField.isSecureTextEntry = true
-            self.resendCodeButton.setTitle(NSLocalizedString("FORGOT_PASSWORD", comment: ""), for: .normal)
-            self.resendCodeButton.isEnabled = true
-            self.resendCodeButton.isHidden = false
-        } else {
-            self.validationCodeTextField.placeholder = NSLocalizedString("ENTER_VALIDATION_CODE", comment: "")
-            self.validationCodeTextField.isSecureTextEntry = false
-            self.validationCodeTextField.keyboardType = .numberPad
-            self.resendCodeButton.setTitle(NSLocalizedString("RESEND_CODE", comment: ""), for: .normal)
-            self.resendCodeButton.isEnabled = true
-            self.resendCodeButton.isHidden = false
-            
+        switch self.authType {
+        case .sms:
+            self.configForSMSAuth()
+        case .password:
+            self.configForPasswordAuth()
+        case .totp:
+            self.configForTOTPAuth()
         }
+        
         self.submitButton.titleLabel?.text = NSLocalizedString("SUBMIT_BUTTON_LABEL", comment: "")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.validationCodeTextField.resignFirstResponder()
+        self.validationCode1TextField.resignFirstResponder()
+        self.validationCode2TextField.resignFirstResponder()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -71,12 +72,54 @@ class ValidationViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Setup
+    private func configForSMSAuth() {
+        self.validationCode1TextField.placeholder = NSLocalizedString("ENTER_VALIDATION_CODE", comment: "")
+        self.validationCode1TextField.isSecureTextEntry = false
+        self.validationCode1TextField.keyboardType = .numberPad
+        self.resendCodeButton.setTitle(NSLocalizedString("RESEND_CODE", comment: ""), for: .normal)
+        self.resendCodeButton.isEnabled = true
+        self.resendCodeButton.isHidden = false
+    }
+
+    private func configForPasswordAuth() {
+        self.validationCode1TextField.placeholder = NSLocalizedString("ENTER_PASSWORD", comment: "")
+        self.validationCode1TextField.keyboardType = .default
+        self.validationCode1TextField.isSecureTextEntry = true
+        self.resendCodeButton.setTitle(NSLocalizedString("FORGOT_PASSWORD", comment: ""), for: .normal)
+        self.resendCodeButton.isEnabled = true
+        self.resendCodeButton.isHidden = false
+    }
+
+    private func configForTOTPAuth() {
+        self.validationCode1TextField.placeholder = NSLocalizedString("ENTER_PASSWORD", comment: "")
+        self.validationCode1TextField.keyboardType = .default
+        self.validationCode1TextField.isSecureTextEntry = true
+        self.validationCode2TextField.placeholder = NSLocalizedString("ENTER_VALIDATION_CODE", comment: "")
+        self.validationCode2TextField.isSecureTextEntry = false
+        self.validationCode2TextField.keyboardType = .numberPad
+        self.resendCodeButton.setTitle(NSLocalizedString("FORGOT_PASSWORD", comment: ""), for: .normal)
+        self.resendCodeButton.isEnabled = true
+        self.resendCodeButton.isHidden = false
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 3 {
+            if self.authType == .totp {
+                return super .tableView(tableView, heightForRowAt: indexPath)
+            } else {
+                return 0
+            }
+        } else {
+            return super .tableView(tableView, heightForRowAt: indexPath)
+        }
+    }
+
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "mainSegue" {
             // Save the passwordAuth property
-            Environment.preferences().passwordAuth = self.passwoordAuth;
             
             DispatchQueue.main.async {
                 let snc = segue.destination as! NavigationController
@@ -102,7 +145,7 @@ class ValidationViewController: UITableViewController {
     // MARK: - Actions
     @IBAction func onValidationButtonTap(sender: Any) {
         self.startSpinner()
-
+        
         DispatchQueue.main.async {
             self.infoLabel.text = NSLocalizedString("Validating...", comment: "")
         }
@@ -110,72 +153,83 @@ class ValidationViewController: UITableViewController {
         let orgName = CCSMStorage.sharedInstance().getOrgName()!
         let userName = CCSMStorage.sharedInstance().getUserName()!
         // Password Auth required
-        if passwoordAuth {
-            CCSMCommManager.authenticate(withPayload: [ "fq_tag": "@\(userName):\(orgName)",
-                                                        "password": self.validationCodeTextField.text! ]) { (success, error) in
-                                                            self.stopSpinner()
-                                                            DispatchQueue.main.async {
-                                                                self.infoLabel.text = NSLocalizedString("", comment: "")
-                                                            }
-                                                            
-                                                            if success {
-                                                                self.ccsmValidationSucceeded()
-                                                            } else {
-                                                                DDLogInfo("Password Validation failed with error: \(String(describing: error?.localizedDescription))")
-                                                                self.ccsmValidationFailed()
-                                                            }
-            }
-        } else {
-            // SMS Auth required
-            CCSMCommManager.authenticate(withPayload: [ "authtoken": "\(orgName):\(userName):\(self.validationCodeTextField.text!)" ]) { (success, error) in
-                self.stopSpinner()
-                if success {
-                    self.ccsmValidationSucceeded()
-                } else {
-                    DDLogInfo("SMS Validation failed with error: \(String(describing: error?.localizedDescription))")
-                    self.ccsmValidationFailed()
-                }
+        var payload: NSDictionary
+        
+        switch self.authType {
+        case .sms:
+            payload = [ "authtoken": "\(orgName):\(userName):\(self.validationCode1TextField.text!)" ]
+        case .password:
+            payload = [ "fq_tag": "@\(userName):\(orgName)",
+                "password": self.validationCode1TextField.text! ]
+        case .totp:
+            payload = [ "fq_tag": "@\(userName):\(orgName)",
+                "password": self.validationCode1TextField.text!,
+                "otp" : self.validationCode2TextField.text! ]
+       }
+        
+        CCSMCommManager.authenticate(withPayload: payload as! [AnyHashable : Any]) { (success, error) in
+            self.stopSpinner()
+            self.updateInfoLabel(string: "")
+            
+            if success {
+                self.ccsmValidationSucceeded()
+            } else {
+                DDLogInfo("Password Validation failed with error: \(String(describing: error?.localizedDescription))")
+                self.ccsmValidationFailed()
             }
         }
+
     }
     
     @IBAction func onResendCodeButtonTap(sender: Any) {
-        if passwoordAuth {
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: NSLocalizedString("RESETTING_PASSWORD", comment: ""), message: NSLocalizedString("ARE_YOU_SURE", comment: ""), preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("NO", comment: ""), style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: ""), style: .destructive, handler: { (action) in
-                    
-                    CCSMCommManager.requestPasswordReset(forUser: CCSMStorage.sharedInstance().getUserName(),
-                                                         org: CCSMStorage.sharedInstance().getOrgName(),
-                                                         completion: { (success, error) in
-                                                            if success {
-                                                                DDLogInfo("Password reset request successful sent.")
-                                                                self.presentAlertWithMessage(message: "Password reset request successful.\nPlease check your email or SMS for instructions.")
-                                                            } else {
-                                                                DDLogDebug("Password reset request failed with error:\(String(describing: error?.localizedDescription))")
-                                                                self.presentAlertWithMessage(message: "Password reset request failed.\n\(String(describing: error?.localizedDescription))")
-                                                            }
-                    })
-                }))
-                self.navigationController?.present(alert, animated: true, completion: nil)
-            }
-        } else {
-            CCSMCommManager.requestLogin(CCSMStorage.sharedInstance().getUserName(),
-                                         orgName: CCSMStorage.sharedInstance().getOrgName(),
-                                         success: {
-                                            DDLogInfo("Request for code resend succeeded.")
-                                            DispatchQueue.main.async {
-                                                self.validationCodeTextField.text = ""
-                                            }
-            },
-                                         failure: { error in
-                                            DDLogDebug("Request for code resend failed.  Error: \(String(describing: error?.localizedDescription))");
-            })
+        switch self.authType {
+        case .sms:
+            self.smsResend()
+        case .password:
+            self.forgotPassword()
+        case .totp:
+            self.forgotPassword()
         }
     }
     
     // MARK: - Comms
+    private func smsResend() {
+        CCSMCommManager.requestLogin(CCSMStorage.sharedInstance().getUserName(),
+                                     orgName: CCSMStorage.sharedInstance().getOrgName(),
+                                     success: {
+                                        DDLogInfo("Request for code resend succeeded.")
+                                        DispatchQueue.main.async {
+                                            self.validationCode1TextField.text = ""
+                                        }
+        },
+                                     failure: { error in
+                                        DDLogDebug("Request for code resend failed.  Error: \(String(describing: error?.localizedDescription))");
+        })
+
+    }
+    
+    private func forgotPassword() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: NSLocalizedString("RESETTING_PASSWORD", comment: ""), message: NSLocalizedString("ARE_YOU_SURE", comment: ""), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("NO", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: ""), style: .destructive, handler: { (action) in
+                
+                CCSMCommManager.requestPasswordReset(forUser: CCSMStorage.sharedInstance().getUserName(),
+                                                     org: CCSMStorage.sharedInstance().getOrgName(),
+                                                     completion: { (success, error) in
+                                                        if success {
+                                                            DDLogInfo("Password reset request successful sent.")
+                                                            self.presentAlertWithMessage(message: "Password reset request successful.\nPlease check your email or SMS for instructions.")
+                                                        } else {
+                                                            DDLogDebug("Password reset request failed with error:\(String(describing: error?.localizedDescription))")
+                                                            self.presentAlertWithMessage(message: "Password reset request failed.\n\(String(describing: error?.localizedDescription))")
+                                                        }
+                })
+            }))
+            self.navigationController?.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     private func ccsmValidationSucceeded() {
         // Check if registered and proceed to next storyboard accordingly
         if TSAccountManager.isRegistered() {
@@ -273,16 +327,20 @@ class ValidationViewController: UITableViewController {
     }
     
     // MARK: - Notificaton handling
-    func updateInfoLabel(notification: Notification) {
+    func updateInfoLabelWithNotification(notification: Notification) {
         let payload = notification.object as! NSDictionary
         let messageString = payload["message"] as! String
         
         if messageString.count == 0 {
             DDLogWarn("Empty registration status notification received.  Ignoring.")
         } else {
-            DispatchQueue.main.async {
-                self.infoLabel.text = messageString
-            }
+            self.updateInfoLabel(string: messageString)
+        }
+    }
+    
+    func updateInfoLabel(string: String) {
+        DispatchQueue.main.async {
+            self.infoLabel.text = string
         }
     }
     

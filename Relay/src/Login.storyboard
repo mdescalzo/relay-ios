@@ -590,6 +590,7 @@
                         <outlet property="usernameTextField" destination="qtm-Dd-xro" id="Zdp-Te-9GO"/>
                         <segue destination="Szf-PP-DHq" kind="show" identifier="smsAuthSegue" id="rTy-kv-9p5"/>
                         <segue destination="Szf-PP-DHq" kind="show" identifier="passwordAuthSegue" id="Vks-BD-c8d"/>
+                        <segue destination="Szf-PP-DHq" kind="show" identifier="totpAuthSegue" id="42O-oB-zpH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4a-zq-kfd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -657,8 +658,42 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="50" id="QLZ-gU-X8d">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="50" id="Oyh-gy-HmV">
                                         <rect key="frame" x="0.0" y="121" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oyh-gy-HmV" id="46F-Yw-Rrr">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqH-FE-IQU" userLabel="Line1">
+                                                    <rect key="frame" x="0.0" y="49.5" width="375" height="0.5"/>
+                                                    <color key="backgroundColor" red="0.75559091570000003" green="0.75556838510000002" blue="0.75558114050000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="a2B-oE-e5U"/>
+                                                    </constraints>
+                                                </view>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Validation Code" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="d1v-K2-QuZ">
+                                                    <rect key="frame" x="36" y="5" width="303" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="fL6-cl-WQN"/>
+                                                    </constraints>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="d1v-K2-QuZ" firstAttribute="centerY" secondItem="46F-Yw-Rrr" secondAttribute="centerY" id="3R9-Bg-LwG"/>
+                                                <constraint firstAttribute="bottom" secondItem="kqH-FE-IQU" secondAttribute="bottom" id="7iA-rs-XLZ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="d1v-K2-QuZ" secondAttribute="trailing" constant="20" id="7kj-wP-vMc"/>
+                                                <constraint firstAttribute="trailing" secondItem="kqH-FE-IQU" secondAttribute="trailing" id="cZd-zk-ecK"/>
+                                                <constraint firstItem="d1v-K2-QuZ" firstAttribute="leading" secondItem="46F-Yw-Rrr" secondAttribute="leadingMargin" constant="20" id="x3o-12-TOQ"/>
+                                                <constraint firstItem="kqH-FE-IQU" firstAttribute="leading" secondItem="46F-Yw-Rrr" secondAttribute="leading" id="xpT-XL-YZ7"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="50" id="QLZ-gU-X8d">
+                                        <rect key="frame" x="0.0" y="171" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QLZ-gU-X8d" id="a2i-X8-KKn">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -692,7 +727,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="75" id="6MC-Jp-xUn">
-                                        <rect key="frame" x="0.0" y="171" width="375" height="75"/>
+                                        <rect key="frame" x="0.0" y="221" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6MC-Jp-xUn" id="twX-zn-PdC">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
@@ -726,7 +761,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="60" id="cOF-OQ-xdu">
-                                        <rect key="frame" x="0.0" y="246" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="296" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cOF-OQ-xdu" id="GwF-Kk-1Kr">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -761,7 +796,8 @@
                         <outlet property="resendCodeButton" destination="2dy-2h-pS6" id="gOS-5t-oVp"/>
                         <outlet property="spinner" destination="PtZ-QA-yvi" id="lMs-Ou-4rj"/>
                         <outlet property="submitButton" destination="aZY-cX-jkb" id="x1W-JT-E68"/>
-                        <outlet property="validationCodeTextField" destination="Ndq-6v-QII" id="FZO-FJ-EWF"/>
+                        <outlet property="validationCode1TextField" destination="d1v-K2-QuZ" id="qXr-Tm-FTQ"/>
+                        <outlet property="validationCode2TextField" destination="Ndq-6v-QII" id="jUp-hy-fLK"/>
                         <segue destination="lHa-vW-cYk" kind="presentation" identifier="mainSegue" id="YmK-Xi-HW3"/>
                     </connections>
                 </tableViewController>
@@ -799,7 +835,7 @@
         <image name="Forsta_logo_blk_horiz" width="1510" height="525"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rTy-kv-9p5"/>
-        <segue reference="Pda-Xi-qnU"/>
+        <segue reference="Vks-BD-c8d"/>
+        <segue reference="YmK-Xi-HW3"/>
     </inferredMetricsTieBreakers>
 </document>
