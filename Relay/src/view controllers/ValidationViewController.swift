@@ -168,13 +168,13 @@ class ValidationViewController: UITableViewController {
        }
         
         CCSMCommManager.authenticate(withPayload: payload as! [AnyHashable : Any]) { (success, error) in
-            self.stopSpinner()
             self.updateInfoLabel(string: "")
             
             if success {
                 self.ccsmValidationSucceeded()
             } else {
                 DDLogInfo("Password Validation failed with error: \(String(describing: error?.localizedDescription))")
+                self.stopSpinner()
                 self.ccsmValidationFailed()
             }
         }
