@@ -8,11 +8,11 @@
 
 #import "OWSMessageSender.h"
 
-@class FLControlMessage;
+@class OutgoingControlMessage;
 
 @interface FLMessageSender : OWSMessageSender
 
--(void)sendControlMessage:(FLControlMessage *)message
+-(void)sendControlMessage:(OutgoingControlMessage *)message
              toRecipients:(NSCountedSet<NSString *> *)recipientIds
                   success:(void (^)())successHandler
                   failure:(void (^)(NSError *error))failureHandler;

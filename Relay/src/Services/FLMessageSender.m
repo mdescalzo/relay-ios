@@ -6,6 +6,7 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
+#import "Relay-Swift.h"
 #import "FLMessageSender.h"
 #import "FLCCSMJSONService.h"
 #import "CCSMStorage.h"
@@ -14,7 +15,6 @@
 #import "Environment.h"
 #import "OWSDispatch.h"
 #import "NSDate+millisecondTimeStamp.h"
-#import "FLControlMessage.h"
 
 @interface FLMessageSender()
 
@@ -24,7 +24,7 @@
 
 @implementation FLMessageSender
 
--(void)sendControlMessage:(FLControlMessage *)message
+-(void)sendControlMessage:(OutgoingControlMessage *)message
              toRecipients:(NSCountedSet<NSString *> *)recipientIds
                   success:(void (^)())successHandler
                   failure:(void (^)(NSError *error))failureHandler

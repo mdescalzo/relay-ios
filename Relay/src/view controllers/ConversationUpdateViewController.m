@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 //
 
+#import "Relay-Swift.h"
 #import "ConversationUpdateViewController.h"
 #import "Environment.h"
 #import "FunctionalUtil.h"
@@ -21,7 +22,6 @@
 #import "OWSMessageSender.h"
 #import "TSAccountManager.h"
 #import "FLDirectoryCell.h"
-#import "FLControlMessage.h"
 #import "TSInfoMessage.h"
 #import "OWSAvatarBuilder.h"
 
@@ -252,8 +252,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             NSString *customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
             
             // Send control message
-            FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
-                                                                                       ofType:FLControlMessageThreadUpdateKey];
+            OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
+                                                                                 controlType:FLControlMessageThreadUpdateKey];
             [Environment.getCurrent.messageSender sendControlMessage:message
                                                         toRecipients:[NSCountedSet setWithArray:self.thread.participants]
                                                              success:nil
@@ -285,8 +285,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                         [participants unionSet:newParticipants];
                         
                         // Send control message
-                        FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
-                                                                                                   ofType:FLControlMessageThreadUpdateKey];
+                        OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
+                                                                                             controlType:FLControlMessageThreadUpdateKey];
                         [Environment.getCurrent.messageSender sendControlMessage:message
                                                                     toRecipients:participants
                                                                          success:nil
@@ -341,9 +341,8 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                                     customMessage:customMessage] save];
             
             // Build control message
-            FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
-                                                                                       ofType:FLControlMessageThreadUpdateKey];
-            
+            OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
+                                                                                 controlType:FLControlMessageThreadUpdateKey];
             NSData *imageData = UIImagePNGRepresentation(self.thread.image);
             [Environment.getCurrent.messageSender sendAttachmentData:imageData
                                                             filename:@""

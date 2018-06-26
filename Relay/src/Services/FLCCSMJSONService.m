@@ -11,7 +11,6 @@
 #import "Environment.h"
 #import "FLCCSMJSONService.h"
 #import "TSOutgoingMessage.h"
-#import "FLControlMessage.h"
 #import "TSThread.h"
 #import "CCSMStorage.h"
 #import "DeviceTypes.h"
@@ -19,6 +18,8 @@
 #import "TSAttachmentPointer.h"
 #import "TSAttachmentStream.h"
 #import "OWSReadReceiptsMessage.h"
+
+#import "Relay-Swift.h"
 
 @interface FLCCSMJSONService()
 
@@ -174,7 +175,7 @@
     return [NSArray new];
 }
 
-+(NSArray *)arrayForTypeControlFromMessage:(FLControlMessage *)message
++(NSArray *)arrayForTypeControlFromMessage:(OutgoingControlMessage *)message
 {
     NSNumber *version = [NSNumber numberWithInt:FLBlobShapeRevision];
     NSString *userAgent = [DeviceTypes deviceModelName];

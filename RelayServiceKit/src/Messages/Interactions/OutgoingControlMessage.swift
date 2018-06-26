@@ -8,11 +8,11 @@
 
 import UIKit
 
-class OutgoingControlMessage: TSOutgoingMessage {
+@objc public class OutgoingControlMessage: TSOutgoingMessage {
     
-    let controlMessageType: String
+    @objc let controlMessageType: String
 
-    @objc required init(thread: TSThread, controlType: String) {
+    @objc required public init(thread: TSThread, controlType: String) {
 
         self.controlMessageType = controlType
 
@@ -22,31 +22,31 @@ class OutgoingControlMessage: TSOutgoingMessage {
         self.body = FLCCSMJSONService.blob(from: self)
     }
     
-    required init(coder: NSCoder) {
+    @objc required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    required init(dictionary dictionaryValue: [AnyHashable : Any]!) throws {
+    @objc required public init(dictionary dictionaryValue: [AnyHashable : Any]!) throws {
         fatalError("init(dictionary:) has not been implemented")
     }
     
-    override var plainTextBody: String?
+    @objc override public var plainTextBody: String?
     {
         get { return nil }
         set { }
     }
 
-    override var attributedTextBody: NSAttributedString?
+    @objc override public var attributedTextBody: NSAttributedString?
     {
         get { return nil }
         set { }
     }
 
-    override func save() {
+    @objc override public func save() {
         return      // never save control messages
     }
 
-    override func save(with transaction: YapDatabaseReadWriteTransaction!) {
+    @objc override public func save(with transaction: YapDatabaseReadWriteTransaction!) {
         return      // never save control messages
     }
 }

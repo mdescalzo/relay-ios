@@ -32,11 +32,9 @@
 #import "TSDatabaseView.h"
 #import "TSStorageManager.h"
 #import "UIUtil.h"
-//#import "VersionMigrations.h"
 #import "TSAttachmentPointer.h"
 #import "TSCall.h"
 #import "TSContentAdapters.h"
-//#import "TSErrorMessage.h"
 #import "TSThread.h"
 #import "TSIncomingMessage.h"
 #import "TSInfoMessage.h"
@@ -52,16 +50,15 @@
 #import "TSInvalidIdentityKeySendingErrorMessage.h"
 #import "TSMessagesManager.h"
 #import "TSNetworkManager.h"
-#import <YapDatabase/YapDatabase.h>
-#import <YapDatabase/YapDatabaseViewChange.h>
-#import <YapDatabase/YapDatabaseViewConnection.h>
-#import <JSQSystemSoundPlayer/JSQSystemSoundPlayer.h>
 #import "MessagesViewController.h"
 #import "SecurityUtils.h"
-#import "FLControlMessage.h"
 #import "OWSDispatch.h"
 #import "FLAnnouncementViewController.h"
+#include "InboxTableViewCell.h"
 
+
+@import YapDatabase;
+@import JSQSystemSoundPlayer;
 @import Photos;
 
 #define CELL_HEIGHT 72.0f
@@ -379,8 +376,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         [validationAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YES", nil)
                                                             style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction * _Nonnull action) {
-                                                              FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:thread
-                                                                                                                                         ofType:FLControlMessageThreadUpdateKey];
+                                                              OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:thread
+                                                                                                                                   controlType:FLControlMessageThreadUpdateKey];
                                                               [Environment.getCurrent.messageSender sendControlMessage:message
                                                                                                           toRecipients:[NSCountedSet setWithArray:thread.participants]
                                                                                                                success:^{
@@ -507,11 +504,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             : [thread unarchiveThreadWithTransaction:transaction];
         }];
         
-        FLControlMessage *controlMessage = nil;
+        OutgoingControlMessage *controlMessage = nil;
         if (viewingThreadsIn == kInboxState) {
-            controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadArchiveKey];
+            controlMessage = [[OutgoingControlMessage alloc] initWithThread:thread controlType:FLControlMessageThreadArchiveKey];
         } else if (viewingThreadsIn == kArchiveState) {
-            controlMessage = [[FLControlMessage alloc] initControlMessageForThread:thread ofType:FLControlMessageThreadRestoreKey];
+            controlMessage = [[OutgoingControlMessage alloc] initWithThread:thread controlType:FLControlMessageThreadRestoreKey];
         }
         if (controlMessage) {
             dispatch_async([OWSDispatch sendingQueue], ^{

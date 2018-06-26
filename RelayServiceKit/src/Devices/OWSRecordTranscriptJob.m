@@ -1,6 +1,7 @@
 //  Created by Michael Kirk on 9/23/16.
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
+#import "Relay-Swift.h"
 #import "OWSRecordTranscriptJob.h"
 #import "OWSAttachmentsProcessor.h"
 #import "OWSDisappearingMessagesJob.h"
@@ -11,7 +12,6 @@
 #import "TSThread.h"
 #import "NSDate+millisecondTimeStamp.h"
 #import "FLCCSMJSONService.h"
-#import "FLControlMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,7 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Intercept and attach forstaPayload
     __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
-    
     
     TSThread *thread = transcript.thread;
     [thread updateWithPayload:jsonPayload];

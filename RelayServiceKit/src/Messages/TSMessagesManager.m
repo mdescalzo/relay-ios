@@ -1,6 +1,7 @@
 //  Created by Frederic Jacobs on 11/11/14.
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 
+#import "Relay-Swift.h"
 #import "TSMessagesManager.h"
 #import "ContactsManagerProtocol.h"
 #import "MimeTypeUtil.h"
@@ -28,20 +29,14 @@
 #import "TSNetworkManager.h"
 #import "TSStorageHeaders.h"
 #import "TextSecureKitEnv.h"
-#import <AxolotlKit/AxolotlExceptions.h>
-#import <AxolotlKit/SessionCipher.h>
-#import "FLControlMessage.h"
 #import "FLCCSMJSONService.h"
 #import "FLDeviceRegistrationService.h"
+
+@import AxolotlKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TSMessagesManager ()
-
-//@property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
-//@property (nonatomic, readonly) TSStorageManager *storageManager;
-//@property (nonatomic, readonly) OWSMessageSender *messageSender;
-//@property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 
 @property NSUInteger preKeyRetries;
 

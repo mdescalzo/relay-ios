@@ -19,12 +19,6 @@
 
 @interface TSMessageAdapter ()
 
-// ---
-
-@property (nonatomic, retain) TSContactThread *thread;
-
-// OR for groups
-
 @property (nonatomic, copy) NSString *senderId;
 @property (nonatomic, copy) NSString *senderDisplayName;
 

@@ -1,6 +1,7 @@
 //  Created by Michael Kirk on 9/21/16.
 //  Copyright © 2016 Open Whisper Systems. All rights reserved.
 
+#import "Relay-Swift.h"
 #import "ConversationSettingsViewController.h"
 #import "Environment.h"
 #import "FingerprintViewController.h"
@@ -23,7 +24,6 @@
 #import "TSStorageManager.h"
 #import "TSAccountManager.h"
 #import "TSThread.h"
-#import "FLControlMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -357,8 +357,8 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
     [self.thread.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self.thread removeParticipants:[NSSet setWithObject:TSAccountManager.sharedInstance.myself.flTag.uniqueId] transaction:transaction];
     } completionBlock:^{
-        FLControlMessage *message = [[FLControlMessage alloc] initControlMessageForThread:self.thread
-                                                                                   ofType:FLControlMessageThreadUpdateKey];
+        OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
+                                                                             controlType:FLControlMessageThreadUpdateKey];
         [Environment.getCurrent.messageSender sendMessage:message
                                                   success:^{
                                                       DDLogInfo(@"%@ Successfully left group.", self.tag);

@@ -8,11 +8,15 @@
 
 import UIKit
 
-class IncomingControlMessage: TSIncomingMessage {
+@objc public class IncomingControlMessage: TSIncomingMessage {
 
-    @objc required init?(thread: TSThread, author: String, payload: NSDictionary, attachments: [String]?) {
+    let controlMessageType: String
+    let attachmentPointers: Array<OWSSignalServiceProtosAttachmentPointer>?
+
+    @objc required public init?(thread: TSThread, author: String, payload: NSDictionary, attachments: Array<OWSSignalServiceProtosAttachmentPointer>?) {
         
         let messageType = payload.object(forKey: "messageType") as! String
+        
         if (messageType.count == 0) {
             DDLogError("Attempted to create control message with invalid payload.");
             return nil
@@ -30,23 +34,24 @@ class IncomingControlMessage: TSIncomingMessage {
             return nil
         }
         
+        attachmentPointers = attachments
+        controlMessageType = dataBlob.object(forKey: "control") as! String
+        
         super.init(timestamp: NSDate.ows_millisecondTimeStamp(),
                    in: thread,
                    authorId: author, messageBody: nil,
-                   attachmentIds: attachments!,
+                   attachmentIds: dataBlob.object(forKey: "attachments") as! [String],
                    expiresInSeconds: 0)
 
         self.messageType = "control"
         self.forstaPayload = payload.copy() as! NSMutableDictionary
     }
     
-    required init(coder: NSCoder) {
+    @objc required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    required init(dictionary dictionaryValue: [AnyHashable : Any]!) throws {
+    @objc required public init(dictionary dictionaryValue: [AnyHashable : Any]!) throws {
         fatalError("init(dictionary:) has not been implemented")
     }
-    
-    
 }

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 //
 
-#import <TwistedOakCollapsingFutures/CollapsingFutures.h>
-#import <PushKit/PushKit.h>
-#import <UIKit/UIApplication.h>
+@import PushKit;
+@import UIKit;
+@import TwistedOakCollapsingFutures;
 
 NS_ASSUME_NONNULL_BEGIN
 
