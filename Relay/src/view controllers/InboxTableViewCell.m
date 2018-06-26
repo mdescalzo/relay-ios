@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.timeLabel.attributedText = attributedDate;
         self.contactPictureView.circle = YES;
         
-        self.separatorInset = UIEdgeInsetsMake(0, _contactPictureView.frame.size.width * 1.5f, 0, 0);
+        self.separatorInset = UIEdgeInsetsMake(0, self.contactPictureView.frame.size.width * 1.5f, 0, 0);
 
         [self setUnreadMsgCount:unreadCount];
         self.hidden = NO;
@@ -99,21 +99,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateCellForUnreadMessage {
     dispatch_async(dispatch_get_main_queue(), ^{
-        _nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
-        _nameLabel.textColor    = [UIColor ows_blackColor];
-        _snippetLabel.font      = [UIFont ows_mediumFontWithSize:12];
-        _snippetLabel.textColor = [UIColor ows_blackColor];
-        _timeLabel.textColor    = [UIColor ows_materialBlueColor];
+        self.nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
+        self.nameLabel.textColor    = [UIColor ows_blackColor];
+        self.snippetLabel.font      = [UIFont ows_mediumFontWithSize:12];
+        self.snippetLabel.textColor = [UIColor ows_blackColor];
+        self.timeLabel.textColor    = [UIColor ows_materialBlueColor];
     });
 }
 
 - (void)updateCellForReadMessage {
     dispatch_async(dispatch_get_main_queue(), ^{
-        _nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
-        _nameLabel.textColor    = [UIColor ows_blackColor];
-        _snippetLabel.font      = [UIFont ows_regularFontWithSize:12];
-        _snippetLabel.textColor = [UIColor lightGrayColor];
-        _timeLabel.textColor    = [UIColor ows_darkGrayColor];
+        self.nameLabel.font         = [UIFont ows_boldFontWithSize:14.0f];
+        self.nameLabel.textColor    = [UIColor ows_blackColor];
+        self.snippetLabel.font      = [UIFont ows_regularFontWithSize:12];
+        self.snippetLabel.textColor = [UIColor lightGrayColor];
+        self.timeLabel.textColor    = [UIColor ows_darkGrayColor];
     });
 }
 
