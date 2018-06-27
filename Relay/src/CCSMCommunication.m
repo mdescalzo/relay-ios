@@ -41,7 +41,10 @@
             success:(void (^)())successBlock
             failure:(void (^)(NSError *error))failureBlock ;
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@/v1/login/send/%@/%@/?format=json", FLHomeURL, orgName, userName];
+    NSString *lowerUsername = userName.lowercaseString;
+    NSString *lowerOrgname = orgName.lowercaseString;
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/v1/login/send/%@/%@/?format=json", FLHomeURL, lowerOrgname, lowerUsername];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10];
     NSURLSession *sharedSession = NSURLSession.sharedSession;
@@ -59,8 +62,8 @@
                                            
                                            if (HTTPresponse.statusCode == 200) // SUCCESS!
                                            {
-                                               [Environment.getCurrent.ccsmStorage setOrgName:orgName];
-                                               [Environment.getCurrent.ccsmStorage setUserName:userName];
+                                               [Environment.getCurrent.ccsmStorage setOrgName:lowerOrgname];
+                                               [Environment.getCurrent.ccsmStorage setUserName:lowerUsername];
                                                DDLogDebug(@"login result's msg is: %@", [result objectForKey:@"msg"]);
                                                successBlock();
                                            }
@@ -73,8 +76,8 @@
                                                        [errorDescription appendString:[NSString stringWithFormat:@"\n%@", message]];
                                                        
                                                        if ([message isEqualToString:@"password auth required"]) {
-                                                           [Environment.getCurrent.ccsmStorage setOrgName:orgName];
-                                                           [Environment.getCurrent.ccsmStorage setUserName:userName];
+                                                           [Environment.getCurrent.ccsmStorage setOrgName:lowerOrgname];
+                                                           [Environment.getCurrent.ccsmStorage setUserName:lowerUsername];
                                                            DDLogDebug(@"Password auth requested.");
                                                        }
                                                    }
@@ -106,6 +109,9 @@
                                org:(NSString *)orgName
                         completion:(void (^)(BOOL success, NSError *error))completionBlock
 {
+    NSString *lowerUsername = userName.lowercaseString;
+    NSString *lowerOrgname = orgName.lowercaseString;
+
     // Make URL
     NSString *urlString = [NSString stringWithFormat:@"%@/v1/password/reset/", FLHomeURL];
     NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -116,7 +122,7 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
-    NSDictionary *payload = @{ @"fq_tag": [NSString stringWithFormat:@"@%@:%@", userName, orgName] };
+    NSDictionary *payload = @{ @"fq_tag": [NSString stringWithFormat:@"@%@:%@", lowerUsername, lowerOrgname] };
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
                                                        options:0
@@ -702,8 +708,10 @@
                                        completion:(void (^_Nullable)(BOOL success, NSError * _Nullable error, NSDictionary *_Nullable payload))completionBlock
 {
     // Build the payload
+    NSString *lowerTagslug = tagSlug.lowercaseString;
+    
     NSDictionary *payload = @{ @"fullname" : fullName,
-                               @"tag_slug" :tagSlug,
+                               @"tag_slug" :lowerTagslug,
                                @"email" : emailAddress,
                                @"password" : password,
                                @"captcha" : token
