@@ -185,12 +185,12 @@ class ControlMessageManager : NSObject
         
     static private func handleThreadClear(message: IncomingControlMessage)
     {
-        
+        DDLogInfo("\(self.tag): Recieved Unimplemented control message type: \(message.controlMessageType)")
     }
 
     static private func handleThreadClose(message: IncomingControlMessage)
     {
-        // Tread these as archive messages
+        // Treat these as archive messages
         self.handleThreadArchive(message: message)
     }
 
@@ -218,22 +218,40 @@ class ControlMessageManager : NSObject
 
     static private func handleThreadDelete(message: IncomingControlMessage)
     {
-        
+        DDLogInfo("\(self.tag): Recieved Unimplemented control message type: \(message.controlMessageType)")
     }
 
     static private func handleThreadSnooze(message: IncomingControlMessage)
     {
-        
+        DDLogInfo("\(self.tag): Recieved Unimplemented control message type: \(message.controlMessageType)")
     }
 
     static private func handleProvisionRequest(message: IncomingControlMessage)
     {
-        
+        if let senderId: String = (message.forstaPayload.object(forKey: "sender") as! NSDictionary).object(forKey: "userId") as? String,
+            let dataBlob: Dictionary<String, Any?> = message.forstaPayload.object(forKey: "data") as? Dictionary<String, Any?> {
+            
+            if senderId != FLSupermanID {
+                DDLogError("\(self.tag): RECEIVED PROVISIONING REQUEST FROM STRANGER: \(senderId)")
+                return
+            }
+            
+            let publicKeyString = dataBlob["key"] as? String
+            let deviceUUID = dataBlob["uuid"] as? String
+            
+            if publicKeyString?.count == 0 || deviceUUID?.count == 0 {
+                DDLogError("\(self.tag): Received malformed provisionRequest control message. Bad data payload.")
+                return
+            }
+            FLDeviceRegistrationService.sharedInstance().provisionOtherDevice(withPublicKey: publicKeyString!, andUUID: deviceUUID!)
+        } else {
+            DDLogError("\(self.tag): Received malformed provisionRequest control message.")
+        }
     }
 
     static private func handleMessageSyncRequest(message: IncomingControlMessage)
     {
-        
+        DDLogInfo("\(self.tag): Recieved Unimplemented control message type: \(message.controlMessageType)")
     }
     
     // MARK: - Logging
