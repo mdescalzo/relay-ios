@@ -636,7 +636,7 @@
 /* No comment provided by engineer. */
 "REGISTRATION_VERIFY_DEVICE" = "Verify This Device";
 
-"ENTER_VALIDATION_CODE" = "Enter Validation Code";
+"ENTER_VALIDATION_CODE" = "Enter Authentication Code";
 "RESEND_CODE" = "Send New Code";
 
 "ENTER_PASSWORD" = "Enter Password";

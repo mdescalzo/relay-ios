@@ -63,10 +63,13 @@ class LoginViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "smsAuthSegue" {
             let vc = segue.destination as! ValidationViewController
-            vc.passwoordAuth = false
+            vc.authType = .sms
         } else if segue.identifier == "passwordAuthSegue" {
             let vc = segue.destination as! ValidationViewController
-            vc.passwoordAuth = true
+            vc.authType = .password
+        } else if segue.identifier == "totpAuthSegue" {
+            let vc = segue.destination as! ValidationViewController
+            vc.authType = .totp
         }
     }
     
@@ -79,6 +82,12 @@ class LoginViewController: UITableViewController {
     private func proceedWithPasswordAuth() {
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: "passwordAuthSegue", sender: self)
+        }
+    }
+    
+    private func proceedWithTOTPAuth() {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "totpAuthSegue", sender: self)
         }
     }
     
@@ -101,7 +110,11 @@ class LoginViewController: UITableViewController {
                                          failure: { error in
                                             self.stopSpinner()
                                             if (error?.localizedDescription.contains("password auth required"))! {
-                                                self.proceedWithPasswordAuth()
+                                                if (error?.localizedDescription.contains("totp auth required"))! {
+                                                    self.proceedWithTOTPAuth()
+                                                } else {
+                                                    self.proceedWithPasswordAuth()
+                                                }
                                             } else {
                                                 self.presentInfoAlert(message: (error?.localizedDescription)!)
                                             }
