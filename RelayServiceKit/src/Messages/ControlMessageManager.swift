@@ -148,41 +148,37 @@ class ControlMessageManager : NSObject
                 }
                 
                 // Handle change to avatar
-                if message.attachmentIds.count > 0 {}
-//                    OWSAttachmentsProcessor *attachmentsProcessor = [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
-//                        properties:[dataBlob objectForKey:@"attachments"]
-//                        timestamp:envelope.timestamp
-//                        relay:envelope.relay
-//                        thread:thread
-//                        networkManager:self.networkManager];
-//
-//                    if (attachmentsProcessor.hasSupportedAttachments) {
-//                        [attachmentsProcessor fetchAttachmentsForMessage:nil
-//                            success:^(TSAttachmentStream *_Nonnull attachmentStream) {
-//                            [thread updateImageWithAttachmentStream:attachmentStream];
-//
-//                            NSString *messageFormat = NSLocalizedString(@"THREAD_IMAGE_CHANGED_MESSAGE", nil);
-//                            NSString *customMessage = nil;
-//                            if ([sender.uniqueId isEqual:TSAccountManager.sharedInstance.myself]) {
-//                            customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
-//                            } else {
-//                            customMessage = [NSString stringWithFormat:messageFormat, sender.fullName];
-//                            }
-//
-//                            TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-//                            inThread:thread
-//                            messageType:TSInfoMessageTypeConversationUpdate
-//                            customMessage:customMessage];
-//                            [infoMessage save];
-//                            }
-//                            failure:^(NSError *_Nonnull error) {
-//                            DDLogError(@"%@ failed to fetch attachments for group avatar sent at: %llu. with error: %@",
-//                            self.tag,
-//                            envelope.timestamp,
-//                            error);
-//                            }];
-//                    }
-//                }
+                if message.attachmentIds.count > 0 {
+                    let attachmentsProcessor = OWSAttachmentsProcessor.init(attachmentProtos: message.attachmentPointers!,
+                                                                            properties: dataBlob.object(forKey: "attachments") as! [[AnyHashable : Any]],
+                                                                            timestamp: NSDate.ows_millisecondTimeStamp(),
+                                                                            relay: message.relay,
+                                                                            thread: thread,
+                                                                            networkManager: TSNetworkManager.sharedManager() as! TSNetworkManager)
+
+                    if attachmentsProcessor.hasSupportedAttachments {
+                        attachmentsProcessor.fetchAttachments(for: nil,
+                                                              success: { (attachmentStream) in
+                                                                thread.updateImage(with: attachmentStream)
+                                                                
+                                                                let formatString = NSLocalizedString("THREAD_IMAGE_CHANGED_MESSAGE", comment: "")
+                                                                var messageString: String? = nil
+                                                                if sender?.uniqueId == TSAccountManager.sharedInstance().myself?.uniqueId {
+                                                                    messageString = String.localizedStringWithFormat(formatString, NSLocalizedString("YOU_STRING", comment: ""))
+                                                                } else {
+                                                                    messageString = String.localizedStringWithFormat(formatString, (sender?.fullName)!)
+                                                                }
+                                                                let infoMessage = TSInfoMessage.init(timestamp: NSDate.ows_millisecondsSince1970(for: message.sendTime),
+                                                                                                     in: thread,
+                                                                                                     messageType: TSInfoMessageType.typeConversationUpdate,
+                                                                                                     customMessage: messageString!)
+                                                                infoMessage.save()
+                        },
+                                                              failure: { (error) in
+                                                                DDLogError("\(self.tag): Failed to fetch attachments for avatar with error: \(error.localizedDescription)")
+                        })
+                    }
+                }
             }
         }
     }

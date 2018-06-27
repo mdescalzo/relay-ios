@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class TSAttachmentStream;
 @class TSAttachmentPointer;
 
+@import Foundation;
+
 /**
  * Given incoming attachment protos, determines which we support.
  * It can download those that we support and notifies threads when it receives unsupported attachments.

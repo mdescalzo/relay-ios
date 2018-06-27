@@ -332,96 +332,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                 messageSender:self.messageSender
                                                                networkManager:self.networkManager];
         
-        // Intercept and attach forstaPayload
-        __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
-        __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-
-        // Check for control message
-        if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
-            NSString *controlType = [dataBlob objectForKey:@"control"];
-            
-            // Archive a thread
-            if ([controlType isEqualToString:FLControlMessageThreadArchiveKey] ||
-                [controlType isEqualToString:FLControlMessageThreadCloseKey]) {
-                [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-                    TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-                    if (thread) {
-                        [thread archiveThreadWithTransaction:transaction
-                                               referenceDate:[NSDate ows_dateWithMillisecondsSince1970:transcript.timestamp]];
-                    }
-                }];
-            }
-            // Restore Archived thread
-            else if ([controlType isEqualToString:FLControlMessageThreadRestoreKey]) {
-                [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-                    TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-                    if (thread) {
-                        [thread unarchiveThreadWithTransaction:transaction];
-                    }
-                }];
-            }
-            //  Message sync request
-            else if ([controlType isEqualToString:FLControlMessageSyncRequestKey]) {
-                // validate message isn't stale
-                
-                // check sync request type 'contentHistory' or 'deviceInfo'
-                NSString *syncType = [dataBlob objectForKey:@"type"];
-                
-                if ([syncType isEqualToString:@"contentHistory"]) {
-                    DDLogDebug(@"Received 'contentHistory' syncRequest.");
-                    
-                    //  Placeholder for future implementation?
-//                } else if ([syncType isEqualToString:@"deviceInfo"]) {
-                } else {
-                    DDLogDebug(@"Unhandled syncRequest of type: %@", syncType);
-                    return;
-                }
-            }
-            else {
-                DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
-                return;
-            }
-        } else {
-        
             [recordJob runWithAttachmentHandler:^(TSAttachmentStream *_Nonnull attachmentStream) {
                 DDLogDebug(@"%@ successfully fetched transcript attachment: %@", self.tag, attachmentStream);
             }];
-        }
     } else if (syncMessage.hasRequest) {
         DDLogDebug(@"%@ Unhandled sync message received.  syncMessage.hasRequest.", self.tag);
-        //        if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeContacts) {
-        //            DDLogInfo(@"%@ Received request `Contacts` syncMessage.", self.tag);
-        //
-        //            OWSSyncContactsMessage *syncContactsMessage =
-        //            [[OWSSyncContactsMessage alloc] initWithContactsManager:self.contactsManager];
-        //
-        //            [self.messageSender sendTemporaryAttachmentData:[syncContactsMessage buildPlainTextAttachmentData]
-        //                                                contentType:OWSMimeTypeApplicationOctetStream
-        //                                                  inMessage:syncContactsMessage
-        //                                                    success:^{
-        //                                                        DDLogInfo(@"%@ Successfully sent Contacts response syncMessage.", self.tag);
-        //                                                    }
-        //                                                    failure:^(NSError *error) {
-        //                                                        DDLogError(@"%@ Failed to send Contacts response syncMessage with error: %@", self.tag, error);
-        //                                                    }];
-        //
-        //        } else if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeGroups) {
-        //            DDLogInfo(@"%@ Received request `groups` syncMessage.", self.tag);
-        //
-        //            OWSSyncGroupsMessage *syncGroupsMessage = [[OWSSyncGroupsMessage alloc] init];
-        //
-        //            [self.messageSender sendTemporaryAttachmentData:[syncGroupsMessage buildPlainTextAttachmentData]
-        //                                                contentType:OWSMimeTypeApplicationOctetStream
-        //                                                  inMessage:syncGroupsMessage
-        //                                                    success:^{
-        //                                                        DDLogInfo(@"%@ Successfully sent Groups response syncMessage.", self.tag);
-        //                                                    }
-        //                                                    failure:^(NSError *error) {
-        //                                                        DDLogError(@"%@ Failed to send Groups response syncMessage with error: %@", self.tag, error);
-        //                                                    }];
-        //        }
     } else if (syncMessage.read.count > 0) {
         DDLogInfo(@"%@ Received %ld read receipt(s)", self.tag, (u_long)syncMessage.read.count);
         
@@ -513,7 +428,7 @@ NS_ASSUME_NONNULL_BEGIN
             [self handleThreadUpdateControlMessageWithEnvelope:envelope
                                                withDataMessage:dataMessage
                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
+//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
             [self handleThreadArchiveControlMessageWithEnvelope:envelope
                                                 withDataMessage:dataMessage
@@ -530,7 +445,7 @@ NS_ASSUME_NONNULL_BEGIN
             [self handleThreadDeleteControlMessageWithEnvelope:envelope
                                                withDataMessage:dataMessage
                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
+//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
         } else if ([controlMessageType isEqualToString:FLControlMessageProvisionRequestKey]) {
             [self handleProvisionRequestControlMessageWithEnvelope:envelope
                                                    withDataMessage:dataMessage

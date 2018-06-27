@@ -47,69 +47,77 @@ NS_ASSUME_NONNULL_BEGIN
     DDLogDebug(@"%@ Recording transcript: %@", self.tag, transcript);
     
     // Intercept and attach forstaPayload
-    __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
-    
     TSThread *thread = transcript.thread;
-    [thread updateWithPayload:jsonPayload];
-    [thread touch];
-    
+    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
     
-    OWSAttachmentsProcessor *attachmentsProcessor =
-    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
-                                                   properties:[dataBlob objectForKey:@"attachments"]
-                                                    timestamp:transcript.timestamp
-                                                        relay:transcript.relay
-                                                       thread:thread
-                                               networkManager:self.networkManager];
-    
-    TSOutgoingMessage *outgoingMessage =
-    [[TSOutgoingMessage alloc] initWithTimestamp:transcript.timestamp
-                                        inThread:thread
-                                     messageBody:@""
-                                   attachmentIds:[attachmentsProcessor.attachmentIds mutableCopy]
-                                expiresInSeconds:transcript.expirationDuration
-                                 expireStartedAt:transcript.expirationStartedAt];
-    outgoingMessage.forstaPayload = [jsonPayload mutableCopy];
-    if (transcript.isExpirationTimerUpdate) {
-        [self.messageSender becomeConsistentWithDisappearingConfigurationForMessage:outgoingMessage];
-        // early return to avoid saving an empty incoming message.
-        return;
+    NSString *messageType = [jsonPayload objectForKey:@"messageType"];
+    if ([messageType isEqualToString:@"control"]) {
+        IncomingControlMessage *controlMessage = [[IncomingControlMessage alloc] initWithThread:thread
+                                                                                         author:TSAccountManager.sharedInstance.myself.uniqueId
+                                                                                          relay:transcript.relay
+                                                                                        payload:jsonPayload
+                                                                                    attachments:transcript.attachmentPointerProtos];
+        [ControlMessageManager processIncomingControlMessageWithMessage:controlMessage];
+    } else if ([messageType isEqualToString:@"content"]) {
+        
+        [thread updateWithPayload:jsonPayload];
+        
+        OWSAttachmentsProcessor *attachmentsProcessor =
+        [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
+                                                       properties:[dataBlob objectForKey:@"attachments"]
+                                                        timestamp:transcript.timestamp
+                                                            relay:transcript.relay
+                                                           thread:thread
+                                                   networkManager:self.networkManager];
+        
+        TSOutgoingMessage *outgoingMessage =
+        [[TSOutgoingMessage alloc] initWithTimestamp:transcript.timestamp
+                                            inThread:thread
+                                         messageBody:@""
+                                       attachmentIds:[attachmentsProcessor.attachmentIds mutableCopy]
+                                    expiresInSeconds:transcript.expirationDuration
+                                     expireStartedAt:transcript.expirationStartedAt];
+        outgoingMessage.forstaPayload = [jsonPayload mutableCopy];
+        if (transcript.isExpirationTimerUpdate) {
+            [self.messageSender becomeConsistentWithDisappearingConfigurationForMessage:outgoingMessage];
+            // early return to avoid saving an empty incoming message.
+            return;
+        }
+        
+        [self.messageSender handleMessageSentRemotely:outgoingMessage sentAt:transcript.expirationStartedAt];
+        
+        [attachmentsProcessor
+         fetchAttachmentsForMessage:outgoingMessage
+         success:attachmentHandler
+         failure:^(NSError *_Nonnull error) {
+             DDLogError(@"%@ failed to fetch transcripts attachments for message: %@",
+                        self.tag,
+                        outgoingMessage);
+         }];
+        
+        
+        
+        // If there is an attachment + text, render the text here, as Signal-iOS renders two messages.
+        if (attachmentsProcessor.hasSupportedAttachments && outgoingMessage.plainTextBody && ![outgoingMessage.plainTextBody isEqualToString:@""]) {
+            // render text *after* the attachment
+            outgoingMessage.hasAnnotation = YES;
+            uint64_t textMessageTimestamp = transcript.timestamp + 1;
+            TSOutgoingMessage *textMessage = [[TSOutgoingMessage alloc] initWithTimestamp:textMessageTimestamp
+                                                                                 inThread:thread
+                                                                              messageBody:@""
+                                                                            attachmentIds:[NSMutableArray new]
+                                                                         expiresInSeconds:transcript.expirationDuration
+                                                                          expireStartedAt:transcript.expirationStartedAt];
+            textMessage.plainTextBody = outgoingMessage.plainTextBody;
+            textMessage.attributedTextBody = outgoingMessage.attributedTextBody;
+            textMessage.expiresInSeconds = outgoingMessage.expiresInSeconds;
+            textMessage.messageState = TSOutgoingMessageStateDelivered;
+            textMessage.messageType = @"content";
+            [textMessage save];
+        }
+        [outgoingMessage save];
     }
-    
-    [self.messageSender handleMessageSentRemotely:outgoingMessage sentAt:transcript.expirationStartedAt];
-    
-    [attachmentsProcessor
-     fetchAttachmentsForMessage:outgoingMessage
-     success:attachmentHandler
-     failure:^(NSError *_Nonnull error) {
-         DDLogError(@"%@ failed to fetch transcripts attachments for message: %@",
-                    self.tag,
-                    outgoingMessage);
-     }];
-    
-    
-    
-    // If there is an attachment + text, render the text here, as Signal-iOS renders two messages.
-    if (attachmentsProcessor.hasSupportedAttachments && outgoingMessage.plainTextBody && ![outgoingMessage.plainTextBody isEqualToString:@""]) {
-        // render text *after* the attachment
-        outgoingMessage.hasAnnotation = YES;
-        uint64_t textMessageTimestamp = transcript.timestamp + 1;
-        TSOutgoingMessage *textMessage = [[TSOutgoingMessage alloc] initWithTimestamp:textMessageTimestamp
-                                                                             inThread:thread
-                                                                          messageBody:@""
-                                                                        attachmentIds:[NSMutableArray new]
-                                                                     expiresInSeconds:transcript.expirationDuration
-                                                                      expireStartedAt:transcript.expirationStartedAt];
-        textMessage.plainTextBody = outgoingMessage.plainTextBody;
-        textMessage.attributedTextBody = outgoingMessage.attributedTextBody;
-        textMessage.expiresInSeconds = outgoingMessage.expiresInSeconds;
-        textMessage.messageState = TSOutgoingMessageStateDelivered;
-        textMessage.messageType = @"content";
-        [textMessage save];
-    }
-    [outgoingMessage save];
-    //    }
 }
 
 #pragma mark - Logging
