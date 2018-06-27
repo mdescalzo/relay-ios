@@ -101,8 +101,9 @@
 
 -(NSDate *)sendTime
 {
-    if (self.forstaPayload) {
-        NSDate *returnDate = nil;
+    NSDate *returnDate = nil;
+    // FIX: The formatters in their presenst state don't work.  Falling back on self.timestamp
+    if ([self.forstaPayload objectForKey:@"sendTime"]) {
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.0) {
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
             NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
@@ -111,9 +112,12 @@
             returnDate = [df dateFromString:[self.forstaPayload objectForKey:@"sendTime"]];
         } else {
             NSISO8601DateFormatter *df = [[NSISO8601DateFormatter alloc] init];
-            df.formatOptions = NSISO8601DateFormatWithInternetDateTime;
+            NSISO8601DateFormatOptions options = NSISO8601DateFormatWithInternetDateTime;
+            df.formatOptions = options;
             returnDate = [df dateFromString:[self.forstaPayload objectForKey:@"sendTime"]];
         }
+    }
+    if (returnDate) {
         return returnDate;
     } else {
         return [NSDate ows_dateWithMillisecondsSince1970:self.timestamp];

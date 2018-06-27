@@ -43,14 +43,19 @@ import UIKit
         self.controlMessageType = dataBlob.object(forKey: "control") as! String
         self.relay = relay!
         
+        var attachmentIds:[String] = []
+        if ((dataBlob.object(forKey: "attachments")) != nil) {
+            attachmentIds = dataBlob.object(forKey: "attachments") as! [String]
+        }
+
         super.init(timestamp: NSDate.ows_millisecondTimeStamp(),
                    in: thread,
                    authorId: author, messageBody: nil,
-                   attachmentIds: dataBlob.object(forKey: "attachments") as! [String],
+                   attachmentIds: attachmentIds,
                    expiresInSeconds: 0)
         
         self.messageType = "control"
-        self.forstaPayload = payload.copy() as! NSMutableDictionary
+        self.forstaPayload = payload.mutableCopy() as! NSMutableDictionary
     }
     
     @objc required public init(coder: NSCoder) {

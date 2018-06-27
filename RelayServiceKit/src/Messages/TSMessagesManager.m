@@ -288,13 +288,15 @@ NS_ASSUME_NONNULL_BEGIN
                             dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
     TSThread *thread = [self threadForEnvelope:envelope dataMessage:dataMessage];
-    
-    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
-    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+        
+    NSMutableArray *properties = [NSMutableArray new];
+    for (OWSSignalServiceProtosAttachmentPointer *pointer in dataMessage.attachments) {
+        [properties addObject:@{ @"name": pointer.fileName }];
+    }
     
     OWSAttachmentsProcessor *attachmentsProcessor =
     [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
-                                                   properties:[dataBlob objectForKey:@"attachments"]
+                                                   properties:properties
                                                     timestamp:envelope.timestamp
                                                         relay:envelope.relay
                                                        thread:thread
@@ -423,40 +425,53 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *controlMessageType = [dataBlob objectForKey:@"control"];
         DDLogInfo(@"Control message received: %@", controlMessageType);
         
-        // Conversation update
-        if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
-            [self handleThreadUpdateControlMessageWithEnvelope:envelope
-                                               withDataMessage:dataMessage
-                                                 attachmentIds:attachmentIds];
-//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
-            [self handleThreadArchiveControlMessageWithEnvelope:envelope
-                                                withDataMessage:dataMessage
-                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadArchiveKey]) {
-            [self handleThreadArchiveControlMessageWithEnvelope:envelope
-                                                withDataMessage:dataMessage
-                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadRestoreKey]) {
-            [self handleThreadRestoreControlMessageWithEnvelope:envelope
-                                                withDataMessage:dataMessage
-                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
-            [self handleThreadDeleteControlMessageWithEnvelope:envelope
-                                               withDataMessage:dataMessage
-                                                 attachmentIds:attachmentIds];
-//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
-        } else if ([controlMessageType isEqualToString:FLControlMessageProvisionRequestKey]) {
-            [self handleProvisionRequestControlMessageWithEnvelope:envelope
-                                                   withDataMessage:dataMessage
-                                                     attachmentIds:attachmentIds];
-        } else {
-#ifdef DEBUG
-            DDLogDebug(@"Unhandled control message of type: %@\nwith Payload: %@", controlMessageType, jsonPayload);
-#else
-            DDLogDebug(@"Unhandled control message of type: %@", controlMessageType);
-#endif
+        NSString *threadId = [jsonPayload objectForKey:@"threadId"];
+        if (threadId.length > 0) {
+            TSThread *thread = [TSThread getOrCreateThreadWithID:threadId];
+            
+            IncomingControlMessage *controlMessage = [[IncomingControlMessage alloc] initWithThread:thread
+                                                                                             author:envelope.source
+                                                                                              relay:envelope.relay
+                                                                                            payload:jsonPayload
+                                                                                        attachments:dataMessage.attachments];
+            [ControlMessageManager processIncomingControlMessageWithMessage:controlMessage];
         }
+
+        
+//        // Conversation update
+//        if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
+//            [self handleThreadUpdateControlMessageWithEnvelope:envelope
+//                                               withDataMessage:dataMessage
+//                                                 attachmentIds:attachmentIds];
+////        } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
+//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
+//            [self handleThreadArchiveControlMessageWithEnvelope:envelope
+//                                                withDataMessage:dataMessage
+//                                                  attachmentIds:attachmentIds];
+//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadArchiveKey]) {
+//            [self handleThreadArchiveControlMessageWithEnvelope:envelope
+//                                                withDataMessage:dataMessage
+//                                                  attachmentIds:attachmentIds];
+//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadRestoreKey]) {
+//            [self handleThreadRestoreControlMessageWithEnvelope:envelope
+//                                                withDataMessage:dataMessage
+//                                                  attachmentIds:attachmentIds];
+//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
+//            [self handleThreadDeleteControlMessageWithEnvelope:envelope
+//                                               withDataMessage:dataMessage
+//                                                 attachmentIds:attachmentIds];
+////        } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
+//        } else if ([controlMessageType isEqualToString:FLControlMessageProvisionRequestKey]) {
+//            [self handleProvisionRequestControlMessageWithEnvelope:envelope
+//                                                   withDataMessage:dataMessage
+//                                                     attachmentIds:attachmentIds];
+//        } else {
+//#ifdef DEBUG
+//            DDLogDebug(@"Unhandled control message of type: %@\nwith Payload: %@", controlMessageType, jsonPayload);
+//#else
+//            DDLogDebug(@"Unhandled control message of type: %@", controlMessageType);
+//#endif
+//        }
         return nil;
         
     } else if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {

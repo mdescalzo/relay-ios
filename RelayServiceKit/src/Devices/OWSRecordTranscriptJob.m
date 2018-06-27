@@ -63,9 +63,14 @@ NS_ASSUME_NONNULL_BEGIN
         
         [thread updateWithPayload:jsonPayload];
         
+        NSMutableArray *properties = [NSMutableArray new];
+        for (OWSSignalServiceProtosAttachmentPointer *pointer in transcript.attachmentPointerProtos) {
+            [properties addObject:@{ @"name": pointer.fileName }];
+        }
+        
         OWSAttachmentsProcessor *attachmentsProcessor =
         [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:transcript.attachmentPointerProtos
-                                                       properties:[dataBlob objectForKey:@"attachments"]
+                                                       properties:properties
                                                         timestamp:transcript.timestamp
                                                             relay:transcript.relay
                                                            thread:thread

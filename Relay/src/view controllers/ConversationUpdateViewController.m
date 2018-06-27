@@ -345,7 +345,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                                                                                  controlType:FLControlMessageThreadUpdateKey];
             NSData *imageData = UIImagePNGRepresentation(self.thread.image);
             [Environment.getCurrent.messageSender sendAttachmentData:imageData
-                                                            filename:@""
+                                                            filename:@"newAvatar"
                                                          contentType:OWSMimeTypeImagePng
                                                            inMessage:message
                                                              success:^{
