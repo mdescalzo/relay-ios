@@ -287,38 +287,66 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)handleReceivedMediaWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
                             dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
-    TSThread *thread = [self threadForEnvelope:envelope dataMessage:dataMessage];
-        
-    NSMutableArray *properties = [NSMutableArray new];
-    for (OWSSignalServiceProtosAttachmentPointer *pointer in dataMessage.attachments) {
-        [properties addObject:@{ @"name": pointer.fileName }];
-    }
+    //  Catch incoming messages and process the new way.
+    __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     
-    OWSAttachmentsProcessor *attachmentsProcessor =
-    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
-                                                   properties:properties
-                                                    timestamp:envelope.timestamp
-                                                        relay:envelope.relay
-                                                       thread:thread
-                                               networkManager:self.networkManager];
-    if (!attachmentsProcessor.hasSupportedAttachments) {
-        DDLogWarn(@"%@ received unsupported media envelope", self.tag);
+    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
+    if ([dataBlob allKeys].count == 0) {
+        DDLogDebug(@"Received message contained no data object.");
         return;
     }
-    
-    TSIncomingMessage *createdMessage = [self handleReceivedEnvelope:envelope
-                                                     withDataMessage:dataMessage
-                                                       attachmentIds:attachmentsProcessor.supportedAttachmentIds];
-    
-    [attachmentsProcessor fetchAttachmentsForMessage:createdMessage
-                                             success:^(TSAttachmentStream *_Nonnull attachmentStream) {
-                                                 DDLogDebug(
-                                                            @"%@ successfully fetched attachment: %@ for message: %@", self.tag, attachmentStream, createdMessage);
-                                             }
-                                             failure:^(NSError *_Nonnull error) {
-                                                 DDLogError(
-                                                            @"%@ failed to fetch attachments for message: %@ with error: %@", self.tag, createdMessage, error);
-                                             }];
+    // Process per messageType
+    if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
+        NSString *controlMessageType = [dataBlob objectForKey:@"control"];
+        DDLogInfo(@"Control message received: %@", controlMessageType);
+        
+        NSString *threadId = [jsonPayload objectForKey:@"threadId"];
+        if (threadId.length > 0) {
+            TSThread *thread = [TSThread getOrCreateThreadWithID:threadId];
+            
+            IncomingControlMessage *controlMessage = [[IncomingControlMessage alloc] initWithThread:thread
+                                                                                             author:envelope.source
+                                                                                              relay:envelope.relay
+                                                                                            payload:jsonPayload
+                                                                                        attachments:dataMessage.attachments];
+            [ControlMessageManager processIncomingControlMessageWithMessage:controlMessage];
+        }
+        
+    } else { // if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {
+        DDLogDebug(@"%@: Received media message of type: %@", self.tag, [jsonPayload objectForKey:@"messageType"]);
+        TSThread *thread = [self threadForEnvelope:envelope dataMessage:dataMessage];
+        
+        NSMutableArray *properties = [NSMutableArray new];
+        for (OWSSignalServiceProtosAttachmentPointer *pointer in dataMessage.attachments) {
+            [properties addObject:@{ @"name": pointer.fileName }];
+        }
+        
+        OWSAttachmentsProcessor *attachmentsProcessor =
+        [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
+                                                       properties:properties
+                                                        timestamp:envelope.timestamp
+                                                            relay:envelope.relay
+                                                           thread:thread
+                                                   networkManager:self.networkManager];
+        if (!attachmentsProcessor.hasSupportedAttachments) {
+            DDLogWarn(@"%@ received unsupported media envelope", self.tag);
+            return;
+        }
+        
+        TSIncomingMessage *createdMessage = [self handleReceivedEnvelope:envelope
+                                                         withDataMessage:dataMessage
+                                                           attachmentIds:attachmentsProcessor.supportedAttachmentIds];
+        
+        [attachmentsProcessor fetchAttachmentsForMessage:createdMessage
+                                                 success:^(TSAttachmentStream *_Nonnull attachmentStream) {
+                                                     DDLogDebug(
+                                                                @"%@ successfully fetched attachment: %@ for message: %@", self.tag, attachmentStream, createdMessage);
+                                                 }
+                                                 failure:^(NSError *_Nonnull error) {
+                                                     DDLogError(
+                                                                @"%@ failed to fetch attachments for message: %@ with error: %@", self.tag, createdMessage, error);
+                                                 }];
+    }
 }
 
 - (void)handleIncomingEnvelope:(OWSSignalServiceProtosEnvelope *)messageEnvelope
@@ -436,42 +464,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                         attachments:dataMessage.attachments];
             [ControlMessageManager processIncomingControlMessageWithMessage:controlMessage];
         }
-
-        
-//        // Conversation update
-//        if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
-//            [self handleThreadUpdateControlMessageWithEnvelope:envelope
-//                                               withDataMessage:dataMessage
-//                                                 attachmentIds:attachmentIds];
-////        } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
-//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
-//            [self handleThreadArchiveControlMessageWithEnvelope:envelope
-//                                                withDataMessage:dataMessage
-//                                                  attachmentIds:attachmentIds];
-//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadArchiveKey]) {
-//            [self handleThreadArchiveControlMessageWithEnvelope:envelope
-//                                                withDataMessage:dataMessage
-//                                                  attachmentIds:attachmentIds];
-//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadRestoreKey]) {
-//            [self handleThreadRestoreControlMessageWithEnvelope:envelope
-//                                                withDataMessage:dataMessage
-//                                                  attachmentIds:attachmentIds];
-//        } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
-//            [self handleThreadDeleteControlMessageWithEnvelope:envelope
-//                                               withDataMessage:dataMessage
-//                                                 attachmentIds:attachmentIds];
-////        } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
-//        } else if ([controlMessageType isEqualToString:FLControlMessageProvisionRequestKey]) {
-//            [self handleProvisionRequestControlMessageWithEnvelope:envelope
-//                                                   withDataMessage:dataMessage
-//                                                     attachmentIds:attachmentIds];
-//        } else {
-//#ifdef DEBUG
-//            DDLogDebug(@"Unhandled control message of type: %@\nwith Payload: %@", controlMessageType, jsonPayload);
-//#else
-//            DDLogDebug(@"Unhandled control message of type: %@", controlMessageType);
-//#endif
-//        }
         return nil;
         
     } else if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {
