@@ -243,19 +243,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 }
 
 - (void)doAfterEnvironmentInitSetup {
-#warning XXX is this method still necessary?
-    //    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(_iOS_9)) {
-    //        self.contactStore = [[CNContactStore alloc] init];
-    //        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts
-    //                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
-    //                                      if (!granted) {
-    //                                          // We're still using the old addressbook API.
-    //                                          // User warned if permission not granted in that setup.
-    //                                      }
-    //                                    }];
-    //    }
-    
-    //    [self setupAddressBook];
+    // TODO: Is this method still necessary?
     
     [self.observableContactsController watchLatestValueOnArbitraryThread:^(NSArray *latestContacts) {
         @synchronized(self) {
