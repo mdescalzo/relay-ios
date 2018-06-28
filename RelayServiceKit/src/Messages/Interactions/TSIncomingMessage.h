@@ -5,9 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class TSContactThread;
-@class TSGroupThread;
-
 extern NSString *const TSIncomingMessageWasReadOnThisDeviceNotification;
 
 @interface TSIncomingMessage : TSMessage
@@ -126,7 +123,6 @@ extern NSString *const TSIncomingMessageWasReadOnThisDeviceNotification;
  *
  */
 - (void)markAsReadLocally;
-// TODO possible to remove?
 - (void)markAsReadLocallyWithTransaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 /**

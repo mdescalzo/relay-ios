@@ -6,13 +6,7 @@
 //  Copyright © 2017 Forsta. All rights reserved.
 //
 
-//#import "SLKTextViewController.h"
-#include "InboxTableViewCell.h"
-//#import "CallState.h"
-//#import "Contact.h"
-//#import "TSGroupModel.h"
-
-#import <UIKit/UIKit.h>
+@import UIKit;
 @import AVFoundation;
 @import MediaPlayer;
 

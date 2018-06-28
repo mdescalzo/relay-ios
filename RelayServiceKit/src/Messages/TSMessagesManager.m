@@ -1,6 +1,7 @@
 //  Created by Frederic Jacobs on 11/11/14.
 //  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
 
+#import "Relay-Swift.h"
 #import "TSMessagesManager.h"
 #import "ContactsManagerProtocol.h"
 #import "MimeTypeUtil.h"
@@ -28,20 +29,14 @@
 #import "TSNetworkManager.h"
 #import "TSStorageHeaders.h"
 #import "TextSecureKitEnv.h"
-#import <AxolotlKit/AxolotlExceptions.h>
-#import <AxolotlKit/SessionCipher.h>
-#import "FLControlMessage.h"
 #import "FLCCSMJSONService.h"
 #import "FLDeviceRegistrationService.h"
+
+@import AxolotlKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TSMessagesManager ()
-
-//@property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
-//@property (nonatomic, readonly) TSStorageManager *storageManager;
-//@property (nonatomic, readonly) OWSMessageSender *messageSender;
-//@property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 
 @property NSUInteger preKeyRetries;
 
@@ -292,36 +287,66 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)handleReceivedMediaWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
                             dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
-    TSThread *thread = [self threadForEnvelope:envelope dataMessage:dataMessage];
+    //  Catch incoming messages and process the new way.
+    __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     
-    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
     NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-    
-    OWSAttachmentsProcessor *attachmentsProcessor =
-    [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
-                                                   properties:[dataBlob objectForKey:@"attachments"]
-                                                    timestamp:envelope.timestamp
-                                                        relay:envelope.relay
-                                                       thread:thread
-                                               networkManager:self.networkManager];
-    if (!attachmentsProcessor.hasSupportedAttachments) {
-        DDLogWarn(@"%@ received unsupported media envelope", self.tag);
+    if ([dataBlob allKeys].count == 0) {
+        DDLogDebug(@"Received message contained no data object.");
         return;
     }
-    
-    TSIncomingMessage *createdMessage = [self handleReceivedEnvelope:envelope
-                                                     withDataMessage:dataMessage
-                                                       attachmentIds:attachmentsProcessor.supportedAttachmentIds];
-    
-    [attachmentsProcessor fetchAttachmentsForMessage:createdMessage
-                                             success:^(TSAttachmentStream *_Nonnull attachmentStream) {
-                                                 DDLogDebug(
-                                                            @"%@ successfully fetched attachment: %@ for message: %@", self.tag, attachmentStream, createdMessage);
-                                             }
-                                             failure:^(NSError *_Nonnull error) {
-                                                 DDLogError(
-                                                            @"%@ failed to fetch attachments for message: %@ with error: %@", self.tag, createdMessage, error);
-                                             }];
+    // Process per messageType
+    if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
+        NSString *controlMessageType = [dataBlob objectForKey:@"control"];
+        DDLogInfo(@"Control message received: %@", controlMessageType);
+        
+        NSString *threadId = [jsonPayload objectForKey:@"threadId"];
+        if (threadId.length > 0) {
+            TSThread *thread = [TSThread getOrCreateThreadWithID:threadId];
+            
+            IncomingControlMessage *controlMessage = [[IncomingControlMessage alloc] initWithThread:thread
+                                                                                             author:envelope.source
+                                                                                              relay:envelope.relay
+                                                                                            payload:jsonPayload
+                                                                                        attachments:dataMessage.attachments];
+            [ControlMessageManager processIncomingControlMessageWithMessage:controlMessage];
+        }
+        
+    } else { // if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"content"]) {
+        DDLogDebug(@"%@: Received media message of type: %@", self.tag, [jsonPayload objectForKey:@"messageType"]);
+        TSThread *thread = [self threadForEnvelope:envelope dataMessage:dataMessage];
+        
+        NSMutableArray *properties = [NSMutableArray new];
+        for (OWSSignalServiceProtosAttachmentPointer *pointer in dataMessage.attachments) {
+            [properties addObject:@{ @"name": pointer.fileName }];
+        }
+        
+        OWSAttachmentsProcessor *attachmentsProcessor =
+        [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
+                                                       properties:properties
+                                                        timestamp:envelope.timestamp
+                                                            relay:envelope.relay
+                                                           thread:thread
+                                                   networkManager:self.networkManager];
+        if (!attachmentsProcessor.hasSupportedAttachments) {
+            DDLogWarn(@"%@ received unsupported media envelope", self.tag);
+            return;
+        }
+        
+        TSIncomingMessage *createdMessage = [self handleReceivedEnvelope:envelope
+                                                         withDataMessage:dataMessage
+                                                           attachmentIds:attachmentsProcessor.supportedAttachmentIds];
+        
+        [attachmentsProcessor fetchAttachmentsForMessage:createdMessage
+                                                 success:^(TSAttachmentStream *_Nonnull attachmentStream) {
+                                                     DDLogDebug(
+                                                                @"%@ successfully fetched attachment: %@ for message: %@", self.tag, attachmentStream, createdMessage);
+                                                 }
+                                                 failure:^(NSError *_Nonnull error) {
+                                                     DDLogError(
+                                                                @"%@ failed to fetch attachments for message: %@ with error: %@", self.tag, createdMessage, error);
+                                                 }];
+    }
 }
 
 - (void)handleIncomingEnvelope:(OWSSignalServiceProtosEnvelope *)messageEnvelope
@@ -337,96 +362,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                                 messageSender:self.messageSender
                                                                networkManager:self.networkManager];
         
-        // Intercept and attach forstaPayload
-        __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:transcript.body];
-        __block NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-
-        // Check for control message
-        if ([[jsonPayload objectForKey:@"messageType"] isEqualToString:@"control"]) {
-            NSString *controlType = [dataBlob objectForKey:@"control"];
-            
-            // Archive a thread
-            if ([controlType isEqualToString:FLControlMessageThreadArchiveKey] ||
-                [controlType isEqualToString:FLControlMessageThreadCloseKey]) {
-                [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-                    TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-                    if (thread) {
-                        [thread archiveThreadWithTransaction:transaction
-                                               referenceDate:[NSDate ows_dateWithMillisecondsSince1970:transcript.timestamp]];
-                    }
-                }];
-            }
-            // Restore Archived thread
-            else if ([controlType isEqualToString:FLControlMessageThreadRestoreKey]) {
-                [TSStorageManager.sharedManager.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-                    TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-                    if (thread) {
-                        [thread unarchiveThreadWithTransaction:transaction];
-                    }
-                }];
-            }
-            //  Message sync request
-            else if ([controlType isEqualToString:FLControlMessageSyncRequestKey]) {
-                // validate message isn't stale
-                
-                // check sync request type 'contentHistory' or 'deviceInfo'
-                NSString *syncType = [dataBlob objectForKey:@"type"];
-                
-                if ([syncType isEqualToString:@"contentHistory"]) {
-                    DDLogDebug(@"Received 'contentHistory' syncRequest.");
-                    
-                    //  Placeholder for future implementation?
-//                } else if ([syncType isEqualToString:@"deviceInfo"]) {
-                } else {
-                    DDLogDebug(@"Unhandled syncRequest of type: %@", syncType);
-                    return;
-                }
-            }
-            else {
-                DDLogDebug(@"Received unhandled sync control message with payload: %@", jsonPayload);
-                return;
-            }
-        } else {
-        
             [recordJob runWithAttachmentHandler:^(TSAttachmentStream *_Nonnull attachmentStream) {
                 DDLogDebug(@"%@ successfully fetched transcript attachment: %@", self.tag, attachmentStream);
             }];
-        }
     } else if (syncMessage.hasRequest) {
         DDLogDebug(@"%@ Unhandled sync message received.  syncMessage.hasRequest.", self.tag);
-        //        if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeContacts) {
-        //            DDLogInfo(@"%@ Received request `Contacts` syncMessage.", self.tag);
-        //
-        //            OWSSyncContactsMessage *syncContactsMessage =
-        //            [[OWSSyncContactsMessage alloc] initWithContactsManager:self.contactsManager];
-        //
-        //            [self.messageSender sendTemporaryAttachmentData:[syncContactsMessage buildPlainTextAttachmentData]
-        //                                                contentType:OWSMimeTypeApplicationOctetStream
-        //                                                  inMessage:syncContactsMessage
-        //                                                    success:^{
-        //                                                        DDLogInfo(@"%@ Successfully sent Contacts response syncMessage.", self.tag);
-        //                                                    }
-        //                                                    failure:^(NSError *error) {
-        //                                                        DDLogError(@"%@ Failed to send Contacts response syncMessage with error: %@", self.tag, error);
-        //                                                    }];
-        //
-        //        } else if (syncMessage.request.type == OWSSignalServiceProtosSyncMessageRequestTypeGroups) {
-        //            DDLogInfo(@"%@ Received request `groups` syncMessage.", self.tag);
-        //
-        //            OWSSyncGroupsMessage *syncGroupsMessage = [[OWSSyncGroupsMessage alloc] init];
-        //
-        //            [self.messageSender sendTemporaryAttachmentData:[syncGroupsMessage buildPlainTextAttachmentData]
-        //                                                contentType:OWSMimeTypeApplicationOctetStream
-        //                                                  inMessage:syncGroupsMessage
-        //                                                    success:^{
-        //                                                        DDLogInfo(@"%@ Successfully sent Groups response syncMessage.", self.tag);
-        //                                                    }
-        //                                                    failure:^(NSError *error) {
-        //                                                        DDLogError(@"%@ Failed to send Groups response syncMessage with error: %@", self.tag, error);
-        //                                                    }];
-        //        }
     } else if (syncMessage.read.count > 0) {
         DDLogInfo(@"%@ Received %ld read receipt(s)", self.tag, (u_long)syncMessage.read.count);
         
@@ -513,39 +453,16 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *controlMessageType = [dataBlob objectForKey:@"control"];
         DDLogInfo(@"Control message received: %@", controlMessageType);
         
-        // Conversation update
-        if ([controlMessageType isEqualToString:FLControlMessageThreadUpdateKey]) {
-            [self handleThreadUpdateControlMessageWithEnvelope:envelope
-                                               withDataMessage:dataMessage
-                                                 attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadClearKey]) {
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadCloseKey]) {
-            [self handleThreadArchiveControlMessageWithEnvelope:envelope
-                                                withDataMessage:dataMessage
-                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadArchiveKey]) {
-            [self handleThreadArchiveControlMessageWithEnvelope:envelope
-                                                withDataMessage:dataMessage
-                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadRestoreKey]) {
-            [self handleThreadRestoreControlMessageWithEnvelope:envelope
-                                                withDataMessage:dataMessage
-                                                  attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadDeleteKey]) {
-            [self handleThreadDeleteControlMessageWithEnvelope:envelope
-                                               withDataMessage:dataMessage
-                                                 attachmentIds:attachmentIds];
-        } else if ([controlMessageType isEqualToString:FLControlMessageThreadSnoozeKey]) {
-        } else if ([controlMessageType isEqualToString:FLControlMessageProvisionRequestKey]) {
-            [self handleProvisionRequestControlMessageWithEnvelope:envelope
-                                                   withDataMessage:dataMessage
-                                                     attachmentIds:attachmentIds];
-        } else {
-#ifdef DEBUG
-            DDLogDebug(@"Unhandled control message of type: %@\nwith Payload: %@", controlMessageType, jsonPayload);
-#else
-            DDLogDebug(@"Unhandled control message of type: %@", controlMessageType);
-#endif
+        NSString *threadId = [jsonPayload objectForKey:@"threadId"];
+        if (threadId.length > 0) {
+            TSThread *thread = [TSThread getOrCreateThreadWithID:threadId];
+            
+            IncomingControlMessage *controlMessage = [[IncomingControlMessage alloc] initWithThread:thread
+                                                                                             author:envelope.source
+                                                                                              relay:envelope.relay
+                                                                                            payload:jsonPayload
+                                                                                        attachments:dataMessage.attachments];
+            [ControlMessageManager processIncomingControlMessageWithMessage:controlMessage];
         }
         return nil;
         

@@ -13,6 +13,9 @@
 @property (nonatomic, readonly) TSThread *thread;
 @property (nonatomic, readonly) uint64_t timestamp;
 
+@property (nonatomic, strong) NSMutableDictionary *forstaPayload;
+@property (nonatomic, readonly) NSDate *sendTime;
+
 - (NSDate *)date;
 - (NSString *)description;
 

@@ -10,22 +10,14 @@
 #import "TSAttachmentPointer.h"
 #import "TSAttachmentStream.h"
 #import "TSCall.h"
-#import "TSContactThread.h"
 #import "TSContentAdapters.h"
 #import "TSErrorMessage.h"
-#import "TSGroupThread.h"
 #import "TSIncomingMessage.h"
 #import "TSInfoMessage.h"
 #import "TSOutgoingMessage.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 @interface TSMessageAdapter ()
-
-// ---
-
-@property (nonatomic, retain) TSContactThread *thread;
-
-// OR for groups
 
 @property (nonatomic, copy) NSString *senderId;
 @property (nonatomic, copy) NSString *senderDisplayName;

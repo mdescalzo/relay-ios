@@ -18,6 +18,7 @@
 #import "TSOutgoingMessage.h"
 #import "TSSocketManager.h"
 #import "FLMessageSender.h"
+#import "TSThread.h"
 
 #define pushManagerDomain @"org.forsta.pushmanager"
 

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 
+#import "Relay-Swift.h"
 #import "Environment.h"
 #import "FingerprintViewController.h"
 #import "FullImageViewController.h"
@@ -26,7 +27,6 @@
 #import "OWSOutgoingMessageCollectionViewCell.h"
 #import "PhoneManager.h"
 #import "PropertyListPreferences.h"
-#import "Relay-Swift.h"
 #import "SignalKeyingStorage.h"
 #import "TSAttachmentPointer.h"
 #import "TSContentAdapters.h"
@@ -34,7 +34,6 @@
 #import "TSErrorMessage.h"
 #import "TSThread.h"
 #import "TSIncomingMessage.h"
-#import "FLControlMessage.h"
 #import "TSInfoMessage.h"
 #import "TSInvalidIdentityKeyErrorMessage.h"
 #import "UIFont+OWS.h"
@@ -215,7 +214,7 @@ typedef enum : NSUInteger {
 
 - (void)hideInputIfNeeded {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (_peek) {
+        if (self.peek) {
             self.inputToolbar.hidden = YES;
             [self.inputToolbar endEditing:TRUE];
             return;
@@ -451,7 +450,7 @@ typedef enum : NSUInteger {
     [self toggleObservers:NO];
 
     [_unreadContainer removeFromSuperview];
-    _unreadContainer = nil;
+    self->_unreadContainer = nil;
 
     [_audioPlayerPoller invalidate];
     [_audioPlayer stop];
@@ -2240,7 +2239,7 @@ typedef enum : NSUInteger {
 - (void)loadDraftInCompose {
     __block NSString *placeholder;
     [self.editingDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        placeholder = [_thread currentDraftWithTransaction:transaction];
+        placeholder = [self.thread currentDraftWithTransaction:transaction];
     }
                                        completionBlock:^{
                                            dispatch_async(dispatch_get_main_queue(), ^{
@@ -2266,10 +2265,10 @@ typedef enum : NSUInteger {
 - (void)setUnreadCount:(NSUInteger)unreadCount {
     if (_unreadCount != unreadCount) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            _unreadCount = unreadCount;
+            self->_unreadCount = unreadCount;
         
-            if (_unreadCount > 0) {
-                if (_unreadContainer == nil) {
+            if (self->_unreadCount > 0) {
+                if (self->_unreadContainer == nil) {
                     static UIImage *backgroundImage = nil;
                     static dispatch_once_t onceToken;
                     dispatch_once(&onceToken, ^{
@@ -2282,37 +2281,37 @@ typedef enum : NSUInteger {
                         UIGraphicsEndImageContext();
                     });
                     
-                    _unreadContainer = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 10.0f, 10.0f)];
-                    _unreadContainer.userInteractionEnabled = NO;
-                    _unreadContainer.layer.zPosition        = 2000;
-                    [self.navigationController.navigationBar addSubview:_unreadContainer];
+                    self->_unreadContainer = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 10.0f, 10.0f)];
+                    self->_unreadContainer.userInteractionEnabled = NO;
+                    self->_unreadContainer.layer.zPosition        = 2000;
+                    [self.navigationController.navigationBar addSubview:self->_unreadContainer];
                     
-                    _unreadBackground = [[UIImageView alloc] initWithImage:backgroundImage];
-                    [_unreadContainer addSubview:_unreadBackground];
+                    self->_unreadBackground = [[UIImageView alloc] initWithImage:backgroundImage];
+                    [self->_unreadContainer addSubview:self->_unreadBackground];
                     
-                    _unreadLabel                 = [[UILabel alloc] init];
-                    _unreadLabel.backgroundColor = [UIColor clearColor];
-                    _unreadLabel.textColor       = [UIColor whiteColor];
-                    _unreadLabel.font            = [UIFont systemFontOfSize:12];
-                    [_unreadContainer addSubview:_unreadLabel];
+                    self->_unreadLabel                 = [[UILabel alloc] init];
+                    self->_unreadLabel.backgroundColor = [UIColor clearColor];
+                    self->_unreadLabel.textColor       = [UIColor whiteColor];
+                    self->_unreadLabel.font            = [UIFont systemFontOfSize:12];
+                    [self->_unreadContainer addSubview:self->_unreadLabel];
                 }
-                _unreadContainer.hidden = false;
+                self->_unreadContainer.hidden = false;
                 
-                _unreadLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)unreadCount];
-                [_unreadLabel sizeToFit];
+                self->_unreadLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)unreadCount];
+                [self->_unreadLabel sizeToFit];
                 
                 CGPoint offset = CGPointMake(17.0f, 2.0f);
                 
-                _unreadBackground.frame =
-                CGRectMake(offset.x, offset.y, MAX(_unreadLabel.frame.size.width + 8.0f, 17.0f), 17.0f);
-                _unreadLabel.frame = CGRectMake(offset.x
+                self->_unreadBackground.frame =
+                CGRectMake(offset.x, offset.y, MAX(self->_unreadLabel.frame.size.width + 8.0f, 17.0f), 17.0f);
+                self->_unreadLabel.frame = CGRectMake(offset.x
                                                 + (CGFloat)floor(
-                                                                 (2.0 * (_unreadBackground.frame.size.width - _unreadLabel.frame.size.width) / 2.0f) / 2.0f),
+                                                                 (2.0 * (self->_unreadBackground.frame.size.width - self->_unreadLabel.frame.size.width) / 2.0f) / 2.0f),
                                                 offset.y + 1.0f,
-                                                _unreadLabel.frame.size.width,
-                                                _unreadLabel.frame.size.height);
-            } else if (_unreadContainer != nil) {
-                _unreadContainer.hidden = true;
+                                                self->_unreadLabel.frame.size.width,
+                                                self->_unreadLabel.frame.size.height);
+            } else if (self->_unreadContainer != nil) {
+                self->_unreadContainer.hidden = true;
             }
         });
     }

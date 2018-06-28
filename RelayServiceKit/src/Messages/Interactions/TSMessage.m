@@ -387,13 +387,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
     return _attributedTextBody;
 }
 
--(NSMutableDictionary *)forstaPayload
-{
-    if (_forstaPayload == nil) {
-        _forstaPayload = [NSMutableDictionary new];
-    }
-    return _forstaPayload;
-}
+
 
 -(nullable NSArray *)arrayFromMessageBody:(NSString *)body
 {

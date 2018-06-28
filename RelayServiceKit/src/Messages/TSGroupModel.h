@@ -4,6 +4,7 @@
 #import "TSYapDatabaseObject.h"
 #import "ContactsManagerProtocol.h"
 
+__deprecated
 @interface TSGroupModel : TSYapDatabaseObject
 
 @property (nonatomic, strong) NSMutableArray *groupMemberIds;

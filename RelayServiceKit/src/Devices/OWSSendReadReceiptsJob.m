@@ -5,7 +5,6 @@
 #import "OWSMessageSender.h"
 #import "OWSReadReceipt.h"
 #import "OWSReadReceiptsMessage.h"
-#import "TSContactThread.h"
 #import "TSIncomingMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN

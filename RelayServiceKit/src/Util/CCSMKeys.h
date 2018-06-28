@@ -1,12 +1,15 @@
 //
-//  FLControlMessage.h
-//  
+//  CCSMKeys.h
+//  Forsta
 //
-//  Created by Mark on 10/18/17.
+//  Created by Mark Descalzo on 6/25/18.
+//  Copyright © 2018 Forsta. All rights reserved.
 //
 
-#import "TSOutgoingMessage.h"
+#ifndef CCSMKeys_h
+#define CCSMKeys_h
 
+// Control message keys
 #define FLControlMessageThreadUpdateKey @"threadUpdate"
 #define FLControlMessageThreadClearKey @"threadClear"
 #define FLControlMessageThreadCloseKey @"threadClose"
@@ -17,10 +20,13 @@
 #define FLControlMessageProvisionRequestKey @"provisionRequest"
 #define FLControlMessageSyncRequestKey @"syncRequest"
 
-@interface FLControlMessage : TSOutgoingMessage
+// Thread keys
+#define FLThreadTitleKey @"threadTitle"
+#define FLThreadIDKey @"threadId"
+#define FLThreadTypeKey @"threadType"
+#define FLDistributionKey @"distribution"
+#define FLExpressionKey @"expression"
+#define FLThreadTypeConversation @"conversation"
+#define FLThreadTypeAnnouncement @"announcement"
 
-@property (strong, readonly) NSString * _Nonnull controlMessageType;
-
--(instancetype _Nonnull)initControlMessageForThread:(TSThread *_Nonnull)thread ofType:(NSString *_Nonnull)controlType;
-
-@end
+#endif /* CCSMKeys_h */

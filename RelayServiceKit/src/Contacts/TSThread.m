@@ -13,15 +13,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-const NSString *FLThreadTitleKey = @"threadTitle";
-const NSString *FLThreadIDKey = @"threadId";
-const NSString *FLThreadTypeKey = @"threadType";
-const NSString *FLDistributionKey = @"distribution";
-const NSString *FLExpressionKey = @"expression";
-const NSString *FLThreadTypeConversation = @"conversation";
-const NSString *FLThreadTypeAnnouncement = @"announcement";
-
-
 @interface TSThread ()
 
 @property (nonatomic, strong) NSDate *creationDate;
@@ -238,6 +229,13 @@ const NSString *FLThreadTypeAnnouncement = @"announcement";
         [self validate];
     }
     return _participants;
+}
+
+-(void)setParticipants:(NSArray<NSString *> *)value
+{
+    if (![value isEqual:_participants]) {
+        _participants = [value copy];
+    }
 }
 
 -(NSString *)displayName
