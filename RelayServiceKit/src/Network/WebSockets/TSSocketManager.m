@@ -176,7 +176,9 @@ NSString *const SocketConnectingNotification = @"SocketConnectingNotification";
         OWSSignalServiceProtosEnvelope *envelope = [OWSSignalServiceProtosEnvelope parseFromData:decryptedPayload];
 
         [[TSMessagesManager sharedManager] handleReceivedEnvelope:envelope];
-    } else {
+    } if ([message.path isEqualToString:@"/api/v1/queue/empty"] && [message.verb isEqualToString:@"PUT"]) {
+        DDLogInfo(@"WebSocket Queue Empty.");
+    }  else {
         DDLogWarn(@"Unsupported WebSocket Request");
     }
 }
