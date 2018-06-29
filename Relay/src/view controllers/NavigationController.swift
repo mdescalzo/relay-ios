@@ -26,7 +26,7 @@ class NavigationController: UINavigationController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        initializeObserver()
+        self.initializeObserver()
         TSSocketManager.sendNotification()
     }
     
@@ -49,16 +49,6 @@ class NavigationController: UINavigationController {
             self.navigationBar.addSubview(self.socketStatusView!)
         }
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
     // MARK: - Socket Status Notifications
     func initializeObserver() {
@@ -92,6 +82,7 @@ class NavigationController: UINavigationController {
         DispatchQueue.main.async {
             if self.socketStatusView == nil {
                 self.initializeSocketStatusBar()
+                self.updateStatusTimer?.invalidate()
                 self.updateStatusTimer = Timer.scheduledTimer(timeInterval: 0.5,
                                                          target: self,
                                                          selector: #selector(self.updateSocketConnecting),
@@ -104,13 +95,16 @@ class NavigationController: UINavigationController {
     }
     
     func updateSocketConnecting() {
-        DispatchQueue.main.async {
-            let progress = (self.socketStatusView?.progress)! + 0.05
-            self.socketStatusView?.progress = min(progress, self.STALLED_PROGRESS)
+        if self.socketStatusView != nil {
+            DispatchQueue.main.async {
+                let progress = (self.socketStatusView?.progress)! + 0.05
+                self.socketStatusView?.progress = min(progress, self.STALLED_PROGRESS)
+            }
         }
     }
     
     func socketIsConnecting() {
+        DDLogInfo("socketIsConnecting called on NavigationController.")
         // Nothing to see here currently
     }
 }

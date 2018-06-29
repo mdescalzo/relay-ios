@@ -10,6 +10,6 @@
 
 @interface TSStorageManager (messageIDs)
 
-+ (NSString *)getAndIncrementMessageIdWithProtocolContext:(nullable id)protocolContext;
++ (NSString *_Nonnull)getAndIncrementMessageIdWithProtocolContext:(nullable id)protocolContext;
 
 @end

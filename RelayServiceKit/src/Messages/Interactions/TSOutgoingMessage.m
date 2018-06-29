@@ -81,29 +81,11 @@ NS_ASSUME_NONNULL_BEGIN
     _messageState = TSOutgoingMessageStateAttemptingOut;
     _hasSyncedTranscript = NO;
 
-//    if ([thread isKindOfClass:[TSGroupThread class]]) {
-//        self.groupMetaMessage = TSGroupMessageDeliver;
-//    } else {
-//        self.groupMetaMessage = TSGroupMessageNone;
-//    }
-
     return self;
 }
 
-//- (void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
-//{
-//    if (!(self.groupMetaMessage == TSGroupMessageDeliver || self.groupMetaMessage == TSGroupMessageNone)) {
-//        DDLogDebug(@"%@ Skipping save for group meta message.", self.tag);
-//        return;
-//    }
-//
-//    [super saveWithTransaction:transaction];
-//}
-
 - (nullable NSString *)recipientIdentifier
 {
-#warning XXX TESTING.  returning nil as groups did with the "old way"
-//    return self.thread.contactIdentifier;
     return nil;
 }
 
@@ -126,45 +108,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (OWSSignalServiceProtosDataMessageBuilder *)dataMessageBuilder
 {
-    TSThread *thread = self.thread;
     OWSSignalServiceProtosDataMessageBuilder *builder = [OWSSignalServiceProtosDataMessageBuilder new];
     [builder setBody:self.body];
-    BOOL attachmentWasGroupAvatar = NO;
-#warning XXX Group avatar sends built here
-//    if ([thread isKindOfClass:[TSGroupThread class]]) {
-//        TSGroupThread *gThread = (TSGroupThread *)thread;
-//        OWSSignalServiceProtosGroupContextBuilder *groupBuilder = [OWSSignalServiceProtosGroupContextBuilder new];
-//
-//        switch (self.groupMetaMessage) {
-//            case TSGroupMessageQuit:
-//                [groupBuilder setType:OWSSignalServiceProtosGroupContextTypeQuit];
-//                break;
-//            case TSGroupMessageUpdate:
-//            case TSGroupMessageNew: {
-//                if (gThread.groupModel.groupImage != nil && self.attachmentIds.count == 1) {
-//                    attachmentWasGroupAvatar = YES;
-//                    [groupBuilder setAvatar:[self buildAttachmentProtoForAttachmentId:self.attachmentIds[0]]];
-//                }
-//
-//                [groupBuilder setMembersArray:gThread.groupModel.groupMemberIds];
-//                [groupBuilder setName:gThread.groupModel.groupName];
-//                [groupBuilder setType:OWSSignalServiceProtosGroupContextTypeUpdate];
-//                break;
-//            }
-//            default:
-//                [groupBuilder setType:OWSSignalServiceProtosGroupContextTypeDeliver];
-//                break;
-//        }
-//        [groupBuilder setId:gThread.groupModel.groupId];
-//        [builder setGroup:groupBuilder.build];
-//    }
-    if (!attachmentWasGroupAvatar) {
-        NSMutableArray *attachments = [NSMutableArray new];
-        for (NSString *attachmentId in self.attachmentIds) {
-            [attachments addObject:[self buildAttachmentProtoForAttachmentId:attachmentId]];
-        }
-        [builder setAttachmentsArray:attachments];
-    }
     [builder setExpireTimer:self.expiresInSeconds];
     return builder;
 }

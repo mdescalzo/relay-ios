@@ -240,7 +240,7 @@
     }
 }
 
-#warning Build out to interace with Address Book for invitations.
+// TODO: Build out to interace with Address Book for invitations.
 #pragma mark - convenience methods
 -(NSArray *)smsNumbersFromContacts:(NSArray <Contact *> *)contacts
 {
