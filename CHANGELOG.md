@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.5.1]
+### Updated
+-  Cocoapods uses frameworks
+### Fixed
+- Sync control messages getting dropped
+- Case-sensitivity in usernames
+### Added
+- Added dedicated ControlMessageManager
+### Removed
+- Carthage dependence
+
 ## [1.5.0]
 ### Updated
 - StorageManager: separated read and read/write operations onto their own connections
@@ -141,6 +152,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.5.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.1
 [1.5.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.0
 [1.4.8]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.8
 [1.4.7]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.7
