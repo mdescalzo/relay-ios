@@ -31,6 +31,7 @@ abstract_target 'Common' do
     pod 'iRate',                       '~> 1.12', :inhibit_warnings => true
     pod 'ReCaptcha', :inhibit_warnings => true
     pod 'PromiseKit',                  '~> 4.0', :inhibit_warnings => true
+    pod 'FLAnimatedImage', '~> 1.0'
     
     target 'Relay' do
     end
