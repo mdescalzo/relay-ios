@@ -24,6 +24,7 @@
 #import "CCSMCommunication.h"
 #import "CCSMStorage.h"
 
+@import Foundation;
 @import Fabric;
 @import Crashlytics;
 
@@ -188,7 +189,7 @@ NSString *const AppDelegateStoryboardLaunchScreen = @"Launch Screen";
     DDLogError(@"%@ Failed to register for remote notifications with error %@", self.tag, error);
 #ifdef DEBUG
     DDLogWarn(@"%@ We're in debug mode. Faking success for remote registration with a fake push identifier", self.tag);
-    [PushManager.sharedManager.pushNotificationFutureSource trySetResult:[NSData dataWithLength:32]];
+    [PushManager.sharedManager.pushNotificationFutureSource trySetResult:[NSMutableData dataWithLength:32]];
 #else
     [PushManager.sharedManager.pushNotificationFutureSource trySetFailure:error];
 #endif

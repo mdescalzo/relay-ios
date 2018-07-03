@@ -51,9 +51,6 @@
           [self log:[NSString stringWithFormat:@"Error from %@", sender] details:text];
         }];
 }
-- (id<JitterQueueNotificationReceiver>)jitterQueueNotificationReceiver {
-    return self;
-}
 
 - (void)notifyCreated {
     [self log:@"JitterQueue created" details:nil];
@@ -66,13 +63,7 @@
         details:[NSString
                     stringWithFormat:@"sequence: %d, remaining: %lu", sequenceNumber, (unsigned long)remainingCount]];
 }
-- (void)notifyBadArrival:(uint16_t)sequenceNumber ofType:(enum JitterBadArrivalType)arrivalType {
-    [self log:@"JitterQueue bad arrival"
-        details:[NSString stringWithFormat:@"sequence: %d, arrival type: %d", sequenceNumber, arrivalType]];
-}
-- (void)notifyBadDequeueOfType:(enum JitterBadDequeueType)type {
-    [self log:@"JitterQueue bad dequeue" details:[NSString stringWithFormat:@"type: %d", type]];
-}
+
 - (void)notifyResyncFrom:(uint16_t)oldReadHeadSequenceNumber to:(uint16_t)newReadHeadSequenceNumber {
     [self log:@"JitterQueue resync"
         details:[NSString stringWithFormat:@"from: %d, to: %d", oldReadHeadSequenceNumber, newReadHeadSequenceNumber]];

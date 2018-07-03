@@ -1,6 +1,5 @@
 #import "Release.h"
 #import "DiscardingLog.h"
-#import "PhoneManager.h"
 #import "PhoneNumberUtil.h"
 //#import "RecentCallManager.h"
 #import "ContactsUpdater.h"
@@ -62,12 +61,12 @@ static unsigned char DH3K_PRIME[] = {
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
-                 supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
+//                 supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
 //                                   phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
 //                              recentCallManager:[RecentCallManager new]
                         testingAndLegacyOptions:@[ ENVIRONMENT_LEGACY_OPTION_RTP_PADDING_BIT_IMPLIES_EXTENSION_BIT_AND_TWELVE_EXTRA_ZERO_BYTES_IN_HEADER ]
-                                   zrtpClientId:RELEASE_ZRTP_CLIENT_ID
-                                  zrtpVersionId:RELEASE_ZRTP_VERSION_ID
+//                                   zrtpClientId:RELEASE_ZRTP_CLIENT_ID
+//                                  zrtpVersionId:RELEASE_ZRTP_VERSION_ID
                                 contactsManager:contactsManager
 //                                contactsUpdater:contactsUpdater
                                  networkManager:networkManager
@@ -94,12 +93,12 @@ static unsigned char DH3K_PRIME[] = {
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
-                 supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
+//                 supportedKeyAgreementProtocols:[self supportedKeyAgreementProtocols]
 //                                   phoneManager:[PhoneManager phoneManagerWithErrorHandler:errorNoter]
 //                              recentCallManager:[RecentCallManager new]
                         testingAndLegacyOptions:@[ ENVIRONMENT_LEGACY_OPTION_RTP_PADDING_BIT_IMPLIES_EXTENSION_BIT_AND_TWELVE_EXTRA_ZERO_BYTES_IN_HEADER ]
-                                   zrtpClientId:RELEASE_ZRTP_CLIENT_ID
-                                  zrtpVersionId:RELEASE_ZRTP_VERSION_ID
+//                                   zrtpClientId:RELEASE_ZRTP_CLIENT_ID
+//                                  zrtpVersionId:RELEASE_ZRTP_VERSION_ID
                                 contactsManager:contactsManager
 //                                contactsUpdater:contactsUpdater
                                  networkManager:networkManager
@@ -107,10 +106,10 @@ static unsigned char DH3K_PRIME[] = {
 }
 
 + (Environment *)unitTestEnvironment:(NSArray *)testingAndLegacyOptions {
-    NSArray *keyAgreementProtocols = self.supportedKeyAgreementProtocols;
-    if ([testingAndLegacyOptions containsObject:TESTING_OPTION_USE_DH_FOR_HANDSHAKE]) {
-        keyAgreementProtocols = @[ [Release supportedDH3KKeyAgreementProtocol] ];
-    }
+//    NSArray *keyAgreementProtocols = self.supportedKeyAgreementProtocols;
+//    if ([testingAndLegacyOptions containsObject:TESTING_OPTION_USE_DH_FOR_HANDSHAKE]) {
+//        keyAgreementProtocols = @[ [Release supportedDH3KKeyAgreementProtocol] ];
+//    }
     NSNumber *port = (NSNumber *)[[NSBundle mainBundle] objectForInfoDictionaryKey:@"TSS_Server_Port"];
 
     TSNetworkManager *networkManager = [TSNetworkManager sharedManager];
@@ -129,26 +128,26 @@ static unsigned char DH3K_PRIME[] = {
                                defaultRelayName:@"textsecure"
                       relayServerHostNameSuffix:@"forsta.services"
                                     certificate:[Certificate certificateFromResourcePath:@"redphone" ofType:@"cer"]
-                 supportedKeyAgreementProtocols:keyAgreementProtocols
+//                 supportedKeyAgreementProtocols:keyAgreementProtocols
 //                                   phoneManager:nil
 //                              recentCallManager:nil
                         testingAndLegacyOptions:testingAndLegacyOptions
-                                   zrtpClientId:TESTING_ZRTP_CLIENT_ID
-                                  zrtpVersionId:TESTING_ZRTP_VERSION_ID
+//                                   zrtpClientId:TESTING_ZRTP_CLIENT_ID
+//                                  zrtpVersionId:TESTING_ZRTP_VERSION_ID
                                 contactsManager:nil
 //                                contactsUpdater:contactsUpdater
                                  networkManager:networkManager
                                   messageSender:messageSender];
 }
 
-+ (NSArray *)supportedKeyAgreementProtocols {
-    return @[ [EC25KeyAgreementProtocol new], [Release supportedDH3KKeyAgreementProtocol] ];
-}
-
-+ (DH3KKeyAgreementProtocol *)supportedDH3KKeyAgreementProtocol {
-    NSData *prime     = [NSData dataWithBytes:DH3K_PRIME length:sizeof(DH3K_PRIME)];
-    NSData *generator = [NSData dataWithSingleByte:DH3K_GENERATOR];
-    return [DH3KKeyAgreementProtocol protocolWithModulus:prime andGenerator:generator];
-}
+//+ (NSArray *)supportedKeyAgreementProtocols {
+//    return @[ [EC25KeyAgreementProtocol new], [Release supportedDH3KKeyAgreementProtocol] ];
+//}
+//
+//+ (DH3KKeyAgreementProtocol *)supportedDH3KKeyAgreementProtocol {
+//    NSData *prime     = [NSData dataWithBytes:DH3K_PRIME length:sizeof(DH3K_PRIME)];
+//    NSData *generator = [NSData dataWithSingleByte:DH3K_GENERATOR];
+//    return [DH3KKeyAgreementProtocol protocolWithModulus:prime andGenerator:generator];
+//}
 
 @end

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #include "InboxTableViewCell.h"
 
-#import "CallState.h"
 #import "Contact.h"
 #import "TSGroupModel.h"
 
@@ -19,7 +18,6 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet UILabel *emptyBoxLabel;
 @property (nonatomic) BOOL newlyRegisteredUser;
-@property (nonatomic, retain) CallState *latestCall;
 
 - (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing;
 - (NSNumber *)updateInboxCountLabel;

@@ -1,6 +1,4 @@
 #import <Foundation/Foundation.h>
-#import "DH3KKeyAgreementProtocol.h"
-#import "EC25KeyAgreementProtocol.h"
 #import "Environment.h"
 
 @interface Release : NSObject
@@ -13,6 +11,5 @@
 /// Fake environment with no logging
 + (Environment *)unitTestEnvironment:(NSArray *)testingAndLegacyOptions;
 
-+ (DH3KKeyAgreementProtocol *)supportedDH3KKeyAgreementProtocol;
 
 @end

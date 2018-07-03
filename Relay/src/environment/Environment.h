@@ -30,13 +30,9 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
     @"LegacyAndroidInterop_1"
 #define TESTING_OPTION_USE_DH_FOR_HANDSHAKE @"DhKeyAgreementOnly"
 
-//@class RecentCallManager;
 @class FLContactsManager;
-//@class FLContactsManager;
-//@class PhoneManager;
 @class SignalsViewController;
 @class TSGroupThread;
-//@class ContactsUpdater;
 @class TSNetworkManager;
 @class FLMessageSender;
 
@@ -51,14 +47,8 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
                defaultRelayName:(NSString *)defaultRelayName
       relayServerHostNameSuffix:(NSString *)relayServerHostNameSuffix
                     certificate:(Certificate *)certificate
- supportedKeyAgreementProtocols:(NSArray *)keyAgreementProtocolsInDescendingPriority
-//                   phoneManager:(PhoneManager *)phoneManager
-//              recentCallManager:(RecentCallManager *)recentCallManager
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
-                   zrtpClientId:(NSData *)zrtpClientId
-                  zrtpVersionId:(NSData *)zrtpVersionId
                 contactsManager:(FLContactsManager *)contactsManager
-//                contactsUpdater:(ContactsUpdater *)contactsUpdater
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender;
 
@@ -92,7 +82,6 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (NSString *)relayServerNameToHostName:(NSString *)name;
 + (ErrorHandlerBlock)errorNoter;
 + (bool)hasEnabledTestingOrLegacyOption:(NSString *)flag;
-//+ (PhoneManager *)phoneManager;
 
 + (PropertyListPreferences *)preferences;
 
@@ -100,13 +89,10 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 + (void)resetAppData;
 + (void)wipeCommDatabase;
 
-//- (void)initCallListener;
 -(void)setForstaViewController:(FLThreadViewController *)forstaViewController;
-//- (void)setSignalsViewController:(SignalsViewController *)signalsViewController;
 - (void)setSignUpFlowNavigationController:(UINavigationController *)signUpFlowNavigationController;
 
 + (void)messageThreadId:(NSString *)threadId;
-//+ (void)messageIdentifier:(NSString *)identifier withCompose:(BOOL)compose;
 + (void)messageGroup:(TSThread *)groupThread;
 
 @end

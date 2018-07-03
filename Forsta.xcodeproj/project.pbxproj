@@ -71,7 +71,6 @@
 		76EB057218170B33006006FC /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
 		76EB057418170B33006006FC /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		76EB058218170B33006006FC /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
-		76EB058418170B33006006FC /* LocalizableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041518170B33006006FC /* LocalizableText.m */; };
 		76EB058818170B33006006FC /* PropertyListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041918170B33006006FC /* PropertyListPreferences.m */; };
 		76EB058A18170B33006006FC /* Release.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041B18170B33006006FC /* Release.m */; };
 		76EB058C18170B33006006FC /* DnsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042018170B33006006FC /* DnsManager.m */; };
@@ -83,30 +82,6 @@
 		76EB05A018170B33006006FC /* IpAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043618170B33006006FC /* IpAddress.m */; };
 		76EB05A218170B33006006FC /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
 		76EB05A418170B33006006FC /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
-		76EB05A618170B33006006FC /* RtpPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043E18170B33006006FC /* RtpPacket.m */; };
-		76EB05A818170B33006006FC /* RtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044018170B33006006FC /* RtpSocket.m */; };
-		76EB05AA18170B33006006FC /* SequenceCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044318170B33006006FC /* SequenceCounter.m */; };
-		76EB05AC18170B33006006FC /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
-		76EB05AE18170B33006006FC /* SrtpStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044718170B33006006FC /* SrtpStream.m */; };
-		76EB05B218170B33006006FC /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
-		76EB05B418170B33006006FC /* HashChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044F18170B33006006FC /* HashChain.m */; };
-		76EB05B618170B33006006FC /* MasterSecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045118170B33006006FC /* MasterSecret.m */; };
-		76EB05B818170B33006006FC /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
-		76EB05BA18170B33006006FC /* CommitPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045618170B33006006FC /* CommitPacket.m */; };
-		76EB05BC18170B33006006FC /* ConfirmAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045818170B33006006FC /* ConfirmAckPacket.m */; };
-		76EB05BE18170B33006006FC /* ConfirmPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045A18170B33006006FC /* ConfirmPacket.m */; };
-		76EB05C018170B33006006FC /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
-		76EB05C218170B33006006FC /* DhPacketSharedSecretHashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045E18170B33006006FC /* DhPacketSharedSecretHashes.m */; };
-		76EB05C418170B33006006FC /* HandshakePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046018170B33006006FC /* HandshakePacket.m */; };
-		76EB05C618170B33006006FC /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
-		76EB05C818170B33006006FC /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
-		76EB05CA18170B33006006FC /* RecipientUnavailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046A18170B33006006FC /* RecipientUnavailable.m */; };
-		76EB05CC18170B33006006FC /* ShortAuthenticationStringGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046C18170B33006006FC /* ShortAuthenticationStringGenerator.m */; };
-		76EB05CE18170B33006006FC /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
-		76EB05D018170B33006006FC /* ZrtpHandshakeSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047018170B33006006FC /* ZrtpHandshakeSocket.m */; };
-		76EB05D218170B33006006FC /* ZrtpInitiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047218170B33006006FC /* ZrtpInitiator.m */; };
-		76EB05D418170B33006006FC /* ZrtpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047418170B33006006FC /* ZrtpManager.m */; };
-		76EB05D618170B33006006FC /* ZrtpResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047618170B33006006FC /* ZrtpResponder.m */; };
 		76EB05D818170B33006006FC /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
 		76EB05DA18170B33006006FC /* LowLatencyConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047B18170B33006006FC /* LowLatencyConnector.m */; };
 		76EB05DC18170B33006006FC /* StreamPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047D18170B33006006FC /* StreamPair.m */; };
@@ -199,7 +174,6 @@
 		7D4A39C41F1693930023C29B /* CountryCodeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5509ECC1A69B1D600ABA4BC /* CountryCodeTableViewCell.m */; };
 		7D4A39C61F1693930023C29B /* LoggingUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B918170B33006006FC /* LoggingUtil.m */; };
 		7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B518170B33006006FC /* DecayingSampleEstimator.m */; };
-		7D4A39C81F1693930023C29B /* CommitPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045618170B33006006FC /* CommitPacket.m */; };
 		7D4A39CC1F1693930023C29B /* AppStoreRating.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */; };
 		7D4A39CD1F1693930023C29B /* OWSQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38301D6682450094BD24 /* OWSQRCodeScanningViewController.m */; };
 		7D4A39CE1F1693930023C29B /* PriorityQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04D318170B33006006FC /* PriorityQueue.m */; };
@@ -208,21 +182,16 @@
 		7D4A39D11F1693930023C29B /* DiscardingLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C618170B33006006FC /* DiscardingLog.m */; };
 		7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
 		7D4A39D31F1693930023C29B /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
-		7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
 		7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB11D921A12A4AA002F93FB /* FullImageViewController.m */; };
 		7D4A39D81F1693930023C29B /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B97940261832BD2400BD66CB /* UIUtil.m */; };
 		7D4A39D91F1693930023C29B /* TSAnimatedAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */; };
-		7D4A39DA1F1693930023C29B /* ConfirmPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045A18170B33006006FC /* ConfirmPacket.m */; };
 		7D4A39DB1F1693930023C29B /* JSQMessagesCollectionViewCell+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531C9C31DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m */; };
-		7D4A39DD1F1693930023C29B /* RtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044018170B33006006FC /* RtpSocket.m */; };
 		7D4A39E01F1693930023C29B /* UIViewController+CameraPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */; };
 		7D4A39E11F1693930023C29B /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042A18170B33006006FC /* HttpManager.m */; };
 		7D4A39E21F1693930023C29B /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81EE1DC030E7004C9430 /* AccountManager.swift */; };
-		7D4A39E41F1693930023C29B /* ZrtpInitiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047218170B33006006FC /* ZrtpInitiator.m */; };
 		7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048218170B33006006FC /* NetworkStream.m */; };
 		7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B61A24F6730007FB87 /* UIFont+OWS.m */; };
 		7D4A39E71F1693930023C29B /* PushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B9ECFB198B31BA00C620D3 /* PushManager.m */; };
-		7D4A39E81F1693930023C29B /* ZrtpResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047618170B33006006FC /* ZrtpResponder.m */; };
 		7D4A39E91F1693930023C29B /* TSMessageAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D53F61A23CCAD009AAF82 /* TSMessageAdapter.m */; };
 		7D4A39EA1F1693930023C29B /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274EA1A5AFDDB00202277 /* AboutTableViewController.m */; };
 		7D4A39ED1F1693930023C29B /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
@@ -230,15 +199,12 @@
 		7D4A39EF1F1693930023C29B /* NumberUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04ED18170B33006006FC /* NumberUtil.m */; };
 		7D4A39F01F1693930023C29B /* TSPhotoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A3EB4A1A423B3800B2236B /* TSPhotoAdapter.m */; };
 		7D4A39F11F1693930023C29B /* FunctionalUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EB18170B33006006FC /* FunctionalUtil.m */; };
-		7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045818170B33006006FC /* ConfirmAckPacket.m */; };
 		7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B318170B33006006FC /* CategorizingLogger.m */; };
 		7D4A39F61F1693930023C29B /* Release.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041B18170B33006006FC /* Release.m */; };
 		7D4A39F71F1693930023C29B /* SessionResetJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D231761DC7E8F10034FA89 /* SessionResetJob.swift */; };
 		7D4A39F81F1693930023C29B /* EventWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B718170B33006006FC /* EventWindow.m */; };
 		7D4A39FA1F1693930023C29B /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7D4A39FB1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C61D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m */; };
-		7D4A39FC1F1693930023C29B /* LocalizableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041518170B33006006FC /* LocalizableText.m */; };
-		7D4A39FF1F1693930023C29B /* RtpPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043E18170B33006006FC /* RtpPacket.m */; };
 		7D4A3A001F1693930023C29B /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F618170B33006006FC /* StringUtil.m */; };
 		7D4A3A011F1693930023C29B /* OWSStaleNotificationObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BFFFA71D898AF0004A12A7 /* OWSStaleNotificationObserver.m */; };
 		7D4A3A031F1693930023C29B /* OWSCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681B61D305A580050903A /* OWSCall.m */; };
@@ -249,10 +215,8 @@
 		7D4A3A081F1693930023C29B /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		7D4A3A091F1693930023C29B /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
 		7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E118170B33006006FC /* Conversions.m */; };
-		7D4A3A0E1F1693930023C29B /* RecipientUnavailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046A18170B33006006FC /* RecipientUnavailable.m */; };
 		7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047B18170B33006006FC /* LowLatencyConnector.m */; };
 		7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66B9F7C1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m */; };
-		7D4A3A141F1693930023C29B /* HashChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044F18170B33006006FC /* HashChain.m */; };
 		7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048718170B33006006FC /* UdpSocket.m */; };
 		7D4A3A161F1693930023C29B /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
 		7D4A3A171F1693930023C29B /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F818170B33006006FC /* ThreadManager.m */; };
@@ -261,7 +225,6 @@
 		7D4A3A1D1F1693930023C29B /* ShowGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */; };
 		7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C018170B33006006FC /* AnonymousConditionLogger.m */; };
-		7D4A3A221F1693930023C29B /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
 		7D4A3A231F1693930023C29B /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
 		7D4A3A251F1693930023C29B /* EvpSymetricUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632618F70C0700D4A43F /* EvpSymetricUtil.m */; };
 		7D4A3A261F1693930023C29B /* CCSMCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE179921EDF37E900327B2B /* CCSMCommunication.m */; };
@@ -274,7 +237,6 @@
 		7D4A3A2D1F1693930023C29B /* TSVideoAttachmentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E9D4B91A65FAD800E4481C /* TSVideoAttachmentAdapter.m */; };
 		7D4A3A311F1693930023C29B /* OWSDeviceProvisioningURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38361D668EBF0094BD24 /* OWSDeviceProvisioningURLParser.m */; };
 		7D4A3A321F1693930023C29B /* UIColor+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B31A24F3880007FB87 /* UIColor+OWS.m */; };
-		7D4A3A331F1693930023C29B /* DhPacketSharedSecretHashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045E18170B33006006FC /* DhPacketSharedSecretHashes.m */; };
 		7D4A3A341F1693930023C29B /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C93C4D199567AD00EDF894 /* DebugLogger.m */; };
 		7D4A3A351F1693930023C29B /* Crc32.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E318170B33006006FC /* Crc32.m */; };
 		7D4A3A381F1693930023C29B /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
@@ -282,45 +244,35 @@
 		7D4A3A3D1F1693930023C29B /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
 		7D4A3A411F1693930023C29B /* ConversationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */; };
 		7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
-		7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
 		7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04CA18170B33006006FC /* ArrayUtil.m */; };
 		7D4A3A4B1F1693930023C29B /* AdvancedSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */; };
-		7D4A3A4C1F1693930023C29B /* HandshakePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046018170B33006006FC /* HandshakePacket.m */; };
-		7D4A3A4D1F1693930023C29B /* SequenceCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044318170B33006006FC /* SequenceCounter.m */; };
 		7D4A3A4E1F1693930023C29B /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D4A3A4F1F1693930023C29B /* CryptoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632418F70C0700D4A43F /* CryptoTools.m */; };
 		7D4A3A501F1693930023C29B /* DnsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042018170B33006006FC /* DnsManager.m */; };
 		7D4A3A511F1693930023C29B /* GroupContactsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B2451A93B238002BBD9D /* GroupContactsResult.m */; };
 		7D4A3A521F1693930023C29B /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66B9F711AEA6D1100E2E609 /* NotificationSettingsViewController.m */; };
 		7D4A3A531F1693930023C29B /* IgnoredPacketFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042518170B33006006FC /* IgnoredPacketFailure.m */; };
-		7D4A3A541F1693930023C29B /* ZrtpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047418170B33006006FC /* ZrtpManager.m */; };
 		7D4A3A551F1693930023C29B /* HostNameEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042218170B33006006FC /* HostNameEndPoint.m */; };
-		7D4A3A561F1693930023C29B /* DH3KKeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */; };
-		7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */; };
 		7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */; };
 		7D4A3A5B1F1693930023C29B /* StreamPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047D18170B33006006FC /* StreamPair.m */; };
 		7D4A3A5C1F1693930023C29B /* TimeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FA18170B33006006FC /* TimeUtil.m */; };
 		7D4A3A5D1F1693930023C29B /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
 		7D4A3A5E1F1693930023C29B /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
 		7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E918170B33006006FC /* DictionaryUtil.m */; };
-		7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
 		7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EB32CE1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m */; };
 		7D4A3A641F1693930023C29B /* HttpRequestUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E919E1FBE8005735D1 /* HttpRequestUtil.m */; };
 		7D4A3A651F1693930023C29B /* SyncPushTokensJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451DE9FC1DC1A28200810E42 /* SyncPushTokensJob.swift */; };
-		7D4A3A661F1693930023C29B /* MasterSecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045118170B33006006FC /* MasterSecret.m */; };
 		7D4A3A681F1693930023C29B /* ConversationUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD256E1A151BCB00F4C644 /* ConversationUpdateViewController.m */; };
 		7D4A3A691F1693930023C29B /* HttpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043418170B33006006FC /* HttpSocket.m */; };
 		7D4A3A6C1F1693930023C29B /* UIDevice+TSHardwareVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC81A971A44558300DFEC7D /* UIDevice+TSHardwareVersion.m */; };
 		7D4A3A6D1F1693930023C29B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB03C318170B33006006FC /* AppDelegate.m */; };
 		7D4A3A6E1F1693930023C29B /* JSQMediaItem+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */; };
-		7D4A3A6F1F1693930023C29B /* ZrtpHandshakeSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047018170B33006006FC /* ZrtpHandshakeSocket.m */; };
 		7D4A3A701F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F2B1931D9C9F48000D2C69 /* OWSOutgoingMessageCollectionViewCell.m */; };
 		7D4A3A711F1693930023C29B /* HttpResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761EB19E1FBE8005735D1 /* HttpResponse.m */; };
 		7D4A3A731F1693930023C29B /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
 		7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
-		7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
 		7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
 		7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
@@ -328,23 +280,17 @@
 		7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042718170B33006006FC /* UnrecognizedRequestFailure.m */; };
 		7D4A3A801F1693930023C29B /* NSData+ows_StripToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B62F5E0F1C2980B4000D370C /* NSData+ows_StripToken.m */; };
 		7D4A3A821F1693930023C29B /* AFHTTPSessionManager+SignalMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E219E1F487005735D1 /* AFHTTPSessionManager+SignalMethods.m */; };
-		7D4A3A831F1693930023C29B /* ShortAuthenticationStringGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046C18170B33006006FC /* ShortAuthenticationStringGenerator.m */; };
-		7D4A3A841F1693930023C29B /* EC25KeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BEB18AAC40200B7C403 /* EC25KeyAgreementProtocol.m */; };
 		7D4A3A851F1693930023C29B /* OWSCallCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681BA1D305C080050903A /* OWSCallCollectionViewCell.m */; };
 		7D4A3A861F1693930023C29B /* AnonymousTerminator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F418170B33006006FC /* AnonymousTerminator.m */; };
 		7D4A3A871F1693930023C29B /* PropertyListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041918170B33006006FC /* PropertyListPreferences.m */; };
-		7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
 		7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E519E1FBE8005735D1 /* HttpRequest.m */; };
 		7D4A3A8D1F1693930023C29B /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
-		7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
 		7D4A3A911F1693930023C29B /* HighlightableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B201751DAECBFE00C461E0 /* HighlightableLabel.swift */; };
-		7D4A3A921F1693930023C29B /* SrtpStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044718170B33006006FC /* SrtpStream.m */; };
 		7D4A3A931F1693930023C29B /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
 		7D4A3A951F1693930023C29B /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		7D4A3A961F1693930023C29B /* OWSDeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459311FB1D75C948008DD4F0 /* OWSDeviceTableViewCell.m */; };
 		7D4A3A971F1693930023C29B /* SecureEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048418170B33006006FC /* SecureEndPoint.m */; };
 		7D4A3A981F1693930023C29B /* Certificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048018170B33006006FC /* Certificate.m */; };
-		7D4A3A991F1693930023C29B /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
 		7D4A3A9A1F1693930023C29B /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
 		7D4A3A9E1F1693930023C29B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4520D8D41D417D8E00123472 /* Photos.framework */; };
 		7D4A3A9F1F1693930023C29B /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -811,7 +757,6 @@
 		7DCFFD6B1F0EE4490003CD95 /* CountryCodeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5509ECC1A69B1D600ABA4BC /* CountryCodeTableViewCell.m */; };
 		7DCFFD6D1F0EE4490003CD95 /* LoggingUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B918170B33006006FC /* LoggingUtil.m */; };
 		7DCFFD6E1F0EE4490003CD95 /* DecayingSampleEstimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B518170B33006006FC /* DecayingSampleEstimator.m */; };
-		7DCFFD6F1F0EE4490003CD95 /* CommitPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045618170B33006006FC /* CommitPacket.m */; };
 		7DCFFD731F0EE4490003CD95 /* AppStoreRating.m in Sources */ = {isa = PBXBuildFile; fileRef = B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */; };
 		7DCFFD741F0EE4490003CD95 /* OWSQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38301D6682450094BD24 /* OWSQRCodeScanningViewController.m */; };
 		7DCFFD751F0EE4490003CD95 /* PriorityQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04D318170B33006006FC /* PriorityQueue.m */; };
@@ -820,21 +765,16 @@
 		7DCFFD781F0EE4490003CD95 /* DiscardingLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C618170B33006006FC /* DiscardingLog.m */; };
 		7DCFFD791F0EE4490003CD95 /* OWSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81F11DC03A22004C9430 /* OWSLogger.m */; };
 		7DCFFD7A1F0EE4490003CD95 /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
-		7DCFFD7B1F0EE4490003CD95 /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
 		7DCFFD7D1F0EE4490003CD95 /* FullImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB11D921A12A4AA002F93FB /* FullImageViewController.m */; };
 		7DCFFD7F1F0EE4490003CD95 /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B97940261832BD2400BD66CB /* UIUtil.m */; };
 		7DCFFD801F0EE4490003CD95 /* TSAnimatedAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE0E3761B954546007210CF /* TSAnimatedAdapter.m */; };
-		7DCFFD811F0EE4490003CD95 /* ConfirmPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045A18170B33006006FC /* ConfirmPacket.m */; };
 		7DCFFD821F0EE4490003CD95 /* JSQMessagesCollectionViewCell+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531C9C31DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m */; };
-		7DCFFD841F0EE4490003CD95 /* RtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044018170B33006006FC /* RtpSocket.m */; };
 		7DCFFD871F0EE4490003CD95 /* UIViewController+CameraPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */; };
 		7DCFFD881F0EE4490003CD95 /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042A18170B33006006FC /* HttpManager.m */; };
 		7DCFFD891F0EE4490003CD95 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD81EE1DC030E7004C9430 /* AccountManager.swift */; };
-		7DCFFD8B1F0EE4490003CD95 /* ZrtpInitiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047218170B33006006FC /* ZrtpInitiator.m */; };
 		7DCFFD8C1F0EE4490003CD95 /* NetworkStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048218170B33006006FC /* NetworkStream.m */; };
 		7DCFFD8D1F0EE4490003CD95 /* UIFont+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B61A24F6730007FB87 /* UIFont+OWS.m */; };
 		7DCFFD8E1F0EE4490003CD95 /* PushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B9ECFB198B31BA00C620D3 /* PushManager.m */; };
-		7DCFFD8F1F0EE4490003CD95 /* ZrtpResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047618170B33006006FC /* ZrtpResponder.m */; };
 		7DCFFD901F0EE4490003CD95 /* TSMessageAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D53F61A23CCAD009AAF82 /* TSMessageAdapter.m */; };
 		7DCFFD911F0EE4490003CD95 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274EA1A5AFDDB00202277 /* AboutTableViewController.m */; };
 		7DCFFD941F0EE4490003CD95 /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
@@ -842,15 +782,12 @@
 		7DCFFD961F0EE4490003CD95 /* NumberUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04ED18170B33006006FC /* NumberUtil.m */; };
 		7DCFFD971F0EE4490003CD95 /* TSPhotoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A3EB4A1A423B3800B2236B /* TSPhotoAdapter.m */; };
 		7DCFFD981F0EE4490003CD95 /* FunctionalUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EB18170B33006006FC /* FunctionalUtil.m */; };
-		7DCFFD9B1F0EE4490003CD95 /* ConfirmAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045818170B33006006FC /* ConfirmAckPacket.m */; };
 		7DCFFD9C1F0EE4490003CD95 /* CategorizingLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B318170B33006006FC /* CategorizingLogger.m */; };
 		7DCFFD9D1F0EE4490003CD95 /* Release.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041B18170B33006006FC /* Release.m */; };
 		7DCFFD9E1F0EE4490003CD95 /* SessionResetJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D231761DC7E8F10034FA89 /* SessionResetJob.swift */; };
 		7DCFFD9F1F0EE4490003CD95 /* EventWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04B718170B33006006FC /* EventWindow.m */; };
 		7DCFFDA11F0EE4490003CD95 /* FLThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */; };
 		7DCFFDA21F0EE4490003CD95 /* OWSIncomingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C61D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m */; };
-		7DCFFDA31F0EE4490003CD95 /* LocalizableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041518170B33006006FC /* LocalizableText.m */; };
-		7DCFFDA61F0EE4490003CD95 /* RtpPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043E18170B33006006FC /* RtpPacket.m */; };
 		7DCFFDA71F0EE4490003CD95 /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F618170B33006006FC /* StringUtil.m */; };
 		7DCFFDA81F0EE4490003CD95 /* OWSStaleNotificationObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BFFFA71D898AF0004A12A7 /* OWSStaleNotificationObserver.m */; };
 		7DCFFDAA1F0EE4490003CD95 /* OWSCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681B61D305A580050903A /* OWSCall.m */; };
@@ -861,10 +798,8 @@
 		7DCFFDAF1F0EE4490003CD95 /* OWSExpirationTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 450873C21D9D5149006B54F2 /* OWSExpirationTimerView.m */; };
 		7DCFFDB01F0EE4490003CD95 /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B6258B321C29E2E60014138E /* NotificationsManager.m */; };
 		7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E118170B33006006FC /* Conversions.m */; };
-		7DCFFDB51F0EE4490003CD95 /* RecipientUnavailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046A18170B33006006FC /* RecipientUnavailable.m */; };
 		7DCFFDB71F0EE4490003CD95 /* LowLatencyConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047B18170B33006006FC /* LowLatencyConnector.m */; };
 		7DCFFDB91F0EE4490003CD95 /* NotificationSettingsOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66B9F7C1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m */; };
-		7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044F18170B33006006FC /* HashChain.m */; };
 		7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048718170B33006006FC /* UdpSocket.m */; };
 		7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
 		7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F818170B33006006FC /* ThreadManager.m */; };
@@ -873,7 +808,6 @@
 		7DCFFDC41F0EE4490003CD95 /* ShowGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D069991A50E9CB004CB540 /* ShowGroupMembersViewController.m */; };
 		7DCFFDC71F0EE4490003CD95 /* FingerprintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962C1A06A2190094C78E /* FingerprintViewController.m */; };
 		7DCFFDC81F0EE4490003CD95 /* AnonymousConditionLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C018170B33006006FC /* AnonymousConditionLogger.m */; };
-		7DCFFDC91F0EE4490003CD95 /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
 		7DCFFDCA1F0EE4490003CD95 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC31962F1A0814130094C78E /* SettingsTableViewController.m */; };
 		7DCFFDCC1F0EE4490003CD95 /* EvpSymetricUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632618F70C0700D4A43F /* EvpSymetricUtil.m */; };
 		7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE179921EDF37E900327B2B /* CCSMCommunication.m */; };
@@ -886,7 +820,6 @@
 		7DCFFDD41F0EE4490003CD95 /* TSVideoAttachmentAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E9D4B91A65FAD800E4481C /* TSVideoAttachmentAdapter.m */; };
 		7DCFFDD81F0EE4490003CD95 /* OWSDeviceProvisioningURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38361D668EBF0094BD24 /* OWSDeviceProvisioningURLParser.m */; };
 		7DCFFDD91F0EE4490003CD95 /* UIColor+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA64B31A24F3880007FB87 /* UIColor+OWS.m */; };
-		7DCFFDDA1F0EE4490003CD95 /* DhPacketSharedSecretHashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045E18170B33006006FC /* DhPacketSharedSecretHashes.m */; };
 		7DCFFDDB1F0EE4490003CD95 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C93C4D199567AD00EDF894 /* DebugLogger.m */; };
 		7DCFFDDC1F0EE4490003CD95 /* Crc32.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E318170B33006006FC /* Crc32.m */; };
 		7DCFFDDF1F0EE4490003CD95 /* OWSLinkDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458E38331D66873D0094BD24 /* OWSLinkDeviceViewController.m */; };
@@ -894,45 +827,35 @@
 		7DCFFDE41F0EE4490003CD95 /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
 		7DCFFDE81F0EE4490003CD95 /* ConversationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */; };
 		7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
-		7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
 		7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04CA18170B33006006FC /* ArrayUtil.m */; };
 		7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */; };
-		7DCFFDF31F0EE4490003CD95 /* HandshakePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046018170B33006006FC /* HandshakePacket.m */; };
-		7DCFFDF41F0EE4490003CD95 /* SequenceCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044318170B33006006FC /* SequenceCounter.m */; };
 		7DCFFDF51F0EE4490003CD95 /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7DCFFDF61F0EE4490003CD95 /* CryptoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632418F70C0700D4A43F /* CryptoTools.m */; };
 		7DCFFDF71F0EE4490003CD95 /* DnsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042018170B33006006FC /* DnsManager.m */; };
 		7DCFFDF81F0EE4490003CD95 /* GroupContactsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B2451A93B238002BBD9D /* GroupContactsResult.m */; };
 		7DCFFDF91F0EE4490003CD95 /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66B9F711AEA6D1100E2E609 /* NotificationSettingsViewController.m */; };
 		7DCFFDFA1F0EE4490003CD95 /* IgnoredPacketFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042518170B33006006FC /* IgnoredPacketFailure.m */; };
-		7DCFFDFB1F0EE4490003CD95 /* ZrtpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047418170B33006006FC /* ZrtpManager.m */; };
 		7DCFFDFC1F0EE4490003CD95 /* HostNameEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042218170B33006006FC /* HostNameEndPoint.m */; };
-		7DCFFDFD1F0EE4490003CD95 /* DH3KKeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */; };
-		7DCFFDFE1F0EE4490003CD95 /* EvpKeyAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */; };
 		7DCFFE011F0EE4490003CD95 /* OWSDisplayedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 453D28B61D32BA5F00D523F0 /* OWSDisplayedMessage.m */; };
 		7DCFFE021F0EE4490003CD95 /* StreamPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047D18170B33006006FC /* StreamPair.m */; };
 		7DCFFE031F0EE4490003CD95 /* TimeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FA18170B33006006FC /* TimeUtil.m */; };
 		7DCFFE041F0EE4490003CD95 /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
 		7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
 		7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04E918170B33006006FC /* DictionaryUtil.m */; };
-		7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
 		7DCFFE0A1F0EE4490003CD95 /* OWSLinkedDevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EB32CE1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m */; };
 		7DCFFE0B1F0EE4490003CD95 /* HttpRequestUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E919E1FBE8005735D1 /* HttpRequestUtil.m */; };
 		7DCFFE0C1F0EE4490003CD95 /* SyncPushTokensJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451DE9FC1DC1A28200810E42 /* SyncPushTokensJob.swift */; };
-		7DCFFE0D1F0EE4490003CD95 /* MasterSecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045118170B33006006FC /* MasterSecret.m */; };
 		7DCFFE0F1F0EE4490003CD95 /* ConversationUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFD256E1A151BCB00F4C644 /* ConversationUpdateViewController.m */; };
 		7DCFFE101F0EE4490003CD95 /* HttpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043418170B33006006FC /* HttpSocket.m */; };
 		7DCFFE131F0EE4490003CD95 /* UIDevice+TSHardwareVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC81A971A44558300DFEC7D /* UIDevice+TSHardwareVersion.m */; };
 		7DCFFE141F0EE4490003CD95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB03C318170B33006006FC /* AppDelegate.m */; };
 		7DCFFE151F0EE4490003CD95 /* JSQMediaItem+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 341BB7481DB727EE001E2975 /* JSQMediaItem+OWS.m */; };
-		7DCFFE161F0EE4490003CD95 /* ZrtpHandshakeSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047018170B33006006FC /* ZrtpHandshakeSocket.m */; };
 		7DCFFE171F0EE4490003CD95 /* OWSOutgoingMessageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F2B1931D9C9F48000D2C69 /* OWSOutgoingMessageCollectionViewCell.m */; };
 		7DCFFE181F0EE4490003CD95 /* HttpResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761EB19E1FBE8005735D1 /* HttpResponse.m */; };
 		7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C619A5611000F2947C /* ObservableValue.m */; };
 		7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EF9B71C0B1EBD009C3DCD /* FLAnimatedImage.m */; };
 		7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
-		7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
 		7DCFFE201F0EE4490003CD95 /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7DCFFE211F0EE4490003CD95 /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
 		7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
@@ -940,23 +863,17 @@
 		7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042718170B33006006FC /* UnrecognizedRequestFailure.m */; };
 		7DCFFE271F0EE4490003CD95 /* NSData+ows_StripToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B62F5E0F1C2980B4000D370C /* NSData+ows_StripToken.m */; };
 		7DCFFE291F0EE4490003CD95 /* AFHTTPSessionManager+SignalMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E219E1F487005735D1 /* AFHTTPSessionManager+SignalMethods.m */; };
-		7DCFFE2A1F0EE4490003CD95 /* ShortAuthenticationStringGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046C18170B33006006FC /* ShortAuthenticationStringGenerator.m */; };
-		7DCFFE2B1F0EE4490003CD95 /* EC25KeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BEB18AAC40200B7C403 /* EC25KeyAgreementProtocol.m */; };
 		7DCFFE2C1F0EE4490003CD95 /* OWSCallCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C681BA1D305C080050903A /* OWSCallCollectionViewCell.m */; };
 		7DCFFE2D1F0EE4490003CD95 /* AnonymousTerminator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04F418170B33006006FC /* AnonymousTerminator.m */; };
 		7DCFFE2E1F0EE4490003CD95 /* PropertyListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041918170B33006006FC /* PropertyListPreferences.m */; };
-		7DCFFE2F1F0EE4490003CD95 /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
 		7DCFFE301F0EE4490003CD95 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B63761E519E1FBE8005735D1 /* HttpRequest.m */; };
 		7DCFFE341F0EE4490003CD95 /* DateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B90418E5183E9DD40038554A /* DateUtil.m */; };
-		7DCFFE351F0EE4490003CD95 /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
 		7DCFFE381F0EE4490003CD95 /* HighlightableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B201751DAECBFE00C461E0 /* HighlightableLabel.swift */; };
-		7DCFFE391F0EE4490003CD95 /* SrtpStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044718170B33006006FC /* SrtpStream.m */; };
 		7DCFFE3A1F0EE4490003CD95 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
 		7DCFFE3C1F0EE4490003CD95 /* Zid.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04FD18170B33006006FC /* Zid.m */; };
 		7DCFFE3D1F0EE4490003CD95 /* OWSDeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459311FB1D75C948008DD4F0 /* OWSDeviceTableViewCell.m */; };
 		7DCFFE3E1F0EE4490003CD95 /* SecureEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048418170B33006006FC /* SecureEndPoint.m */; };
 		7DCFFE3F1F0EE4490003CD95 /* Certificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB048018170B33006006FC /* Certificate.m */; };
-		7DCFFE401F0EE4490003CD95 /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
 		7DCFFE411F0EE4490003CD95 /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
 		7DCFFE451F0EE4490003CD95 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4520D8D41D417D8E00123472 /* Photos.framework */; };
 		7DCFFE461F0EE4490003CD95 /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1140,7 +1057,6 @@
 		B660F71A1C29988E00687D6E /* EvpSymetricUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632618F70C0700D4A43F /* EvpSymetricUtil.m */; };
 		B660F71B1C29988E00687D6E /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
 		B660F71C1C29988E00687D6E /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C93C4D199567AD00EDF894 /* DebugLogger.m */; };
-		B660F71D1C29988E00687D6E /* LocalizableText.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041518170B33006006FC /* LocalizableText.m */; };
 		B660F71F1C29988E00687D6E /* PropertyListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041918170B33006006FC /* PropertyListPreferences.m */; };
 		B660F7201C29988E00687D6E /* Release.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041B18170B33006006FC /* Release.m */; };
 		B660F7211C29988E00687D6E /* SignalKeyingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B1013B196D213F007E3930 /* SignalKeyingStorage.m */; };
@@ -1158,34 +1074,6 @@
 		B660F7301C29988E00687D6E /* IpAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043618170B33006006FC /* IpAddress.m */; };
 		B660F7311C29988E00687D6E /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
 		B660F7321C29988E00687D6E /* PacketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043B18170B33006006FC /* PacketHandler.m */; };
-		B660F7331C29988E00687D6E /* RtpPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043E18170B33006006FC /* RtpPacket.m */; };
-		B660F7341C29988E00687D6E /* RtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044018170B33006006FC /* RtpSocket.m */; };
-		B660F7351C29988E00687D6E /* SequenceCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044318170B33006006FC /* SequenceCounter.m */; };
-		B660F7361C29988E00687D6E /* SrtpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044518170B33006006FC /* SrtpSocket.m */; };
-		B660F7371C29988E00687D6E /* SrtpStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044718170B33006006FC /* SrtpStream.m */; };
-		B660F7381C29988E00687D6E /* DH3KKeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */; };
-		B660F7391C29988E00687D6E /* DH3KKeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */; };
-		B660F73A1C29988E00687D6E /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
-		B660F73B1C29988E00687D6E /* EC25KeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BEB18AAC40200B7C403 /* EC25KeyAgreementProtocol.m */; };
-		B660F73C1C29988E00687D6E /* EvpKeyAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */; };
-		B660F73D1C29988E00687D6E /* HashChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB044F18170B33006006FC /* HashChain.m */; };
-		B660F73E1C29988E00687D6E /* MasterSecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045118170B33006006FC /* MasterSecret.m */; };
-		B660F73F1C29988E00687D6E /* NegotiationFailed.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045318170B33006006FC /* NegotiationFailed.m */; };
-		B660F7401C29988E00687D6E /* CommitPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045618170B33006006FC /* CommitPacket.m */; };
-		B660F7411C29988E00687D6E /* ConfirmAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045818170B33006006FC /* ConfirmAckPacket.m */; };
-		B660F7421C29988E00687D6E /* ConfirmPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045A18170B33006006FC /* ConfirmPacket.m */; };
-		B660F7431C29988E00687D6E /* DhPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045C18170B33006006FC /* DhPacket.m */; };
-		B660F7441C29988E00687D6E /* DhPacketSharedSecretHashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB045E18170B33006006FC /* DhPacketSharedSecretHashes.m */; };
-		B660F7451C29988E00687D6E /* HandshakePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046018170B33006006FC /* HandshakePacket.m */; };
-		B660F7461C29988E00687D6E /* HelloAckPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046218170B33006006FC /* HelloAckPacket.m */; };
-		B660F7471C29988E00687D6E /* HelloPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046418170B33006006FC /* HelloPacket.m */; };
-		B660F7481C29988E00687D6E /* RecipientUnavailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046A18170B33006006FC /* RecipientUnavailable.m */; };
-		B660F7491C29988E00687D6E /* ShortAuthenticationStringGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046C18170B33006006FC /* ShortAuthenticationStringGenerator.m */; };
-		B660F74A1C29988E00687D6E /* ZrtpHandshakeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */; };
-		B660F74B1C29988E00687D6E /* ZrtpHandshakeSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047018170B33006006FC /* ZrtpHandshakeSocket.m */; };
-		B660F74C1C29988E00687D6E /* ZrtpInitiator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047218170B33006006FC /* ZrtpInitiator.m */; };
-		B660F74D1C29988E00687D6E /* ZrtpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047418170B33006006FC /* ZrtpManager.m */; };
-		B660F74E1C29988E00687D6E /* ZrtpResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047618170B33006006FC /* ZrtpResponder.m */; };
 		B660F74F1C29988E00687D6E /* LowLatencyCandidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047918170B33006006FC /* LowLatencyCandidate.m */; };
 		B660F7501C29988E00687D6E /* LowLatencyConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047B18170B33006006FC /* LowLatencyConnector.m */; };
 		B660F7511C29988E00687D6E /* StreamPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB047D18170B33006006FC /* StreamPair.m */; };
@@ -1276,10 +1164,6 @@
 		E1370BE418A0686C00826894 /* outring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40B18A05754001A532A /* outring.mp3 */; };
 		E1370BE518A0686C00826894 /* r.caf in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40C18A05754001A532A /* r.caf */; };
 		E1370BE618A0686C00826894 /* sonarping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E18AB40D18A05754001A532A /* sonarping.mp3 */; };
-		E16E5BEE18AAC40200B7C403 /* EC25KeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */; };
-		E16E5BEF18AAC40200B7C403 /* EC25KeyAgreementProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BEB18AAC40200B7C403 /* EC25KeyAgreementProtocol.m */; };
-		E16E5BF018AAC40200B7C403 /* EvpKeyAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */; };
-		E19167A418A9687800B7A468 /* DH3KKeyAgreementParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */; };
 		EF764C351DB67CC5000D9A87 /* UIViewController+CameraPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF764C341DB67CC5000D9A87 /* UIViewController+CameraPermissions.m */; };
 		F44C8FB073F65C830B188C53 /* libPods-SignalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8751F811EA2A9F687F5999D2 /* libPods-SignalTests.a */; };
 		FB239C30C82B63759248ECBF /* Pods_Common_RelayDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85D3625E7F213FC5E74DF218 /* Pods_Common_RelayDev.framework */; };
@@ -1404,8 +1288,6 @@
 		76EB040218170B33006006FC /* RecentCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentCallManager.m; sourceTree = "<group>"; };
 		76EB041218170B33006006FC /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Environment.h; sourceTree = "<group>"; };
 		76EB041318170B33006006FC /* Environment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Environment.m; sourceTree = "<group>"; };
-		76EB041418170B33006006FC /* LocalizableText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalizableText.h; sourceTree = "<group>"; };
-		76EB041518170B33006006FC /* LocalizableText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalizableText.m; sourceTree = "<group>"; };
 		76EB041818170B33006006FC /* PropertyListPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyListPreferences.h; sourceTree = "<group>"; };
 		76EB041918170B33006006FC /* PropertyListPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyListPreferences.m; sourceTree = "<group>"; };
 		76EB041A18170B33006006FC /* Release.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Release.h; sourceTree = "<group>"; };
@@ -1429,57 +1311,6 @@
 		76EB043918170B33006006FC /* NetworkEndPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkEndPoint.h; sourceTree = "<group>"; };
 		76EB043A18170B33006006FC /* PacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketHandler.h; sourceTree = "<group>"; };
 		76EB043B18170B33006006FC /* PacketHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketHandler.m; sourceTree = "<group>"; };
-		76EB043D18170B33006006FC /* RtpPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtpPacket.h; sourceTree = "<group>"; };
-		76EB043E18170B33006006FC /* RtpPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RtpPacket.m; sourceTree = "<group>"; };
-		76EB043F18170B33006006FC /* RtpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtpSocket.h; sourceTree = "<group>"; };
-		76EB044018170B33006006FC /* RtpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RtpSocket.m; sourceTree = "<group>"; };
-		76EB044218170B33006006FC /* SequenceCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SequenceCounter.h; sourceTree = "<group>"; };
-		76EB044318170B33006006FC /* SequenceCounter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SequenceCounter.m; sourceTree = "<group>"; };
-		76EB044418170B33006006FC /* SrtpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SrtpSocket.h; sourceTree = "<group>"; };
-		76EB044518170B33006006FC /* SrtpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SrtpSocket.m; sourceTree = "<group>"; };
-		76EB044618170B33006006FC /* SrtpStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SrtpStream.h; sourceTree = "<group>"; };
-		76EB044718170B33006006FC /* SrtpStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SrtpStream.m; sourceTree = "<group>"; };
-		76EB044C18170B33006006FC /* DH3KKeyAgreementProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DH3KKeyAgreementProtocol.h; sourceTree = "<group>"; };
-		76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DH3KKeyAgreementProtocol.m; sourceTree = "<group>"; };
-		76EB044E18170B33006006FC /* HashChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashChain.h; sourceTree = "<group>"; };
-		76EB044F18170B33006006FC /* HashChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashChain.m; sourceTree = "<group>"; };
-		76EB045018170B33006006FC /* MasterSecret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterSecret.h; sourceTree = "<group>"; };
-		76EB045118170B33006006FC /* MasterSecret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterSecret.m; sourceTree = "<group>"; };
-		76EB045218170B33006006FC /* NegotiationFailed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NegotiationFailed.h; sourceTree = "<group>"; };
-		76EB045318170B33006006FC /* NegotiationFailed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NegotiationFailed.m; sourceTree = "<group>"; };
-		76EB045518170B33006006FC /* CommitPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommitPacket.h; sourceTree = "<group>"; };
-		76EB045618170B33006006FC /* CommitPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitPacket.m; sourceTree = "<group>"; };
-		76EB045718170B33006006FC /* ConfirmAckPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmAckPacket.h; sourceTree = "<group>"; };
-		76EB045818170B33006006FC /* ConfirmAckPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmAckPacket.m; sourceTree = "<group>"; };
-		76EB045918170B33006006FC /* ConfirmPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmPacket.h; sourceTree = "<group>"; };
-		76EB045A18170B33006006FC /* ConfirmPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmPacket.m; sourceTree = "<group>"; };
-		76EB045B18170B33006006FC /* DhPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DhPacket.h; sourceTree = "<group>"; };
-		76EB045C18170B33006006FC /* DhPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DhPacket.m; sourceTree = "<group>"; };
-		76EB045D18170B33006006FC /* DhPacketSharedSecretHashes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DhPacketSharedSecretHashes.h; sourceTree = "<group>"; };
-		76EB045E18170B33006006FC /* DhPacketSharedSecretHashes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DhPacketSharedSecretHashes.m; sourceTree = "<group>"; };
-		76EB045F18170B33006006FC /* HandshakePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandshakePacket.h; sourceTree = "<group>"; };
-		76EB046018170B33006006FC /* HandshakePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandshakePacket.m; sourceTree = "<group>"; };
-		76EB046118170B33006006FC /* HelloAckPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloAckPacket.h; sourceTree = "<group>"; };
-		76EB046218170B33006006FC /* HelloAckPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloAckPacket.m; sourceTree = "<group>"; };
-		76EB046318170B33006006FC /* HelloPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloPacket.h; sourceTree = "<group>"; };
-		76EB046418170B33006006FC /* HelloPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloPacket.m; sourceTree = "<group>"; };
-		76EB046618170B33006006FC /* KeyAgreementParticipant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyAgreementParticipant.h; sourceTree = "<group>"; };
-		76EB046718170B33006006FC /* KeyAgreementProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyAgreementProtocol.h; sourceTree = "<group>"; };
-		76EB046818170B33006006FC /* ZrtpRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZrtpRole.h; sourceTree = "<group>"; };
-		76EB046918170B33006006FC /* RecipientUnavailable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipientUnavailable.h; sourceTree = "<group>"; };
-		76EB046A18170B33006006FC /* RecipientUnavailable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipientUnavailable.m; sourceTree = "<group>"; };
-		76EB046B18170B33006006FC /* ShortAuthenticationStringGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShortAuthenticationStringGenerator.h; sourceTree = "<group>"; };
-		76EB046C18170B33006006FC /* ShortAuthenticationStringGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShortAuthenticationStringGenerator.m; sourceTree = "<group>"; };
-		76EB046D18170B33006006FC /* ZrtpHandshakeResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZrtpHandshakeResult.h; sourceTree = "<group>"; };
-		76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZrtpHandshakeResult.m; sourceTree = "<group>"; };
-		76EB046F18170B33006006FC /* ZrtpHandshakeSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZrtpHandshakeSocket.h; sourceTree = "<group>"; };
-		76EB047018170B33006006FC /* ZrtpHandshakeSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZrtpHandshakeSocket.m; sourceTree = "<group>"; };
-		76EB047118170B33006006FC /* ZrtpInitiator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZrtpInitiator.h; sourceTree = "<group>"; };
-		76EB047218170B33006006FC /* ZrtpInitiator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZrtpInitiator.m; sourceTree = "<group>"; };
-		76EB047318170B33006006FC /* ZrtpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZrtpManager.h; sourceTree = "<group>"; };
-		76EB047418170B33006006FC /* ZrtpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZrtpManager.m; sourceTree = "<group>"; };
-		76EB047518170B33006006FC /* ZrtpResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZrtpResponder.h; sourceTree = "<group>"; };
-		76EB047618170B33006006FC /* ZrtpResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZrtpResponder.m; sourceTree = "<group>"; };
 		76EB047818170B33006006FC /* LowLatencyCandidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LowLatencyCandidate.h; sourceTree = "<group>"; };
 		76EB047918170B33006006FC /* LowLatencyCandidate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LowLatencyCandidate.m; sourceTree = "<group>"; };
 		76EB047A18170B33006006FC /* LowLatencyConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LowLatencyConnector.h; sourceTree = "<group>"; };
@@ -2044,12 +1875,6 @@
 		DBE179921EDF37E900327B2B /* CCSMCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMCommunication.m; sourceTree = "<group>"; };
 		DBE179941EDF381400327B2B /* CCSMCommunication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCSMCommunication.h; sourceTree = "<group>"; };
 		DDF434CA3373A266854BEDC2 /* Pods-Relay.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Relay.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Relay/Pods-Relay.app store release.xcconfig"; sourceTree = "<group>"; };
-		E16E5BE818AAC40200B7C403 /* EC25KeyAgreementParticipant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EC25KeyAgreementParticipant.h; sourceTree = "<group>"; };
-		E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EC25KeyAgreementParticipant.m; sourceTree = "<group>"; };
-		E16E5BEA18AAC40200B7C403 /* EC25KeyAgreementProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EC25KeyAgreementProtocol.h; sourceTree = "<group>"; };
-		E16E5BEB18AAC40200B7C403 /* EC25KeyAgreementProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EC25KeyAgreementProtocol.m; sourceTree = "<group>"; };
-		E16E5BEC18AAC40200B7C403 /* EvpKeyAgreement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvpKeyAgreement.h; sourceTree = "<group>"; };
-		E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvpKeyAgreement.m; sourceTree = "<group>"; };
 		E18AB40718A05754001A532A /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
 		E18AB40818A05754001A532A /* completed.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = completed.mp3; sourceTree = "<group>"; };
 		E18AB40918A05754001A532A /* failure.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = failure.mp3; sourceTree = "<group>"; };
@@ -2057,8 +1882,6 @@
 		E18AB40B18A05754001A532A /* outring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = outring.mp3; sourceTree = "<group>"; };
 		E18AB40C18A05754001A532A /* r.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = r.caf; sourceTree = "<group>"; };
 		E18AB40D18A05754001A532A /* sonarping.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sonarping.mp3; sourceTree = "<group>"; };
-		E19167A218A9687800B7A468 /* DH3KKeyAgreementParticipant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DH3KKeyAgreementParticipant.h; sourceTree = "<group>"; };
-		E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DH3KKeyAgreementParticipant.m; sourceTree = "<group>"; };
 		E1A0AD8B16E13FDD0071E604 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		E85DB184824BA9DC302EC8B3 /* Pods-SignalTests.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.app store release.xcconfig"; sourceTree = "<group>"; };
 		EF764C331DB67CC5000D9A87 /* UIViewController+CameraPermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+CameraPermissions.h"; path = "util/UIViewController+CameraPermissions.h"; sourceTree = "<group>"; };
@@ -2364,8 +2187,6 @@
 				76EB041318170B33006006FC /* Environment.m */,
 				B6C93C4C199567AD00EDF894 /* DebugLogger.h */,
 				B6C93C4D199567AD00EDF894 /* DebugLogger.m */,
-				76EB041418170B33006006FC /* LocalizableText.h */,
-				76EB041518170B33006006FC /* LocalizableText.m */,
 				76EB041818170B33006006FC /* PropertyListPreferences.h */,
 				76EB041918170B33006006FC /* PropertyListPreferences.m */,
 				76EB041A18170B33006006FC /* Release.h */,
@@ -2389,7 +2210,6 @@
 				76EB043918170B33006006FC /* NetworkEndPoint.h */,
 				76EB043A18170B33006006FC /* PacketHandler.h */,
 				76EB043B18170B33006006FC /* PacketHandler.m */,
-				76EB043C18170B33006006FC /* rtp */,
 				76EB047718170B33006006FC /* tcp */,
 				76EB048518170B33006006FC /* udp */,
 				B6B9ECFA198B31BA00C620D3 /* PushManager.h */,
@@ -2440,112 +2260,6 @@
 				76EB043418170B33006006FC /* HttpSocket.m */,
 			);
 			path = http;
-			sourceTree = "<group>";
-		};
-		76EB043C18170B33006006FC /* rtp */ = {
-			isa = PBXGroup;
-			children = (
-				76EB043D18170B33006006FC /* RtpPacket.h */,
-				76EB043E18170B33006006FC /* RtpPacket.m */,
-				76EB043F18170B33006006FC /* RtpSocket.h */,
-				76EB044018170B33006006FC /* RtpSocket.m */,
-				76EB044118170B33006006FC /* srtp */,
-				76EB044818170B33006006FC /* zrtp */,
-			);
-			path = rtp;
-			sourceTree = "<group>";
-		};
-		76EB044118170B33006006FC /* srtp */ = {
-			isa = PBXGroup;
-			children = (
-				76EB044218170B33006006FC /* SequenceCounter.h */,
-				76EB044318170B33006006FC /* SequenceCounter.m */,
-				76EB044418170B33006006FC /* SrtpSocket.h */,
-				76EB044518170B33006006FC /* SrtpSocket.m */,
-				76EB044618170B33006006FC /* SrtpStream.h */,
-				76EB044718170B33006006FC /* SrtpStream.m */,
-			);
-			path = srtp;
-			sourceTree = "<group>";
-		};
-		76EB044818170B33006006FC /* zrtp */ = {
-			isa = PBXGroup;
-			children = (
-				76EB044918170B33006006FC /* agreement */,
-				76EB044E18170B33006006FC /* HashChain.h */,
-				76EB044F18170B33006006FC /* HashChain.m */,
-				76EB045018170B33006006FC /* MasterSecret.h */,
-				76EB045118170B33006006FC /* MasterSecret.m */,
-				76EB045218170B33006006FC /* NegotiationFailed.h */,
-				76EB045318170B33006006FC /* NegotiationFailed.m */,
-				76EB045418170B33006006FC /* packets */,
-				76EB046518170B33006006FC /* protocols */,
-				76EB046918170B33006006FC /* RecipientUnavailable.h */,
-				76EB046A18170B33006006FC /* RecipientUnavailable.m */,
-				76EB046B18170B33006006FC /* ShortAuthenticationStringGenerator.h */,
-				76EB046C18170B33006006FC /* ShortAuthenticationStringGenerator.m */,
-				76EB046D18170B33006006FC /* ZrtpHandshakeResult.h */,
-				76EB046E18170B33006006FC /* ZrtpHandshakeResult.m */,
-				76EB046F18170B33006006FC /* ZrtpHandshakeSocket.h */,
-				76EB047018170B33006006FC /* ZrtpHandshakeSocket.m */,
-				76EB047118170B33006006FC /* ZrtpInitiator.h */,
-				76EB047218170B33006006FC /* ZrtpInitiator.m */,
-				76EB047318170B33006006FC /* ZrtpManager.h */,
-				76EB047418170B33006006FC /* ZrtpManager.m */,
-				76EB047518170B33006006FC /* ZrtpResponder.h */,
-				76EB047618170B33006006FC /* ZrtpResponder.m */,
-			);
-			path = zrtp;
-			sourceTree = "<group>";
-		};
-		76EB044918170B33006006FC /* agreement */ = {
-			isa = PBXGroup;
-			children = (
-				E19167A218A9687800B7A468 /* DH3KKeyAgreementParticipant.h */,
-				E19167A318A9687800B7A468 /* DH3KKeyAgreementParticipant.m */,
-				76EB044C18170B33006006FC /* DH3KKeyAgreementProtocol.h */,
-				76EB044D18170B33006006FC /* DH3KKeyAgreementProtocol.m */,
-				E16E5BE818AAC40200B7C403 /* EC25KeyAgreementParticipant.h */,
-				E16E5BE918AAC40200B7C403 /* EC25KeyAgreementParticipant.m */,
-				E16E5BEA18AAC40200B7C403 /* EC25KeyAgreementProtocol.h */,
-				E16E5BEB18AAC40200B7C403 /* EC25KeyAgreementProtocol.m */,
-				E16E5BEC18AAC40200B7C403 /* EvpKeyAgreement.h */,
-				E16E5BED18AAC40200B7C403 /* EvpKeyAgreement.m */,
-			);
-			path = agreement;
-			sourceTree = "<group>";
-		};
-		76EB045418170B33006006FC /* packets */ = {
-			isa = PBXGroup;
-			children = (
-				76EB045518170B33006006FC /* CommitPacket.h */,
-				76EB045618170B33006006FC /* CommitPacket.m */,
-				76EB045718170B33006006FC /* ConfirmAckPacket.h */,
-				76EB045818170B33006006FC /* ConfirmAckPacket.m */,
-				76EB045918170B33006006FC /* ConfirmPacket.h */,
-				76EB045A18170B33006006FC /* ConfirmPacket.m */,
-				76EB045B18170B33006006FC /* DhPacket.h */,
-				76EB045C18170B33006006FC /* DhPacket.m */,
-				76EB045D18170B33006006FC /* DhPacketSharedSecretHashes.h */,
-				76EB045E18170B33006006FC /* DhPacketSharedSecretHashes.m */,
-				76EB045F18170B33006006FC /* HandshakePacket.h */,
-				76EB046018170B33006006FC /* HandshakePacket.m */,
-				76EB046118170B33006006FC /* HelloAckPacket.h */,
-				76EB046218170B33006006FC /* HelloAckPacket.m */,
-				76EB046318170B33006006FC /* HelloPacket.h */,
-				76EB046418170B33006006FC /* HelloPacket.m */,
-			);
-			path = packets;
-			sourceTree = "<group>";
-		};
-		76EB046518170B33006006FC /* protocols */ = {
-			isa = PBXGroup;
-			children = (
-				76EB046618170B33006006FC /* KeyAgreementParticipant.h */,
-				76EB046718170B33006006FC /* KeyAgreementProtocol.h */,
-				76EB046818170B33006006FC /* ZrtpRole.h */,
-			);
-			path = protocols;
 			sourceTree = "<group>";
 		};
 		76EB047718170B33006006FC /* tcp */ = {
@@ -4645,7 +4359,6 @@
 				7D4A39C61F1693930023C29B /* LoggingUtil.m in Sources */,
 				7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */,
 				7D613A6D1F90181900E18D29 /* OWSDeviceProvisioningRequest.m in Sources */,
-				7D4A39C81F1693930023C29B /* CommitPacket.m in Sources */,
 				7D4A39CC1F1693930023C29B /* AppStoreRating.m in Sources */,
 				7D4A39CD1F1693930023C29B /* OWSQRCodeScanningViewController.m in Sources */,
 				7D4A39CE1F1693930023C29B /* PriorityQueue.m in Sources */,
@@ -4659,29 +4372,24 @@
 				7D4A39D11F1693930023C29B /* DiscardingLog.m in Sources */,
 				7D4A39D21F1693930023C29B /* OWSLogger.m in Sources */,
 				7D4A39D31F1693930023C29B /* FLCCSMJSONService.m in Sources */,
-				7D4A39D41F1693930023C29B /* SrtpSocket.m in Sources */,
 				7D4A39D61F1693930023C29B /* FullImageViewController.m in Sources */,
 				7D6FB26B2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				7D6139EA1F90178700E18D29 /* OWSReadReceiptsMessage.m in Sources */,
 				7D4A39D81F1693930023C29B /* UIUtil.m in Sources */,
 				7D4A39D91F1693930023C29B /* TSAnimatedAdapter.m in Sources */,
-				7D4A39DA1F1693930023C29B /* ConfirmPacket.m in Sources */,
 				7D4A39DB1F1693930023C29B /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
 				7D613AAF1F90186000E18D29 /* OWSFingerprintProtos.pb.m in Sources */,
-				7D4A39DD1F1693930023C29B /* RtpSocket.m in Sources */,
 				7D4A39E01F1693930023C29B /* UIViewController+CameraPermissions.m in Sources */,
 				7D4A39E11F1693930023C29B /* HttpManager.m in Sources */,
 				7D4A39E21F1693930023C29B /* AccountManager.swift in Sources */,
 				7D3A67771FE9BB1800C4096A /* FLPickerCell.m in Sources */,
 				7D03420A20A4CE77004D8ACA /* Curve25519+keyPairFromPrivateKey.m in Sources */,
-				7D4A39E41F1693930023C29B /* ZrtpInitiator.m in Sources */,
 				7D613AEB1F9018D800E18D29 /* OperationFailed.m in Sources */,
 				7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				7DF7E830209A5289001B8687 /* NewAccountViewController.swift in Sources */,
 				7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */,
 				7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */,
 				7D4A39E71F1693930023C29B /* PushManager.m in Sources */,
-				7D4A39E81F1693930023C29B /* ZrtpResponder.m in Sources */,
 				7D4A39E91F1693930023C29B /* TSMessageAdapter.m in Sources */,
 				7D4A39EA1F1693930023C29B /* AboutTableViewController.m in Sources */,
 				7D6139951F90163700E18D29 /* OWSDispatch.m in Sources */,
@@ -4696,7 +4404,6 @@
 				7D4A39F11F1693930023C29B /* FunctionalUtil.m in Sources */,
 				7D613A881F90183300E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
 				7D613A481F9017F100E18D29 /* OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.m in Sources */,
-				7D4A39F41F1693930023C29B /* ConfirmAckPacket.m in Sources */,
 				7D4A39F51F1693930023C29B /* CategorizingLogger.m in Sources */,
 				7D613A701F90181B00E18D29 /* OWSGetDevicesRequest.m in Sources */,
 				7DD53DE720B71FB700848437 /* NewConversationViewController.swift in Sources */,
@@ -4710,8 +4417,6 @@
 				7D4A39FA1F1693930023C29B /* FLThreadViewController.m in Sources */,
 				7D4A39FB1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.m in Sources */,
 				7D613A4B1F9017F300E18D29 /* OWSSignalServiceProtos.pb.m in Sources */,
-				7D4A39FC1F1693930023C29B /* LocalizableText.m in Sources */,
-				7D4A39FF1F1693930023C29B /* RtpPacket.m in Sources */,
 				7D6139921F90163400E18D29 /* OWSError.m in Sources */,
 				7D4A3A001F1693930023C29B /* StringUtil.m in Sources */,
 				7D613AC11F90187B00E18D29 /* TSStorageManager+keyFromIntLong.m in Sources */,
@@ -4729,12 +4434,10 @@
 				7D6FB266201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				7D4A3A0B1F1693930023C29B /* Conversions.m in Sources */,
 				7D613A691F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
-				7D4A3A0E1F1693930023C29B /* RecipientUnavailable.m in Sources */,
 				7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */,
 				7D6139DA1F90177700E18D29 /* OWSGroupsOutputStream.m in Sources */,
 				7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D6139B61F90173D00E18D29 /* ContactsUpdater.m in Sources */,
-				7D4A3A141F1693930023C29B /* HashChain.m in Sources */,
 				7D613A8E1F90183900E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
@@ -4754,7 +4457,6 @@
 				7D6139ED1F90178B00E18D29 /* OWSReadReceiptsProcessor.m in Sources */,
 				7D4A3A201F1693930023C29B /* FingerprintViewController.m in Sources */,
 				7D4A3A211F1693930023C29B /* AnonymousConditionLogger.m in Sources */,
-				7D4A3A221F1693930023C29B /* DhPacket.m in Sources */,
 				7D613A361F9017DF00E18D29 /* OWSDisappearingMessagesFinder.m in Sources */,
 				7DFE7C531F74398500905909 /* ForstaColors.m in Sources */,
 				7D613AE21F90189A00E18D29 /* TextSecureKitEnv.m in Sources */,
@@ -4778,7 +4480,6 @@
 				7D4A3A2D1F1693930023C29B /* TSVideoAttachmentAdapter.m in Sources */,
 				7D4A3A311F1693930023C29B /* OWSDeviceProvisioningURLParser.m in Sources */,
 				7D4A3A321F1693930023C29B /* UIColor+OWS.m in Sources */,
-				7D4A3A331F1693930023C29B /* DhPacketSharedSecretHashes.m in Sources */,
 				7D4A3A341F1693930023C29B /* DebugLogger.m in Sources */,
 				7D613AAC1F90185D00E18D29 /* OWSFingerprintBuilder.m in Sources */,
 				7D613ADF1F90189700E18D29 /* TSYapDatabaseObject.m in Sources */,
@@ -4804,16 +4505,13 @@
 				7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */,
 				7D1B5A2F20DD46BA002D57A9 /* ControlMessageManager.swift in Sources */,
 				7D613ABE1F90187700E18D29 /* TSStorageManager+IdentityKeyStore.m in Sources */,
-				7D4A3A471F1693930023C29B /* EC25KeyAgreementParticipant.m in Sources */,
 				7D613AD01F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
 				7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */,
 				7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */,
 				7D613A911F90183C00E18D29 /* TSSubmitMessageRequest.m in Sources */,
 				7D4A3A4B1F1693930023C29B /* AdvancedSettingsTableViewController.m in Sources */,
-				7D4A3A4C1F1693930023C29B /* HandshakePacket.m in Sources */,
 				7D613ACA1F90188300E18D29 /* TSStorageManager+SignedPreKeyStore.m in Sources */,
-				7D4A3A4D1F1693930023C29B /* SequenceCounter.m in Sources */,
 				7D4A3A4E1F1693930023C29B /* FLMessageSender.m in Sources */,
 				7D4A3A4F1F1693930023C29B /* CryptoTools.m in Sources */,
 				7D4A3A501F1693930023C29B /* DnsManager.m in Sources */,
@@ -4821,11 +4519,8 @@
 				7D4A3A521F1693930023C29B /* NotificationSettingsViewController.m in Sources */,
 				7D4A3A531F1693930023C29B /* IgnoredPacketFailure.m in Sources */,
 				7D613A4E1F9017F600E18D29 /* PreKeyBundle+jsonDict.m in Sources */,
-				7D4A3A541F1693930023C29B /* ZrtpManager.m in Sources */,
 				7D4A3A551F1693930023C29B /* HostNameEndPoint.m in Sources */,
 				7D6139BF1F90174500E18D29 /* PhoneNumberUtil.m in Sources */,
-				7D4A3A561F1693930023C29B /* DH3KKeyAgreementParticipant.m in Sources */,
-				7D4A3A571F1693930023C29B /* EvpKeyAgreement.m in Sources */,
 				7D613A331F9017DC00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
 				7D1DBECE20C1A39B00B39333 /* LoginViewController.swift in Sources */,
 				7D4A3A5A1F1693930023C29B /* OWSDisplayedMessage.m in Sources */,
@@ -4840,7 +4535,6 @@
 				7D4A3A611F1693930023C29B /* DictionaryUtil.m in Sources */,
 				7DFF570320B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7D6139F71F90179900E18D29 /* OWSAttachmentsProcessor.m in Sources */,
-				7D4A3A621F1693930023C29B /* ZrtpHandshakeResult.m in Sources */,
 				7D6139E31F90178000E18D29 /* OWSProvisioningProtos.pb.m in Sources */,
 				7D613A301F9017DA00E18D29 /* TSInvalidIdentityKeyReceivingErrorMessage.m in Sources */,
 				7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */,
@@ -4848,7 +4542,6 @@
 				7D613A8B1F90183600E18D29 /* TSRequest.m in Sources */,
 				7D4A3A641F1693930023C29B /* HttpRequestUtil.m in Sources */,
 				7D4A3A651F1693930023C29B /* SyncPushTokensJob.swift in Sources */,
-				7D4A3A661F1693930023C29B /* MasterSecret.m in Sources */,
 				7DB55A9A1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				7D613A241F9017CC00E18D29 /* TSInteraction.m in Sources */,
 				7D6139D41F90177100E18D29 /* OWSDevice.m in Sources */,
@@ -4867,7 +4560,6 @@
 				7D613A211F9017C900E18D29 /* TSInfoMessage.m in Sources */,
 				7D613A661F90181200E18D29 /* OWSDeleteDeviceRequest.m in Sources */,
 				7D4A3A6E1F1693930023C29B /* JSQMediaItem+OWS.m in Sources */,
-				7D4A3A6F1F1693930023C29B /* ZrtpHandshakeSocket.m in Sources */,
 				7D613A851F90183000E18D29 /* TSRegisterForPushRequest.m in Sources */,
 				7D4A3A701F1693930023C29B /* OWSOutgoingMessageCollectionViewCell.m in Sources */,
 				7D4A3A711F1693930023C29B /* HttpResponse.m in Sources */,
@@ -4877,7 +4569,6 @@
 				7D4A3A741F1693930023C29B /* FLAnimatedImage.m in Sources */,
 				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
 				7D2E00DC20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */,
-				7D4A3A781F1693930023C29B /* HelloPacket.m in Sources */,
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
 				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
@@ -4889,8 +4580,6 @@
 				7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */,
 				7D4A3A801F1693930023C29B /* NSData+ows_StripToken.m in Sources */,
 				7D4A3A821F1693930023C29B /* AFHTTPSessionManager+SignalMethods.m in Sources */,
-				7D4A3A831F1693930023C29B /* ShortAuthenticationStringGenerator.m in Sources */,
-				7D4A3A841F1693930023C29B /* EC25KeyAgreementProtocol.m in Sources */,
 				7D613A451F9017ED00E18D29 /* OWSMessageServiceParams.m in Sources */,
 				7D6139981F90163B00E18D29 /* NSURLSessionDataTask+StatusCode.m in Sources */,
 				7D4A3A851F1693930023C29B /* OWSCallCollectionViewCell.m in Sources */,
@@ -4900,7 +4589,6 @@
 				7D613A091F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D4A3A871F1693930023C29B /* PropertyListPreferences.m in Sources */,
 				7D61398C1F90162400E18D29 /* Cryptography.m in Sources */,
-				7D4A3A881F1693930023C29B /* DH3KKeyAgreementProtocol.m in Sources */,
 				7D613A941F90183F00E18D29 /* TSUnregisterAccountRequest.m in Sources */,
 				7D4A3A891F1693930023C29B /* HttpRequest.m in Sources */,
 				7D6139B31F90173A00E18D29 /* Contact.m in Sources */,
@@ -4908,11 +4596,9 @@
 				7D613A181F9017BE00E18D29 /* OWSEndSessionMessage.m in Sources */,
 				7D613A061F9017AA00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				7D613ACD1F90188600E18D29 /* OWSOrphanedDataCleaner.m in Sources */,
-				7D4A3A8E1F1693930023C29B /* HelloAckPacket.m in Sources */,
 				7D613A2D1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7D613AD61F90188E00E18D29 /* TSStorageManager+keyingMaterial.m in Sources */,
 				7D4A3A911F1693930023C29B /* HighlightableLabel.swift in Sources */,
-				7D4A3A921F1693930023C29B /* SrtpStream.m in Sources */,
 				7D4A3A931F1693930023C29B /* DeveloperPanelViewController.m in Sources */,
 				7D6139C21F90174800E18D29 /* SignalRecipient.m in Sources */,
 				7D6139F41F90179300E18D29 /* OWSSendReadReceiptsJob.m in Sources */,
@@ -4921,7 +4607,6 @@
 				7D4A3A961F1693930023C29B /* OWSDeviceTableViewCell.m in Sources */,
 				7D4A3A971F1693930023C29B /* SecureEndPoint.m in Sources */,
 				7D4A3A981F1693930023C29B /* Certificate.m in Sources */,
-				7D4A3A991F1693930023C29B /* NegotiationFailed.m in Sources */,
 				7D613A791F90182400E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D4A3A9A1F1693930023C29B /* LowLatencyCandidate.m in Sources */,
 			);
@@ -4945,7 +4630,6 @@
 				7D613A921F90183D00E18D29 /* TSSubmitMessageRequest.m in Sources */,
 				7DCFFD6E1F0EE4490003CD95 /* DecayingSampleEstimator.m in Sources */,
 				7D613A521F9017FA00E18D29 /* TSCall.m in Sources */,
-				7DCFFD6F1F0EE4490003CD95 /* CommitPacket.m in Sources */,
 				7D3DA2FB20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */,
 				7D613A251F9017CC00E18D29 /* TSInteraction.m in Sources */,
 				7D613A831F90182D00E18D29 /* TSRecipientPrekeyRequest.m in Sources */,
@@ -4960,7 +4644,6 @@
 				7DCFFD791F0EE4490003CD95 /* OWSLogger.m in Sources */,
 				7DCFFD7A1F0EE4490003CD95 /* FLCCSMJSONService.m in Sources */,
 				7D613A431F9017EB00E18D29 /* OWSMessageSender.m in Sources */,
-				7DCFFD7B1F0EE4490003CD95 /* SrtpSocket.m in Sources */,
 				7DCFFD7D1F0EE4490003CD95 /* FullImageViewController.m in Sources */,
 				7D613A461F9017ED00E18D29 /* OWSMessageServiceParams.m in Sources */,
 				7D613ADD1F90189500E18D29 /* TSStorageManager.m in Sources */,
@@ -4968,7 +4651,6 @@
 				7DCFFD801F0EE4490003CD95 /* TSAnimatedAdapter.m in Sources */,
 				7D613A641F90180E00E18D29 /* OWSUploadingService.m in Sources */,
 				7D6FB26C2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
-				7DCFFD811F0EE4490003CD95 /* ConfirmPacket.m in Sources */,
 				7DCFFD821F0EE4490003CD95 /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
 				7D613A6A1F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
 				7D6139EB1F90178700E18D29 /* OWSReadReceiptsMessage.m in Sources */,
@@ -4978,7 +4660,6 @@
 				7D613A491F9017F100E18D29 /* OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.m in Sources */,
 				7D613AE91F9018D400E18D29 /* BadState.m in Sources */,
 				7D613A311F9017DA00E18D29 /* TSInvalidIdentityKeyReceivingErrorMessage.m in Sources */,
-				7DCFFD841F0EE4490003CD95 /* RtpSocket.m in Sources */,
 				7D613ACB1F90188300E18D29 /* TSStorageManager+SignedPreKeyStore.m in Sources */,
 				7D6139A61F90172100E18D29 /* TSPreKeyManager.m in Sources */,
 				7D3A67781FE9BB1800C4096A /* FLPickerCell.m in Sources */,
@@ -4987,12 +4668,10 @@
 				7DCFFD881F0EE4490003CD95 /* HttpManager.m in Sources */,
 				7DF7E831209A5289001B8687 /* NewAccountViewController.swift in Sources */,
 				7DCFFD891F0EE4490003CD95 /* AccountManager.swift in Sources */,
-				7DCFFD8B1F0EE4490003CD95 /* ZrtpInitiator.m in Sources */,
 				7D0E3C221F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				7DCFFD8C1F0EE4490003CD95 /* NetworkStream.m in Sources */,
 				7DCFFD8D1F0EE4490003CD95 /* UIFont+OWS.m in Sources */,
 				7DCFFD8E1F0EE4490003CD95 /* PushManager.m in Sources */,
-				7DCFFD8F1F0EE4490003CD95 /* ZrtpResponder.m in Sources */,
 				7DCFFD901F0EE4490003CD95 /* TSMessageAdapter.m in Sources */,
 				7DCFFD911F0EE4490003CD95 /* AboutTableViewController.m in Sources */,
 				7D6139941F90163700E18D29 /* OWSDispatch.m in Sources */,
@@ -5010,15 +4689,12 @@
 				7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD41F90188B00E18D29 /* TSDatabaseView.m in Sources */,
 				7D613A071F9017AB00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
-				7DCFFD9B1F0EE4490003CD95 /* ConfirmAckPacket.m in Sources */,
 				7DCFFD9C1F0EE4490003CD95 /* CategorizingLogger.m in Sources */,
 				7DCFFD9D1F0EE4490003CD95 /* Release.m in Sources */,
 				7DCFFD9E1F0EE4490003CD95 /* SessionResetJob.swift in Sources */,
 				7DCFFD9F1F0EE4490003CD95 /* EventWindow.m in Sources */,
 				7DCFFDA11F0EE4490003CD95 /* FLThreadViewController.m in Sources */,
 				7DCFFDA21F0EE4490003CD95 /* OWSIncomingMessageCollectionViewCell.m in Sources */,
-				7DCFFDA31F0EE4490003CD95 /* LocalizableText.m in Sources */,
-				7DCFFDA61F0EE4490003CD95 /* RtpPacket.m in Sources */,
 				7D6139BD1F90174300E18D29 /* PhoneNumber.m in Sources */,
 				7D6139911F90163400E18D29 /* OWSError.m in Sources */,
 				7D1DBECB20C0650200B39333 /* NavigationController.swift in Sources */,
@@ -5037,7 +4713,6 @@
 				7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */,
 				7D613A891F90183300E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
 				7D613AF01F9018DD00E18D29 /* SecurityFailure.m in Sources */,
-				7DCFFDB51F0EE4490003CD95 /* RecipientUnavailable.m in Sources */,
 				7D613A801F90182A00E18D29 /* TSCurrentSignedPreKeyRequest.m in Sources */,
 				7DCFFDB71F0EE4490003CD95 /* LowLatencyConnector.m in Sources */,
 				7DCFFDB91F0EE4490003CD95 /* NotificationSettingsOptionsViewController.m in Sources */,
@@ -5045,7 +4720,6 @@
 				7D613A101F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D6139A81F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D613AC51F90187E00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
-				7DCFFDBB1F0EE4490003CD95 /* HashChain.m in Sources */,
 				7DCFFDBC1F0EE4490003CD95 /* UdpSocket.m in Sources */,
 				7D613A5E1F90180800E18D29 /* OWSDeviceProvisioningService.m in Sources */,
 				7DD53DE420B7140400848437 /* SlugCell.swift in Sources */,
@@ -5058,7 +4732,6 @@
 				7DCFFDC41F0EE4490003CD95 /* ShowGroupMembersViewController.m in Sources */,
 				7DCFFDC71F0EE4490003CD95 /* FingerprintViewController.m in Sources */,
 				7DCFFDC81F0EE4490003CD95 /* AnonymousConditionLogger.m in Sources */,
-				7DCFFDC91F0EE4490003CD95 /* DhPacket.m in Sources */,
 				7D613AE71F9018D100E18D29 /* BadArgument.m in Sources */,
 				7DFE7C541F74398500905909 /* ForstaColors.m in Sources */,
 				7DCFFDCA1F0EE4490003CD95 /* SettingsTableViewController.m in Sources */,
@@ -5085,7 +4758,6 @@
 				7DCFFDD81F0EE4490003CD95 /* OWSDeviceProvisioningURLParser.m in Sources */,
 				7D613ACE1F90188600E18D29 /* OWSOrphanedDataCleaner.m in Sources */,
 				7DCFFDD91F0EE4490003CD95 /* UIColor+OWS.m in Sources */,
-				7DCFFDDA1F0EE4490003CD95 /* DhPacketSharedSecretHashes.m in Sources */,
 				7D6139F51F90179300E18D29 /* OWSSendReadReceiptsJob.m in Sources */,
 				7D3A672F1FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */,
 				7D613A771F90182100E18D29 /* TSAttachmentRequest.m in Sources */,
@@ -5103,19 +4775,16 @@
 				7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */,
 				7D9D0E2F200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AF81F9018ED00E18D29 /* NSData+Base64.m in Sources */,
-				7DCFFDEE1F0EE4490003CD95 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BB1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7D6139E11F90177E00E18D29 /* OWSProvisioningMessage.m in Sources */,
 				7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */,
 				7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */,
 				7D1B5A3020DD46BA002D57A9 /* ControlMessageManager.swift in Sources */,
 				7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */,
-				7DCFFDF31F0EE4490003CD95 /* HandshakePacket.m in Sources */,
 				7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A221F9017C900E18D29 /* TSInfoMessage.m in Sources */,
 				7D613A7A1F90182400E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B71F90173D00E18D29 /* ContactsUpdater.m in Sources */,
-				7DCFFDF41F0EE4490003CD95 /* SequenceCounter.m in Sources */,
 				7DCFFDF51F0EE4490003CD95 /* FLMessageSender.m in Sources */,
 				7DCFFDF61F0EE4490003CD95 /* CryptoTools.m in Sources */,
 				7D613AD71F90188E00E18D29 /* TSStorageManager+keyingMaterial.m in Sources */,
@@ -5126,12 +4795,9 @@
 				7DCFFDF81F0EE4490003CD95 /* GroupContactsResult.m in Sources */,
 				7DCFFDF91F0EE4490003CD95 /* NotificationSettingsViewController.m in Sources */,
 				7DCFFDFA1F0EE4490003CD95 /* IgnoredPacketFailure.m in Sources */,
-				7DCFFDFB1F0EE4490003CD95 /* ZrtpManager.m in Sources */,
 				7D6139A41F90171F00E18D29 /* TSAttributes.m in Sources */,
 				7DCFFDFC1F0EE4490003CD95 /* HostNameEndPoint.m in Sources */,
-				7DCFFDFD1F0EE4490003CD95 /* DH3KKeyAgreementParticipant.m in Sources */,
 				7D613A341F9017DD00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
-				7DCFFDFE1F0EE4490003CD95 /* EvpKeyAgreement.m in Sources */,
 				7D613A8C1F90183600E18D29 /* TSRequest.m in Sources */,
 				7D613A2E1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7D1DBECF20C1A39B00B39333 /* LoginViewController.swift in Sources */,
@@ -5142,13 +4808,11 @@
 				7D613A2B1F9017D100E18D29 /* TSOutgoingMessage.m in Sources */,
 				7DCFFE051F0EE4490003CD95 /* PacketHandler.m in Sources */,
 				7DCFFE081F0EE4490003CD95 /* DictionaryUtil.m in Sources */,
-				7DCFFE091F0EE4490003CD95 /* ZrtpHandshakeResult.m in Sources */,
 				7D613A281F9017CF00E18D29 /* TSMessage.m in Sources */,
 				7DCFFE0A1F0EE4490003CD95 /* OWSLinkedDevicesTableViewController.m in Sources */,
 				7DFF570420B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7DCFFE0B1F0EE4490003CD95 /* HttpRequestUtil.m in Sources */,
 				7DCFFE0C1F0EE4490003CD95 /* SyncPushTokensJob.swift in Sources */,
-				7DCFFE0D1F0EE4490003CD95 /* MasterSecret.m in Sources */,
 				7D6139B41F90173B00E18D29 /* Contact.m in Sources */,
 				7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				7DCFFE0F1F0EE4490003CD95 /* ConversationUpdateViewController.m in Sources */,
@@ -5164,7 +4828,6 @@
 				7D7DA5971F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */,
 				7DCFFE151F0EE4490003CD95 /* JSQMediaItem+OWS.m in Sources */,
 				7D613AAD1F90185D00E18D29 /* OWSFingerprintBuilder.m in Sources */,
-				7DCFFE161F0EE4490003CD95 /* ZrtpHandshakeSocket.m in Sources */,
 				7DCFFE171F0EE4490003CD95 /* OWSOutgoingMessageCollectionViewCell.m in Sources */,
 				7D613A011F9017A200E18D29 /* TSAttachmentStream.m in Sources */,
 				7DCFFE181F0EE4490003CD95 /* HttpResponse.m in Sources */,
@@ -5173,7 +4836,6 @@
 				7DCFFE1A1F0EE4490003CD95 /* ObservableValue.m in Sources */,
 				7DCFFE1B1F0EE4490003CD95 /* FLAnimatedImage.m in Sources */,
 				7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */,
-				7DCFFE1F1F0EE4490003CD95 /* HelloPacket.m in Sources */,
 				7DCFFE201F0EE4490003CD95 /* FutureUtil.m in Sources */,
 				7D6139A21F90171C00E18D29 /* TSAccountManager.m in Sources */,
 				7D613A7D1F90182700E18D29 /* TSContactsIntersectionRequest.m in Sources */,
@@ -5195,10 +4857,8 @@
 				7D613A1C1F9017C200E18D29 /* TSErrorMessage.m in Sources */,
 				7DCFFE291F0EE4490003CD95 /* AFHTTPSessionManager+SignalMethods.m in Sources */,
 				7D613A5B1F90180600E18D29 /* OWSDeviceProvisioningCodeService.m in Sources */,
-				7DCFFE2A1F0EE4490003CD95 /* ShortAuthenticationStringGenerator.m in Sources */,
 				7D613A581F9017FF00E18D29 /* TSMessagesManager.m in Sources */,
 				7D613AC21F90187B00E18D29 /* TSStorageManager+keyFromIntLong.m in Sources */,
-				7DCFFE2B1F0EE4490003CD95 /* EC25KeyAgreementProtocol.m in Sources */,
 				7D6139971F90163A00E18D29 /* NSURLSessionDataTask+StatusCode.m in Sources */,
 				7DCFFE2C1F0EE4490003CD95 /* OWSCallCollectionViewCell.m in Sources */,
 				7DCFFE2D1F0EE4490003CD95 /* AnonymousTerminator.m in Sources */,
@@ -5209,15 +4869,12 @@
 				7D613A371F9017E000E18D29 /* OWSDisappearingMessagesFinder.m in Sources */,
 				7D61398B1F90162300E18D29 /* Cryptography.m in Sources */,
 				7D613AB01F90186000E18D29 /* OWSFingerprintProtos.pb.m in Sources */,
-				7DCFFE2F1F0EE4490003CD95 /* DH3KKeyAgreementProtocol.m in Sources */,
 				7D613AB71F90186600E18D29 /* OWSWebsocketSecurityPolicy.m in Sources */,
 				7DCFFE301F0EE4490003CD95 /* HttpRequest.m in Sources */,
 				7DCFFE341F0EE4490003CD95 /* DateUtil.m in Sources */,
-				7DCFFE351F0EE4490003CD95 /* HelloAckPacket.m in Sources */,
 				7D613A401F9017E800E18D29 /* OWSLegacyMessageServiceParams.m in Sources */,
 				7DCFFE381F0EE4490003CD95 /* HighlightableLabel.swift in Sources */,
 				7D6139D91F90177400E18D29 /* OWSDeviceProvisioner.m in Sources */,
-				7DCFFE391F0EE4490003CD95 /* SrtpStream.m in Sources */,
 				7DCFFE3A1F0EE4490003CD95 /* DeveloperPanelViewController.m in Sources */,
 				7DCFFE3C1F0EE4490003CD95 /* Zid.m in Sources */,
 				7DCFFE3D1F0EE4490003CD95 /* OWSDeviceTableViewCell.m in Sources */,
@@ -5227,7 +4884,6 @@
 				7D613A611F90180B00E18D29 /* OWSDevicesService.m in Sources */,
 				7DCFFE3F1F0EE4490003CD95 /* Certificate.m in Sources */,
 				7D613ADA1F90189100E18D29 /* TSStorageManager+messageIDs.m in Sources */,
-				7DCFFE401F0EE4490003CD95 /* NegotiationFailed.m in Sources */,
 				7DCFFE411F0EE4490003CD95 /* LowLatencyCandidate.m in Sources */,
 				7D6139D51F90177100E18D29 /* OWSDevice.m in Sources */,
 			);
@@ -5249,7 +4905,6 @@
 				76EB061218170B33006006FC /* LoggingUtil.m in Sources */,
 				76EB060E18170B33006006FC /* DecayingSampleEstimator.m in Sources */,
 				7D613A931F90183D00E18D29 /* TSSubmitMessageRequest.m in Sources */,
-				76EB05BA18170B33006006FC /* CommitPacket.m in Sources */,
 				7D613A531F9017FA00E18D29 /* TSCall.m in Sources */,
 				7D3DA2FC20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */,
 				7D613A261F9017CC00E18D29 /* TSInteraction.m in Sources */,
@@ -5264,14 +4919,12 @@
 				76EB061A18170B33006006FC /* DiscardingLog.m in Sources */,
 				45CD81F21DC03A22004C9430 /* OWSLogger.m in Sources */,
 				7D516F231EF32B6000E7E15F /* FLCCSMJSONService.m in Sources */,
-				76EB05AC18170B33006006FC /* SrtpSocket.m in Sources */,
 				7D613A441F9017EB00E18D29 /* OWSMessageSender.m in Sources */,
 				FCB11D931A12A4AA002F93FB /* FullImageViewController.m in Sources */,
 				7D613A471F9017EF00E18D29 /* OWSMessageServiceParams.m in Sources */,
 				7D613ADE1F90189500E18D29 /* TSStorageManager.m in Sources */,
 				B97940271832BD2400BD66CB /* UIUtil.m in Sources */,
 				4CE0E3771B954546007210CF /* TSAnimatedAdapter.m in Sources */,
-				76EB05BE18170B33006006FC /* ConfirmPacket.m in Sources */,
 				7D613A651F90180E00E18D29 /* OWSUploadingService.m in Sources */,
 				7D6FB26D2020FBCC00619C67 /* AnnouncementDetailViewController.m in Sources */,
 				4531C9C41DD8E6D800F08304 /* JSQMessagesCollectionViewCell+OWS.m in Sources */,
@@ -5283,7 +4936,6 @@
 				7D613A4A1F9017F100E18D29 /* OWSNotifyRemoteOfUpdatedDisappearingConfigurationJob.m in Sources */,
 				7D613AEA1F9018D500E18D29 /* BadState.m in Sources */,
 				7D613A321F9017DA00E18D29 /* TSInvalidIdentityKeyReceivingErrorMessage.m in Sources */,
-				76EB05A818170B33006006FC /* RtpSocket.m in Sources */,
 				7D613ACC1F90188300E18D29 /* TSStorageManager+SignedPreKeyStore.m in Sources */,
 				7D6139A71F90172100E18D29 /* TSPreKeyManager.m in Sources */,
 				7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */,
@@ -5292,12 +4944,10 @@
 				76EB059418170B33006006FC /* HttpManager.m in Sources */,
 				45CD81EF1DC030E7004C9430 /* AccountManager.swift in Sources */,
 				7DF7E832209A5289001B8687 /* NewAccountViewController.swift in Sources */,
-				76EB05D218170B33006006FC /* ZrtpInitiator.m in Sources */,
 				76EB05E018170B33006006FC /* NetworkStream.m in Sources */,
 				7D0E3C231F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				FCFA64B71A24F6730007FB87 /* UIFont+OWS.m in Sources */,
 				B6B9ECFC198B31BA00C620D3 /* PushManager.m in Sources */,
-				76EB05D618170B33006006FC /* ZrtpResponder.m in Sources */,
 				B62D53F71A23CCAD009AAF82 /* TSMessageAdapter.m in Sources */,
 				FCD274EB1A5AFDDB00202277 /* AboutTableViewController.m in Sources */,
 				7D6139931F90163700E18D29 /* OWSDispatch.m in Sources */,
@@ -5311,7 +4961,6 @@
 				76EB063A18170B33006006FC /* FunctionalUtil.m in Sources */,
 				7D613A6F1F90181900E18D29 /* OWSDeviceProvisioningRequest.m in Sources */,
 				7D6139E41F90178100E18D29 /* OWSProvisioningProtos.pb.m in Sources */,
-				76EB05BC18170B33006006FC /* ConfirmAckPacket.m in Sources */,
 				7DD53DE920B71FB700848437 /* NewConversationViewController.swift in Sources */,
 				7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */,
 				7D613AD51F90188B00E18D29 /* TSDatabaseView.m in Sources */,
@@ -5322,8 +4971,6 @@
 				76EB061018170B33006006FC /* EventWindow.m in Sources */,
 				7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */,
 				450873C71D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m in Sources */,
-				76EB058418170B33006006FC /* LocalizableText.m in Sources */,
-				76EB05A618170B33006006FC /* RtpPacket.m in Sources */,
 				76EB064218170B33006006FC /* StringUtil.m in Sources */,
 				7D6139BE1F90174300E18D29 /* PhoneNumber.m in Sources */,
 				7D6139901F90163300E18D29 /* OWSError.m in Sources */,
@@ -5341,14 +4988,12 @@
 				7D6FB268201FC76000619C67 /* FLAnnouncementViewController.m in Sources */,
 				76EB063018170B33006006FC /* Conversions.m in Sources */,
 				7D613A8A1F90183400E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
-				76EB05CA18170B33006006FC /* RecipientUnavailable.m in Sources */,
 				7D613AF11F9018DD00E18D29 /* SecurityFailure.m in Sources */,
 				7D613A811F90182A00E18D29 /* TSCurrentSignedPreKeyRequest.m in Sources */,
 				76EB05DA18170B33006006FC /* LowLatencyConnector.m in Sources */,
 				B66B9F7D1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D613A0E1F9017B100E18D29 /* OWSSyncContactsMessage.m in Sources */,
 				7D613A111F9017B400E18D29 /* OWSSyncGroupsMessage.m in Sources */,
-				76EB05B418170B33006006FC /* HashChain.m in Sources */,
 				7D6139A91F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D613AC61F90187E00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
@@ -5364,7 +5009,6 @@
 				7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */,
 				FC31962D1A06A2190094C78E /* FingerprintViewController.m in Sources */,
 				76EB061418170B33006006FC /* AnonymousConditionLogger.m in Sources */,
-				76EB05C018170B33006006FC /* DhPacket.m in Sources */,
 				7D613AE61F9018D100E18D29 /* BadArgument.m in Sources */,
 				7DFE7C551F74398500905909 /* ForstaColors.m in Sources */,
 				FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */,
@@ -5391,7 +5035,6 @@
 				458E38371D668EBF0094BD24 /* OWSDeviceProvisioningURLParser.m in Sources */,
 				7D613ACF1F90188600E18D29 /* OWSOrphanedDataCleaner.m in Sources */,
 				FCFA64B41A24F3880007FB87 /* UIColor+OWS.m in Sources */,
-				76EB05C218170B33006006FC /* DhPacketSharedSecretHashes.m in Sources */,
 				7D6139F61F90179400E18D29 /* OWSSendReadReceiptsJob.m in Sources */,
 				7D3A67301FE8708900C4096A /* AppearanceSettingsViewController.m in Sources */,
 				7D613A781F90182200E18D29 /* TSAttachmentRequest.m in Sources */,
@@ -5409,19 +5052,16 @@
 				76EB061818170B33006006FC /* AnonymousValueLogger.m in Sources */,
 				7D9D0E30200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */,
 				7D613AF91F9018ED00E18D29 /* NSData+Base64.m in Sources */,
-				E16E5BEE18AAC40200B7C403 /* EC25KeyAgreementParticipant.m in Sources */,
 				7D6139BA1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7D6139E21F90177F00E18D29 /* OWSProvisioningMessage.m in Sources */,
 				76EB057418170B33006006FC /* RecentCallManager.m in Sources */,
 				76EB061C18170B33006006FC /* ArrayUtil.m in Sources */,
 				7D1B5A3120DD46BA002D57A9 /* ControlMessageManager.swift in Sources */,
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
-				76EB05C418170B33006006FC /* HandshakePacket.m in Sources */,
 				7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A231F9017CA00E18D29 /* TSInfoMessage.m in Sources */,
 				7D613A7B1F90182500E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B81F90173D00E18D29 /* ContactsUpdater.m in Sources */,
-				76EB05AA18170B33006006FC /* SequenceCounter.m in Sources */,
 				7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */,
 				7038632718F70C0700D4A43F /* CryptoTools.m in Sources */,
 				7D613AD81F90188F00E18D29 /* TSStorageManager+keyingMaterial.m in Sources */,
@@ -5432,12 +5072,9 @@
 				B671B2461A93B238002BBD9D /* GroupContactsResult.m in Sources */,
 				B66B9F721AEA6D1100E2E609 /* NotificationSettingsViewController.m in Sources */,
 				76EB059018170B33006006FC /* IgnoredPacketFailure.m in Sources */,
-				76EB05D418170B33006006FC /* ZrtpManager.m in Sources */,
 				7D6139A51F90171F00E18D29 /* TSAttributes.m in Sources */,
 				76EB058E18170B33006006FC /* HostNameEndPoint.m in Sources */,
-				E19167A418A9687800B7A468 /* DH3KKeyAgreementParticipant.m in Sources */,
 				7D613A351F9017DD00E18D29 /* TSInvalidIdentityKeySendingErrorMessage.m in Sources */,
-				E16E5BF018AAC40200B7C403 /* EvpKeyAgreement.m in Sources */,
 				7D613A8D1F90183600E18D29 /* TSRequest.m in Sources */,
 				7D613A2F1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7D1DBED020C1A39B00B39333 /* LoginViewController.swift in Sources */,
@@ -5448,13 +5085,11 @@
 				7D613A2C1F9017D200E18D29 /* TSOutgoingMessage.m in Sources */,
 				76EB05A418170B33006006FC /* PacketHandler.m in Sources */,
 				76EB063818170B33006006FC /* DictionaryUtil.m in Sources */,
-				76EB05CE18170B33006006FC /* ZrtpHandshakeResult.m in Sources */,
 				7D613A291F9017CF00E18D29 /* TSMessage.m in Sources */,
 				45EB32CF1D7465C900735B2E /* OWSLinkedDevicesTableViewController.m in Sources */,
 				7DFF570520B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				B63761EE19E1FBE8005735D1 /* HttpRequestUtil.m in Sources */,
 				451DE9FD1DC1A28200810E42 /* SyncPushTokensJob.swift in Sources */,
-				76EB05B618170B33006006FC /* MasterSecret.m in Sources */,
 				7D6139B51F90173B00E18D29 /* Contact.m in Sources */,
 				7DB55A9C1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				FCFD256F1A151BCB00F4C644 /* ConversationUpdateViewController.m in Sources */,
@@ -5470,7 +5105,6 @@
 				7D7DA5981F2FBA66007FE6E4 /* OWSGroupAvatarBuilder.m in Sources */,
 				341BB7491DB727EE001E2975 /* JSQMediaItem+OWS.m in Sources */,
 				7D613AAE1F90185E00E18D29 /* OWSFingerprintBuilder.m in Sources */,
-				76EB05D018170B33006006FC /* ZrtpHandshakeSocket.m in Sources */,
 				45F2B1941D9C9F48000D2C69 /* OWSOutgoingMessageCollectionViewCell.m in Sources */,
 				7D613A021F9017A200E18D29 /* TSAttachmentStream.m in Sources */,
 				B63761EF19E1FBE8005735D1 /* HttpResponse.m in Sources */,
@@ -5479,7 +5113,6 @@
 				BFB074C919A5611000F2947C /* ObservableValue.m in Sources */,
 				B68EF9BA1C0B1EBD009C3DCD /* FLAnimatedImage.m in Sources */,
 				B68112EA1A4D9EC400BA82FF /* UIImage+normalizeImage.m in Sources */,
-				76EB05C818170B33006006FC /* HelloPacket.m in Sources */,
 				BFB074C719A5611000F2947C /* FutureUtil.m in Sources */,
 				7D6139A31F90171D00E18D29 /* TSAccountManager.m in Sources */,
 				7D613A7E1F90182700E18D29 /* TSContactsIntersectionRequest.m in Sources */,
@@ -5501,10 +5134,8 @@
 				7D613A1D1F9017C200E18D29 /* TSErrorMessage.m in Sources */,
 				B63761E319E1F487005735D1 /* AFHTTPSessionManager+SignalMethods.m in Sources */,
 				7D613A5C1F90180600E18D29 /* OWSDeviceProvisioningCodeService.m in Sources */,
-				76EB05CC18170B33006006FC /* ShortAuthenticationStringGenerator.m in Sources */,
 				7D613A591F9017FF00E18D29 /* TSMessagesManager.m in Sources */,
 				7D613AC31F90187B00E18D29 /* TSStorageManager+keyFromIntLong.m in Sources */,
-				E16E5BEF18AAC40200B7C403 /* EC25KeyAgreementProtocol.m in Sources */,
 				7D6139961F90163A00E18D29 /* NSURLSessionDataTask+StatusCode.m in Sources */,
 				45C681BC1D305C080050903A /* OWSCallCollectionViewCell.m in Sources */,
 				76EB064018170B33006006FC /* AnonymousTerminator.m in Sources */,
@@ -5515,15 +5146,12 @@
 				7D613A381F9017E000E18D29 /* OWSDisappearingMessagesFinder.m in Sources */,
 				7D61398A1F90162300E18D29 /* Cryptography.m in Sources */,
 				7D613AB11F90186000E18D29 /* OWSFingerprintProtos.pb.m in Sources */,
-				76EB05B218170B33006006FC /* DH3KKeyAgreementProtocol.m in Sources */,
 				7D613AB61F90186600E18D29 /* OWSWebsocketSecurityPolicy.m in Sources */,
 				B63761EC19E1FBE8005735D1 /* HttpRequest.m in Sources */,
 				B90418E6183E9DD40038554A /* DateUtil.m in Sources */,
-				76EB05C618170B33006006FC /* HelloAckPacket.m in Sources */,
 				7D613A411F9017E800E18D29 /* OWSLegacyMessageServiceParams.m in Sources */,
 				45B201761DAECBFE00C461E0 /* HighlightableLabel.swift in Sources */,
 				7D6139D81F90177400E18D29 /* OWSDeviceProvisioner.m in Sources */,
-				76EB05AE18170B33006006FC /* SrtpStream.m in Sources */,
 				7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */,
 				76EB064818170B33006006FC /* Zid.m in Sources */,
 				459311FC1D75C948008DD4F0 /* OWSDeviceTableViewCell.m in Sources */,
@@ -5533,7 +5161,6 @@
 				7D613A621F90180B00E18D29 /* OWSDevicesService.m in Sources */,
 				76EB05DE18170B33006006FC /* Certificate.m in Sources */,
 				7D613ADB1F90189200E18D29 /* TSStorageManager+messageIDs.m in Sources */,
-				76EB05B818170B33006006FC /* NegotiationFailed.m in Sources */,
 				76EB05D818170B33006006FC /* LowLatencyCandidate.m in Sources */,
 				7D6139D61F90177100E18D29 /* OWSDevice.m in Sources */,
 			);
@@ -5553,7 +5180,6 @@
 				B660F71A1C29988E00687D6E /* EvpSymetricUtil.m in Sources */,
 				B660F71B1C29988E00687D6E /* Environment.m in Sources */,
 				B660F71C1C29988E00687D6E /* DebugLogger.m in Sources */,
-				B660F71D1C29988E00687D6E /* LocalizableText.m in Sources */,
 				B660F71F1C29988E00687D6E /* PropertyListPreferences.m in Sources */,
 				B660F7201C29988E00687D6E /* Release.m in Sources */,
 				B660F7211C29988E00687D6E /* SignalKeyingStorage.m in Sources */,
@@ -5576,39 +5202,11 @@
 				B660F7301C29988E00687D6E /* IpAddress.m in Sources */,
 				B660F7311C29988E00687D6E /* IpEndPoint.m in Sources */,
 				B660F7321C29988E00687D6E /* PacketHandler.m in Sources */,
-				B660F7331C29988E00687D6E /* RtpPacket.m in Sources */,
 				45BFFFA91D898AF0004A12A7 /* OWSStaleNotificationObserver.m in Sources */,
-				B660F7341C29988E00687D6E /* RtpSocket.m in Sources */,
-				B660F7351C29988E00687D6E /* SequenceCounter.m in Sources */,
-				B660F7361C29988E00687D6E /* SrtpSocket.m in Sources */,
 				45C681C71D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
-				B660F7371C29988E00687D6E /* SrtpStream.m in Sources */,
-				B660F7381C29988E00687D6E /* DH3KKeyAgreementParticipant.m in Sources */,
-				B660F7391C29988E00687D6E /* DH3KKeyAgreementProtocol.m in Sources */,
-				B660F73A1C29988E00687D6E /* EC25KeyAgreementParticipant.m in Sources */,
-				B660F73B1C29988E00687D6E /* EC25KeyAgreementProtocol.m in Sources */,
-				B660F73C1C29988E00687D6E /* EvpKeyAgreement.m in Sources */,
 				451DE9FE1DC1A28200810E42 /* SyncPushTokensJob.swift in Sources */,
-				B660F73D1C29988E00687D6E /* HashChain.m in Sources */,
-				B660F73E1C29988E00687D6E /* MasterSecret.m in Sources */,
-				B660F73F1C29988E00687D6E /* NegotiationFailed.m in Sources */,
-				B660F7401C29988E00687D6E /* CommitPacket.m in Sources */,
-				B660F7411C29988E00687D6E /* ConfirmAckPacket.m in Sources */,
-				B660F7421C29988E00687D6E /* ConfirmPacket.m in Sources */,
-				B660F7431C29988E00687D6E /* DhPacket.m in Sources */,
-				B660F7441C29988E00687D6E /* DhPacketSharedSecretHashes.m in Sources */,
-				B660F7451C29988E00687D6E /* HandshakePacket.m in Sources */,
-				B660F7461C29988E00687D6E /* HelloAckPacket.m in Sources */,
-				B660F7471C29988E00687D6E /* HelloPacket.m in Sources */,
-				B660F7481C29988E00687D6E /* RecipientUnavailable.m in Sources */,
 				45843D201D2236B30013E85A /* OWSContactsSearcher.m in Sources */,
-				B660F7491C29988E00687D6E /* ShortAuthenticationStringGenerator.m in Sources */,
 				45C681BD1D305C080050903A /* OWSCallCollectionViewCell.m in Sources */,
-				B660F74A1C29988E00687D6E /* ZrtpHandshakeResult.m in Sources */,
-				B660F74B1C29988E00687D6E /* ZrtpHandshakeSocket.m in Sources */,
-				B660F74C1C29988E00687D6E /* ZrtpInitiator.m in Sources */,
-				B660F74D1C29988E00687D6E /* ZrtpManager.m in Sources */,
-				B660F74E1C29988E00687D6E /* ZrtpResponder.m in Sources */,
 				B660F74F1C29988E00687D6E /* LowLatencyCandidate.m in Sources */,
 				B660F7501C29988E00687D6E /* LowLatencyConnector.m in Sources */,
 				B660F7511C29988E00687D6E /* StreamPair.m in Sources */,

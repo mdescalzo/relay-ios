@@ -1,9 +1,7 @@
 #import "Environment.h"
 #import "Constraints.h"
-#import "DH3KKeyAgreementProtocol.h"
 #import "DebugLogger.h"
 #import "FunctionalUtil.h"
-#import "KeyAgreementProtocol.h"
 #import "MessagesViewController.h"
 #import "RecentCallManager.h"
 #import "SignalKeyingStorage.h"
@@ -59,27 +57,13 @@ static Environment *environment = nil;
                defaultRelayName:(NSString *)defaultRelayName
       relayServerHostNameSuffix:(NSString *)relayServerHostNameSuffix
                     certificate:(Certificate *)certificate
- supportedKeyAgreementProtocols:(NSArray *)keyAgreementProtocolsInDescendingPriority
         testingAndLegacyOptions:(NSArray *)testingAndLegacyOptions
-                   zrtpClientId:(NSData *)zrtpClientId
-                  zrtpVersionId:(NSData *)zrtpVersionId
                 contactsManager:(FLContactsManager *)contactsManager
                  networkManager:(TSNetworkManager *)networkManager
                   messageSender:(FLMessageSender *)messageSender
 {
     ows_require(errorNoter != nil);
-    ows_require(zrtpClientId != nil);
-    ows_require(zrtpVersionId != nil);
     ows_require(testingAndLegacyOptions != nil);
-    ows_require(keyAgreementProtocolsInDescendingPriority != nil);
-    ows_require([keyAgreementProtocolsInDescendingPriority all:^int(id p) {
-      return [p conformsToProtocol:@protocol(KeyAgreementProtocol)];
-    }]);
-
-    // must support DH3k
-    ows_require([keyAgreementProtocolsInDescendingPriority any:^int(id p) {
-      return [p isKindOfClass:DH3KKeyAgreementProtocol.class];
-    }]);
 
     self = [super init];
     if (!self) {
@@ -97,9 +81,6 @@ static Environment *environment = nil;
     _defaultRelayName = defaultRelayName;
     _certificate = certificate;
     _relayServerHostNameSuffix = relayServerHostNameSuffix;
-    _keyAgreementProtocolsInDescendingPriority = keyAgreementProtocolsInDescendingPriority;
-    _zrtpClientId = zrtpClientId;
-    _zrtpVersionId = zrtpVersionId;
     _contactsManager = contactsManager;
     _networkManager = networkManager;
     _messageSender = messageSender;
