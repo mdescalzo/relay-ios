@@ -2,7 +2,6 @@
 #import "UIUtil.h"
 
 #import "Environment.h"
-#import "PhoneManager.h"
 
 @interface ContactTableViewCell ()
 

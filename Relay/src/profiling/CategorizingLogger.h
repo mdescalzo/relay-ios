@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "JitterQueue.h"
 #import "Logging.h"
 
-@interface CategorizingLogger : NSObject <Logging, JitterQueueNotificationReceiver> {
+@interface CategorizingLogger : NSObject <Logging> {
    @private
     NSMutableArray *callbacks;
    @private

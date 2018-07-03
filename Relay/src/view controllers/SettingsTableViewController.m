@@ -12,13 +12,8 @@
 #import "PropertyListPreferences.h"
 #import "TSAccountManager.h"
 #import "UIUtil.h"
-
-#import "RPServerRequestsManager.h"
-
 #import "TSSocketManager.h"
-
 #import "FLContactsManager.h"
-
 #import "AboutTableViewController.h"
 #import "AdvancedSettingsTableViewController.h"
 #import "NotificationSettingsViewController.h"

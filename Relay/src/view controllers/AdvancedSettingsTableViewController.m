@@ -11,7 +11,6 @@
 #import "Environment.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
-#import "RPAccountManager.h"
 #import "Relay-Swift.h"
 #import "TSAccountManager.h"
 #import <PastelogKit/Pastelog.h>

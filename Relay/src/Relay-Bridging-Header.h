@@ -7,7 +7,6 @@
 #import "OWSLogger.h"
 #import "PropertyListPreferences.h"
 #import "PushManager.h"
-#import "RPAccountManager.h"
 #import "NSDate+millisecondTimeStamp.h"
 #import "OWSEndSessionMessage.h"
 #import "OWSError.h"
