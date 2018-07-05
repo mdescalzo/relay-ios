@@ -98,6 +98,8 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         return successHandler();
     }
     
+    // TODO: Added multiple attachment support
+    
     TSAttachmentStream *attachmentStream =
     [TSAttachmentStream fetchObjectWithUniqueID:message.attachmentIds.firstObject];
     

@@ -111,6 +111,13 @@ NS_ASSUME_NONNULL_BEGIN
     OWSSignalServiceProtosDataMessageBuilder *builder = [OWSSignalServiceProtosDataMessageBuilder new];
     [builder setBody:self.body];
     [builder setExpireTimer:self.expiresInSeconds];
+    
+    NSMutableArray *attachments = [NSMutableArray new];
+    for (NSString *attachmentId in self.attachmentIds) {
+        [attachments addObject:[self buildAttachmentProtoForAttachmentId:attachmentId]];
+    }
+    [builder setAttachmentsArray:attachments];
+    
     return builder;
 }
 

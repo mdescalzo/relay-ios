@@ -299,7 +299,7 @@ static const NSUInteger OWSMessageSchemaVersion = 3;
         
         // Add the new value to the forstaPayload
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            if (_plainTextBody.length > 0) {
+            if (self->_plainTextBody.length > 0) {
                 NSMutableDictionary *dataDict = [[self.forstaPayload objectForKey:@"data"] mutableCopy];
                 if (!dataDict) {
                     dataDict = [NSMutableDictionary new];
