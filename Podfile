@@ -26,12 +26,12 @@ abstract_target 'Common' do
     pod 'SAMKeychain',                 '~> 1.5.2', :inhibit_warnings => true
     pod 'TwistedOakCollapsingFutures', '~> 1.0.0', :inhibit_warnings => true
     pod 'UIImageView+Extension',       '~> 0.2.5.1', :inhibit_warnings => true
-    pod 'SmileTouchID', :inhibit_warnings => true
+    pod 'SmileTouchID',                '~> 0.1', :inhibit_warnings => true
     pod 'NSAttributedString-DDHTML',   git: 'git@github.com:ForstaLabs/NSAttributedString-DDHTML.git', branch: 'master', :inhibit_warnings => true
     pod 'iRate',                       '~> 1.12', :inhibit_warnings => true
-    pod 'ReCaptcha', :inhibit_warnings => true
+    pod 'ReCaptcha',                   '~> 1.2', :inhibit_warnings => true
     pod 'PromiseKit',                  '~> 4.0', :inhibit_warnings => true
-    pod 'FLAnimatedImage', '~> 1.0'
+    pod 'FLAnimatedImage',             '~> 1.0', :inhibit_warnings => true
     
     target 'Relay' do
     end
