@@ -95,8 +95,8 @@ class NavigationController: UINavigationController {
     }
     
     func updateSocketConnecting() {
-        if self.socketStatusView != nil {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            if self.socketStatusView != nil {
                 let progress = (self.socketStatusView?.progress)! + 0.05
                 self.socketStatusView?.progress = min(progress, self.STALLED_PROGRESS)
             }
