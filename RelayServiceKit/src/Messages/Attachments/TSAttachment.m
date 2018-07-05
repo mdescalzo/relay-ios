@@ -42,15 +42,6 @@ NSUInteger const TSAttachmentSchemaVersion = 2;
         return self;
     }
 
-    if (_attachmentSchemaVersion < 2) {
-        if (!_serverId) {
-            _serverId = (UInt64)[self.uniqueId integerValue];
-            if (!_serverId) {
-                DDLogError(@"%@ failed to parse legacy uniqueId:%@ as integer.", self.tag, self.uniqueId);
-            }
-        }
-    }
-
     _attachmentSchemaVersion = TSAttachmentSchemaVersion;
 
     return self;
