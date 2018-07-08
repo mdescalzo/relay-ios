@@ -1,4 +1,4 @@
-platform :ios, '8.0'
+platform :ios, '10.0'
 source 'https://github.com/CocoaPods/Specs.git'
 project './Forsta.xcodeproj'
 
@@ -32,6 +32,7 @@ abstract_target 'Common' do
     pod 'ReCaptcha',                   '~> 1.2', :inhibit_warnings => true
     pod 'PromiseKit',                  '~> 4.0', :inhibit_warnings => true
     pod 'FLAnimatedImage',             '~> 1.0', :inhibit_warnings => true
+    pod 'GoogleWebRTC'
     
     target 'Relay' do
     end

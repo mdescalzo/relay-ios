@@ -68,8 +68,6 @@
 		70BAFD5D190584BE00FA5E0B /* NotificationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */; };
 		76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */; };
 		76EB054018170B33006006FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB03C318170B33006006FC /* AppDelegate.m */; };
-		76EB057218170B33006006FC /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
-		76EB057418170B33006006FC /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		76EB058218170B33006006FC /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041318170B33006006FC /* Environment.m */; };
 		76EB058818170B33006006FC /* PropertyListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041918170B33006006FC /* PropertyListPreferences.m */; };
 		76EB058A18170B33006006FC /* Release.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB041B18170B33006006FC /* Release.m */; };
@@ -243,7 +241,6 @@
 		7D4A3A3D1F1693930023C29B /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
 		7D4A3A411F1693930023C29B /* ConversationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */; };
 		7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
-		7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04CA18170B33006006FC /* ArrayUtil.m */; };
 		7D4A3A4B1F1693930023C29B /* AdvancedSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */; };
 		7D4A3A4E1F1693930023C29B /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
@@ -273,7 +270,6 @@
 		7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
 		7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
-		7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
 		7D4A3A7D1F1693930023C29B /* SignalKeyingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B1013B196D213F007E3930 /* SignalKeyingStorage.m */; };
 		7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042718170B33006006FC /* UnrecognizedRequestFailure.m */; };
 		7D4A3A801F1693930023C29B /* NSData+ows_StripToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B62F5E0F1C2980B4000D370C /* NSData+ows_StripToken.m */; };
@@ -750,6 +746,14 @@
 		7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DB55A9C1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
+		7DBFC3F120EFE0640047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
+		7DBFC3F220EFE0640047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
+		7DBFC3F320EFE0640047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
+		7DBFC3F520EFFE5B0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
+		7DBFC3F620EFFE5B0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
+		7DBFC3F720EFFE5B0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
+		7DBFC3F820EFFE5E0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
+		7DBFC3F920EFFE630047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
 		7DCFF9711F0C700F0003CD95 /* forsta_splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFF9701F0C700F0003CD95 /* forsta_splash.png */; };
 		7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
 		7DCFFD6B1F0EE4490003CD95 /* CountryCodeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5509ECC1A69B1D600ABA4BC /* CountryCodeTableViewCell.m */; };
@@ -824,7 +828,6 @@
 		7DCFFDE41F0EE4490003CD95 /* IpEndPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB043818170B33006006FC /* IpEndPoint.m */; };
 		7DCFFDE81F0EE4490003CD95 /* ConversationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452E3C8D1D935C77002A45B0 /* ConversationSettingsViewController.m */; };
 		7DCFFDEB1F0EE4490003CD95 /* AnonymousValueLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04C418170B33006006FC /* AnonymousValueLogger.m */; };
-		7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04CA18170B33006006FC /* ArrayUtil.m */; };
 		7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E71A5AFDC900202277 /* AdvancedSettingsTableViewController.m */; };
 		7DCFFDF51F0EE4490003CD95 /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
@@ -854,7 +857,6 @@
 		7DCFFE1D1F0EE4490003CD95 /* UIImage+normalizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B68112E91A4D9EC400BA82FF /* UIImage+normalizeImage.m */; };
 		7DCFFE201F0EE4490003CD95 /* FutureUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB074C419A5611000F2947C /* FutureUtil.m */; };
 		7DCFFE211F0EE4490003CD95 /* PrivacySettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD274E11A5AFD8000202277 /* PrivacySettingsTableViewController.m */; };
-		7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
 		7DCFFE241F0EE4490003CD95 /* SignalKeyingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B1013B196D213F007E3930 /* SignalKeyingStorage.m */; };
 		7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB042718170B33006006FC /* UnrecognizedRequestFailure.m */; };
 		7DCFFE271F0EE4490003CD95 /* NSData+ows_StripToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B62F5E0F1C2980B4000D370C /* NSData+ows_StripToken.m */; };
@@ -1045,8 +1047,6 @@
 		B660F6DE1C29868000687D6E /* PriorityQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B660F6B01C29868000687D6E /* PriorityQueueTest.m */; };
 		B660F6DF1C29868000687D6E /* QueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B660F6B21C29868000687D6E /* QueueTest.m */; };
 		B660F6E01C29868000687D6E /* UtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B660F6B41C29868000687D6E /* UtilTest.m */; };
-		B660F7141C29988E00687D6E /* RecentCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040018170B33006006FC /* RecentCall.m */; };
-		B660F7151C29988E00687D6E /* RecentCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB040218170B33006006FC /* RecentCallManager.m */; };
 		B660F7161C29988E00687D6E /* GroupContactsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B2451A93B238002BBD9D /* GroupContactsResult.m */; };
 		B660F7181C29988E00687D6E /* CryptoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 7038632418F70C0700D4A43F /* CryptoTools.m */; };
 		B660F7191C29988E00687D6E /* EvpMessageDigest.m in Sources */ = {isa = PBXBuildFile; fileRef = 701231B418ECAA4500D456C4 /* EvpMessageDigest.m */; };
@@ -1274,10 +1274,6 @@
 		76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		76EB03C218170B33006006FC /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		76EB03C318170B33006006FC /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		76EB03FF18170B33006006FC /* RecentCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentCall.h; sourceTree = "<group>"; };
-		76EB040018170B33006006FC /* RecentCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentCall.m; sourceTree = "<group>"; };
-		76EB040118170B33006006FC /* RecentCallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentCallManager.h; sourceTree = "<group>"; };
-		76EB040218170B33006006FC /* RecentCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentCallManager.m; sourceTree = "<group>"; };
 		76EB041218170B33006006FC /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Environment.h; sourceTree = "<group>"; };
 		76EB041318170B33006006FC /* Environment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Environment.m; sourceTree = "<group>"; };
 		76EB041818170B33006006FC /* PropertyListPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyListPreferences.h; sourceTree = "<group>"; };
@@ -1686,6 +1682,8 @@
 		7DB55A981F2A7F10001D3058 /* FLInvitationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLInvitationService.h; sourceTree = "<group>"; };
 		7DB55A991F2A7F10001D3058 /* FLInvitationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLInvitationService.m; sourceTree = "<group>"; };
 		7DBA8D661ED9FA62009FCF65 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		7DBFC3F020EFE0640047FC62 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
+		7DBFC3F420EFFE5B0047FC62 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
@@ -2112,8 +2110,7 @@
 			children = (
 				76EB03C218170B33006006FC /* AppDelegate.h */,
 				76EB03C318170B33006006FC /* AppDelegate.m */,
-				76EB03D918170B33006006FC /* audio */,
-				76EB03FE18170B33006006FC /* call */,
+				76EB03FE18170B33006006FC /* Call */,
 				DBE1798C1ED9FF8500327B2B /* CCSM */,
 				76EB040318170B33006006FC /* contact */,
 				70DBA29918CFE98500771DAD /* crypto */,
@@ -2136,22 +2133,13 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		76EB03D918170B33006006FC /* audio */ = {
+		76EB03FE18170B33006006FC /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				7DBFC3F020EFE0640047FC62 /* CallManager.swift */,
+				7DBFC3F420EFFE5B0047FC62 /* Call.swift */,
 			);
-			path = audio;
-			sourceTree = "<group>";
-		};
-		76EB03FE18170B33006006FC /* call */ = {
-			isa = PBXGroup;
-			children = (
-				76EB03FF18170B33006006FC /* RecentCall.h */,
-				76EB040018170B33006006FC /* RecentCall.m */,
-				76EB040118170B33006006FC /* RecentCallManager.h */,
-				76EB040218170B33006006FC /* RecentCallManager.m */,
-			);
-			path = call;
+			path = Call;
 			sourceTree = "<group>";
 		};
 		76EB040318170B33006006FC /* contact */ = {
@@ -3913,6 +3901,7 @@
 				"${BUILT_PRODUCTS_DIR}/FFCircularProgressView/FFCircularProgressView.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+				"${PODS_ROOT}/GoogleWebRTC/Frameworks/frameworks/WebRTC.framework",
 				"${BUILT_PRODUCTS_DIR}/HKDFKit/HKDFKit.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
@@ -3944,6 +3933,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FFCircularProgressView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HKDFKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
@@ -4003,6 +3993,7 @@
 				"${BUILT_PRODUCTS_DIR}/FFCircularProgressView/FFCircularProgressView.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+				"${PODS_ROOT}/GoogleWebRTC/Frameworks/frameworks/WebRTC.framework",
 				"${BUILT_PRODUCTS_DIR}/HKDFKit/HKDFKit.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
@@ -4034,6 +4025,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FFCircularProgressView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HKDFKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
@@ -4090,6 +4082,7 @@
 				"${BUILT_PRODUCTS_DIR}/FFCircularProgressView/FFCircularProgressView.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+				"${PODS_ROOT}/GoogleWebRTC/Frameworks/frameworks/WebRTC.framework",
 				"${BUILT_PRODUCTS_DIR}/HKDFKit/HKDFKit.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
@@ -4121,6 +4114,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FFCircularProgressView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HKDFKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
@@ -4222,6 +4216,7 @@
 				"${BUILT_PRODUCTS_DIR}/FFCircularProgressView/FFCircularProgressView.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${PODS_ROOT}/GRKOpenSSLFramework/OpenSSL-iOS/bin/openssl.framework",
+				"${PODS_ROOT}/GoogleWebRTC/Frameworks/frameworks/WebRTC.framework",
 				"${BUILT_PRODUCTS_DIR}/HKDFKit/HKDFKit.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
@@ -4253,6 +4248,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FFCircularProgressView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HKDFKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
@@ -4490,7 +4486,6 @@
 				7D613ABE1F90187700E18D29 /* TSStorageManager+IdentityKeyStore.m in Sources */,
 				7D613AD01F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
 				7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
-				7D4A3A491F1693930023C29B /* RecentCallManager.m in Sources */,
 				7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */,
 				7D613A911F90183C00E18D29 /* TSSubmitMessageRequest.m in Sources */,
 				7D4A3A4B1F1693930023C29B /* AdvancedSettingsTableViewController.m in Sources */,
@@ -4519,6 +4514,7 @@
 				7DFF570320B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7D6139F71F90179900E18D29 /* OWSAttachmentsProcessor.m in Sources */,
 				7D6139E31F90178000E18D29 /* OWSProvisioningProtos.pb.m in Sources */,
+				7DBFC3F120EFE0640047FC62 /* CallManager.swift in Sources */,
 				7D613A301F9017DA00E18D29 /* TSInvalidIdentityKeyReceivingErrorMessage.m in Sources */,
 				7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */,
 				7D613AD31F90188B00E18D29 /* TSDatabaseView.m in Sources */,
@@ -4556,7 +4552,6 @@
 				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
 				7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
 				7D613AA01F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
-				7D4A3A7B1F1693930023C29B /* RecentCall.m in Sources */,
 				7D4A3A7D1F1693930023C29B /* SignalKeyingStorage.m in Sources */,
 				7D613A3F1F9017E800E18D29 /* OWSLegacyMessageServiceParams.m in Sources */,
 				7D4A3A7E1F1693930023C29B /* UnrecognizedRequestFailure.m in Sources */,
@@ -4581,6 +4576,7 @@
 				7D613A2D1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7D613AD61F90188E00E18D29 /* TSStorageManager+keyingMaterial.m in Sources */,
 				7D4A3A911F1693930023C29B /* HighlightableLabel.swift in Sources */,
+				7DBFC3F520EFFE5B0047FC62 /* Call.swift in Sources */,
 				7D4A3A931F1693930023C29B /* DeveloperPanelViewController.m in Sources */,
 				7D6139C21F90174800E18D29 /* SignalRecipient.m in Sources */,
 				7D6139F41F90179300E18D29 /* OWSSendReadReceiptsJob.m in Sources */,
@@ -4758,7 +4754,6 @@
 				7D613AF81F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				7D6139BB1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7D6139E11F90177E00E18D29 /* OWSProvisioningMessage.m in Sources */,
-				7DCFFDF01F0EE4490003CD95 /* RecentCallManager.m in Sources */,
 				7DCFFDF11F0EE4490003CD95 /* ArrayUtil.m in Sources */,
 				7D1B5A3020DD46BA002D57A9 /* ControlMessageManager.swift in Sources */,
 				7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */,
@@ -4794,6 +4789,7 @@
 				7DFF570420B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7DCFFE0B1F0EE4490003CD95 /* HttpRequestUtil.m in Sources */,
 				7DCFFE0C1F0EE4490003CD95 /* SyncPushTokensJob.swift in Sources */,
+				7DBFC3F220EFE0640047FC62 /* CallManager.swift in Sources */,
 				7D6139B41F90173B00E18D29 /* Contact.m in Sources */,
 				7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				7DCFFE0F1F0EE4490003CD95 /* ConversationUpdateViewController.m in Sources */,
@@ -4822,7 +4818,6 @@
 				7D7DA5911F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7DCFFE211F0EE4490003CD95 /* PrivacySettingsTableViewController.m in Sources */,
 				7D613AA41F90185000E18D29 /* TSSocketManager.m in Sources */,
-				7DCFFE221F0EE4490003CD95 /* RecentCall.m in Sources */,
 				7DCFFE241F0EE4490003CD95 /* SignalKeyingStorage.m in Sources */,
 				7D2E00DD20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */,
 				7D613AB31F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
@@ -4856,6 +4851,7 @@
 				7DCFFE381F0EE4490003CD95 /* HighlightableLabel.swift in Sources */,
 				7D6139D91F90177400E18D29 /* OWSDeviceProvisioner.m in Sources */,
 				7DCFFE3A1F0EE4490003CD95 /* DeveloperPanelViewController.m in Sources */,
+				7DBFC3F620EFFE5B0047FC62 /* Call.swift in Sources */,
 				7DCFFE3C1F0EE4490003CD95 /* Zid.m in Sources */,
 				7DCFFE3D1F0EE4490003CD95 /* OWSDeviceTableViewCell.m in Sources */,
 				7D6139CF1F90176C00E18D29 /* OWSChunkedOutputStream.m in Sources */,
@@ -5033,7 +5029,6 @@
 				7D613AF91F9018ED00E18D29 /* NSData+Base64.m in Sources */,
 				7D6139BA1F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7D6139E21F90177F00E18D29 /* OWSProvisioningMessage.m in Sources */,
-				76EB057418170B33006006FC /* RecentCallManager.m in Sources */,
 				76EB061C18170B33006006FC /* ArrayUtil.m in Sources */,
 				7D1B5A3120DD46BA002D57A9 /* ControlMessageManager.swift in Sources */,
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
@@ -5069,6 +5064,7 @@
 				7DFF570520B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				B63761EE19E1FBE8005735D1 /* HttpRequestUtil.m in Sources */,
 				451DE9FD1DC1A28200810E42 /* SyncPushTokensJob.swift in Sources */,
+				7DBFC3F320EFE0640047FC62 /* CallManager.swift in Sources */,
 				7D6139B51F90173B00E18D29 /* Contact.m in Sources */,
 				7DB55A9C1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				FCFD256F1A151BCB00F4C644 /* ConversationUpdateViewController.m in Sources */,
@@ -5097,7 +5093,6 @@
 				7D7DA5921F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				FCD274E21A5AFD8000202277 /* PrivacySettingsTableViewController.m in Sources */,
 				7D613AA51F90185000E18D29 /* TSSocketManager.m in Sources */,
-				76EB057218170B33006006FC /* RecentCall.m in Sources */,
 				B6B1013C196D213F007E3930 /* SignalKeyingStorage.m in Sources */,
 				7D2E00DE20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */,
 				7D613AB41F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
@@ -5131,6 +5126,7 @@
 				45B201761DAECBFE00C461E0 /* HighlightableLabel.swift in Sources */,
 				7D6139D81F90177400E18D29 /* OWSDeviceProvisioner.m in Sources */,
 				7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */,
+				7DBFC3F720EFFE5B0047FC62 /* Call.swift in Sources */,
 				76EB064818170B33006006FC /* Zid.m in Sources */,
 				459311FC1D75C948008DD4F0 /* OWSDeviceTableViewCell.m in Sources */,
 				7D6139D01F90176C00E18D29 /* OWSChunkedOutputStream.m in Sources */,
@@ -5149,8 +5145,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				459C3F0D1C9B3A1B003ACF51 /* TSMessageAdapterTest.m in Sources */,
-				B660F7141C29988E00687D6E /* RecentCall.m in Sources */,
-				B660F7151C29988E00687D6E /* RecentCallManager.m in Sources */,
 				451DE9F81DC18C9500810E42 /* AccountManager.swift in Sources */,
 				B660F7161C29988E00687D6E /* GroupContactsResult.m in Sources */,
 				B660F7181C29988E00687D6E /* CryptoTools.m in Sources */,
@@ -5183,6 +5177,7 @@
 				45BFFFA91D898AF0004A12A7 /* OWSStaleNotificationObserver.m in Sources */,
 				45C681C71D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				451DE9FE1DC1A28200810E42 /* SyncPushTokensJob.swift in Sources */,
+				7DBFC3F820EFFE5E0047FC62 /* Call.swift in Sources */,
 				45843D201D2236B30013E85A /* OWSContactsSearcher.m in Sources */,
 				45C681BD1D305C080050903A /* OWSCallCollectionViewCell.m in Sources */,
 				B660F74F1C29988E00687D6E /* LowLatencyCandidate.m in Sources */,
@@ -5233,6 +5228,7 @@
 				B660F7891C29988E00687D6E /* TimeUtil.m in Sources */,
 				B660F78A1C29988E00687D6E /* UIUtil.m in Sources */,
 				B660F78B1C29988E00687D6E /* Zid.m in Sources */,
+				7DBFC3F920EFFE630047FC62 /* CallManager.swift in Sources */,
 				B660F78C1C29988E00687D6E /* UIDevice+TSHardwareVersion.m in Sources */,
 				B660F6C31C29868000687D6E /* EC25AgreerTest.m in Sources */,
 				B660F6D81C29868000687D6E /* CryptoToolsTest.m in Sources */,
@@ -5338,7 +5334,7 @@
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
 				INFOPLIST_FILE = "RelayDev-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5404,7 +5400,7 @@
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
 				INFOPLIST_FILE = "RelayDev-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5468,7 +5464,7 @@
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
 				INFOPLIST_FILE = "RelayStage-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5533,7 +5529,7 @@
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
 				INFOPLIST_FILE = "RelayStage-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5621,7 +5617,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
@@ -5689,7 +5685,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -5739,7 +5735,7 @@
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
 				INFOPLIST_FILE = "Relay-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5801,7 +5797,7 @@
 					"\"$(SRCROOT)/Libraries\"/**",
 				);
 				INFOPLIST_FILE = "Relay-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
