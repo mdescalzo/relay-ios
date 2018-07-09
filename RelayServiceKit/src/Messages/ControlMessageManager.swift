@@ -40,14 +40,10 @@ class ControlMessageManager : NSObject
     {
         if let dataBlob = message.forstaPayload.object(forKey: "data") as? NSDictionary {
             if let threadUpdates = dataBlob.object(forKey: "threadUpdates") as? NSDictionary {
-//                var threadId: String = (threadUpdates.object(forKey: FLThreadIDKey) as? String)!
-//                if threadId.count == 0 {
-//                    threadId = message.forstaPayload.object(forKey: FLThreadIDKey) as! String
-//                }
                 
                 let thread = message.thread!
                 let senderId = (message.forstaPayload.object(forKey: "sender") as! NSDictionary).object(forKey: "userId") as! String
-                let sender: SignalRecipient? = Environment.getCurrent().contactsManager.recipient(withUserId: senderId)!
+                let sender: SignalRecipient? = Environment.getCurrent().contactsManager.recipient(withUserId: senderId)
              
                 // Handle thread name change
                 if let threadTitle = threadUpdates.object(forKey: FLThreadTitleKey) as? String {
