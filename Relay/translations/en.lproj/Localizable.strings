@@ -854,7 +854,7 @@
 "UNKNOWN_ATTACHMENT_LABEL" = "Unknown attachment";
 
 /* Displayed if for some reason we can't determine a contacts phone number *or* name */
-"UNKNOWN_CONTACT_NAME" = "Unknown Contact";
+"UNKNOWN_CONTACT_NAME" = "Unknown User";
 
 /* button title for unlinking a device */
 "UNLINK_ACTION" = "Unlink";
