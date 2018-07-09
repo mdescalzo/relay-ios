@@ -164,7 +164,8 @@ class ControlMessageManager : NSObject
                                                                         if sender?.uniqueId == TSAccountManager.sharedInstance().myself?.uniqueId {
                                                                             messageString = String.localizedStringWithFormat(formatString, NSLocalizedString("YOU_STRING", comment: ""))
                                                                         } else {
-                                                                            messageString = String.localizedStringWithFormat(formatString, (sender?.fullName)!)
+                                                                            let nameString: String = ((sender != nil) ? (sender?.fullName)! as String : NSLocalizedString("UNKNOWN_CONTACT_NAME", comment: ""))
+                                                                            messageString = String.localizedStringWithFormat(formatString, nameString)
                                                                         }
                                                                         let infoMessage = TSInfoMessage.init(timestamp: NSDate.ows_millisecondsSince1970(for: message.sendTime),
                                                                                                              in: thread,
