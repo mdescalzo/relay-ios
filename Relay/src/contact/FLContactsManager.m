@@ -405,6 +405,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
     if (userId.length == 0) {
         return nil;
     }
+
     // Check to see if we already have it cached
     __block SignalRecipient *recipient = [self.recipientCache objectForKey:userId];
     if (recipient) {
@@ -419,8 +420,11 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
             }
         }];
         
+        
         // Go make it from CCSM
         if (!recipient) {
+            __block dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 NSDictionary *recipientDict = [self dictionaryForRecipientId:userId];
                 if (recipientDict) {
@@ -429,7 +433,10 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
                         [self.recipientCache setObject:recipient forKey:recipient.uniqueId];
                     }
                 }
+                dispatch_semaphore_signal(sema);
             });
+            dispatch_time_t wait_time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * (double)NSEC_PER_SEC));
+            dispatch_semaphore_wait(sema, wait_time);
         }
         
         return recipient;

@@ -40,14 +40,10 @@ class ControlMessageManager : NSObject
     {
         if let dataBlob = message.forstaPayload.object(forKey: "data") as? NSDictionary {
             if let threadUpdates = dataBlob.object(forKey: "threadUpdates") as? NSDictionary {
-//                var threadId: String = (threadUpdates.object(forKey: FLThreadIDKey) as? String)!
-//                if threadId.count == 0 {
-//                    threadId = message.forstaPayload.object(forKey: FLThreadIDKey) as! String
-//                }
                 
                 let thread = message.thread!
                 let senderId = (message.forstaPayload.object(forKey: "sender") as! NSDictionary).object(forKey: "userId") as! String
-                let sender: SignalRecipient? = Environment.getCurrent().contactsManager.recipient(withUserId: senderId)!
+                let sender: SignalRecipient? = Environment.getCurrent().contactsManager.recipient(withUserId: senderId)
              
                 // Handle thread name change
                 if let threadTitle = threadUpdates.object(forKey: FLThreadTitleKey) as? String {
@@ -168,7 +164,8 @@ class ControlMessageManager : NSObject
                                                                         if sender?.uniqueId == TSAccountManager.sharedInstance().myself?.uniqueId {
                                                                             messageString = String.localizedStringWithFormat(formatString, NSLocalizedString("YOU_STRING", comment: ""))
                                                                         } else {
-                                                                            messageString = String.localizedStringWithFormat(formatString, (sender?.fullName)!)
+                                                                            let nameString: String = ((sender != nil) ? (sender?.fullName)! as String : NSLocalizedString("UNKNOWN_CONTACT_NAME", comment: ""))
+                                                                            messageString = String.localizedStringWithFormat(formatString, nameString)
                                                                         }
                                                                         let infoMessage = TSInfoMessage.init(timestamp: NSDate.ows_millisecondsSince1970(for: message.sendTime),
                                                                                                              in: thread,
