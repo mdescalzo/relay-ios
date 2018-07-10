@@ -31,11 +31,74 @@ class ControlMessageManager : NSObject
             self.handleThreadDelete(message: message)
         case FLControlMessageThreadSnoozeKey:
             self.handleThreadSnooze(message: message)
+        case FLControlMessageCallOfferKey:
+            self.handleCallOffer(message: message)
+        case FLControlMessageCallLeaveKey:
+            self.handleCallLeave(message: message)
+        case FLControlMessageCallICECandidates:
+            self.handleCallICECandidates(message: message)
         default:
             DDLogInfo("Unhandled control message of type: \(message.controlMessageType)")
         }
     }
     
+    static private func handleCallICECandidates(message: IncomingControlMessage)
+    {
+        DDLogInfo("Received callICECandidates message: \(message.forstaPayload)")
+        
+        if let callId = message.forstaPayload.object(forKey: "callId") {
+            DDLogInfo("callId: \(callId)")
+        }
+        if let members = message.forstaPayload.object(forKey: "members") {
+            DDLogInfo("members: \(members)")
+        }
+        if let originator = message.forstaPayload.object(forKey: "originator") {
+            DDLogInfo("originator: \(originator)")
+        }
+        if let peerId = message.forstaPayload.object(forKey: "peerId") {
+            DDLogInfo("peerId: \(peerId)")
+        }
+        if let icecandidates = message.forstaPayload.object(forKey: "icecandidates") {
+            DDLogInfo("icecandidates: \(icecandidates)")
+        }
+    }
+    
+    static private func handleCallOffer(message: IncomingControlMessage)
+    {
+        DDLogInfo("Received callOffer message: \(message.forstaPayload)")
+        
+        if let callId = message.forstaPayload.object(forKey: "callId") {
+            DDLogInfo("callId: \(callId)")
+        }
+        if let members = message.forstaPayload.object(forKey: "members") {
+            DDLogInfo("members: \(members)")
+        }
+        if let originator = message.forstaPayload.object(forKey: "originator") {
+            DDLogInfo("originator: \(originator)")
+        }
+        if let peerId = message.forstaPayload.object(forKey: "peerId") {
+            DDLogInfo("peerId: \(peerId)")
+        }
+        if let offer = message.forstaPayload.object(forKey: "offer") {
+            DDLogInfo("offer: \(offer)")
+        }
+    }
+
+    static private func handleCallLeave(message: IncomingControlMessage)
+    {
+        DDLogInfo("Received callLeave message: \(message.forstaPayload)")
+        
+        if let callId = message.forstaPayload.object(forKey: "callId") {
+            DDLogInfo("callId: \(callId)")
+        }
+        if let members = message.forstaPayload.object(forKey: "members") {
+            DDLogInfo("members: \(members)")
+        }
+        if let originator = message.forstaPayload.object(forKey: "originator") {
+            DDLogInfo("originator: \(originator)")
+        }
+    }
+
     static private func handleThreadUpdate(message: IncomingControlMessage)
     {
         if let dataBlob = message.forstaPayload.object(forKey: "data") as? NSDictionary {
