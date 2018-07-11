@@ -353,6 +353,15 @@
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
+		7D5913C320F5167D002699EC /* Array+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C220F5167D002699EC /* Array+Speakerbox.swift */; };
+		7D5913C420F5167D002699EC /* Array+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C220F5167D002699EC /* Array+Speakerbox.swift */; };
+		7D5913C520F5167D002699EC /* Array+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C220F5167D002699EC /* Array+Speakerbox.swift */; };
+		7D5913C720F516A3002699EC /* UIFont+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */; };
+		7D5913C820F516A3002699EC /* UIFont+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */; };
+		7D5913C920F516A3002699EC /* UIFont+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */; };
+		7D5913CB20F51C32002699EC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913CA20F51C32002699EC /* CallViewController.swift */; };
+		7D5913CC20F51C32002699EC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913CA20F51C32002699EC /* CallViewController.swift */; };
+		7D5913CD20F51C32002699EC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913CA20F51C32002699EC /* CallViewController.swift */; };
 		7D61398A1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398B1F90162300E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
 		7D61398C1F90162400E18D29 /* Cryptography.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6139751F90161500E18D29 /* Cryptography.m */; };
@@ -1409,6 +1418,9 @@
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* FLCCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLCCSMJSONService.h; path = Services/FLCCSMJSONService.h; sourceTree = "<group>"; };
 		7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLCCSMJSONService.m; path = Services/FLCCSMJSONService.m; sourceTree = "<group>"; };
+		7D5913C220F5167D002699EC /* Array+Speakerbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Speakerbox.swift"; sourceTree = "<group>"; };
+		7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Speakerbox.swift"; sourceTree = "<group>"; };
+		7D5913CA20F51C32002699EC /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		7D6138771F90161500E18D29 /* TSAccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAccountManager.h; sourceTree = "<group>"; };
 		7D6138781F90161500E18D29 /* TSAccountManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSAccountManager.m; sourceTree = "<group>"; };
 		7D6138791F90161500E18D29 /* TSAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAttributes.h; sourceTree = "<group>"; };
@@ -2498,6 +2510,7 @@
 				7D6FB2692020FBCC00619C67 /* AnnouncementDetailViewController.h */,
 				7D6FB26A2020FBCC00619C67 /* AnnouncementDetailViewController.m */,
 				7D1DBEC920C0650200B39333 /* NavigationController.swift */,
+				7D5913CA20F51C32002699EC /* CallViewController.swift */,
 			);
 			name = ForstaMessages;
 			sourceTree = "<group>";
@@ -2923,6 +2936,15 @@
 				7D6139731F90161500E18D29 /* SecurityFailure.m */,
 			);
 			path = constraints;
+			sourceTree = "<group>";
+		};
+		7D66B72320F50D7600A1690B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */,
+				7D5913C220F5167D002699EC /* Array+Speakerbox.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		7D7DA5B41F30CB3B007FE6E4 /* ContactsPicker */ = {
@@ -3372,6 +3394,7 @@
 		D221A094169C9E5E00537ABF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7D66B72320F50D7600A1690B /* Extensions */,
 				7D6701E71F7D9C3500A2D0DF /* RelayDev.entitlements */,
 				7DF8D5E31F7EA1DB00F76A60 /* RelayStage.entitlements */,
 				B657DDC91911A40500F45B0C /* Relay.entitlements */,
@@ -4319,10 +4342,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D5913C720F516A3002699EC /* UIFont+Speakerbox.swift in Sources */,
 				7D6139A11F90170900E18D29 /* FunctionalUtil.m in Sources */,
 				7D61399A1F90166F00E18D29 /* TSAccountManager.m in Sources */,
 				7D61399C1F90166F00E18D29 /* TSAttributes.m in Sources */,
 				7D61399E1F90166F00E18D29 /* TSPreKeyManager.m in Sources */,
+				7D5913C320F5167D002699EC /* Array+Speakerbox.swift in Sources */,
 				7D6139A01F90166F00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D7DA5B11F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D613A9D1F90184800E18D29 /* TSNetworkManager.m in Sources */,
@@ -4394,6 +4419,7 @@
 				7D4A39F71F1693930023C29B /* SessionResetJob.swift in Sources */,
 				7D4A39F81F1693930023C29B /* EventWindow.m in Sources */,
 				7D6139DD1F90177B00E18D29 /* OWSProvisioningCipher.m in Sources */,
+				7D5913CB20F51C32002699EC /* CallViewController.swift in Sources */,
 				7D4A39FA1F1693930023C29B /* FLThreadViewController.m in Sources */,
 				7D4A39FB1F1693930023C29B /* OWSIncomingMessageCollectionViewCell.m in Sources */,
 				7D613A4B1F9017F300E18D29 /* OWSSignalServiceProtos.pb.m in Sources */,
@@ -4594,10 +4620,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D5913C820F516A3002699EC /* UIFont+Speakerbox.swift in Sources */,
 				7D613A1F1F9017C600E18D29 /* TSIncomingMessage.m in Sources */,
 				7D7DA5B21F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D6139F21F90179100E18D29 /* OWSRecordTranscriptJob.m in Sources */,
 				7D613AD11F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
+				7D5913C420F5167D002699EC /* Array+Speakerbox.swift in Sources */,
 				7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */,
 				7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */,
 				7D613A861F90183000E18D29 /* TSRegisterForPushRequest.m in Sources */,
@@ -4669,6 +4697,7 @@
 				7D613A071F9017AB00E18D29 /* OWSOutgoingSentMessageTranscript.m in Sources */,
 				7DCFFD9C1F0EE4490003CD95 /* CategorizingLogger.m in Sources */,
 				7DCFFD9D1F0EE4490003CD95 /* Release.m in Sources */,
+				7D5913CC20F51C32002699EC /* CallViewController.swift in Sources */,
 				7DCFFD9E1F0EE4490003CD95 /* SessionResetJob.swift in Sources */,
 				7DCFFD9F1F0EE4490003CD95 /* EventWindow.m in Sources */,
 				7DCFFDA11F0EE4490003CD95 /* FLThreadViewController.m in Sources */,
@@ -4869,10 +4898,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D5913C920F516A3002699EC /* UIFont+Speakerbox.swift in Sources */,
 				7D613A201F9017C700E18D29 /* TSIncomingMessage.m in Sources */,
 				7D7DA5B31F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D6139F31F90179100E18D29 /* OWSRecordTranscriptJob.m in Sources */,
 				7D613AD21F90188900E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
+				7D5913C520F5167D002699EC /* Array+Speakerbox.swift in Sources */,
 				76EB063E18170B33006006FC /* Operation.m in Sources */,
 				7D613A871F90183100E18D29 /* TSRegisterForPushRequest.m in Sources */,
 				A5509ECD1A69B1D600ABA4BC /* CountryCodeTableViewCell.m in Sources */,
@@ -4944,6 +4975,7 @@
 				76EB060C18170B33006006FC /* CategorizingLogger.m in Sources */,
 				76EB058A18170B33006006FC /* Release.m in Sources */,
 				45D231771DC7E8F10034FA89 /* SessionResetJob.swift in Sources */,
+				7D5913CD20F51C32002699EC /* CallViewController.swift in Sources */,
 				76EB061018170B33006006FC /* EventWindow.m in Sources */,
 				7D3B865A1EE218FA00190FD5 /* FLThreadViewController.m in Sources */,
 				450873C71D9D867B006B54F2 /* OWSIncomingMessageCollectionViewCell.m in Sources */,

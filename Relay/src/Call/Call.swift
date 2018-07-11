@@ -9,6 +9,24 @@
 import Foundation
 import WebRTC
 
+public enum CallState: String {
+    case idle
+    case dialing
+    case answering
+    case remoteRinging
+    case localRinging
+    case connected
+    case reconnecting
+    case localFailure // terminal
+    case localHangup // terminal
+    case remoteHangup // terminal
+    case remoteBusy // terminal
+}
+
+enum CallDirection {
+    case outgoing, incoming
+}
+
 final class Call {
     
     // MARK: Metadata Properties
