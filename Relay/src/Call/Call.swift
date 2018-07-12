@@ -27,13 +27,15 @@ enum CallDirection {
     case outgoing, incoming
 }
 
-final class Call {
+@objc public class Call : NSObject {
     
     // MARK: Metadata Properties
     
     let uuid: UUID
     let isOutgoing: Bool
     var handle: String?
+    var connectedDate: NSDate?
+    let direction: CallDirection
     
     // MARK: Call State Properties
     
@@ -58,6 +60,36 @@ final class Call {
     var isOnHold = false {
         didSet {
             stateDidChange?()
+        }
+    }
+    
+    var isTerminated: Bool {
+        switch state {
+        case .localFailure, .localHangup, .remoteHangup, .remoteBusy:
+            return true
+        case .idle, .dialing, .answering, .remoteRinging, .localRinging, .connected, .reconnecting:
+            return false
+        }
+    }
+    
+    var state: CallState {
+        didSet {
+//            SwiftAssertIsOnMainThread(#function)
+//            Logger.debug("\(TAG) state changed: \(oldValue) -> \(self.state) for call: \(self.identifiersForLogs)")
+            
+            // Update connectedDate
+            if case .connected = self.state {
+                // if it's the first time we've connected (not a reconnect)
+                if connectedDate == nil {
+                    connectedDate = NSDate()
+                }
+            }
+            
+//            updateCallRecordType()
+//            
+//            for observer in observers {
+//                observer.value?.stateDidChange(call: self, state: state)
+//            }
         }
     }
     
