@@ -12,7 +12,7 @@
 #import "TSNetworkManager.h"
 #import "TSStorageHeaders.h"
 
-#define EPHEMERAL_PREKEYS_MINIMUM 15
+#define EPHEMERAL_PREKEYS_MINIMUM 35
 
 @implementation TSPreKeyManager
 

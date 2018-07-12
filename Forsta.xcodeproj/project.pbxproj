@@ -744,10 +744,9 @@
 		7D9D0E2E200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
 		7D9D0E2F200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
 		7D9D0E30200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
-		7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
-		7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
-		7DA09F401FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
-		7DA09F411FBE83AF00F2D859 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA09F3D1FBE83AF00F2D859 /* FLTag.m */; };
+		7DA2797620F6FCA700C6E9B1 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA2797520F6FCA700C6E9B1 /* FLTag.m */; };
+		7DA2797720F6FCA700C6E9B1 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA2797520F6FCA700C6E9B1 /* FLTag.m */; };
+		7DA2797820F6FCA700C6E9B1 /* FLTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA2797520F6FCA700C6E9B1 /* FLTag.m */; };
 		7DA801441F86CA850048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
 		7DA801511F8710C40048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
 		7DA801521F8710CB0048950F /* Forsta-values.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DA801431F86C4040048950F /* Forsta-values.plist */; };
@@ -1688,8 +1687,8 @@
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
 		7D9D0E2C200E71FF00F60594 /* FLGiphyVideoAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLGiphyVideoAdapter.h; sourceTree = "<group>"; };
 		7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLGiphyVideoAdapter.m; sourceTree = "<group>"; };
-		7DA09F3C1FBE83AE00F2D859 /* FLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLTag.h; path = Relay/src/contact/FLTag.h; sourceTree = SOURCE_ROOT; };
-		7DA09F3D1FBE83AF00F2D859 /* FLTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLTag.m; path = Relay/src/contact/FLTag.m; sourceTree = SOURCE_ROOT; };
+		7DA2797420F6FCA600C6E9B1 /* FLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLTag.h; sourceTree = "<group>"; };
+		7DA2797520F6FCA700C6E9B1 /* FLTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLTag.m; sourceTree = "<group>"; };
 		7DA801431F86C4040048950F /* Forsta-values.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Forsta-values.plist"; sourceTree = "<group>"; };
 		7DB55A981F2A7F10001D3058 /* FLInvitationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLInvitationService.h; sourceTree = "<group>"; };
 		7DB55A991F2A7F10001D3058 /* FLInvitationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLInvitationService.m; sourceTree = "<group>"; };
@@ -2564,8 +2563,8 @@
 		7D6138861F90161500E18D29 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				7DA09F3C1FBE83AE00F2D859 /* FLTag.h */,
-				7DA09F3D1FBE83AF00F2D859 /* FLTag.m */,
+				7DA2797420F6FCA600C6E9B1 /* FLTag.h */,
+				7DA2797520F6FCA700C6E9B1 /* FLTag.m */,
 				7D6138871F90161500E18D29 /* Contact.h */,
 				7D6138881F90161500E18D29 /* Contact.m */,
 				7D6138891F90161500E18D29 /* ContactsUpdater.h */,
@@ -4478,7 +4477,6 @@
 				7D4A3A291F1693930023C29B /* IpAddress.m in Sources */,
 				7D4A3A2A1F1693930023C29B /* MessagesViewController.m in Sources */,
 				7D4A3A2B1F1693930023C29B /* OWSMessagesBubblesSizeCalculator.m in Sources */,
-				7DA09F3E1FBE83AF00F2D859 /* FLTag.m in Sources */,
 				7D39218C20E1649A0057ADF0 /* InboxTableViewCell.m in Sources */,
 				7D613A9A1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7D613AD91F90189100E18D29 /* TSStorageManager+messageIDs.m in Sources */,
@@ -4550,6 +4548,7 @@
 				7DB55A9A1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				7D613A241F9017CC00E18D29 /* TSInteraction.m in Sources */,
 				7D6139D41F90177100E18D29 /* OWSDevice.m in Sources */,
+				7DA2797620F6FCA700C6E9B1 /* FLTag.m in Sources */,
 				7D613A1B1F9017C000E18D29 /* TSErrorMessage.m in Sources */,
 				7D613AFA1F9018F700E18D29 /* NSData+hexString.m in Sources */,
 				7D4A3A681F1693930023C29B /* ConversationUpdateViewController.m in Sources */,
@@ -4756,7 +4755,6 @@
 				7DCFFDD01F0EE4490003CD95 /* IpAddress.m in Sources */,
 				7D613A981F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D613ABC1F90187100E18D29 /* SecurityUtils.m in Sources */,
-				7DA09F3F1FBE83AF00F2D859 /* FLTag.m in Sources */,
 				7DCFFDD11F0EE4490003CD95 /* MessagesViewController.m in Sources */,
 				7D39218D20E1649A0057ADF0 /* InboxTableViewCell.m in Sources */,
 				7DCFFDD21F0EE4490003CD95 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -4828,6 +4826,7 @@
 				7D7DA5881F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */,
 				7D613AA11F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
 				7D613AFB1F9018F800E18D29 /* NSData+hexString.m in Sources */,
+				7DA2797720F6FCA700C6E9B1 /* FLTag.m in Sources */,
 				7DCFFE131F0EE4490003CD95 /* UIDevice+TSHardwareVersion.m in Sources */,
 				7D6139EF1F90178C00E18D29 /* OWSReadReceiptsProcessor.m in Sources */,
 				7DCFFE141F0EE4490003CD95 /* AppDelegate.m in Sources */,
@@ -5034,7 +5033,6 @@
 				76EB05A018170B33006006FC /* IpAddress.m in Sources */,
 				7D613A991F90184300E18D29 /* TSUpdateAttributesRequest.m in Sources */,
 				7D613ABD1F90187100E18D29 /* SecurityUtils.m in Sources */,
-				7DA09F401FBE83AF00F2D859 /* FLTag.m in Sources */,
 				FCAC965119FF0A6E0046DFC5 /* MessagesViewController.m in Sources */,
 				7D39218E20E1649A0057ADF0 /* InboxTableViewCell.m in Sources */,
 				453D28BA1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
@@ -5106,6 +5104,7 @@
 				7D7DA5891F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */,
 				7D613AA21F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
 				7D613AFC1F9018F800E18D29 /* NSData+hexString.m in Sources */,
+				7DA2797820F6FCA700C6E9B1 /* FLTag.m in Sources */,
 				FCC81A981A44558300DFEC7D /* UIDevice+TSHardwareVersion.m in Sources */,
 				7D6139F01F90178C00E18D29 /* OWSReadReceiptsProcessor.m in Sources */,
 				76EB054018170B33006006FC /* AppDelegate.m in Sources */,
@@ -5219,7 +5218,6 @@
 				450873C41D9D5149006B54F2 /* OWSExpirationTimerView.m in Sources */,
 				B660F7531C29988E00687D6E /* NetworkStream.m in Sources */,
 				453D28BB1D332DB100D523F0 /* OWSMessagesBubblesSizeCalculator.m in Sources */,
-				7DA09F411FBE83AF00F2D859 /* FLTag.m in Sources */,
 				B660F7541C29988E00687D6E /* SecureEndPoint.m in Sources */,
 				B660F7551C29988E00687D6E /* UdpSocket.m in Sources */,
 				45843D221D223BA10013E85A /* OWSContactsSearcherTest.m in Sources */,
@@ -5337,7 +5335,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5403,7 +5401,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5467,7 +5465,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5532,7 +5530,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5738,7 +5736,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5800,7 +5798,7 @@
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				DEVELOPMENT_TEAM = THHR8L4QV3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
