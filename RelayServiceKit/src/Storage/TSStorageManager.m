@@ -12,9 +12,10 @@
 #import "TSInteraction.h"
 #import "TSPrivacyPreferences.h"
 #import "TSThread.h"
-#import <Curve25519Kit/Randomness.h>
-#import <SAMKeychain/SAMKeychain.h>
-#import <YapDatabase/YapDatabaseRelationship.h>
+
+@import SAMKeychain;
+@import YapDatabase;
+@import Curve25519Kit;
 
 NSString *const TSUIDatabaseConnectionDidUpdateNotification = @"TSUIDatabaseConnectionDidUpdateNotification";
 
@@ -100,10 +101,10 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
                                      deserializer:[[self class] logOnFailureDeserializer]
                                           options:options];
     _readDbConnection = self.newDatabaseConnection;
-    _readDbConnection.objectPolicy = YDB_AnyReadTransaction;
+    _readDbConnection.permittedTransactions = YDB_AnyReadTransaction;
     
     _writeDbConnection = self.newDatabaseConnection;
-    _writeDbConnection.objectPolicy = YDB_AnyReadWriteTransaction;
+    _writeDbConnection.permittedTransactions = YDB_AnyReadWriteTransaction;
     
     _messagesConnection = self.newDatabaseConnection;
     
