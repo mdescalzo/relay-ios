@@ -128,28 +128,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleDeliveryReceipt:(OWSSignalServiceProtosEnvelope *)envelope
 {
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        TSInteraction *interaction =
-        [TSInteraction interactionForTimestamp:envelope.timestamp withTransaction:transaction];
-        if ([interaction isKindOfClass:[TSOutgoingMessage class]]) {
-            TSOutgoingMessage *outgoingMessage = (TSOutgoingMessage *)interaction;
-            outgoingMessage.messageState = TSOutgoingMessageStateDelivered;
-            
-            // Hand thread changes made by myself on a different client
-            if ([outgoingMessage respondsToSelector:@selector(forstaPayload)]) {
-                NSString *threadTitle = [outgoingMessage.forstaPayload objectForKey:@"threadTitle"];
-                TSThread *thread = [TSThread fetchObjectWithUniqueID:outgoingMessage.uniqueThreadId transaction:transaction];
-                if (thread && threadTitle) {
-                    thread.name = threadTitle;
-                    [thread saveWithTransaction:transaction];
-                }
-            } else {
-                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:envelope.source transaction:transaction];
-                DDLogDebug(@"Received malformed receipt from %@, uid: %@, device %d", recipient.fullName, envelope.source, envelope.sourceDevice);
-            }
-            [outgoingMessage saveWithTransaction:transaction];
-        }
+    __block TSInteraction *interaction = nil;
+
+    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+        interaction = [TSInteraction interactionForTimestamp:envelope.timestamp withTransaction:transaction];
     }];
+
+    if ([interaction isKindOfClass:[TSOutgoingMessage class]]) {
+        TSOutgoingMessage *outgoingMessage = (TSOutgoingMessage *)interaction;
+        outgoingMessage.messageState = TSOutgoingMessageStateDelivered;
+
+        [outgoingMessage save];
+    }
 }
 
 - (void)handleSecureMessage:(OWSSignalServiceProtosEnvelope *)messageEnvelope
