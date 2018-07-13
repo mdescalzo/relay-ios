@@ -38,6 +38,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TSMessagesManager ()
 
+@property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
+@property (nonatomic, readonly) TSStorageManager *storageManager;
+@property (nonatomic, readonly) OWSMessageSender *messageSender;
+@property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
+
+@property (nonatomic, readonly) YapDatabaseConnection *readDbConnection;
+@property (nonatomic, readonly) YapDatabaseConnection *readWriteDbConnection;
+@property (nonatomic, readonly) TSNetworkManager *networkManager;
+
 @property NSUInteger preKeyRetries;
 
 @end
@@ -84,7 +93,9 @@ NS_ASSUME_NONNULL_BEGIN
     _contactsManager = contactsManager;
     _messageSender = messageSender;
     
-    _dbConnection = storageManager.newDatabaseConnection;
+    _readDbConnection = storageManager.readDbConnection;
+    _readWriteDbConnection = storageManager.writeDbConnection;
+    
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:storageManager];
     
     _preKeyRetries = FLPreKeyRetries;
@@ -130,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     __block TSInteraction *interaction = nil;
 
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.readWriteDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         interaction = [TSInteraction interactionForTimestamp:envelope.timestamp withTransaction:transaction];
     }];
 
@@ -152,7 +163,7 @@ NS_ASSUME_NONNULL_BEGIN
         __block BOOL containsSessionId;
         containsSessionId = [storageManager containsSession:recipientId deviceId:deviceId protocolContext:nil];
         if (!containsSessionId) {
-            [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [self.readWriteDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                 TSErrorMessage *errorMessage =
                 [TSErrorMessage missingSessionWithEnvelope:messageEnvelope withTransaction:transaction];
                 [errorMessage saveWithTransaction:transaction];
@@ -372,7 +383,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)handleEndSessionMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)endSessionEnvelope
                                 dataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
 {
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.readWriteDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         NSDictionary *messagePayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
         NSString *threadid = [messagePayload objectForKey:@"threadId"];
         TSThread *thread = [TSThread getOrCreateThreadWithID:threadid transaction:transaction];
@@ -478,7 +489,7 @@ NS_ASSUME_NONNULL_BEGIN
     DDLogError(@"%@ Got exception: %@ of type: %@", self.tag, exception.description, exception.name);
     
     __block TSInvalidIdentityKeyReceivingErrorMessage *keyErrorMessage = nil;
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+    [self.readWriteDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         TSErrorMessage *errorMessage;
         
         if ([exception.name isEqualToString:NoSessionException]) {
@@ -533,7 +544,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSUInteger)unreadMessagesCount {
     __block NSUInteger numberOfItems;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [self.readDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         numberOfItems = [[transaction ext:TSUnreadDatabaseViewExtensionName] numberOfItemsInAllGroups];
     }];
     
@@ -542,7 +553,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSUInteger)unreadMessagesCountExcept:(TSThread *)thread {
     __block NSUInteger numberOfItems;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [self.readDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         numberOfItems = [[transaction ext:TSUnreadDatabaseViewExtensionName] numberOfItemsInAllGroups];
         numberOfItems =
         numberOfItems - [[transaction ext:TSUnreadDatabaseViewExtensionName] numberOfItemsInGroup:thread.uniqueId];
@@ -553,7 +564,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSUInteger)unreadMessagesInThread:(TSThread *)thread {
     __block NSUInteger numberOfItems;
-    [self.dbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+    [self.readDbConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
         numberOfItems = [[transaction ext:TSUnreadDatabaseViewExtensionName] numberOfItemsInGroup:thread.uniqueId];
     }];
     return numberOfItems;
@@ -564,47 +575,45 @@ NS_ASSUME_NONNULL_BEGIN
                                              withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
                                                attachmentIds:(NSArray<NSString *> *)attachmentIds
 {
-    __block NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
-    __block TSIncomingMessage *incomingMessage = nil;
-    __block TSThread *thread = nil;
-    __block NSString *threadId = [jsonPayload objectForKey:@"threadId"];
+    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
+    TSIncomingMessage *incomingMessage = nil;
+    TSThread *thread = nil;
+    NSString *threadId = [jsonPayload objectForKey:@"threadId"];
     
     // getOrCreate a thread and an incomingMessage
-    [self.dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        thread = [TSThread getOrCreateThreadWithID:threadId transaction:transaction];
-        
-        // Check to see if we already have this message
-        incomingMessage = [TSIncomingMessage fetchObjectWithUniqueID:[jsonPayload objectForKey:@"messageId"] transaction:transaction];
-        
-        if (incomingMessage == nil) {
-            incomingMessage = [[TSIncomingMessage alloc] initWithTimestamp:envelope.timestamp
-                                                                  inThread:thread
-                                                                  authorId:envelope.source
-                                                               messageBody:dataMessage.body
-                                                             attachmentIds:attachmentIds
-                                                          expiresInSeconds:dataMessage.expireTimer];
-            incomingMessage.uniqueId = [jsonPayload objectForKey:@"messageId"];
-            incomingMessage.messageType = [jsonPayload objectForKey:@"messageType"];
-        }
-        incomingMessage.forstaPayload = [jsonPayload mutableCopy];
-        
-        // Android & web client allow attachments to be sent with body.
-        if (attachmentIds.count > 0 && incomingMessage.plainTextBody.length > 0) {
-            incomingMessage.hasAnnotation = YES;
-            // We want the text to be displayed under the attachment
-            uint64_t textMessageTimestamp = envelope.timestamp + 1;
-            TSIncomingMessage *textMessage = [[TSIncomingMessage alloc] initWithTimestamp:textMessageTimestamp
-                                                                                 inThread:thread
-                                                                                 authorId:envelope.source
-                                                                              messageBody:@""];
-            textMessage.plainTextBody = incomingMessage.plainTextBody;
-            textMessage.attributedTextBody = incomingMessage.attributedTextBody;
-            textMessage.expiresInSeconds = dataMessage.expireTimer;
-            textMessage.messageType = @"content";
-            [textMessage saveWithTransaction:transaction];
-        }
-        [incomingMessage saveWithTransaction:transaction];
-    }];
+    thread = [TSThread getOrCreateThreadWithID:threadId];
+    
+    // Check to see if we already have this message
+    incomingMessage = [TSIncomingMessage fetchObjectWithUniqueID:[jsonPayload objectForKey:@"messageId"]];
+    
+    if (incomingMessage == nil) {
+        incomingMessage = [[TSIncomingMessage alloc] initWithTimestamp:envelope.timestamp
+                                                              inThread:thread
+                                                              authorId:envelope.source
+                                                           messageBody:dataMessage.body
+                                                         attachmentIds:attachmentIds
+                                                      expiresInSeconds:dataMessage.expireTimer];
+        incomingMessage.uniqueId = [jsonPayload objectForKey:@"messageId"];
+        incomingMessage.messageType = [jsonPayload objectForKey:@"messageType"];
+    }
+    incomingMessage.forstaPayload = [jsonPayload mutableCopy];
+    
+    // Android & web client allow attachments to be sent with body.
+    if (attachmentIds.count > 0 && incomingMessage.plainTextBody.length > 0) {
+        incomingMessage.hasAnnotation = YES;
+        // We want the text to be displayed under the attachment
+        uint64_t textMessageTimestamp = envelope.timestamp + 1;
+        TSIncomingMessage *textMessage = [[TSIncomingMessage alloc] initWithTimestamp:textMessageTimestamp
+                                                                             inThread:thread
+                                                                             authorId:envelope.source
+                                                                          messageBody:@""];
+        textMessage.plainTextBody = incomingMessage.plainTextBody;
+        textMessage.attributedTextBody = incomingMessage.attributedTextBody;
+        textMessage.expiresInSeconds = dataMessage.expireTimer;
+        textMessage.messageType = @"content";
+        [textMessage save];
+    }
+    [incomingMessage save];
     
     // Ensure the thread is updated in background
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -633,232 +642,6 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
         DDLogDebug(@"Unable to process incoming message.");
         return nil;
-    }
-}
-
-
-// MARK: - Control message handlers
--(void)handleProvisionRequestControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                        withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-                                          attachmentIds:(NSArray<NSString *> *)attachmentIds
-{
-
-    if (![envelope.source isEqualToString:FLSupermanID]) {
-        DDLogError(@"%@: RECEIVED PROVISIONING REQUEST FROM STRANGER: %@", self.tag, envelope.source);
-        return;
-    }
-    
-    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
-    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-
-    if (![dataBlob respondsToSelector:@selector(objectForKey:)]) {
-        DDLogError(@"%@: Received malformed provisionRequest control message.  Bad data object.", self.tag);
-        return;
-    }
-    
-    NSString *publicKeyString = [dataBlob objectForKey:@"key"];
-    NSString *deviceUUID = [dataBlob objectForKey:@"uuid"];
-    
-    if (!(publicKeyString.length > 0 && deviceUUID.length > 0)) {
-        DDLogError(@"%@: Received malformed provisionRequest control message.  Bad data payload: %@", self.tag, dataBlob);
-        return;
-    }
-    
-    [FLDeviceRegistrationService.sharedInstance provisionOtherDeviceWithPublicKey:publicKeyString
-                                                                          andUUID:deviceUUID];
-
-}
-
--(void)handleThreadDeleteControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                    withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-                                      attachmentIds:(NSArray<NSString *> *)attachmentIds
-{
-    DDLogDebug(@"Received unhandled threadDelete control message.");
-    // Remove the sender from the thread
-    //    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
-    //
-    //        SignalRecipient *sender = [SignalRecipient recipientWithTextSecureIdentifier:envelope.source withTransaction:transaction];
-    //        if (sender) {
-    //            TSThread *thread = [TSThread fetchObjectWithUniqueID:[self threadIDFromDataMessage:dataMessage] transaction:transaction];
-    //            if (thread) {
-    //                if (sender.flTag.uniqueId) {
-    //                    [thread removeParticipants:[NSSet setWithObject:sender.flTag.uniqueId] transaction:transaction];
-    //                    TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
-    //                                                                                 inThread:thread
-    //                                                                              messageType:TSInfoMessageTypeConversationUpdate
-    //                                                                            customMessage:[NSString stringWithFormat:NSLocalizedString(@"GROUP_MEMBER_LEFT", @""), sender.fullName]];
-    //                    [infoMessage saveWithTransaction:transaction];
-    //                }
-    //            }
-    //        }
-    //    }];
-}
-
--(void)handleThreadArchiveControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
-{
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
-        NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-        TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-        if (thread) {
-            [thread archiveThreadWithTransaction:transaction
-                                   referenceDate:[NSDate ows_dateWithMillisecondsSince1970:envelope.timestamp]];
-            DDLogDebug(@"%@: Archived thread: %@", self.tag, thread.uniqueId);
-        }
-    }];
-}
-
--(void)handleThreadRestoreControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                     withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-                                       attachmentIds:(NSArray<NSString *> *)attachmentIds
-{
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
-        NSString *threadID = [jsonPayload objectForKey:@"threadId"];
-        TSThread *thread = [TSThread fetchObjectWithUniqueID:threadID transaction:transaction];
-        if (thread) {
-            [thread unarchiveThreadWithTransaction:transaction];
-            DDLogDebug(@"%@: Unarchived thread: %@", self.tag, thread.uniqueId);
-        }
-    }];
-}
-
--(void)handleThreadUpdateControlMessageWithEnvelope:(OWSSignalServiceProtosEnvelope *)envelope
-                                    withDataMessage:(OWSSignalServiceProtosDataMessage *)dataMessage
-                                      attachmentIds:(NSArray<NSString *> *)attachmentIds
-{
-    NSDictionary *jsonPayload = [FLCCSMJSONService payloadDictionaryFromMessageBody:dataMessage.body];
-    NSDictionary *dataBlob = [jsonPayload objectForKey:@"data"];
-    NSDictionary *threadUpdates = [dataBlob objectForKey:@"threadUpdates"];
-    
-    __block NSString *threadID = [threadUpdates objectForKey:@"threadId"];
-    if (threadID.length == 0) {
-        threadID = [jsonPayload objectForKey:@"threadId"];
-    }
-    __block TSThread *thread = nil;
-    __block SignalRecipient *sender = [Environment.getCurrent.contactsManager recipientWithUserId:envelope.source];
-    
-    [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        thread = [TSThread getOrCreateThreadWithID:threadID transaction:transaction];
-        
-        // Handle thread name change.
-        NSString *threadTitle = [threadUpdates objectForKey:@"threadTitle"];
-        if (![thread.name isEqualToString:threadTitle]) {
-            thread.name = threadTitle;
-            NSString *customMessage = nil;
-            TSInfoMessage *infoMessage = nil;
-            if (sender) {
-                NSString *messageFormat = NSLocalizedString(@"THREAD_TITLE_UPDATE_MESSAGE", @"Thread title update message");
-                customMessage = [NSString stringWithFormat:messageFormat, sender.fullName];
-                
-                infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
-                                                              inThread:thread
-                                                           messageType:TSInfoMessageTypeConversationUpdate
-                                                         customMessage:customMessage];
-            } else {
-                infoMessage = [[TSInfoMessage alloc] initWithTimestamp:envelope.timestamp
-                                                              inThread:thread
-                                                           messageType:TSInfoMessageTypeConversationUpdate];
-            }
-            [infoMessage saveWithTransaction:transaction];
-            [thread saveWithTransaction:transaction];
-        }
-    }];
-    
-    // Handle change to participants
-    NSString *expression = [threadUpdates objectForKey:@"expression"];
-    if (expression.length > 0 && ![thread.universalExpression isEqualToString:expression]) {
-        [CCSMCommManager asyncTagLookupWithString:expression success:^(NSDictionary * _Nonnull lookupResults) {
-            if (lookupResults) {
-                [self.dbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    NSCountedSet *newParticipants = [[NSCountedSet setWithArray:[lookupResults objectForKey:@"userids"]] copy];
-                    NSCountedSet *leaving = [[NSCountedSet setWithArray:thread.participants] copy];
-                    [leaving minusSet:newParticipants];
-                    for (NSString *uid in leaving) {
-                        NSString *customMessage = nil;
-                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid transaction:transaction];
-                        
-                        if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
-                            customMessage = NSLocalizedString(@"GROUP_YOU_LEFT", nil);
-                        } else {
-                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
-                            customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
-                        }
-                        [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                         inThread:thread
-                                                      messageType:TSInfoMessageTypeConversationUpdate
-                                                    customMessage:customMessage] saveWithTransaction:transaction];
-                    }
-                    
-                    NSCountedSet *joining = [newParticipants copy];
-                    [joining minusSet:[NSCountedSet setWithArray:thread.participants]];
-                    for (NSString *uid in joining) {
-                        NSString *customMessage = nil;
-                        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid transaction:transaction];
-                        
-                        if ([recipient isEqual:TSAccountManager.sharedInstance.myself]) {
-                            customMessage = NSLocalizedString(@"GROUP_YOU_JOINED", nil);
-                        } else {
-                            NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
-                            customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
-                        }
-                        
-                        [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                         inThread:thread
-                                                      messageType:TSInfoMessageTypeConversationUpdate
-                                                    customMessage:customMessage] saveWithTransaction:transaction];
-                    }
-                    
-                    // Update the local thread with the changes.
-                    thread.participants = [lookupResults objectForKey:@"userids"];
-                    thread.prettyExpression = [lookupResults objectForKey:@"pretty"];
-                    thread.universalExpression = [lookupResults objectForKey:@"universal"];
-                    [thread saveWithTransaction:transaction];
-                }];
-            }
-        } failure:^(NSError * _Nonnull error) {
-            DDLogError(@"%@: TagMath lookup failed on thread participation update.  Error: %@", self.tag, error.localizedDescription);
-        }];
-    }
-    
-    // Handle change to avatar
-    //  Must be done outside the transaction block
-    if (dataMessage.attachments.count > 0) {
-        OWSAttachmentsProcessor *attachmentsProcessor = [[OWSAttachmentsProcessor alloc] initWithAttachmentProtos:dataMessage.attachments
-                                                                                                       properties:[dataBlob objectForKey:@"attachments"]
-                                                                                                        timestamp:envelope.timestamp
-                                                                                                            relay:envelope.relay
-                                                                                                           thread:thread
-                                                                                                   networkManager:self.networkManager];
-        
-        if (attachmentsProcessor.hasSupportedAttachments) {
-            [attachmentsProcessor fetchAttachmentsForMessage:nil
-                                                     success:^(TSAttachmentStream *_Nonnull attachmentStream) {
-                                                         [thread updateImageWithAttachmentStream:attachmentStream];
-                                                         
-                                                         NSString *messageFormat = NSLocalizedString(@"THREAD_IMAGE_CHANGED_MESSAGE", nil);
-                                                         NSString *customMessage = nil;
-                                                         if ([sender.uniqueId isEqual:TSAccountManager.sharedInstance.myself]) {
-                                                             customMessage = [NSString stringWithFormat:messageFormat, NSLocalizedString(@"YOU_STRING", nil)];
-                                                         } else {
-                                                             customMessage = [NSString stringWithFormat:messageFormat, sender.fullName];
-                                                         }
-                                                         
-                                                         TSInfoMessage *infoMessage = [[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                                                      inThread:thread
-                                                                                                                   messageType:TSInfoMessageTypeConversationUpdate
-                                                                                                                 customMessage:customMessage];
-                                                         [infoMessage save];
-                                                     }
-                                                     failure:^(NSError *_Nonnull error) {
-                                                         DDLogError(@"%@ failed to fetch attachments for group avatar sent at: %llu. with error: %@",
-                                                                    self.tag,
-                                                                    envelope.timestamp,
-                                                                    error);
-                                                     }];
-        }
     }
 }
 

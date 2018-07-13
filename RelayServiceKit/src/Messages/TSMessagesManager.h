@@ -18,10 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TSMessagesManager : NSObject
 
-@property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
-@property (nonatomic, readonly) TSStorageManager *storageManager;
-@property (nonatomic, readonly) OWSMessageSender *messageSender;
-@property (nonatomic, readonly) OWSDisappearingMessagesJob *disappearingMessagesJob;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNetworkManager:(TSNetworkManager *)networkManager
@@ -30,9 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
                          messageSender:(OWSMessageSender *)messageSender NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)sharedManager;
-
-@property (nonatomic, readonly) YapDatabaseConnection *dbConnection;
-@property (nonatomic, readonly) TSNetworkManager *networkManager;
 
 - (void)handleReceivedEnvelope:(OWSSignalServiceProtosEnvelope *)envelope;
 

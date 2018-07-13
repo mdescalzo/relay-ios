@@ -1973,6 +1973,19 @@ typedef enum : NSUInteger {
     [self updateBackButtonAsync];
 
     NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
+    
+    // Check for updates to the thread/conversation
+    if ([self.uiDatabaseConnection hasChangeForKey:self.thread.uniqueId
+                                      inCollection:[TSThread collection]
+                                   inNotifications:notifications]) {
+        [self.uiDatabaseConnection asyncReadWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
+        } completionBlock:^{
+            [self setNavigationTitle];
+        }];
+    }
+    
+    // Check for updates to the mappings
     if (![[self.uiDatabaseConnection ext:TSMessageDatabaseViewExtensionName]
           hasChangesForNotifications:notifications]) {
         [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
@@ -1981,11 +1994,6 @@ typedef enum : NSUInteger {
         return;
     }
 
-    [self.uiDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-        self.thread = [TSThread fetchObjectWithUniqueID:self.thread.uniqueId transaction:transaction];
-    }];
-    
-    [self setNavigationTitle];
     if ([self userLeftGroup]) {
         [self hideInputIfNeeded];
         [self disableInfoButtonIfNeeded];
