@@ -12,9 +12,10 @@
 #import "TSInteraction.h"
 #import "TSPrivacyPreferences.h"
 #import "TSThread.h"
-#import <Curve25519Kit/Randomness.h>
-#import <SAMKeychain/SAMKeychain.h>
-#import <YapDatabase/YapDatabaseRelationship.h>
+
+@import Curve25519Kit;
+@import SAMKeychain;
+@import YapDatabase;
 
 NSString *const TSUIDatabaseConnectionDidUpdateNotification = @"TSUIDatabaseConnectionDidUpdateNotification";
 
@@ -101,6 +102,12 @@ static NSString *keychainDBPassAccount    = @"TSDatabasePass";
                                           options:options];
     _readDbConnection = self.newDatabaseConnection;
     _writeDbConnection = self.newDatabaseConnection;
+
+#if DEBUG
+    _readDbConnection.objectPolicy = YDB_AnyReadTransaction;
+    _writeDbConnection.objectPolicy = YDB_AnyReadWriteTransaction;
+#endif
+    
     _messagesConnection = self.newDatabaseConnection;
     
     return self;

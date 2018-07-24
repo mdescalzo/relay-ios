@@ -1,5 +1,14 @@
 # Change Log
 
+## [1.5.2]
+
+### Updated
+- Increased minimum stored prekeys value
+### Fixed
+- Intermittent dropped attachments
+- Bugs in ControlMessageManager
+- Bug in receipt handler
+
 ## [1.5.1]
 ### Updated
 -  Cocoapods uses frameworks
@@ -152,6 +161,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.5.2]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.2
 [1.5.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.1
 [1.5.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.0
 [1.4.8]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.4.8

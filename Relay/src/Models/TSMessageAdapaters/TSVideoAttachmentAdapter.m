@@ -77,9 +77,9 @@
 - (void)setAudioProgressFromFloat:(float)progress {
     dispatch_async(dispatch_get_main_queue(), ^{
       if (!isnan(progress)) {
-          [_waveform setProgress:progress];
-          [_waveform generateWaveforms];
-          [_waveform setNeedsDisplay];
+          [self->_waveform setProgress:progress];
+          [self->_waveform generateWaveforms];
+          [self->_waveform setNeedsDisplay];
       }
     });
 }
@@ -234,9 +234,8 @@
             _progressView.hidden     = YES;
             _videoPlayButton.hidden  = NO;
             _attachment.isDownloaded = YES; // TODO isn't this redundant with attachment processor?
-            [[TSMessagesManager sharedManager]
-                    .dbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-              [_attachment saveWithTransaction:transaction];
+            [TSStorageManager.sharedManager.writeDbConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                [self->_attachment saveWithTransaction:transaction];
             }];
         }
     }
