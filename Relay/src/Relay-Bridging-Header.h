@@ -35,3 +35,4 @@
 #import "NSDate+millisecondTimeStamp.h"
 #import "OWSAttachmentsProcessor.h"
 #import "TSNetworkManager.h"
+#import "AudioController.h"

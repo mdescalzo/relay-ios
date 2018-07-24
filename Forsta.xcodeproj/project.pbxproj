@@ -160,6 +160,24 @@
 		7D3DA2FA20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
 		7D3DA2FB20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
 		7D3DA2FC20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
+		7D41EA5521077F9900C8138E /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* ProviderDelegate.swift */; };
+		7D41EA5621077F9900C8138E /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* ProviderDelegate.swift */; };
+		7D41EA5721077F9900C8138E /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* ProviderDelegate.swift */; };
+		7D41EA722107863700C8138E /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA6F2107863600C8138E /* AudioController.mm */; };
+		7D41EA732107863700C8138E /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA6F2107863600C8138E /* AudioController.mm */; };
+		7D41EA742107863700C8138E /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA6F2107863600C8138E /* AudioController.mm */; };
+		7D41EA752107863700C8138E /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA712107863600C8138E /* CallAudio.swift */; };
+		7D41EA762107863700C8138E /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA712107863600C8138E /* CallAudio.swift */; };
+		7D41EA772107863700C8138E /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA712107863600C8138E /* CallAudio.swift */; };
+		7D41EA802107866000C8138E /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */; };
+		7D41EA812107866000C8138E /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */; };
+		7D41EA822107866000C8138E /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */; };
+		7D41EA832107866000C8138E /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */; };
+		7D41EA842107866000C8138E /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */; };
+		7D41EA852107866000C8138E /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */; };
+		7D41EA862107866000C8138E /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7F2107865F00C8138E /* CAXException.cpp */; };
+		7D41EA872107866000C8138E /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7F2107865F00C8138E /* CAXException.cpp */; };
+		7D41EA882107866000C8138E /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7F2107865F00C8138E /* CAXException.cpp */; };
 		7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
@@ -1403,6 +1421,17 @@
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationViewController.swift; sourceTree = "<group>"; };
+		7D41EA5421077F9800C8138E /* ProviderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderDelegate.swift; sourceTree = "<group>"; };
+		7D41EA6F2107863600C8138E /* AudioController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioController.mm; sourceTree = "<group>"; };
+		7D41EA702107863600C8138E /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioController.h; sourceTree = "<group>"; };
+		7D41EA712107863600C8138E /* CallAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallAudio.swift; sourceTree = "<group>"; };
+		7D41EA792107865C00C8138E /* CAXException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAXException.h; sourceTree = "<group>"; };
+		7D41EA7A2107865D00C8138E /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMath.h; sourceTree = "<group>"; };
+		7D41EA7B2107865D00C8138E /* CADebugMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugMacros.h; sourceTree = "<group>"; };
+		7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAStreamBasicDescription.cpp; sourceTree = "<group>"; };
+		7D41EA7D2107865E00C8138E /* CAStreamBasicDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAStreamBasicDescription.h; sourceTree = "<group>"; };
+		7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CADebugMacros.cpp; sourceTree = "<group>"; };
+		7D41EA7F2107865F00C8138E /* CAXException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAXException.cpp; sourceTree = "<group>"; };
 		7D4794B9207EA38C00029A70 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
 		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
@@ -2129,7 +2158,6 @@
 				76EB041D18170B33006006FC /* network */,
 				70BAFD5B190584BE00FA5E0B /* NotificationTracker.h */,
 				70BAFD5C190584BE00FA5E0B /* NotificationTracker.m */,
-				76EB048818170B33006006FC /* phone */,
 				76EB04B118170B33006006FC /* profiling */,
 				7D516F1A1EF318F000E7E15F /* Services */,
 				45CD81A41DBFF8CF004C9430 /* Storyboards */,
@@ -2147,8 +2175,10 @@
 		76EB03FE18170B33006006FC /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				7D41EA59210785FE00C8138E /* Audio */,
 				7DBFC3F020EFE0640047FC62 /* CallManager.swift */,
 				7DBFC3F420EFFE5B0047FC62 /* Call.swift */,
+				7D41EA5421077F9800C8138E /* ProviderDelegate.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -2283,13 +2313,6 @@
 				76EB048718170B33006006FC /* UdpSocket.m */,
 			);
 			path = udp;
-			sourceTree = "<group>";
-		};
-		76EB048818170B33006006FC /* phone */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = phone;
 			sourceTree = "<group>";
 		};
 		76EB04A818170B33006006FC /* number directory */ = {
@@ -2512,6 +2535,31 @@
 				7D5913CA20F51C32002699EC /* CallViewController.swift */,
 			);
 			name = ForstaMessages;
+			sourceTree = "<group>";
+		};
+		7D41EA59210785FE00C8138E /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				7D41EA712107863600C8138E /* CallAudio.swift */,
+				7D41EA702107863600C8138E /* AudioController.h */,
+				7D41EA6F2107863600C8138E /* AudioController.mm */,
+				7D41EA782107863F00C8138E /* Utility */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		7D41EA782107863F00C8138E /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7D41EA7B2107865D00C8138E /* CADebugMacros.h */,
+				7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */,
+				7D41EA7A2107865D00C8138E /* CAMath.h */,
+				7D41EA792107865C00C8138E /* CAXException.h */,
+				7D41EA7F2107865F00C8138E /* CAXException.cpp */,
+				7D41EA7D2107865E00C8138E /* CAStreamBasicDescription.h */,
+				7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		7D516F181EF3125B00E7E15F /* Developer Panel */ = {
@@ -4441,10 +4489,13 @@
 				7D613A691F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
 				7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */,
 				7D6139DA1F90177700E18D29 /* OWSGroupsOutputStream.m in Sources */,
+				7D41EA752107863700C8138E /* CallAudio.swift in Sources */,
+				7D41EA722107863700C8138E /* AudioController.mm in Sources */,
 				7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D6139B61F90173D00E18D29 /* ContactsUpdater.m in Sources */,
 				7D613A8E1F90183900E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
+				7D41EA862107866000C8138E /* CAXException.cpp in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
 				7D6139C51F90175000E18D29 /* TSThread.m in Sources */,
 				7D613AC41F90187D00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
@@ -4453,6 +4504,7 @@
 				7DD53DE320B7140200848437 /* SlugCell.swift in Sources */,
 				7D613A631F90180D00E18D29 /* OWSUploadingService.m in Sources */,
 				7D4A3A1A1F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
+				7D41EA802107866000C8138E /* CAStreamBasicDescription.cpp in Sources */,
 				7D6139D11F90176E00E18D29 /* OWSContactsOutputStream.m in Sources */,
 				7D613AE51F9018D100E18D29 /* BadArgument.m in Sources */,
 				7D613A7C1F90182600E18D29 /* TSContactsIntersectionRequest.m in Sources */,
@@ -4508,6 +4560,7 @@
 				7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */,
 				7D1B5A2F20DD46BA002D57A9 /* ControlMessageManager.swift in Sources */,
 				7D613ABE1F90187700E18D29 /* TSStorageManager+IdentityKeyStore.m in Sources */,
+				7D41EA5521077F9900C8138E /* ProviderDelegate.swift in Sources */,
 				7D613AD01F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
 				7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */,
@@ -4587,6 +4640,7 @@
 				7D4A3A851F1693930023C29B /* OWSCallCollectionViewCell.m in Sources */,
 				7D6139B91F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7D4A3A861F1693930023C29B /* AnonymousTerminator.m in Sources */,
+				7D41EA832107866000C8138E /* CADebugMacros.cpp in Sources */,
 				7D613AFD1F9018FA00E18D29 /* NSData+messagePadding.m in Sources */,
 				7D613A091F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D4A3A871F1693930023C29B /* PropertyListPreferences.m in Sources */,
@@ -4719,10 +4773,13 @@
 				7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */,
 				7D613A891F90183300E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
 				7D613AF01F9018DD00E18D29 /* SecurityFailure.m in Sources */,
+				7D41EA762107863700C8138E /* CallAudio.swift in Sources */,
+				7D41EA732107863700C8138E /* AudioController.mm in Sources */,
 				7D613A801F90182A00E18D29 /* TSCurrentSignedPreKeyRequest.m in Sources */,
 				7DCFFDB71F0EE4490003CD95 /* LowLatencyConnector.m in Sources */,
 				7DCFFDB91F0EE4490003CD95 /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D613A0D1F9017B100E18D29 /* OWSSyncContactsMessage.m in Sources */,
+				7D41EA872107866000C8138E /* CAXException.cpp in Sources */,
 				7D613A101F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D6139A81F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D613AC51F90187E00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
@@ -4731,6 +4788,7 @@
 				7DD53DE420B7140400848437 /* SlugCell.swift in Sources */,
 				7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */,
 				7D613A9E1F90184900E18D29 /* TSNetworkManager.m in Sources */,
+				7D41EA812107866000C8138E /* CAStreamBasicDescription.cpp in Sources */,
 				7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */,
 				7DCFFDC01F0EE4490003CD95 /* OWSScrubbingLogFormatter.m in Sources */,
 				7DCFFDC11F0EE4490003CD95 /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
@@ -4786,6 +4844,7 @@
 				7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */,
 				7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A221F9017C900E18D29 /* TSInfoMessage.m in Sources */,
+				7D41EA5621077F9900C8138E /* ProviderDelegate.swift in Sources */,
 				7D613A7A1F90182400E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B71F90173D00E18D29 /* ContactsUpdater.m in Sources */,
 				7DCFFDF51F0EE4490003CD95 /* FLMessageSender.m in Sources */,
@@ -4865,6 +4924,7 @@
 				7D6139971F90163A00E18D29 /* NSURLSessionDataTask+StatusCode.m in Sources */,
 				7DCFFE2C1F0EE4490003CD95 /* OWSCallCollectionViewCell.m in Sources */,
 				7DCFFE2D1F0EE4490003CD95 /* AnonymousTerminator.m in Sources */,
+				7D41EA842107866000C8138E /* CADebugMacros.cpp in Sources */,
 				7DCFFE2E1F0EE4490003CD95 /* PropertyListPreferences.m in Sources */,
 				7D613AFE1F9018FB00E18D29 /* NSData+messagePadding.m in Sources */,
 				7D613A161F9017BB00E18D29 /* OWSDisappearingMessagesConfigurationMessage.m in Sources */,
@@ -4997,10 +5057,13 @@
 				7D613A8A1F90183400E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
 				7D613AF11F9018DD00E18D29 /* SecurityFailure.m in Sources */,
 				7D613A811F90182A00E18D29 /* TSCurrentSignedPreKeyRequest.m in Sources */,
+				7D41EA772107863700C8138E /* CallAudio.swift in Sources */,
+				7D41EA742107863700C8138E /* AudioController.mm in Sources */,
 				76EB05DA18170B33006006FC /* LowLatencyConnector.m in Sources */,
 				B66B9F7D1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D613A0E1F9017B100E18D29 /* OWSSyncContactsMessage.m in Sources */,
 				7D613A111F9017B400E18D29 /* OWSSyncGroupsMessage.m in Sources */,
+				7D41EA882107866000C8138E /* CAXException.cpp in Sources */,
 				7D6139A91F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D613AC61F90187E00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
@@ -5009,6 +5072,7 @@
 				7DD53DE520B7140500848437 /* SlugCell.swift in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
 				7D613A9F1F90184900E18D29 /* TSNetworkManager.m in Sources */,
+				7D41EA822107866000C8138E /* CAStreamBasicDescription.cpp in Sources */,
 				45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */,
 				45C681C61D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				7D613A3B1F9017E200E18D29 /* OWSDisappearingMessagesJob.m in Sources */,
@@ -5064,6 +5128,7 @@
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
 				7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A231F9017CA00E18D29 /* TSInfoMessage.m in Sources */,
+				7D41EA5721077F9900C8138E /* ProviderDelegate.swift in Sources */,
 				7D613A7B1F90182500E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B81F90173D00E18D29 /* ContactsUpdater.m in Sources */,
 				7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */,
@@ -5143,6 +5208,7 @@
 				7D6139961F90163A00E18D29 /* NSURLSessionDataTask+StatusCode.m in Sources */,
 				45C681BC1D305C080050903A /* OWSCallCollectionViewCell.m in Sources */,
 				76EB064018170B33006006FC /* AnonymousTerminator.m in Sources */,
+				7D41EA852107866000C8138E /* CADebugMacros.cpp in Sources */,
 				76EB058818170B33006006FC /* PropertyListPreferences.m in Sources */,
 				7D613AFF1F9018FB00E18D29 /* NSData+messagePadding.m in Sources */,
 				7D613A171F9017BC00E18D29 /* OWSDisappearingMessagesConfigurationMessage.m in Sources */,

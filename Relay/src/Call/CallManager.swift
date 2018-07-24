@@ -1,3 +1,9 @@
+//
+//  Copyright © 2018 Forsta. All rights reserved.
+//
+//  Based upon SpeakerBox sample provided by Apple
+//
+
 import UIKit
 import CallKit
 import WebRTC

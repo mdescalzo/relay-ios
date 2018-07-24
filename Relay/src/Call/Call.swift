@@ -1,10 +1,8 @@
-/*
- Copyright (C) 2017 Apple Inc. All Rights Reserved.
- See LICENSE.txt for this sample’s licensing information
- 
- Abstract:
- Model class representing a single call
- */
+//
+//  Copyright © 2018 Forsta. All rights reserved.
+//
+//  Based upon SpeakerBox sample provided by Apple
+//
 
 import Foundation
 import WebRTC
