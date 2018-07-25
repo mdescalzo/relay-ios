@@ -9,7 +9,7 @@ import CallKit
 import WebRTC
 
 @available(iOS 10.0, *)
-final class CallManager: NSObject {
+final class CallKitManager: NSObject {
     
     let callController = CXCallController()
     
@@ -27,7 +27,7 @@ final class CallManager: NSObject {
         requestTransaction(transaction)
     }
     
-    func end(call: Call) {
+    func end(call: CallKitCall) {
         let endCallAction = CXEndCallAction(call: call.uuid)
         let transaction = CXTransaction()
         transaction.addAction(endCallAction)
@@ -35,7 +35,7 @@ final class CallManager: NSObject {
         requestTransaction(transaction)
     }
     
-    func setHeld(call: Call, onHold: Bool) {
+    func setHeld(call: CallKitCall, onHold: Bool) {
         let setHeldCallAction = CXSetHeldCallAction(call: call.uuid, onHold: onHold)
         let transaction = CXTransaction()
         transaction.addAction(setHeldCallAction)
@@ -57,16 +57,16 @@ final class CallManager: NSObject {
     
     static let CallsChangedNotification = Notification.Name("CallManagerCallsChangedNotification")
     
-    private(set) var calls = [Call]()
+    private(set) var calls = [CallKitCall]()
     
-    func callWithUUID(uuid: UUID) -> Call? {
+    func callWithUUID(uuid: UUID) -> CallKitCall? {
         guard let index = calls.index(where: { $0.uuid == uuid }) else {
             return nil
         }
         return calls[index]
     }
     
-    func addCall(_ call: Call) {
+    func addCall(_ call: CallKitCall) {
         calls.append(call)
         
         call.stateDidChange = { [weak self] in
@@ -76,8 +76,9 @@ final class CallManager: NSObject {
         postCallsChangedNotification()
     }
     
-    func removeCall(_ call: Call) {
-        calls.removeFirst(where: { $0 === call })
+    func removeCall(_ call: CallKitCall) {
+        guard let index = calls.index(where: { $0 === call }) else { return }
+        calls.remove(at: index)
         postCallsChangedNotification()
     }
     
@@ -92,7 +93,7 @@ final class CallManager: NSObject {
     
     // MARK: CallDelegate
     
-    func CallDidChangeState(_ call: Call) {
+    func CallDidChangeState(_ call: CallKitCall) {
         postCallsChangedNotification()
     }
     

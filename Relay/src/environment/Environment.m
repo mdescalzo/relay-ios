@@ -3,7 +3,6 @@
 #import "DebugLogger.h"
 #import "FunctionalUtil.h"
 #import "MessagesViewController.h"
-#import "RecentCallManager.h"
 #import "SignalKeyingStorage.h"
 #import "TSThread.h"
 #import "ContactsUpdater.h"

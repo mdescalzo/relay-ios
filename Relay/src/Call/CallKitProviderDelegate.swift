@@ -9,12 +9,13 @@ import UIKit
 import CallKit
 
 @available(iOS 10.0, *)
-final class ProviderDelegate: NSObject, CXProviderDelegate {
+final class CallKitProviderDelegate: NSObject {
 
-    let callManager: CallManager
-    private let provider: CXProvider
+    let callManager: CallKitManager
+    
+    fileprivate let provider: CXProvider
 
-    init(callManager: CallManager) {
+    init(callManager: CallKitManager) {
         self.callManager = callManager
         provider = CXProvider(configuration: type(of: self).providerConfiguration)
 
@@ -59,7 +60,7 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
                 since calls may be "denied" for various legitimate reasons. See CXErrorCodeIncomingCallError.
              */
             if error == nil {
-                let call = Call(uuid: uuid)
+                let call = CallKitCall(uuid: uuid)
                 call.handle = handle
 
                 self.callManager.addCall(call)
@@ -68,7 +69,10 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
             completion?(error)
         }
     }
+}
 
+@available(iOS 10.0, *)
+extension CallKitProviderDelegate: CXProviderDelegate {
     // MARK: CXProviderDelegate
 
     func providerDidReset(_ provider: CXProvider) {
@@ -90,7 +94,7 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
 
     func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
         // Create & configure an instance of SpeakerboxCall, the app's model class representing the new outgoing call.
-        let call = Call(uuid: action.callUUID, isOutgoing: true)
+        let call = CallKitCall(uuid: action.callUUID, isOutgoing: true)
         call.handle = action.handle.value
 
         /*

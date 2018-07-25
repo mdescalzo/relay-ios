@@ -160,24 +160,9 @@
 		7D3DA2FA20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
 		7D3DA2FB20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
 		7D3DA2FC20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */; };
-		7D41EA5521077F9900C8138E /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* ProviderDelegate.swift */; };
-		7D41EA5621077F9900C8138E /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* ProviderDelegate.swift */; };
-		7D41EA5721077F9900C8138E /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* ProviderDelegate.swift */; };
-		7D41EA722107863700C8138E /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA6F2107863600C8138E /* AudioController.mm */; };
-		7D41EA732107863700C8138E /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA6F2107863600C8138E /* AudioController.mm */; };
-		7D41EA742107863700C8138E /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA6F2107863600C8138E /* AudioController.mm */; };
-		7D41EA752107863700C8138E /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA712107863600C8138E /* CallAudio.swift */; };
-		7D41EA762107863700C8138E /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA712107863600C8138E /* CallAudio.swift */; };
-		7D41EA772107863700C8138E /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA712107863600C8138E /* CallAudio.swift */; };
-		7D41EA802107866000C8138E /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */; };
-		7D41EA812107866000C8138E /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */; };
-		7D41EA822107866000C8138E /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */; };
-		7D41EA832107866000C8138E /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */; };
-		7D41EA842107866000C8138E /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */; };
-		7D41EA852107866000C8138E /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */; };
-		7D41EA862107866000C8138E /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7F2107865F00C8138E /* CAXException.cpp */; };
-		7D41EA872107866000C8138E /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7F2107865F00C8138E /* CAXException.cpp */; };
-		7D41EA882107866000C8138E /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA7F2107865F00C8138E /* CAXException.cpp */; };
+		7D41EA5521077F9900C8138E /* CallKitProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* CallKitProviderDelegate.swift */; };
+		7D41EA5621077F9900C8138E /* CallKitProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* CallKitProviderDelegate.swift */; };
+		7D41EA5721077F9900C8138E /* CallKitProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D41EA5421077F9800C8138E /* CallKitProviderDelegate.swift */; };
 		7D4794BA207EA38C00029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BB207EB7F000029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
 		7D4794BC207EB7F900029A70 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4794B9207EA38C00029A70 /* CoreText.framework */; };
@@ -371,12 +356,6 @@
 		7D4D89461EE63503003970A5 /* SettingsPopupMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4D89451EE63502003970A5 /* SettingsPopupMenuViewController.m */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
-		7D5913C320F5167D002699EC /* Array+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C220F5167D002699EC /* Array+Speakerbox.swift */; };
-		7D5913C420F5167D002699EC /* Array+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C220F5167D002699EC /* Array+Speakerbox.swift */; };
-		7D5913C520F5167D002699EC /* Array+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C220F5167D002699EC /* Array+Speakerbox.swift */; };
-		7D5913C720F516A3002699EC /* UIFont+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */; };
-		7D5913C820F516A3002699EC /* UIFont+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */; };
-		7D5913C920F516A3002699EC /* UIFont+Speakerbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */; };
 		7D5913CB20F51C32002699EC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913CA20F51C32002699EC /* CallViewController.swift */; };
 		7D5913CC20F51C32002699EC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913CA20F51C32002699EC /* CallViewController.swift */; };
 		7D5913CD20F51C32002699EC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913CA20F51C32002699EC /* CallViewController.swift */; };
@@ -759,6 +738,21 @@
 		7D7F360220191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
 		7D7F360320191E5F00FC63C9 /* CCSMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7F360020191E5F00FC63C9 /* CCSMStorage.m */; };
 		7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */; };
+		7D9BCBE82108D0D400C46D10 /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBDD2108D0D300C46D10 /* CallAudio.swift */; };
+		7D9BCBE92108D0D400C46D10 /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBDD2108D0D300C46D10 /* CallAudio.swift */; };
+		7D9BCBEA2108D0D400C46D10 /* CallAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBDD2108D0D300C46D10 /* CallAudio.swift */; };
+		7D9BCBEB2108D0D400C46D10 /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBDF2108D0D300C46D10 /* AudioController.mm */; };
+		7D9BCBEC2108D0D400C46D10 /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBDF2108D0D300C46D10 /* AudioController.mm */; };
+		7D9BCBED2108D0D400C46D10 /* AudioController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBDF2108D0D300C46D10 /* AudioController.mm */; };
+		7D9BCBEE2108D0D400C46D10 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE22108D0D300C46D10 /* CADebugMacros.cpp */; };
+		7D9BCBEF2108D0D400C46D10 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE22108D0D300C46D10 /* CADebugMacros.cpp */; };
+		7D9BCBF02108D0D400C46D10 /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE22108D0D300C46D10 /* CADebugMacros.cpp */; };
+		7D9BCBF12108D0D400C46D10 /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE32108D0D300C46D10 /* CAXException.cpp */; };
+		7D9BCBF22108D0D400C46D10 /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE32108D0D300C46D10 /* CAXException.cpp */; };
+		7D9BCBF32108D0D400C46D10 /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE32108D0D300C46D10 /* CAXException.cpp */; };
+		7D9BCBF42108D0D400C46D10 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE62108D0D300C46D10 /* CAStreamBasicDescription.cpp */; };
+		7D9BCBF52108D0D400C46D10 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE62108D0D300C46D10 /* CAStreamBasicDescription.cpp */; };
+		7D9BCBF62108D0D400C46D10 /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D9BCBE62108D0D300C46D10 /* CAStreamBasicDescription.cpp */; };
 		7D9D0E2E200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
 		7D9D0E2F200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
 		7D9D0E30200E71FF00F60594 /* FLGiphyVideoAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */; };
@@ -772,14 +766,14 @@
 		7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DB55A9C1F2A7F10001D3058 /* FLInvitationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB55A991F2A7F10001D3058 /* FLInvitationService.m */; };
 		7DBA8D671ED9FA62009FCF65 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DBA8D661ED9FA62009FCF65 /* Login.storyboard */; };
-		7DBFC3F120EFE0640047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
-		7DBFC3F220EFE0640047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
-		7DBFC3F320EFE0640047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
-		7DBFC3F520EFFE5B0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
-		7DBFC3F620EFFE5B0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
-		7DBFC3F720EFFE5B0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
-		7DBFC3F820EFFE5E0047FC62 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* Call.swift */; };
-		7DBFC3F920EFFE630047FC62 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallManager.swift */; };
+		7DBFC3F120EFE0640047FC62 /* CallKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallKitManager.swift */; };
+		7DBFC3F220EFE0640047FC62 /* CallKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallKitManager.swift */; };
+		7DBFC3F320EFE0640047FC62 /* CallKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallKitManager.swift */; };
+		7DBFC3F520EFFE5B0047FC62 /* CallKitCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* CallKitCall.swift */; };
+		7DBFC3F620EFFE5B0047FC62 /* CallKitCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* CallKitCall.swift */; };
+		7DBFC3F720EFFE5B0047FC62 /* CallKitCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* CallKitCall.swift */; };
+		7DBFC3F820EFFE5E0047FC62 /* CallKitCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F420EFFE5B0047FC62 /* CallKitCall.swift */; };
+		7DBFC3F920EFFE630047FC62 /* CallKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBFC3F020EFE0640047FC62 /* CallKitManager.swift */; };
 		7DCFF9711F0C700F0003CD95 /* forsta_splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCFF9701F0C700F0003CD95 /* forsta_splash.png */; };
 		7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EB04EF18170B33006006FC /* Operation.m */; };
 		7DCFFD6B1F0EE4490003CD95 /* CountryCodeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5509ECC1A69B1D600ABA4BC /* CountryCodeTableViewCell.m */; };
@@ -1421,17 +1415,7 @@
 		7D3B86581EE218FA00190FD5 /* FLThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLThreadViewController.h; sourceTree = "<group>"; };
 		7D3B86591EE218FA00190FD5 /* FLThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLThreadViewController.m; sourceTree = "<group>"; };
 		7D3DA2F920BF54C900CF5CA4 /* ValidationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationViewController.swift; sourceTree = "<group>"; };
-		7D41EA5421077F9800C8138E /* ProviderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderDelegate.swift; sourceTree = "<group>"; };
-		7D41EA6F2107863600C8138E /* AudioController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioController.mm; sourceTree = "<group>"; };
-		7D41EA702107863600C8138E /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioController.h; sourceTree = "<group>"; };
-		7D41EA712107863600C8138E /* CallAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallAudio.swift; sourceTree = "<group>"; };
-		7D41EA792107865C00C8138E /* CAXException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAXException.h; sourceTree = "<group>"; };
-		7D41EA7A2107865D00C8138E /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMath.h; sourceTree = "<group>"; };
-		7D41EA7B2107865D00C8138E /* CADebugMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugMacros.h; sourceTree = "<group>"; };
-		7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAStreamBasicDescription.cpp; sourceTree = "<group>"; };
-		7D41EA7D2107865E00C8138E /* CAStreamBasicDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAStreamBasicDescription.h; sourceTree = "<group>"; };
-		7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CADebugMacros.cpp; sourceTree = "<group>"; };
-		7D41EA7F2107865F00C8138E /* CAXException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAXException.cpp; sourceTree = "<group>"; };
+		7D41EA5421077F9800C8138E /* CallKitProviderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallKitProviderDelegate.swift; sourceTree = "<group>"; };
 		7D4794B9207EA38C00029A70 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7D4995972022495F00E24D40 /* FLDeviceRegistrationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLDeviceRegistrationService.h; sourceTree = "<group>"; };
 		7D4995982022495F00E24D40 /* FLDeviceRegistrationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLDeviceRegistrationService.m; sourceTree = "<group>"; };
@@ -1446,8 +1430,6 @@
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* FLCCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLCCSMJSONService.h; path = Services/FLCCSMJSONService.h; sourceTree = "<group>"; };
 		7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLCCSMJSONService.m; path = Services/FLCCSMJSONService.m; sourceTree = "<group>"; };
-		7D5913C220F5167D002699EC /* Array+Speakerbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Speakerbox.swift"; sourceTree = "<group>"; };
-		7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Speakerbox.swift"; sourceTree = "<group>"; };
 		7D5913CA20F51C32002699EC /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		7D6138771F90161500E18D29 /* TSAccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSAccountManager.h; sourceTree = "<group>"; };
 		7D6138781F90161500E18D29 /* TSAccountManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TSAccountManager.m; sourceTree = "<group>"; };
@@ -1714,6 +1696,16 @@
 		7D7F360020191E5F00FC63C9 /* CCSMStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSMStorage.m; sourceTree = "<group>"; };
 		7D82CEBD1EF87F860034FD41 /* DeveloperPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperPanelViewController.h; sourceTree = "<group>"; };
 		7D82CEBE1EF87F860034FD41 /* DeveloperPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperPanelViewController.m; sourceTree = "<group>"; };
+		7D9BCBDD2108D0D300C46D10 /* CallAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallAudio.swift; sourceTree = "<group>"; };
+		7D9BCBDE2108D0D300C46D10 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioController.h; sourceTree = "<group>"; };
+		7D9BCBDF2108D0D300C46D10 /* AudioController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioController.mm; sourceTree = "<group>"; };
+		7D9BCBE12108D0D300C46D10 /* CAStreamBasicDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAStreamBasicDescription.h; sourceTree = "<group>"; };
+		7D9BCBE22108D0D300C46D10 /* CADebugMacros.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CADebugMacros.cpp; sourceTree = "<group>"; };
+		7D9BCBE32108D0D300C46D10 /* CAXException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAXException.cpp; sourceTree = "<group>"; };
+		7D9BCBE42108D0D300C46D10 /* CAXException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAXException.h; sourceTree = "<group>"; };
+		7D9BCBE52108D0D300C46D10 /* CADebugMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugMacros.h; sourceTree = "<group>"; };
+		7D9BCBE62108D0D300C46D10 /* CAStreamBasicDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAStreamBasicDescription.cpp; sourceTree = "<group>"; };
+		7D9BCBE72108D0D300C46D10 /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMath.h; sourceTree = "<group>"; };
 		7D9D0E2C200E71FF00F60594 /* FLGiphyVideoAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLGiphyVideoAdapter.h; sourceTree = "<group>"; };
 		7D9D0E2D200E71FF00F60594 /* FLGiphyVideoAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLGiphyVideoAdapter.m; sourceTree = "<group>"; };
 		7DA2797420F6FCA600C6E9B1 /* FLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLTag.h; sourceTree = "<group>"; };
@@ -1722,8 +1714,8 @@
 		7DB55A981F2A7F10001D3058 /* FLInvitationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLInvitationService.h; sourceTree = "<group>"; };
 		7DB55A991F2A7F10001D3058 /* FLInvitationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLInvitationService.m; sourceTree = "<group>"; };
 		7DBA8D661ED9FA62009FCF65 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
-		7DBFC3F020EFE0640047FC62 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
-		7DBFC3F420EFFE5B0047FC62 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
+		7DBFC3F020EFE0640047FC62 /* CallKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallKitManager.swift; sourceTree = "<group>"; };
+		7DBFC3F420EFFE5B0047FC62 /* CallKitCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallKitCall.swift; sourceTree = "<group>"; };
 		7DCFF9701F0C700F0003CD95 /* forsta_splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forsta_splash.png; sourceTree = "<group>"; };
 		7DCFFE941F0EE4490003CD95 /* RelayStage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RelayStage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCFFEC51F0FE2330003CD95 /* DeviceTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTypes.h; sourceTree = "<group>"; };
@@ -2175,10 +2167,10 @@
 		76EB03FE18170B33006006FC /* Call */ = {
 			isa = PBXGroup;
 			children = (
-				7D41EA59210785FE00C8138E /* Audio */,
-				7DBFC3F020EFE0640047FC62 /* CallManager.swift */,
-				7DBFC3F420EFFE5B0047FC62 /* Call.swift */,
-				7D41EA5421077F9800C8138E /* ProviderDelegate.swift */,
+				7D9BCBDC2108D0D300C46D10 /* Audio */,
+				7DBFC3F020EFE0640047FC62 /* CallKitManager.swift */,
+				7DBFC3F420EFFE5B0047FC62 /* CallKitCall.swift */,
+				7D41EA5421077F9800C8138E /* CallKitProviderDelegate.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -2535,31 +2527,6 @@
 				7D5913CA20F51C32002699EC /* CallViewController.swift */,
 			);
 			name = ForstaMessages;
-			sourceTree = "<group>";
-		};
-		7D41EA59210785FE00C8138E /* Audio */ = {
-			isa = PBXGroup;
-			children = (
-				7D41EA712107863600C8138E /* CallAudio.swift */,
-				7D41EA702107863600C8138E /* AudioController.h */,
-				7D41EA6F2107863600C8138E /* AudioController.mm */,
-				7D41EA782107863F00C8138E /* Utility */,
-			);
-			path = Audio;
-			sourceTree = "<group>";
-		};
-		7D41EA782107863F00C8138E /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				7D41EA7B2107865D00C8138E /* CADebugMacros.h */,
-				7D41EA7E2107865E00C8138E /* CADebugMacros.cpp */,
-				7D41EA7A2107865D00C8138E /* CAMath.h */,
-				7D41EA792107865C00C8138E /* CAXException.h */,
-				7D41EA7F2107865F00C8138E /* CAXException.cpp */,
-				7D41EA7D2107865E00C8138E /* CAStreamBasicDescription.h */,
-				7D41EA7C2107865D00C8138E /* CAStreamBasicDescription.cpp */,
-			);
-			path = Utility;
 			sourceTree = "<group>";
 		};
 		7D516F181EF3125B00E7E15F /* Developer Panel */ = {
@@ -2988,8 +2955,6 @@
 		7D66B72320F50D7600A1690B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7D5913C620F516A3002699EC /* UIFont+Speakerbox.swift */,
-				7D5913C220F5167D002699EC /* Array+Speakerbox.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3021,6 +2986,32 @@
 				7D6139691F90161500E18D29 /* Util */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		7D9BCBDC2108D0D300C46D10 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				7D9BCBDD2108D0D300C46D10 /* CallAudio.swift */,
+				7D9BCBDE2108D0D300C46D10 /* AudioController.h */,
+				7D9BCBDF2108D0D300C46D10 /* AudioController.mm */,
+				7D9BCBE02108D0D300C46D10 /* Utility */,
+			);
+			name = Audio;
+			path = ../../../../../Desktop/Call/Audio;
+			sourceTree = "<group>";
+		};
+		7D9BCBE02108D0D300C46D10 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7D9BCBE12108D0D300C46D10 /* CAStreamBasicDescription.h */,
+				7D9BCBE22108D0D300C46D10 /* CADebugMacros.cpp */,
+				7D9BCBE32108D0D300C46D10 /* CAXException.cpp */,
+				7D9BCBE42108D0D300C46D10 /* CAXException.h */,
+				7D9BCBE52108D0D300C46D10 /* CADebugMacros.h */,
+				7D9BCBE62108D0D300C46D10 /* CAStreamBasicDescription.cpp */,
+				7D9BCBE72108D0D300C46D10 /* CAMath.h */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		7DBA8D681ED9FC49009FCF65 /* Login */ = {
@@ -4389,12 +4380,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D5913C720F516A3002699EC /* UIFont+Speakerbox.swift in Sources */,
 				7D6139A11F90170900E18D29 /* FunctionalUtil.m in Sources */,
 				7D61399A1F90166F00E18D29 /* TSAccountManager.m in Sources */,
 				7D61399C1F90166F00E18D29 /* TSAttributes.m in Sources */,
 				7D61399E1F90166F00E18D29 /* TSPreKeyManager.m in Sources */,
-				7D5913C320F5167D002699EC /* Array+Speakerbox.swift in Sources */,
 				7D6139A01F90166F00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D7DA5B11F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D613A9D1F90184800E18D29 /* TSNetworkManager.m in Sources */,
@@ -4439,6 +4428,7 @@
 				7D613AEB1F9018D800E18D29 /* OperationFailed.m in Sources */,
 				7D0E3C211F71A9F500EBC5FE /* ImagePreviewViewController.m in Sources */,
 				7DF7E830209A5289001B8687 /* NewAccountViewController.swift in Sources */,
+				7D9BCBEB2108D0D400C46D10 /* AudioController.mm in Sources */,
 				7D4A39E51F1693930023C29B /* NetworkStream.m in Sources */,
 				7D4A39E61F1693930023C29B /* UIFont+OWS.m in Sources */,
 				7D4A39E71F1693930023C29B /* PushManager.m in Sources */,
@@ -4447,6 +4437,7 @@
 				7D6139951F90163700E18D29 /* OWSDispatch.m in Sources */,
 				7D613A5A1F90180600E18D29 /* OWSDeviceProvisioningCodeService.m in Sources */,
 				7D613A511F9017F900E18D29 /* TSCall.m in Sources */,
+				7D9BCBE82108D0D400C46D10 /* CallAudio.swift in Sources */,
 				7D4A39ED1F1693930023C29B /* EvpMessageDigest.m in Sources */,
 				7D4A39EE1F1693930023C29B /* CyclicalBuffer.m in Sources */,
 				7D2E00D820DD96FF005C587C /* IncomingControlMessage.swift in Sources */,
@@ -4489,13 +4480,10 @@
 				7D613A691F90181500E18D29 /* OWSDeviceProvisioningCodeRequest.m in Sources */,
 				7D4A3A101F1693930023C29B /* LowLatencyConnector.m in Sources */,
 				7D6139DA1F90177700E18D29 /* OWSGroupsOutputStream.m in Sources */,
-				7D41EA752107863700C8138E /* CallAudio.swift in Sources */,
-				7D41EA722107863700C8138E /* AudioController.mm in Sources */,
 				7D4A3A121F1693930023C29B /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D6139B61F90173D00E18D29 /* ContactsUpdater.m in Sources */,
 				7D613A8E1F90183900E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
 				7D4A3A151F1693930023C29B /* UdpSocket.m in Sources */,
-				7D41EA862107866000C8138E /* CAXException.cpp in Sources */,
 				7D4A3A161F1693930023C29B /* Environment.m in Sources */,
 				7D6139C51F90175000E18D29 /* TSThread.m in Sources */,
 				7D613AC41F90187D00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
@@ -4504,9 +4492,9 @@
 				7DD53DE320B7140200848437 /* SlugCell.swift in Sources */,
 				7D613A631F90180D00E18D29 /* OWSUploadingService.m in Sources */,
 				7D4A3A1A1F1693930023C29B /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
-				7D41EA802107866000C8138E /* CAStreamBasicDescription.cpp in Sources */,
 				7D6139D11F90176E00E18D29 /* OWSContactsOutputStream.m in Sources */,
 				7D613AE51F9018D100E18D29 /* BadArgument.m in Sources */,
+				7D9BCBF42108D0D400C46D10 /* CAStreamBasicDescription.cpp in Sources */,
 				7D613A7C1F90182600E18D29 /* TSContactsIntersectionRequest.m in Sources */,
 				7D613AA61F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,
 				7D613AC71F90188000E18D29 /* TSStorageManager+SessionStore.m in Sources */,
@@ -4517,6 +4505,7 @@
 				7D613A361F9017DF00E18D29 /* OWSDisappearingMessagesFinder.m in Sources */,
 				7DFE7C531F74398500905909 /* ForstaColors.m in Sources */,
 				7D613AE21F90189A00E18D29 /* TextSecureKitEnv.m in Sources */,
+				7D9BCBEE2108D0D400C46D10 /* CADebugMacros.cpp in Sources */,
 				7D4A3A231F1693930023C29B /* SettingsTableViewController.m in Sources */,
 				7D613A271F9017CF00E18D29 /* TSMessage.m in Sources */,
 				7D4A3A251F1693930023C29B /* EvpSymetricUtil.m in Sources */,
@@ -4560,7 +4549,7 @@
 				7D4A3A441F1693930023C29B /* AnonymousValueLogger.m in Sources */,
 				7D1B5A2F20DD46BA002D57A9 /* ControlMessageManager.swift in Sources */,
 				7D613ABE1F90187700E18D29 /* TSStorageManager+IdentityKeyStore.m in Sources */,
-				7D41EA5521077F9900C8138E /* ProviderDelegate.swift in Sources */,
+				7D41EA5521077F9900C8138E /* CallKitProviderDelegate.swift in Sources */,
 				7D613AD01F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
 				7DF27F5A1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D4A3A4A1F1693930023C29B /* ArrayUtil.m in Sources */,
@@ -4591,7 +4580,7 @@
 				7DFF570320B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7D6139F71F90179900E18D29 /* OWSAttachmentsProcessor.m in Sources */,
 				7D6139E31F90178000E18D29 /* OWSProvisioningProtos.pb.m in Sources */,
-				7DBFC3F120EFE0640047FC62 /* CallManager.swift in Sources */,
+				7DBFC3F120EFE0640047FC62 /* CallKitManager.swift in Sources */,
 				7D613A301F9017DA00E18D29 /* TSInvalidIdentityKeyReceivingErrorMessage.m in Sources */,
 				7D4A3A631F1693930023C29B /* OWSLinkedDevicesTableViewController.m in Sources */,
 				7D613AD31F90188B00E18D29 /* TSDatabaseView.m in Sources */,
@@ -4600,6 +4589,7 @@
 				7D4A3A651F1693930023C29B /* SyncPushTokensJob.swift in Sources */,
 				7DB55A9A1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				7D613A241F9017CC00E18D29 /* TSInteraction.m in Sources */,
+				7D9BCBF12108D0D400C46D10 /* CAXException.cpp in Sources */,
 				7D6139D41F90177100E18D29 /* OWSDevice.m in Sources */,
 				7DA2797620F6FCA700C6E9B1 /* FLTag.m in Sources */,
 				7D613A1B1F9017C000E18D29 /* TSErrorMessage.m in Sources */,
@@ -4640,7 +4630,6 @@
 				7D4A3A851F1693930023C29B /* OWSCallCollectionViewCell.m in Sources */,
 				7D6139B91F90174000E18D29 /* OWSDisappearingMessagesConfiguration.m in Sources */,
 				7D4A3A861F1693930023C29B /* AnonymousTerminator.m in Sources */,
-				7D41EA832107866000C8138E /* CADebugMacros.cpp in Sources */,
 				7D613AFD1F9018FA00E18D29 /* NSData+messagePadding.m in Sources */,
 				7D613A091F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D4A3A871F1693930023C29B /* PropertyListPreferences.m in Sources */,
@@ -4655,7 +4644,7 @@
 				7D613A2D1F9017D700E18D29 /* TSInvalidIdentityKeyErrorMessage.m in Sources */,
 				7D613AD61F90188E00E18D29 /* TSStorageManager+keyingMaterial.m in Sources */,
 				7D4A3A911F1693930023C29B /* HighlightableLabel.swift in Sources */,
-				7DBFC3F520EFFE5B0047FC62 /* Call.swift in Sources */,
+				7DBFC3F520EFFE5B0047FC62 /* CallKitCall.swift in Sources */,
 				7D4A3A931F1693930023C29B /* DeveloperPanelViewController.m in Sources */,
 				7D6139C21F90174800E18D29 /* SignalRecipient.m in Sources */,
 				7D6139F41F90179300E18D29 /* OWSSendReadReceiptsJob.m in Sources */,
@@ -4673,12 +4662,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D5913C820F516A3002699EC /* UIFont+Speakerbox.swift in Sources */,
 				7D613A1F1F9017C600E18D29 /* TSIncomingMessage.m in Sources */,
 				7D7DA5B21F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D6139F21F90179100E18D29 /* OWSRecordTranscriptJob.m in Sources */,
 				7D613AD11F90188800E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
-				7D5913C420F5167D002699EC /* Array+Speakerbox.swift in Sources */,
 				7D4A39A61F168E310023C29B /* DeviceTypes.m in Sources */,
 				7DCFFD691F0EE4490003CD95 /* Operation.m in Sources */,
 				7D613A861F90183000E18D29 /* TSRegisterForPushRequest.m in Sources */,
@@ -4723,6 +4710,7 @@
 				7D6139A61F90172100E18D29 /* TSPreKeyManager.m in Sources */,
 				7D3A67781FE9BB1800C4096A /* FLPickerCell.m in Sources */,
 				7D03420B20A4CE77004D8ACA /* Curve25519+keyPairFromPrivateKey.m in Sources */,
+				7D9BCBEC2108D0D400C46D10 /* AudioController.mm in Sources */,
 				7DCFFD871F0EE4490003CD95 /* UIViewController+CameraPermissions.m in Sources */,
 				7DCFFD881F0EE4490003CD95 /* HttpManager.m in Sources */,
 				7DF7E831209A5289001B8687 /* NewAccountViewController.swift in Sources */,
@@ -4731,6 +4719,7 @@
 				7DCFFD8C1F0EE4490003CD95 /* NetworkStream.m in Sources */,
 				7DCFFD8D1F0EE4490003CD95 /* UIFont+OWS.m in Sources */,
 				7DCFFD8E1F0EE4490003CD95 /* PushManager.m in Sources */,
+				7D9BCBE92108D0D400C46D10 /* CallAudio.swift in Sources */,
 				7DCFFD901F0EE4490003CD95 /* TSMessageAdapter.m in Sources */,
 				7DCFFD911F0EE4490003CD95 /* AboutTableViewController.m in Sources */,
 				7D6139941F90163700E18D29 /* OWSDispatch.m in Sources */,
@@ -4773,13 +4762,10 @@
 				7DCFFDB21F0EE4490003CD95 /* Conversions.m in Sources */,
 				7D613A891F90183300E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
 				7D613AF01F9018DD00E18D29 /* SecurityFailure.m in Sources */,
-				7D41EA762107863700C8138E /* CallAudio.swift in Sources */,
-				7D41EA732107863700C8138E /* AudioController.mm in Sources */,
 				7D613A801F90182A00E18D29 /* TSCurrentSignedPreKeyRequest.m in Sources */,
 				7DCFFDB71F0EE4490003CD95 /* LowLatencyConnector.m in Sources */,
 				7DCFFDB91F0EE4490003CD95 /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D613A0D1F9017B100E18D29 /* OWSSyncContactsMessage.m in Sources */,
-				7D41EA872107866000C8138E /* CAXException.cpp in Sources */,
 				7D613A101F9017B300E18D29 /* OWSSyncGroupsMessage.m in Sources */,
 				7D6139A81F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D613AC51F90187E00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
@@ -4788,9 +4774,9 @@
 				7DD53DE420B7140400848437 /* SlugCell.swift in Sources */,
 				7DCFFDBD1F0EE4490003CD95 /* Environment.m in Sources */,
 				7D613A9E1F90184900E18D29 /* TSNetworkManager.m in Sources */,
-				7D41EA812107866000C8138E /* CAStreamBasicDescription.cpp in Sources */,
 				7DCFFDBE1F0EE4490003CD95 /* ThreadManager.m in Sources */,
 				7DCFFDC01F0EE4490003CD95 /* OWSScrubbingLogFormatter.m in Sources */,
+				7D9BCBF52108D0D400C46D10 /* CAStreamBasicDescription.cpp in Sources */,
 				7DCFFDC11F0EE4490003CD95 /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				7D613A3A1F9017E200E18D29 /* OWSDisappearingMessagesJob.m in Sources */,
 				7DCFFDC41F0EE4490003CD95 /* ShowGroupMembersViewController.m in Sources */,
@@ -4801,6 +4787,7 @@
 				7DCFFDCA1F0EE4490003CD95 /* SettingsTableViewController.m in Sources */,
 				7D613A951F90183F00E18D29 /* TSUnregisterAccountRequest.m in Sources */,
 				7DCFFDCC1F0EE4490003CD95 /* EvpSymetricUtil.m in Sources */,
+				7D9BCBEF2108D0D400C46D10 /* CADebugMacros.cpp in Sources */,
 				7DCFFDCD1F0EE4490003CD95 /* CCSMCommunication.m in Sources */,
 				7D613A0A1F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D613A711F90181C00E18D29 /* OWSGetDevicesRequest.m in Sources */,
@@ -4844,7 +4831,7 @@
 				7DCFFDF21F0EE4490003CD95 /* AdvancedSettingsTableViewController.m in Sources */,
 				7DF27F5B1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A221F9017C900E18D29 /* TSInfoMessage.m in Sources */,
-				7D41EA5621077F9900C8138E /* ProviderDelegate.swift in Sources */,
+				7D41EA5621077F9900C8138E /* CallKitProviderDelegate.swift in Sources */,
 				7D613A7A1F90182400E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B71F90173D00E18D29 /* ContactsUpdater.m in Sources */,
 				7DCFFDF51F0EE4490003CD95 /* FLMessageSender.m in Sources */,
@@ -4875,7 +4862,7 @@
 				7DFF570420B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				7DCFFE0B1F0EE4490003CD95 /* HttpRequestUtil.m in Sources */,
 				7DCFFE0C1F0EE4490003CD95 /* SyncPushTokensJob.swift in Sources */,
-				7DBFC3F220EFE0640047FC62 /* CallManager.swift in Sources */,
+				7DBFC3F220EFE0640047FC62 /* CallKitManager.swift in Sources */,
 				7D6139B41F90173B00E18D29 /* Contact.m in Sources */,
 				7DB55A9B1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				7DCFFE0F1F0EE4490003CD95 /* ConversationUpdateViewController.m in Sources */,
@@ -4884,6 +4871,7 @@
 				7D613AED1F9018D900E18D29 /* OperationFailed.m in Sources */,
 				7D7DA5881F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */,
 				7D613AA11F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
+				7D9BCBF22108D0D400C46D10 /* CAXException.cpp in Sources */,
 				7D613AFB1F9018F800E18D29 /* NSData+hexString.m in Sources */,
 				7DA2797720F6FCA700C6E9B1 /* FLTag.m in Sources */,
 				7DCFFE131F0EE4490003CD95 /* UIDevice+TSHardwareVersion.m in Sources */,
@@ -4924,7 +4912,6 @@
 				7D6139971F90163A00E18D29 /* NSURLSessionDataTask+StatusCode.m in Sources */,
 				7DCFFE2C1F0EE4490003CD95 /* OWSCallCollectionViewCell.m in Sources */,
 				7DCFFE2D1F0EE4490003CD95 /* AnonymousTerminator.m in Sources */,
-				7D41EA842107866000C8138E /* CADebugMacros.cpp in Sources */,
 				7DCFFE2E1F0EE4490003CD95 /* PropertyListPreferences.m in Sources */,
 				7D613AFE1F9018FB00E18D29 /* NSData+messagePadding.m in Sources */,
 				7D613A161F9017BB00E18D29 /* OWSDisappearingMessagesConfigurationMessage.m in Sources */,
@@ -4939,7 +4926,7 @@
 				7DCFFE381F0EE4490003CD95 /* HighlightableLabel.swift in Sources */,
 				7D6139D91F90177400E18D29 /* OWSDeviceProvisioner.m in Sources */,
 				7DCFFE3A1F0EE4490003CD95 /* DeveloperPanelViewController.m in Sources */,
-				7DBFC3F620EFFE5B0047FC62 /* Call.swift in Sources */,
+				7DBFC3F620EFFE5B0047FC62 /* CallKitCall.swift in Sources */,
 				7DCFFE3C1F0EE4490003CD95 /* Zid.m in Sources */,
 				7DCFFE3D1F0EE4490003CD95 /* OWSDeviceTableViewCell.m in Sources */,
 				7D6139CF1F90176C00E18D29 /* OWSChunkedOutputStream.m in Sources */,
@@ -4957,12 +4944,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D5913C920F516A3002699EC /* UIFont+Speakerbox.swift in Sources */,
 				7D613A201F9017C700E18D29 /* TSIncomingMessage.m in Sources */,
 				7D7DA5B31F30CB32007FE6E4 /* FLContactSelectionTableViewController.m in Sources */,
 				7D6139F31F90179100E18D29 /* OWSRecordTranscriptJob.m in Sources */,
 				7D613AD21F90188900E18D29 /* TSDatabaseSecondaryIndexes.m in Sources */,
-				7D5913C520F5167D002699EC /* Array+Speakerbox.swift in Sources */,
 				76EB063E18170B33006006FC /* Operation.m in Sources */,
 				7D613A871F90183100E18D29 /* TSRegisterForPushRequest.m in Sources */,
 				A5509ECD1A69B1D600ABA4BC /* CountryCodeTableViewCell.m in Sources */,
@@ -5007,6 +4992,7 @@
 				7D3A67791FE9BB1800C4096A /* FLPickerCell.m in Sources */,
 				7D03420C20A4CE77004D8ACA /* Curve25519+keyPairFromPrivateKey.m in Sources */,
 				EF764C351DB67CC5000D9A87 /* UIViewController+CameraPermissions.m in Sources */,
+				7D9BCBED2108D0D400C46D10 /* AudioController.mm in Sources */,
 				76EB059418170B33006006FC /* HttpManager.m in Sources */,
 				45CD81EF1DC030E7004C9430 /* AccountManager.swift in Sources */,
 				7DF7E832209A5289001B8687 /* NewAccountViewController.swift in Sources */,
@@ -5015,6 +5001,7 @@
 				FCFA64B71A24F6730007FB87 /* UIFont+OWS.m in Sources */,
 				B6B9ECFC198B31BA00C620D3 /* PushManager.m in Sources */,
 				B62D53F71A23CCAD009AAF82 /* TSMessageAdapter.m in Sources */,
+				7D9BCBEA2108D0D400C46D10 /* CallAudio.swift in Sources */,
 				FCD274EB1A5AFDDB00202277 /* AboutTableViewController.m in Sources */,
 				7D6139931F90163700E18D29 /* OWSDispatch.m in Sources */,
 				7D2E00DA20DD96FF005C587C /* IncomingControlMessage.swift in Sources */,
@@ -5057,13 +5044,10 @@
 				7D613A8A1F90183400E18D29 /* TSRegisterPrekeysRequest.m in Sources */,
 				7D613AF11F9018DD00E18D29 /* SecurityFailure.m in Sources */,
 				7D613A811F90182A00E18D29 /* TSCurrentSignedPreKeyRequest.m in Sources */,
-				7D41EA772107863700C8138E /* CallAudio.swift in Sources */,
-				7D41EA742107863700C8138E /* AudioController.mm in Sources */,
 				76EB05DA18170B33006006FC /* LowLatencyConnector.m in Sources */,
 				B66B9F7D1AEAF40500E2E609 /* NotificationSettingsOptionsViewController.m in Sources */,
 				7D613A0E1F9017B100E18D29 /* OWSSyncContactsMessage.m in Sources */,
 				7D613A111F9017B400E18D29 /* OWSSyncGroupsMessage.m in Sources */,
-				7D41EA882107866000C8138E /* CAXException.cpp in Sources */,
 				7D6139A91F90172D00E18D29 /* TSPrivacyPreferences.m in Sources */,
 				7D613AC61F90187E00E18D29 /* TSStorageManager+PreKeyStore.m in Sources */,
 				76EB05E418170B33006006FC /* UdpSocket.m in Sources */,
@@ -5072,9 +5056,9 @@
 				7DD53DE520B7140500848437 /* SlugCell.swift in Sources */,
 				76EB064418170B33006006FC /* ThreadManager.m in Sources */,
 				7D613A9F1F90184900E18D29 /* TSNetworkManager.m in Sources */,
-				7D41EA822107866000C8138E /* CAStreamBasicDescription.cpp in Sources */,
 				45666F561D9B2827008FE134 /* OWSScrubbingLogFormatter.m in Sources */,
 				45C681C61D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
+				7D9BCBF62108D0D400C46D10 /* CAStreamBasicDescription.cpp in Sources */,
 				7D613A3B1F9017E200E18D29 /* OWSDisappearingMessagesJob.m in Sources */,
 				A5D0699B1A50E9CB004CB540 /* ShowGroupMembersViewController.m in Sources */,
 				7DCFFEC71F0FE2330003CD95 /* DeviceTypes.m in Sources */,
@@ -5085,6 +5069,7 @@
 				FC3196301A0814130094C78E /* SettingsTableViewController.m in Sources */,
 				7D613A961F90184000E18D29 /* TSUnregisterAccountRequest.m in Sources */,
 				7038632818F70C0700D4A43F /* EvpSymetricUtil.m in Sources */,
+				7D9BCBF02108D0D400C46D10 /* CADebugMacros.cpp in Sources */,
 				DBE179931EDF37E900327B2B /* CCSMCommunication.m in Sources */,
 				7D613A0B1F9017AE00E18D29 /* OWSOutgoingSyncMessage.m in Sources */,
 				7D613A721F90181C00E18D29 /* OWSGetDevicesRequest.m in Sources */,
@@ -5128,7 +5113,7 @@
 				FCD274E81A5AFDC900202277 /* AdvancedSettingsTableViewController.m in Sources */,
 				7DF27F5C1FAB833A00900AF1 /* FLDocumentAdapter.m in Sources */,
 				7D613A231F9017CA00E18D29 /* TSInfoMessage.m in Sources */,
-				7D41EA5721077F9900C8138E /* ProviderDelegate.swift in Sources */,
+				7D41EA5721077F9900C8138E /* CallKitProviderDelegate.swift in Sources */,
 				7D613A7B1F90182500E18D29 /* TSAvailablePreKeysCountRequest.m in Sources */,
 				7D6139B81F90173D00E18D29 /* ContactsUpdater.m in Sources */,
 				7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */,
@@ -5159,7 +5144,7 @@
 				7DFF570520B5D1E3004F2DAD /* SlugViewLayout.swift in Sources */,
 				B63761EE19E1FBE8005735D1 /* HttpRequestUtil.m in Sources */,
 				451DE9FD1DC1A28200810E42 /* SyncPushTokensJob.swift in Sources */,
-				7DBFC3F320EFE0640047FC62 /* CallManager.swift in Sources */,
+				7DBFC3F320EFE0640047FC62 /* CallKitManager.swift in Sources */,
 				7D6139B51F90173B00E18D29 /* Contact.m in Sources */,
 				7DB55A9C1F2A7F10001D3058 /* FLInvitationService.m in Sources */,
 				FCFD256F1A151BCB00F4C644 /* ConversationUpdateViewController.m in Sources */,
@@ -5168,6 +5153,7 @@
 				7D613AEE1F9018D900E18D29 /* OperationFailed.m in Sources */,
 				7D7DA5891F2F8797007FE6E4 /* FLDirectoryCell.m in Sources */,
 				7D613AA21F90184D00E18D29 /* SubProtocol.pb.m in Sources */,
+				7D9BCBF32108D0D400C46D10 /* CAXException.cpp in Sources */,
 				7D613AFC1F9018F800E18D29 /* NSData+hexString.m in Sources */,
 				7DA2797820F6FCA700C6E9B1 /* FLTag.m in Sources */,
 				FCC81A981A44558300DFEC7D /* UIDevice+TSHardwareVersion.m in Sources */,
@@ -5208,7 +5194,6 @@
 				7D6139961F90163A00E18D29 /* NSURLSessionDataTask+StatusCode.m in Sources */,
 				45C681BC1D305C080050903A /* OWSCallCollectionViewCell.m in Sources */,
 				76EB064018170B33006006FC /* AnonymousTerminator.m in Sources */,
-				7D41EA852107866000C8138E /* CADebugMacros.cpp in Sources */,
 				76EB058818170B33006006FC /* PropertyListPreferences.m in Sources */,
 				7D613AFF1F9018FB00E18D29 /* NSData+messagePadding.m in Sources */,
 				7D613A171F9017BC00E18D29 /* OWSDisappearingMessagesConfigurationMessage.m in Sources */,
@@ -5223,7 +5208,7 @@
 				45B201761DAECBFE00C461E0 /* HighlightableLabel.swift in Sources */,
 				7D6139D81F90177400E18D29 /* OWSDeviceProvisioner.m in Sources */,
 				7D82CEBF1EF87F860034FD41 /* DeveloperPanelViewController.m in Sources */,
-				7DBFC3F720EFFE5B0047FC62 /* Call.swift in Sources */,
+				7DBFC3F720EFFE5B0047FC62 /* CallKitCall.swift in Sources */,
 				76EB064818170B33006006FC /* Zid.m in Sources */,
 				459311FC1D75C948008DD4F0 /* OWSDeviceTableViewCell.m in Sources */,
 				7D6139D01F90176C00E18D29 /* OWSChunkedOutputStream.m in Sources */,
@@ -5274,7 +5259,7 @@
 				45BFFFA91D898AF0004A12A7 /* OWSStaleNotificationObserver.m in Sources */,
 				45C681C71D305C9E0050903A /* OWSDisplayedMessageCollectionViewCell.m in Sources */,
 				451DE9FE1DC1A28200810E42 /* SyncPushTokensJob.swift in Sources */,
-				7DBFC3F820EFFE5E0047FC62 /* Call.swift in Sources */,
+				7DBFC3F820EFFE5E0047FC62 /* CallKitCall.swift in Sources */,
 				45843D201D2236B30013E85A /* OWSContactsSearcher.m in Sources */,
 				45C681BD1D305C080050903A /* OWSCallCollectionViewCell.m in Sources */,
 				B660F74F1C29988E00687D6E /* LowLatencyCandidate.m in Sources */,
@@ -5324,7 +5309,7 @@
 				B660F7891C29988E00687D6E /* TimeUtil.m in Sources */,
 				B660F78A1C29988E00687D6E /* UIUtil.m in Sources */,
 				B660F78B1C29988E00687D6E /* Zid.m in Sources */,
-				7DBFC3F920EFFE630047FC62 /* CallManager.swift in Sources */,
+				7DBFC3F920EFFE630047FC62 /* CallKitManager.swift in Sources */,
 				B660F78C1C29988E00687D6E /* UIDevice+TSHardwareVersion.m in Sources */,
 				B660F6C31C29868000687D6E /* EC25AgreerTest.m in Sources */,
 				B660F6D81C29868000687D6E /* CryptoToolsTest.m in Sources */,
@@ -5395,6 +5380,7 @@
 			baseConfigurationReference = 698DA70C81F48D4FBF8BE17D /* Pods-Common-RelayDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayDev.entitlements;
@@ -5407,7 +5393,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5461,6 +5446,7 @@
 			baseConfigurationReference = B462E78DB73BA9EF43380A26 /* Pods-Common-RelayDev.app store release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayDev.entitlements;
@@ -5473,7 +5459,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5526,6 +5511,7 @@
 			baseConfigurationReference = AC91192815E6509A42F26823 /* Pods-Common-RelayStage.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Stage";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
@@ -5537,7 +5523,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5591,6 +5576,7 @@
 			baseConfigurationReference = B20485A9B4860E2BCDF77692 /* Pods-Common-RelayStage.app store release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Stage";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CODE_SIGN_ENTITLEMENTS = Relay/RelayStage.entitlements;
@@ -5602,7 +5588,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5797,6 +5782,7 @@
 			baseConfigurationReference = F7BEFF9560BDFB012DD85B4F /* Pods-Common-Relay.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
@@ -5808,7 +5794,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5859,6 +5844,7 @@
 			baseConfigurationReference = 275E0CCDE98544FCC6FCE2EE /* Pods-Common-Relay.app store release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CODE_SIGN_ENTITLEMENTS = Relay/Relay.entitlements;
@@ -5870,7 +5856,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5923,6 +5908,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Relay.app/Relay";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -5930,7 +5916,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5977,6 +5962,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Relay.app/Relay";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -5984,7 +5970,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;

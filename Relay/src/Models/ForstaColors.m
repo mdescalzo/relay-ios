@@ -8,7 +8,6 @@
 
 #import "ForstaColors.h"
 
-#import <UIKit/UIKit.h>
 
 @implementation ForstaColors
 

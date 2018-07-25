@@ -9,16 +9,16 @@ abstract_target 'Common' do
     pod 'Fabric', :inhibit_warnings => true
     pod 'Crashlytics', :inhibit_warnings => true
     pod 'GRKOpenSSLFramework',         '~> 1.0.2.14'
-    pod 'Curve25519Kit',               git: 'https://github.com/signalapp/Curve25519Kit', branch: 'mkirk/framework-friendly'
-    pod 'HKDFKit',                     git: 'https://github.com/signalapp/HKDFKit.git', branch: 'mkirk/framework-friendly'
-    pod 'PastelogKit',                 git: 'git@github.com:ForstaLabs/PastelogKit.git', branch: 'gitHubAuthToken'# , :inhibit_warnings => true
+    pod 'Curve25519Kit',               git: 'https://github.com/signalapp/Curve25519Kit', branch: 'mkirk/framework-friendly', :inhibit_warnings => true
+    pod 'HKDFKit',                     git: 'https://github.com/signalapp/HKDFKit.git', branch: 'mkirk/framework-friendly', :inhibit_warnings => true
+    pod 'PastelogKit',                 git: 'git@github.com:ForstaLabs/PastelogKit.git', branch: 'gitHubAuthToken', :inhibit_warnings => true
     pod 'FFCircularProgressView',      '~> 0.5', :inhibit_warnings => true
     pod 'SCWaveformView',              '~> 1.0', :inhibit_warnings => true
     pod 'ZXingObjC',                   '~> 3.2.2',  :inhibit_warnings => true
     pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: 'forstaMaster', :inhibit_warnings => true
-    pod 'CocoaLumberjack/Swift',             :inhibit_warnings => true
+    pod 'CocoaLumberjack/Swift',       '~> 3.4.0', :inhibit_warnings => true
     pod 'AFNetworking',                '~> 3.2.0', :inhibit_warnings => true
-    pod 'AxolotlKit',                  git: 'https://github.com/signalapp/SignalProtocolKit.git'
+    pod 'AxolotlKit',                  git: 'https://github.com/signalapp/SignalProtocolKit.git', :inhibit_warnings => true
     pod 'Mantle',                      '~> 2.1.0', :inhibit_warnings => true
     pod 'YapDatabase/SQLCipher',       '~> 3.1', :inhibit_warnings => true
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :inhibit_warnings => true
@@ -32,7 +32,7 @@ abstract_target 'Common' do
     pod 'ReCaptcha',                   '~> 1.2', :inhibit_warnings => true
     pod 'PromiseKit',                  '~> 4.0', :inhibit_warnings => true
     pod 'FLAnimatedImage',             '~> 1.0', :inhibit_warnings => true
-    pod 'GoogleWebRTC'
+    pod 'GoogleWebRTC',                '~> 1.1', :inhibit_warnings => true
     
     target 'Relay' do
     end

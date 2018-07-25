@@ -21,11 +21,11 @@ public enum CallState: String {
     case remoteBusy // terminal
 }
 
-enum CallDirection {
-    case outgoing, incoming
-}
+//enum CallDirection {
+//    case outgoing, incoming
+//}
 
-@objc public class Call : NSObject {
+@objc public class CallKitCall : NSObject {
     
     // MARK: Metadata Properties
     
@@ -33,7 +33,7 @@ enum CallDirection {
     let isOutgoing: Bool
     var handle: String?
     var connectedDate: NSDate?
-    let direction: CallDirection
+//    let direction: CallDirection
     
     // MARK: Call State Properties
     
@@ -137,6 +137,7 @@ enum CallDirection {
     init(uuid: UUID, isOutgoing: Bool = false) {
         self.uuid = uuid
         self.isOutgoing = isOutgoing
+        self.state = .idle
     }
     
     // MARK: Actions
