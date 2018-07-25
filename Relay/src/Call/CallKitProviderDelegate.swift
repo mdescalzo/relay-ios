@@ -9,7 +9,7 @@ import UIKit
 import CallKit
 
 @available(iOS 10.0, *)
-final class CallKitProviderDelegate: NSObject {
+@objc final class CallKitProviderDelegate: NSObject {
 
     let callManager: CallKitManager
     
@@ -33,7 +33,7 @@ final class CallKitProviderDelegate: NSObject {
 
         providerConfiguration.maximumCallsPerCallGroup = 1
 
-        providerConfiguration.supportedHandleTypes = [.phoneNumber]
+        providerConfiguration.supportedHandleTypes = [ .generic ]
 
         if let iconMaskImage = UIImage(named: "IconMask") {
             providerConfiguration.iconTemplateImageData = UIImagePNGRepresentation(iconMaskImage)
@@ -50,7 +50,7 @@ final class CallKitProviderDelegate: NSObject {
     func reportIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false, completion: ((Error?) -> Void)? = nil) {
         // Construct a CXCallUpdate describing the incoming call, including the caller.
         let update = CXCallUpdate()
-        update.remoteHandle = CXHandle(type: .phoneNumber, value: handle)
+        update.remoteHandle = CXHandle(type: .generic, value: handle)
         update.hasVideo = hasVideo
 
         // Report the incoming call to the system

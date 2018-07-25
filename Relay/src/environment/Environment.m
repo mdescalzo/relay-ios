@@ -9,6 +9,7 @@
 #import "TSAccountManager.h"
 #import "FLThreadViewController.h"
 #import "SmileAuthenticator.h"
+#import "Relay-Swift.h"
 
 #define isRegisteredUserDefaultString @"isRegistered"
 
@@ -84,6 +85,7 @@ static Environment *environment = nil;
     _networkManager = networkManager;
     _messageSender = messageSender;
     _invitationService = [FLInvitationService new];
+    _callManager = [CallKitManager new];
 
     return self;
 }
@@ -97,31 +99,6 @@ static Environment *environment = nil;
     return Environment.getCurrent.logging;
 }
 
-+ (BOOL)isRedPhoneRegistered {
-    // Attributes that need to be set
-    NSData *signalingKey = SignalKeyingStorage.signalingCipherKey;
-    NSData *macKey       = SignalKeyingStorage.signalingMacKey;
-    NSData *extra        = SignalKeyingStorage.signalingExtraKey;
-    NSString *serverAuth = SignalKeyingStorage.serverAuthPassword;
-
-    return signalingKey && macKey && extra && serverAuth;
-}
-
-//- (void)initCallListener {
-//    [self.phoneManager.currentCallObservable watchLatestValue:^(CallState *latestCall) {
-//        if (latestCall == nil) {
-//            return;
-//        }
-//        FLThreadViewController *vc = [[Environment getCurrent] forstaViewController];
-////        SignalsViewController *vc = [[Environment getCurrent] signalsViewController];
-//        [vc dismissViewControllerAnimated:NO completion:nil];
-//        vc.latestCall = latestCall;
-//        [vc performSegueWithIdentifier:kCallSegue sender:self];
-//    }
-//                                                     onThread:NSThread.mainThread
-//                                               untilCancelled:nil];
-//}
-
 + (PropertyListPreferences *)preferences {
     return [PropertyListPreferences sharedInstance];
 }
@@ -130,10 +107,6 @@ static Environment *environment = nil;
 {
     _forstaViewController = forstaViewController;
 }
-
-//- (void)setSignalsViewController:(SignalsViewController *)signalsViewController {
-//    _signalsViewController = signalsViewController;
-//}
 
 - (void)setSignUpFlowNavigationController:(UINavigationController *)navigationController {
     _signUpFlowNavigationController = navigationController;
@@ -199,12 +172,12 @@ static Environment *environment = nil;
 //    return _invitationService;
 //}
 
--(CCSMStorage *)ccsmStorage
+-(CallKitProviderDelegate *)callProviderDelegate
 {
-    if (_ccsmStorage == nil) {
-        _ccsmStorage = [CCSMStorage new];
+    if (_callProviderDelegate == nil) {
+        _callProviderDelegate = [[CallKitProviderDelegate alloc] initWithCallManager:self.callManager];
     }
-    return _ccsmStorage;
+    return _callProviderDelegate;
 }
 
 @end

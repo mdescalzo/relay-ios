@@ -65,23 +65,47 @@ class ControlMessageManager : NSObject
     
     static private func handleCallOffer(message: IncomingControlMessage)
     {
-        DDLogInfo("Received callOffer message: \(message.forstaPayload)")
+//        DDLogInfo("Received callOffer message: \(message.forstaPayload)")
         
-        if let callId = message.forstaPayload.object(forKey: "callId") {
-            DDLogInfo("callId: \(callId)")
+        let dataBlob = message.forstaPayload.object(forKey: "data") as? NSDictionary
+        
+        guard dataBlob != nil else {
+            DDLogInfo("Received callOffer message with no data object.")
+            return
         }
-        if let members = message.forstaPayload.object(forKey: "members") {
-            DDLogInfo("members: \(members)")
+        
+        let callId = dataBlob?.object(forKey: "callId") as? String
+        let members = dataBlob?.object(forKey: "members") as? NSArray
+        let originator = dataBlob?.object(forKey: "originator") as? String
+        let peerId = dataBlob?.object(forKey: "peerId") as? String
+        let offer = dataBlob?.object(forKey: "offer") as? NSDictionary
+        
+        // TODO: Add class validation to guard statement
+        guard callId != nil && members != nil && originator != nil && peerId != nil && offer != nil else {
+            DDLogInfo("Received callOffer message missing required objects.")
+            return
         }
-        if let originator = message.forstaPayload.object(forKey: "originator") {
-            DDLogInfo("originator: \(originator)")
+        
+        // MARK: TEMPORARY
+        // TODO Move report incoming call function to AppDelegate or Environment
+        if #available(iOS 10.0, *) {
+            
+            let recipient = Environment.getCurrent().contactsManager.recipient(withUserId: originator!)
+            
+            let backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+            DispatchQueue.main.async {
+                
+                Environment.getCurrent().callProviderDelegate.reportIncomingCall(uuid: UUID.init(uuidString: callId!)!, handle: (recipient?.flTag.displaySlug)!, hasVideo: false, completion: { error in
+                    UIApplication.shared.endBackgroundTask(backgroundTaskIdentifier)
+                })
+            }
+        } else {
+            // Fallback on earlier versions
+            DDLogInfo("\(self.tag): Unable to hand incoming call due to iOS version.")
+            return
         }
-        if let peerId = message.forstaPayload.object(forKey: "peerId") {
-            DDLogInfo("peerId: \(peerId)")
-        }
-        if let offer = message.forstaPayload.object(forKey: "offer") {
-            DDLogInfo("offer: \(offer)")
-        }
+        ///////////////////
+
     }
 
     static private func handleCallLeave(message: IncomingControlMessage)

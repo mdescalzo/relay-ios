@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "Logging.h"
 #import "PacketHandler.h"
 #import "PropertyListPreferences.h"
@@ -8,7 +7,6 @@
 #import "CCSMStorage.h"
 #import "CCSMCommunication.h"
 #import "FLMessageSender.h"
-//#import "FLContactsManager.h"
 #import "FLContactsManager.h"
 #import "FLInvitationService.h"
 
@@ -30,13 +28,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
     @"LegacyAndroidInterop_1"
 #define TESTING_OPTION_USE_DH_FOR_HANDSHAKE @"DhKeyAgreementOnly"
 
-@class FLContactsManager;
-@class SignalsViewController;
-@class TSGroupThread;
-@class TSNetworkManager;
-@class FLMessageSender;
-
-@class FLThreadViewController;
+@class FLContactsManager, TSNetworkManager, FLMessageSender, FLThreadViewController, CallKitManager, CallKitProviderDelegate;
 
 @interface Environment : NSObject
 
@@ -66,11 +58,13 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 @property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
-@property (nonatomic, strong) CCSMStorage *ccsmStorage;
 @property (nonatomic, readonly) FLInvitationService *invitationService;
 
 @property (nonatomic, readonly) FLThreadViewController *forstaViewController;
 @property (nonatomic, readonly, weak) UINavigationController *signUpFlowNavigationController;
+
+@property (nonatomic, readonly) CallKitManager *callManager;
+@property (nonatomic) CallKitProviderDelegate *callProviderDelegate;
 
 + (SecureEndPoint *)getMasterServerSecureEndPoint;
 + (SecureEndPoint *)getSecureEndPointToDefaultRelayServer;
@@ -85,7 +79,6 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
 + (PropertyListPreferences *)preferences;
 
-+ (BOOL)isRedPhoneRegistered;
 + (void)resetAppData;
 + (void)wipeCommDatabase;
 

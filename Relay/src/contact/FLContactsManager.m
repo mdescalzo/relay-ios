@@ -128,7 +128,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 // MARK: - Recipient management
 -(void)processUsersBlob
 {
-    __block NSDictionary *usersBlob = [[Environment getCurrent].ccsmStorage getUsers];
+    __block NSDictionary *usersBlob = [CCSMStorage.sharedInstance getUsers];
     
     if (usersBlob.count > 0) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -184,7 +184,7 @@ typedef BOOL (^ContactSearchBlock)(id, NSUInteger, BOOL *);
 // MARK: - Tag management
 -(void)processTagsBlob
 {
-    __block NSDictionary *tagsBlob = [[Environment getCurrent].ccsmStorage getTags];
+    __block NSDictionary *tagsBlob = [CCSMStorage.sharedInstance getTags];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         for (NSDictionary *tagDict in [tagsBlob allValues]) {

@@ -1062,7 +1062,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_userTags == nil) {
         // Pull the tags dictionary, pull the keys, and sort them alphabetically
-        _userTags = [[[[Environment getCurrent].ccsmStorage getTags] allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        _userTags = [[[CCSMStorage.sharedInstance getTags] allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     }
     return _userTags;
 }
@@ -1070,7 +1070,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 -(NSString *)userId
 {
-    return [[[Environment getCurrent].ccsmStorage getUserInfo] objectForKey:kUserIDKey];
+    return [[CCSMStorage.sharedInstance getUserInfo] objectForKey:kUserIDKey];
 }
 
 -(NSString *)userDisplayName
