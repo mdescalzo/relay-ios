@@ -80,25 +80,19 @@ class ControlMessageManager : NSObject
         let peerId = dataBlob?.object(forKey: "peerId") as? String
         let offer = dataBlob?.object(forKey: "offer") as? NSDictionary
         
-        // TODO: Add class validation to guard statement
         guard callId != nil && members != nil && originator != nil && peerId != nil && offer != nil else {
             DDLogInfo("Received callOffer message missing required objects.")
             return
         }
         
         // MARK: TEMPORARY
-        // TODO Move report incoming call function to AppDelegate or Environment
         if #available(iOS 10.0, *) {
-            
-            let recipient = Environment.getCurrent().contactsManager.recipient(withUserId: originator!)
-            
-            let backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-            DispatchQueue.main.async {
-                
-                Environment.getCurrent().callProviderDelegate.reportIncomingCall(uuid: UUID.init(uuidString: callId!)!, handle: (recipient?.flTag.displaySlug)!, hasVideo: false, completion: { error in
-                    UIApplication.shared.endBackgroundTask(backgroundTaskIdentifier)
-                })
+            Environment.displayIncomingCall(callId!, originalorId: originator!, video: false) { (error) in
+                if  error != nil {
+                    DDLogError("Error displaying incoming call: \(String(describing: error?.localizedDescription))");
+                }
             }
+
         } else {
             // Fallback on earlier versions
             DDLogInfo("\(self.tag): Unable to hand incoming call due to iOS version.")

@@ -10,8 +10,6 @@
 #import "FLContactsManager.h"
 #import "FLInvitationService.h"
 
-static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
-
 /**
  *
  * Environment is a data and data accessor class.
@@ -87,5 +85,7 @@ static NSString *const kCallSegue = @"2.0_6.0_Call_Segue";
 
 + (void)messageThreadId:(NSString *)threadId;
 + (void)messageGroup:(TSThread *)groupThread;
+
++(void)displayIncomingCall:(nonnull NSString *)callId originalorId:(nonnull NSString *)originator video:(BOOL)hasVideo completion:(void (^_Nonnull)(NSError *_Nullable))completion;
 
 @end

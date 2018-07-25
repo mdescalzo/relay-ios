@@ -180,4 +180,21 @@ static Environment *environment = nil;
     return _callProviderDelegate;
 }
 
++(void)displayIncomingCall:(nonnull NSString *)callId originalorId:(nonnull NSString *)originator video:(BOOL)hasVideo completion:(void (^_Nonnull)(NSError *_Nullable))completion
+{
+    __block SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:originator];
+    __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:nil];
+    __block NSUUID *callUUID = [[NSUUID alloc] initWithUUIDString:callId];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [Environment.getCurrent.callProviderDelegate reportIncomingCallWithUuid:callUUID handle:recipient.fullName hasVideo:hasVideo completion:^(NSError *error) {
+            [UIApplication.sharedApplication endBackgroundTask:backgroundTaskIdentifier];
+            
+            if (completion != nil) {
+                completion(error);
+            }
+        }];
+    });
+}
+                   
 @end
