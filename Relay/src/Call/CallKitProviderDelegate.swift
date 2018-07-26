@@ -60,9 +60,7 @@ import CallKit
                 since calls may be "denied" for various legitimate reasons. See CXErrorCodeIncomingCallError.
              */
             if error == nil {
-                let call = CallKitCall(uuid: uuid)
-                call.handle = handle
-
+                let call = CallKitCall(uuid: uuid, handle: handle)
                 self.callManager.addCall(call)
             }
             
@@ -94,9 +92,8 @@ extension CallKitProviderDelegate: CXProviderDelegate {
 
     func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
         // Create & configure an instance of SpeakerboxCall, the app's model class representing the new outgoing call.
-        let call = CallKitCall(uuid: action.callUUID, isOutgoing: true)
-        call.handle = action.handle.value
-
+        let call = CallKitCall(uuid: action.callUUID, isOutgoing: true, handle: action.handle.value)
+        
         /*
             Configure the audio session, but do not start call audio here, since it must be done once
             the audio session has been activated by the system after having its priority elevated.
@@ -114,6 +111,10 @@ extension CallKitProviderDelegate: CXProviderDelegate {
             self?.provider.reportOutgoingCall(with: call.uuid, connectedAt: call.connectDate)
         }
 
+        Environment.displayOutgoingCall(call.uuid.uuidString) { error in
+            // TODO: Do a thing with an error
+        }
+        
         // Trigger the call to be started via the underlying network service.
         call.startCall { success in
             if success {

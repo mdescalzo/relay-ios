@@ -619,12 +619,9 @@ typedef enum : NSUInteger {
 
 - (void)callAction {
     if ([self canCall]) {
-        PhoneNumber *number = [self phoneNumberForThread];
-        NSString *phoneStr = [[NSString alloc] initWithFormat:@"tel://%@",number];
-        // Prepare the NSURL
-        NSURL *phoneURL = [[NSURL alloc] initWithString:phoneStr];
-        // Make the call
-        [[UIApplication sharedApplication] openURL:phoneURL];
+
+        [Environment.getCurrent.callManager startCallWithHandle:self.thread.displayName video:NO];
+        
     } else {
         DDLogWarn(@"Tried to initiate a call but thread is not callable.");
     }
@@ -632,22 +629,28 @@ typedef enum : NSUInteger {
 
 - (BOOL)canCall
 {
-    if (self.thread.participants.count > 2) {
-        return NO;
+    // We only support calling from this view when chatting with 1 other recipient
+    if (self.thread.participants.count == 2) {
+        return YES;
     } else {
-        NSString *userid = nil;
-        for (NSString *uid in self.thread.participants) {
-            if (![uid isEqualToString:[TSAccountManager localNumber]]) {
-                userid = uid;
-            }
-        }
-        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
-        if (recipient.phoneNumber) {
-            return YES;
-        } else {
-            return NO;
-        }
+        return NO;
     }
+//    if (self.thread.participants.count > 2) {
+//        return NO;
+//    } else {
+//        NSString *userid = nil;
+//        for (NSString *uid in self.thread.participants) {
+//            if (![uid isEqualToString:[TSAccountManager localNumber]]) {
+//                userid = uid;
+//            }
+//        }
+//        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
+//        if (recipient.phoneNumber) {
+//            return YES;
+//        } else {
+//            return NO;
+//        }
+//    }
 }
 
 #pragma mark - JSQMessagesViewController method overrides
@@ -1689,7 +1692,7 @@ typedef enum : NSUInteger {
 
 - (void)resetFrame {
     // fixes bug on frame being off after this selection
-    CGRect frame    = [UIScreen mainScreen].applicationFrame;
+    CGRect frame    = [[UIScreen mainScreen] bounds];
     self.view.frame = frame;
 }
 

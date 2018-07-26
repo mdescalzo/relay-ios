@@ -435,7 +435,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 }
 
-#pragma mark - Lifted from SignalsViewController
 - (void)presentThread:(TSThread *)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -449,6 +448,17 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         
         [mvc configureForThread:thread keyboardOnViewAppearing:keyboardOnViewAppearing];
         [self.navigationController pushViewController:mvc animated:YES];
+    });
+}
+
+- (void)presentCall:(nonnull CallKitCall *)call
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        CallViewController *callViewController  = [[UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:NULL]
+                                                   instantiateViewControllerWithIdentifier:@"InCallViewController"];
+        [callViewController configureWithCall:call];
+        
+        [self.navigationController presentViewController:callViewController animated:YES completion:nil];
     });
 }
 

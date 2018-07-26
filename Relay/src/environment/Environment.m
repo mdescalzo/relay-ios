@@ -12,6 +12,7 @@
 #import "Relay-Swift.h"
 
 #define isRegisteredUserDefaultString @"isRegistered"
+#define callSegueId @"callViewSegue"
 
 static Environment *environment = nil;
 
@@ -86,6 +87,7 @@ static Environment *environment = nil;
     _messageSender = messageSender;
     _invitationService = [FLInvitationService new];
     _callManager = [CallKitManager new];
+    [self callProviderDelegate];
 
     return self;
 }
@@ -180,12 +182,13 @@ static Environment *environment = nil;
     return _callProviderDelegate;
 }
 
+// MARK: Call management
 +(void)displayIncomingCall:(nonnull NSString *)callId originalorId:(nonnull NSString *)originator video:(BOOL)hasVideo completion:(void (^_Nonnull)(NSError *_Nullable))completion
 {
     __block SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:originator];
-    __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:nil];
     __block NSUUID *callUUID = [[NSUUID alloc] initWithUUIDString:callId];
-    
+    __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:nil];
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [Environment.getCurrent.callProviderDelegate reportIncomingCallWithUuid:callUUID handle:recipient.fullName hasVideo:hasVideo completion:^(NSError *error) {
             [UIApplication.sharedApplication endBackgroundTask:backgroundTaskIdentifier];
@@ -195,6 +198,36 @@ static Environment *environment = nil;
             }
         }];
     });
+}
+
++(void)displayOutgoingCall:(nonnull NSString *)callId completion:(void (^_Nonnull)(NSError *_Nullable))completion
+{
+    __block NSUUID *callUUID = [[NSUUID alloc] initWithUUIDString:callId];
+    __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:nil];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+//        [Environment.getCurrent.callProviderDelegate reportIncomingCallWithUuid:callUUID handle:recipient.fullName hasVideo:hasVideo completion:^(NSError *error) {
+            CallKitCall *call = [Environment.getCurrent.callManager callWithUUIDWithUuid:callUUID];
+            
+            [Environment.getCurrent.forstaViewController presentCall:call];
+            
+            [UIApplication.sharedApplication endBackgroundTask:backgroundTaskIdentifier];
+            
+            if (completion != nil) {
+                completion(nil);
+            }
+//        }];
+    });
+    
+}
+
++(void)endCallWithId:(NSString *)callId
+{
+    __block NSUUID *callUUID = [[NSUUID alloc] initWithUUIDString:callId];
+    CallKitCall *call = [Environment.getCurrent.callManager callWithUUIDWithUuid:callUUID];
+    if (call != nil) {
+        [Environment.getCurrent.callManager endWithCall:call];
+    }
 }
                    
 @end

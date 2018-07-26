@@ -8,6 +8,7 @@
 
 import UIKit
 
+@available(iOS 10.0, *)
 class CallViewController: UIViewController {
 
     @IBOutlet private weak var contactView: UIView!
@@ -26,13 +27,27 @@ class CallViewController: UIViewController {
     @IBOutlet private weak var rejectButton: UIButton!
     @IBOutlet private weak var answerButton: UIButton!
     
-    var callState: CallState?
-    var contact: SignalRecipient?
+    var call: CallKitCall?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleCallStateDidChangeNotification(notification:)),
+                                               name: CallKitManager.CallStateChangedNotification,
+                                               object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: CallKitManager.CallStateChangedNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,13 +55,14 @@ class CallViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func configure(callState: CallState, contact: SignalRecipient) {
+    func configure(call: CallKitCall) {
         
+        self.call = call
     }
     
     // MARK: Button Actions
     @IBAction private func endCallTapped(_ sender: Any) {
-        
+        Environment.endCall(withId: (call?.uuid.uuidString)!)
     }
     
     @IBAction private func rejectCallTapped(_ sender: Any) {
@@ -74,5 +90,10 @@ class CallViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // Handler for changes to call state
+    @objc fileprivate func handleCallStateDidChangeNotification(notification: NSNotification){
+        DDLogInfo("Call state changed with notification: \(notification)")
+    }
 
 }

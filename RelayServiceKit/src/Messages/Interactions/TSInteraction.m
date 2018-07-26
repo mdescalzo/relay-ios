@@ -51,10 +51,6 @@
     return self;
 }
 
-//- (TSThread *)thread
-//{
-//    return [TSThread fetchObjectWithUniqueID:self.uniqueThreadId];
-//}
 
 #pragma mark Date operations
 
@@ -102,7 +98,7 @@
 -(NSDate *)sendTime
 {
     NSDate *returnDate = nil;
-    // FIX: The formatters in their presenst state don't work.  Falling back on self.timestamp
+    // FIXME: The formatters in their presenst state don't work.  Falling back on self.timestamp
     if ([self.forstaPayload objectForKey:@"sendTime"]) {
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.0) {
             NSDateFormatter *df = [[NSDateFormatter alloc] init];

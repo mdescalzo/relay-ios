@@ -7,24 +7,6 @@
 import Foundation
 import WebRTC
 
-public enum CallState: String {
-    case idle
-    case dialing
-    case answering
-    case remoteRinging
-    case localRinging
-    case connected
-    case reconnecting
-    case localFailure // terminal
-    case localHangup // terminal
-    case remoteHangup // terminal
-    case remoteBusy // terminal
-}
-
-//enum CallDirection {
-//    case outgoing, incoming
-//}
-
 @objc public class CallKitCall : NSObject {
     
     // MARK: Metadata Properties
@@ -32,8 +14,6 @@ public enum CallState: String {
     let uuid: UUID
     let isOutgoing: Bool
     var handle: String?
-    var connectedDate: NSDate?
-//    let direction: CallDirection
     
     // MARK: Call State Properties
     
@@ -60,37 +40,7 @@ public enum CallState: String {
             stateDidChange?()
         }
     }
-    
-    var isTerminated: Bool {
-        switch state {
-        case .localFailure, .localHangup, .remoteHangup, .remoteBusy:
-            return true
-        case .idle, .dialing, .answering, .remoteRinging, .localRinging, .connected, .reconnecting:
-            return false
-        }
-    }
-    
-    var state: CallState {
-        didSet {
-//            SwiftAssertIsOnMainThread(#function)
-//            Logger.debug("\(TAG) state changed: \(oldValue) -> \(self.state) for call: \(self.identifiersForLogs)")
-            
-            // Update connectedDate
-            if case .connected = self.state {
-                // if it's the first time we've connected (not a reconnect)
-                if connectedDate == nil {
-                    connectedDate = NSDate()
-                }
-            }
-            
-//            updateCallRecordType()
-//            
-//            for observer in observers {
-//                observer.value?.stateDidChange(call: self, state: state)
-//            }
-        }
-    }
-    
+
     // MARK: State change callback blocks
     
     var stateDidChange: (() -> Void)?
@@ -134,10 +84,12 @@ public enum CallState: String {
     
     // MARK: Initialization
     
-    init(uuid: UUID, isOutgoing: Bool = false) {
+    init(uuid: UUID, isOutgoing: Bool = false, handle: String) {
         self.uuid = uuid
         self.isOutgoing = isOutgoing
-        self.state = .idle
+        self.handle = handle
+        
+        super.init()
     }
     
     // MARK: Actions

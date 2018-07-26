@@ -51,8 +51,6 @@
 @property (nonatomic, readonly) NSArray *keyAgreementProtocolsInDescendingPriority;
 @property (nonatomic, readonly) ErrorHandlerBlock errorNoter;
 @property (nonatomic, readonly) NSArray *testingAndLegacyOptions;
-@property (nonatomic, readonly) NSData *zrtpClientId;
-@property (nonatomic, readonly) NSData *zrtpVersionId;
 @property (nonatomic, readonly) FLContactsManager *contactsManager;
 @property (nonatomic, readonly) TSNetworkManager *networkManager;
 @property (nonatomic, readonly) FLMessageSender *messageSender;
@@ -87,5 +85,7 @@
 + (void)messageGroup:(TSThread *)groupThread;
 
 +(void)displayIncomingCall:(nonnull NSString *)callId originalorId:(nonnull NSString *)originator video:(BOOL)hasVideo completion:(void (^_Nonnull)(NSError *_Nullable))completion;
++(void)displayOutgoingCall:(nonnull NSString *)callId completion:(void (^_Nonnull)(NSError *_Nullable))completion;
++(void)endCallWithId:(nonnull NSString *)callId;
 
 @end

@@ -104,17 +104,25 @@ class ControlMessageManager : NSObject
 
     static private func handleCallLeave(message: IncomingControlMessage)
     {
-        DDLogInfo("Received callLeave message: \(message.forstaPayload)")
+//        DDLogInfo("Received callLeave message: \(message.forstaPayload)")
+        // FIXME: Message processing stops while call is pending.
+
+        let dataBlob = message.forstaPayload.object(forKey: "data") as? NSDictionary
         
-        if let callId = message.forstaPayload.object(forKey: "callId") {
-            DDLogInfo("callId: \(callId)")
+        guard dataBlob != nil else {
+            DDLogInfo("Received callLeave message with no data object.")
+            return
         }
-        if let members = message.forstaPayload.object(forKey: "members") {
-            DDLogInfo("members: \(members)")
+        
+        let callId = dataBlob?.object(forKey: "callId") as? String
+
+        guard callId != nil else {
+            DDLogInfo("Received callLeave message without callId.")
+            return
         }
-        if let originator = message.forstaPayload.object(forKey: "originator") {
-            DDLogInfo("originator: \(originator)")
-        }
+        
+        Environment.endCall(withId: callId!)
+        
     }
 
     static private func handleThreadUpdate(message: IncomingControlMessage)

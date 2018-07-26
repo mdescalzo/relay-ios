@@ -10,6 +10,8 @@
 @import AVFoundation;
 @import MediaPlayer;
 
+@class CallKitCall;
+
 @interface FLThreadViewController : UIViewController <UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource,
                                                             UIViewControllerPreviewingDelegate,
                                                             UIPopoverPresentationControllerDelegate>
@@ -21,7 +23,7 @@
 @property (nonatomic, strong) NSDictionary * _Nullable targetUserInfo;
 
 - (void)presentThread:(TSThread *_Nonnull)thread keyboardOnViewAppearing:(BOOL)keyboardOnViewAppearing;
-//- (void)configureForThread:(TSThread *_Nonnull)thread keyboardOnViewAppearing:(BOOL)keyboardAppearing;
+- (void)presentCall:(nonnull CallKitCall *)call;
 
 - (NSNumber *_Nullable)updateInboxCountLabel;
 - (void)composeNew:(nullable id)sender;

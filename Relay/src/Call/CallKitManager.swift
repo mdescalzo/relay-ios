@@ -58,7 +58,8 @@ import WebRTC
     
     // MARK: Call Management
     
-    static let CallsChangedNotification = Notification.Name("CallManagerCallsChangedNotification")
+//    static let CallsChangedNotification = Notification.Name("CallManagerCallsChangedNotification")
+    static let CallStateChangedNotification = Notification.Name("CallManagerCallStateChangedNotification")
     
     private(set) var calls = [CallKitCall]()
     
@@ -73,31 +74,34 @@ import WebRTC
         calls.append(call)
         
         call.stateDidChange = { [weak self] in
-            self?.postCallsChangedNotification()
+            // TODO: post a call-specific notification with the call or callId as payload
+            self?.postCallStateChangedNotification(call: call)
         }
         
-        postCallsChangedNotification()
+//        call.hasEndedDidChange = { [weak self] in
+//            // TODO: Add call ended activities here
+//
+//        }
+
+        
     }
     
     func removeCall(_ call: CallKitCall) {
         guard let index = calls.index(where: { $0 === call }) else { return }
         calls.remove(at: index)
-        postCallsChangedNotification()
     }
     
     func removeAllCalls() {
         calls.removeAll()
-        postCallsChangedNotification()
     }
+ 
     
-    private func postCallsChangedNotification() {
-        NotificationCenter.default.post(name: type(of: self).CallsChangedNotification, object: self)
+    private func postCallStateChangedNotification(call: CallKitCall) {
+        NotificationCenter.default.post(name: type(of: self).CallStateChangedNotification, object: call)
     }
-    
-    // MARK: CallDelegate
-    
-    func CallDidChangeState(_ call: CallKitCall) {
-        postCallsChangedNotification()
-    }
-    
+
+//    private func postCallsChangedNotification() {
+//        NotificationCenter.default.post(name: type(of: self).CallsChangedNotification, object: self)
+//    }
+
 }
