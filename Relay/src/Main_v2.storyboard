@@ -2411,9 +2411,11 @@
                         <outlet property="endCallButton" destination="ynR-kb-wSg" id="qRn-1y-Y0w"/>
                         <outlet property="explainAuthenticationStringLabel" destination="U0W-UV-HOo" id="CEa-aJ-DMT"/>
                         <outlet property="incomingCallButtonsView" destination="06G-yL-Wyu" id="uHB-ng-GUJ"/>
+                        <outlet property="muteButton" destination="hQC-eL-idp" id="joO-EL-RMZ"/>
                         <outlet property="nameLabel" destination="fZ0-dm-lhf" id="JLq-u9-UOT"/>
                         <outlet property="rejectButton" destination="Juv-oA-tKl" id="3Da-JT-LbP"/>
                         <outlet property="safewordsView" destination="qZX-gN-BBY" id="85d-gX-99e"/>
+                        <outlet property="speakerButton" destination="dwP-iD-hNg" id="nPp-Y3-uU0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="byW-vB-sSC" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -74,14 +74,12 @@ import WebRTC
         calls.append(call)
         
         call.stateDidChange = { [weak self] in
-            // TODO: post a call-specific notification with the call or callId as payload
             self?.postCallStateChangedNotification(call: call)
         }
         
-//        call.hasEndedDidChange = { [weak self] in
-//            // TODO: Add call ended activities here
-//
-//        }
+        call.hasEndedDidChange = { [weak self] in
+            self?.postCallStateChangedNotification(call: call)
+        }
 
         
     }

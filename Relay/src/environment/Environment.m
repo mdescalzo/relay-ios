@@ -206,17 +206,15 @@ static Environment *environment = nil;
     __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:nil];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [Environment.getCurrent.callProviderDelegate reportIncomingCallWithUuid:callUUID handle:recipient.fullName hasVideo:hasVideo completion:^(NSError *error) {
-            CallKitCall *call = [Environment.getCurrent.callManager callWithUUIDWithUuid:callUUID];
-            
-            [Environment.getCurrent.forstaViewController presentCall:call];
-            
-            [UIApplication.sharedApplication endBackgroundTask:backgroundTaskIdentifier];
-            
-            if (completion != nil) {
-                completion(nil);
-            }
-//        }];
+        CallKitCall *call = [Environment.getCurrent.callManager callWithUUIDWithUuid:callUUID];
+        
+        [Environment.getCurrent.forstaViewController presentCall:call];
+        
+        [UIApplication.sharedApplication endBackgroundTask:backgroundTaskIdentifier];
+        
+        if (completion != nil) {
+            completion(nil);
+        }
     });
     
 }

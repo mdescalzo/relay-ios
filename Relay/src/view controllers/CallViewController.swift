@@ -27,12 +27,18 @@ class CallViewController: UIViewController {
     @IBOutlet private weak var rejectButton: UIButton!
     @IBOutlet private weak var answerButton: UIButton!
     
+    @IBOutlet weak var muteButton: UIButton!
+    @IBOutlet weak var speakerButton: UIButton!
+    
     var call: CallKitCall?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.muteButton.isEnabled = false
+        self.speakerButton.isEnabled = false
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +64,7 @@ class CallViewController: UIViewController {
     func configure(call: CallKitCall) {
         
         self.call = call
+        self.updateUI()
     }
     
     // MARK: Button Actions
@@ -66,7 +73,7 @@ class CallViewController: UIViewController {
     }
     
     @IBAction private func rejectCallTapped(_ sender: Any) {
-        
+        Environment.endCall(withId: (call?.uuid.uuidString)!)
     }
     
     @IBAction private func acceptCallTapped(_ sender: Any) {
@@ -74,11 +81,11 @@ class CallViewController: UIViewController {
     }
     
     @IBAction private func speakerTapped(_ sender: Any) {
-        
+
     }
     
     @IBAction private func muteCallTapped(_ sender: Any) {
-        
+
     }
     
     /*
@@ -94,6 +101,47 @@ class CallViewController: UIViewController {
     // Handler for changes to call state
     @objc fileprivate func handleCallStateDidChangeNotification(notification: NSNotification){
         DDLogInfo("Call state changed with notification: \(notification)")
+        // TODO: extract the call and apply changes to the UI
+        self.updateUI()
+        
+        if (self.call?.hasEnded)! {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
+    fileprivate func updateUI() {
+        
+        DispatchQueue.main.async {
+            
+            self.nameLabel.text = self.call?.handle
+            
+            self.safewordsView.isHidden = true
+            self.authenticationStringLabel.isHidden = true
+            self.explainAuthenticationStringLabel.isHidden = true
+
+            self.activeCallButtonsView.isHidden = true
+            self.incomingCallButtonsView.isHidden = true
+
+            if (self.call?.hasConnected)! {
+                self.callStatusLabel.text = NSLocalizedString("IN_CALL_CONNECTED", comment: "")
+                self.activeCallButtonsView.isHidden = false
+                self.muteButton.isEnabled = true
+                self.speakerButton.isEnabled = true
+            } else if (self.call?.hasStartedConnecting)! {
+                self.callStatusLabel.text = NSLocalizedString("IN_CALL_CONNECTING", comment: "")
+                self.activeCallButtonsView.isHidden = false
+            } else if (self.call?.hasEnded)! {
+                self.callStatusLabel.text = NSLocalizedString("CALL_ENDED", comment: "")
+                self.activeCallButtonsView.isHidden = false
+             } else {
+                if (self.call?.isOutgoing)! {
+                    self.callStatusLabel.text = NSLocalizedString("IN_CALL_DIALING", comment: "")
+                    self.activeCallButtonsView.isHidden = false
+                } else {
+                    self.callStatusLabel.text = NSLocalizedString("IN_CALL_RINGING", comment: "")
+                    self.incomingCallButtonsView.isHidden = false
+                }
+            }
+        }
+    }
 }
