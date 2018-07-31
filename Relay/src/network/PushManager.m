@@ -47,11 +47,11 @@
 
 - (instancetype)initDefault
 {
-    return [self initWithContactsManager:[Environment getCurrent].contactsManager
+    return [self initWithContactsManager:[Environment shared].contactsManager
                      notificationTracker:[NotificationTracker notificationTracker]
-                          networkManager:[Environment getCurrent].networkManager
+                          networkManager:[Environment shared].networkManager
                           storageManager:[TSStorageManager sharedManager]];
-//                         contactsUpdater:[Environment getCurrent].contactsUpdater];
+//                         contactsUpdater:[Environment shared].contactsUpdater];
 }
 
 - (instancetype)initWithContactsManager:(FLContactsManager *)contactsManager
@@ -155,8 +155,8 @@
             [self.messageSender sendMessage:message
                 success:^{
                     [self markAllInThreadAsRead:notification.userInfo completionHandler:completionHandler];
-//                    [[[[Environment getCurrent] signalsViewController] tableView] reloadData];
-                    [[[[Environment getCurrent] forstaViewController] tableView] reloadData];
+//                    [[[[Environment shared] signalsViewController] tableView] reloadData];
+                    [[[Environment.shared forstaViewController] tableView] reloadData];
                 }
                 failure:^(NSError *error) {
                     // TODO Surface the specific error in the notification?
@@ -203,7 +203,7 @@
       [thread markAllAsReadWithTransaction:transaction];
     }
         completionBlock:^{
-          [[[Environment getCurrent] forstaViewController] updateInboxCountLabel];
+          [[Environment.shared forstaViewController] updateInboxCountLabel];
           [self cancelNotificationsWithThreadId:threadId];
 
           completionHandler();

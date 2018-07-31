@@ -26,7 +26,7 @@
     @"LegacyAndroidInterop_1"
 #define TESTING_OPTION_USE_DH_FOR_HANDSHAKE @"DhKeyAgreementOnly"
 
-@class FLContactsManager, TSNetworkManager, FLMessageSender, FLThreadViewController, CallKitManager, CallKitProviderDelegate;
+@class FLContactsManager, TSNetworkManager, FLMessageSender, FLThreadViewController, CallService, CallKitProviderDelegate;
 
 @interface Environment : NSObject
 
@@ -59,14 +59,14 @@
 @property (nonatomic, readonly) FLThreadViewController *forstaViewController;
 @property (nonatomic, readonly, weak) UINavigationController *signUpFlowNavigationController;
 
-@property (nonatomic, readonly) CallKitManager *callManager;
+@property (nonatomic, readonly) CallService *callService;
 @property (nonatomic) CallKitProviderDelegate *callProviderDelegate;
 
 + (SecureEndPoint *)getMasterServerSecureEndPoint;
 + (SecureEndPoint *)getSecureEndPointToDefaultRelayServer;
 + (SecureEndPoint *)getSecureEndPointToSignalingServerNamed:(NSString *)name;
 
-+ (Environment *)getCurrent;
++ (Environment *)shared;
 + (void)setCurrent:(Environment *)curEnvironment;
 + (id<Logging>)logging;
 + (NSString *)relayServerNameToHostName:(NSString *)name;
@@ -84,8 +84,9 @@
 + (void)messageThreadId:(NSString *)threadId;
 + (void)messageGroup:(TSThread *)groupThread;
 
-+(void)displayIncomingCall:(nonnull NSString *)callId originalorId:(nonnull NSString *)originator video:(BOOL)hasVideo completion:(void (^_Nonnull)(NSError *_Nullable))completion;
-+(void)displayOutgoingCall:(nonnull NSString *)callId completion:(void (^_Nonnull)(NSError *_Nullable))completion;
-+(void)endCallWithId:(nonnull NSString *)callId;
+// TODO: Move this to the callService or callUIAdapter if not already there
+//+(void)displayIncomingCall:(nonnull NSString *)callId originalorId:(nonnull NSString *)originator video:(BOOL)hasVideo completion:(void (^_Nonnull)(NSError *_Nullable))completion;
+//+(void)displayOutgoingCall:(nonnull NSString *)callId completion:(void (^_Nonnull)(NSError *_Nullable))completion;
+//+(void)endCallWithId:(nonnull NSString *)callId;
 
 @end

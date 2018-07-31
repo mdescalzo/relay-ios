@@ -90,7 +90,7 @@ NSString *const TSIncomingMessageWasReadOnThisDeviceNotification = @"TSIncomingM
                                              messageAuthorId = message.authorId;
 //                                         } else { // Contact Thread
 //                                             messageAuthorId =
-//                                                 [TSContactThread contactIdFromThreadId:message.uniqueThreadId];
+//                                                 [TSThread contactIdFromThreadId:message.uniqueThreadId];
 //                                         }
 
                                          if ([messageAuthorId isEqualToString:authorId]) {

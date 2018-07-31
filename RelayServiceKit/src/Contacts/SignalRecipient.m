@@ -93,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     recipient.isActive = ([(NSNumber *)[userDict objectForKey:@"is_active"] intValue] == 1 ? YES : NO);
     if (!recipient.isActive) {
-        [Environment.getCurrent.contactsManager removeRecipient:recipient withTransaction:transaction];
+        [Environment.shared.contactsManager removeRecipient:recipient withTransaction:transaction];
         return nil;
     }
     
@@ -122,12 +122,12 @@ NS_ASSUME_NONNULL_BEGIN
         if (recipient.flTag.orgSlug.length == 0) {
             recipient.flTag.orgSlug = recipient.orgSlug;
         }
-        [Environment.getCurrent.contactsManager saveTag:recipient.flTag withTransaction:transaction];
+        [Environment.shared.contactsManager saveTag:recipient.flTag withTransaction:transaction];
     } else {
         DDLogDebug(@"Missing tagDictionary for Recipient: %@", self);
     }
 //    [recipient saveWithTransaction:transaction];
-    [Environment.getCurrent.contactsManager saveRecipient:recipient withTransaction:transaction];
+    [Environment.shared.contactsManager saveRecipient:recipient withTransaction:transaction];
 
     return recipient;
 }
@@ -203,7 +203,7 @@ NS_ASSUME_NONNULL_BEGIN
 //-(void)saveWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 //{
 //    if (self.flTag) {
-//        [Environment.getCurrent.contactsManager saveTag:self.flTag withTransaction:transaction];
+//        [Environment.shared.contactsManager saveTag:self.flTag withTransaction:transaction];
 //    }
 //    [super saveWithTransaction:transaction];
 //}
@@ -218,7 +218,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)removeWithTransaction:(YapDatabaseReadWriteTransaction *)transaction
 {
     if (self.flTag) {
-        [Environment.getCurrent.contactsManager removeTag:self.flTag withTransaction:transaction];
+        [Environment.shared.contactsManager removeTag:self.flTag withTransaction:transaction];
     }
     [super removeWithTransaction:transaction];
 }

@@ -405,7 +405,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
                                             if userids.count > 0 {
                                                 DispatchQueue.global(qos: .background).async {
                                                     for uid in userids {
-                                                        Environment.getCurrent().contactsManager.recipient(withUserId: uid)
+                                                        Environment.shared().contactsManager.recipient(withUserId: uid)
                                                     }
                                                 }
                                             }
@@ -432,7 +432,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
             let usersIds: NSArray = results.object(forKey: "userids") as! NSArray
             
             for uid in usersIds {
-                Environment.getCurrent().contactsManager.recipient(withUserId: uid as! String)
+                Environment.shared().contactsManager.recipient(withUserId: uid as! String)
             }
         }
     }
@@ -473,7 +473,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
                 // Spin off background process to pull in participants
                 DispatchQueue.global(qos: .background).async {
                     for uid in userIds {
-                        Environment.getCurrent().contactsManager.updateRecipient(uid as! String)
+                        Environment.shared().contactsManager.updateRecipient(uid as! String)
                     }
                 }
                 Environment.messageGroup(thread)
@@ -586,7 +586,7 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     @objc private func refreshContentFromSource() {
         DispatchQueue.main.async {
             self.refreshControl.beginRefreshing()
-            Environment.getCurrent().contactsManager.refreshCCSMRecipients()
+            Environment.shared().contactsManager.refreshCCSMRecipients()
             self.refreshControl.endRefreshing()
         }
     }

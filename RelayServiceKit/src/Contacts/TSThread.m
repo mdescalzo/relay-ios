@@ -288,7 +288,7 @@ NS_ASSUME_NONNULL_BEGIN
                     break;
                 case 1:
                 {
-                    return [Environment.getCurrent.contactsManager imageForRecipientId:self.participants.lastObject];
+                    return [Environment.shared.contactsManager imageForRecipientId:self.participants.lastObject];
                 }
                     break;
                 case 2:
@@ -299,7 +299,7 @@ NS_ASSUME_NONNULL_BEGIN
                             otherId = uid;
                         }
                     }
-                    return [Environment.getCurrent.contactsManager imageForRecipientId:otherId];
+                    return [Environment.shared.contactsManager imageForRecipientId:otherId];
                 }
                     break;
                 default:
@@ -319,7 +319,7 @@ NS_ASSUME_NONNULL_BEGIN
 //        
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 //            for (NSString* uid in _participants) {
-//                [Environment.getCurrent.contactsManager updateRecipient:uid];
+//                [Environment.shared.contactsManager updateRecipient:uid];
 //             }
 //        });
 //    }

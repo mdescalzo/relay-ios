@@ -8,7 +8,7 @@
 #import "TSThread.h"
 
 // Thread finding imports
-//#import "TSContactThread.h"
+//#import "TSThread.h"
 //#import "TSGroupModel.h"
 //#import "TSGroupThread.h"
 

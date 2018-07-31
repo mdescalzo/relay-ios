@@ -157,7 +157,7 @@
     if (_sender == nil) {
         if ([self.message isKindOfClass:[TSIncomingMessage class]]) {
             TSIncomingMessage *incMessage = (TSIncomingMessage *)self.message;
-            _sender = [Environment.getCurrent.contactsManager recipientWithUserId:incMessage.authorId];
+            _sender = [Environment.shared.contactsManager recipientWithUserId:incMessage.authorId];
         } else {
             _sender = TSAccountManager.sharedInstance.myself;
         }
@@ -170,7 +170,7 @@
     if (_recipients == nil) {
         NSMutableArray *holdingTank = [NSMutableArray new];
         for (NSString *uid in self.message.thread.participants) {
-            SignalRecipient *newRecipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid];
+            SignalRecipient *newRecipient = [Environment.shared.contactsManager recipientWithUserId:uid];
             if (newRecipient) {
                 [holdingTank addObject:newRecipient];
             }

@@ -131,7 +131,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
         return self;
     }
     
-    _contactsManager = [Environment getCurrent].contactsManager;
+    _contactsManager = Environment.shared.contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
 
     return self;
@@ -144,7 +144,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
         return self;
     }
     
-    _contactsManager = [Environment getCurrent].contactsManager;
+    _contactsManager = Environment.shared.contactsManager;
     _messagesManager = [TSMessagesManager sharedManager];
 
     return self;
@@ -153,7 +153,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    [[Environment getCurrent] setForstaViewController:self];
+    [Environment.shared setForstaViewController:self];
 }
 
 -(void)dealloc
@@ -169,7 +169,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     [self.uiDatabaseConnection beginLongLivedReadTransaction];
     
     // TODO: Investigate this!
-    [[Environment getCurrent].contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
+    [Environment.shared.contactsManager.getObservableContacts watchLatestValue:^(id latestValue) {
         [self.tableView reloadData];
     }
                                                                             onThread:[NSThread mainThread]
@@ -189,7 +189,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
     
     // setup methodology lifted from Signals
     [self ensureNotificationsUpToDate];
-    [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+    [Environment.shared.contactsManager doAfterEnvironmentInitSetup];
     
     // FAB
     [self.view addSubview:self.fabButton];
@@ -270,7 +270,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 //                        style:UIAlertActionStyleCancel
 //                        handler:^(UIAlertAction *action) {
 //                            [self ensureNotificationsUpToDate];
-//                            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+//                            [Environment.shared.contactsManager doAfterEnvironmentInitSetup];
 //                        }]];
 //
 //            [self presentViewController:controller animated:YES completion:nil];
@@ -279,7 +279,7 @@ NSString *FLUserSelectedFromDirectory = @"FLUserSelectedFromDirectory";
 //        default: {
 //            DDLogError(@"%@ Unexpected for new user to have kABAuthorizationStatus:%ld", self.tag, status);
 //            [self ensureNotificationsUpToDate];
-//            [[Environment getCurrent].contactsManager doAfterEnvironmentInitSetup];
+//            [Environment.shared.contactsManager doAfterEnvironmentInitSetup];
 //
 //            break;
 //        }
@@ -378,7 +378,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                                                           handler:^(UIAlertAction * _Nonnull action) {
                                                               OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:thread
                                                                                                                                    controlType:FLControlMessageThreadUpdateKey];
-                                                              [Environment.getCurrent.messageSender sendControlMessage:message
+                                                              [Environment.shared.messageSender sendControlMessage:message
                                                                                                           toRecipients:[NSCountedSet setWithArray:thread.participants]
                                                                                                                success:^{
                                                                                                                    [self deleteThread:thread];
@@ -451,7 +451,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     });
 }
 
-- (void)presentCall:(nonnull CallKitCall *)call
+- (void)presentCall:(nonnull RelayCall *)call
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         CallViewController *callViewController  = [[UIStoryboard storyboardWithName:AppDelegateStoryboardMain bundle:NULL]
@@ -522,7 +522,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         }
         if (controlMessage) {
             dispatch_async([OWSDispatch sendingQueue], ^{
-                [Environment.getCurrent.messageSender sendSyncTranscriptForMessage:controlMessage];
+                [Environment.shared.messageSender sendSyncTranscriptForMessage:controlMessage];
             });
         }
     });

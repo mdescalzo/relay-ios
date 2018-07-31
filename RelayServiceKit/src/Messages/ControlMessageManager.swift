@@ -65,7 +65,11 @@ class ControlMessageManager : NSObject
     
     static private func handleCallOffer(message: IncomingControlMessage)
     {
-//        DDLogInfo("Received callOffer message: \(message.forstaPayload)")
+        guard #available(iOS 10.0, *) else {
+            DDLogInfo("\(self.tag): Ignoring callOffer controler message due to iOS version.")
+            return
+        }
+        
         
         let dataBlob = message.forstaPayload.object(forKey: "data") as? NSDictionary
         
@@ -80,25 +84,23 @@ class ControlMessageManager : NSObject
         let peerId = dataBlob?.object(forKey: "peerId") as? String
         let offer = dataBlob?.object(forKey: "offer") as? NSDictionary
         
+        
         guard callId != nil && members != nil && originator != nil && peerId != nil && offer != nil else {
-            DDLogInfo("Received callOffer message missing required objects.")
+            DDLogDebug("Received callOffer message missing required objects.")
             return
         }
         
-        // MARK: TEMPORARY
-        if #available(iOS 10.0, *) {
-            Environment.displayIncomingCall(callId!, originalorId: originator!, video: false) { (error) in
-                if  error != nil {
-                    DDLogError("Error displaying incoming call: \(String(describing: error?.localizedDescription))");
-                }
-            }
-
-        } else {
-            // Fallback on earlier versions
-            DDLogInfo("\(self.tag): Unable to hand incoming call due to iOS version.")
+        let sdpString = offer?.object(forKey: "sdp") as? String
+        
+        guard sdpString != nil else {
+            DDLogDebug("sdb string missing from call offer.")
             return
         }
-        ///////////////////
+        
+        
+        let callOffer = CallOffer(callId: callId!, members: members!, originator: originator!, peerId: peerId!, sdpString: sdpString!)
+        
+        Environment.shared().callService.handleReceivedOffer(thread: <#T##TSThread#>, callId: <#T##UInt64#>, sessionDescription: <#T##String#>)
 
     }
 
@@ -132,7 +134,7 @@ class ControlMessageManager : NSObject
                 
                 let thread = message.thread!
                 let senderId = (message.forstaPayload.object(forKey: "sender") as! NSDictionary).object(forKey: "userId") as! String
-                let sender: SignalRecipient? = Environment.getCurrent().contactsManager.recipient(withUserId: senderId)
+                let sender: SignalRecipient? = Environment.shared().contactsManager.recipient(withUserId: senderId)
              
                 // Handle thread name change
                 if let threadTitle = threadUpdates.object(forKey: FLThreadTitleKey) as? String {
@@ -182,7 +184,7 @@ class ControlMessageManager : NSObject
                                                                 if uid == TSAccountManager.sharedInstance().myself?.uniqueId {
                                                                     customMessage = NSLocalizedString("GROUP_YOU_LEFT", comment: "")
                                                                 } else {
-                                                                    let recipient = Environment.getCurrent().contactsManager.recipient(withUserId: uid , transaction: transaction)
+                                                                    let recipient = Environment.shared().contactsManager.recipient(withUserId: uid , transaction: transaction)
                                                                     let format = NSLocalizedString("GROUP_MEMBER_LEFT", comment: "") as NSString
                                                                     customMessage = NSString.init(format: format as NSString, (recipient?.fullName)!) as String
                                                                 }
@@ -202,7 +204,7 @@ class ControlMessageManager : NSObject
                                                                 if uid == TSAccountManager.sharedInstance().myself?.uniqueId {
                                                                     customMessage = NSLocalizedString("GROUP_YOU_JOINED", comment: "")
                                                                 } else {
-                                                                    let recipient = Environment.getCurrent().contactsManager.recipient(withUserId: uid , transaction: transaction)
+                                                                    let recipient = Environment.shared().contactsManager.recipient(withUserId: uid , transaction: transaction)
                                                                     let format = NSLocalizedString("GROUP_MEMBER_JOINED", comment: "") as NSString
                                                                     customMessage = NSString.init(format: format as NSString, (recipient?.fullName)!) as String
                                                                 }

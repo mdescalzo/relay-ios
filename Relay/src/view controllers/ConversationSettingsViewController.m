@@ -93,8 +93,8 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
     }
     
     _storageManager = [TSStorageManager sharedManager];
-    _contactsManager = [Environment getCurrent].contactsManager;
-    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _contactsManager = Environment.shared.contactsManager;
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:Environment.shared.networkManager
                                                        storageManager:_storageManager
                                                       contactsManager:_contactsManager];
     return self;
@@ -108,8 +108,8 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
     }
     
     _storageManager = [TSStorageManager sharedManager];
-    _contactsManager = [Environment getCurrent].contactsManager;
-    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _contactsManager = Environment.shared.contactsManager;
+    _messageSender = [[FLMessageSender alloc] initWithNetworkManager:Environment.shared.networkManager
                                                        storageManager:_storageManager
                                                       contactsManager:_contactsManager];
     return self;
@@ -359,7 +359,7 @@ static NSString *const ConversationSettingsViewControllerSegueShowGroupMembers =
     } completionBlock:^{
         OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
                                                                              controlType:FLControlMessageThreadUpdateKey];
-        [Environment.getCurrent.messageSender sendMessage:message
+        [Environment.shared.messageSender sendMessage:message
                                                   success:^{
                                                       DDLogInfo(@"%@ Successfully left group.", self.tag);
                                                       [self.thread.writeDbConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {

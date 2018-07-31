@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class TSInvalidIdentityKeyReceivingErrorMessage;
 
 /**
- *  TSThread is the superclass of TSContactThread and TSGroupThread
+ *  TSThread is the superclass of TSThread and TSGroupThread
  */
 
 @interface TSThread : TSYapDatabaseObject

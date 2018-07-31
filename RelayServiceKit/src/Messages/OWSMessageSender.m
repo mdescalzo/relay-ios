@@ -183,7 +183,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     //  2.) fail and create a new identical error message in the thread.
     [errorMessage remove];
     
-    //    if ([errorMessage.thread isKindOfClass:[TSContactThread class]]) {
+    //    if ([errorMessage.thread isKindOfClass:[TSThread class]]) {
     //        return [self sendMessage:message success:successHandler failure:failureHandler];
     //    }
     SignalRecipient *failedRecipient = [SignalRecipient fetchObjectWithUniqueID:errorMessage.recipientId];
@@ -205,7 +205,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     NSMutableArray<SignalRecipient *> *recipients = [NSMutableArray new];
     
     for (NSString *recipientId in identifiers) {
-        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:recipientId];
+        SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:recipientId];
         
         if (recipient) {
             [recipients addObject:recipient];
@@ -395,7 +395,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         TSInfoMessage *infoMessage = [TSInfoMessage userNotRegisteredMessageInThread:thread transaction:transaction];
         infoMessage.customMessage = [NSString stringWithFormat:@"%@: %@", infoMessage.description, recipient.fullName];
         [infoMessage saveWithTransaction:transaction];
-        [Environment.getCurrent.contactsManager removeRecipient:recipient withTransaction:transaction];
+        [Environment.shared.contactsManager removeRecipient:recipient withTransaction:transaction];
     }];
 }
 
@@ -412,7 +412,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     }
     remainingAttempts -= 1;
     
-    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:recipientId];
+    SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:recipientId];
     
     if (!recipient) {
         DDLogError(@"Attempted Special send to nil recipient.");
@@ -457,7 +457,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                          
                                          switch (statuscode) {
                                              case 404: {
-                                                 [Environment.getCurrent.contactsManager removeRecipient:recipient];
+                                                 [Environment.shared.contactsManager removeRecipient:recipient];
                                                  return failureHandler(OWSErrorMakeNoSuchSignalRecipientError());
                                              }
                                              case 409: {
@@ -645,7 +645,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         [recipient addDevices:[NSSet setWithArray:missingDevices]];
     }
     
-    [Environment.getCurrent.contactsManager saveRecipient:recipient];
+    [Environment.shared.contactsManager saveRecipient:recipient];
 }
 
 - (void)handleMessageSentLocally:(TSOutgoingMessage *)message

@@ -47,7 +47,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
 //    self.groupContacts =
 //        [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
 //
-//    [[Environment.getCurrent contactsManager]
+//    [[Environment.shared contactsManager]
 //            .getObservableContacts watchLatestValue:^(id latestValue) {
 //      self.groupContacts =
 //          [[GroupContactsResult alloc] initWithMembersId:self.thread.participants without:nil];
@@ -217,7 +217,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     if (_participants == nil) {
         NSMutableArray *holdingArray = [NSMutableArray new];
         for (NSString *uid in self.thread.participants) {
-            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid];
+            SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:uid];
             if (recipient) {
                 [holdingArray addObject:recipient];
             }

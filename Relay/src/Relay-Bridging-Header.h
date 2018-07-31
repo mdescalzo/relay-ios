@@ -36,3 +36,8 @@
 #import "OWSAttachmentsProcessor.h"
 #import "TSNetworkManager.h"
 #import "AudioController.h"
+#import "NSObject+OWS.h"
+#import "TSCall.h"
+#import "OWSAsserts.h"
+#import "OWSBackgroundTask.h"
+#import "Threading.h"

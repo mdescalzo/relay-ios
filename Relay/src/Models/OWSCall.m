@@ -30,9 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCallRecord:(TSCall *)callRecord
 {
     TSThread *thread = callRecord.thread;
-//    TSContactThread *contactThread;
-//    if ([thread isKindOfClass:[TSContactThread class]]) {
-//        contactThread = (TSContactThread *)thread;
+//    TSThread *contactThread;
+//    if ([thread isKindOfClass:[TSThread class]]) {
+//        contactThread = (TSThread *)thread;
 //    } else {
 //        DDLogError(@"%@ Unexpected thread type: %@", self.tag, thread);
 //    }

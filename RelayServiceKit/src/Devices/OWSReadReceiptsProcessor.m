@@ -62,7 +62,7 @@ NSString *const OWSReadReceiptsProcessorMarkedMessageAsReadNotification =
         messageAuthorId = message.authorId;
     } else { // Contact Thread
         DDLogDebug(@"No authorId set for message!");
-        //        messageAuthorId = [TSContactThread contactIdFromThreadId:message.uniqueThreadId];
+        //        messageAuthorId = [TSThread contactIdFromThreadId:message.uniqueThreadId];
     }
 
     OWSReadReceipt *readReceipt = [OWSReadReceipt firstWithSenderId:messageAuthorId timestamp:message.timestamp];

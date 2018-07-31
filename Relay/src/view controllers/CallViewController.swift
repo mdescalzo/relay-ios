@@ -30,7 +30,7 @@ class CallViewController: UIViewController {
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var speakerButton: UIButton!
     
-    var call: CallKitCall?
+    var call: RelayCall?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,14 +46,14 @@ class CallViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleCallStateDidChangeNotification(notification:)),
-                                               name: CallKitManager.CallStateChangedNotification,
+                                               name: CallService.CallStateChangedNotification,
                                                object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NotificationCenter.default.removeObserver(self, name: CallKitManager.CallStateChangedNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: CallService.CallStateChangedNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,7 +61,7 @@ class CallViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func configure(call: CallKitCall) {
+    func configure(call: RelayCall) {
         
         self.call = call
         self.updateUI()
@@ -69,11 +69,11 @@ class CallViewController: UIViewController {
     
     // MARK: Button Actions
     @IBAction private func endCallTapped(_ sender: Any) {
-        Environment.endCall(withId: (call?.uuid.uuidString)!)
+//        Environment.endCall(withId: (call?.uuid.uuidString)!)
     }
     
     @IBAction private func rejectCallTapped(_ sender: Any) {
-        Environment.endCall(withId: (call?.uuid.uuidString)!)
+//        Environment.endCall(withId: (call?.uuid.uuidString)!)
     }
     
     @IBAction private func acceptCallTapped(_ sender: Any) {

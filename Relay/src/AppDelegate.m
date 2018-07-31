@@ -100,7 +100,7 @@ NSString *const AppDelegateStoryboardLaunchScreen = @"Launch Screen";
     UIApplicationState launchState = application.applicationState;
     if ([TSAccountManager isRegistered]) {
         DDLogDebug(@"TSAccountManager isRegistered TRUE.");
-        [Environment.getCurrent.contactsManager doAfterEnvironmentInitSetup];
+        [Environment.shared.contactsManager doAfterEnvironmentInitSetup];
         
         DDLogDebug(@"Begin push registration promise chain.");
         OWSAccountManager *accountManager = [[OWSAccountManager alloc] initWithTextSecureAccountManager:[TSAccountManager sharedInstance]];
@@ -149,7 +149,7 @@ NSString *const AppDelegateStoryboardLaunchScreen = @"Launch Screen";
 - (void)setupTSKitEnv
 {
     DDLogDebug(@"[TextSecureKitEnv sharedEnv].contactsManager");
-    [TextSecureKitEnv sharedEnv].contactsManager = [Environment getCurrent].contactsManager;
+    [TextSecureKitEnv sharedEnv].contactsManager = [Environment shared].contactsManager;
 
     DDLogDebug(@"[[TSStorageManager sharedManager] setupDatabase]");
     [[TSStorageManager sharedManager] setupDatabase];
@@ -159,9 +159,9 @@ NSString *const AppDelegateStoryboardLaunchScreen = @"Launch Screen";
     
     DDLogDebug(@"FLMessageSender *messageSender init");
     FLMessageSender *messageSender =
-    [[FLMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    [[FLMessageSender alloc] initWithNetworkManager:[Environment shared].networkManager
                                       storageManager:[TSStorageManager sharedManager]
-                                     contactsManager:[Environment getCurrent].contactsManager];
+                                     contactsManager:[Environment shared].contactsManager];
      
     DDLogDebug(@"incomingMessageReadObserver init");
     self.incomingMessageReadObserver =
@@ -285,7 +285,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
                 } else {
                     [self protectScreen];
                 }
-                [Environment.getCurrent.forstaViewController updateInboxCountLabel];
+                [Environment.shared.forstaViewController updateInboxCountLabel];
             });
             [TSSocketManager resignActivity];
         }
@@ -299,7 +299,7 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
 performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
   completionHandler:(void (^)(BOOL succeeded))completionHandler {
     if ([TSAccountManager isRegistered]) {
-        [[Environment getCurrent].forstaViewController composeNew:nil];
+        [[Environment shared].forstaViewController composeNew:nil];
         completionHandler(YES);
     } else {
         UIAlertController *controller =
@@ -312,7 +312,7 @@ performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem
                                                      handler:^(UIAlertAction *_Nonnull action){
                                                          
                                                      }]];
-        [[Environment getCurrent]
+        [[Environment shared]
          .forstaViewController.presentedViewController presentViewController:controller
          animated:YES
          completion:^{

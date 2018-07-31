@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
         messageAuthorId = message.authorId;
     } else { // Contact Thread
         DDLogDebug(@"No authorId set for message!");
-//        messageAuthorId = [TSContactThread contactIdFromThreadId:message.uniqueThreadId];
+//        messageAuthorId = [TSThread contactIdFromThreadId:message.uniqueThreadId];
     }
 
     OWSReadReceipt *readReceipt = [[OWSReadReceipt alloc] initWithSenderId:messageAuthorId timestamp:message.timestamp];

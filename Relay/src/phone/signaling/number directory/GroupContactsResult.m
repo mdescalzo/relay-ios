@@ -28,7 +28,7 @@
 - (instancetype)initWithMembersId:(NSArray *)memberIdentifiers without:(NSArray *)removeIds {
     self = [super init];
 
-    FLContactsManager *manager = [Environment.getCurrent contactsManager];
+    FLContactsManager *manager = [Environment.shared contactsManager];
 
     NSMutableSet *remainingIdentifiers = [NSMutableSet setWithArray:memberIdentifiers];
 

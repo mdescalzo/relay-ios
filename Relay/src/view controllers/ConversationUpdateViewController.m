@@ -53,9 +53,9 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         return self;
     }
     
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:Environment.shared.networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:[Environment getCurrent].contactsManager];
+                                                      contactsManager:Environment.shared.contactsManager];
     return self;
 }
 
@@ -66,9 +66,9 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
         return self;
     }
     
-    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:[Environment getCurrent].networkManager
+    _messageSender = [[OWSMessageSender alloc] initWithNetworkManager:Environment.shared.networkManager
                                                        storageManager:[TSStorageManager sharedManager]
-                                                      contactsManager:[Environment getCurrent].contactsManager];
+                                                      contactsManager:Environment.shared.contactsManager];
     return self;
 }
 
@@ -114,7 +114,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             [self setupGroupImageButton:self.thread.image];
         } else {
             [self setupGroupImageButton:[OWSAvatarBuilder buildImageForThread:self.thread
-                                                              contactsManager:Environment.getCurrent.contactsManager
+                                                              contactsManager:Environment.shared.contactsManager
                                                                      diameter:self.groupImageButton.frame.size.height]];
         }
     }
@@ -160,7 +160,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
     // Get parts
     NSString *searchString = nil;
     for (NSString *userid in model.groupMemberIds) {
-        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
+        SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:userid];
         if (searchString.length == 0) {
             searchString =  [NSString stringWithFormat:@"@%@", recipient.flTag.slug];
         } else {
@@ -254,7 +254,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             // Send control message
             OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
                                                                                  controlType:FLControlMessageThreadUpdateKey];
-            [Environment.getCurrent.messageSender sendControlMessage:message
+            [Environment.shared.messageSender sendControlMessage:message
                                                         toRecipients:[NSCountedSet setWithArray:self.thread.participants]
                                                              success:nil
                                                              failure:nil];
@@ -287,7 +287,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                         // Send control message
                         OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
                                                                                              controlType:FLControlMessageThreadUpdateKey];
-                        [Environment.getCurrent.messageSender sendControlMessage:message
+                        [Environment.shared.messageSender sendControlMessage:message
                                                                     toRecipients:participants
                                                                          success:nil
                                                                          failure:nil];
@@ -298,7 +298,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                             [leaving minusSet:newParticipants];
                             for (NSString *uid in leaving) {
                                 NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_LEFT", nil);
-                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid];
+                                SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:uid];
                                 NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
                                 
                                 [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
@@ -311,7 +311,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                             [joining minusSet:self.originalThreadParticipants];
                             for (NSString *uid in joining) {
                                 NSString *messageFormat = NSLocalizedString(@"GROUP_MEMBER_JOINED", nil);
-                                SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:uid];
+                                SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:uid];
                                 NSString *customMessage = [NSString stringWithFormat:messageFormat, recipient.fullName];
                                 
                                 [[[TSInfoMessage alloc] initWithTimestamp:[NSDate ows_millisecondTimeStamp]
@@ -344,7 +344,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
             OutgoingControlMessage *message = [[OutgoingControlMessage alloc] initWithThread:self.thread
                                                                                  controlType:FLControlMessageThreadUpdateKey];
             NSData *imageData = UIImagePNGRepresentation(self.thread.image);
-            [Environment.getCurrent.messageSender sendAttachmentData:imageData
+            [Environment.shared.messageSender sendAttachmentData:imageData
                                                             filename:@""
                                                          contentType:OWSMimeTypeImagePng
                                                            inMessage:message
@@ -558,7 +558,7 @@ static NSString *const kUnwindToMessagesViewSegue = @"UnwindToMessagesViewSegue"
                 }
             }
         }];
-        //        for (SignalRecipient *recipient in [Environment.getCurrent.contactsManager activeRecipients]) {
+        //        for (SignalRecipient *recipient in [Environment.shared.contactsManager activeRecipients]) {
         //            if (![self.thread.participants containsObject:recipient.uniqueId] && recipient.isActive) {
         //                [mArray addObject:recipient];
         //            }

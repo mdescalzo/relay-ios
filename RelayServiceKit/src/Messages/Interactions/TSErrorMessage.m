@@ -64,7 +64,7 @@
         }
 //    }];
     
-//    TSContactThread *contactThread = [TSContactThread getOrCreateThreadWithContactId:envelope.source transaction:transaction];
+//    TSThread *contactThread = [TSThread getOrCreateThreadWithContactId:envelope.source transaction:transaction];
     
     return [self initWithTimestamp:envelope.timestamp inThread:thread failedMessageType:errorMessageType];
 }

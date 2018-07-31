@@ -52,7 +52,7 @@ static const NSTimeInterval silenceWindow = 1.0;  // seconds
 //    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
 //        // Remove previous notification of call and show missed notification.
 //        UILocalNotification *notif = [[PushManager sharedManager] closeVOIPBackgroundTask];
-//        TSContactThread *cThread   = (TSContactThread *)thread;
+//        TSThread *cThread   = (TSThread *)thread;
 //
 //        if (call.callType == RPRecentCallTypeMissed) {
 //            if (notif) {

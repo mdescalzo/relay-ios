@@ -18,7 +18,7 @@ static Environment *environment = nil;
 
 @implementation Environment
 
-+ (Environment *)getCurrent {
++ (Environment *)shared {
     NSAssert((environment != nil), @"Environment is not defined.");
     return environment;
 }
@@ -27,24 +27,24 @@ static Environment *environment = nil;
     environment = curEnvironment;
 }
 + (ErrorHandlerBlock)errorNoter {
-    return self.getCurrent.errorNoter;
+    return self.shared.errorNoter;
 }
 + (bool)hasEnabledTestingOrLegacyOption:(NSString *)flag {
-    return [self.getCurrent.testingAndLegacyOptions containsObject:flag];
+    return [self.shared.testingAndLegacyOptions containsObject:flag];
 }
 
 + (NSString *)relayServerNameToHostName:(NSString *)name {
-    return [NSString stringWithFormat:@"%@.%@", name, Environment.getCurrent.relayServerHostNameSuffix];
+    return [NSString stringWithFormat:@"%@.%@", name, Environment.shared.relayServerHostNameSuffix];
 }
 + (SecureEndPoint *)getMasterServerSecureEndPoint {
-    return Environment.getCurrent.masterServerSecureEndPoint;
+    return Environment.shared.masterServerSecureEndPoint;
 }
 + (SecureEndPoint *)getSecureEndPointToDefaultRelayServer {
-    return [Environment getSecureEndPointToSignalingServerNamed:Environment.getCurrent.defaultRelayName];
+    return [Environment getSecureEndPointToSignalingServerNamed:Environment.shared.defaultRelayName];
 }
 + (SecureEndPoint *)getSecureEndPointToSignalingServerNamed:(NSString *)name {
     ows_require(name != nil);
-    Environment *env = Environment.getCurrent;
+    Environment *env = Environment.shared;
 
     NSString *hostName         = [self relayServerNameToHostName:name];
     HostNameEndPoint *location = [HostNameEndPoint hostNameEndPointWithHostName:hostName andPort:env.serverPort];
@@ -86,7 +86,7 @@ static Environment *environment = nil;
     _networkManager = networkManager;
     _messageSender = messageSender;
     _invitationService = [FLInvitationService new];
-    _callManager = [CallKitManager new];
+    _callService = [CallService new];
     [self callProviderDelegate];
 
     return self;
@@ -94,11 +94,11 @@ static Environment *environment = nil;
 
 + (id<Logging>)logging {
     // Many tests create objects that rely on Environment only for logging.
-    // So we bypass the nil check in getCurrent and silently don't log during unit testing, instead of failing hard.
+    // So we bypass the nil check in shared and silently don't log during unit testing, instead of failing hard.
     if (environment == nil)
         return nil;
 
-    return Environment.getCurrent.logging;
+    return Environment.shared.logging;
 }
 
 + (PropertyListPreferences *)preferences {
@@ -124,7 +124,7 @@ static Environment *environment = nil;
         return;
     }
 
-    Environment *env          = [self getCurrent];
+    Environment *env          = [self shared];
     FLThreadViewController *vc = env.forstaViewController;
     UIViewController *topvc   = vc.navigationController.topViewController;
     
@@ -142,7 +142,7 @@ static Environment *environment = nil;
 
 
 + (void)messageGroup:(TSThread *)groupThread {
-    Environment *env          = [self getCurrent];
+    Environment *env          = [self shared];
     FLThreadViewController *vc = env.forstaViewController;
 
     [vc presentThread:groupThread keyboardOnViewAppearing:YES];
@@ -153,7 +153,7 @@ static Environment *environment = nil;
     [SmileAuthenticator clearPassword];
     [[TSStorageManager sharedManager] wipeSignalStorage];
     [Environment.preferences clear];
-    [Environment.getCurrent.contactsManager nukeAndPave];
+    [Environment.shared.contactsManager nukeAndPave];
     [DebugLogger.sharedLogger wipeLogs];
 
     exit(0);
@@ -177,7 +177,7 @@ static Environment *environment = nil;
 -(CallKitProviderDelegate *)callProviderDelegate
 {
     if (_callProviderDelegate == nil) {
-        _callProviderDelegate = [[CallKitProviderDelegate alloc] initWithCallManager:self.callManager];
+        _callProviderDelegate = [[CallKitProviderDelegate alloc] initWithCallManager:self.callService];
     }
     return _callProviderDelegate;
 }
@@ -185,12 +185,12 @@ static Environment *environment = nil;
 // MARK: Call management
 +(void)displayIncomingCall:(nonnull NSString *)callId originalorId:(nonnull NSString *)originator video:(BOOL)hasVideo completion:(void (^_Nonnull)(NSError *_Nullable))completion
 {
-    __block SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:originator];
+    __block SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:originator];
     __block NSUUID *callUUID = [[NSUUID alloc] initWithUUIDString:callId];
     __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:nil];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [Environment.getCurrent.callProviderDelegate reportIncomingCallWithUuid:callUUID handle:recipient.fullName hasVideo:hasVideo completion:^(NSError *error) {
+        [Environment.shared.callProviderDelegate reportIncomingCallWithUuid:callUUID handle:recipient.fullName hasVideo:hasVideo completion:^(NSError *error) {
             [UIApplication.sharedApplication endBackgroundTask:backgroundTaskIdentifier];
             
             if (completion != nil) {
@@ -206,9 +206,9 @@ static Environment *environment = nil;
     __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithExpirationHandler:nil];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        CallKitCall *call = [Environment.getCurrent.callManager callWithUUIDWithUuid:callUUID];
+        RelayCall *call = [Environment.shared.callService callWithUUIDWithUuid:callUUID];
         
-        [Environment.getCurrent.forstaViewController presentCall:call];
+        [Environment.shared.forstaViewController presentCall:call];
         
         [UIApplication.sharedApplication endBackgroundTask:backgroundTaskIdentifier];
         
@@ -222,9 +222,9 @@ static Environment *environment = nil;
 +(void)endCallWithId:(NSString *)callId
 {
     __block NSUUID *callUUID = [[NSUUID alloc] initWithUUIDString:callId];
-    CallKitCall *call = [Environment.getCurrent.callManager callWithUUIDWithUuid:callUUID];
+    RelayCall *call = [Environment.shared.callService callWithUUIDWithUuid:callUUID];
     if (call != nil) {
-        [Environment.getCurrent.callManager endWithCall:call];
+        [Environment.shared.callManager endWithCall:call];
     }
 }
                    

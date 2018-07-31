@@ -26,7 +26,7 @@
 +(instancetype _Nullable)getOrCreateTagWithDictionary:(NSDictionary *_Nonnull)tagDictionary;
 {
     __block FLTag *aTag = nil;
-    [Environment.getCurrent.contactsManager.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [Environment.shared.contactsManager.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         aTag = [self getOrCreateTagWithDictionary:tagDictionary transaction:transaction];
     }];
     return aTag;
@@ -79,7 +79,7 @@
         aTag.orgSlug = [orgDict objectForKey:FLTagSlugKey];
         aTag.orgUrl = [orgDict objectForKey:FLTagURLKey];
     }
-    [Environment.getCurrent.contactsManager saveTag:aTag withTransaction:transaction];
+    [Environment.shared.contactsManager saveTag:aTag withTransaction:transaction];
 
     return aTag;
 }
@@ -87,7 +87,7 @@
 +(instancetype _Nonnull)getOrCreateTagWithId:(NSString *_Nonnull)tagId
 {
     __block FLTag *aTag = nil;
-    [Environment.getCurrent.contactsManager.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+    [Environment.shared.contactsManager.mainConnection readWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
         [self getOrCreateTagWithId:tagId transaction:transaction];
     }];
     return aTag;

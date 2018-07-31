@@ -7,6 +7,8 @@
     #import "Environment.h"
     #import "CCSMKeys.h"
     #import <CocoaLumberjack/CocoaLumberjack.h>
+    #import "NSObject+OWS.h"
+
 
     #ifdef DEBUG
     static const NSUInteger ddLogLevel = DDLogLevelAll;

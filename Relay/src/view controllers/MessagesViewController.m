@@ -167,8 +167,8 @@ typedef enum : NSUInteger {
 
 - (void)commonInit
 {
-    _contactsManager = [Environment getCurrent].contactsManager;
-    _messageSender = [Environment getCurrent].messageSender;
+    _contactsManager = Environment.shared.contactsManager;
+    _messageSender = Environment.shared.messageSender;
     _storageManager = [TSStorageManager sharedManager];
     _disappearingMessagesJob = [[OWSDisappearingMessagesJob alloc] initWithStorageManager:_storageManager];
     _messagesManager = [TSMessagesManager sharedManager];
@@ -613,14 +613,14 @@ typedef enum : NSUInteger {
             userid = uid;
         }
     }
-    SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
+    SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:userid];
     return [PhoneNumber phoneNumberFromUserSpecifiedText:recipient.phoneNumber];
 }
 
 - (void)callAction {
     if ([self canCall]) {
 
-        [Environment.getCurrent.callManager startCallWithHandle:self.thread.displayName video:NO];
+        [Environment.shared.callManager startCallWithHandle:self.thread.displayName video:NO];
         
     } else {
         DDLogWarn(@"Tried to initiate a call but thread is not callable.");
@@ -644,7 +644,7 @@ typedef enum : NSUInteger {
 //                userid = uid;
 //            }
 //        }
-//        SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:userid];
+//        SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:userid];
 //        if (recipient.phoneNumber) {
 //            return YES;
 //        } else {
@@ -1497,14 +1497,14 @@ typedef enum : NSUInteger {
                                                    style:UIAlertActionStyleDefault
                                                  handler:^(UIAlertAction * _Nonnull action) {
 #warning XXX Corrupted message handling here
-//                                      if (![self.thread isKindOfClass:[TSContactThread class]]) {
+//                                      if (![self.thread isKindOfClass:[TSThread class]]) {
 //                                          // Corrupt Message errors only appear in contact threads.
                                                      DDLogError(
                                                                 @"%@ Unexpected request to reset session in group thread. Refusing",
                                                                 self.tag);
                                                      return;
 //                                      }
-//                                      TSContactThread *contactThread = (TSContactThread *)self.thread;
+//                                      TSThread *contactThread = (TSThread *)self.thread;
 //                                      [OWSSessionResetJob runWithCorruptedMessage:message
 //                                                                    contactThread:contactThread
 //                                                                    messageSender:self.messageSender

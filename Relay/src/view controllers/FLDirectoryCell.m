@@ -40,14 +40,14 @@
         self.nameLabel.attributedText = [self attributedStringForContact:recipient];
         self.detailLabel.text = recipient.orgSlug;
         
-        UIImage *avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
+        UIImage *avatar = [Environment.shared.contactsManager imageForRecipientId:recipient.uniqueId];
         
         if (avatar) {
             self.avatarImageView.image = avatar;
         } else {
             OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                    name:recipient.fullName
-                                                                                        contactsManager:[Environment getCurrent].contactsManager
+                                                                                        contactsManager:Environment.shared.contactsManager
                                                                                                diameter:self.avatarImageView.frame.size.height];
             self.avatarImageView.image = [avatarBuilder buildDefaultImage];
         }
@@ -69,21 +69,21 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         UIImage *avatar = nil;
         if (aTag.recipientIds.count == 1) {
-            SignalRecipient *recipient = [Environment.getCurrent.contactsManager recipientWithUserId:[aTag.recipientIds anyObject]];
-            avatar = [Environment.getCurrent.contactsManager imageForRecipientId:recipient.uniqueId];
+            SignalRecipient *recipient = [Environment.shared.contactsManager recipientWithUserId:[aTag.recipientIds anyObject]];
+            avatar = [Environment.shared.contactsManager imageForRecipientId:recipient.uniqueId];
             if (avatar == nil) {
                 OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:recipient.uniqueId
                                                                                                        name:recipient.fullName
-                                                                                            contactsManager:Environment.getCurrent.contactsManager
+                                                                                            contactsManager:Environment.shared.contactsManager
                                                                                                    diameter:self.contentView.frame.size.height];
                 avatar = [avatarBuilder buildDefaultImage];
                 recipient.avatar = avatar;
-                [Environment.getCurrent.contactsManager saveRecipient:recipient];
+                [Environment.shared.contactsManager saveRecipient:recipient];
             }
         } else {
             OWSContactAvatarBuilder *avatarBuilder = [[OWSContactAvatarBuilder alloc] initWithContactId:aTag.uniqueId
                                                                                                    name:description
-                                                                                        contactsManager:[Environment getCurrent].contactsManager
+                                                                                        contactsManager:Environment.shared.contactsManager
                                                                                                diameter:self.contentView.frame.size.height];
             avatar = [avatarBuilder buildDefaultImage];
         }

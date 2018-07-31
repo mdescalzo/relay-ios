@@ -170,7 +170,7 @@ CGFloat const kRowHeight = 40;
             UIViewController *vc = [navController topViewController];
 
             // Call service to make the invitation
-            [[[Environment getCurrent] invitationService] inviteUsersFrom:vc];
+            [[Environment.shared invitationService] inviteUsersFrom:vc];
         }
             break;
         case kDirectoryIndex:  //         Directory selected

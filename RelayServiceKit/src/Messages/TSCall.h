@@ -1,23 +1,45 @@
-//  Created by Frederic Jacobs on 12/11/14.
-//  Copyright (c) 2014 Open Whisper Systems. All rights reserved.
+//
+//  Copyright (c) 2018 Open Whisper Systems. All rights reserved.
+//
 
+//#import "OWSReadTracking.h"
 #import "TSInteraction.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @class TSThread;
 
 typedef enum {
     RPRecentCallTypeIncoming = 1,
     RPRecentCallTypeOutgoing,
-    RPRecentCallTypeMissed,
+    RPRecentCallTypeIncomingMissed,
+    // These call types are used until the call connects.
+    RPRecentCallTypeOutgoingIncomplete,
+    RPRecentCallTypeIncomingIncomplete,
+    RPRecentCallTypeIncomingMissedBecauseOfChangedIdentity,
+    RPRecentCallTypeIncomingDeclined,
+    RPRecentCallTypeOutgoingMissed,
 } RPRecentCallType;
 
-@interface TSCall : TSInteraction
+NSString *NSStringFromCallType(RPRecentCallType callType);
+
+@interface TSCall : TSInteraction // <OWSReadTracking, OWSPreviewText>
 
 @property (nonatomic, readonly) RPRecentCallType callType;
 
-- (instancetype)initWithTimestamp:(uint64_t)timeStamp
-                   withCallNumber:(NSString *)contactNumber
-                         callType:(RPRecentCallType)callType
-                         inThread:(TSThread *)thread;
+- (instancetype)initInteractionWithTimestamp:(uint64_t)timestamp inThread:(TSThread *)thread NS_UNAVAILABLE;
+
+- (instancetype)initWithTimestamp:(uint64_t)timestamp
+                       withCallId:(NSString *)contactNumber
+                         callType:(RPRecentCallType)callType NS_DESIGNATED_INITIALIZER;
+// TODO: Implement thread association
+//                         inThread:(TSThread *)thread NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
+
+- (void)updateCallType:(RPRecentCallType)callType;
+- (void)updateCallType:(RPRecentCallType)callType transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
 @end
+
+NS_ASSUME_NONNULL_END
