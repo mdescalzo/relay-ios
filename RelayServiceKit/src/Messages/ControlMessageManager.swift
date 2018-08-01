@@ -100,8 +100,7 @@ class ControlMessageManager : NSObject
         
         let callOffer = CallOffer(callId: callId!, members: members!, originator: originator!, peerId: peerId!, sdpString: sdpString!)
         
-        Environment.shared().callService.handleReceivedOffer(thread: <#T##TSThread#>, callId: <#T##UInt64#>, sessionDescription: <#T##String#>)
-
+        Environment.shared().callService.handleReceivedOffer(offer: callOffer)
     }
 
     static private func handleCallLeave(message: IncomingControlMessage)

@@ -43,7 +43,7 @@ protocol CallObserver: class {
     var observers = [Weak<CallObserver>]()
 
     @objc
-    let remotePhoneNumber: String
+    let remoteId: String
 
     var isTerminated: Bool {
         switch state {
@@ -153,27 +153,27 @@ protocol CallObserver: class {
 
     // MARK: Initializers and Factory Methods
 
-    init(direction: CallDirection, callUUID: UUID, signalingId: UInt64, state: CallState, remotePhoneNumber: String) {
+    init(direction: CallDirection, callUUID: UUID, state: CallState, remoteId: String) {
         self.direction = direction
         self.callUUID = callUUID
-        self.signalingId = signalingId
         self.state = state
-        self.remotePhoneNumber = remotePhoneNumber
-        self.thread = TSThread.getOrCreateThread(contactId: remotePhoneNumber)
-        self.audioActivity = AudioActivity(audioDescription: "[RelayCall] with \(remotePhoneNumber)")
+        self.remoteId = remoteId
+        // TODO: Thread association
+//        self.thread = TSThread.getOrCreateThread(contactId: remoteId)
+        self.audioActivity = AudioActivity(audioDescription: "[RelayCall] with \(remoteId)")
     }
 
     // A string containing the three identifiers for this call.
     var identifiersForLogs: String {
-        return "{\(remotePhoneNumber), \(callUUID), \(signalingId)}"
+        return "{\(remoteId), \(callUUID)}"
     }
 
-    class func outgoingCall(callUUID: UUID, remotePhoneNumber: String) -> RelayCall {
-        return RelayCall(direction: .outgoing, callUUID: callUUID, signalingId: newCallSignalingId(), state: .dialing, remotePhoneNumber: remotePhoneNumber)
+    class func outgoingCall(idString: String, remoteId: String) -> RelayCall {
+        return RelayCall(direction: .outgoing, callUUID: UUID.init(uuidString: idString)!, state: .dialing, remoteId: remoteId)
     }
 
-    class func incomingCall(callUUID: UUID, remotePhoneNumber: String, signalingId: UInt64) -> RelayCall {
-        return RelayCall(direction: .incoming, callUUID: callUUID, signalingId: signalingId, state: .answering, remotePhoneNumber: remotePhoneNumber)
+    class func incomingCall(idString: String, remoteId: String) -> RelayCall {
+        return RelayCall(direction: .incoming, callUUID: UUID.init(uuidString: idString)!, state: .answering, remoteId: remoteId)
     }
 
     // -

@@ -411,6 +411,12 @@
 		7D4EA0F821110DDC00E83EE7 /* Threading.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA0F721110DDB00E83EE7 /* Threading.m */; };
 		7D4EA0F921110DDC00E83EE7 /* Threading.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA0F721110DDB00E83EE7 /* Threading.m */; };
 		7D4EA0FA21110DDC00E83EE7 /* Threading.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA0F721110DDB00E83EE7 /* Threading.m */; };
+		7D4EA0FD211117C500E83EE7 /* OWSAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA0FC211117C400E83EE7 /* OWSAudioPlayer.m */; };
+		7D4EA0FE211117C500E83EE7 /* OWSAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA0FC211117C400E83EE7 /* OWSAudioPlayer.m */; };
+		7D4EA0FF211117C500E83EE7 /* OWSAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA0FC211117C400E83EE7 /* OWSAudioPlayer.m */; };
+		7D4EA10121120C6200E83EE7 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA10021120C6100E83EE7 /* Platform.swift */; };
+		7D4EA10221120C6200E83EE7 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA10021120C6100E83EE7 /* Platform.swift */; };
+		7D4EA10321120C6200E83EE7 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4EA10021120C6100E83EE7 /* Platform.swift */; };
 		7D516F1D1EF3195100E7E15F /* FLMessageSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F1C1EF3195100E7E15F /* FLMessageSender.m */; };
 		7D516F231EF32B6000E7E15F /* FLCCSMJSONService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D516F221EF32B6000E7E15F /* FLCCSMJSONService.m */; };
 		7D5913CB20F51C32002699EC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5913CA20F51C32002699EC /* CallViewController.swift */; };
@@ -1499,6 +1505,9 @@
 		7D4EA0F221110D1E00E83EE7 /* NSTimer+OWS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+OWS.m"; sourceTree = "<group>"; };
 		7D4EA0F621110DD200E83EE7 /* Threading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Threading.h; sourceTree = "<group>"; };
 		7D4EA0F721110DDB00E83EE7 /* Threading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Threading.m; sourceTree = "<group>"; };
+		7D4EA0FB211117B800E83EE7 /* OWSAudioPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWSAudioPlayer.h; sourceTree = "<group>"; };
+		7D4EA0FC211117C400E83EE7 /* OWSAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSAudioPlayer.m; sourceTree = "<group>"; };
+		7D4EA10021120C6100E83EE7 /* Platform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		7D516F1B1EF3195100E7E15F /* FLMessageSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLMessageSender.h; path = Services/FLMessageSender.h; sourceTree = "<group>"; };
 		7D516F1C1EF3195100E7E15F /* FLMessageSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FLMessageSender.m; path = Services/FLMessageSender.m; sourceTree = "<group>"; };
 		7D516F211EF32B6000E7E15F /* FLCCSMJSONService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FLCCSMJSONService.h; path = Services/FLCCSMJSONService.h; sourceTree = "<group>"; };
@@ -2439,6 +2448,8 @@
 		76EB04C818170B33006006FC /* util */ = {
 			isa = PBXGroup;
 			children = (
+				7D4EA0FB211117B800E83EE7 /* OWSAudioPlayer.h */,
+				7D4EA0FC211117C400E83EE7 /* OWSAudioPlayer.m */,
 				B6DA6B051B8A2F9A00CA6F98 /* AppStoreRating.h */,
 				B6DA6B061B8A2F9A00CA6F98 /* AppStoreRating.m */,
 				FCFA64B11A24F29E0007FB87 /* UI Categories */,
@@ -2465,6 +2476,7 @@
 				BFB074C619A5611000F2947C /* ObservableValue.m */,
 				76EB04EE18170B33006006FC /* Operation.h */,
 				76EB04EF18170B33006006FC /* Operation.m */,
+				7D4EA10021120C6100E83EE7 /* Platform.swift */,
 				76EB04F018170B33006006FC /* protocols */,
 				76EB04F518170B33006006FC /* StringUtil.h */,
 				76EB04F618170B33006006FC /* StringUtil.m */,
@@ -4508,6 +4520,7 @@
 				7D613A541F9017FC00E18D29 /* TSGroupModel.m in Sources */,
 				7D3DA2FA20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */,
 				7D613A601F90180B00E18D29 /* OWSDevicesService.m in Sources */,
+				7D4EA0FD211117C500E83EE7 /* OWSAudioPlayer.m in Sources */,
 				7D4A39C61F1693930023C29B /* LoggingUtil.m in Sources */,
 				7D4A39C71F1693930023C29B /* DecayingSampleEstimator.m in Sources */,
 				7D613A6D1F90181900E18D29 /* OWSDeviceProvisioningRequest.m in Sources */,
@@ -4740,6 +4753,7 @@
 				7D4A3A761F1693930023C29B /* UIImage+normalizeImage.m in Sources */,
 				7D2E00DC20DDA21B005C587C /* OutgoingControlMessage.swift in Sources */,
 				7D4A3A791F1693930023C29B /* FutureUtil.m in Sources */,
+				7D4EA10121120C6200E83EE7 /* Platform.swift in Sources */,
 				7D7DA5901F2FBA66007FE6E4 /* OWSAvatarBuilder.m in Sources */,
 				7D4A3A7A1F1693930023C29B /* PrivacySettingsTableViewController.m in Sources */,
 				7D4995992022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
@@ -4807,6 +4821,7 @@
 				7D3DA2FB20BF54C900CF5CA4 /* ValidationViewController.swift in Sources */,
 				7D613A251F9017CC00E18D29 /* TSInteraction.m in Sources */,
 				7D613A831F90182D00E18D29 /* TSRecipientPrekeyRequest.m in Sources */,
+				7D4EA0FE211117C500E83EE7 /* OWSAudioPlayer.m in Sources */,
 				7DCFFD731F0EE4490003CD95 /* AppStoreRating.m in Sources */,
 				7D613A8F1F90183A00E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
 				7DCFFD741F0EE4490003CD95 /* OWSQRCodeScanningViewController.m in Sources */,
@@ -5039,6 +5054,7 @@
 				7D613AB31F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
 				7DCFFE251F0EE4490003CD95 /* UnrecognizedRequestFailure.m in Sources */,
 				7DCFFE271F0EE4490003CD95 /* NSData+ows_StripToken.m in Sources */,
+				7D4EA10221120C6200E83EE7 /* Platform.swift in Sources */,
 				7D49959A2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
 				7D613A9B1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7D613AA71F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,
@@ -5106,6 +5122,7 @@
 				7D613A261F9017CC00E18D29 /* TSInteraction.m in Sources */,
 				B6DA6B071B8A2F9A00CA6F98 /* AppStoreRating.m in Sources */,
 				7D613A841F90182D00E18D29 /* TSRecipientPrekeyRequest.m in Sources */,
+				7D4EA0FF211117C500E83EE7 /* OWSAudioPlayer.m in Sources */,
 				458E38311D6682450094BD24 /* OWSQRCodeScanningViewController.m in Sources */,
 				7D613A901F90183A00E18D29 /* TSRequestVerificationCodeRequest.m in Sources */,
 				76EB062418170B33006006FC /* PriorityQueue.m in Sources */,
@@ -5338,6 +5355,7 @@
 				7D613AB41F90186300E18D29 /* OWSHTTPSecurityPolicy.m in Sources */,
 				76EB059218170B33006006FC /* UnrecognizedRequestFailure.m in Sources */,
 				B62F5E101C2980B4000D370C /* NSData+ows_StripToken.m in Sources */,
+				7D4EA10321120C6200E83EE7 /* Platform.swift in Sources */,
 				7D49959B2022495F00E24D40 /* FLDeviceRegistrationService.m in Sources */,
 				7D613A9C1F90184600E18D29 /* TSVerifyCodeRequest.m in Sources */,
 				7D613AA81F90185800E18D29 /* ECKeyPair+OWSPrivateKey.m in Sources */,

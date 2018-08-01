@@ -29,16 +29,16 @@ public class WebRTCCallMessageHandler: NSObject {
     
     // MARK: - Call Handlers
     
-    public func receivedOffer(_ offer: CallOffer) {
-        SwiftAssertIsOnMainThread(#function)
-        
-        guard offer.callId.count > 0 else {
-            DDLogDebug("no callId passed to \(#function)")
-            return
-        }
-        // TODO: attach calls to threads/converstations
-        self.callService.processIncomingOffer(callId: offer.callId, sessionDescription: offer.sessionDescription)
-    }
+//    public func receivedOffer(_ offer: CallOffer) {
+//        SwiftAssertIsOnMainThread(#function)
+//
+//        guard offer.callId.count > 0 else {
+//            DDLogDebug("no callId passed to \(#function)")
+//            return
+//        }
+//        // TODO: attach calls to threads/converstations
+//        self.callService.processIncomingOffer(callId: offer.callId, sessionDescription: offer.sessionDescription)
+//    }
     
     public func receivedAnswer(_ answer: OWSSignalServiceProtosCallMessageAnswer, from callerId: String) {
         SwiftAssertIsOnMainThread(#function)
@@ -91,20 +91,3 @@ public class WebRTCCallMessageHandler: NSObject {
     
 }
 
-@objc public class CallOffer: NSObject {
-    let callId: String
-    let members: NSArray
-    let originator: String
-    let peerId: String
-    let sdpString: String
-    
-    init(callId: String, members: NSArray, originator: String, peerId: String, sdpString: String) {
-        self.callId = callId
-        self.members = members
-        self.originator = originator
-        self.peerId = peerId
-        self.sdpString = sdpString
-        
-        super.init()
-    }
-}

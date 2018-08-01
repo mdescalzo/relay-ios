@@ -369,7 +369,7 @@ private class RelayCallData: NSObject {
         let callData = RelayCallData(call: call)
         self.callData = callData
 
-//        let callRecord = TSCall(timestamp: NSDate.ows_millisecondTimeStamp(), withCallNumber: call.remotePhoneNumber, callType: RPRecentCallTypeOutgoingIncomplete, in: call.thread)
+//        let callRecord = TSCall(timestamp: NSDate.ows_millisecondTimeStamp(), withCallNumber: call.remoteId, callType: RPRecentCallTypeOutgoingIncomplete, in: call.thread)
         let callRecord = TSCall(timestamp: NSDate.ows_millisecondTimeStamp(), withCallId: call.callUUID.uuidString, callType: RPRecentCallTypeOutgoingIncomplete)
         callRecord.save()
         call.callRecord = callRecord
@@ -471,7 +471,7 @@ private class RelayCallData: NSObject {
     /**
      * Called by the call initiator after receiving a CallAnswer from the callee.
      */
-    public func handleReceivedAnswer(thread: TSThread, callId: UInt64, sessionDescription: String) {
+    public func handleReceivedAnswer(thread: TSThread, callId: UUID, sessionDescription: String) {
         Logger.info("\(self.logTag) received call answer for call: \(callId) thread: \(thread.uniqueId)")
         SwiftAssertIsOnMainThread(#function)
 
@@ -480,7 +480,7 @@ private class RelayCallData: NSObject {
             return
         }
 
-        guard call.signalingId == callId else {
+        guard call.callUUID == callId else {
             Logger.warn("\(self.logTag) ignoring mismatched call: \(callId) currentCall: \(call.callUUID.uuidString) in \(#function)")
             return
         }
@@ -538,11 +538,12 @@ private class RelayCallData: NSObject {
         Logger.info("\(self.logTag) \(#function) for call: \(call.identifiersForLogs) thread: \(String(describing: call.thread?.uniqueId))")
         SwiftAssertIsOnMainThread(#function)
 
-        let busyMessage = OWSCallBusyMessage(callId: call.signalingId)
-        let callMessage = OWSOutgoingCallMessage(thread: call.thread, busyMessage: busyMessage)
-        let sendPromise = messageSender.sendPromise(message: callMessage)
-        sendPromise.retainUntilComplete()
-
+        // TODO: Implement these message types
+//        let busyMessage = OWSCallBusyMessage(callId: call.callUUID)
+//        let callMessage = OWSOutgoingCallMessage(thread: call.thread, busyMessage: busyMessage)
+//        let sendPromise = messageSender.sendPromise(message: callMessage)
+//        sendPromise.retainUntilComplete()
+//
         handleMissedCall(call)
     }
 
@@ -578,10 +579,10 @@ private class RelayCallData: NSObject {
      * Received an incoming call offer. We still have to complete setting up the Signaling channel before we notify
      * the user of an incoming call.
      */
-    public func handleReceivedOffer(thread: TSThread, callId: UInt64, sessionDescription callerSessionDescription: String) {
+    public func handleReceivedOffer(offer: CallOffer) {
         SwiftAssertIsOnMainThread(#function)
 
-        let newCall = RelayCall.incomingCall(callUUID: UUID(), remotePhoneNumber: thread.displayName, signalingId: callId)
+        let newCall = RelayCall.incomingCall(idString: offer.callId, remoteId: offer.originator)
 
         Logger.info("\(self.logTag) receivedCallOffer: \(newCall.identifiersForLogs)")
 
@@ -624,7 +625,7 @@ private class RelayCallData: NSObject {
 
             handleLocalBusyCall(newCall)
 
-            if existingCall.remotePhoneNumber == newCall.remotePhoneNumber {
+            if existingCall.remoteId == newCall.remoteId {
                 Logger.info("\(self.logTag) handling call from current call user as remote busy.: \(newCall.identifiersForLogs) but we're already in call: \(existingCall.identifiersForLogs)")
 
                 // If we're receiving a new call offer from the user we already think we have a call with,
@@ -996,7 +997,7 @@ private class RelayCallData: NSObject {
 
         Logger.info("\(self.logTag) in \(#function): \(call.identifiersForLogs).")
 
-        let callRecord = TSCall(timestamp: NSDate.ows_millisecondTimeStamp(), withCallNumber: call.remotePhoneNumber, callType: RPRecentCallTypeIncomingIncomplete, in: call.thread)
+        let callRecord = TSCall(timestamp: NSDate.ows_millisecondTimeStamp(), withCallNumber: call.remoteId, callType: RPRecentCallTypeIncomingIncomplete, in: call.thread)
         callRecord.save()
         call.callRecord = callRecord
 
@@ -1075,7 +1076,7 @@ private class RelayCallData: NSObject {
             owsFail("Not expecting callrecord to already be set")
             callRecord.updateCallType(RPRecentCallTypeIncomingDeclined)
         } else {
-            let callRecord = TSCall(timestamp: NSDate.ows_millisecondTimeStamp(), withCallNumber: call.remotePhoneNumber, callType: RPRecentCallTypeIncomingDeclined, in: call.thread)
+            let callRecord = TSCall(timestamp: NSDate.ows_millisecondTimeStamp(), withCallNumber: call.remoteId, callType: RPRecentCallTypeIncomingDeclined, in: call.thread)
             callRecord.save()
             call.callRecord = callRecord
         }
@@ -1730,5 +1731,23 @@ private class RelayCallData: NSObject {
 
         self.activeCallTimer?.invalidate()
         self.activeCallTimer = nil
+    }
+}
+
+@objc public class CallOffer: NSObject {
+    let callId: String
+    let members: NSArray
+    let originator: String
+    let peerId: String
+    let sdpString: String
+    
+    init(callId: String, members: NSArray, originator: String, peerId: String, sdpString: String) {
+        self.callId = callId
+        self.members = members
+        self.originator = originator
+        self.peerId = peerId
+        self.sdpString = sdpString
+        
+        super.init()
     }
 }

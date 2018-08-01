@@ -95,13 +95,7 @@ extension CallUIAdaptee {
         self.contactsManager = contactsManager
         self.callService = callService
 
-        if Platform.isSimulator {
-            // CallKit doesn't seem entirely supported in simulator.
-            // e.g. you can't receive calls in the call screen.
-            // So we use the non-CallKit call UI.
-            Logger.info("\(TAG) choosing non-callkit adaptee for simulator.")
-            adaptee = NonCallKitCallUIAdaptee(callService: callService, notificationsAdapter: notificationsAdapter)
-        } else if #available(iOS 11, *) {
+        if #available(iOS 11, *) {
             Logger.info("\(TAG) choosing callkit adaptee for iOS11+")
             let showNames = Environment.preferences().notificationPreviewType() != .noNameNoPreview
             let useSystemCallLog = Environment.preferences().isSystemCallLogEnabled()

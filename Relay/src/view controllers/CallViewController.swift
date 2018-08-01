@@ -30,6 +30,8 @@ class CallViewController: UIViewController {
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var speakerButton: UIButton!
     
+    let contactsManager: FLContactsManager
+    
     var call: RelayCall?
     
     override func viewDidLoad() {
@@ -87,6 +89,25 @@ class CallViewController: UIViewController {
     @IBAction private func muteCallTapped(_ sender: Any) {
 
     }
+    
+    // MARK: - Initializers
+    required init(call: RelayCall) {
+        contactsManager = Environment.shared().contactsManager
+        self.call = call
+        super.init(nibName: nil, bundle: nil)
+        
+        // TODO: Implement this
+//        allAudioSources = Set(callUIAdapter.audioService.availableInputs)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     /*
     // MARK: - Navigation
