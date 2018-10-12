@@ -1,4 +1,4 @@
-platform :ios, '8.0'
+platform :ios, '9.0'
 source 'https://github.com/CocoaPods/Specs.git'
 project './Forsta.xcodeproj'
 
@@ -18,7 +18,7 @@ abstract_target 'Common' do
     pod 'JSQMessagesViewController',   git: 'git@github.com:ForstaLabs/JSQMessagesViewController.git', branch: 'forstaMaster', :inhibit_warnings => true
     pod 'CocoaLumberjack/Swift',             :inhibit_warnings => true
     pod 'AFNetworking',                '~> 3.2.0', :inhibit_warnings => true
-    pod 'AxolotlKit',                  git: 'https://github.com/signalapp/SignalProtocolKit.git'
+    pod 'AxolotlKit',                  git: 'https://github.com/signalapp/SignalProtocolKit.git', commit: '54d5f90558578bb96ebfa9688b3905093b489e31', :inhibit_warnings => true
     pod 'Mantle',                      '~> 2.1.0', :inhibit_warnings => true
     pod 'YapDatabase/SQLCipher',       '~> 3.1', :inhibit_warnings => true
     pod 'SocketRocket',               :git => 'https://github.com/facebook/SocketRocket.git', :inhibit_warnings => true

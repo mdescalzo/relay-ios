@@ -3,7 +3,8 @@
 ## [1.5.3]
 
 ### Fixed
-- Correct db connection policy assignments
+- Fixed crash on login
+- Corrected db connection policy assignments
 
 ## [1.5.2]
 
