@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.5.3]
+
+### Fixed
+- Correct db connection policy assignments
+
 ## [1.5.2]
 
 ### Updated
@@ -161,6 +166,7 @@
 ## [1.0.0]
 - Initial release
 
+[1.5.3]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.3
 [1.5.2]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.2
 [1.5.1]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.1
 [1.5.0]: https://github.com/ForstaLabs/relay-ios/releases/tag/v1.5.0
